@@ -4,6 +4,7 @@ abstract class StringValues {
   static const hello = 'Hello';
   static const register = 'Register';
   static const login = 'Login';
+  static const logout = 'Logout';
   static const forgotPassword = 'Forgot Password';
   static const resetPassword = 'Reset Password';
   static const name = 'Name';
@@ -17,4 +18,15 @@ abstract class StringValues {
   static const oldPassword = 'Old Password';
   static const settings = 'Settings';
   static const profile = 'Profile';
+  static const doNotHaveAccount = "Don't have an account?";
+  static const alreadyHaveAccount = "Already have an account?";
+  static const String themeMode = 'themeMode';
+  static const String system = 'System';
+  static const String light = 'Light';
+  static const String dark = 'Dark';
+}
+
+abstract class AssetValues {
+  static const String icon = 'assets/icon.png';
+  static const String vector1 = 'assets/vector-1.png';
 }

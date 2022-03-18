@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/common/cached_network_image.dart';
+import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -15,15 +15,18 @@ class HomeView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(StringValues.hello),
-              const NxNetworkImage(
-                imageUrl:
-                    'https://nixrajput.nixlab.co.in/_next/static/media/profile.ec2dbb8c.png',
-              ),
               ElevatedButton(
                 onPressed: () {
                   RouteManagement.goToSettingsView();
                 },
                 child: const Text(StringValues.settings),
+              ),
+              Dimens.boxHeight16,
+              ElevatedButton(
+                onPressed: () {
+                  RouteManagement.goToLoginView();
+                },
+                child: const Text(StringValues.logout),
               ),
             ],
           ),

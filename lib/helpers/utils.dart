@@ -48,7 +48,7 @@ abstract class AppUtils {
         ),
       ),
       backgroundColor: const Color(0xFF503E9D),
-      margin: Dimens.edgeInsets15,
+      margin: Dimens.edgeInsets16,
       borderRadius: Dimens.fifteen,
       snackStyle: SnackStyle.FLOATING,
     );

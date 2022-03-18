@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/strings.dart';
 
 abstract class AppThemes {
   static final lightTheme = ThemeData(
@@ -67,28 +68,31 @@ abstract class AppThemes {
   );
 }
 
+const appThemeModes = {'System', 'Dark', 'Light'};
+
 class AppThemeController extends GetxController {
   final themeData = GetStorage();
 
-  final _themeMode = false.obs;
-  bool get themeMode => _themeMode.value;
+  final _themeMode = Rx(appThemeModes.first);
+
+  String get themeMode => _themeMode.value;
 
   @override
   void onInit() {
-    themeData.writeIfNull('darkMode', false);
+    themeData.writeIfNull(StringValues.themeMode, appThemeModes.first);
     getThemeMode();
     super.onInit();
   }
 
-  void toggleThemeMode(value) {
+  void setThemeMode(value) {
     _themeMode(value);
-    themeData.write('darkMode', value);
+    themeData.write(StringValues.themeMode, value);
     update();
   }
 
   void getThemeMode() {
-    bool isDarkMode = themeData.read('darkMode');
-    _themeMode(isDarkMode);
+    String themeMode = themeData.read(StringValues.themeMode);
+    _themeMode(themeMode);
     update();
   }
 }

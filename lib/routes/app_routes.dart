@@ -3,6 +3,10 @@ part of 'app_pages.dart';
 abstract class AppRoutes {
   static const home = _Routes.home;
   static const settings = _Routes.settings;
+  static const login = _Routes.login;
+  static const register = _Routes.register;
+  static const forgotPassword = _Routes.forgotPassword;
+  static const resetPassword = _Routes.resetPassword;
 }
 
 abstract class _Routes {

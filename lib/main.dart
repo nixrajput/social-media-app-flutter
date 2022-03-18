@@ -32,11 +32,15 @@ class MyApp extends StatelessWidget {
         builder: () => GetMaterialApp(
           title: StringValues.appName,
           debugShowCheckedModeBanner: false,
-          themeMode: logic.themeMode ? ThemeMode.dark : ThemeMode.light,
+          themeMode: logic.themeMode == StringValues.system
+              ? ThemeMode.system
+              : logic.themeMode == StringValues.dark
+                  ? ThemeMode.dark
+                  : ThemeMode.light,
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
           getPages: AppPages.pages,
-          initialRoute: AppRoutes.home,
+          initialRoute: AppRoutes.login,
         ),
       ),
     );

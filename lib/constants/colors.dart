@@ -18,7 +18,7 @@ abstract class ColorValues {
   );
 
   static const Color primaryColor = Color(0xFFA038C8);
-  static const Color primaryLightColor = Color(0xFFA065B6);
+  static const Color primaryLightColor = Color(0xffd35dfa);
   static const Color primaryTextColor = Color(0xFF505050);
 
   static const Color successColor = Color(0xFF4CAF50);
@@ -33,5 +33,5 @@ abstract class ColorValues {
   static const Color lightGrayColor = Color(0xFFdbdbdb);
 
   static const Color lightBgColor = Color.fromRGBO(250, 250, 250, 1);
-  static const Color darkBgColor = Color.fromRGBO(32, 32, 48, 1.0);
+  static const Color darkBgColor = Color.fromRGBO(20, 20, 36, 1.0);
 }
