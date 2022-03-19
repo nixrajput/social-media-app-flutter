@@ -24,6 +24,27 @@ abstract class StringValues {
   static const String system = 'System';
   static const String light = 'Light';
   static const String dark = 'Dark';
+  static const okay = 'Okay';
+  static const info = 'info';
+  static const success = 'success';
+  static const warning = 'warning';
+  static const error = 'error';
+  static const message = 'message';
+  static const enterFirstName = 'Enter your first name';
+  static const enterLastName = 'Enter your last name';
+  static const enterEmail = 'Enter your email';
+  static const enterUsername = 'Enter an username';
+  static const enterPassword = 'Enter a password';
+  static const enterConfirmPassword = 'Retype your password';
+  static const errorOccurred = 'Error Occurred';
+  static const unknownErrorOccurred = 'An unknown error occurred';
+  static const loginSuccessful = 'Logged in successfully';
+  static const registrationSuccessful = 'Registered successfully';
+  static const logoutSuccessful = 'Logged out successfully';
+  static const token = 'token';
+  static const expiresAt = 'expiresAt';
+  static const loginData = 'loginData';
+  static const userData = 'userData';
 }
 
 abstract class AssetValues {

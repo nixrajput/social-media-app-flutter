@@ -6,6 +6,10 @@ abstract class RouteManagement {
     Get.offAllNamed(AppRoutes.login);
   }
 
+  static void goToSplashView() {
+    Get.offAllNamed(AppRoutes.splash);
+  }
+
   static void goToRegisterView() {
     Get.toNamed(AppRoutes.register);
   }

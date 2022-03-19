@@ -4,6 +4,7 @@ import 'package:social_media_app/modules/auth/views/login_view.dart';
 import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/home/bindings/home_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
+import 'package:social_media_app/modules/splash/views/splash_view.dart';
 import 'package:social_media_app/modules/user/views/settings_view.dart';
 
 part 'app_routes.dart';
@@ -12,6 +13,12 @@ abstract class AppPages {
   static var transitionDuration = const Duration(milliseconds: 300);
 
   static final pages = [
+    GetPage(
+      name: _Routes.splash,
+      page: SplashView.new,
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
     GetPage(
       name: _Routes.login,
       page: LoginView.new,

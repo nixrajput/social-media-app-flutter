@@ -6,6 +6,8 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
+import 'modules/auth/controllers/auth_controller.dart';
+
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +21,7 @@ void main() async {
 Future<void> initServices() async {
   await GetStorage.init();
   Get.put(AppThemeController());
+  Get.put(AuthController());
 }
 
 class MyApp extends StatelessWidget {
@@ -40,7 +43,7 @@ class MyApp extends StatelessWidget {
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
           getPages: AppPages.pages,
-          initialRoute: AppRoutes.login,
+          initialRoute: AppRoutes.splash,
         ),
       ),
     );

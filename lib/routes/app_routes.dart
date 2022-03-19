@@ -7,6 +7,7 @@ abstract class AppRoutes {
   static const register = _Routes.register;
   static const forgotPassword = _Routes.forgotPassword;
   static const resetPassword = _Routes.resetPassword;
+  static const splash = _Routes.splash;
 }
 
 abstract class _Routes {
@@ -16,4 +17,5 @@ abstract class _Routes {
   static const forgotPassword = '/forgot_password';
   static const resetPassword = '/reset_password';
   static const settings = '/settings';
+  static const splash = '/';
 }

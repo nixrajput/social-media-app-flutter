@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class HomeView extends StatelessWidget {
@@ -14,19 +18,32 @@ class HomeView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(StringValues.hello),
+              GetBuilder<AuthController>(
+                builder: (logic) => logic.isLoading
+                    ? const Center(
+                        child: CupertinoActivityIndicator(),
+                      )
+                    : Column(
+                        children: [
+                          Text(
+                            StringValues.hello +
+                                ' ' +
+                                logic.userModel.user!.fname,
+                            style: AppStyles.style24Bold,
+                          ),
+                          ElevatedButton(
+                            onPressed: () => logic.logout(),
+                            child: const Text(StringValues.logout),
+                          ),
+                        ],
+                      ),
+              ),
+              Dimens.boxHeight16,
               ElevatedButton(
                 onPressed: () {
                   RouteManagement.goToSettingsView();
                 },
                 child: const Text(StringValues.settings),
-              ),
-              Dimens.boxHeight16,
-              ElevatedButton(
-                onPressed: () {
-                  RouteManagement.goToLoginView();
-                },
-                child: const Text(StringValues.logout),
               ),
             ],
           ),

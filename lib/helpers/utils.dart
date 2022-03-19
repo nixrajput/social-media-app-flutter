@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/strings.dart';
 
 import '../constants/dimens.dart';
 
@@ -43,14 +45,53 @@ abstract class AppUtils {
             Get.back<void>();
           }
         },
-        child: Text(
-          'Okay',
+        child: const Text(
+          StringValues.okay,
         ),
       ),
       backgroundColor: const Color(0xFF503E9D),
       margin: Dimens.edgeInsets16,
       borderRadius: Dimens.fifteen,
       snackStyle: SnackStyle.FLOATING,
+    );
+  }
+
+  static void showSnackBar(String message, String type) {
+    closeSnackBar();
+    Get.showSnackbar(
+      GetSnackBar(
+        messageText: Text(
+          message,
+          style: TextStyle(
+            color: (type == StringValues.error ||
+                    type == StringValues.success ||
+                    type == StringValues.warning)
+                ? ColorValues.whiteColor
+                : ThemeData().textTheme.bodyText1!.color,
+          ),
+        ),
+        icon: Icon(
+          type == StringValues.error
+              ? CupertinoIcons.clear_circled_solid
+              : type == StringValues.success
+                  ? CupertinoIcons.check_mark_circled_solid
+                  : CupertinoIcons.info_circle_fill,
+          color: (type == StringValues.error ||
+                  type == StringValues.success ||
+                  type == StringValues.warning)
+              ? ColorValues.whiteColor
+              : ThemeData().iconTheme.color,
+        ),
+        shouldIconPulse: false,
+        backgroundColor: type == StringValues.error
+            ? ColorValues.errorColor
+            : type == StringValues.warning
+                ? ColorValues.warningColor
+                : type == StringValues.success
+                    ? ColorValues.successColor
+                    : ThemeData().snackBarTheme.backgroundColor!,
+        duration: const Duration(seconds: 5),
+      ),
     );
   }
 
