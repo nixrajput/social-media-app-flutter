@@ -38,7 +38,7 @@ class ProfileTabView extends StatelessWidget {
                 ),
                 actions: InkWell(
                   onTap: () => RouteManagement.goToSettingsView(),
-                  child: const Icon(CupertinoIcons.settings),
+                  child: const Icon(CupertinoIcons.gear),
                 ),
               ),
               SliverFillRemaining(

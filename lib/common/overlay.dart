@@ -88,8 +88,8 @@ abstract class AppOverlay {
                             .textTheme
                             .bodyText1!
                             .color!
-                            .withOpacity(0.5)
-                            .withAlpha(50),
+                            .withOpacity(0.75)
+                            .withAlpha(200),
                     dismissible: dismissible ?? false,
                   ),
                   _child

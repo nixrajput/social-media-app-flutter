@@ -45,7 +45,7 @@ class LoginView extends StatelessWidget {
         children: [
           NxAssetImage(
             imgAsset: AssetValues.vector1,
-            maxHeight: Dimens.hundred * 2.4,
+            maxHeight: Dimens.hundred * 2.0,
           ),
           Padding(
             padding: Dimens.edgeInsets0_16,
@@ -99,9 +99,9 @@ class LoginView extends StatelessWidget {
                       onEditingComplete: logic.focusNode.unfocus,
                     ),
                     Dimens.boxHeight32,
-                    NxTextButton(
+                    const NxTextButton(
                       label: StringValues.forgotPassword,
-                      onTap: () {},
+                      onTap: RouteManagement.goToForgotPasswordView,
                     ),
                     Dimens.boxHeight32,
                     NxFilledButton(

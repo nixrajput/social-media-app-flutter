@@ -14,6 +14,14 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.register);
   }
 
+  static void goToForgotPasswordView() {
+    Get.toNamed(AppRoutes.forgotPassword);
+  }
+
+  static void goToResetPasswordView() {
+    Get.offAndToNamed(AppRoutes.resetPassword);
+  }
+
   static void goToHomeView() {
     Get.offAllNamed(AppRoutes.home);
   }

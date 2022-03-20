@@ -8,4 +8,5 @@ abstract class AppUrls {
   static const String forgotPasswordEndpoint = '/forgot/password';
   static const String resetPasswordEndpoint = '/reset/password';
   static const String profileDetailsEndpoint = '/me';
+  static const String getAllPostsEndpoint = '/admin/posts';
 }

@@ -35,6 +35,7 @@ abstract class StringValues {
   static const enterEmail = 'Enter your email';
   static const enterUsername = 'Enter an username';
   static const enterPassword = 'Enter a password';
+  static const enterOtp = 'Enter the OTP';
   static const enterConfirmPassword = 'Retype your password';
   static const errorOccurred = 'Error Occurred';
   static const unknownErrorOccurred = 'An unknown error occurred';
@@ -49,6 +50,12 @@ abstract class StringValues {
   static const search = 'Search';
   static const notifications = 'Notifications';
   static const theme = 'Theme';
+  static const getOtp = 'Get OTP';
+  static const otp = 'OTP';
+  static const otpSendSuccessful = 'OTP sent successfully to your email';
+  static const doNotHaveOtp = "Don't have an OTP?";
+  static const alreadyHaveOtp = "Already have an OTP?";
+  static const passwordChangeSuccessful = 'Password changed successfully';
 }
 
 abstract class AssetValues {

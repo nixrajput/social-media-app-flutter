@@ -21,6 +21,9 @@ class AuthController extends GetxController {
   final lNameTextController = TextEditingController();
   final unameTextController = TextEditingController();
   final confirmPasswordTextController = TextEditingController();
+
+  final otpTextController = TextEditingController();
+
   final FocusScopeNode focusNode = FocusScopeNode();
 
   final _token = ''.obs;
@@ -44,6 +47,39 @@ class AuthController extends GetxController {
     ever(_token, _autoLogin);
     _token.bindStream(tokenStream);
     super.onReady();
+  }
+
+  @override
+  void onClose() {
+    _clearLoginTextControllers();
+    _clearRegisterTextControllers();
+    _clearForgotPasswordTextControllers();
+    _clearResetPasswordTextControllers();
+    super.onClose();
+  }
+
+  void _clearLoginTextControllers() {
+    emailTextController.clear();
+    passwordTextController.clear();
+  }
+
+  void _clearRegisterTextControllers() {
+    fNameTextController.clear();
+    lNameTextController.clear();
+    emailTextController.clear();
+    unameTextController.clear();
+    passwordTextController.clear();
+    confirmPasswordTextController.clear();
+  }
+
+  void _clearForgotPasswordTextControllers() {
+    emailTextController.clear();
+  }
+
+  void _clearResetPasswordTextControllers() {
+    otpTextController.clear();
+    passwordTextController.clear();
+    confirmPasswordTextController.clear();
   }
 
   Stream<String> _validateToken() async* {
@@ -163,6 +199,8 @@ class AuthController extends GetxController {
         _loginModel.value = LoginModel.fromJson(data);
         await _saveLoginDataToLocalStorage();
         _autoLogout();
+        await _getProfileDetails();
+        _clearLoginTextControllers();
         AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
         update();
@@ -170,6 +208,7 @@ class AuthController extends GetxController {
           StringValues.loginSuccessful,
           StringValues.success,
         );
+        RouteManagement.goToHomeView();
       } else {
         AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
@@ -277,7 +316,7 @@ class AuthController extends GetxController {
       );
       return;
     }
-    if (password.isEmpty) {
+    if (confPassword.isEmpty) {
       AppUtils.showSnackBar(
         StringValues.enterConfirmPassword,
         StringValues.warning,
@@ -310,11 +349,151 @@ class AuthController extends GetxController {
       final data = jsonDecode(response.body);
 
       if (response.statusCode == 201) {
+        _clearRegisterTextControllers();
         AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
           StringValues.registrationSuccessful,
+          StringValues.success,
+        );
+        RouteManagement.goToLoginView();
+      } else {
+        AppOverlay.hideLoadingIndicator();
+        _isLoading.value = false;
+        update();
+        AppUtils.showSnackBar(
+          data[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } catch (err) {
+      AppOverlay.hideLoadingIndicator();
+      _isLoading.value = false;
+      update();
+      debugPrint(err.toString());
+      AppUtils.showSnackBar(
+        '${StringValues.errorOccurred}: ${err.toString()}',
+        StringValues.error,
+      );
+    }
+  }
+
+  Future<void> _sendForgotPasswordOTP(String email) async {
+    if (email.isEmpty) {
+      AppUtils.showSnackBar(
+        StringValues.enterEmail,
+        StringValues.warning,
+      );
+      return;
+    }
+
+    AppOverlay.showLoadingIndicator();
+    _isLoading.value = true;
+    update();
+
+    try {
+      final response = await http.post(
+        Uri.parse(AppUrls.baseUrl + AppUrls.forgotPasswordEndpoint),
+        headers: {
+          'content-type': 'application/json',
+          'x-rapidapi-host': SecretValues.rapidApiHost,
+          'x-rapidapi-key': SecretValues.rapidApiKey,
+        },
+        body: jsonEncode({
+          'email': email,
+        }),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        _clearForgotPasswordTextControllers();
+        AppOverlay.hideLoadingIndicator();
+        _isLoading.value = false;
+        update();
+        AppUtils.showSnackBar(
+          StringValues.otpSendSuccessful,
+          StringValues.success,
+        );
+        RouteManagement.goToResetPasswordView();
+      } else {
+        AppOverlay.hideLoadingIndicator();
+        _isLoading.value = false;
+        update();
+        AppUtils.showSnackBar(
+          data[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } catch (err) {
+      AppOverlay.hideLoadingIndicator();
+      _isLoading.value = false;
+      update();
+      debugPrint(err.toString());
+      AppUtils.showSnackBar(
+        '${StringValues.errorOccurred}: ${err.toString()}',
+        StringValues.error,
+      );
+    }
+  }
+
+  Future<void> _resetPassword(
+    String otp,
+    String newPassword,
+    String confPassword,
+  ) async {
+    if (otp.isEmpty) {
+      AppUtils.showSnackBar(
+        StringValues.enterOtp,
+        StringValues.warning,
+      );
+      return;
+    }
+
+    if (newPassword.isEmpty) {
+      AppUtils.showSnackBar(
+        StringValues.enterPassword,
+        StringValues.warning,
+      );
+      return;
+    }
+    if (confPassword.isEmpty) {
+      AppUtils.showSnackBar(
+        StringValues.enterConfirmPassword,
+        StringValues.warning,
+      );
+      return;
+    }
+
+    AppOverlay.showLoadingIndicator();
+    _isLoading.value = true;
+    update();
+
+    try {
+      final response = await http.put(
+        Uri.parse(AppUrls.baseUrl + AppUrls.resetPasswordEndpoint),
+        headers: {
+          'content-type': 'application/json',
+          'x-rapidapi-host': SecretValues.rapidApiHost,
+          'x-rapidapi-key': SecretValues.rapidApiKey,
+        },
+        body: jsonEncode({
+          'otp': otp,
+          'newPassword': newPassword,
+          'confirmPassword': confPassword,
+        }),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        _clearResetPasswordTextControllers();
+        AppOverlay.hideLoadingIndicator();
+        _isLoading.value = false;
+        update();
+        AppUtils.showSnackBar(
+          StringValues.passwordChangeSuccessful,
           StringValues.success,
         );
         RouteManagement.goToLoginView();
@@ -360,4 +539,16 @@ class AuthController extends GetxController {
   Future<void> logout() async => await _logout();
 
   Future<void> getProfileDetails() async => await _getProfileDetails();
+
+  Future<void> sendResetPasswordOTP() async {
+    await _sendForgotPasswordOTP(emailTextController.text.trim());
+  }
+
+  Future<void> resetPassword() async {
+    await _resetPassword(
+      otpTextController.text.trim(),
+      passwordTextController.text.trim(),
+      confirmPasswordTextController.text.trim(),
+    );
+  }
 }

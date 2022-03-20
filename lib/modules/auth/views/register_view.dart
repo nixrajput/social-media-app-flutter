@@ -45,7 +45,7 @@ class RegisterView extends StatelessWidget {
         children: [
           NxAssetImage(
             imgAsset: AssetValues.vector1,
-            maxHeight: Dimens.hundred * 2.4,
+            maxHeight: Dimens.hundred * 2.0,
           ),
           Padding(
             padding: Dimens.edgeInsets0_16,

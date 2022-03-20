@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:social_media_app/modules/auth/bindings/auth_binding.dart';
+import 'package:social_media_app/modules/auth/views/forgot_password_view.dart';
 import 'package:social_media_app/modules/auth/views/login_view.dart';
 import 'package:social_media_app/modules/auth/views/register_view.dart';
+import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
 import 'package:social_media_app/modules/home/bindings/home_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
@@ -44,6 +46,20 @@ abstract class AppPages {
       name: _Routes.settings,
       page: SettingsView.new,
       transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.forgotPassword,
+      page: ForgotPasswordView.new,
+      transitionDuration: transitionDuration,
+      binding: AuthBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.resetPassword,
+      page: ResetPasswordView.new,
+      transitionDuration: transitionDuration,
+      binding: AuthBinding(),
       transition: Transition.downToUp,
     ),
   ];

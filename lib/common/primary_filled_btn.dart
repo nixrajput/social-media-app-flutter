@@ -43,7 +43,7 @@ class NxFilledButton extends StatelessWidget {
                   ? ColorValues.primaryColor.withOpacity(0.5)
                   : ColorValues.primaryColor,
           borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius ?? Dimens.eight),
+            Radius.circular(borderRadius ?? Dimens.thirtyTwo),
           ),
         ),
         child: Row(
