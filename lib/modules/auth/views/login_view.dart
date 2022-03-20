@@ -68,11 +68,6 @@ class LoginView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (logic.isLoading)
-                      const Center(
-                        child: CupertinoActivityIndicator(),
-                      ),
-                    Dimens.boxHeight16,
                     TextFormField(
                       decoration: const InputDecoration(
                         icon: Icon(

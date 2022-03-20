@@ -69,11 +69,6 @@ class RegisterView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (logic.isLoading)
-                      const Center(
-                        child: CupertinoActivityIndicator(),
-                      ),
-                    Dimens.boxHeight16,
                     TextFormField(
                       decoration: const InputDecoration(
                         icon: Icon(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/common/asset_image.dart';
+import 'package:social_media_app/common/loading_indicator.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 
@@ -24,7 +25,7 @@ class SplashView extends StatelessWidget {
                 height: Dimens.hundred * 1.6,
               ),
               Dimens.boxHeight32,
-              const CupertinoActivityIndicator(),
+              const NxLoadingIndicator(),
             ],
           ),
         ),

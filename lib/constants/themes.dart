@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 
 abstract class AppThemes {
@@ -9,15 +10,22 @@ abstract class AppThemes {
     colorScheme: const ColorScheme.light().copyWith(
       primary: ColorValues.primarySwatch,
     ),
-    iconTheme: const IconThemeData(color: ColorValues.grayColor),
+    iconTheme: const IconThemeData(color: ColorValues.darkGrayColor),
     scaffoldBackgroundColor: ColorValues.lightBgColor,
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.lightBgColor),
     bottomAppBarColor: ColorValues.lightBgColor,
     shadowColor: ColorValues.lightGrayColor,
     cardTheme: const CardTheme(color: ColorValues.whiteColor),
     dialogTheme: const DialogTheme(backgroundColor: ColorValues.whiteColor),
-    bottomSheetTheme:
-        const BottomSheetThemeData(backgroundColor: ColorValues.lightBgColor),
+    bottomSheetTheme: const BottomSheetThemeData().copyWith(
+      backgroundColor: ColorValues.whiteColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(Dimens.sixTeen),
+          topRight: Radius.circular(Dimens.sixTeen),
+        ),
+      ),
+    ),
     dividerColor: ColorValues.grayColor,
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: ColorValues.darkBgColor,
@@ -32,6 +40,11 @@ abstract class AppThemes {
         elevation: MaterialStateProperty.all(0.0),
       ),
     ),
+    textTheme: const TextTheme().copyWith(
+      bodyText1: const TextStyle(
+        color: ColorValues.darkBgColor,
+      ),
+    ),
     brightness: Brightness.light,
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
@@ -40,16 +53,23 @@ abstract class AppThemes {
     colorScheme: const ColorScheme.dark().copyWith(
       primary: ColorValues.primarySwatch,
     ),
-    iconTheme: const IconThemeData(color: ColorValues.grayColor),
+    iconTheme: const IconThemeData(color: ColorValues.darkGrayColor),
     scaffoldBackgroundColor: ColorValues.darkBgColor,
     shadowColor: ColorValues.lightGrayColor,
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.darkBgColor),
     bottomAppBarColor: ColorValues.darkBgColor,
     cardTheme: const CardTheme(color: ColorValues.darkBgColor),
     dialogTheme: const DialogTheme(backgroundColor: ColorValues.darkBgColor),
-    bottomSheetTheme:
-        const BottomSheetThemeData(backgroundColor: ColorValues.darkBgColor),
-    dividerColor: ColorValues.grayColor,
+    bottomSheetTheme: const BottomSheetThemeData().copyWith(
+      backgroundColor: ColorValues.darkColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(Dimens.sixTeen),
+          topRight: Radius.circular(Dimens.sixTeen),
+        ),
+      ),
+    ),
+    dividerColor: ColorValues.darkerGrayColor,
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: ColorValues.lightBgColor,
       contentTextStyle: TextStyle(
@@ -61,6 +81,11 @@ abstract class AppThemes {
         backgroundColor: MaterialStateProperty.all(ColorValues.primaryColor),
         foregroundColor: MaterialStateProperty.all(ColorValues.whiteColor),
         elevation: MaterialStateProperty.all(0.0),
+      ),
+    ),
+    textTheme: const TextTheme().copyWith(
+      bodyText1: const TextStyle(
+        color: ColorValues.lightBgColor,
       ),
     ),
     brightness: Brightness.dark,

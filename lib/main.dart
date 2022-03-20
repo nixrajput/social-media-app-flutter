@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
 import 'package:social_media_app/routes/app_pages.dart';
@@ -32,18 +33,20 @@ class MyApp extends StatelessWidget {
     return GetBuilder<AppThemeController>(
       builder: (logic) => ScreenUtilInit(
         designSize: const Size(392, 744),
-        builder: () => GetMaterialApp(
-          title: StringValues.appName,
-          debugShowCheckedModeBanner: false,
-          themeMode: logic.themeMode == StringValues.system
-              ? ThemeMode.system
-              : logic.themeMode == StringValues.dark
-                  ? ThemeMode.dark
-                  : ThemeMode.light,
-          theme: AppThemes.lightTheme,
-          darkTheme: AppThemes.darkTheme,
-          getPages: AppPages.pages,
-          initialRoute: AppRoutes.splash,
+        builder: () => NxOverlayWidget(
+          child: GetMaterialApp(
+            title: StringValues.appName,
+            debugShowCheckedModeBanner: false,
+            themeMode: logic.themeMode == StringValues.system
+                ? ThemeMode.system
+                : logic.themeMode == StringValues.dark
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
+            theme: AppThemes.lightTheme,
+            darkTheme: AppThemes.darkTheme,
+            getPages: AppPages.pages,
+            initialRoute: AppRoutes.splash,
+          ),
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/urls.dart';
@@ -34,16 +35,16 @@ class AuthController extends GetxController {
 
   UserModel get userModel => _userModel.value;
 
-  String get tokenValue => _token.value;
+  String get token => _token.value;
+
+  Stream<String> get tokenStream => _validateToken();
 
   @override
   onReady() {
     ever(_token, _autoLogin);
-    _token.bindStream(token);
+    _token.bindStream(tokenStream);
     super.onReady();
   }
-
-  Stream<String> get token => _validateToken();
 
   Stream<String> _validateToken() async* {
     String _token = '';
@@ -99,23 +100,27 @@ class AuthController extends GetxController {
   }
 
   Future<void> _logout() async {
+    _isLoading.value = true;
+    update();
     _token.value = '';
     _expiresAt.value = '';
+    _userModel.value = UserModel();
     await clearLoginDataFromLocalStorage();
     AppUtils.showSnackBar(
       StringValues.logoutSuccessful,
       StringValues.success,
     );
+    _isLoading.value = false;
     update();
   }
 
   void _autoLogout() async {
-    var _currentTimestamp =
-        (DateTime.now().millisecondsSinceEpoch / 1000).round();
-    debugPrint(_currentTimestamp.toString());
-    debugPrint(_expiresAt.value.toString());
-    if (int.parse(_expiresAt.value) < _currentTimestamp) {
-      await _logout();
+    if (_expiresAt.isNotEmpty) {
+      var _currentTimestamp =
+          (DateTime.now().millisecondsSinceEpoch / 1000).round();
+      if (int.parse(_expiresAt.value) < _currentTimestamp) {
+        await _logout();
+      }
     }
   }
 
@@ -136,6 +141,7 @@ class AuthController extends GetxController {
     }
 
     _isLoading.value = true;
+    AppOverlay.showLoadingIndicator();
     update();
 
     try {
@@ -157,6 +163,7 @@ class AuthController extends GetxController {
         _loginModel.value = LoginModel.fromJson(data);
         await _saveLoginDataToLocalStorage();
         _autoLogout();
+        AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -164,6 +171,7 @@ class AuthController extends GetxController {
           StringValues.success,
         );
       } else {
+        AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -172,6 +180,7 @@ class AuthController extends GetxController {
         );
       }
     } catch (err) {
+      AppOverlay.hideLoadingIndicator();
       _isLoading.value = false;
       update();
       debugPrint(err.toString());
@@ -201,10 +210,10 @@ class AuthController extends GetxController {
       if (response.statusCode == 200) {
         _userModel.value = UserModel.fromJson(data);
         _isLoading.value = false;
-        AppUtils.showSnackBar(
-          'User data fetched',
-          StringValues.success,
-        );
+        // AppUtils.showSnackBar(
+        //   'User data fetched',
+        //   StringValues.success,
+        // );
         update();
       } else {
         _isLoading.value = false;
@@ -276,6 +285,7 @@ class AuthController extends GetxController {
       return;
     }
 
+    AppOverlay.showLoadingIndicator();
     _isLoading.value = true;
     update();
 
@@ -298,16 +308,18 @@ class AuthController extends GetxController {
       );
 
       final data = jsonDecode(response.body);
-      debugPrint(data.toString());
 
       if (response.statusCode == 201) {
+        AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
           StringValues.registrationSuccessful,
           StringValues.success,
         );
+        RouteManagement.goToLoginView();
       } else {
+        AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -316,6 +328,7 @@ class AuthController extends GetxController {
         );
       }
     } catch (err) {
+      AppOverlay.hideLoadingIndicator();
       _isLoading.value = false;
       update();
       debugPrint(err.toString());

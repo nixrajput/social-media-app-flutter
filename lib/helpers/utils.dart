@@ -56,6 +56,33 @@ abstract class AppUtils {
     );
   }
 
+  static void showBottomSheet(List<Widget> children) {
+    closeBottomSheet();
+    Get.bottomSheet(
+      Padding(
+        padding: Dimens.edgeInsets8_16,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: children,
+        ),
+      ),
+      barrierColor:
+          Theme.of(Get.context!).textTheme.bodyText1!.color!.withAlpha(90),
+      backgroundColor: Theme.of(Get.context!).bottomSheetTheme.backgroundColor,
+    );
+  }
+
+  static void showOverlay(Function func) {
+    Get.showOverlay(
+      loadingWidget: const CupertinoActivityIndicator(),
+      opacityColor: Theme.of(Get.context!).bottomSheetTheme.backgroundColor!,
+      opacity: 0.5,
+      asyncFunction: () async {
+        await func();
+      },
+    );
+  }
+
   static void showSnackBar(String message, String type) {
     closeSnackBar();
     Get.showSnackbar(

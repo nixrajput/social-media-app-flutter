@@ -45,9 +45,14 @@ abstract class StringValues {
   static const expiresAt = 'expiresAt';
   static const loginData = 'loginData';
   static const userData = 'userData';
+  static const home = 'Home';
+  static const search = 'Search';
+  static const notifications = 'Notifications';
+  static const theme = 'Theme';
 }
 
 abstract class AssetValues {
   static const String icon = 'assets/icon.png';
+  static const String avatar = 'assets/avatar.png';
   static const String vector1 = 'assets/vector-1.png';
 }

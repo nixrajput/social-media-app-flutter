@@ -10,6 +10,7 @@ class NxAssetImage extends StatelessWidget {
     this.height,
     this.maxWidth,
     this.maxHeight,
+    this.scale,
   }) : super(key: key);
 
   final String imgAsset;
@@ -17,6 +18,7 @@ class NxAssetImage extends StatelessWidget {
   final double? height;
   final double? maxWidth;
   final double? maxHeight;
+  final double? scale;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,9 @@ class NxAssetImage extends StatelessWidget {
           CupertinoIcons.info,
           color: ColorValues.errorColor,
         ),
+        width: width,
+        height: height,
+        scale: scale ?? 1.0,
       ),
     );
   }

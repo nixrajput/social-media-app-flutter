@@ -42,6 +42,7 @@ abstract class Dimens {
   static double thirtyFive = 35.r;
   static double seventy = 70.r;
   static double fourty = 40.r;
+  static double fourtyEight = 48.r;
   static double thirtyFour = 34.r;
   static double seven = 7.r;
   static double ninetyEight = 98.r;
@@ -61,29 +62,18 @@ abstract class Dimens {
 
   //EdgeInsets
 
-  static EdgeInsets edgeInsets16_16_16_16 = EdgeInsets.fromLTRB(
-    sixTeen,
-    sixTeen,
-    sixTeen,
-    sixTeen,
-  );
-
-  static EdgeInsets edgeInsets16_0_16_0 = EdgeInsets.fromLTRB(
-    sixTeen,
-    zero,
-    sixTeen,
-    zero,
-  );
-
-  static EdgeInsets edgeInsets0_16_0_16 = EdgeInsets.fromLTRB(
-    zero,
-    sixTeen,
-    zero,
-    sixTeen,
-  );
-
   static EdgeInsets edgeInsetsTopTwelvePercent = EdgeInsets.only(
     top: percentHeight(0.12),
+  );
+
+  static EdgeInsets edgeInsets4_0 = EdgeInsets.symmetric(
+    vertical: four,
+    horizontal: zero,
+  );
+
+  static EdgeInsets edgeInsets0_4 = EdgeInsets.symmetric(
+    vertical: zero,
+    horizontal: four,
   );
 
   static EdgeInsets edgeInsets8_0 = EdgeInsets.symmetric(
@@ -118,84 +108,59 @@ abstract class Dimens {
 
   static EdgeInsets edgeInsets0 = EdgeInsets.zero;
 
-  static EdgeInsets edgeInsets8 = EdgeInsets.all(
-    eight,
-  );
+  static EdgeInsets edgeInsets4 = EdgeInsets.all(four);
 
-  static EdgeInsets edgeInsets10 = EdgeInsets.all(
-    ten,
-  );
+  static EdgeInsets edgeInsets8 = EdgeInsets.all(eight);
 
-  static EdgeInsets edgeInsets16 = EdgeInsets.all(
-    sixTeen,
-  );
+  static EdgeInsets edgeInsets10 = EdgeInsets.all(ten);
 
-  static EdgeInsets edgeInsets20 = EdgeInsets.all(
-    twenty,
-  );
+  static EdgeInsets edgeInsets16 = EdgeInsets.all(sixTeen);
+
+  static EdgeInsets edgeInsets20 = EdgeInsets.all(twenty);
 
   //SizedBoxes
 
-  static SizedBox boxHeight8 = SizedBox(
-    height: eight,
-  );
+  static SizedBox boxHeight2 = SizedBox(height: two);
 
-  static SizedBox boxHeight10 = SizedBox(
-    height: ten,
-  );
+  static SizedBox boxHeight4 = SizedBox(height: four);
 
-  static SizedBox boxHeight12 = SizedBox(
-    height: twelve,
-  );
+  static SizedBox boxHeight8 = SizedBox(height: eight);
 
-  static SizedBox boxHeight16 = SizedBox(
-    height: sixTeen,
-  );
+  static SizedBox boxHeight10 = SizedBox(height: ten);
 
-  static SizedBox boxHeight20 = SizedBox(
-    height: twenty,
-  );
+  static SizedBox boxHeight12 = SizedBox(height: twelve);
 
-  static SizedBox boxHeight24 = SizedBox(
-    height: twentyFour,
-  );
+  static SizedBox boxHeight16 = SizedBox(height: sixTeen);
 
-  static SizedBox boxHeight32 = SizedBox(
-    height: thirtyTwo,
-  );
+  static SizedBox boxHeight20 = SizedBox(height: twenty);
 
-  static SizedBox boxHeight40 = SizedBox(
-    height: fourty,
-  );
-  static SizedBox boxHeight64 = SizedBox(
-    height: sixtyFour,
-  );
+  static SizedBox boxHeight24 = SizedBox(height: twentyFour);
 
-  static SizedBox boxWidth4 = SizedBox(
-    width: four,
-  );
+  static SizedBox boxHeight32 = SizedBox(height: thirtyTwo);
 
-  static SizedBox boxWidth8 = SizedBox(
-    width: eight,
-  );
+  static SizedBox boxHeight40 = SizedBox(height: fourty);
 
-  static SizedBox boxWidth10 = SizedBox(
-    width: ten,
-  );
+  static SizedBox boxHeight48 = SizedBox(height: fourtyEight);
 
-  static SizedBox boxWidth12 = SizedBox(
-    width: twelve,
-  );
+  static SizedBox boxHeight64 = SizedBox(height: sixtyFour);
 
-  static SizedBox boxWidth16 = SizedBox(
-    width: sixTeen,
-  );
+  static SizedBox boxWidth2 = SizedBox(width: two);
 
-  static SizedBox boxWidth20 = SizedBox(
-    width: twenty,
-  );
+  static SizedBox boxWidth4 = SizedBox(width: four);
 
-  static SizedBox boxWidth40 = SizedBox(
-    width: fourty,
-  );
+  static SizedBox boxWidth8 = SizedBox(width: eight);
+
+  static SizedBox boxWidth10 = SizedBox(width: ten);
+
+  static SizedBox boxWidth12 = SizedBox(width: twelve);
+
+  static SizedBox boxWidth16 = SizedBox(width: sixTeen);
+
+  static SizedBox boxWidth20 = SizedBox(width: twenty);
+
+  static SizedBox boxWidth24 = SizedBox(width: twentyFour);
+
+  static SizedBox boxWidth32 = SizedBox(width: thirtyTwo);
+
+  static SizedBox boxWidth40 = SizedBox(width: fourty);
 }

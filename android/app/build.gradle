@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.nixlab.social_media_app"
+        applicationId "com.nixlab.social"
         minSdkVersion 20
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
