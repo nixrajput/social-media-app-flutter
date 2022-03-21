@@ -17,19 +17,18 @@ class NxAppBar extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: Dimens.edgeInsets16_8,
+            padding: Dimens.edgeInsets8,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 InkWell(
                   onTap: () => RouteManagement.goToBack(),
                   child: CircleAvatar(
-                    backgroundColor: ColorValues.grayColor,
-                    radius: Dimens.fourteen,
-                    child: Icon(
+                    backgroundColor: Theme.of(context).dividerColor,
+                    radius: Dimens.sixTeen,
+                    child: const Icon(
                       CupertinoIcons.left_chevron,
                       color: ColorValues.whiteColor,
-                      size: Dimens.twenty,
                     ),
                   ),
                 ),

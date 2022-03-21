@@ -38,6 +38,7 @@ class SettingsView extends StatelessWidget {
   Widget _buildSettingsBody() => GetBuilder<AppThemeController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: Dimens.edgeInsets8_16,
               child: Column(
@@ -75,7 +76,6 @@ class SettingsView extends StatelessWidget {
                       logic.themeMode.toString(),
                     ),
                   ),
-                  const Divider(thickness: 0.5)
                 ],
               ),
             ),

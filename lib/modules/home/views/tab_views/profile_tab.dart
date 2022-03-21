@@ -9,7 +9,6 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
-import 'package:social_media_app/modules/home/controllers/home_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class ProfileTabView extends StatelessWidget {
@@ -17,35 +16,34 @@ class ProfileTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
-      builder: (logic) => SafeArea(
-        child: SizedBox(
-          width: Dimens.screenWidth,
-          height: Dimens.screenHeight,
-          child: CustomScrollView(
-            slivers: [
-              NxSliverAppBar(
-                isFloating: true,
-                bgColor: Theme.of(context).scaffoldBackgroundColor,
-                leading: NxAssetImage(
-                  imgAsset: AssetValues.icon,
-                  width: Dimens.thirtyTwo,
-                  height: Dimens.thirtyTwo,
-                ),
-                title: Text(
-                  StringValues.appName,
-                  style: AppStyles.style20Bold,
-                ),
-                actions: InkWell(
-                  onTap: () => RouteManagement.goToSettingsView(),
-                  child: const Icon(CupertinoIcons.gear),
-                ),
+    return SafeArea(
+      child: SizedBox(
+        width: Dimens.screenWidth,
+        height: Dimens.screenHeight,
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            NxSliverAppBar(
+              isFloating: true,
+              bgColor: Theme.of(context).scaffoldBackgroundColor,
+              leading: NxAssetImage(
+                imgAsset: AssetValues.icon,
+                width: Dimens.thirtyTwo,
+                height: Dimens.thirtyTwo,
               ),
-              SliverFillRemaining(
-                child: _buildProfileBody(),
+              title: Text(
+                StringValues.appName,
+                style: AppStyles.style20Bold,
               ),
-            ],
-          ),
+              actions: InkWell(
+                onTap: () => RouteManagement.goToSettingsView(),
+                child: const Icon(CupertinoIcons.gear),
+              ),
+            ),
+            SliverFillRemaining(
+              child: _buildProfileBody(),
+            ),
+          ],
         ),
       ),
     );
@@ -64,9 +62,9 @@ class ProfileTabView extends StatelessWidget {
                     _buildHeader(logic),
                     Dimens.boxHeight8,
                     Text(
-                      logic.userModel.user!.fname! +
+                      logic.userModel.user!.fname +
                           ' ' +
-                          logic.userModel.user!.lname!,
+                          logic.userModel.user!.lname,
                       style: AppStyles.style18Bold,
                     ),
                     Dimens.boxHeight40,

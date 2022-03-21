@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:social_media_app/models/post_model.dart';
+
 class UserModel {
   UserModel({
     this.success,
@@ -27,62 +29,83 @@ class UserModel {
 
 class User {
   User({
+    required this.id,
+    required this.fname,
+    required this.lname,
+    required this.email,
+    required this.uname,
+    required this.posts,
+    required this.followers,
+    required this.following,
+    required this.role,
+    required this.accountStatus,
+    required this.createdAt,
+    required this.isVerified,
+    this.phone,
+    this.gender,
+    this.dob,
+    this.about,
     this.avatar,
-    this.id,
-    this.fname,
-    this.lname,
-    this.email,
-    this.uname,
-    this.posts,
-    this.followers,
-    this.following,
-    this.role,
-    this.accountStatus,
-    this.createdAt,
-    this.v,
     this.expiresAt,
     this.token,
-    this.isVerified,
+    this.resetPasswordToken,
+    this.resetPasswordExpire,
+    this.lastActive,
   });
 
+  final String id;
+  final String fname;
+  final String lname;
+  final String email;
+  final String uname;
+  final List<PostModel> posts;
+  final List<dynamic> followers;
+  final List<dynamic> following;
+  final String role;
+  final String accountStatus;
+  final DateTime createdAt;
+  final bool isVerified;
+  final Phone? phone;
+  final String? gender;
+  final String? dob;
+  final String? about;
   final Avatar? avatar;
-  final String? id;
-  final String? fname;
-  final String? lname;
-  final String? email;
-  final String? uname;
-  final List<dynamic>? posts;
-  final List<dynamic>? followers;
-  final List<dynamic>? following;
-  final String? role;
-  final String? accountStatus;
-  final DateTime? createdAt;
-  final int? v;
   final String? expiresAt;
   final String? token;
-  final bool? isVerified;
+  final String? resetPasswordToken;
+  final String? resetPasswordExpire;
+  final DateTime? lastActive;
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        avatar: json["avatar"] == null ? null : Avatar.fromJson(json["avatar"]),
         id: json["_id"],
         fname: json["fname"],
         lname: json["lname"],
         email: json["email"],
         uname: json["uname"],
-        posts: List<dynamic>.from(json["posts"].map((x) => x)),
+        avatar: json["avatar"] == null ? null : Avatar.fromJson(json["avatar"]),
+        phone: json["phone"] == null ? null : Phone.fromJson(json["phone"]),
+        gender: json["gender"],
+        dob: json["dob"],
+        about: json["about"],
+        posts: List<PostModel>.from(
+            json['posts'].map((x) => PostModel.fromJson(x))),
         followers: List<dynamic>.from(json["followers"].map((x) => x)),
         following: List<dynamic>.from(json["following"].map((x) => x)),
         role: json["role"],
         accountStatus: json["accountStatus"],
         createdAt: DateTime.parse(json["createdAt"]),
-        v: json["__v"],
         expiresAt: json["expiresAt"],
         token: json["token"],
         isVerified: json["isVerified"],
+        resetPasswordToken: json["resetPasswordToken"],
+        resetPasswordExpire: json["resetPasswordExpire"],
+        lastActive: json["lastActive"] == null
+            ? null
+            : DateTime.parse(json["lastActive"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -92,16 +115,22 @@ class User {
         "lname": lname,
         "email": email,
         "uname": uname,
-        "posts": List<dynamic>.from(posts!.map((x) => x)),
-        "followers": List<dynamic>.from(followers!.map((x) => x)),
-        "following": List<dynamic>.from(following!.map((x) => x)),
+        "phone": phone!.toJson(),
+        "gender": gender,
+        "dob": dob,
+        "about": about,
+        "posts": List<dynamic>.from(posts.map((x) => x)),
+        "followers": List<dynamic>.from(followers.map((x) => x)),
+        "following": List<dynamic>.from(following.map((x) => x)),
         "role": role,
         "accountStatus": accountStatus,
-        "createdAt": createdAt!.toIso8601String(),
-        "__v": v,
+        "createdAt": createdAt.toIso8601String(),
         "expiresAt": expiresAt,
         "token": token,
         "isVerified": isVerified,
+        "resetPasswordToken": resetPasswordToken,
+        "resetPasswordExpire": resetPasswordExpire,
+        "lastActive": lastActive!.toIso8601String(),
       };
 }
 
@@ -126,5 +155,29 @@ class Avatar {
   Map<String, dynamic> toJson() => {
         "public_id": publicId,
         "url": url,
+      };
+}
+
+class Phone {
+  Phone({
+    this.countryCode,
+    this.phoneNo,
+  });
+
+  final String? countryCode;
+  final String? phoneNo;
+
+  factory Phone.fromRawJson(String str) => Phone.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Phone.fromJson(Map<String, dynamic> json) => Phone(
+        countryCode: json["countryCode"],
+        phoneNo: json["phoneNo"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "countryCode": countryCode,
+        "phoneNo": phoneNo,
       };
 }

@@ -18,6 +18,7 @@ class HomeTabView extends StatelessWidget {
     return GetBuilder<HomeController>(
       builder: (logic) => SafeArea(
         child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
           slivers: [
             NxSliverAppBar(
               isFloating: true,

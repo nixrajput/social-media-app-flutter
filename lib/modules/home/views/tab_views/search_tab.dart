@@ -19,6 +19,7 @@ class SearchTabView extends StatelessWidget {
         width: Dimens.screenWidth,
         height: Dimens.screenHeight,
         child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
           slivers: [
             NxSliverAppBar(
               isFloating: true,
