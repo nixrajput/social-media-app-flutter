@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/constants/dimens.dart';
 
 class NxIconButton extends StatelessWidget {
   final IconData icon;
@@ -25,18 +26,18 @@ class NxIconButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: padding ?? padding,
+        padding: padding ?? Dimens.edgeInsets0,
         decoration: BoxDecoration(
-          color: bgColor ?? bgColor,
+          color: bgColor ?? Colors.transparent,
           borderRadius: BorderRadius.all(
             Radius.circular(
-              borderRadius ?? 0.0,
+              borderRadius ?? Dimens.zero,
             ),
           ),
         ),
         child: Icon(
           icon,
-          size: iconSize ?? iconSize,
+          size: iconSize ?? Dimens.twentyFour,
           color: iconColor ?? Theme.of(context).iconTheme.color,
         ),
       ),

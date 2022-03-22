@@ -127,7 +127,7 @@ class LoaderCanvas extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(LoaderCanvas oldPaint) {
+  bool shouldRepaint(LoaderCanvas oldDelegate) {
     return true;
   }
 }
