@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import 'package:social_media_app/models/post_model.dart';
+import 'avatar_model.dart';
+import 'image_model.dart';
+import 'phone_model.dart';
 
 class UserModel {
   UserModel({
@@ -58,7 +60,7 @@ class User {
   final String lname;
   final String email;
   final String uname;
-  final List<PostModel> posts;
+  final List<UserPost> posts;
   final List<dynamic> followers;
   final List<dynamic> following;
   final String role;
@@ -91,8 +93,8 @@ class User {
         gender: json["gender"],
         dob: json["dob"],
         about: json["about"],
-        posts: List<PostModel>.from(
-            json['posts'].map((x) => PostModel.fromJson(x))),
+        posts:
+            List<UserPost>.from(json['posts'].map((x) => UserPost.fromJson(x))),
         followers: List<dynamic>.from(json["followers"].map((x) => x)),
         following: List<dynamic>.from(json["following"].map((x) => x)),
         role: json["role"],
@@ -134,50 +136,51 @@ class User {
       };
 }
 
-class Avatar {
-  Avatar({
-    required this.publicId,
-    required this.url,
+class UserPost {
+  UserPost({
+    this.id,
+    this.caption,
+    this.images,
+    this.owner,
+    this.likes,
+    this.comments,
+    this.postStatus,
+    this.createdAt,
   });
 
-  final String publicId;
-  final String url;
+  final String? id;
+  final String? caption;
+  final List<Image>? images;
+  final String? owner;
+  final List<dynamic>? likes;
+  final List<dynamic>? comments;
+  final String? postStatus;
+  final DateTime? createdAt;
 
-  factory Avatar.fromRawJson(String str) => Avatar.fromJson(json.decode(str));
+  factory UserPost.fromRawJson(String str) =>
+      UserPost.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Avatar.fromJson(Map<String, dynamic> json) => Avatar(
-        publicId: json["public_id"],
-        url: json["url"],
+  factory UserPost.fromJson(Map<String, dynamic> json) => UserPost(
+        id: json["_id"],
+        caption: json["caption"],
+        images: List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
+        owner: json["owner"],
+        likes: List<dynamic>.from(json["likes"].map((x) => x)),
+        comments: List<dynamic>.from(json["comments"].map((x) => x)),
+        postStatus: json["postStatus"],
+        createdAt: DateTime.parse(json["createdAt"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "public_id": publicId,
-        "url": url,
-      };
-}
-
-class Phone {
-  Phone({
-    this.countryCode,
-    this.phoneNo,
-  });
-
-  final String? countryCode;
-  final String? phoneNo;
-
-  factory Phone.fromRawJson(String str) => Phone.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Phone.fromJson(Map<String, dynamic> json) => Phone(
-        countryCode: json["countryCode"],
-        phoneNo: json["phoneNo"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "countryCode": countryCode,
-        "phoneNo": phoneNo,
+        "_id": id,
+        "caption": caption,
+        "images": List<dynamic>.from(images!.map((x) => x.toJson())),
+        "owner": owner,
+        "likes": List<dynamic>.from(likes!.map((x) => x)),
+        "comments": List<dynamic>.from(comments!.map((x) => x)),
+        "postStatus": postStatus,
+        "createdAt": createdAt!.toIso8601String(),
       };
 }

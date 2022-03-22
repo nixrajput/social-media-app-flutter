@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:social_media_app/common/asset_image.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
+import 'package:social_media_app/common/loading_indicator.dart';
 import 'package:social_media_app/common/sliver_app_bar.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -50,31 +51,38 @@ class ProfileTabView extends StatelessWidget {
   }
 
   Widget _buildProfileBody() => GetBuilder<AuthController>(
-        builder: (logic) => (logic.isLoading || logic.userModel.user == null)
+        builder: (logic) => (logic.isLoading)
             ? const Center(
-                child: CupertinoActivityIndicator(),
+                child: NxLoadingIndicator(),
               )
-            : Padding(
-                padding: Dimens.edgeInsets8_16,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildHeader(logic),
-                    Dimens.boxHeight8,
-                    Text(
-                      logic.userModel.user!.fname +
-                          ' ' +
-                          logic.userModel.user!.lname,
-                      style: AppStyles.style18Bold,
+            : logic.userModel.user == null
+                ? Center(
+                    child: Text(
+                      StringValues.unknownErrorOccurred,
+                      style: AppStyles.style14Bold,
                     ),
-                    Dimens.boxHeight40,
-                    ElevatedButton(
-                      onPressed: () => logic.logout(),
-                      child: const Text(StringValues.logout),
+                  )
+                : Padding(
+                    padding: Dimens.edgeInsets8_16,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHeader(logic),
+                        Dimens.boxHeight8,
+                        Text(
+                          logic.userModel.user!.fname +
+                              ' ' +
+                              logic.userModel.user!.lname,
+                          style: AppStyles.style18Bold,
+                        ),
+                        Dimens.boxHeight40,
+                        ElevatedButton(
+                          onPressed: () => logic.logout(),
+                          child: const Text(StringValues.logout),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
       );
 
   Widget _buildHeader(logic) => Center(

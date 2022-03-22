@@ -44,6 +44,9 @@ abstract class AppThemes {
       bodyText1: const TextStyle(
         color: ColorValues.darkBgColor,
       ),
+      subtitle1: const TextStyle(
+        color: ColorValues.darkGrayColor,
+      ),
     ),
     brightness: Brightness.light,
     visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -86,6 +89,9 @@ abstract class AppThemes {
     textTheme: const TextTheme().copyWith(
       bodyText1: const TextStyle(
         color: ColorValues.lightBgColor,
+      ),
+      subtitle1: const TextStyle(
+        color: ColorValues.grayColor,
       ),
     ),
     brightness: Brightness.dark,

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
-import 'package:social_media_app/modules/home/controllers/home_controller.dart';
+import 'package:social_media_app/modules/home/controllers/navbar_controller.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
+    return GetBuilder<NavBarController>(
       builder: (controller) => BottomNavigationBar(
         items: controller.tab!,
         currentIndex: controller.currentTab,

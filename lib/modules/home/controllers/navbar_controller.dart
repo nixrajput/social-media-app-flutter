@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/strings.dart';
 
-class HomeController extends GetxController {
+class NavBarController extends GetxController {
   int currentTab = 0;
 
   List<BottomNavigationBarItem>? tab = [

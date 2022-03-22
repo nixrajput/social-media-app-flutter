@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/modules/home/controllers/home_controller.dart';
+import 'package:social_media_app/modules/home/controllers/navbar_controller.dart';
 import 'package:social_media_app/modules/home/views/tab_views/home_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/notification_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/profile_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/search_tab.dart';
-import 'package:social_media_app/modules/home/widgets/bottom_nav_bar.dart';
+import 'package:social_media_app/modules/home/views/widgets/bottom_nav_bar.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -14,7 +13,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GetBuilder<HomeController>(
+      body: GetBuilder<NavBarController>(
         builder: (controller) => IndexedStack(
           index: controller.currentTab,
           children: const [

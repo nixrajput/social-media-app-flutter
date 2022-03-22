@@ -1,12 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:social_media_app/common/asset_image.dart';
 import 'package:social_media_app/common/sliver_app_bar.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/home/controllers/home_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class SearchTabView extends StatelessWidget {
@@ -47,7 +45,5 @@ class SearchTabView extends StatelessWidget {
     );
   }
 
-  Widget _buildSearchBody() => GetBuilder<HomeController>(
-        builder: (logic) => Column(),
-      );
+  Widget _buildSearchBody() => Column();
 }

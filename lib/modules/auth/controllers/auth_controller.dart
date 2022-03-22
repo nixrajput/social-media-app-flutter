@@ -14,6 +14,8 @@ import 'package:social_media_app/models/user_model.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class AuthController extends GetxController {
+  static AuthController get find => Get.find();
+
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
