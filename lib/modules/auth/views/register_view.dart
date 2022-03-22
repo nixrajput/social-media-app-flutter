@@ -8,7 +8,7 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
+import 'package:social_media_app/modules/auth/controllers/register_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class RegisterView extends StatelessWidget {
@@ -57,7 +57,7 @@ class RegisterView extends StatelessWidget {
         ],
       );
 
-  Widget _buildRegistrationFields() => GetBuilder<AuthController>(
+  Widget _buildRegistrationFields() => GetBuilder<RegisterController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(

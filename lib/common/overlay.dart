@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:social_media_app/common/loading_indicator.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 
 final _tKey = GlobalKey(debugLabel: 'overlay_parent');
@@ -84,12 +83,7 @@ abstract class AppOverlay {
                 children: <Widget>[
                   ModalBarrier(
                     color: modalColor ??
-                        Theme.of(Get.context!)
-                            .textTheme
-                            .bodyText1!
-                            .color!
-                            .withOpacity(0.75)
-                            .withAlpha(200),
+                        ColorValues.grayColor.withOpacity(0.75).withAlpha(200),
                     dismissible: dismissible ?? false,
                   ),
                   _child

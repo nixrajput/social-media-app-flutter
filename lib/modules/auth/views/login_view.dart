@@ -8,7 +8,7 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
+import 'package:social_media_app/modules/auth/controllers/login_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class LoginView extends StatelessWidget {
@@ -57,7 +57,7 @@ class LoginView extends StatelessWidget {
         ],
       );
 
-  Widget _buildLoginFields() => GetBuilder<AuthController>(
+  Widget _buildLoginFields() => GetBuilder<LoginController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(

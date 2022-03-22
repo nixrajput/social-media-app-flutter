@@ -136,4 +136,10 @@ abstract class AppUtils {
   static void closeBottomSheet() {
     if (Get.isBottomSheetOpen ?? false) Get.back<void>();
   }
+
+  static void closeFocus() {
+    if (FocusManager.instance.primaryFocus!.hasFocus) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+  }
 }

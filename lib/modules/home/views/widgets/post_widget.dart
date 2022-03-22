@@ -22,21 +22,15 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // constraints: BoxConstraints(
-      //   maxWidth: Dimens.screenWidth,
-      //   maxHeight: Dimens.screenWidth + 16.0,
-      // ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildPostHead(),
-          Dimens.boxHeight8,
-          _buildPostBody(),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildPostHead(),
+        Dimens.boxHeight8,
+        _buildPostBody(),
+      ],
     );
   }
 

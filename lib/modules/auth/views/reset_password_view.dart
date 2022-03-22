@@ -8,7 +8,7 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
+import 'package:social_media_app/modules/auth/controllers/password_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class ResetPasswordView extends StatelessWidget {
@@ -57,7 +57,7 @@ class ResetPasswordView extends StatelessWidget {
         ],
       );
 
-  Widget _buildLoginFields() => GetBuilder<AuthController>(
+  Widget _buildLoginFields() => GetBuilder<PasswordController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
