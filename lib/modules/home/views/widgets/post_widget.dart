@@ -8,38 +8,45 @@ import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/common/cached_network_image.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
+import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/common/primary_icon_btn.dart';
+import 'package:social_media_app/common/primary_text_btn.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/models/post_model.dart';
+import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
+import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 
 class PostWidget extends StatelessWidget {
-  const PostWidget({
+  PostWidget({
     Key? key,
     required this.post,
   }) : super(key: key);
 
   final Post post;
 
+  final _auth = AuthController.find;
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildPostHead(),
-        Dimens.boxHeight8,
-        _buildPostBody(),
-        Dimens.boxHeight8,
-        _buildPostFooter(),
-      ],
+    return NxElevatedCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildPostHead(),
+          _buildPostBody(),
+          _buildPostFooter(),
+        ],
+      ),
     );
   }
 
   Widget _buildPostHead() => Padding(
-        padding: Dimens.edgeInsets0_8,
+        padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -69,11 +76,11 @@ class PostWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          post.owner!.fname + " " + post.owner!.lname,
+                          "${post.owner!.fname} ${post.owner!.lname}",
                           style: AppStyles.style16Bold,
                         ),
                         Text(
-                          "@" + post.owner!.uname,
+                          "@${post.owner!.uname}",
                           style: TextStyle(
                             color: Theme.of(Get.context!)
                                 .textTheme
@@ -87,6 +94,7 @@ class PostWidget extends StatelessWidget {
                 ),
                 NxIconButton(
                   icon: CupertinoIcons.chevron_down,
+                  iconSize: Dimens.twenty,
                   onTap: () {},
                 ),
               ],
@@ -95,43 +103,77 @@ class PostWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildPostBody() => GestureDetector(
-        onDoubleTap: () {
-          debugPrint('tapped');
-        },
-        child: FlutterCarousel(
-          options: CarouselOptions(
-            height: Dimens.screenWidth * 0.8,
-            floatingIndicator: true,
-            viewportFraction: 1.0,
-            aspectRatio: 1.0,
-            slideIndicator: CircularWaveSlideIndicator(),
+  Widget _buildPostBody() => GetBuilder<PostController>(
+        builder: (logic) => GestureDetector(
+          onDoubleTap: () {
+            logic.toggleLikePost(post.id!);
+          },
+          child: FlutterCarousel(
+            options: CarouselOptions(
+              height: Dimens.screenWidth * 0.8,
+              floatingIndicator: true,
+              viewportFraction: 1.0,
+              aspectRatio: 1.0,
+              slideIndicator: CircularWaveSlideIndicator(),
+            ),
+            items: post.images!
+                .map((img) => NxNetworkImage(
+                      imageUrl: img.url,
+                    ))
+                .toList(),
           ),
-          items: post.images!
-              .map((img) => NxNetworkImage(
-                    imageUrl: img.url,
-                  ))
-              .toList(),
         ),
       );
 
   Widget _buildPostFooter() => Padding(
-        padding: Dimens.edgeInsets0_8,
+        padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                NxIconButton(
-                  icon: CupertinoIcons.heart,
-                  onTap: () {},
+                GetBuilder<PostController>(
+                  builder: (controller) {
+                    var postIndex = controller.postModel.posts!
+                        .indexWhere((element) => element.id == post.id);
+                    var tempPost =
+                        controller.postModel.posts!.elementAt(postIndex);
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        NxIconButton(
+                          icon:
+                              tempPost.likes!.contains(_auth.userModel.user?.id)
+                                  ? CupertinoIcons.heart_solid
+                                  : CupertinoIcons.heart,
+                          onTap: () {
+                            controller.toggleLikePost(post.id!);
+                          },
+                          iconColor:
+                              tempPost.likes!.contains(_auth.userModel.user?.id)
+                                  ? ColorValues.primaryColor
+                                  : ColorValues.grayColor,
+                        ),
+                        Dimens.boxWidth4,
+                        if (tempPost.likes!.isNotEmpty)
+                          Text(
+                            '${tempPost.likes!.length} likes',
+                            style: AppStyles.style14Bold,
+                          ),
+                      ],
+                    );
+                  },
                 ),
-                Dimens.boxWidth8,
-                NxIconButton(
-                  icon: CupertinoIcons.chat_bubble,
+                Dimens.boxHeight4,
+                NxTextButton(
+                  label: 'View All Comments',
                   onTap: () {},
+                  textColor: ColorValues.grayColor,
                 ),
               ],
             ),
@@ -147,9 +189,7 @@ class PostWidget extends StatelessWidget {
                 color: Theme.of(Get.context!).textTheme.subtitle1!.color,
               ),
             ),
-            const Divider(
-              thickness: 0.25,
-            ),
+            // const Divider(thickness: 0.25),
           ],
         ),
       );

@@ -175,9 +175,9 @@ class RegisterView extends StatelessWidget {
                           style: AppStyles.style16Normal,
                         ),
                         Dimens.boxWidth4,
-                        NxTextButton(
+                        const NxTextButton(
                           label: StringValues.login,
-                          onTap: () => RouteManagement.goToLoginView(),
+                          onTap: RouteManagement.goToLoginView,
                         ),
                       ],
                     ),

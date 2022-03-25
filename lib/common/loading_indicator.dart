@@ -88,18 +88,18 @@ class LoaderCanvas extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint _arc = Paint()
+    var _arc = Paint()
       ..color = strokeColor!
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.5;
 
-    Paint _circle = Paint()
+    var _circle = Paint()
       ..color = transparentCenter!
           ? Colors.transparent
           : ColorValues.primaryColor.withOpacity(0.25)
       ..style = PaintingStyle.fill;
 
-    Offset _center = Offset(size.width / 2, size.height / 2);
+    var _center = Offset(size.width / 2, size.height / 2);
 
     canvas.drawCircle(_center, size.width / 2, _circle);
 

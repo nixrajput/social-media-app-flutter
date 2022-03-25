@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/common/overlay.dart';
-import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
@@ -86,7 +85,7 @@ class RegisterController extends GetxController {
       return;
     }
 
-    AppOverlay.showLoadingIndicator();
+    await AppOverlay.showLoadingIndicator();
     _isLoading.value = true;
     update();
 
@@ -95,8 +94,6 @@ class RegisterController extends GetxController {
         Uri.parse(AppUrls.baseUrl + AppUrls.registerEndpoint),
         headers: {
           'content-type': 'application/json',
-          'x-rapidapi-host': SecretValues.rapidApiHost,
-          'x-rapidapi-key': SecretValues.rapidApiKey,
         },
         body: jsonEncode({
           'fname': fName,
@@ -112,7 +109,7 @@ class RegisterController extends GetxController {
 
       if (response.statusCode == 201) {
         _clearRegisterTextControllers();
-        AppOverlay.hideLoadingIndicator();
+        await AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -121,7 +118,7 @@ class RegisterController extends GetxController {
         );
         RouteManagement.goToLoginView();
       } else {
-        AppOverlay.hideLoadingIndicator();
+        await AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -130,7 +127,7 @@ class RegisterController extends GetxController {
         );
       }
     } catch (err) {
-      AppOverlay.hideLoadingIndicator();
+      await AppOverlay.hideLoadingIndicator();
       _isLoading.value = false;
       update();
       debugPrint(err.toString());
@@ -143,7 +140,7 @@ class RegisterController extends GetxController {
 
   Future<void> register() async {
     AppUtils.closeFocus();
-    _register(
+    await _register(
       fNameTextController.text.trim(),
       lNameTextController.text.trim(),
       emailTextController.text.trim(),

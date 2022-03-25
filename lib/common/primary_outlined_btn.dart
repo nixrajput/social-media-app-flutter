@@ -1,17 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/constants/dimens.dart';
 
 class NxOutlinedButton extends StatelessWidget {
-  final Color? bgColor;
-  final double? borderRadius;
-  final String label;
-  final Color? labelColor;
-  final Widget? prefix;
-  final Widget? suffix;
-  final VoidCallback onTap;
-  final EdgeInsets? padding;
-  final double? width;
-  final double? height;
-
   const NxOutlinedButton({
     Key? key,
     this.bgColor,
@@ -24,7 +14,20 @@ class NxOutlinedButton extends StatelessWidget {
     this.padding,
     this.width,
     this.height,
+    this.fontSize,
   }) : super(key: key);
+
+  final Color? bgColor;
+  final double? borderRadius;
+  final String label;
+  final Color? labelColor;
+  final Widget? prefix;
+  final Widget? suffix;
+  final VoidCallback onTap;
+  final EdgeInsets? padding;
+  final double? width;
+  final double? height;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +37,13 @@ class NxOutlinedButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onTap,
         style: OutlinedButton.styleFrom(
-          elevation: 0.0,
-          primary: Theme.of(context).scaffoldBackgroundColor,
-          padding: padding ?? const EdgeInsets.all(16.0),
-          side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+          elevation: Dimens.zero,
+          primary: Colors.transparent,
+          padding: padding ?? Dimens.edgeInsets8,
+          side: BorderSide(color: Theme.of(context).colorScheme.primary),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(borderRadius ?? 8.0),
+            borderRadius: BorderRadius.circular(
+              borderRadius ?? Dimens.four,
             ),
           ),
         ),
@@ -48,16 +51,15 @@ class NxOutlinedButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (prefix != null) Container(child: prefix),
-            if (prefix != null) const SizedBox(width: 5.0),
+            if (prefix != null) Dimens.boxWidth4,
             Text(
               label.toUpperCase(),
               style: TextStyle(
-                color: labelColor ?? Theme.of(context).colorScheme.secondary,
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
+                color: labelColor ?? Theme.of(context).colorScheme.primary,
+                fontSize: fontSize ?? Dimens.fourteen,
               ),
             ),
-            if (suffix != null) const SizedBox(width: 5.0),
+            if (suffix != null) Dimens.boxWidth4,
             if (suffix != null) Container(child: suffix),
           ],
         ),

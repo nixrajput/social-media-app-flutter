@@ -61,8 +61,8 @@ abstract class AppThemes {
     shadowColor: ColorValues.lightGrayColor,
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.darkBgColor),
     bottomAppBarColor: ColorValues.darkBgColor,
-    cardTheme: const CardTheme(color: ColorValues.darkBgColor),
-    dialogTheme: const DialogTheme(backgroundColor: ColorValues.darkBgColor),
+    cardTheme: const CardTheme(color: ColorValues.darkColor),
+    dialogTheme: const DialogTheme(backgroundColor: ColorValues.darkColor),
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
       backgroundColor: ColorValues.darkColor,
       shape: RoundedRectangleBorder(
@@ -99,7 +99,7 @@ abstract class AppThemes {
   );
 }
 
-const appThemeModes = {'System', 'Dark', 'Light'};
+const appThemeModes = {'System', 'Light', 'Dark'};
 
 class AppThemeController extends GetxController {
   final themeData = GetStorage();

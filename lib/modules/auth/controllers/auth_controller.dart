@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
@@ -57,7 +56,7 @@ class AuthController extends GetxController {
   }
 
   Stream<String> _validateToken() async* {
-    String _token = '';
+    var _token = '';
     final decodedData = await HelperFunction.readLoginDataFromLocalStorage();
     if (decodedData != null) {
       _expiresAt.value = decodedData[StringValues.expiresAt];
@@ -67,18 +66,17 @@ class AuthController extends GetxController {
     yield _token;
   }
 
-  void _autoLogin(_token) async {
-    if (_token.isEmpty) {
-      RouteManagement.goToLoginView();
-    } else {
+  void _autoLogin(String _token) async {
+    if (_token.isNotEmpty) {
       await _getProfileDetails();
       RouteManagement.goToHomeView();
+    } else {
+      RouteManagement.goToLoginView();
     }
   }
 
   Future<void> _logout() async {
-    _isLoading.value = true;
-    update();
+    RouteManagement.goToLoginView();
     setToken = '';
     setExpiresAt = '';
     setLoginModel = LoginModel();
@@ -88,7 +86,6 @@ class AuthController extends GetxController {
       StringValues.logoutSuccessful,
       StringValues.success,
     );
-    _isLoading.value = false;
     update();
   }
 
@@ -99,6 +96,14 @@ class AuthController extends GetxController {
       if (int.parse(_expiresAt.value) < _currentTimestamp) {
         await _logout();
       }
+    }
+    if (_userModel.value.user != null &&
+        _token.value == _userModel.value.user!.token) {
+      await _logout();
+      AppUtils.showSnackBar(
+        'Token is expired or invalid',
+        StringValues.error,
+      );
     }
   }
 
@@ -111,8 +116,6 @@ class AuthController extends GetxController {
         Uri.parse(AppUrls.baseUrl + AppUrls.profileDetailsEndpoint),
         headers: {
           'content-type': 'application/json',
-          'x-rapidapi-host': SecretValues.rapidApiHost,
-          'x-rapidapi-key': SecretValues.rapidApiKey,
           'authorization': 'Bearer ${_token.value}',
         },
       );
@@ -121,10 +124,6 @@ class AuthController extends GetxController {
       if (response.statusCode == 200) {
         _userModel.value = UserModel.fromJson(data);
         _isLoading.value = false;
-        // AppUtils.showSnackBar(
-        //   'User data fetched',
-        //   StringValues.success,
-        // );
         update();
       } else {
         _isLoading.value = false;

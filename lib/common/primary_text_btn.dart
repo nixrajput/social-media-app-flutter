@@ -4,7 +4,7 @@ import 'package:social_media_app/constants/dimens.dart';
 
 class NxTextButton extends StatelessWidget {
   final String label;
-  final Function onTap;
+  final VoidCallback onTap;
   final double? fontSize;
   final Color? textColor;
   final EdgeInsets? padding;
@@ -23,7 +23,7 @@ class NxTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onTap(),
+      onTap: onTap,
       child: Container(
         padding: padding ?? Dimens.edgeInsets0,
         margin: margin ?? Dimens.edgeInsets0,

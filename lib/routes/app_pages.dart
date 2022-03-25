@@ -10,11 +10,20 @@ import 'package:social_media_app/modules/home/bindings/home_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/splash/views/splash_view.dart';
+import 'package:social_media_app/modules/user/bindings/about_binding.dart';
+import 'package:social_media_app/modules/user/bindings/name_binding.dart';
+import 'package:social_media_app/modules/user/bindings/user_binding.dart';
+import 'package:social_media_app/modules/user/bindings/username_binding.dart';
+import 'package:social_media_app/modules/user/views/change_password_view.dart';
+import 'package:social_media_app/modules/user/views/edit_about_view.dart';
+import 'package:social_media_app/modules/user/views/edit_name_view.dart';
+import 'package:social_media_app/modules/user/views/edit_profile_view.dart';
+import 'package:social_media_app/modules/user/views/edit_username_view.dart';
 
 part 'app_routes.dart';
 
 abstract class AppPages {
-  static var transitionDuration = const Duration(milliseconds: 300);
+  static var transitionDuration = const Duration(milliseconds: 500);
 
   static final pages = [
     GetPage(
@@ -62,6 +71,41 @@ abstract class AppPages {
       page: ResetPasswordView.new,
       transitionDuration: transitionDuration,
       binding: PasswordBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.changePassword,
+      page: ChangePasswordView.new,
+      transitionDuration: transitionDuration,
+      binding: UserBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.editProfile,
+      page: EditProfileView.new,
+      transitionDuration: transitionDuration,
+      binding: UserBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.editName,
+      page: EditNameView.new,
+      transitionDuration: transitionDuration,
+      binding: NameBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.editUsername,
+      page: EditUsernameView.new,
+      transitionDuration: transitionDuration,
+      binding: UsernameBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.editAbout,
+      page: EditAboutView.new,
+      transitionDuration: transitionDuration,
+      binding: AboutBinding(),
       transition: Transition.downToUp,
     ),
   ];

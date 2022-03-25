@@ -14,7 +14,7 @@ abstract class HelperFunction {
         StringValues.expiresAt: _expiresAt,
       });
 
-      loginData.write(StringValues.loginData, data);
+      await loginData.write(StringValues.loginData, data);
       debugPrint('Auth details saved.');
     } else {
       debugPrint('Auth details could not saved.');
@@ -35,7 +35,7 @@ abstract class HelperFunction {
 
   static Future<void> clearLoginDataFromLocalStorage() async {
     final loginData = GetStorage();
-    loginData.remove(StringValues.loginData);
+    await loginData.remove(StringValues.loginData);
     debugPrint('Auth details removed.');
   }
 }

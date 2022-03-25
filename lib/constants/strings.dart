@@ -35,6 +35,8 @@ abstract class StringValues {
   static const enterEmail = 'Enter your email';
   static const enterUsername = 'Enter an username';
   static const enterPassword = 'Enter a password';
+  static const enterOldPassword = 'Enter current password';
+  static const enterNewPassword = 'Enter a new password';
   static const enterOtp = 'Enter the OTP';
   static const enterConfirmPassword = 'Retype your password';
   static const errorOccurred = 'Error Occurred';
@@ -56,6 +58,20 @@ abstract class StringValues {
   static const doNotHaveOtp = "Don't have an OTP?";
   static const alreadyHaveOtp = "Already have an OTP?";
   static const passwordChangeSuccessful = 'Password changed successfully';
+  static const editProfile = 'Edit Profile';
+  static const updateProfileSuccessful = 'Profile updated successfully';
+  static const updateUsernameSuccessful = 'Username updated successfully';
+  static const followers = 'Followers';
+  static const following = 'Following';
+  static const changePassword = 'Change Password';
+  static const about = 'About';
+  static const userNotFoundError = 'User details not found.';
+  static const save = 'Save';
+  static const dob = 'DOB';
+  static const birthDate = 'Date of Birth';
+  static const gender = 'Gender';
+  static const phoneNo = 'Phone Number';
+  static const countryCode = 'Country Code';
 }
 
 abstract class AssetValues {

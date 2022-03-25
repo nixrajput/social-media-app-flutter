@@ -1,11 +1,17 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/common/asset_image.dart';
+import 'package:intl/intl.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
+import 'package:social_media_app/common/count_widget.dart';
+import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/common/loading_indicator.dart';
+import 'package:social_media_app/common/primary_filled_btn.dart';
+import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/common/sliver_app_bar.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -25,20 +31,18 @@ class ProfileTabView extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           slivers: [
             NxSliverAppBar(
-              isFloating: true,
-              bgColor: Theme.of(context).scaffoldBackgroundColor,
-              leading: NxAssetImage(
-                imgAsset: AssetValues.icon,
-                width: Dimens.thirtyTwo,
-                height: Dimens.thirtyTwo,
+              isPinned: true,
+              leading: GetBuilder<AuthController>(
+                builder: (logic) => Text(
+                  logic.userModel.user != null
+                      ? logic.userModel.user!.uname
+                      : StringValues.profile,
+                  style: AppStyles.style18Bold,
+                ),
               ),
-              title: Text(
-                StringValues.appName,
-                style: AppStyles.style20Bold,
-              ),
-              actions: InkWell(
-                onTap: () => RouteManagement.goToSettingsView(),
-                child: const Icon(CupertinoIcons.gear),
+              actions: const InkWell(
+                onTap: RouteManagement.goToSettingsView,
+                child: Icon(CupertinoIcons.gear),
               ),
             ),
             SliverFillRemaining(
@@ -57,44 +61,136 @@ class ProfileTabView extends StatelessWidget {
               )
             : logic.userModel.user == null
                 ? Center(
-                    child: Text(
-                      StringValues.unknownErrorOccurred,
-                      style: AppStyles.style14Bold,
-                    ),
-                  )
-                : Padding(
-                    padding: Dimens.edgeInsets8_16,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        _buildHeader(logic),
-                        Dimens.boxHeight8,
+                        const Icon(CupertinoIcons.info),
+                        Dimens.boxHeight16,
                         Text(
-                          logic.userModel.user!.fname +
-                              ' ' +
-                              logic.userModel.user!.lname,
-                          style: AppStyles.style18Bold,
-                        ),
-                        Dimens.boxHeight40,
-                        ElevatedButton(
-                          onPressed: () => logic.logout(),
-                          child: const Text(StringValues.logout),
+                          StringValues.userNotFoundError,
+                          style: AppStyles.style14Bold,
                         ),
                       ],
                     ),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      NxElevatedCard(
+                        child: Padding(
+                          padding: Dimens.edgeInsets8,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  _buildProfileImage(logic),
+                                  Dimens.boxWidth16,
+                                  NxOutlinedButton(
+                                    label: StringValues.editProfile,
+                                    onTap: RouteManagement.goToEditProfileView,
+                                    width: Dimens.hundred * 1.2,
+                                  ),
+                                ],
+                              ),
+                              Dimens.boxHeight16,
+                              _buildUserDetails(logic),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Dimens.boxHeight40,
+                      _buildActionButtons(logic),
+                    ],
                   ),
       );
 
-  Widget _buildHeader(logic) => Center(
-        child: (logic.userModel.user != null &&
-                logic.userModel.user?.avatar == null)
-            ? NxCircleAssetImage(
-                imgAsset: AssetValues.avatar,
-                radius: Dimens.sixtyFour,
-              )
-            : NxCircleNetworkImage(
-                imageUrl: logic.userModel.user?.avatar!.url,
-                radius: Dimens.sixtyFour,
+  Widget _buildProfileImage(AuthController logic) {
+    if (logic.userModel.user != null && logic.userModel.user!.avatar != null) {
+      return NxCircleNetworkImage(
+        imageUrl: logic.userModel.user!.avatar!.url,
+        radius: Dimens.sixtyFour,
+      );
+    }
+    return NxCircleAssetImage(
+      imgAsset: AssetValues.avatar,
+      radius: Dimens.sixtyFour,
+    );
+  }
+
+  Widget _buildUserDetails(AuthController logic) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '${logic.userModel.user!.fname} ${logic.userModel.user!.lname}',
+            style: AppStyles.style18Bold,
+          ),
+          Text(
+            "@${logic.userModel.user!.uname}",
+            style: TextStyle(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            ),
+          ),
+          if (logic.userModel.user!.about != null) Dimens.boxHeight8,
+          if (logic.userModel.user!.about != null)
+            Text(
+              logic.userModel.user!.about!,
+              style: AppStyles.style14Normal,
+            ),
+          Dimens.boxHeight8,
+          Text(
+            'Joined ${DateFormat.yMMMd().format(logic.userModel.user!.createdAt)}',
+            style: const TextStyle(color: ColorValues.grayColor),
+          ),
+          Dimens.boxHeight16,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              NxCountWidget(
+                title: StringValues.followers,
+                value: logic.userModel.user!.followers.length.toString(),
+                onTap: () {
+                  if (kDebugMode) {
+                    print('followers tapped');
+                  }
+                },
               ),
+              NxCountWidget(
+                title: StringValues.following,
+                value: logic.userModel.user!.following.length.toString(),
+                onTap: () {
+                  if (kDebugMode) {
+                    print('following tapped');
+                  }
+                },
+              ),
+            ],
+          ),
+        ],
+      );
+
+  Widget _buildActionButtons(AuthController logic) => Padding(
+        padding: Dimens.edgeInsets0_8,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            NxOutlinedButton(
+              label: StringValues.changePassword,
+              onTap: RouteManagement.goToChangePasswordView,
+              borderRadius: Dimens.eight,
+              padding: Dimens.edgeInsets16_8,
+            ),
+            Dimens.boxHeight16,
+            NxFilledButton(
+              label: StringValues.logout,
+              onTap: logic.logout,
+              borderRadius: Dimens.eight,
+            ),
+          ],
+        ),
       );
 }

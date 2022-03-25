@@ -1,88 +1,98 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/models/login_model.dart';
 import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
-import 'package:social_media_app/modules/auth/helpers/helper_func.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
-class LoginController extends GetxController {
-  static LoginController get find => Get.find();
+class NameController extends GetxController {
+  static NameController get find => Get.find();
 
   final _auth = AuthController.find;
 
-  final emailTextController = TextEditingController();
-  final passwordTextController = TextEditingController();
+  final fNameTextController = TextEditingController();
+  final lNameTextController = TextEditingController();
 
   final FocusScopeNode focusNode = FocusScopeNode();
 
   final _isLoading = false.obs;
 
-  bool get isLoading => _isLoading.value;
-
-  void _clearLoginTextControllers() {
-    emailTextController.clear();
-    passwordTextController.clear();
+  @override
+  void onInit() {
+    initializeFields();
+    super.onInit();
   }
 
-  Future<void> _login(String email, String password) async {
-    if (email.isEmpty) {
-      AppUtils.showSnackBar(
-        StringValues.enterEmail,
-        StringValues.warning,
-      );
-      return;
+  void initializeFields() async {
+    if (_auth.userModel.user != null) {
+      var user = _auth.userModel.user!;
+      fNameTextController.text = user.fname;
+      lNameTextController.text = user.lname;
     }
-    if (password.isEmpty) {
+  }
+
+  Future<void> _updateName(
+    String fname,
+    String lname,
+  ) async {
+    if (fname.isEmpty) {
       AppUtils.showSnackBar(
-        StringValues.enterPassword,
+        StringValues.enterFirstName,
         StringValues.warning,
       );
       return;
     }
 
-    _isLoading.value = true;
+    if (lname.isEmpty) {
+      AppUtils.showSnackBar(
+        StringValues.enterLastName,
+        StringValues.warning,
+      );
+      return;
+    }
+
     await AppOverlay.showLoadingIndicator();
+    _isLoading.value = true;
     update();
 
     try {
-      final response = await http.post(
-        Uri.parse(AppUrls.baseUrl + AppUrls.loginEndpoint),
+      final response = await http.put(
+        Uri.parse(AppUrls.baseUrl + AppUrls.updateProfileDetailsEndpoint),
         headers: {
           'content-type': 'application/json',
+          'authorization': 'Bearer ${_auth.token}',
         },
+        // body: jsonEncode({
+        //   'fname': fName,
+        //   'lname': lName,
+        //   'phone': {
+        //     'countryCode': countryCode,
+        //     'phoneNo': phone,
+        //   },
+        //   'gender': gender,
+        //   'dob': dob,
+        //   'about': about,
+        // }),
         body: jsonEncode({
-          'email': email,
-          'password': password,
+          'fname': fname,
+          'lname': lname,
         }),
       );
 
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        _auth.setLoginModel = LoginModel.fromJson(data);
-
-        var _token = _auth.loginModel.token!;
-        var _expiresAt = _auth.loginModel.expiresAt!;
-
-        await HelperFunction.saveLoginDataToLocalStorage(
-          _token,
-          _expiresAt,
-        );
-
-        _auth.setToken = _token;
-        _auth.setExpiresAt = _expiresAt;
-        _auth.autoLogout();
-        _clearLoginTextControllers();
+        await _auth.getProfileDetails();
         await AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
         update();
+        RouteManagement.goToBack();
         AppUtils.showSnackBar(
-          StringValues.loginSuccessful,
+          StringValues.updateProfileSuccessful,
           StringValues.success,
         );
       } else {
@@ -106,11 +116,11 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> login() async {
+  Future<void> updateName() async {
     AppUtils.closeFocus();
-    await _login(
-      emailTextController.text.trim(),
-      passwordTextController.text.trim(),
+    await _updateName(
+      fNameTextController.text.trim(),
+      lNameTextController.text.trim(),
     );
   }
 }

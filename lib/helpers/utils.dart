@@ -87,6 +87,8 @@ abstract class AppUtils {
     closeSnackBar();
     Get.showSnackbar(
       GetSnackBar(
+        margin: Dimens.edgeInsets8,
+        borderRadius: Dimens.eight,
         messageText: Text(
           message,
           style: TextStyle(

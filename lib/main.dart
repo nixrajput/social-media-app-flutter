@@ -5,9 +5,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
+import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
-
-import 'modules/auth/controllers/auth_controller.dart';
 
 void main() async {
   try {

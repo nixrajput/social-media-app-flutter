@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/constants/dimens.dart';
 
 class NxElevatedCard extends StatelessWidget {
-  final Widget child;
-  final double? borderRadius;
-  final EdgeInsets? padding;
-  final EdgeInsets? margin;
-  final double? elevation;
-  final double? width;
-  final double? height;
-
   const NxElevatedCard({
     Key? key,
     required this.child,
@@ -16,29 +9,30 @@ class NxElevatedCard extends StatelessWidget {
     this.padding,
     this.margin,
     this.elevation,
-    this.width,
-    this.height,
+    this.bgColor,
+    this.shadowColor,
   }) : super(key: key);
+
+  final Widget child;
+  final double? borderRadius;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
+  final double? elevation;
+  final Color? bgColor;
+  final Color? shadowColor;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width ?? double.infinity,
-      height: height ?? height,
-      margin: margin ?? const EdgeInsets.all(0.0),
-      padding: padding ?? const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).bottomAppBarColor,
-        borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 8.0)),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0.0, elevation ?? 4.0),
-            color: Theme.of(context).shadowColor,
-            blurRadius: 16.0,
-          )
-        ],
+    return Card(
+      margin: margin ?? Dimens.edgeInsets8,
+      elevation: elevation ?? Dimens.zero,
+      color: bgColor ?? Theme.of(context).cardTheme.color,
+      shadowColor: shadowColor ?? Theme.of(context).cardTheme.shadowColor,
+      clipBehavior: Clip.none,
+      child: Padding(
+        padding: padding ?? Dimens.edgeInsets0,
+        child: child,
       ),
-      child: child,
     );
   }
 }

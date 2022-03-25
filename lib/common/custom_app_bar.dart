@@ -14,37 +14,29 @@ class NxAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: Dimens.screenWidth,
-      child: Column(
-        children: [
-          Padding(
-            padding: Dimens.edgeInsets8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () => RouteManagement.goToBack(),
-                  child: CircleAvatar(
-                    backgroundColor: Theme.of(context).dividerColor,
-                    radius: Dimens.sixTeen,
-                    child: const Icon(
-                      CupertinoIcons.left_chevron,
-                      color: ColorValues.whiteColor,
-                    ),
-                  ),
+      child: Padding(
+        padding: Dimens.edgeInsets8,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: RouteManagement.goToBack,
+              child: CircleAvatar(
+                backgroundColor: Theme.of(context).dividerColor,
+                radius: Dimens.sixTeen,
+                child: const Icon(
+                  CupertinoIcons.left_chevron,
+                  color: ColorValues.whiteColor,
                 ),
-                Dimens.boxWidth16,
-                Text(
-                  title!,
-                  style: AppStyles.style20Bold,
-                )
-              ],
+              ),
             ),
-          ),
-          Divider(
-            height: Dimens.zero,
-            thickness: 0.3,
-          ),
-        ],
+            Dimens.boxWidth16,
+            Text(
+              title!,
+              style: AppStyles.style20Bold,
+            )
+          ],
+        ),
       ),
     );
   }

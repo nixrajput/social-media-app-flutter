@@ -6,15 +6,15 @@ class NxSliverAppBar extends StatelessWidget {
     Key? key,
     required this.leading,
     this.bgColor,
-    required this.title,
+    this.title,
     this.actions,
     this.isFloating,
     this.isPinned,
     this.centerTitle,
   }) : super(key: key);
 
-  final Widget? leading;
-  final Widget title;
+  final Widget leading;
+  final Widget? title;
   final bool? centerTitle;
   final Widget? actions;
   final Color? bgColor;
@@ -26,27 +26,19 @@ class NxSliverAppBar extends StatelessWidget {
     return SliverAppBar(
       floating: isFloating ?? true,
       pinned: isPinned ?? false,
-      backgroundColor: bgColor ?? Colors.transparent,
-      flexibleSpace: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: Dimens.edgeInsets8,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                leading!,
-                title,
-                actions!,
-              ],
-            ),
-          ),
-          Divider(
-            height: Dimens.zero,
-            thickness: 0.3,
-          ),
-        ],
+      elevation: Dimens.zero,
+      backgroundColor: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
+      flexibleSpace: Padding(
+        padding: Dimens.edgeInsets8,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            leading,
+            if (title != null) title!,
+            if (actions != null) actions!,
+          ],
+        ),
       ),
     );
   }

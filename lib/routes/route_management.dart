@@ -30,6 +30,26 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.settings);
   }
 
+  static void goToEditProfileView() {
+    Get.toNamed(AppRoutes.editProfile);
+  }
+
+  static void goToChangePasswordView() {
+    Get.toNamed(AppRoutes.changePassword);
+  }
+
+  static void goToEditNameView() {
+    Get.toNamed(AppRoutes.editName);
+  }
+
+  static void goToEditUsernameView() {
+    Get.toNamed(AppRoutes.editUsername);
+  }
+
+  static void goToEditAboutView() {
+    Get.toNamed(AppRoutes.editAbout);
+  }
+
   static void goToBack() {
     Get.back();
   }

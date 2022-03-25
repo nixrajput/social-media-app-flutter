@@ -16,29 +16,34 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PostController>(
-      builder: (logic) => SafeArea(
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            NxSliverAppBar(
-              isFloating: true,
-              bgColor: Theme.of(context).scaffoldBackgroundColor,
-              leading: NxAssetImage(
-                imgAsset: AssetValues.icon,
-                width: Dimens.thirtyTwo,
-                height: Dimens.thirtyTwo,
-              ),
-              title: Text(
-                StringValues.appName,
-                style: AppStyles.style20Bold,
-              ),
-              actions: InkWell(
-                onTap: () => RouteManagement.goToSettingsView(),
-                child: const Icon(CupertinoIcons.gear),
-              ),
+    return SafeArea(
+      child: CustomScrollView(
+        physics: const BouncingScrollPhysics(),
+        slivers: [
+          NxSliverAppBar(
+            isFloating: true,
+            bgColor: Theme.of(context).scaffoldBackgroundColor,
+            leading: Row(
+              children: [
+                NxAssetImage(
+                  imgAsset: AssetValues.icon,
+                  width: Dimens.thirtyTwo,
+                  height: Dimens.thirtyTwo,
+                ),
+                Dimens.boxWidth8,
+                Text(
+                  StringValues.appName,
+                  style: AppStyles.style16Bold,
+                )
+              ],
             ),
-            logic.isLoading
+            actions: const InkWell(
+              onTap: RouteManagement.goToSettingsView,
+              child: Icon(CupertinoIcons.gear_solid),
+            ),
+          ),
+          GetBuilder<PostController>(
+            builder: (logic) => logic.isLoading
                 ? const SliverFillRemaining(
                     child: Center(
                       child: NxLoadingIndicator(),
@@ -49,11 +54,11 @@ class HomeTabView extends StatelessWidget {
                       (ctx, index) => PostWidget(
                         post: logic.postModel.posts!.elementAt(index),
                       ),
-                      childCount: logic.postModel.posts?.length,
+                      childCount: logic.postModel.posts!.length,
                     ),
-                  )
-          ],
-        ),
+                  ),
+          )
+        ],
       ),
     );
   }

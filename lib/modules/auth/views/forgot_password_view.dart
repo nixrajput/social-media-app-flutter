@@ -29,7 +29,7 @@ class ForgotPasswordView extends StatelessWidget {
               children: [
                 _buildImageHeader(),
                 Dimens.boxHeight16,
-                _buildLoginFields(),
+                _buildForgotPasswordFields(),
               ],
             ),
           ),
@@ -57,7 +57,7 @@ class ForgotPasswordView extends StatelessWidget {
         ],
       );
 
-  Widget _buildLoginFields() => GetBuilder<PasswordController>(
+  Widget _buildForgotPasswordFields() => GetBuilder<PasswordController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
@@ -97,9 +97,9 @@ class ForgotPasswordView extends StatelessWidget {
                           style: AppStyles.style16Normal,
                         ),
                         Dimens.boxWidth4,
-                        NxTextButton(
+                        const NxTextButton(
                           label: StringValues.resetPassword,
-                          onTap: () => RouteManagement.goToResetPasswordView(),
+                          onTap: RouteManagement.goToResetPasswordView,
                         ),
                       ],
                     ),
@@ -113,9 +113,9 @@ class ForgotPasswordView extends StatelessWidget {
                           style: AppStyles.style16Normal,
                         ),
                         Dimens.boxWidth4,
-                        NxTextButton(
+                        const NxTextButton(
                           label: StringValues.login,
-                          onTap: () => RouteManagement.goToLoginView(),
+                          onTap: RouteManagement.goToLoginView,
                         ),
                       ],
                     ),
