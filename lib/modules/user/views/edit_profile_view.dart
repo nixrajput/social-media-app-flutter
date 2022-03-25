@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/common/circular_asset_image.dart';
+import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/common/primary_text_field.dart';
@@ -39,14 +41,18 @@ class EditProfileView extends StatelessWidget {
 
   Widget _buildEditProfileBody() => Expanded(
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: NxElevatedCard(
             child: Padding(
               padding: Dimens.edgeInsets8,
               child: GetBuilder<AuthController>(
                 builder: (logic) => Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Dimens.boxHeight8,
+                    _buildProfileImage(logic),
+                    Dimens.boxHeight16,
                     NxTextField(
                       label: StringValues.name,
                       initialValue:
@@ -103,4 +109,17 @@ class EditProfileView extends StatelessWidget {
           ),
         ),
       );
+
+  Widget _buildProfileImage(AuthController logic) {
+    if (logic.userModel.user != null && logic.userModel.user!.avatar != null) {
+      return NxCircleNetworkImage(
+        imageUrl: logic.userModel.user!.avatar!.url,
+        radius: Dimens.sixtyFour,
+      );
+    }
+    return NxCircleAssetImage(
+      imgAsset: AssetValues.avatar,
+      radius: Dimens.sixtyFour,
+    );
+  }
 }

@@ -118,7 +118,7 @@ class UsernameController extends GetxController {
         update();
         RouteManagement.goToBack();
         AppUtils.showSnackBar(
-          StringValues.updateUsernameSuccessful,
+          data[StringValues.message],
           StringValues.success,
         );
       } else {

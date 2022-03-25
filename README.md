@@ -22,7 +22,21 @@ A social media application developed using Flutter and GetX state management.
 
 ## Screenshots
 
-- Adding soon...
+### Login Screen
+
+![login](screenshots/login.png)
+
+### Registration Screen
+
+![register](screenshots/register.png)
+
+### Forgot Password Screen
+
+![forgot](screenshots/forgot.png)
+
+### Reset Password Screen
+
+![reset](screenshots/reset.png)
 
 ## Connect With Me
 

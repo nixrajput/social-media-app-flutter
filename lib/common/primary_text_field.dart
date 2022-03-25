@@ -59,6 +59,7 @@ class NxTextField extends StatelessWidget {
         onEditingComplete: onEditingComplete,
         readOnly: readOnly ?? false,
         enabled: enabled ?? true,
+        scrollPhysics: const AlwaysScrollableScrollPhysics(),
       ),
     );
   }

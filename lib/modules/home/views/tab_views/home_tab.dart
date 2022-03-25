@@ -27,13 +27,13 @@ class HomeTabView extends StatelessWidget {
               children: [
                 NxAssetImage(
                   imgAsset: AssetValues.icon,
-                  width: Dimens.thirtyTwo,
-                  height: Dimens.thirtyTwo,
+                  width: Dimens.twentyFour,
+                  height: Dimens.twentyFour,
                 ),
                 Dimens.boxWidth8,
                 Text(
                   StringValues.appName,
-                  style: AppStyles.style16Bold,
+                  style: AppStyles.style18Bold,
                 )
               ],
             ),
@@ -55,6 +55,7 @@ class HomeTabView extends StatelessWidget {
                         post: logic.postModel.posts!.elementAt(index),
                       ),
                       childCount: logic.postModel.posts!.length,
+                      addAutomaticKeepAlives: true,
                     ),
                   ),
           )

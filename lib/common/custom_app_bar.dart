@@ -18,12 +18,13 @@ class NxAppBar extends StatelessWidget {
         padding: Dimens.edgeInsets8,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             InkWell(
               onTap: RouteManagement.goToBack,
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).dividerColor,
-                radius: Dimens.sixTeen,
+                radius: Dimens.fourteen,
                 child: const Icon(
                   CupertinoIcons.left_chevron,
                   color: ColorValues.whiteColor,
@@ -33,7 +34,7 @@ class NxAppBar extends StatelessWidget {
             Dimens.boxWidth16,
             Text(
               title!,
-              style: AppStyles.style20Bold,
+              style: AppStyles.style18Bold,
             )
           ],
         ),

@@ -42,7 +42,7 @@ class ProfileTabView extends StatelessWidget {
               ),
               actions: const InkWell(
                 onTap: RouteManagement.goToSettingsView,
-                child: Icon(CupertinoIcons.gear),
+                child: Icon(CupertinoIcons.gear_solid),
               ),
             ),
             SliverFillRemaining(
@@ -73,37 +73,41 @@ class ProfileTabView extends StatelessWidget {
                       ],
                     ),
                   )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      NxElevatedCard(
-                        child: Padding(
-                          padding: Dimens.edgeInsets8,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                children: [
-                                  _buildProfileImage(logic),
-                                  Dimens.boxWidth16,
-                                  NxOutlinedButton(
-                                    label: StringValues.editProfile,
-                                    onTap: RouteManagement.goToEditProfileView,
-                                    width: Dimens.hundred * 1.2,
-                                  ),
-                                ],
-                              ),
-                              Dimens.boxHeight16,
-                              _buildUserDetails(logic),
-                            ],
+                : SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        NxElevatedCard(
+                          child: Padding(
+                            padding: Dimens.edgeInsets8,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  children: [
+                                    _buildProfileImage(logic),
+                                    Dimens.boxWidth16,
+                                    NxOutlinedButton(
+                                      label: StringValues.editProfile,
+                                      onTap:
+                                          RouteManagement.goToEditProfileView,
+                                      width: Dimens.hundred * 1.2,
+                                    ),
+                                  ],
+                                ),
+                                Dimens.boxHeight16,
+                                _buildUserDetails(logic),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Dimens.boxHeight40,
-                      _buildActionButtons(logic),
-                    ],
+                        Dimens.boxHeight40,
+                        _buildActionButtons(logic),
+                      ],
+                    ),
                   ),
       );
 

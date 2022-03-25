@@ -50,7 +50,7 @@ class EditUsernameView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       NxTextField(
-                        label: StringValues.firstName,
+                        label: StringValues.username,
                         editingController: logic.uNameTextController,
                         icon: CupertinoIcons.at,
                         onEditingComplete: logic.focusNode.unfocus,

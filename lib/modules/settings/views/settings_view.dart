@@ -35,54 +35,51 @@ class SettingsView extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingsBody() =>
-      GetBuilder<AppThemeController>(
-        builder: (logic) =>
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Padding(
-                  padding: Dimens.edgeInsets8_16,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Display',
-                        style: AppStyles.style14Normal.copyWith(
-                          color: ColorValues.darkGrayColor,
-                        ),
-                      ),
-                      Dimens.boxHeight4,
-                      ListTile(
-                        onTap: () {
-                          AppUtils.showBottomSheet(
-                            appThemeModes
-                                .map(
-                                  (theme) =>
-                                  ListTile(
-                                    onTap: () {
-                                      AppUtils.closeBottomSheet();
-                                      logic.setThemeMode(theme);
-                                    },
-                                    leading: Text(
-                                      theme.toString(),
-                                      style: AppStyles.style16Bold,
-                                    ),
-                                  ),
-                            )
-                                .toList(),
-                          );
-                        },
-                        leading: const Icon(CupertinoIcons.brightness_solid),
-                        title: const Text(StringValues.theme),
-                        subtitle: Text(
-                          logic.themeMode.toString(),
-                        ),
-                      ),
-                    ],
+  Widget _buildSettingsBody() => GetBuilder<AppThemeController>(
+        builder: (logic) => Expanded(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: Dimens.edgeInsets8_16,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Display',
+                    style: AppStyles.style14Normal.copyWith(
+                      color: ColorValues.darkGrayColor,
+                    ),
                   ),
-                ),
+                  Dimens.boxHeight4,
+                  ListTile(
+                    onTap: () {
+                      AppUtils.showBottomSheet(
+                        appThemeModes
+                            .map(
+                              (theme) => ListTile(
+                                onTap: () {
+                                  AppUtils.closeBottomSheet();
+                                  logic.setThemeMode(theme);
+                                },
+                                leading: Text(
+                                  theme.toString(),
+                                  style: AppStyles.style16Bold,
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      );
+                    },
+                    leading: const Icon(CupertinoIcons.brightness_solid),
+                    title: const Text(StringValues.theme),
+                    subtitle: Text(
+                      logic.themeMode.toString(),
+                    ),
+                  ),
+                ],
               ),
             ),
+          ),
+        ),
       );
 }

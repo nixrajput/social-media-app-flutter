@@ -26,12 +26,12 @@ class NxSliverAppBar extends StatelessWidget {
     return SliverAppBar(
       floating: isFloating ?? true,
       pinned: isPinned ?? false,
+      toolbarHeight: Dimens.fourty,
       elevation: Dimens.zero,
       backgroundColor: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
       flexibleSpace: Padding(
         padding: Dimens.edgeInsets8,
         child: Row(
-          mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             leading,

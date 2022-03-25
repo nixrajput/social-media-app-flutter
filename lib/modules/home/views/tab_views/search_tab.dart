@@ -18,11 +18,12 @@ class SearchTabView extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           slivers: [
             NxSliverAppBar(
-              isFloating: true,
+              isFloating: false,
+              isPinned: true,
               bgColor: Theme.of(context).scaffoldBackgroundColor,
               leading: Text(
                 StringValues.search,
-                style: AppStyles.style16Bold,
+                style: AppStyles.style18Bold,
               ),
             ),
             SliverFillRemaining(
