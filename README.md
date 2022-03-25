@@ -2,16 +2,20 @@
 
 A social media application developed using Flutter and GetX state management.
 
+
 ## Features
 
 - Login
 - Registration
+- Forgot Password
+- Reset Password
+- Change Password
 - Get Profile Details
 - Update Profile Details
 - Upload Profile Picture
 - Delete Profile
-- Add Post
-- Get Posts
+- Create Post
+- Fetch Posts
 - Like/Unlike Post
 - Update Post
 - Delete Post
@@ -19,6 +23,7 @@ A social media application developed using Flutter and GetX state management.
 - Get Comments
 - Like/Unlike Comment
 - Delete Comment
+
 
 ## Screenshots
 
@@ -37,6 +42,7 @@ A social media application developed using Flutter and GetX state management.
 ### Reset Password Screen
 
 ![reset](screenshots/reset.png)
+
 
 ## Connect With Me
 
