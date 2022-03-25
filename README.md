@@ -29,7 +29,7 @@ A social media application developed using Flutter and GetX state management.
 
 ### Login Screen
 
-![login](screenshots/login.png)
+<img src="screenshots/login.png" alt="" width="400" />
 
 ### Registration Screen
 
