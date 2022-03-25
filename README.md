@@ -33,15 +33,15 @@ A social media application developed using Flutter and GetX state management.
 
 ### Registration Screen
 
-![register](screenshots/register.png)
+<img src="screenshots/register.png" alt="" width="400" />
 
 ### Forgot Password Screen
 
-![forgot](screenshots/forgot.png)
+<img src="screenshots/forgot.png" alt="" width="400" />
 
 ### Reset Password Screen
 
-![reset](screenshots/reset.png)
+<img src="screenshots/reset.png" alt="" width="400" />
 
 
 ## Connect With Me
