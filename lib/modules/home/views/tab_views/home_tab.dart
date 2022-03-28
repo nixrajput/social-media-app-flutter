@@ -52,9 +52,9 @@ class HomeTabView extends StatelessWidget {
                 : SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (ctx, index) => PostWidget(
-                        post: logic.postModel.posts!.elementAt(index),
+                        post: logic.postData.posts!.elementAt(index),
                       ),
-                      childCount: logic.postModel.posts!.length,
+                      childCount: logic.postData.posts!.length,
                       addAutomaticKeepAlives: true,
                     ),
                   ),

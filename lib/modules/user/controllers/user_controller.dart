@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
 
 class UserController extends GetxController {
   static UserController get find => Get.find();
@@ -40,11 +40,11 @@ class UserController extends GetxController {
   }
 
   Future<void> initializeProfileDetails() async {
-    if (_auth.userModel.user != null) {
+    if (_auth.userData.user != null) {
       if (kDebugMode) {
         print('initializing fields');
       }
-      var user = _auth.userModel.user!;
+      var user = _auth.userData.user!;
       fNameTextController.text = user.fname;
       lNameTextController.text = user.lname;
       unameTextController.text = user.uname;

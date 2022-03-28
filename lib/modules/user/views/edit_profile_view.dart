@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
@@ -8,7 +9,6 @@ import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/common/primary_text_field.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class EditProfileView extends StatelessWidget {
@@ -56,7 +56,7 @@ class EditProfileView extends StatelessWidget {
                     NxTextField(
                       label: StringValues.name,
                       initialValue:
-                          '${logic.userModel.user!.fname} ${logic.userModel.user!.lname}',
+                          '${logic.userData.user!.fname} ${logic.userData.user!.lname}',
                       icon: CupertinoIcons.person,
                       enabled: false,
                       onTap: RouteManagement.goToEditNameView,
@@ -64,7 +64,7 @@ class EditProfileView extends StatelessWidget {
                     Dimens.boxHeight8,
                     NxTextField(
                       label: StringValues.username,
-                      initialValue: logic.userModel.user!.uname,
+                      initialValue: logic.userData.user!.uname,
                       icon: CupertinoIcons.at,
                       enabled: false,
                       onTap: RouteManagement.goToEditUsernameView,
@@ -72,14 +72,14 @@ class EditProfileView extends StatelessWidget {
                     Dimens.boxHeight8,
                     NxTextField(
                       label: StringValues.email,
-                      initialValue: logic.userModel.user!.email,
+                      initialValue: logic.userData.user!.email,
                       icon: CupertinoIcons.mail,
                       enabled: false,
                     ),
                     Dimens.boxHeight8,
                     NxTextField(
                       label: StringValues.about,
-                      initialValue: logic.userModel.user!.about,
+                      initialValue: logic.userData.user!.about,
                       icon: CupertinoIcons.doc_text,
                       enabled: false,
                       maxLines: 4,
@@ -88,7 +88,7 @@ class EditProfileView extends StatelessWidget {
                     Dimens.boxHeight8,
                     NxTextField(
                       label: StringValues.birthDate,
-                      initialValue: logic.userModel.user!.dob,
+                      initialValue: logic.userData.user!.dob,
                       icon: Icons.cake_outlined,
                       enabled: false,
                       //onTap: RouteManagement.goToEditNameView,
@@ -96,7 +96,7 @@ class EditProfileView extends StatelessWidget {
                     Dimens.boxHeight8,
                     NxTextField(
                       label: StringValues.gender,
-                      initialValue: logic.userModel.user!.gender,
+                      initialValue: logic.userData.user!.gender,
                       icon: Icons.male_outlined,
                       enabled: false,
                       //onTap: RouteManagement.goToEditNameView,
@@ -111,9 +111,9 @@ class EditProfileView extends StatelessWidget {
       );
 
   Widget _buildProfileImage(AuthController logic) {
-    if (logic.userModel.user != null && logic.userModel.user!.avatar != null) {
+    if (logic.userData.user != null && logic.userData.user!.avatar != null) {
       return NxCircleNetworkImage(
-        imageUrl: logic.userModel.user!.avatar!.url,
+        imageUrl: logic.userData.user!.avatar!.url,
         radius: Dimens.sixtyFour,
       );
     }

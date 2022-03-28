@@ -1,5 +1,4 @@
 abstract class AppUrls {
-  // static const String baseUrl = 'https://social-media5.p.rapidapi.com';
   static const String baseUrl = 'https://zany-gold-foal-wig.cyclic.app/api/v1';
 
 //  Endpoints

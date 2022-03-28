@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class AboutController extends GetxController {
@@ -28,8 +28,8 @@ class AboutController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_auth.userModel.user != null) {
-      var user = _auth.userModel.user!;
+    if (_auth.userData.user != null) {
+      var user = _auth.userData.user!;
       aboutTextController.text = user.about ?? '';
     }
   }

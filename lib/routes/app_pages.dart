@@ -23,7 +23,7 @@ import 'package:social_media_app/modules/user/views/edit_username_view.dart';
 part 'app_routes.dart';
 
 abstract class AppPages {
-  static var transitionDuration = const Duration(milliseconds: 500);
+  static var transitionDuration = const Duration(milliseconds: 300);
 
   static final pages = [
     GetPage(

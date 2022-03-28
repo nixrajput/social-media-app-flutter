@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/count_widget.dart';
@@ -15,7 +16,6 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class ProfileTabView extends StatelessWidget {
@@ -34,8 +34,8 @@ class ProfileTabView extends StatelessWidget {
               isPinned: true,
               leading: GetBuilder<AuthController>(
                 builder: (logic) => Text(
-                  logic.userModel.user != null
-                      ? logic.userModel.user!.uname
+                  logic.userData.user != null
+                      ? logic.userData.user!.uname
                       : StringValues.profile,
                   style: AppStyles.style18Bold,
                 ),
@@ -59,7 +59,7 @@ class ProfileTabView extends StatelessWidget {
             ? const Center(
                 child: NxLoadingIndicator(),
               )
-            : logic.userModel.user == null
+            : logic.userData.user == null
                 ? Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -112,9 +112,9 @@ class ProfileTabView extends StatelessWidget {
       );
 
   Widget _buildProfileImage(AuthController logic) {
-    if (logic.userModel.user != null && logic.userModel.user!.avatar != null) {
+    if (logic.userData.user != null && logic.userData.user!.avatar != null) {
       return NxCircleNetworkImage(
-        imageUrl: logic.userModel.user!.avatar!.url,
+        imageUrl: logic.userData.user!.avatar!.url,
         radius: Dimens.sixtyFour,
       );
     }
@@ -130,24 +130,24 @@ class ProfileTabView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            '${logic.userModel.user!.fname} ${logic.userModel.user!.lname}',
+            '${logic.userData.user!.fname} ${logic.userData.user!.lname}',
             style: AppStyles.style18Bold,
           ),
           Text(
-            "@${logic.userModel.user!.uname}",
+            "@${logic.userData.user!.uname}",
             style: TextStyle(
               color: Theme.of(Get.context!).textTheme.subtitle1!.color,
             ),
           ),
-          if (logic.userModel.user!.about != null) Dimens.boxHeight8,
-          if (logic.userModel.user!.about != null)
+          if (logic.userData.user!.about != null) Dimens.boxHeight8,
+          if (logic.userData.user!.about != null)
             Text(
-              logic.userModel.user!.about!,
+              logic.userData.user!.about!,
               style: AppStyles.style14Normal,
             ),
           Dimens.boxHeight8,
           Text(
-            'Joined ${DateFormat.yMMMd().format(logic.userModel.user!.createdAt)}',
+            'Joined ${DateFormat.yMMMd().format(logic.userData.user!.createdAt)}',
             style: const TextStyle(color: ColorValues.grayColor),
           ),
           Dimens.boxHeight16,
@@ -156,7 +156,7 @@ class ProfileTabView extends StatelessWidget {
             children: [
               NxCountWidget(
                 title: StringValues.followers,
-                value: logic.userModel.user!.followers.length.toString(),
+                value: logic.userData.user!.followers.length.toString(),
                 onTap: () {
                   if (kDebugMode) {
                     print('followers tapped');
@@ -165,7 +165,7 @@ class ProfileTabView extends StatelessWidget {
               ),
               NxCountWidget(
                 title: StringValues.following,
-                value: logic.userModel.user!.following.length.toString(),
+                value: logic.userData.user!.following.length.toString(),
                 onTap: () {
                   if (kDebugMode) {
                     print('following tapped');

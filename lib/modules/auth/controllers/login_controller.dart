@@ -3,13 +3,12 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/models/responses/login_response.dart';
+import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/models/login_model.dart';
-import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
-import 'package:social_media_app/modules/auth/helpers/helper_func.dart';
 
 class LoginController extends GetxController {
   static LoginController get find => Get.find();
@@ -64,12 +63,12 @@ class LoginController extends GetxController {
 
       final data = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        _auth.setLoginModel = LoginModel.fromJson(data);
+        _auth.setLoginData = LoginResponse.fromJson(data);
 
-        var _token = _auth.loginModel.token!;
-        var _expiresAt = _auth.loginModel.expiresAt!;
+        var _token = _auth.loginData.token!;
+        var _expiresAt = _auth.loginData.expiresAt!;
 
-        await HelperFunction.saveLoginDataToLocalStorage(
+        await AppUtils.saveLoginDataToLocalStorage(
           _token,
           _expiresAt,
         );

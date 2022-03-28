@@ -5,6 +5,8 @@ import 'package:flutter_carousel_widget/flutter_carousel_options.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
+import 'package:social_media_app/apis/models/entities/post.dart';
+import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/cached_network_image.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
@@ -15,8 +17,6 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/models/post_model.dart';
-import 'package:social_media_app/modules/auth/controllers/auth_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 
 class PostWidget extends StatelessWidget {
@@ -60,13 +60,13 @@ class PostWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    post.owner!.avatar == null
+                    post.owner.avatar == null
                         ? NxCircleAssetImage(
                             imgAsset: AssetValues.avatar,
                             radius: Dimens.twenty,
                           )
                         : NxCircleNetworkImage(
-                            imageUrl: post.owner!.avatar!.url,
+                            imageUrl: post.owner.avatar!.url,
                             radius: Dimens.twenty,
                           ),
                     Dimens.boxWidth8,
@@ -76,11 +76,11 @@ class PostWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "${post.owner!.fname} ${post.owner!.lname}",
+                          "${post.owner.fname} ${post.owner.lname}",
                           style: AppStyles.style16Bold,
                         ),
                         Text(
-                          "@${post.owner!.uname}",
+                          "@${post.owner.uname}",
                           style: TextStyle(
                             color: Theme.of(Get.context!)
                                 .textTheme
@@ -106,7 +106,7 @@ class PostWidget extends StatelessWidget {
   Widget _buildPostBody() => GetBuilder<PostController>(
         builder: (logic) => GestureDetector(
           onDoubleTap: () {
-            logic.toggleLikePost(post.id!);
+            logic.toggleLikePost(post.id);
           },
           child: FlutterCarousel(
             options: CarouselOptions(
@@ -139,30 +139,29 @@ class PostWidget extends StatelessWidget {
               children: [
                 GetBuilder<PostController>(
                   builder: (controller) {
-                    var postIndex = controller.postModel.posts!
+                    var postIndex = controller.postData.posts!
                         .indexWhere((element) => element.id == post.id);
                     var tempPost =
-                        controller.postModel.posts!.elementAt(postIndex);
+                        controller.postData.posts!.elementAt(postIndex);
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         NxIconButton(
-                          icon:
-                              tempPost.likes!.contains(_auth.userModel.user?.id)
-                                  ? CupertinoIcons.heart_solid
-                                  : CupertinoIcons.heart,
+                          icon: tempPost.likes.contains(_auth.userData.user?.id)
+                              ? CupertinoIcons.heart_solid
+                              : CupertinoIcons.heart,
                           onTap: () {
-                            controller.toggleLikePost(post.id!);
+                            controller.toggleLikePost(post.id);
                           },
                           iconColor:
-                              tempPost.likes!.contains(_auth.userModel.user?.id)
+                              tempPost.likes.contains(_auth.userData.user?.id)
                                   ? ColorValues.primaryColor
                                   : ColorValues.grayColor,
                         ),
                         Dimens.boxWidth4,
-                        if (tempPost.likes!.isNotEmpty)
+                        if (tempPost.likes.isNotEmpty)
                           Text(
-                            '${tempPost.likes!.length} likes',
+                            '${tempPost.likes.length} likes',
                             style: AppStyles.style14Bold,
                           ),
                       ],
@@ -184,7 +183,7 @@ class PostWidget extends StatelessWidget {
                 style: AppStyles.style16Normal,
               ),
             Text(
-              GetTimeAgo.parse(post.createdAt!),
+              GetTimeAgo.parse(post.createdAt),
               style: TextStyle(
                 color: Theme.of(Get.context!).textTheme.subtitle1!.color,
               ),

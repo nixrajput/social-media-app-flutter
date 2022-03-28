@@ -1,38 +1,38 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart' as dio;
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/models/responses/login_response.dart';
+import 'package:social_media_app/apis/models/responses/user_response.dart';
+import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/models/login_model.dart';
-import 'package:social_media_app/models/user_model.dart';
-import 'package:social_media_app/modules/auth/helpers/helper_func.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class AuthController extends GetxController {
   static AuthController get find => Get.find();
 
+  final _apiProvider = ApiProvider(dio.Dio());
+
   final _token = ''.obs;
   final _isLoading = false.obs;
-  final Rx<LoginModel> _loginModel = LoginModel().obs;
-  final Rx<String> _expiresAt = ''.obs;
-  final Rx<UserModel> _userModel = UserModel().obs;
+  final _loginData = LoginResponse().obs;
+  final _expiresAt = ''.obs;
+  final _userData = UserResponse().obs;
 
   bool get isLoading => _isLoading.value;
 
-  set setLoginModel(LoginModel model) {
-    _loginModel.value = model;
+  set setLoginData(LoginResponse value) {
+    _loginData.value = value;
   }
 
-  LoginModel get loginModel => _loginModel.value;
+  LoginResponse get loginData => _loginData.value;
 
-  set setUserModel(UserModel model) {
-    _userModel.value = model;
+  set setUserData(UserResponse value) {
+    _userData.value = value;
   }
 
-  UserModel get userModel => _userModel.value;
+  UserResponse get userData => _userData.value;
 
   set setToken(String value) {
     _token.value = value;
@@ -57,7 +57,7 @@ class AuthController extends GetxController {
 
   Stream<String> _validateToken() async* {
     var _token = '';
-    final decodedData = await HelperFunction.readLoginDataFromLocalStorage();
+    final decodedData = await AppUtils.readLoginDataFromLocalStorage();
     if (decodedData != null) {
       _expiresAt.value = decodedData[StringValues.expiresAt];
       _token = decodedData[StringValues.token];
@@ -79,9 +79,9 @@ class AuthController extends GetxController {
     RouteManagement.goToLoginView();
     setToken = '';
     setExpiresAt = '';
-    setLoginModel = LoginModel();
-    setUserModel = UserModel();
-    await HelperFunction.clearLoginDataFromLocalStorage();
+    setLoginData = LoginResponse();
+    setUserData = UserResponse();
+    await AppUtils.clearLoginDataFromLocalStorage();
     AppUtils.showSnackBar(
       StringValues.logoutSuccessful,
       StringValues.success,
@@ -97,8 +97,8 @@ class AuthController extends GetxController {
         await _logout();
       }
     }
-    if (_userModel.value.user != null &&
-        _token.value == _userModel.value.user!.token) {
+    if (_userData.value.user != null &&
+        _token.value == _userData.value.user!.token) {
       await _logout();
       AppUtils.showSnackBar(
         'Token is expired or invalid',
@@ -111,37 +111,27 @@ class AuthController extends GetxController {
     _isLoading.value = true;
     update();
 
-    try {
-      final response = await http.get(
-        Uri.parse(AppUrls.baseUrl + AppUrls.profileDetailsEndpoint),
-        headers: {
-          'content-type': 'application/json',
-          'authorization': 'Bearer ${_token.value}',
-        },
-      );
-
-      final data = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        _userModel.value = UserModel.fromJson(data);
-        _isLoading.value = false;
-        update();
-      } else {
-        _isLoading.value = false;
-        update();
-        AppUtils.showSnackBar(
-          data[StringValues.message],
-          StringValues.error,
-        );
-      }
-    } catch (err) {
+    await _apiProvider
+        .getProfileDetails('application/json', 'Bearer ${_token.value}')
+        .then((data) {
+      setUserData = data;
       _isLoading.value = false;
-      update();
-      debugPrint(err.toString());
-      AppUtils.showSnackBar(
-        '${StringValues.errorOccurred}: ${err.toString()}',
-        StringValues.error,
-      );
-    }
+    }).catchError((Object obj) {
+      switch (obj.runtimeType) {
+        case DioError:
+          final res = (obj as DioError).response;
+          _isLoading.value = false;
+          update();
+          AppUtils.showSnackBar(
+            res!.statusMessage.toString(),
+            StringValues.error,
+          );
+          debugPrint("Got error : ${res.statusCode} -> ${res.statusMessage}");
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   Future<void> logout() async => await _logout();

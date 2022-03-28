@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/strings.dart';
 
 import '../constants/dimens.dart';
 
 abstract class AppUtils {
+  static final storage = GetStorage();
+
   static void showLoadingDialog() {
     closeDialog();
     Get.dialog<void>(
@@ -143,5 +148,34 @@ abstract class AppUtils {
     if (FocusManager.instance.primaryFocus!.hasFocus) {
       FocusManager.instance.primaryFocus?.unfocus();
     }
+  }
+
+  static Future<void> saveLoginDataToLocalStorage(_token, _expiresAt) async {
+    if (_token!.isNotEmpty && _expiresAt!.isNotEmpty) {
+      final data = jsonEncode({
+        StringValues.token: _token,
+        StringValues.expiresAt: _expiresAt,
+      });
+
+      await storage.write(StringValues.loginData, data);
+      debugPrint('Auth details saved.');
+    } else {
+      debugPrint('Auth details could not saved.');
+    }
+  }
+
+  static Future<dynamic> readLoginDataFromLocalStorage() async {
+    if (storage.hasData(StringValues.loginData)) {
+      final data = await storage.read(StringValues.loginData);
+      var decodedData = jsonDecode(data) as Map<String, dynamic>;
+      debugPrint('Auth details found.');
+      return decodedData;
+    }
+    return null;
+  }
+
+  static Future<void> clearLoginDataFromLocalStorage() async {
+    await storage.remove(StringValues.loginData);
+    debugPrint('Auth details removed.');
   }
 }
