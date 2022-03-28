@@ -1,7 +1,8 @@
-import 'package:dio/dio.dart' as dio;
-import 'package:dio/dio.dart';
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/responses/login_response.dart';
 import 'package:social_media_app/apis/models/responses/user_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
@@ -12,7 +13,7 @@ import 'package:social_media_app/routes/route_management.dart';
 class AuthController extends GetxController {
   static AuthController get find => Get.find();
 
-  final _apiProvider = ApiProvider(dio.Dio());
+  final _apiProvider = ApiProvider(http.Client());
 
   final _token = ''.obs;
   final _isLoading = false.obs;
@@ -51,6 +52,7 @@ class AuthController extends GetxController {
   @override
   onReady() {
     ever(_token, _autoLogin);
+    // ever(_isLoading, _showSplashScreen);
     _token.bindStream(tokenStream);
     super.onReady();
   }
@@ -65,6 +67,12 @@ class AuthController extends GetxController {
     autoLogout();
     yield _token;
   }
+
+  // dynamic _showSplashScreen(bool isLoading) {
+  //   if (isLoading == true) {
+  //     RouteManagement.goToSplashView();
+  //   }
+  // }
 
   void _autoLogin(String _token) async {
     if (_token.isNotEmpty) {
@@ -111,27 +119,32 @@ class AuthController extends GetxController {
     _isLoading.value = true;
     update();
 
-    await _apiProvider
-        .getProfileDetails('application/json', 'Bearer ${_token.value}')
-        .then((data) {
-      setUserData = data;
-      _isLoading.value = false;
-    }).catchError((Object obj) {
-      switch (obj.runtimeType) {
-        case DioError:
-          final res = (obj as DioError).response;
-          _isLoading.value = false;
-          update();
-          AppUtils.showSnackBar(
-            res!.statusMessage.toString(),
-            StringValues.error,
-          );
-          debugPrint("Got error : ${res.statusCode} -> ${res.statusMessage}");
-          break;
-        default:
-          break;
+    try {
+      final response = await _apiProvider.getProfileDetails(_token.value);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        setUserData = UserResponse.fromJson(decodedData);
+        _isLoading.value = false;
+        update();
+      } else {
+        _isLoading.value = false;
+        update();
+        AppUtils.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
       }
-    });
+    } catch (err) {
+      _isLoading.value = false;
+      update();
+      debugPrint(err.toString());
+      AppUtils.showSnackBar(
+        '${StringValues.errorOccurred}: ${err.toString()}',
+        StringValues.error,
+      );
+    }
   }
 
   Future<void> logout() async => await _logout();

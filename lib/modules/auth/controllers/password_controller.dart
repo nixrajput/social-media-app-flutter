@@ -3,17 +3,18 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class PasswordController extends GetxController {
   static PasswordController get find => Get.find();
 
-  final emailTextController = TextEditingController();
+  final _apiProvider = ApiProvider(http.Client());
 
+  final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
   final confirmPasswordTextController = TextEditingController();
   final otpTextController = TextEditingController();
@@ -39,22 +40,18 @@ class PasswordController extends GetxController {
       return;
     }
 
+    final body = {
+      'email': email,
+    };
+
     await AppOverlay.showLoadingIndicator();
     _isLoading.value = true;
     update();
 
     try {
-      final response = await http.post(
-        Uri.parse(AppUrls.baseUrl + AppUrls.forgotPasswordEndpoint),
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: jsonEncode({
-          'email': email,
-        }),
-      );
+      final response = await _apiProvider.sendPasswordResetEmail(body);
 
-      final data = jsonDecode(response.body);
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
         _clearResetPasswordTextControllers();
@@ -71,7 +68,7 @@ class PasswordController extends GetxController {
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
-          data[StringValues.message],
+          decodedData[StringValues.message],
           StringValues.error,
         );
       }
@@ -115,24 +112,20 @@ class PasswordController extends GetxController {
       return;
     }
 
+    final body = {
+      'otp': otp,
+      'newPassword': newPassword,
+      'confirmPassword': confPassword,
+    };
+
     await AppOverlay.showLoadingIndicator();
     _isLoading.value = true;
     update();
 
     try {
-      final response = await http.put(
-        Uri.parse(AppUrls.baseUrl + AppUrls.resetPasswordEndpoint),
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: jsonEncode({
-          'otp': otp,
-          'newPassword': newPassword,
-          'confirmPassword': confPassword,
-        }),
-      );
+      final response = await _apiProvider.resetPassword(body);
 
-      final data = jsonDecode(response.body);
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
         _clearResetPasswordTextControllers();
@@ -149,7 +142,7 @@ class PasswordController extends GetxController {
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
-          data[StringValues.message],
+          decodedData[StringValues.message],
           StringValues.error,
         );
       }

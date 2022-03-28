@@ -51,10 +51,16 @@ class HomeTabView extends StatelessWidget {
                   )
                 : SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      (ctx, index) => PostWidget(
-                        post: logic.postData.posts!.elementAt(index),
-                      ),
-                      childCount: logic.postData.posts!.length,
+                      (ctx, index) => logic.postData?.posts != null
+                          ? PostWidget(
+                              post: logic.postData!.posts!.elementAt(index),
+                            )
+                          : const Center(
+                              child: Text(StringValues.unknownErrorOccurred),
+                            ),
+                      childCount: logic.postData?.posts != null
+                          ? logic.postData!.posts!.length
+                          : 1,
                       addAutomaticKeepAlives: true,
                     ),
                   ),

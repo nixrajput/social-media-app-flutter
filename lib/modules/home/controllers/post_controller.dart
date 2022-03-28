@@ -1,7 +1,9 @@
-import 'package:dio/dio.dart' as dio;
-import 'package:dio/dio.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/models/responses/common_response.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
@@ -13,7 +15,7 @@ class PostController extends GetxController {
 
   final _auth = AuthController.find;
 
-  final _apiProvider = ApiProvider(dio.Dio());
+  final _apiProvider = ApiProvider(http.Client());
 
   @override
   void onInit() {
@@ -26,7 +28,7 @@ class PostController extends GetxController {
 
   bool get isLoading => _isLoading.value;
 
-  PostResponse get postData => _postData.value;
+  PostResponse? get postData => _postData.value;
 
   set setPostData(PostResponse value) {
     _postData.value = value;
@@ -36,27 +38,32 @@ class PostController extends GetxController {
     _isLoading.value = true;
     update();
 
-    await _apiProvider
-        .fetchAllPosts('application/json', 'Bearer ${_auth.token}')
-        .then((data) {
-      setPostData = data;
-      _isLoading.value = false;
-    }).catchError((Object obj) {
-      switch (obj.runtimeType) {
-        case DioError:
-          final res = (obj as DioError).response;
-          _isLoading.value = false;
-          update();
-          AppUtils.showSnackBar(
-            res!.statusMessage.toString(),
-            StringValues.error,
-          );
-          debugPrint("Got error : ${res.statusCode} -> ${res.statusMessage}");
-          break;
-        default:
-          break;
+    try {
+      final response = await _apiProvider.fetchAllPosts(_auth.token);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        setPostData = PostResponse.fromJson(decodedData);
+        _isLoading.value = false;
+        update();
+      } else {
+        _isLoading.value = false;
+        update();
+        AppUtils.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
       }
-    });
+    } catch (err) {
+      _isLoading.value = false;
+      update();
+      debugPrint(err.toString());
+      AppUtils.showSnackBar(
+        '${StringValues.errorOccurred}: ${err.toString()}',
+        StringValues.error,
+      );
+    }
   }
 
   void _toggleLike(postId) {
@@ -75,62 +82,33 @@ class PostController extends GetxController {
   Future<void> _toggleLikePost(String postId) async {
     _toggleLike(postId);
 
-    await _apiProvider
-        .likeUnlikePost('application/json', 'Bearer ${_auth.token}', postId)
-        .then((data) {
-      AppUtils.showSnackBar(
-        data.message!,
-        StringValues.success,
-      );
-    }).catchError((Object obj) {
-      switch (obj.runtimeType) {
-        case DioError:
-          final res = (obj as DioError).response;
-          _toggleLike(postId);
-          AppUtils.showSnackBar(
-            res!.statusMessage.toString(),
-            StringValues.error,
-          );
-          debugPrint("Got error : ${res.statusCode} -> ${res.statusMessage}");
-          break;
-        default:
-          break;
-      }
-    });
+    try {
+      final response = await _apiProvider.likeUnlikePost(_auth.token, postId);
 
-    // try {
-    //   final response = await http.get(
-    //     Uri.parse(
-    //       '${AppUrls.baseUrl}${AppUrls.likePostEndpoint}/$postId',
-    //     ),
-    //     headers: {
-    //       'content-type': 'application/json',
-    //       'authorization': 'Bearer ${_auth.token}',
-    //     },
-    //   );
-    //
-    //   final data = jsonDecode(response.body);
-    //
-    //   if (response.statusCode == 200) {
-    //     AppUtils.showSnackBar(
-    //       data[StringValues.message],
-    //       StringValues.success,
-    //     );
-    //   } else {
-    //     _toggleLike(postId);
-    //     AppUtils.showSnackBar(
-    //       data[StringValues.message],
-    //       StringValues.error,
-    //     );
-    //   }
-    // } catch (err) {
-    //   _toggleLike(postId);
-    //   debugPrint(err.toString());
-    //   AppUtils.showSnackBar(
-    //     '${StringValues.errorOccurred}: ${err.toString()}',
-    //     StringValues.error,
-    //   );
-    // }
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      final apiResponse = CommonResponse.fromJson(decodedData);
+
+      if (response.statusCode == 200) {
+        AppUtils.showSnackBar(
+          apiResponse.message!,
+          StringValues.success,
+        );
+      } else {
+        _toggleLike(postId);
+        AppUtils.showSnackBar(
+          apiResponse.message!,
+          StringValues.error,
+        );
+      }
+    } catch (err) {
+      _toggleLike(postId);
+      debugPrint(err.toString());
+      AppUtils.showSnackBar(
+        '${StringValues.errorOccurred}: ${err.toString()}',
+        StringValues.error,
+      );
+    }
   }
 
   Future<void> fetchAllPosts() async => await _fetchAllPosts();

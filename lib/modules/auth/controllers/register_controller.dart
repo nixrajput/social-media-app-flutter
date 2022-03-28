@@ -3,14 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class RegisterController extends GetxController {
   static RegisterController get find => Get.find();
+
+  final _apiProvider = ApiProvider(http.Client());
 
   final fNameTextController = TextEditingController();
   final lNameTextController = TextEditingController();
@@ -85,27 +87,23 @@ class RegisterController extends GetxController {
       return;
     }
 
+    final body = {
+      'fname': fName,
+      'lname': lName,
+      'email': email,
+      'uname': uname,
+      'password': password,
+      'confirmPassword': confPassword,
+    };
+
     await AppOverlay.showLoadingIndicator();
     _isLoading.value = true;
     update();
 
     try {
-      final response = await http.post(
-        Uri.parse(AppUrls.baseUrl + AppUrls.registerEndpoint),
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: jsonEncode({
-          'fname': fName,
-          'lname': lName,
-          'email': email,
-          'uname': uname,
-          'password': password,
-          'confirmPassword': confPassword,
-        }),
-      );
+      final response = await _apiProvider.register(body);
 
-      final data = jsonDecode(response.body);
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 201) {
         _clearRegisterTextControllers();
@@ -122,7 +120,7 @@ class RegisterController extends GetxController {
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
-          data[StringValues.message],
+          decodedData[StringValues.message],
           StringValues.error,
         );
       }

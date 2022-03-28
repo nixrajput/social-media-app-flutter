@@ -4,16 +4,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
 
 class UserController extends GetxController {
   static UserController get find => Get.find();
 
   final _auth = AuthController.find;
+
+  final _apiProvider = ApiProvider(http.Client());
 
   final fNameTextController = TextEditingController();
   final lNameTextController = TextEditingController();
@@ -57,16 +59,11 @@ class UserController extends GetxController {
     update();
 
     try {
-      final response = await http.put(
-        Uri.parse(AppUrls.baseUrl + AppUrls.uploadProfilePicEndpoint),
-        headers: {
-          'content-type': 'application/json',
-          'authorization': 'Bearer ${_auth.token}',
-        },
-        body: jsonEncode({'avatar': avatar}),
-      );
+      final response =
+          await _apiProvider.uploadProfilePicture(avatar, _auth.token);
 
-      final data = jsonDecode(response.body);
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
       if (response.statusCode == 200) {
         await _auth.getProfileDetails();
         _isLoading.value = false;
@@ -75,7 +72,7 @@ class UserController extends GetxController {
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
-          data[StringValues.message],
+          decodedData[StringValues.message],
           StringValues.error,
         );
       }
@@ -117,25 +114,20 @@ class UserController extends GetxController {
       return;
     }
 
+    final body = {
+      'oldPassword': oldPassword,
+      'newPassword': newPassword,
+      'confirmPassword': confPassword,
+    };
+
     _isLoading.value = true;
     await AppOverlay.showLoadingIndicator();
     update();
 
     try {
-      final response = await http.put(
-        Uri.parse(AppUrls.baseUrl + AppUrls.updatePasswordEndpoint),
-        headers: {
-          'content-type': 'application/json',
-          'authorization': 'Bearer ${_auth.token}',
-        },
-        body: jsonEncode({
-          'oldPassword': oldPassword,
-          'newPassword': newPassword,
-          'confirmPassword': confPassword,
-        }),
-      );
+      final response = await _apiProvider.changePassword(body, _auth.token);
 
-      final data = jsonDecode(response.body);
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
         await _auth.logout();
@@ -147,7 +139,7 @@ class UserController extends GetxController {
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
-          data[StringValues.message],
+          decodedData[StringValues.message],
           StringValues.error,
         );
       }
@@ -163,33 +155,29 @@ class UserController extends GetxController {
     }
   }
 
-  Future<void> _toggleFollowUser() async {
+  Future<void> _followUnfollowUser(String userId) async {
     _isLoading.value = true;
     update();
 
     try {
-      final response = await http.get(
-        Uri.parse(AppUrls.baseUrl + AppUrls.followUserEndpoint),
-        headers: {
-          'content-type': 'application/json',
-          'authorization': 'Bearer ${_auth.token}',
-        },
-      );
+      final response =
+          await _apiProvider.followUnfollowUser(userId, _auth.token);
 
-      final data = jsonDecode(response.body);
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
       if (response.statusCode == 200) {
         await _auth.getProfileDetails();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
-          data[StringValues.message],
+          decodedData[StringValues.message],
           StringValues.success,
         );
       } else {
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
-          data[StringValues.message],
+          decodedData[StringValues.message],
           StringValues.error,
         );
       }
@@ -209,9 +197,9 @@ class UserController extends GetxController {
     await _uploadProfilePicture(avatar);
   }
 
-  Future<void> followUnfollowUser() async {
+  Future<void> followUnfollowUser(String userId) async {
     AppUtils.closeFocus();
-    await _toggleFollowUser();
+    await _followUnfollowUser(userId);
   }
 
   Future<void> changePassword() async {

@@ -139,10 +139,10 @@ class PostWidget extends StatelessWidget {
               children: [
                 GetBuilder<PostController>(
                   builder: (controller) {
-                    var postIndex = controller.postData.posts!
+                    var postIndex = controller.postData!.posts!
                         .indexWhere((element) => element.id == post.id);
                     var tempPost =
-                        controller.postData.posts!.elementAt(postIndex);
+                        controller.postData!.posts!.elementAt(postIndex);
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

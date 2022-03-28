@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -14,6 +14,8 @@ class NameController extends GetxController {
   static NameController get find => Get.find();
 
   final _auth = AuthController.find;
+
+  final _apiProvider = ApiProvider(http.Client());
 
   final fNameTextController = TextEditingController();
   final lNameTextController = TextEditingController();
@@ -56,35 +58,21 @@ class NameController extends GetxController {
       return;
     }
 
+    final body = {
+      'fname': fname,
+      'lname': lname,
+    };
+
     await AppOverlay.showLoadingIndicator();
     _isLoading.value = true;
     update();
 
     try {
-      final response = await http.put(
-        Uri.parse(AppUrls.baseUrl + AppUrls.updateProfileDetailsEndpoint),
-        headers: {
-          'content-type': 'application/json',
-          'authorization': 'Bearer ${_auth.token}',
-        },
-        // body: jsonEncode({
-        //   'fname': fName,
-        //   'lname': lName,
-        //   'phone': {
-        //     'countryCode': countryCode,
-        //     'phoneNo': phone,
-        //   },
-        //   'gender': gender,
-        //   'dob': dob,
-        //   'about': about,
-        // }),
-        body: jsonEncode({
-          'fname': fname,
-          'lname': lname,
-        }),
-      );
+      final response =
+          await _apiProvider.updateProfileDetails(body, _auth.token);
 
-      final data = jsonDecode(response.body);
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
       if (response.statusCode == 200) {
         await _auth.getProfileDetails();
         await AppOverlay.hideLoadingIndicator();
@@ -100,7 +88,7 @@ class NameController extends GetxController {
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
-          data[StringValues.message],
+          decodedData[StringValues.message],
           StringValues.error,
         );
       }

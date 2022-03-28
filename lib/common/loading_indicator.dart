@@ -23,7 +23,7 @@ class NxLoadingIndicator extends StatefulWidget {
 class _NxLoadingIndicatorState extends State<NxLoadingIndicator>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation _animation;
+  late Animation<dynamic> _animation;
 
   @override
   void initState() {
