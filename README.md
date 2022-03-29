@@ -25,6 +25,11 @@ A social media application developed using Flutter and GetX state management.
 - Delete Comment
 
 
+## Download APK
+
+[Download](https://github.com/nixrajput/social-media-app-flutter/releases/download/v1.0.0-beta)
+
+
 ## Screenshots
 
 ### Login Screen
