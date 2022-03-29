@@ -5,10 +5,11 @@ import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
+import 'package:social_media_app/common/custom_list_tile.dart';
 import 'package:social_media_app/common/elevated_card.dart';
-import 'package:social_media_app/common/primary_text_field.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class EditProfileView extends StatelessWidget {
@@ -53,53 +54,97 @@ class EditProfileView extends StatelessWidget {
                     Dimens.boxHeight8,
                     _buildProfileImage(logic),
                     Dimens.boxHeight16,
-                    NxTextField(
-                      label: StringValues.name,
-                      initialValue:
-                          '${logic.userData.user!.fname} ${logic.userData.user!.lname}',
-                      icon: CupertinoIcons.person,
-                      enabled: false,
+                    NxListTile(
+                      leading: const Icon(CupertinoIcons.person),
+                      title: Text(
+                        StringValues.name,
+                        style: AppStyles.style12Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                        ),
+                      ),
+                      subtitle: Text(
+                        '${logic.userData.user!.fname} ${logic.userData.user!.lname}',
+                        style: AppStyles.style16Normal,
+                      ),
                       onTap: RouteManagement.goToEditNameView,
                     ),
-                    Dimens.boxHeight8,
-                    NxTextField(
-                      label: StringValues.username,
-                      initialValue: logic.userData.user!.uname,
-                      icon: CupertinoIcons.at,
-                      enabled: false,
+                    Dimens.boxHeight16,
+                    NxListTile(
+                      leading: const Icon(CupertinoIcons.at),
+                      title: Text(
+                        StringValues.username,
+                        style: AppStyles.style12Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                        ),
+                      ),
+                      subtitle: Text(
+                        logic.userData.user!.uname,
+                        style: AppStyles.style16Normal,
+                      ),
                       onTap: RouteManagement.goToEditUsernameView,
                     ),
-                    Dimens.boxHeight8,
-                    NxTextField(
-                      label: StringValues.email,
-                      initialValue: logic.userData.user!.email,
-                      icon: CupertinoIcons.mail,
-                      enabled: false,
+                    Dimens.boxHeight16,
+                    NxListTile(
+                      leading: const Icon(CupertinoIcons.mail),
+                      title: Text(
+                        StringValues.email,
+                        style: AppStyles.style12Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                        ),
+                      ),
+                      subtitle: Text(
+                        logic.userData.user!.email,
+                        style: AppStyles.style16Normal,
+                      ),
                     ),
-                    Dimens.boxHeight8,
-                    NxTextField(
-                      label: StringValues.about,
-                      initialValue: logic.userData.user!.about,
-                      icon: CupertinoIcons.doc_text,
-                      enabled: false,
-                      maxLines: 4,
+                    Dimens.boxHeight16,
+                    NxListTile(
+                      leading: const Icon(CupertinoIcons.doc_text),
+                      title: Text(
+                        StringValues.about,
+                        style: AppStyles.style12Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                        ),
+                      ),
+                      subtitle: Text(
+                        logic.userData.user!.about ?? '',
+                        style: AppStyles.style16Normal,
+                      ),
                       onTap: RouteManagement.goToEditAboutView,
                     ),
-                    Dimens.boxHeight8,
-                    NxTextField(
-                      label: StringValues.birthDate,
-                      initialValue: logic.userData.user!.dob,
-                      icon: Icons.cake_outlined,
-                      enabled: false,
-                      //onTap: RouteManagement.goToEditNameView,
+                    Dimens.boxHeight16,
+                    NxListTile(
+                      leading: const Icon(Icons.cake_outlined),
+                      title: Text(
+                        StringValues.birthDate,
+                        style: AppStyles.style12Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                        ),
+                      ),
+                      subtitle: Text(
+                        logic.userData.user!.dob ?? '',
+                        style: AppStyles.style16Normal,
+                      ),
                     ),
-                    Dimens.boxHeight8,
-                    NxTextField(
-                      label: StringValues.gender,
-                      initialValue: logic.userData.user!.gender,
-                      icon: Icons.male_outlined,
-                      enabled: false,
-                      //onTap: RouteManagement.goToEditNameView,
+                    Dimens.boxHeight16,
+                    NxListTile(
+                      leading: const Icon(Icons.male_outlined),
+                      title: Text(
+                        StringValues.gender,
+                        style: AppStyles.style12Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                        ),
+                      ),
+                      subtitle: Text(
+                        logic.userData.user!.gender ?? '',
+                        style: AppStyles.style16Normal,
+                      ),
                     ),
                     Dimens.boxHeight16,
                   ],

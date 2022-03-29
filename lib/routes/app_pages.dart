@@ -11,6 +11,7 @@ import 'package:social_media_app/modules/home/views/home_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/splash/views/splash_view.dart';
 import 'package:social_media_app/modules/user/bindings/about_binding.dart';
+import 'package:social_media_app/modules/user/bindings/change_password_binding.dart';
 import 'package:social_media_app/modules/user/bindings/name_binding.dart';
 import 'package:social_media_app/modules/user/bindings/user_binding.dart';
 import 'package:social_media_app/modules/user/bindings/username_binding.dart';
@@ -77,7 +78,7 @@ abstract class AppPages {
       name: _Routes.changePassword,
       page: ChangePasswordView.new,
       transitionDuration: transitionDuration,
-      binding: UserBinding(),
+      binding: ChangePasswordBinding(),
       transition: Transition.downToUp,
     ),
     GetPage(

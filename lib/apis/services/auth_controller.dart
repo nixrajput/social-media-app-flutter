@@ -68,16 +68,9 @@ class AuthController extends GetxController {
     yield _token;
   }
 
-  // dynamic _showSplashScreen(bool isLoading) {
-  //   if (isLoading == true) {
-  //     RouteManagement.goToSplashView();
-  //   }
-  // }
-
-  void _autoLogin(String _token) async {
+  void _autoLogin(_token) async {
     if (_token.isNotEmpty) {
-      await _getProfileDetails();
-      RouteManagement.goToHomeView();
+      await _getProfileDetails().then((_) => RouteManagement.goToHomeView());
     } else {
       RouteManagement.goToLoginView();
     }
@@ -116,9 +109,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> _getProfileDetails() async {
-    _isLoading.value = true;
-    update();
-
+    debugPrint('Fetching User Data...');
     try {
       final response = await _apiProvider.getProfileDetails(_token.value);
 
@@ -126,19 +117,14 @@ class AuthController extends GetxController {
 
       if (response.statusCode == 200) {
         setUserData = UserResponse.fromJson(decodedData);
-        _isLoading.value = false;
         update();
       } else {
-        _isLoading.value = false;
-        update();
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } catch (err) {
-      _isLoading.value = false;
-      update();
       debugPrint(err.toString());
       AppUtils.showSnackBar(
         '${StringValues.errorOccurred}: ${err.toString()}',

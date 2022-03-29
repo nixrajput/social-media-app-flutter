@@ -8,7 +8,7 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/user/controllers/user_controller.dart';
+import 'package:social_media_app/modules/user/controllers/change_password_controller.dart';
 
 class ChangePasswordView extends StatelessWidget {
   const ChangePasswordView({Key? key}) : super(key: key);
@@ -38,7 +38,7 @@ class ChangePasswordView extends StatelessWidget {
     );
   }
 
-  Widget _buildPasswordFields() => GetBuilder<UserController>(
+  Widget _buildPasswordFields() => GetBuilder<ChangePasswordController>(
         builder: (logic) => SingleChildScrollView(
           child: NxElevatedCard(
             child: Padding(

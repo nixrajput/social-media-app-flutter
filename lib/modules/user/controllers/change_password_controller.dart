@@ -8,17 +8,17 @@ import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/routes/route_management.dart';
 
-class NameController extends GetxController {
-  static NameController get find => Get.find();
+class ChangePasswordController extends GetxController {
+  static ChangePasswordController get find => Get.find();
 
   final _auth = AuthController.find;
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final fNameTextController = TextEditingController();
-  final lNameTextController = TextEditingController();
+  final oldPasswordTextController = TextEditingController();
+  final newPasswordTextController = TextEditingController();
+  final confirmPasswordTextController = TextEditingController();
 
   final FocusScopeNode focusNode = FocusScopeNode();
 
@@ -26,65 +26,53 @@ class NameController extends GetxController {
 
   bool get isLoading => _isLoading.value;
 
-  @override
-  void onInit() {
-    initializeFields();
-    super.onInit();
-  }
-
-  void initializeFields() async {
-    if (_auth.userData.user != null) {
-      var user = _auth.userData.user!;
-      fNameTextController.text = user.fname;
-      lNameTextController.text = user.lname;
-    }
-  }
-
-  Future<void> _updateName(
-    String fname,
-    String lname,
+  Future<void> _changePassword(
+    String oldPassword,
+    String newPassword,
+    String confPassword,
   ) async {
-    if (fname.isEmpty) {
+    if (oldPassword.isEmpty) {
       AppUtils.showSnackBar(
-        StringValues.enterFirstName,
+        StringValues.enterOldPassword,
         StringValues.warning,
       );
       return;
     }
-
-    if (lname.isEmpty) {
+    if (newPassword.isEmpty) {
       AppUtils.showSnackBar(
-        StringValues.enterLastName,
+        StringValues.enterNewPassword,
+        StringValues.warning,
+      );
+      return;
+    }
+    if (confPassword.isEmpty) {
+      AppUtils.showSnackBar(
+        StringValues.enterConfirmPassword,
         StringValues.warning,
       );
       return;
     }
 
     final body = {
-      'fname': fname,
-      'lname': lname,
+      'oldPassword': oldPassword,
+      'newPassword': newPassword,
+      'confirmPassword': confPassword,
     };
 
-    await AppOverlay.showLoadingIndicator();
     _isLoading.value = true;
+    await AppOverlay.showLoadingIndicator();
     update();
 
     try {
-      final response =
-          await _apiProvider.updateProfileDetails(body, _auth.token);
+      final response = await _apiProvider.changePassword(body, _auth.token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await _auth.getProfileDetails();
+        await _auth.logout();
         await AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
         update();
-        RouteManagement.goToBack();
-        AppUtils.showSnackBar(
-          StringValues.updateProfileSuccessful,
-          StringValues.success,
-        );
       } else {
         await AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
@@ -106,11 +94,12 @@ class NameController extends GetxController {
     }
   }
 
-  Future<void> updateName() async {
+  Future<void> changePassword() async {
     AppUtils.closeFocus();
-    await _updateName(
-      fNameTextController.text.trim(),
-      lNameTextController.text.trim(),
+    await _changePassword(
+      oldPasswordTextController.text.trim(),
+      newPasswordTextController.text.trim(),
+      confirmPasswordTextController.text.trim(),
     );
   }
 }
