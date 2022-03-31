@@ -89,11 +89,25 @@ class CreatePostController extends GetxController {
     }
   }
 
-  Future<void> createNewPost() async {
+  Future<void> selectPostImages() async {
     _pickedImageList.value = await AppUtils.selectMultipleImage();
+    if (_pickedImageList.isNotEmpty) {
+      RouteManagement.goToCreatePostView();
+    }
+  }
 
+  Future<void> removePostImage(int index) async {
+    if (_pickedImageList.isNotEmpty) {
+      _pickedImageList.removeAt(index);
+      update();
+    }
+  }
+
+  Future<void> createNewPost() async {
     if (_pickedImageList.isNotEmpty) {
       await _createNewPost();
+    } else {
+      _pickedImageList.value = await AppUtils.selectMultipleImage();
     }
   }
 }

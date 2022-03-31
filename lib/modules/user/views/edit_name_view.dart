@@ -37,42 +37,44 @@ class EditNameView extends StatelessWidget {
     );
   }
 
-  Widget _buildEditBody() => Expanded(
+  Widget _buildEditBody() =>
+      Expanded(
         child: SingleChildScrollView(
           child: NxElevatedCard(
             child: Padding(
               padding: Dimens.edgeInsets8,
               child: GetBuilder<NameController>(
-                builder: (logic) => FocusScope(
-                  node: logic.focusNode,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      NxTextField(
-                        label: StringValues.firstName,
-                        editingController: logic.fNameTextController,
-                        icon: CupertinoIcons.person,
-                        onEditingComplete: logic.focusNode.nextFocus,
-                        inputType: TextInputType.name,
+                builder: (logic) =>
+                    FocusScope(
+                      node: logic.focusNode,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          NxTextField(
+                            label: StringValues.firstName,
+                            editingController: logic.fNameTextController,
+                            icon: CupertinoIcons.person,
+                            onEditingComplete: logic.focusNode.nextFocus,
+                            inputType: TextInputType.name,
+                          ),
+                          Dimens.boxHeight16,
+                          NxTextField(
+                            label: StringValues.lastName,
+                            editingController: logic.lNameTextController,
+                            icon: CupertinoIcons.person,
+                            onEditingComplete: logic.focusNode.unfocus,
+                            inputType: TextInputType.name,
+                          ),
+                          Dimens.boxHeight40,
+                          NxFilledButton(
+                            onTap: logic.updateName,
+                            label: StringValues.save,
+                          ),
+                          Dimens.boxHeight16,
+                        ],
                       ),
-                      Dimens.boxHeight16,
-                      NxTextField(
-                        label: StringValues.lastName,
-                        editingController: logic.lNameTextController,
-                        icon: CupertinoIcons.person,
-                        onEditingComplete: logic.focusNode.unfocus,
-                        inputType: TextInputType.name,
-                      ),
-                      Dimens.boxHeight40,
-                      NxFilledButton(
-                        onTap: logic.updateName,
-                        label: StringValues.save,
-                      ),
-                      Dimens.boxHeight16,
-                    ],
-                  ),
-                ),
+                    ),
               ),
             ),
           ),

@@ -15,12 +15,16 @@ class NxOutlinedButton extends StatelessWidget {
     this.width,
     this.height,
     this.fontSize,
+    this.borderColor,
+    this.borderWidth,
+    this.borderStyle,
   }) : super(key: key);
 
   final Color? bgColor;
   final double? borderRadius;
   final String label;
   final Color? labelColor;
+  final Color? borderColor;
   final Widget? prefix;
   final Widget? suffix;
   final VoidCallback onTap;
@@ -28,6 +32,8 @@ class NxOutlinedButton extends StatelessWidget {
   final double? width;
   final double? height;
   final double? fontSize;
+  final double? borderWidth;
+  final BorderStyle? borderStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +44,14 @@ class NxOutlinedButton extends StatelessWidget {
         onPressed: onTap,
         style: OutlinedButton.styleFrom(
           elevation: Dimens.zero,
+          backgroundColor: bgColor ?? Colors.transparent,
           primary: Colors.transparent,
           padding: padding ?? Dimens.edgeInsets8,
-          side: BorderSide(color: Theme.of(context).colorScheme.primary),
+          side: BorderSide(
+            color: borderColor ?? Theme.of(context).iconTheme.color!,
+            width: borderWidth ?? Dimens.one,
+            style: borderStyle ?? BorderStyle.solid,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               borderRadius ?? Dimens.four,
@@ -53,9 +64,10 @@ class NxOutlinedButton extends StatelessWidget {
             if (prefix != null) Container(child: prefix),
             if (prefix != null) Dimens.boxWidth4,
             Text(
-              label.toUpperCase(),
+              label,
               style: TextStyle(
-                color: labelColor ?? Theme.of(context).colorScheme.primary,
+                color:
+                    labelColor ?? Theme.of(context).textTheme.bodyText1!.color!,
                 fontSize: fontSize ?? Dimens.fourteen,
               ),
             ),

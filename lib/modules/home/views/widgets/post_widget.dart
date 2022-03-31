@@ -146,16 +146,17 @@ class PostWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         NxIconButton(
-                          icon: tempPost.likes.contains(_auth.userData.user?.id)
+                          icon: tempPost.likes
+                                  .contains(_auth.profileData.user?.id)
                               ? CupertinoIcons.heart_solid
                               : CupertinoIcons.heart,
                           onTap: () {
                             controller.toggleLikePost(post.id);
                           },
-                          iconColor:
-                              tempPost.likes.contains(_auth.userData.user?.id)
-                                  ? ColorValues.primaryColor
-                                  : ColorValues.grayColor,
+                          iconColor: tempPost.likes
+                                  .contains(_auth.profileData.user?.id)
+                              ? ColorValues.primaryColor
+                              : ColorValues.grayColor,
                         ),
                         Dimens.boxWidth4,
                         if (tempPost.likes.isNotEmpty)

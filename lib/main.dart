@@ -22,9 +22,8 @@ void main() async {
 
 Future<void> initServices() async {
   await GetStorage.init();
-  Get
-    ..put(AppThemeController(), permanent: true)
-    ..put(AuthController(), permanent: true);
+  Get..put(AppThemeController(), permanent: true)..put(
+      AuthController(), permanent: true);
 }
 
 class MyApp extends StatelessWidget {
@@ -33,24 +32,26 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AppThemeController>(
-      builder: (logic) => ScreenUtilInit(
-        designSize: const Size(392, 744),
-        builder: () => NxOverlayWidget(
-          child: GetMaterialApp(
-            title: StringValues.appName,
-            debugShowCheckedModeBanner: false,
-            themeMode: logic.themeMode == StringValues.system
-                ? ThemeMode.system
-                : logic.themeMode == StringValues.dark
-                    ? ThemeMode.dark
-                    : ThemeMode.light,
-            theme: AppThemes.lightTheme,
-            darkTheme: AppThemes.darkTheme,
-            getPages: AppPages.pages,
-            initialRoute: AppRoutes.splash,
+      builder: (logic) =>
+          ScreenUtilInit(
+            designSize: const Size(392, 744),
+            builder: () =>
+                NxOverlayWidget(
+                  child: GetMaterialApp(
+                    title: StringValues.appName,
+                    debugShowCheckedModeBanner: false,
+                    themeMode: logic.themeMode == StringValues.system
+                        ? ThemeMode.system
+                        : logic.themeMode == StringValues.dark
+                        ? ThemeMode.dark
+                        : ThemeMode.light,
+                    theme: AppThemes.lightTheme,
+                    darkTheme: AppThemes.darkTheme,
+                    getPages: AppPages.pages,
+                    initialRoute: AppRoutes.splash,
+                  ),
+                ),
           ),
-        ),
-      ),
     );
   }
 }

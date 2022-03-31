@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/responses/login_response.dart';
-import 'package:social_media_app/apis/models/responses/user_response.dart';
+import 'package:social_media_app/apis/models/responses/profile_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
@@ -19,7 +19,7 @@ class AuthController extends GetxController {
   final _isLoading = false.obs;
   final _loginData = LoginResponse().obs;
   final _expiresAt = ''.obs;
-  final _userData = UserResponse().obs;
+  final _profileData = ProfileResponse().obs;
 
   bool get isLoading => _isLoading.value;
 
@@ -29,11 +29,11 @@ class AuthController extends GetxController {
 
   LoginResponse get loginData => _loginData.value;
 
-  set setUserData(UserResponse value) {
-    _userData.value = value;
+  set setProfileData(ProfileResponse value) {
+    _profileData.value = value;
   }
 
-  UserResponse get userData => _userData.value;
+  ProfileResponse get profileData => _profileData.value;
 
   set setToken(String value) {
     _token.value = value;
@@ -81,7 +81,7 @@ class AuthController extends GetxController {
     setToken = '';
     setExpiresAt = '';
     setLoginData = LoginResponse();
-    setUserData = UserResponse();
+    setProfileData = ProfileResponse();
     await AppUtils.clearLoginDataFromLocalStorage();
     AppUtils.showSnackBar(
       StringValues.logoutSuccessful,
@@ -98,25 +98,24 @@ class AuthController extends GetxController {
         await _logout();
       }
     }
-    if (_userData.value.user != null &&
-        _token.value == _userData.value.user!.token) {
+    if (_profileData.value.user != null &&
+        _token.value == _profileData.value.user!.token) {
       await _logout();
       AppUtils.showSnackBar(
-        'Token is expired or invalid',
+        StringValues.tokenError,
         StringValues.error,
       );
     }
   }
 
   Future<void> _getProfileDetails() async {
-    debugPrint('Fetching User Data...');
     try {
       final response = await _apiProvider.getProfileDetails(_token.value);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        setUserData = UserResponse.fromJson(decodedData);
+        setProfileData = ProfileResponse.fromJson(decodedData);
         update();
       } else {
         AppUtils.showSnackBar(
@@ -131,6 +130,50 @@ class AuthController extends GetxController {
         StringValues.error,
       );
     }
+  }
+
+  void _toggleFollowUser(String userId) {
+    if (_profileData.value.user!.following.contains(userId)) {
+      _profileData.value.user!.following.remove(userId);
+    } else {
+      _profileData.value.user!.following.add(userId);
+    }
+    update();
+  }
+
+  Future<void> _followUnfollowUser(String userId) async {
+    _toggleFollowUser(userId);
+
+    try {
+      final response =
+          await _apiProvider.followUnfollowUser(userId, _token.value);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        AppUtils.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+        );
+      } else {
+        _toggleFollowUser(userId);
+        AppUtils.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } catch (err) {
+      _toggleFollowUser(userId);
+      AppUtils.printLog(err);
+      AppUtils.showSnackBar(
+        '${StringValues.errorOccurred}: ${err.toString()}',
+        StringValues.error,
+      );
+    }
+  }
+
+  Future<void> followUnfollowUser(String userId) async {
+    await _followUnfollowUser(userId);
   }
 
   Future<void> logout() async => await _logout();

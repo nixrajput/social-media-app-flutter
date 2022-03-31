@@ -70,7 +70,7 @@ class EditProfileView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        '${logic.userData.user!.fname} ${logic.userData.user!.lname}',
+                        '${logic.profileData.user!.fname} ${logic.profileData.user!.lname}',
                         style: AppStyles.style16Normal,
                       ),
                       onTap: RouteManagement.goToEditNameView,
@@ -86,7 +86,7 @@ class EditProfileView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.userData.user!.uname,
+                        logic.profileData.user!.uname,
                         style: AppStyles.style16Normal,
                       ),
                       onTap: RouteManagement.goToEditUsernameView,
@@ -102,7 +102,7 @@ class EditProfileView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.userData.user!.email,
+                        logic.profileData.user!.email,
                         style: AppStyles.style16Normal,
                       ),
                     ),
@@ -117,7 +117,7 @@ class EditProfileView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.userData.user!.about ?? '',
+                        logic.profileData.user!.about ?? '',
                         style: AppStyles.style16Normal,
                       ),
                       onTap: RouteManagement.goToEditAboutView,
@@ -133,7 +133,7 @@ class EditProfileView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.userData.user!.dob ?? '',
+                        logic.profileData.user!.dob ?? '',
                         style: AppStyles.style16Normal,
                       ),
                     ),
@@ -148,7 +148,7 @@ class EditProfileView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.userData.user!.gender ?? '',
+                        logic.profileData.user!.gender ?? '',
                         style: AppStyles.style16Normal,
                       ),
                     ),
@@ -162,9 +162,10 @@ class EditProfileView extends StatelessWidget {
       );
 
   Widget _buildProfileImage(AuthController logic) {
-    if (logic.userData.user != null && logic.userData.user!.avatar != null) {
+    if (logic.profileData.user != null &&
+        logic.profileData.user!.avatar != null) {
       return NxCircleNetworkImage(
-        imageUrl: logic.userData.user!.avatar!.url,
+        imageUrl: logic.profileData.user!.avatar!.url,
         radius: Dimens.sixtyFour,
       );
     }

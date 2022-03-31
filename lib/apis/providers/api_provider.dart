@@ -91,7 +91,7 @@ class ApiProvider {
 
   Future<http.Response> fetchAllPosts(String token) async {
     final response = await _client.get(
-      Uri.parse(baseUrl! + AppUrls.getAllPostsEndpoint),
+      Uri.parse(baseUrl! + AppUrls.getFollowingPostsEndpoint),
       headers: {
         'content-type': 'application/json',
         'authorization': 'Bearer $token',

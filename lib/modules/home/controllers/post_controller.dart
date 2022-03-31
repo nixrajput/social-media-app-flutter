@@ -69,10 +69,10 @@ class PostController extends GetxController {
         _postData.value.posts!.indexWhere((element) => element.id == postId);
     var tempPost = _postData.value.posts!.elementAt(postIndex);
 
-    if (tempPost.likes.contains(_auth.userData.user!.id)) {
-      tempPost.likes.remove(_auth.userData.user!.id);
+    if (tempPost.likes.contains(_auth.profileData.user!.id)) {
+      tempPost.likes.remove(_auth.profileData.user!.id);
     } else {
-      tempPost.likes.add(_auth.userData.user!.id);
+      tempPost.likes.add(_auth.profileData.user!.id);
     }
     update();
   }

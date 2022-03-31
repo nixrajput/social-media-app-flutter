@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/asset_image.dart';
 import 'package:social_media_app/common/loading_indicator.dart';
+import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/common/sliver_app_bar.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -43,27 +44,63 @@ class HomeTabView extends StatelessWidget {
             ),
           ),
           GetBuilder<PostController>(
-            builder: (logic) => logic.isLoading
-                ? const SliverFillRemaining(
-                    child: Center(
-                      child: NxLoadingIndicator(),
-                    ),
-                  )
-                : SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (ctx, index) => logic.postData?.posts != null
-                          ? PostWidget(
-                              post: logic.postData!.posts!.elementAt(index),
-                            )
-                          : const Center(
-                              child: Text(StringValues.unknownErrorOccurred),
-                            ),
-                      childCount: logic.postData?.posts != null
-                          ? logic.postData!.posts!.length
-                          : 1,
-                      addAutomaticKeepAlives: true,
-                    ),
+            builder: (logic) {
+              if (logic.isLoading) {
+                return const SliverFillRemaining(
+                  child: Center(
+                    child: NxLoadingIndicator(),
                   ),
+                );
+              }
+              if (logic.postData!.posts == null ||
+                  logic.postData!.posts!.isEmpty) {
+                return SliverFillRemaining(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        StringValues.noPosts,
+                        style: AppStyles.style20Normal.copyWith(
+                          color: Theme.of(context).textTheme.subtitle1!.color,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Dimens.boxHeight8,
+                      Text(
+                        StringValues.followUserLine,
+                        style: AppStyles.style16Normal.copyWith(
+                          color: Theme.of(context).textTheme.subtitle1!.color,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Dimens.boxHeight16,
+                      NxOutlinedButton(
+                        width: Dimens.hundred * 2.0,
+                        padding: Dimens.edgeInsets8,
+                        label: StringValues.refresh,
+                        onTap: () => logic.fetchAllPosts(),
+                      )
+                    ],
+                  ),
+                );
+              }
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (ctx, index) => logic.postData!.posts != null
+                      ? PostWidget(
+                          post: logic.postData!.posts!.elementAt(index),
+                        )
+                      : const Center(
+                          child: Text(StringValues.unknownErrorOccurred),
+                        ),
+                  childCount: logic.postData?.posts != null
+                      ? logic.postData!.posts!.length
+                      : 1,
+                  addAutomaticKeepAlives: true,
+                ),
+              );
+            },
           )
         ],
       ),

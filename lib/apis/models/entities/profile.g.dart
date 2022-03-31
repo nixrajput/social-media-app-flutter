@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'profile.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-User _$UserFromJson(Map<String, dynamic> json) => User(
+Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       id: json['_id'] as String,
       fname: json['fname'] as String,
       lname: json['lname'] as String,
@@ -21,19 +21,26 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       gender: json['gender'] as String?,
       dob: json['dob'] as String?,
       about: json['about'] as String?,
-      posts: json['posts'] as List<dynamic>,
+      posts: (json['posts'] as List<dynamic>)
+          .map((e) => UserPost.fromJson(e as Map<String, dynamic>))
+          .toList(),
       followers: json['followers'] as List<dynamic>,
       following: json['following'] as List<dynamic>,
       role: json['role'] as String,
       accountStatus: json['accountStatus'] as String,
       isVerified: json['isVerified'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      token: json['token'] as String?,
+      expiresAt: json['expiresAt'] as String?,
+      otp: json['otp'] as String?,
+      resetPasswordToken: json['resetPasswordToken'] as String?,
+      resetPasswordExpire: json['resetPasswordExpire'] as String?,
       lastActive: json['lastActive'] == null
           ? null
           : DateTime.parse(json['lastActive'] as String),
     );
 
-Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
+Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       '_id': instance.id,
       'fname': instance.fname,
       'lname': instance.lname,
@@ -51,5 +58,10 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'accountStatus': instance.accountStatus,
       'createdAt': instance.createdAt.toIso8601String(),
       'isVerified': instance.isVerified,
+      'token': instance.token,
+      'expiresAt': instance.expiresAt,
+      'otp': instance.otp,
+      'resetPasswordToken': instance.resetPasswordToken,
+      'resetPasswordExpire': instance.resetPasswordExpire,
       'lastActive': instance.lastActive?.toIso8601String(),
     };

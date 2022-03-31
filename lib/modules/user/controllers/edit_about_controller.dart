@@ -32,8 +32,8 @@ class AboutController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_auth.userData.user != null) {
-      var user = _auth.userData.user!;
+    if (_auth.profileData.user != null) {
+      var user = _auth.profileData.user!;
       aboutTextController.text = user.about ?? '';
     }
   }

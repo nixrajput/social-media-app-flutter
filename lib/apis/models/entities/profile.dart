@@ -1,12 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/phone.dart';
 import 'package:social_media_app/apis/models/entities/user_avatar.dart';
+import 'package:social_media_app/apis/models/entities/user_post.dart';
 
-part 'user.g.dart';
+part 'profile.g.dart';
 
 @JsonSerializable()
-class User {
-  User({
+class Profile {
+  Profile({
     required this.id,
     required this.fname,
     required this.lname,
@@ -24,12 +25,18 @@ class User {
     required this.accountStatus,
     required this.isVerified,
     required this.createdAt,
+    this.token,
+    this.expiresAt,
+    this.otp,
+    this.resetPasswordToken,
+    this.resetPasswordExpire,
     this.lastActive,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory Profile.fromJson(Map<String, dynamic> json) =>
+      _$ProfileFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$ProfileToJson(this);
 
   @JsonKey(name: '_id')
   String id;
@@ -62,7 +69,7 @@ class User {
   String? about;
 
   @JsonKey(name: 'posts')
-  List<dynamic> posts;
+  List<UserPost> posts;
 
   @JsonKey(name: 'followers')
   List<dynamic> followers;
@@ -81,6 +88,21 @@ class User {
 
   @JsonKey(name: 'isVerified')
   bool isVerified;
+
+  @JsonKey(name: 'token')
+  String? token;
+
+  @JsonKey(name: 'expiresAt')
+  String? expiresAt;
+
+  @JsonKey(name: 'otp')
+  String? otp;
+
+  @JsonKey(name: 'resetPasswordToken')
+  String? resetPasswordToken;
+
+  @JsonKey(name: 'resetPasswordExpire')
+  String? resetPasswordExpire;
 
   @JsonKey(name: 'lastActive')
   DateTime? lastActive;

@@ -25,9 +25,10 @@ class NxAppBar extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).dividerColor,
                 radius: Dimens.fourteen,
-                child: const Icon(
+                child: Icon(
                   CupertinoIcons.left_chevron,
                   color: ColorValues.whiteColor,
+                  size: Dimens.twenty,
                 ),
               ),
             ),

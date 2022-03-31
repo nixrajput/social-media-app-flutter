@@ -96,8 +96,8 @@ abstract class AppUtils {
     closeSnackBar();
     Get.showSnackbar(
       GetSnackBar(
-        margin: Dimens.edgeInsets16,
-        borderRadius: Dimens.twentyFour,
+        margin: Dimens.edgeInsets0,
+        borderRadius: Dimens.zero,
         messageText: Text(
           message,
           style: TextStyle(
@@ -128,7 +128,7 @@ abstract class AppUtils {
                 : type == StringValues.success
                     ? ColorValues.successColor
                     : ThemeData().snackBarTheme.backgroundColor!,
-        duration: Duration(seconds: duration ?? 3),
+        duration: Duration(seconds: duration ?? 2),
       ),
     );
   }
@@ -206,11 +206,15 @@ abstract class AppUtils {
     final _imagePicker = ImagePicker();
     final _imageCropper = ImageCropper();
     final pickedImage = await _imagePicker.pickImage(
+      maxWidth: 1920.0,
+      maxHeight: 1920.0,
       source: imageSource ?? ImageSource.gallery,
     );
 
     if (pickedImage != null) {
       var croppedFile = await _imageCropper.cropImage(
+        maxWidth: 1920,
+        maxHeight: 1920,
         sourcePath: pickedImage.path,
         aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
         cropStyle: CropStyle.circle,
@@ -230,11 +234,16 @@ abstract class AppUtils {
     final _imagePicker = ImagePicker();
     final _imageCropper = ImageCropper();
     var imageList = <File>[];
-    final pickedImages = await _imagePicker.pickMultiImage();
+    final pickedImages = await _imagePicker.pickMultiImage(
+      maxWidth: 1920.0,
+      maxHeight: 1920.0,
+    );
 
     if (pickedImages != null) {
       for (var pickedImage in pickedImages) {
         var croppedFile = await _imageCropper.cropImage(
+          maxWidth: 1920,
+          maxHeight: 1920,
           sourcePath: pickedImage.path,
           aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
           androidUiSettings: androidUiSettings,

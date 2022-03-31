@@ -11,7 +11,7 @@ class NavBarController extends GetxController {
       label: StringValues.home,
     ),
     const BottomNavigationBarItem(
-      icon: Icon(CupertinoIcons.at),
+      icon: Icon(CupertinoIcons.number),
       label: StringValues.search,
     ),
     const BottomNavigationBarItem(

@@ -61,8 +61,11 @@ abstract class StringValues {
   static const editProfile = 'Edit Profile';
   static const updateProfileSuccessful = 'Profile updated successfully';
   static const updateUsernameSuccessful = 'Username updated successfully';
+  static const tokenError = 'Token is expired or invalid';
   static const followers = 'Followers';
   static const following = 'Following';
+  static const follow = 'Follow';
+  static const unfollow = 'Unfollow';
   static const changePassword = 'Change Password';
   static const about = 'About';
   static const userNotFoundError = 'User details not found.';
@@ -75,6 +78,14 @@ abstract class StringValues {
   static const cropImage = 'Crop Image';
   static const caption = 'caption';
   static const createNewPost = 'Create New Post';
+  static const addCaption = 'Add a caption';
+  static const post = 'Post';
+  static const publish = 'Publish';
+  static const trending = 'Trending';
+  static const refresh = 'Refresh';
+  static const followUserLine =
+      'Do follow some users to see their latest posts.';
+  static const noPosts = 'No posts to show.';
 }
 
 abstract class AssetValues {
