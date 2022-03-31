@@ -7,7 +7,7 @@ import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/common/primary_text_field.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/modules/user/controllers/about_controller.dart';
+import 'package:social_media_app/modules/user/controllers/edit_about_controller.dart';
 
 class EditAboutView extends StatelessWidget {
   const EditAboutView({Key? key}) : super(key: key);

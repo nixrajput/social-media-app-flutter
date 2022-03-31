@@ -110,10 +110,9 @@ class PostWidget extends StatelessWidget {
           },
           child: FlutterCarousel(
             options: CarouselOptions(
-              height: Dimens.screenWidth * 0.8,
+              height: Dimens.screenWidth,
               floatingIndicator: true,
               viewportFraction: 1.0,
-              aspectRatio: 1.0,
               slideIndicator: CircularWaveSlideIndicator(),
             ),
             items: post.images!

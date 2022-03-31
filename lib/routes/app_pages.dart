@@ -8,12 +8,14 @@ import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
 import 'package:social_media_app/modules/home/bindings/home_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
+import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
+import 'package:social_media_app/modules/post/views/create_post_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/splash/views/splash_view.dart';
 import 'package:social_media_app/modules/user/bindings/about_binding.dart';
 import 'package:social_media_app/modules/user/bindings/change_password_binding.dart';
+import 'package:social_media_app/modules/user/bindings/edit_profile_binding.dart';
 import 'package:social_media_app/modules/user/bindings/name_binding.dart';
-import 'package:social_media_app/modules/user/bindings/user_binding.dart';
 import 'package:social_media_app/modules/user/bindings/username_binding.dart';
 import 'package:social_media_app/modules/user/views/change_password_view.dart';
 import 'package:social_media_app/modules/user/views/edit_about_view.dart';
@@ -85,7 +87,7 @@ abstract class AppPages {
       name: _Routes.editProfile,
       page: EditProfileView.new,
       transitionDuration: transitionDuration,
-      binding: UserBinding(),
+      binding: EditProfileBinding(),
       transition: Transition.downToUp,
     ),
     GetPage(
@@ -107,6 +109,13 @@ abstract class AppPages {
       page: EditAboutView.new,
       transitionDuration: transitionDuration,
       binding: AboutBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.createPost,
+      page: CreatePostView.new,
+      transitionDuration: transitionDuration,
+      binding: CreatePostBinding(),
       transition: Transition.downToUp,
     ),
   ];

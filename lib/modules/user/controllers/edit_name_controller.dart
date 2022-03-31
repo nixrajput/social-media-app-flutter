@@ -98,7 +98,7 @@ class NameController extends GetxController {
       await AppOverlay.hideLoadingIndicator();
       _isLoading.value = false;
       update();
-      debugPrint(err.toString());
+      AppUtils.printLog(err);
       AppUtils.showSnackBar(
         '${StringValues.errorOccurred}: ${err.toString()}',
         StringValues.error,

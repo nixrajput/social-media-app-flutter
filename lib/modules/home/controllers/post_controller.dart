@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/responses/common_response.dart';
@@ -14,14 +13,7 @@ class PostController extends GetxController {
   static PostController get find => Get.find();
 
   final _auth = AuthController.find;
-
   final _apiProvider = ApiProvider(http.Client());
-
-  @override
-  void onInit() {
-    _fetchAllPosts();
-    super.onInit();
-  }
 
   final _isLoading = false.obs;
   final _postData = PostResponse().obs;
@@ -32,6 +24,12 @@ class PostController extends GetxController {
 
   set setPostData(PostResponse value) {
     _postData.value = value;
+  }
+
+  @override
+  void onInit() {
+    _fetchAllPosts();
+    super.onInit();
   }
 
   Future<void> _fetchAllPosts() async {
@@ -58,7 +56,7 @@ class PostController extends GetxController {
     } catch (err) {
       _isLoading.value = false;
       update();
-      debugPrint(err.toString());
+      AppUtils.printLog(err);
       AppUtils.showSnackBar(
         '${StringValues.errorOccurred}: ${err.toString()}',
         StringValues.error,
@@ -103,7 +101,7 @@ class PostController extends GetxController {
       }
     } catch (err) {
       _toggleLike(postId);
-      debugPrint(err.toString());
+      AppUtils.printLog(err);
       AppUtils.showSnackBar(
         '${StringValues.errorOccurred}: ${err.toString()}',
         StringValues.error,

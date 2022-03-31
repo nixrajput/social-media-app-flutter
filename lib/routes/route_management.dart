@@ -50,6 +50,10 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.editAbout);
   }
 
+  static void goToCreatePostView() {
+    Get.toNamed(AppRoutes.createPost);
+  }
+
   static void goToBack() {
     Get.back();
   }

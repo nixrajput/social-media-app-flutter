@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
@@ -19,20 +18,23 @@ class UserController extends GetxController {
 
   bool get isLoading => _isLoading.value;
 
-  Future<void> _uploadProfilePicture(avatar) async {
+  Future<void> _getUsers() async {
     _isLoading.value = true;
     update();
 
     try {
-      final response =
-          await _apiProvider.uploadProfilePicture(avatar, _auth.token);
+      final response = await _apiProvider.getUsers(_auth.token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await _auth.getProfileDetails();
+        AppUtils.printLog(decodedData);
         _isLoading.value = false;
         update();
+        AppUtils.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+        );
       } else {
         _isLoading.value = false;
         update();
@@ -44,7 +46,7 @@ class UserController extends GetxController {
     } catch (err) {
       _isLoading.value = false;
       update();
-      debugPrint(err.toString());
+      AppUtils.printLog(err);
       AppUtils.showSnackBar(
         '${StringValues.errorOccurred}: ${err.toString()}',
         StringValues.error,
@@ -81,7 +83,7 @@ class UserController extends GetxController {
     } catch (err) {
       _isLoading.value = false;
       update();
-      debugPrint(err.toString());
+      AppUtils.printLog(err);
       AppUtils.showSnackBar(
         '${StringValues.errorOccurred}: ${err.toString()}',
         StringValues.error,
@@ -89,9 +91,9 @@ class UserController extends GetxController {
     }
   }
 
-  Future<void> uploadProfilePicture(avatar) async {
+  Future<void> getUsers() async {
     AppUtils.closeFocus();
-    await _uploadProfilePicture(avatar);
+    await _getUsers();
   }
 
   Future<void> followUnfollowUser(String userId) async {

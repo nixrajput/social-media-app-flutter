@@ -72,6 +72,9 @@ abstract class StringValues {
   static const gender = 'Gender';
   static const phoneNo = 'Phone Number';
   static const countryCode = 'Country Code';
+  static const cropImage = 'Crop Image';
+  static const caption = 'caption';
+  static const createNewPost = 'Create New Post';
 }
 
 abstract class AssetValues {

@@ -1,13 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-
-import '../constants/dimens.dart';
 
 abstract class AppUtils {
   static final storage = GetStorage();
@@ -24,7 +26,9 @@ abstract class AppUtils {
               height: Dimens.hundred,
               child: CupertinoTheme(
                 data: CupertinoTheme.of(Get.context!).copyWith(
-                    brightness: Brightness.dark, primaryColor: Colors.white),
+                  brightness: Brightness.dark,
+                  primaryColor: Colors.white,
+                ),
                 child: const CupertinoActivityIndicator(),
               ),
             ),
@@ -88,12 +92,12 @@ abstract class AppUtils {
     );
   }
 
-  static void showSnackBar(String message, String type) {
+  static void showSnackBar(String message, String type, {int? duration}) {
     closeSnackBar();
     Get.showSnackbar(
       GetSnackBar(
-        margin: Dimens.edgeInsets8,
-        borderRadius: Dimens.eight,
+        margin: Dimens.edgeInsets16,
+        borderRadius: Dimens.twentyFour,
         messageText: Text(
           message,
           style: TextStyle(
@@ -124,7 +128,7 @@ abstract class AppUtils {
                 : type == StringValues.success
                     ? ColorValues.successColor
                     : ThemeData().snackBarTheme.backgroundColor!,
-        duration: const Duration(seconds: 5),
+        duration: Duration(seconds: duration ?? 3),
       ),
     );
   }
@@ -177,5 +181,71 @@ abstract class AppUtils {
   static Future<void> clearLoginDataFromLocalStorage() async {
     await storage.remove(StringValues.loginData);
     debugPrint('Auth details removed.');
+  }
+
+  static final androidUiSettings = AndroidUiSettings(
+    toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+    toolbarTitle: StringValues.cropImage,
+    toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+    backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+  );
+  static const iOsUiSettings = IOSUiSettings(
+    title: StringValues.cropImage,
+    minimumAspectRatio: 1.0,
+  );
+
+  static void printLog(message) {
+    debugPrint(
+        "---------------------------------------------------------------");
+    debugPrint(message.toString());
+    debugPrint(
+        "---------------------------------------------------------------");
+  }
+
+  static Future<dynamic> selectSingleImage({ImageSource? imageSource}) async {
+    final _imagePicker = ImagePicker();
+    final _imageCropper = ImageCropper();
+    final pickedImage = await _imagePicker.pickImage(
+      source: imageSource ?? ImageSource.gallery,
+    );
+
+    if (pickedImage != null) {
+      var croppedFile = await _imageCropper.cropImage(
+        sourcePath: pickedImage.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+        cropStyle: CropStyle.circle,
+        androidUiSettings: androidUiSettings,
+        iosUiSettings: iOsUiSettings,
+        compressQuality: 70,
+        compressFormat: ImageCompressFormat.png,
+      );
+
+      return croppedFile;
+    }
+
+    return null;
+  }
+
+  static Future<dynamic> selectMultipleImage() async {
+    final _imagePicker = ImagePicker();
+    final _imageCropper = ImageCropper();
+    var imageList = <File>[];
+    final pickedImages = await _imagePicker.pickMultiImage();
+
+    if (pickedImages != null) {
+      for (var pickedImage in pickedImages) {
+        var croppedFile = await _imageCropper.cropImage(
+          sourcePath: pickedImage.path,
+          aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+          androidUiSettings: androidUiSettings,
+          iosUiSettings: iOsUiSettings,
+          compressQuality: 70,
+          compressFormat: ImageCompressFormat.png,
+        );
+        imageList.add(croppedFile!);
+      }
+    }
+
+    return imageList;
   }
 }

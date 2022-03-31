@@ -7,10 +7,10 @@ import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/common/primary_text_field.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/modules/user/controllers/edit_username_controller.dart';
+import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
 
-class EditUsernameView extends StatelessWidget {
-  const EditUsernameView({Key? key}) : super(key: key);
+class CreatePostView extends StatelessWidget {
+  const CreatePostView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class EditUsernameView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const NxAppBar(
-                  title: StringValues.username,
+                  title: StringValues.createNewPost,
                 ),
                 _buildEditBody(),
               ],
@@ -42,28 +42,25 @@ class EditUsernameView extends StatelessWidget {
           child: NxElevatedCard(
             child: Padding(
               padding: Dimens.edgeInsets8,
-              child: GetBuilder<UsernameController>(
-                builder: (logic) => FocusScope(
-                  node: logic.focusNode,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      NxTextField(
-                        label: StringValues.username,
-                        editingController: logic.uNameTextController,
-                        icon: CupertinoIcons.at,
-                        onEditingComplete: logic.focusNode.unfocus,
-                        inputType: TextInputType.text,
-                      ),
-                      Dimens.boxHeight40,
-                      NxFilledButton(
-                        onTap: logic.updateUsername,
-                        label: StringValues.save,
-                      ),
-                      Dimens.boxHeight16,
-                    ],
-                  ),
+              child: GetBuilder<CreatePostController>(
+                builder: (logic) => Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    NxTextField(
+                      label: StringValues.caption,
+                      editingController: logic.captionTextController,
+                      icon: CupertinoIcons.captions_bubble,
+                      inputType: TextInputType.multiline,
+                      maxLines: 3,
+                    ),
+                    Dimens.boxHeight40,
+                    NxFilledButton(
+                      onTap: logic.createNewPost,
+                      label: StringValues.save,
+                    ),
+                    Dimens.boxHeight16,
+                  ],
                 ),
               ),
             ),

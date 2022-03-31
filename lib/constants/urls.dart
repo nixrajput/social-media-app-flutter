@@ -9,6 +9,8 @@ abstract class AppUrls {
   static const String resetPasswordEndpoint = '/reset/password';
   static const String profileDetailsEndpoint = '/me';
   static const String getAllPostsEndpoint = '/admin/posts';
+  static const String getFollowingPostsEndpoint = '/posts';
+  static const String createPostEndpoint = '/post/create';
   static const String likePostEndpoint = '/post/like';
 
   static const String uploadProfilePicEndpoint = '/avatar/me';
@@ -16,5 +18,6 @@ abstract class AppUrls {
   static const String checkUsernameAvailableEndpoint = '/check/username';
   static const String updateUsernameEndpoint = '/update/username';
   static const String followUserEndpoint = '/follow';
+  static const String getUsersEndpoint = '/users';
   static const String userDetailsEndpoint = '/user';
 }

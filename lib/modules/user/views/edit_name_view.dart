@@ -7,7 +7,7 @@ import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/common/primary_text_field.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/modules/user/controllers/name_controller.dart';
+import 'package:social_media_app/modules/user/controllers/edit_name_controller.dart';
 
 class EditNameView extends StatelessWidget {
   const EditNameView({Key? key}) : super(key: key);

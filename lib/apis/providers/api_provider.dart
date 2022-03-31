@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/urls.dart';
 
 class ApiProvider {
@@ -65,6 +66,29 @@ class ApiProvider {
     return response;
   }
 
+  Future<http.StreamedResponse> createPost(
+    String token,
+    String? caption,
+    List<http.MultipartFile> multiPartFiles,
+  ) async {
+    final request = http.MultipartRequest(
+      "POST",
+      Uri.parse(baseUrl! + AppUrls.createPostEndpoint),
+    );
+
+    request.headers.addAll({
+      'content-type': 'application/json',
+      'authorization': 'Bearer $token',
+    });
+
+    request.files.addAll(multiPartFiles);
+    if (caption != null) request.fields[StringValues.caption] = caption;
+
+    final response = await request.send();
+
+    return response;
+  }
+
   Future<http.Response> fetchAllPosts(String token) async {
     final response = await _client.get(
       Uri.parse(baseUrl! + AppUrls.getAllPostsEndpoint),
@@ -89,16 +113,23 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> uploadProfilePicture(
-      dynamic avatar, String token) async {
-    final response = await _client.put(
+  Future<http.StreamedResponse> uploadProfilePicture(
+    String token,
+    http.MultipartFile multiPartFile,
+  ) async {
+    final request = http.MultipartRequest(
+      "POST",
       Uri.parse(baseUrl! + AppUrls.uploadProfilePicEndpoint),
-      headers: {
-        'content-type': 'application/json',
-        'authorization': 'Bearer $token',
-      },
-      body: jsonEncode({'avatar': avatar}),
     );
+
+    request.headers.addAll({
+      'content-type': 'application/json',
+      'authorization': 'Bearer $token',
+    });
+
+    request.files.add(multiPartFile);
+
+    final response = await request.send();
 
     return response;
   }
@@ -126,6 +157,18 @@ class ApiProvider {
         'authorization': 'Bearer $token',
       },
       body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getUsers(String token) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.getUsersEndpoint}'),
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer $token',
+      },
     );
 
     return response;

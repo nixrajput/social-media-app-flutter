@@ -35,7 +35,6 @@ dependencies:
   get: ^4.6.1
   get_storage: ^2.0.3
   built_value: ^8.1.4
-  dio: ^4.0.4
   json_annotation: ^4.4.0
 
 dev_dependencies:

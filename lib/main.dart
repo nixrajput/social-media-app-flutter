@@ -7,6 +7,7 @@ import 'package:social_media_app/apis/services/theme_controller.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
+import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
 void main() async {
@@ -15,7 +16,7 @@ void main() async {
     await initServices();
     runApp(const MyApp());
   } catch (err) {
-    debugPrint(err.toString());
+    AppUtils.printLog(err);
   }
 }
 
