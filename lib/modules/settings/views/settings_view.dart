@@ -47,7 +47,7 @@ class SettingsView extends StatelessWidget {
                   Text(
                     'Display',
                     style: AppStyles.style14Normal.copyWith(
-                      color: ColorValues.darkGrayColor,
+                      color: ColorValues.primaryColor,
                     ),
                   ),
                   Dimens.boxHeight4,

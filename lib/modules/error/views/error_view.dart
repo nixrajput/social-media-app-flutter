@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/common/asset_image.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
 
-class SplashView extends StatelessWidget {
-  const SplashView({Key? key}) : super(key: key);
+class ErrorView extends StatelessWidget {
+  const ErrorView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +19,18 @@ class SplashView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               NxAssetImage(
-                imgAsset: AssetValues.appIcon,
-                width: Dimens.hundred * 1.6,
-                height: Dimens.hundred * 1.6,
+                imgAsset: AssetValues.error,
+                width: Dimens.hundred * 2,
+                height: Dimens.hundred * 2,
               ),
-              Dimens.boxHeight32,
-              const CupertinoActivityIndicator(),
+              Dimens.boxHeight8,
+              Text(
+                StringValues.errorOccurred,
+                style: AppStyles.style16Normal.copyWith(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),
         ),

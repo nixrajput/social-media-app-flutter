@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -77,15 +78,33 @@ class CreatePostController extends GetxController {
           StringValues.error,
         );
       }
-    } catch (err) {
+    } on SocketException {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(err);
-      AppUtils.showSnackBar(
-        '${StringValues.errorOccurred}: ${err.toString()}',
-        StringValues.error,
-      );
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 

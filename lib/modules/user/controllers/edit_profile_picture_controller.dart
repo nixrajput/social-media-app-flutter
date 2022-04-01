@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -33,6 +34,7 @@ class EditProfilePictureController extends GetxController {
   }
 
   Future<void> _uploadProfilePicture() async {
+    AppUtils.printLog("Update Profile Picture Request...");
     AppUtils.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -56,8 +58,6 @@ class EditProfilePictureController extends GetxController {
       final decodedData =
           jsonDecode(utf8.decode(responseDataFromStream.bodyBytes));
 
-      AppUtils.printLog(decodedData);
-
       if (response.statusCode == 200) {
         AppUtils.closeDialog();
         await _auth.getProfileDetails();
@@ -72,15 +72,33 @@ class EditProfilePictureController extends GetxController {
           StringValues.error,
         );
       }
-    } catch (err) {
+    } on SocketException {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(err);
-      AppUtils.showSnackBar(
-        '${StringValues.errorOccurred}: ${err.toString()}',
-        StringValues.error,
-      );
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 

@@ -1,7 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/asset_image.dart';
-import 'package:social_media_app/common/loading_indicator.dart';
 import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/common/sliver_app_bar.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -25,7 +25,7 @@ class HomeTabView extends StatelessWidget {
             leading: Row(
               children: [
                 NxAssetImage(
-                  imgAsset: AssetValues.icon,
+                  imgAsset: AssetValues.appIcon,
                   width: Dimens.thirtyTwo,
                   height: Dimens.thirtyTwo,
                 ),
@@ -42,7 +42,7 @@ class HomeTabView extends StatelessWidget {
               if (logic.isLoading) {
                 return const SliverFillRemaining(
                   child: Center(
-                    child: NxLoadingIndicator(),
+                    child: CupertinoActivityIndicator(),
                   ),
                 );
               }
@@ -53,17 +53,15 @@ class HomeTabView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        StringValues.noPosts,
-                        style: AppStyles.style20Normal.copyWith(
-                          color: Theme.of(context).textTheme.subtitle1!.color,
-                        ),
-                        textAlign: TextAlign.center,
+                      NxAssetImage(
+                        imgAsset: AssetValues.error,
+                        width: Dimens.hundred * 2,
+                        height: Dimens.hundred * 2,
                       ),
                       Dimens.boxHeight8,
                       Text(
-                        StringValues.followUserLine,
-                        style: AppStyles.style16Normal.copyWith(
+                        StringValues.noPosts,
+                        style: AppStyles.style20Normal.copyWith(
                           color: Theme.of(context).textTheme.subtitle1!.color,
                         ),
                         textAlign: TextAlign.center,

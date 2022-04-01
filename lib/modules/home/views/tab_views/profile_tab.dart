@@ -76,13 +76,13 @@ class ProfileTabView extends StatelessWidget {
                 : SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         NxElevatedCard(
                           child: Padding(
                             padding: Dimens.edgeInsets8,
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -90,11 +90,10 @@ class ProfileTabView extends StatelessWidget {
                                   children: [
                                     _buildProfileImage(logic),
                                     Dimens.boxWidth16,
-                                    NxOutlinedButton(
+                                    const NxOutlinedButton(
                                       label: StringValues.editProfile,
                                       onTap:
                                           RouteManagement.goToEditProfileView,
-                                      width: Dimens.hundred * 1.2,
                                     ),
                                   ],
                                 ),
@@ -104,7 +103,7 @@ class ProfileTabView extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Dimens.boxHeight40,
+                        Dimens.boxHeight20,
                         _buildActionButtons(logic),
                       ],
                     ),
@@ -182,18 +181,21 @@ class ProfileTabView extends StatelessWidget {
         padding: Dimens.edgeInsets0_8,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             NxOutlinedButton(
               label: StringValues.changePassword,
               onTap: RouteManagement.goToChangePasswordView,
-              borderRadius: Dimens.eight,
-              padding: Dimens.edgeInsets16_8,
+              width: Dimens.screenWidth * 0.8,
+              height: Dimens.fourtyEight,
             ),
             Dimens.boxHeight16,
             NxFilledButton(
               label: StringValues.logout,
               onTap: logic.logout,
-              borderRadius: Dimens.eight,
+              width: Dimens.screenWidth * 0.8,
+              height: Dimens.fourtyEight,
             ),
           ],
         ),

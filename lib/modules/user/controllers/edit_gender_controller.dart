@@ -1,11 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
-import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -17,13 +17,17 @@ class GenderController extends GetxController {
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final genderTextController = TextEditingController();
-
-  final FocusScopeNode focusNode = FocusScopeNode();
-
+  final _gender = ''.obs;
   final _isLoading = false.obs;
 
   bool get isLoading => _isLoading.value;
+
+  String get gender => _gender.value;
+
+  set setGender(String gender) {
+    _gender.value = gender;
+    update();
+  }
 
   @override
   void onInit() {
@@ -34,7 +38,7 @@ class GenderController extends GetxController {
   void initializeFields() async {
     if (_auth.profileData.user != null) {
       var user = _auth.profileData.user!;
-      genderTextController.text = user.gender ?? '';
+      setGender = user.gender ?? '';
     }
   }
 
@@ -47,7 +51,8 @@ class GenderController extends GetxController {
       'gender': gender,
     };
 
-    await AppOverlay.showLoadingIndicator();
+    AppUtils.printLog("Update Gender Request...");
+    AppUtils.showLoadingDialog();
     _isLoading.value = true;
     update();
 
@@ -59,7 +64,7 @@ class GenderController extends GetxController {
 
       if (response.statusCode == 200) {
         await _auth.getProfileDetails();
-        await AppOverlay.hideLoadingIndicator();
+        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         RouteManagement.goToBack();
@@ -68,7 +73,7 @@ class GenderController extends GetxController {
           StringValues.success,
         );
       } else {
-        await AppOverlay.hideLoadingIndicator();
+        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -76,17 +81,44 @@ class GenderController extends GetxController {
           StringValues.error,
         );
       }
-    } catch (err) {
-      await AppOverlay.hideLoadingIndicator();
+    } on SocketException {
+      AppUtils.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog('Update Gender Error');
-      AppUtils.printLog(err);
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> updateGender() async {
     AppUtils.closeFocus();
-    await _updateGender(genderTextController.text.trim());
+    if (_gender.value.isEmpty) {
+      return;
+    }
+    if (_gender.value == _auth.profileData.user!.gender) {
+      return;
+    }
+    await _updateGender(_gender.value.trim());
   }
 }

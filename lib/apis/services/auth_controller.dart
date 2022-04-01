@@ -1,6 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/responses/login_response.dart';
@@ -49,14 +50,6 @@ class AuthController extends GetxController {
 
   Stream<String> get tokenStream => _validateToken();
 
-  @override
-  onReady() {
-    ever(_token, _autoLogin);
-    // ever(_isLoading, _showSplashScreen);
-    _token.bindStream(tokenStream);
-    super.onReady();
-  }
-
   Stream<String> _validateToken() async* {
     var _token = '';
     final decodedData = await AppUtils.readLoginDataFromLocalStorage();
@@ -68,9 +61,46 @@ class AuthController extends GetxController {
     yield _token;
   }
 
-  void _autoLogin(_token) async {
-    if (_token.isNotEmpty) {
-      await _getProfileDetails().then((_) => RouteManagement.goToHomeView());
+  void _autoLogin(String? _token) async {
+    if (_token != null && _token.isNotEmpty) {
+      AppUtils.printLog("Fetching Profile Details Request...");
+      try {
+        final response = await _apiProvider.getProfileDetails(_token);
+
+        final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+        if (response.statusCode == 200) {
+          setProfileData = ProfileResponse.fromJson(decodedData);
+          update();
+          RouteManagement.goToHomeView();
+        } else {
+          RouteManagement.goToErrorView();
+          AppUtils.showSnackBar(
+            decodedData[StringValues.message],
+            StringValues.error,
+          );
+        }
+      } on SocketException {
+        AppUtils.printLog(StringValues.internetConnError);
+        RouteManagement.goToErrorView();
+        AppUtils.showSnackBar(
+            StringValues.internetConnError, StringValues.error);
+      } on TimeoutException {
+        AppUtils.printLog(StringValues.connTimedOut);
+        AppUtils.printLog(StringValues.connTimedOut);
+        RouteManagement.goToErrorView();
+        AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      } on FormatException catch (e) {
+        AppUtils.printLog(StringValues.formatExcError);
+        AppUtils.printLog(e);
+        RouteManagement.goToErrorView();
+        AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      } catch (exc) {
+        AppUtils.printLog(StringValues.errorOccurred);
+        AppUtils.printLog(exc);
+        RouteManagement.goToErrorView();
+        AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      }
     } else {
       RouteManagement.goToLoginView();
     }
@@ -109,6 +139,9 @@ class AuthController extends GetxController {
   }
 
   Future<void> _getProfileDetails() async {
+    _isLoading.value = true;
+    update();
+    AppUtils.printLog("Fetching Profile Details Request...");
     try {
       final response = await _apiProvider.getProfileDetails(_token.value);
 
@@ -116,19 +149,39 @@ class AuthController extends GetxController {
 
       if (response.statusCode == 200) {
         setProfileData = ProfileResponse.fromJson(decodedData);
+        _isLoading.value = false;
         update();
       } else {
+        _isLoading.value = false;
+        update();
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } catch (err) {
-      debugPrint(err.toString());
-      AppUtils.showSnackBar(
-        '${StringValues.errorOccurred}: ${err.toString()}',
-        StringValues.error,
-      );
+    } on SocketException {
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
@@ -142,6 +195,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> _followUnfollowUser(String userId) async {
+    AppUtils.printLog("Follow/Unfollow User Request...");
     _toggleFollowUser(userId);
 
     try {
@@ -162,13 +216,25 @@ class AuthController extends GetxController {
           StringValues.error,
         );
       }
-    } catch (err) {
+    } on SocketException {
       _toggleFollowUser(userId);
-      AppUtils.printLog(err);
-      AppUtils.showSnackBar(
-        '${StringValues.errorOccurred}: ${err.toString()}',
-        StringValues.error,
-      );
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _toggleFollowUser(userId);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _toggleFollowUser(userId);
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _toggleFollowUser(userId);
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
@@ -179,4 +245,11 @@ class AuthController extends GetxController {
   Future<void> logout() async => await _logout();
 
   Future<void> getProfileDetails() async => await _getProfileDetails();
+
+  @override
+  onReady() {
+    ever(_token, _autoLogin);
+    _token.bindStream(tokenStream);
+    super.onReady();
+  }
 }

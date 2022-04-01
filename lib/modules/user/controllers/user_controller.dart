@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -27,6 +29,7 @@ class UserController extends GetxController {
   }
 
   Future<void> _getUsers() async {
+    AppUtils.printLog("Get Users Request...");
     _isLoading.value = true;
     update();
 
@@ -51,11 +54,29 @@ class UserController extends GetxController {
           StringValues.error,
         );
       }
-    } catch (err) {
+    } on SocketException {
       _isLoading.value = false;
       update();
-      AppUtils.printLog('Get User List Error');
-      AppUtils.printLog(err);
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
@@ -63,9 +84,9 @@ class UserController extends GetxController {
     await _getUsers();
   }
 
-  @override
-  void onInit() async {
-    await _getUsers();
-    super.onInit();
-  }
+// @override
+// void onInit() async {
+//   await _getUsers();
+//   super.onInit();
+// }
 }

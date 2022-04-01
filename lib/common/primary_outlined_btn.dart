@@ -38,8 +38,8 @@ class NxOutlinedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width ?? width,
-      height: height ?? height,
+      width: width,
+      height: height,
       child: OutlinedButton(
         onPressed: onTap,
         style: OutlinedButton.styleFrom(
@@ -59,6 +59,7 @@ class NxOutlinedButton extends StatelessWidget {
           ),
         ),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (prefix != null) Container(child: prefix),

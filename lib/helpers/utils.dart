@@ -64,7 +64,7 @@ abstract class AppUtils {
     );
   }
 
-  static void showBottomSheet(List<Widget> children) {
+  static void showBottomSheet(List<Widget> children, {double? borderRadius}) {
     closeBottomSheet();
     Get.bottomSheet(
       Padding(
@@ -72,6 +72,12 @@ abstract class AppUtils {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: children,
+        ),
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(borderRadius ?? Dimens.zero),
+          topRight: Radius.circular(borderRadius ?? Dimens.zero),
         ),
       ),
       barrierColor:
@@ -95,11 +101,12 @@ abstract class AppUtils {
     closeSnackBar();
     Get.showSnackbar(
       GetSnackBar(
-        maxWidth: Dimens.screenWidth * 0.75,
         margin: EdgeInsets.only(
+          left: Dimens.sixTeen,
+          right: Dimens.sixTeen,
           bottom: Dimens.thirtyTwo,
         ),
-        borderRadius: Dimens.fourty,
+        borderRadius: Dimens.four,
         padding: Dimens.edgeInsets16,
         snackStyle: SnackStyle.FLOATING,
         messageText: Text(
@@ -152,9 +159,9 @@ abstract class AppUtils {
       });
 
       await storage.write(StringValues.loginData, data);
-      debugPrint('Auth details saved.');
+      printLog(StringValues.authDetailsSaved);
     } else {
-      debugPrint('Auth details could not saved.');
+      printLog(StringValues.authDetailsNotSaved);
     }
   }
 
@@ -162,37 +169,38 @@ abstract class AppUtils {
     if (storage.hasData(StringValues.loginData)) {
       final data = await storage.read(StringValues.loginData);
       var decodedData = jsonDecode(data) as Map<String, dynamic>;
-      debugPrint('Auth details found.');
+      printLog(StringValues.authDetailsFound);
       return decodedData;
     }
+    printLog(StringValues.authDetailsNotFound);
     return null;
   }
 
   static Future<void> clearLoginDataFromLocalStorage() async {
     await storage.remove(StringValues.loginData);
-    debugPrint('Auth details removed.');
+    printLog(StringValues.authDetailsRemoved);
   }
-
-  static final androidUiSettings = AndroidUiSettings(
-    toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-    toolbarTitle: StringValues.cropImage,
-    toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
-    backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-  );
-  static const iOsUiSettings = IOSUiSettings(
-    title: StringValues.cropImage,
-    minimumAspectRatio: 1.0,
-  );
 
   static void printLog(message) {
     debugPrint(
-        "---------------------------------------------------------------");
+        "=======================================================================");
     debugPrint(message.toString());
     debugPrint(
-        "---------------------------------------------------------------");
+        "=======================================================================");
   }
 
   static Future<dynamic> selectSingleImage({ImageSource? imageSource}) async {
+    final androidUiSettings = AndroidUiSettings(
+      toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      toolbarTitle: StringValues.cropImage,
+      toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+    );
+    const iOsUiSettings = IOSUiSettings(
+      title: StringValues.cropImage,
+      minimumAspectRatio: 1.0,
+    );
+
     final _imagePicker = ImagePicker();
     final _imageCropper = ImageCropper();
     final pickedImage = await _imagePicker.pickImage(
@@ -221,6 +229,17 @@ abstract class AppUtils {
   }
 
   static Future<dynamic> selectMultipleImage() async {
+    final androidUiSettings = AndroidUiSettings(
+      toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+      toolbarTitle: StringValues.cropImage,
+      toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+    );
+    const iOsUiSettings = IOSUiSettings(
+      title: StringValues.cropImage,
+      minimumAspectRatio: 1.0,
+    );
+
     final _imagePicker = ImagePicker();
     final _imageCropper = ImageCropper();
     var imageList = <File>[];

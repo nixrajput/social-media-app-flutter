@@ -2,6 +2,7 @@ part of 'app_pages.dart';
 
 abstract class AppRoutes {
   static const splash = _Routes.splash;
+  static const error = _Routes.error;
   static const home = _Routes.home;
 
   static const login = _Routes.login;
@@ -26,6 +27,7 @@ abstract class AppRoutes {
 
 abstract class _Routes {
   static const splash = '/';
+  static const error = '/error';
   static const home = '/home';
 
   static const login = '/login';

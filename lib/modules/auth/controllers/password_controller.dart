@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -44,7 +45,8 @@ class PasswordController extends GetxController {
       'email': email,
     };
 
-    await AppOverlay.showLoadingIndicator();
+    AppUtils.printLog("Send Password Reset OTP Request...");
+    AppUtils.showLoadingDialog();
     _isLoading.value = true;
     update();
 
@@ -55,7 +57,7 @@ class PasswordController extends GetxController {
 
       if (response.statusCode == 200) {
         _clearResetPasswordTextControllers();
-        await AppOverlay.hideLoadingIndicator();
+        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -64,7 +66,7 @@ class PasswordController extends GetxController {
         );
         RouteManagement.goToResetPasswordView();
       } else {
-        await AppOverlay.hideLoadingIndicator();
+        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -72,15 +74,33 @@ class PasswordController extends GetxController {
           StringValues.error,
         );
       }
-    } catch (err) {
-      await AppOverlay.hideLoadingIndicator();
+    } on SocketException {
+      AppUtils.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(err);
-      AppUtils.showSnackBar(
-        '${StringValues.errorOccurred}: ${err.toString()}',
-        StringValues.error,
-      );
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
@@ -118,7 +138,8 @@ class PasswordController extends GetxController {
       'confirmPassword': confPassword,
     };
 
-    await AppOverlay.showLoadingIndicator();
+    AppUtils.printLog("Password Reset Request...");
+    AppUtils.showLoadingDialog();
     _isLoading.value = true;
     update();
 
@@ -129,7 +150,7 @@ class PasswordController extends GetxController {
 
       if (response.statusCode == 200) {
         _clearResetPasswordTextControllers();
-        await AppOverlay.hideLoadingIndicator();
+        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -138,7 +159,7 @@ class PasswordController extends GetxController {
         );
         RouteManagement.goToLoginView();
       } else {
-        await AppOverlay.hideLoadingIndicator();
+        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -146,15 +167,33 @@ class PasswordController extends GetxController {
           StringValues.error,
         );
       }
-    } catch (err) {
-      await AppOverlay.hideLoadingIndicator();
+    } on SocketException {
+      AppUtils.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(err);
-      AppUtils.showSnackBar(
-        '${StringValues.errorOccurred}: ${err.toString()}',
-        StringValues.error,
-      );
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 

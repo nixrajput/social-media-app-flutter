@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -6,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/responses/login_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
-import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
 
@@ -52,8 +53,9 @@ class LoginController extends GetxController {
       'password': password,
     };
 
+    AppUtils.printLog("User Login Request...");
+    AppUtils.showLoadingDialog();
     _isLoading.value = true;
-    await AppOverlay.showLoadingIndicator();
     update();
 
     try {
@@ -73,7 +75,8 @@ class LoginController extends GetxController {
         _auth.setExpiresAt = _expiresAt;
         _auth.autoLogout();
         _clearLoginTextControllers();
-        await AppOverlay.hideLoadingIndicator();
+
+        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -81,7 +84,7 @@ class LoginController extends GetxController {
           StringValues.success,
         );
       } else {
-        await AppOverlay.hideLoadingIndicator();
+        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -89,15 +92,33 @@ class LoginController extends GetxController {
           StringValues.error,
         );
       }
-    } catch (err) {
-      await AppOverlay.hideLoadingIndicator();
+    } on SocketException {
+      AppUtils.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(err);
-      AppUtils.showSnackBar(
-        '${StringValues.errorOccurred}: ${err.toString()}',
-        StringValues.error,
-      );
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 

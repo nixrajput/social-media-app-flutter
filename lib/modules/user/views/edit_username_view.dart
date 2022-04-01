@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -68,16 +69,29 @@ class EditUsernameView extends StatelessWidget {
                       border: OutlineInputBorder(),
                     ),
                     maxLines: 1,
+                    initialValue: logic.username,
                     keyboardType: TextInputType.text,
                     style: AppStyles.style16Normal,
-                    controller: logic.uNameTextController,
                     onChanged: (value) {
-                      logic.checkUsername(value);
+                      logic.setUsername = value;
                     },
                     onEditingComplete: logic.focusNode.unfocus,
                   ),
                   Dimens.boxHeight8,
-                  Text(logic.isUnameAvailable),
+                  if (logic.isUnameAvailable == StringValues.success)
+                    const Text(
+                      StringValues.usernameAvailable,
+                      style: TextStyle(
+                        color: ColorValues.successColor,
+                      ),
+                    ),
+                  if (logic.isUnameAvailable == StringValues.error)
+                    const Text(
+                      StringValues.usernameNotAvailable,
+                      style: TextStyle(
+                        color: ColorValues.errorColor,
+                      ),
+                    ),
                   Dimens.boxHeight16,
                 ],
               ),

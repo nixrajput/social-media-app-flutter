@@ -29,6 +29,7 @@ abstract class StringValues {
   static const success = 'success';
   static const warning = 'warning';
   static const error = 'error';
+  static const none = 'none';
   static const message = 'message';
   static const enterFirstName = 'Enter your first name';
   static const enterLastName = 'Enter your last name';
@@ -39,11 +40,11 @@ abstract class StringValues {
   static const enterNewPassword = 'Enter a new password';
   static const enterOtp = 'Enter the OTP';
   static const enterConfirmPassword = 'Retype your password';
-  static const errorOccurred = 'Error Occurred';
-  static const unknownErrorOccurred = 'An unknown error occurred';
-  static const loginSuccessful = 'Logged in successfully';
-  static const registrationSuccessful = 'Registered successfully';
-  static const logoutSuccessful = 'Logged out successfully';
+  static const errorOccurred = 'An error occurred, please try again.';
+  static const unknownErrorOccurred = 'An unknown error occurred.';
+  static const loginSuccessful = 'Logged in successfully.';
+  static const registrationSuccessful = 'Registered successfully.';
+  static const logoutSuccessful = 'Logged out successfully.';
   static const token = 'token';
   static const expiresAt = 'expiresAt';
   static const loginData = 'loginData';
@@ -54,14 +55,14 @@ abstract class StringValues {
   static const theme = 'Theme';
   static const getOtp = 'Get OTP';
   static const otp = 'OTP';
-  static const otpSendSuccessful = 'OTP sent successfully to your email';
+  static const otpSendSuccessful = 'OTP sent successfully to your email.';
   static const doNotHaveOtp = "Don't have an OTP?";
   static const alreadyHaveOtp = "Already have an OTP?";
-  static const passwordChangeSuccessful = 'Password changed successfully';
+  static const passwordChangeSuccessful = 'Password changed successfully.';
   static const editProfile = 'Edit Profile';
-  static const updateProfileSuccessful = 'Profile updated successfully';
-  static const updateUsernameSuccessful = 'Username updated successfully';
-  static const tokenError = 'Token is expired or invalid';
+  static const updateProfileSuccessful = 'Profile updated successfully.';
+  static const updateUsernameSuccessful = 'Username updated successfully.';
+  static const tokenError = 'Token is expired or invalid.';
   static const followers = 'Followers';
   static const following = 'Following';
   static const follow = 'Follow';
@@ -90,10 +91,26 @@ abstract class StringValues {
   static const dobFormat = 'dd mmm, yyyy';
   static const select = 'Select';
   static const noData = 'No data to show.';
+  static const internetConnError =
+      'Internet connection is poor or unavailable.';
+  static const connTimedOut = 'Connection timed out.';
+  static const formatExcError = 'Format error occurred.';
+  static const authDetailsSaved = 'Auth details saved.';
+  static const authDetailsNotSaved = "Auth details couldn't saved.";
+  static const authDetailsFound = 'Auth details found.';
+  static const authDetailsNotFound = 'Auth details not found.';
+  static const authDetailsRemoved = 'Auth details removed.';
+  static const usernameAvailable = 'Username available.';
+  static const usernameNotAvailable = 'Username not available.';
+  static const exit = 'Exit';
+  static const male = 'Male';
+  static const female = 'Female';
+  static const others = 'Others';
 }
 
 abstract class AssetValues {
-  static const String icon = 'assets/icon.png';
+  static const String appIcon = 'assets/icon.png';
   static const String avatar = 'assets/avatar.png';
   static const String vector1 = 'assets/vector-1.png';
+  static const String error = 'assets/error.png';
 }

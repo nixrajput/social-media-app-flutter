@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
-import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -39,11 +40,10 @@ class AboutController extends GetxController {
   }
 
   Future<void> _updateAbout(String about) async {
-    if (about.isEmpty) return;
-
     final body = {'about': about};
 
-    await AppOverlay.showLoadingIndicator();
+    AppUtils.printLog("Update About Request...");
+    AppUtils.showLoadingDialog();
     _isLoading.value = true;
     update();
 
@@ -55,7 +55,7 @@ class AboutController extends GetxController {
 
       if (response.statusCode == 200) {
         await _auth.getProfileDetails();
-        await AppOverlay.hideLoadingIndicator();
+        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         RouteManagement.goToBack();
@@ -64,7 +64,7 @@ class AboutController extends GetxController {
           StringValues.success,
         );
       } else {
-        await AppOverlay.hideLoadingIndicator();
+        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -72,17 +72,41 @@ class AboutController extends GetxController {
           StringValues.error,
         );
       }
-    } catch (err) {
-      await AppOverlay.hideLoadingIndicator();
+    } on SocketException {
+      AppUtils.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog('Edit About Error');
-      AppUtils.printLog(err);
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> updateAbout() async {
     AppUtils.closeFocus();
-    await _updateAbout(aboutTextController.text.trim());
+    if (aboutTextController.text == _auth.profileData.user!.about) {
+      return;
+    }
+    await _updateAbout(aboutTextController.text);
   }
 }

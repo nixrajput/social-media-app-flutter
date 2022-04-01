@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants/colors.dart';
-import 'package:social_media_app/constants/dimens.dart';
 
 abstract class AppThemes {
   static final lightTheme = ThemeData(
@@ -16,12 +15,6 @@ abstract class AppThemes {
     dialogTheme: const DialogTheme(backgroundColor: ColorValues.whiteColor),
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
       backgroundColor: ColorValues.whiteColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(Dimens.sixTeen),
-          topRight: Radius.circular(Dimens.sixTeen),
-        ),
-      ),
     ),
     dividerColor: ColorValues.grayColor,
     snackBarTheme: const SnackBarThemeData(
@@ -62,12 +55,6 @@ abstract class AppThemes {
     dialogTheme: const DialogTheme(backgroundColor: ColorValues.darkColor),
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
       backgroundColor: ColorValues.darkColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(Dimens.sixTeen),
-          topRight: Radius.circular(Dimens.sixTeen),
-        ),
-      ),
     ),
     dividerColor: ColorValues.darkerGrayColor,
     snackBarTheme: const SnackBarThemeData(
