@@ -22,8 +22,11 @@ class UsernameController extends GetxController {
   final FocusScopeNode focusNode = FocusScopeNode();
 
   final _isLoading = false.obs;
+  final _isUnameAvailable = ''.obs;
 
   bool get isLoading => _isLoading.value;
+
+  String get isUnameAvailable => _isUnameAvailable.value;
 
   @override
   void onInit() {
@@ -47,7 +50,6 @@ class UsernameController extends GetxController {
       return;
     }
 
-    await AppOverlay.showLoadingIndicator();
     _isLoading.value = true;
     update();
 
@@ -58,31 +60,19 @@ class UsernameController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
+        _isUnameAvailable.value = decodedData[StringValues.message];
         update();
-        AppUtils.showSnackBar(
-          decodedData[StringValues.message],
-          StringValues.success,
-        );
       } else {
-        await AppOverlay.hideLoadingIndicator();
         _isLoading.value = false;
+        _isUnameAvailable.value = decodedData[StringValues.message];
         update();
-        AppUtils.showSnackBar(
-          decodedData[StringValues.message],
-          StringValues.error,
-        );
       }
     } catch (err) {
-      await AppOverlay.hideLoadingIndicator();
       _isLoading.value = false;
       update();
+      AppUtils.printLog('Check Username Error');
       AppUtils.printLog(err);
-      AppUtils.showSnackBar(
-        '${StringValues.errorOccurred}: ${err.toString()}',
-        StringValues.error,
-      );
     }
   }
 
@@ -127,11 +117,8 @@ class UsernameController extends GetxController {
       await AppOverlay.hideLoadingIndicator();
       _isLoading.value = false;
       update();
+      AppUtils.printLog('Update Username Error');
       AppUtils.printLog(err);
-      AppUtils.showSnackBar(
-        '${StringValues.errorOccurred}: ${err.toString()}',
-        StringValues.error,
-      );
     }
   }
 
@@ -142,10 +129,7 @@ class UsernameController extends GetxController {
     );
   }
 
-  Future<void> checkUsername() async {
-    AppUtils.closeFocus();
-    await _checkUsername(
-      uNameTextController.text.trim(),
-    );
+  Future<void> checkUsername(String username) async {
+    await _checkUsername(username);
   }
 }

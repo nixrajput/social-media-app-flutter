@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
-import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
-import 'package:social_media_app/common/primary_text_field.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/user/controllers/edit_username_controller.dart';
 
 class EditUsernameView extends StatelessWidget {
@@ -21,15 +19,31 @@ class EditUsernameView extends StatelessWidget {
           child: SizedBox(
             width: Dimens.screenWidth,
             height: Dimens.screenHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const NxAppBar(
-                  title: StringValues.username,
-                ),
-                _buildEditBody(),
-              ],
+            child: GetBuilder<UsernameController>(
+              builder: (logic) => Stack(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const NxAppBar(
+                        title: StringValues.username,
+                      ),
+                      _buildBody(logic),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: Dimens.zero,
+                    left: Dimens.zero,
+                    right: Dimens.zero,
+                    child: NxFilledButton(
+                      borderRadius: Dimens.zero,
+                      onTap: logic.updateUsername,
+                      label: StringValues.save,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -37,34 +51,35 @@ class EditUsernameView extends StatelessWidget {
     );
   }
 
-  Widget _buildEditBody() => Expanded(
+  Widget _buildBody(UsernameController logic) => Expanded(
         child: SingleChildScrollView(
-          child: NxElevatedCard(
-            child: Padding(
-              padding: Dimens.edgeInsets8,
-              child: GetBuilder<UsernameController>(
-                builder: (logic) => FocusScope(
-                  node: logic.focusNode,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      NxTextField(
-                        label: StringValues.username,
-                        editingController: logic.uNameTextController,
-                        icon: CupertinoIcons.at,
-                        onEditingComplete: logic.focusNode.unfocus,
-                        inputType: TextInputType.text,
-                      ),
-                      Dimens.boxHeight40,
-                      NxFilledButton(
-                        onTap: logic.updateUsername,
-                        label: StringValues.save,
-                      ),
-                      Dimens.boxHeight16,
-                    ],
+          child: Padding(
+            padding: Dimens.edgeInsets8,
+            child: FocusScope(
+              node: logic.focusNode,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Dimens.boxHeight20,
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: StringValues.username,
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 1,
+                    keyboardType: TextInputType.text,
+                    style: AppStyles.style16Normal,
+                    controller: logic.uNameTextController,
+                    onChanged: (value) {
+                      logic.checkUsername(value);
+                    },
+                    onEditingComplete: logic.focusNode.unfocus,
                   ),
-                ),
+                  Dimens.boxHeight8,
+                  Text(logic.isUnameAvailable),
+                  Dimens.boxHeight16,
+                ],
               ),
             ),
           ),

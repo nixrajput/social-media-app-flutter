@@ -168,4 +168,8 @@ abstract class Dimens {
   static SizedBox boxWidth32 = SizedBox(width: thirtyTwo);
 
   static SizedBox boxWidth40 = SizedBox(width: fourty);
+
+  static Divider divider = const Divider(height: 0.0, thickness: 0.4);
+
+  static Divider dividerWithHeight = const Divider(thickness: 0.5);
 }

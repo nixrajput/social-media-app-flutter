@@ -10,14 +10,14 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
-class AboutController extends GetxController {
-  static AboutController get find => Get.find();
+class DOBController extends GetxController {
+  static DOBController get find => Get.find();
 
   final _auth = AuthController.find;
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final aboutTextController = TextEditingController();
+  final dobTextController = TextEditingController();
 
   final FocusScopeNode focusNode = FocusScopeNode();
 
@@ -34,14 +34,18 @@ class AboutController extends GetxController {
   void initializeFields() async {
     if (_auth.profileData.user != null) {
       var user = _auth.profileData.user!;
-      aboutTextController.text = user.about ?? '';
+      dobTextController.text = user.dob ?? '';
     }
   }
 
-  Future<void> _updateAbout(String about) async {
-    if (about.isEmpty) return;
+  Future<void> _updateDOB(String dob) async {
+    if (dob.isEmpty) {
+      return;
+    }
 
-    final body = {'about': about};
+    final body = {
+      'dob': dob.substring(0, 10),
+    };
 
     await AppOverlay.showLoadingIndicator();
     _isLoading.value = true;
@@ -76,13 +80,13 @@ class AboutController extends GetxController {
       await AppOverlay.hideLoadingIndicator();
       _isLoading.value = false;
       update();
-      AppUtils.printLog('Edit About Error');
+      AppUtils.printLog('Update DOB Error');
       AppUtils.printLog(err);
     }
   }
 
-  Future<void> updateAbout() async {
+  Future<void> updateDOB() async {
     AppUtils.closeFocus();
-    await _updateAbout(aboutTextController.text.trim());
+    await _updateDOB(dobTextController.text.trim());
   }
 }

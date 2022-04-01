@@ -7,7 +7,7 @@ class NxTextField extends StatelessWidget {
     Key? key,
     this.icon,
     this.iconColor,
-    required this.label,
+    this.label,
     this.editingController,
     this.onEditingComplete,
     this.hint,
@@ -23,7 +23,7 @@ class NxTextField extends StatelessWidget {
 
   final IconData? icon;
   final Color? iconColor;
-  final String label;
+  final String? label;
   final String? hint;
   final String? initialValue;
   final TextEditingController? editingController;
@@ -38,29 +38,27 @@ class NxTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: TextFormField(
-        decoration: InputDecoration(
-          icon: Icon(
-            icon,
-            color: iconColor ?? ColorValues.darkGrayColor,
-          ),
-          labelText: label,
-          hintText: hint ?? '',
+    return TextFormField(
+      decoration: InputDecoration(
+        icon: Icon(
+          icon,
+          color: iconColor ?? ColorValues.darkGrayColor,
         ),
-        initialValue: initialValue,
-        keyboardType: inputType ?? TextInputType.text,
-        minLines: minLines ?? 1,
-        maxLines: maxLines ?? 1,
-        style: AppStyles.style16Normal,
-        controller: editingController,
-        onChanged: onChanged,
-        onEditingComplete: onEditingComplete,
-        readOnly: readOnly ?? false,
-        enabled: enabled ?? true,
-        scrollPhysics: const AlwaysScrollableScrollPhysics(),
+        labelText: label,
+        hintText: hint,
+        border: const OutlineInputBorder(),
       ),
+      initialValue: initialValue,
+      keyboardType: inputType ?? TextInputType.text,
+      minLines: minLines ?? 1,
+      maxLines: maxLines ?? 1,
+      style: AppStyles.style16Normal,
+      controller: editingController,
+      onChanged: onChanged,
+      onEditingComplete: onEditingComplete,
+      readOnly: readOnly ?? false,
+      enabled: enabled ?? true,
+      scrollPhysics: const BouncingScrollPhysics(),
     );
   }
 }

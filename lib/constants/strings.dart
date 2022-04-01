@@ -86,6 +86,10 @@ abstract class StringValues {
   static const followUserLine =
       'Do follow some users to see their latest posts.';
   static const noPosts = 'No posts to show.';
+  static const writeSomethingAboutYou = 'Write something about you...';
+  static const dobFormat = 'dd mmm, yyyy';
+  static const select = 'Select';
+  static const noData = 'No data to show.';
 }
 
 abstract class AssetValues {

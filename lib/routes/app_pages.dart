@@ -14,11 +14,15 @@ import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/splash/views/splash_view.dart';
 import 'package:social_media_app/modules/user/bindings/about_binding.dart';
 import 'package:social_media_app/modules/user/bindings/change_password_binding.dart';
+import 'package:social_media_app/modules/user/bindings/dob_binding.dart';
 import 'package:social_media_app/modules/user/bindings/edit_profile_binding.dart';
+import 'package:social_media_app/modules/user/bindings/gender_binding.dart';
 import 'package:social_media_app/modules/user/bindings/name_binding.dart';
 import 'package:social_media_app/modules/user/bindings/username_binding.dart';
 import 'package:social_media_app/modules/user/views/change_password_view.dart';
 import 'package:social_media_app/modules/user/views/edit_about_view.dart';
+import 'package:social_media_app/modules/user/views/edit_dob_view.dart';
+import 'package:social_media_app/modules/user/views/edit_gender_view.dart';
 import 'package:social_media_app/modules/user/views/edit_name_view.dart';
 import 'package:social_media_app/modules/user/views/edit_profile_view.dart';
 import 'package:social_media_app/modules/user/views/edit_username_view.dart';
@@ -109,6 +113,20 @@ abstract class AppPages {
       page: EditAboutView.new,
       transitionDuration: transitionDuration,
       binding: AboutBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.editDob,
+      page: EditDOBView.new,
+      transitionDuration: transitionDuration,
+      binding: DOBBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.editGender,
+      page: EditGenderView.new,
+      transitionDuration: transitionDuration,
+      binding: GenderBinding(),
       transition: Transition.downToUp,
     ),
     GetPage(

@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
-import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
-import 'package:social_media_app/common/primary_text_field.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/user/controllers/edit_name_controller.dart';
 
 class EditNameView extends StatelessWidget {
@@ -21,15 +19,31 @@ class EditNameView extends StatelessWidget {
           child: SizedBox(
             width: Dimens.screenWidth,
             height: Dimens.screenHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const NxAppBar(
-                  title: StringValues.name,
-                ),
-                _buildEditBody(),
-              ],
+            child: GetBuilder<NameController>(
+              builder: (logic) => Stack(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const NxAppBar(
+                        title: StringValues.name,
+                      ),
+                      _buildBody(logic),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: Dimens.zero,
+                    left: Dimens.zero,
+                    right: Dimens.zero,
+                    child: NxFilledButton(
+                      borderRadius: Dimens.zero,
+                      onTap: logic.updateName,
+                      label: StringValues.save,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -37,44 +51,42 @@ class EditNameView extends StatelessWidget {
     );
   }
 
-  Widget _buildEditBody() =>
-      Expanded(
+  Widget _buildBody(NameController logic) => Expanded(
         child: SingleChildScrollView(
-          child: NxElevatedCard(
-            child: Padding(
-              padding: Dimens.edgeInsets8,
-              child: GetBuilder<NameController>(
-                builder: (logic) =>
-                    FocusScope(
-                      node: logic.focusNode,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          NxTextField(
-                            label: StringValues.firstName,
-                            editingController: logic.fNameTextController,
-                            icon: CupertinoIcons.person,
-                            onEditingComplete: logic.focusNode.nextFocus,
-                            inputType: TextInputType.name,
-                          ),
-                          Dimens.boxHeight16,
-                          NxTextField(
-                            label: StringValues.lastName,
-                            editingController: logic.lNameTextController,
-                            icon: CupertinoIcons.person,
-                            onEditingComplete: logic.focusNode.unfocus,
-                            inputType: TextInputType.name,
-                          ),
-                          Dimens.boxHeight40,
-                          NxFilledButton(
-                            onTap: logic.updateName,
-                            label: StringValues.save,
-                          ),
-                          Dimens.boxHeight16,
-                        ],
-                      ),
+          child: Padding(
+            padding: Dimens.edgeInsets8,
+            child: FocusScope(
+              node: logic.focusNode,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Dimens.boxHeight20,
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: StringValues.firstName,
+                      border: OutlineInputBorder(),
                     ),
+                    maxLines: 1,
+                    keyboardType: TextInputType.name,
+                    style: AppStyles.style16Normal,
+                    controller: logic.fNameTextController,
+                    onEditingComplete: logic.focusNode.nextFocus,
+                  ),
+                  Dimens.boxHeight16,
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: StringValues.lastName,
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 1,
+                    keyboardType: TextInputType.name,
+                    style: AppStyles.style16Normal,
+                    controller: logic.lNameTextController,
+                    onEditingComplete: logic.focusNode.unfocus,
+                  ),
+                  Dimens.boxHeight16,
+                ],
               ),
             ),
           ),

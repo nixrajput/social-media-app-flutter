@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 
@@ -96,16 +95,17 @@ abstract class AppUtils {
     closeSnackBar();
     Get.showSnackbar(
       GetSnackBar(
-        margin: Dimens.edgeInsets0,
-        borderRadius: Dimens.zero,
+        maxWidth: Dimens.screenWidth * 0.75,
+        margin: EdgeInsets.only(
+          bottom: Dimens.thirtyTwo,
+        ),
+        borderRadius: Dimens.fourty,
+        padding: Dimens.edgeInsets16,
+        snackStyle: SnackStyle.FLOATING,
         messageText: Text(
           message,
           style: TextStyle(
-            color: (type == StringValues.error ||
-                    type == StringValues.success ||
-                    type == StringValues.warning)
-                ? ColorValues.whiteColor
-                : ThemeData().textTheme.bodyText1!.color,
+            color: Theme.of(Get.context!).scaffoldBackgroundColor,
           ),
         ),
         icon: Icon(
@@ -114,20 +114,10 @@ abstract class AppUtils {
               : type == StringValues.success
                   ? CupertinoIcons.check_mark_circled_solid
                   : CupertinoIcons.info_circle_fill,
-          color: (type == StringValues.error ||
-                  type == StringValues.success ||
-                  type == StringValues.warning)
-              ? ColorValues.whiteColor
-              : ThemeData().iconTheme.color,
+          color: Theme.of(Get.context!).iconTheme.color,
         ),
         shouldIconPulse: false,
-        backgroundColor: type == StringValues.error
-            ? ColorValues.errorColor
-            : type == StringValues.warning
-                ? ColorValues.warningColor
-                : type == StringValues.success
-                    ? ColorValues.successColor
-                    : ThemeData().snackBarTheme.backgroundColor!,
+        backgroundColor: Theme.of(Get.context!).snackBarTheme.backgroundColor!,
         duration: Duration(seconds: duration ?? 2),
       ),
     );

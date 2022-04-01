@@ -60,6 +60,7 @@ class EditProfileView extends StatelessWidget {
                       ),
                     ),
                     Dimens.boxHeight16,
+                    Dimens.dividerWithHeight,
                     NxListTile(
                       leading: const Icon(CupertinoIcons.person),
                       title: Text(
@@ -75,7 +76,7 @@ class EditProfileView extends StatelessWidget {
                       ),
                       onTap: RouteManagement.goToEditNameView,
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.dividerWithHeight,
                     NxListTile(
                       leading: const Icon(CupertinoIcons.at),
                       title: Text(
@@ -91,7 +92,7 @@ class EditProfileView extends StatelessWidget {
                       ),
                       onTap: RouteManagement.goToEditUsernameView,
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.dividerWithHeight,
                     NxListTile(
                       leading: const Icon(CupertinoIcons.mail),
                       title: Text(
@@ -106,7 +107,7 @@ class EditProfileView extends StatelessWidget {
                         style: AppStyles.style16Normal,
                       ),
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.dividerWithHeight,
                     NxListTile(
                       leading: const Icon(CupertinoIcons.doc_text),
                       title: Text(
@@ -117,12 +118,23 @@ class EditProfileView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileData.user!.about ?? '',
-                        style: AppStyles.style16Normal,
+                        logic.profileData.user!.about ??
+                            StringValues.writeSomethingAboutYou,
+                        style: AppStyles.style16Normal.copyWith(
+                          color: logic.profileData.user!.about == null
+                              ? Theme.of(Get.context!)
+                                  .textTheme
+                                  .subtitle1
+                                  ?.color
+                              : Theme.of(Get.context!)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.color,
+                        ),
                       ),
                       onTap: RouteManagement.goToEditAboutView,
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.dividerWithHeight,
                     NxListTile(
                       leading: const Icon(Icons.cake_outlined),
                       title: Text(
@@ -133,11 +145,22 @@ class EditProfileView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileData.user!.dob ?? '',
-                        style: AppStyles.style16Normal,
+                        logic.profileData.user!.dob ?? StringValues.dobFormat,
+                        style: AppStyles.style16Normal.copyWith(
+                          color: logic.profileData.user!.dob == null
+                              ? Theme.of(Get.context!)
+                                  .textTheme
+                                  .subtitle1
+                                  ?.color
+                              : Theme.of(Get.context!)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.color,
+                        ),
                       ),
+                      onTap: RouteManagement.goToEditDOBView,
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.dividerWithHeight,
                     NxListTile(
                       leading: const Icon(Icons.male_outlined),
                       title: Text(
@@ -148,10 +171,22 @@ class EditProfileView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileData.user!.gender ?? '',
-                        style: AppStyles.style16Normal,
+                        logic.profileData.user!.gender ?? StringValues.select,
+                        style: AppStyles.style16Normal.copyWith(
+                          color: logic.profileData.user!.gender == null
+                              ? Theme.of(Get.context!)
+                                  .textTheme
+                                  .subtitle1
+                                  ?.color
+                              : Theme.of(Get.context!)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.color,
+                        ),
                       ),
+                      onTap: RouteManagement.goToEditGenderView,
                     ),
+                    Dimens.dividerWithHeight,
                     Dimens.boxHeight16,
                   ],
                 ),

@@ -50,6 +50,18 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.editAbout);
   }
 
+  static void goToEditDOBView() {
+    Get.toNamed(AppRoutes.editDob);
+  }
+
+  static void goToEditGenderView() {
+    Get.toNamed(AppRoutes.editGender);
+  }
+
+  static void goToEditPhoneView() {
+    Get.toNamed(AppRoutes.editPhone);
+  }
+
   static void goToCreatePostView() {
     Get.toNamed(AppRoutes.createPost);
   }
