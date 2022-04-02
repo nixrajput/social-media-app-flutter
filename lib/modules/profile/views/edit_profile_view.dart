@@ -10,7 +10,7 @@ import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/user/controllers/edit_profile_picture_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class EditProfileView extends StatelessWidget {
@@ -131,6 +131,7 @@ class EditProfileView extends StatelessWidget {
                                   .bodyText1
                                   ?.color,
                         ),
+                        maxLines: 3,
                       ),
                       onTap: RouteManagement.goToEditAboutView,
                     ),

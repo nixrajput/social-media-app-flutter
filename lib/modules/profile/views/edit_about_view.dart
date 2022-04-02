@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/user/controllers/edit_username_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/edit_about_controller.dart';
 
-class EditUsernameView extends StatelessWidget {
-  const EditUsernameView({Key? key}) : super(key: key);
+class EditAboutView extends StatelessWidget {
+  const EditAboutView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class EditUsernameView extends StatelessWidget {
           child: SizedBox(
             width: Dimens.screenWidth,
             height: Dimens.screenHeight,
-            child: GetBuilder<UsernameController>(
+            child: GetBuilder<AboutController>(
               builder: (logic) => Stack(
                 children: [
                   Column(
@@ -28,7 +27,7 @@ class EditUsernameView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const NxAppBar(
-                        title: StringValues.username,
+                        title: StringValues.about,
                       ),
                       _buildBody(logic),
                     ],
@@ -39,7 +38,7 @@ class EditUsernameView extends StatelessWidget {
                     right: Dimens.zero,
                     child: NxFilledButton(
                       borderRadius: Dimens.zero,
-                      onTap: logic.updateUsername,
+                      onTap: logic.updateAbout,
                       label: StringValues.save,
                     ),
                   )
@@ -52,7 +51,7 @@ class EditUsernameView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(UsernameController logic) => Expanded(
+  Widget _buildBody(AboutController logic) => Expanded(
         child: SingleChildScrollView(
           child: Padding(
             padding: Dimens.edgeInsets8,
@@ -65,33 +64,15 @@ class EditUsernameView extends StatelessWidget {
                   Dimens.boxHeight20,
                   TextFormField(
                     decoration: const InputDecoration(
-                      hintText: StringValues.username,
+                      hintText: StringValues.writeSomethingAboutYou,
                       border: OutlineInputBorder(),
                     ),
-                    maxLines: 1,
-                    initialValue: logic.username,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 4,
                     style: AppStyles.style16Normal,
-                    onChanged: (value) {
-                      logic.setUsername = value;
-                    },
+                    controller: logic.aboutTextController,
                     onEditingComplete: logic.focusNode.unfocus,
                   ),
-                  Dimens.boxHeight8,
-                  if (logic.isUnameAvailable == StringValues.success)
-                    const Text(
-                      StringValues.usernameAvailable,
-                      style: TextStyle(
-                        color: ColorValues.successColor,
-                      ),
-                    ),
-                  if (logic.isUnameAvailable == StringValues.error)
-                    const Text(
-                      StringValues.usernameNotAvailable,
-                      style: TextStyle(
-                        color: ColorValues.errorColor,
-                      ),
-                    ),
                   Dimens.boxHeight16,
                 ],
               ),

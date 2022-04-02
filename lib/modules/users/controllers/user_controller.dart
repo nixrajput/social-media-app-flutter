@@ -42,10 +42,6 @@ class UserController extends GetxController {
         setUserListData = UserListResponse.fromJson(decodedData);
         _isLoading.value = false;
         update();
-        AppUtils.showSnackBar(
-          decodedData[StringValues.message],
-          StringValues.success,
-        );
       } else {
         _isLoading.value = false;
         update();
@@ -84,9 +80,9 @@ class UserController extends GetxController {
     await _getUsers();
   }
 
-// @override
-// void onInit() async {
-//   await _getUsers();
-//   super.onInit();
-// }
+  @override
+  void onInit() async {
+    await _getUsers();
+    super.onInit();
+  }
 }

@@ -28,9 +28,6 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       accountStatus: json['accountStatus'] as String,
       isVerified: json['isVerified'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      lastActive: json['lastActive'] == null
-          ? null
-          : DateTime.parse(json['lastActive'] as String),
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -51,5 +48,4 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'accountStatus': instance.accountStatus,
       'createdAt': instance.createdAt.toIso8601String(),
       'isVerified': instance.isVerified,
-      'lastActive': instance.lastActive?.toIso8601String(),
     };

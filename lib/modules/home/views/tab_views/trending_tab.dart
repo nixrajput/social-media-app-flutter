@@ -8,23 +8,10 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
-import 'package:social_media_app/modules/user/controllers/user_controller.dart';
+import 'package:social_media_app/modules/users/controllers/user_controller.dart';
 
-class TrendingTabView extends StatefulWidget {
+class TrendingTabView extends StatelessWidget {
   const TrendingTabView({Key? key}) : super(key: key);
-
-  @override
-  State<TrendingTabView> createState() => _TrendingTabViewState();
-}
-
-class _TrendingTabViewState extends State<TrendingTabView> {
-  final _userCon = Get.put(UserController());
-
-  @override
-  void initState() {
-    _userCon.getUsers();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

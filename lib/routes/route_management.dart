@@ -70,6 +70,14 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.createPost);
   }
 
+  static void goToFollowersListView() {
+    Get.toNamed(AppRoutes.followers);
+  }
+
+  static void goToFollowingListView() {
+    Get.toNamed(AppRoutes.following);
+  }
+
   static void goToBack() {
     Get.back();
   }

@@ -1,14 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/user/controllers/edit_name_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/change_password_controller.dart';
 
-class EditNameView extends StatelessWidget {
-  const EditNameView({Key? key}) : super(key: key);
+class ChangePasswordView extends StatelessWidget {
+  const ChangePasswordView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class EditNameView extends StatelessWidget {
           child: SizedBox(
             width: Dimens.screenWidth,
             height: Dimens.screenHeight,
-            child: GetBuilder<NameController>(
+            child: GetBuilder<ChangePasswordController>(
               builder: (logic) => Stack(
                 children: [
                   Column(
@@ -27,7 +29,7 @@ class EditNameView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const NxAppBar(
-                        title: StringValues.name,
+                        title: StringValues.changePassword,
                       ),
                       _buildBody(logic),
                     ],
@@ -38,8 +40,8 @@ class EditNameView extends StatelessWidget {
                     right: Dimens.zero,
                     child: NxFilledButton(
                       borderRadius: Dimens.zero,
-                      onTap: logic.updateName,
-                      label: StringValues.save,
+                      onTap: logic.changePassword,
+                      label: StringValues.changePassword,
                     ),
                   )
                 ],
@@ -51,7 +53,7 @@ class EditNameView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(NameController logic) => Expanded(
+  Widget _buildBody(ChangePasswordController logic) => Expanded(
         child: SingleChildScrollView(
           child: Padding(
             padding: Dimens.edgeInsets8,
@@ -63,28 +65,50 @@ class EditNameView extends StatelessWidget {
                 children: [
                   Dimens.boxHeight20,
                   TextFormField(
+                    obscureText: true,
                     decoration: const InputDecoration(
-                      hintText: StringValues.firstName,
-                      border: OutlineInputBorder(),
+                      icon: Icon(
+                        CupertinoIcons.lock_open,
+                        color: ColorValues.darkGrayColor,
+                      ),
+                      hintText: StringValues.oldPassword,
                     ),
+                    keyboardType: TextInputType.visiblePassword,
                     maxLines: 1,
-                    keyboardType: TextInputType.name,
-                    textCapitalization: TextCapitalization.words,
                     style: AppStyles.style16Normal,
-                    controller: logic.fNameTextController,
+                    controller: logic.oldPasswordTextController,
                     onEditingComplete: logic.focusNode.nextFocus,
                   ),
                   Dimens.boxHeight16,
                   TextFormField(
+                    obscureText: true,
                     decoration: const InputDecoration(
-                      hintText: StringValues.lastName,
-                      border: OutlineInputBorder(),
+                      icon: Icon(
+                        CupertinoIcons.lock,
+                        color: ColorValues.darkGrayColor,
+                      ),
+                      hintText: StringValues.newPassword,
                     ),
+                    keyboardType: TextInputType.visiblePassword,
                     maxLines: 1,
-                    keyboardType: TextInputType.name,
-                    textCapitalization: TextCapitalization.words,
                     style: AppStyles.style16Normal,
-                    controller: logic.lNameTextController,
+                    controller: logic.newPasswordTextController,
+                    onEditingComplete: logic.focusNode.nextFocus,
+                  ),
+                  Dimens.boxHeight16,
+                  TextFormField(
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      icon: Icon(
+                        CupertinoIcons.lock,
+                        color: ColorValues.darkGrayColor,
+                      ),
+                      hintText: StringValues.confirmPassword,
+                    ),
+                    keyboardType: TextInputType.visiblePassword,
+                    maxLines: 1,
+                    style: AppStyles.style16Normal,
+                    controller: logic.confirmPasswordTextController,
                     onEditingComplete: logic.focusNode.unfocus,
                   ),
                   Dimens.boxHeight16,

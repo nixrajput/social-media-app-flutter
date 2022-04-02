@@ -5,10 +5,10 @@ import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/user/controllers/edit_about_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/edit_name_controller.dart';
 
-class EditAboutView extends StatelessWidget {
-  const EditAboutView({Key? key}) : super(key: key);
+class EditNameView extends StatelessWidget {
+  const EditNameView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class EditAboutView extends StatelessWidget {
           child: SizedBox(
             width: Dimens.screenWidth,
             height: Dimens.screenHeight,
-            child: GetBuilder<AboutController>(
+            child: GetBuilder<NameController>(
               builder: (logic) => Stack(
                 children: [
                   Column(
@@ -27,7 +27,7 @@ class EditAboutView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const NxAppBar(
-                        title: StringValues.about,
+                        title: StringValues.name,
                       ),
                       _buildBody(logic),
                     ],
@@ -38,7 +38,7 @@ class EditAboutView extends StatelessWidget {
                     right: Dimens.zero,
                     child: NxFilledButton(
                       borderRadius: Dimens.zero,
-                      onTap: logic.updateAbout,
+                      onTap: logic.updateName,
                       label: StringValues.save,
                     ),
                   )
@@ -51,7 +51,7 @@ class EditAboutView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(AboutController logic) => Expanded(
+  Widget _buildBody(NameController logic) => Expanded(
         child: SingleChildScrollView(
           child: Padding(
             padding: Dimens.edgeInsets8,
@@ -64,13 +64,27 @@ class EditAboutView extends StatelessWidget {
                   Dimens.boxHeight20,
                   TextFormField(
                     decoration: const InputDecoration(
-                      hintText: StringValues.writeSomethingAboutYou,
+                      hintText: StringValues.firstName,
                       border: OutlineInputBorder(),
                     ),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 4,
+                    maxLines: 1,
+                    keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
                     style: AppStyles.style16Normal,
-                    controller: logic.aboutTextController,
+                    controller: logic.fNameTextController,
+                    onEditingComplete: logic.focusNode.nextFocus,
+                  ),
+                  Dimens.boxHeight16,
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      hintText: StringValues.lastName,
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: 1,
+                    keyboardType: TextInputType.name,
+                    textCapitalization: TextCapitalization.words,
+                    style: AppStyles.style16Normal,
+                    controller: logic.lNameTextController,
                     onEditingComplete: logic.focusNode.unfocus,
                   ),
                   Dimens.boxHeight16,

@@ -224,4 +224,28 @@ class ApiProvider {
 
     return response;
   }
+
+  Future<http.Response> getFollowersList(String token) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.getFollowersEndpoint}'),
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer $token',
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getFollowingList(String token) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.getFollowingEndpoint}'),
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer $token',
+      },
+    );
+
+    return response;
+  }
 }

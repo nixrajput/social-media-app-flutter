@@ -4,67 +4,45 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/models/responses/follower_list_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
 
-class EditProfilePictureController extends GetxController {
-  static EditProfilePictureController get find => Get.find();
+class FollowingListController extends GetxController {
+  static FollowingListController get find => Get.find();
 
   final _auth = AuthController.find;
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final _pickedImage = Rxn<File>();
-
+  final _followingList = FollowerListResponse().obs;
   final _isLoading = false.obs;
 
   bool get isLoading => _isLoading.value;
 
-  File? get pickedImage => _pickedImage.value;
+  FollowerListResponse? get followingList => _followingList.value;
 
-  Future<void> chooseImage() async {
-    _pickedImage.value = await AppUtils.selectSingleImage();
-
-    if (_pickedImage.value != null) {
-      AppUtils.printLog(_pickedImage.value!.path);
-      await _uploadProfilePicture();
-    }
+  set setFollowingListData(FollowerListResponse value) {
+    _followingList.value = value;
   }
 
-  Future<void> _uploadProfilePicture() async {
-    AppUtils.printLog("Update Profile Picture Request...");
-    AppUtils.showLoadingDialog();
+  Future<void> _getFollowersList() async {
+    AppUtils.printLog("Get Following List Request...");
     _isLoading.value = true;
     update();
 
     try {
-      final fileStream = http.ByteStream(pickedImage!.openRead());
-      final fileLength = await pickedImage!.length();
-      final multiPartFile = http.MultipartFile(
-        "avatar",
-        fileStream,
-        fileLength,
-        filename: pickedImage!.path,
-      );
+      final response = await _apiProvider.getFollowingList(_auth.token);
 
-      final response = await _apiProvider.uploadProfilePicture(
-        _auth.token,
-        multiPartFile,
-      );
-
-      final responseDataFromStream = await http.Response.fromStream(response);
-      final decodedData =
-          jsonDecode(utf8.decode(responseDataFromStream.bodyBytes));
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        AppUtils.closeDialog();
-        await _auth.getProfileDetails();
+        setFollowingListData = FollowerListResponse.fromJson(decodedData);
         _isLoading.value = false;
         update();
       } else {
-        AppUtils.closeDialog();
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(
@@ -73,27 +51,23 @@ class EditProfilePictureController extends GetxController {
         );
       }
     } on SocketException {
-      AppUtils.closeDialog();
       _isLoading.value = false;
       update();
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.closeDialog();
       _isLoading.value = false;
       update();
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtils.closeDialog();
       _isLoading.value = false;
       update();
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.closeDialog();
       _isLoading.value = false;
       update();
       AppUtils.printLog(StringValues.errorOccurred);
@@ -102,8 +76,13 @@ class EditProfilePictureController extends GetxController {
     }
   }
 
-  Future<void> uploadProfilePicture() async {
-    AppUtils.closeFocus();
-    await _uploadProfilePicture();
+  Future<void> getFollowersList() async {
+    await _getFollowersList();
+  }
+
+  @override
+  void onInit() async {
+    await _getFollowersList();
+    super.onInit();
   }
 }

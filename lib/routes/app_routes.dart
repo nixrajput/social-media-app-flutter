@@ -21,6 +21,8 @@ abstract class AppRoutes {
   static const editDob = _Routes.editDob;
   static const editGender = _Routes.editGender;
   static const editPhone = _Routes.editPhone;
+  static const following = _Routes.following;
+  static const followers = _Routes.followers;
 
   static const createPost = _Routes.createPost;
 }
@@ -46,6 +48,8 @@ abstract class _Routes {
   static const editDob = '/edit_dob';
   static const editGender = '/edit_gender';
   static const editPhone = '/edit_phone';
+  static const following = '/following';
+  static const followers = '/followers';
 
   static const createPost = '/create_post';
 }

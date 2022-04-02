@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:social_media_app/modules/user/controllers/edit_gender_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/edit_gender_controller.dart';
 
 class GenderBinding extends Bindings {
   @override

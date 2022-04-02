@@ -24,7 +24,6 @@ class User {
     required this.accountStatus,
     required this.isVerified,
     required this.createdAt,
-    this.lastActive,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -81,7 +80,4 @@ class User {
 
   @JsonKey(name: 'isVerified')
   bool isVerified;
-
-  @JsonKey(name: 'lastActive')
-  DateTime? lastActive;
 }

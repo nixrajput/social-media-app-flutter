@@ -86,6 +86,7 @@ class ForgotPasswordView extends StatelessWidget {
                     NxFilledButton(
                       onTap: () => logic.sendResetPasswordOTP(),
                       label: StringValues.getOtp,
+                      width: double.infinity,
                     ),
                     Dimens.boxHeight32,
                     Row(

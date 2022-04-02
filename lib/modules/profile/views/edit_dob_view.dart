@@ -7,7 +7,7 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/user/controllers/edit_dob_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/edit_dob_controller.dart';
 
 class EditDOBView extends StatelessWidget {
   const EditDOBView({Key? key}) : super(key: key);

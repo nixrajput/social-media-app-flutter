@@ -11,22 +11,26 @@ import 'package:social_media_app/modules/home/bindings/home_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
 import 'package:social_media_app/modules/post/views/create_post_view.dart';
+import 'package:social_media_app/modules/profile/bindings/about_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/change_password_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/dob_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/edit_profile_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/followers_list_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/following_list_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/gender_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/name_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/username_binding.dart';
+import 'package:social_media_app/modules/profile/views/change_password_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_about_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_dob_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_gender_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_name_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_profile_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_username_view.dart';
+import 'package:social_media_app/modules/profile/views/followers_list_view.dart';
+import 'package:social_media_app/modules/profile/views/following_list_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/splash/views/splash_view.dart';
-import 'package:social_media_app/modules/user/bindings/about_binding.dart';
-import 'package:social_media_app/modules/user/bindings/change_password_binding.dart';
-import 'package:social_media_app/modules/user/bindings/dob_binding.dart';
-import 'package:social_media_app/modules/user/bindings/edit_profile_binding.dart';
-import 'package:social_media_app/modules/user/bindings/gender_binding.dart';
-import 'package:social_media_app/modules/user/bindings/name_binding.dart';
-import 'package:social_media_app/modules/user/bindings/username_binding.dart';
-import 'package:social_media_app/modules/user/views/change_password_view.dart';
-import 'package:social_media_app/modules/user/views/edit_about_view.dart';
-import 'package:social_media_app/modules/user/views/edit_dob_view.dart';
-import 'package:social_media_app/modules/user/views/edit_gender_view.dart';
-import 'package:social_media_app/modules/user/views/edit_name_view.dart';
-import 'package:social_media_app/modules/user/views/edit_profile_view.dart';
-import 'package:social_media_app/modules/user/views/edit_username_view.dart';
 
 part 'app_routes.dart';
 
@@ -141,6 +145,20 @@ abstract class AppPages {
       page: CreatePostView.new,
       transitionDuration: transitionDuration,
       binding: CreatePostBinding(),
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.followers,
+      page: FollowersListView.new,
+      binding: FollowersBinding(),
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.following,
+      page: FollowingListView.new,
+      binding: FollowingBinding(),
+      transitionDuration: transitionDuration,
       transition: Transition.downToUp,
     ),
   ];

@@ -164,6 +164,7 @@ class RegisterView extends StatelessWidget {
                     NxFilledButton(
                       onTap: () => logic.register(),
                       label: StringValues.register,
+                      width: double.infinity,
                     ),
                     Dimens.boxHeight32,
                     Row(

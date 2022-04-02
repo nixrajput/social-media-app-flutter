@@ -5,7 +5,7 @@ import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/modules/user/controllers/edit_gender_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/edit_gender_controller.dart';
 
 class EditGenderView extends StatelessWidget {
   const EditGenderView({Key? key}) : super(key: key);

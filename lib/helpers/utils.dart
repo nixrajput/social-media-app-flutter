@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 
@@ -121,7 +122,13 @@ abstract class AppUtils {
               : type == StringValues.success
                   ? CupertinoIcons.check_mark_circled_solid
                   : CupertinoIcons.info_circle_fill,
-          color: Theme.of(Get.context!).iconTheme.color,
+          color: type == StringValues.error
+              ? ColorValues.errorColor
+              : type == StringValues.success
+                  ? ColorValues.successColor
+                  : type == StringValues.warning
+                      ? ColorValues.warningColor
+                      : Theme.of(Get.context!).iconTheme.color,
         ),
         shouldIconPulse: false,
         backgroundColor: Theme.of(Get.context!).snackBarTheme.backgroundColor!,

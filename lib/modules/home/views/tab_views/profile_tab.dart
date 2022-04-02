@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -152,25 +151,17 @@ class ProfileTabView extends StatelessWidget {
           ),
           Dimens.boxHeight16,
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               NxCountWidget(
                 title: StringValues.followers,
                 value: logic.profileData.user!.followers.length.toString(),
-                onTap: () {
-                  if (kDebugMode) {
-                    print('followers tapped');
-                  }
-                },
+                onTap: RouteManagement.goToFollowersListView,
               ),
               NxCountWidget(
                 title: StringValues.following,
                 value: logic.profileData.user!.following.length.toString(),
-                onTap: () {
-                  if (kDebugMode) {
-                    print('following tapped');
-                  }
-                },
+                onTap: RouteManagement.goToFollowingListView,
               ),
             ],
           ),
