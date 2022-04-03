@@ -102,10 +102,15 @@ abstract class StringValues {
   static const authDetailsRemoved = 'Auth details removed.';
   static const usernameAvailable = 'Username available.';
   static const usernameNotAvailable = 'Username not available.';
+  static const userIdNotFound = 'User Id not found.';
   static const exit = 'Exit';
   static const male = 'Male';
   static const female = 'Female';
   static const others = 'Others';
+  static const delete = 'Delete';
+  static const share = 'Share';
+  static const report = 'Report';
+  static const posts = 'Posts';
 }
 
 abstract class AssetValues {

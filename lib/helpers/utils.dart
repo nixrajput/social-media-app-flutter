@@ -69,7 +69,7 @@ abstract class AppUtils {
     closeBottomSheet();
     Get.bottomSheet(
       Padding(
-        padding: Dimens.edgeInsets8_16,
+        padding: Dimens.edgeInsets8_0,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: children,

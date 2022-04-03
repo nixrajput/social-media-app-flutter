@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/responses/common_response.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
@@ -19,14 +20,17 @@ class PostController extends GetxController {
 
   final _isLoading = false.obs;
   final _postData = PostResponse().obs;
+  final _postList = RxList<Post>();
 
   bool get isLoading => _isLoading.value;
 
   PostResponse? get postData => _postData.value;
 
-  set setPostData(PostResponse value) {
-    _postData.value = value;
-  }
+  List<Post> get postList => _postList;
+
+  set setPostListData(List<Post> data) => _postList.value = data;
+
+  set setPostData(PostResponse value) => _postData.value = value;
 
   @override
   void onInit() {
@@ -46,6 +50,7 @@ class PostController extends GetxController {
 
       if (response.statusCode == 200) {
         setPostData = PostResponse.fromJson(decodedData);
+        setPostListData = _postData.value.posts!;
         _isLoading.value = false;
         update();
       } else {
@@ -83,9 +88,8 @@ class PostController extends GetxController {
   }
 
   void _toggleLike(postId) {
-    var postIndex =
-        _postData.value.posts!.indexWhere((element) => element.id == postId);
-    var tempPost = _postData.value.posts!.elementAt(postIndex);
+    var postIndex = _postList.indexWhere((element) => element.id == postId);
+    var tempPost = _postList.elementAt(postIndex);
 
     if (tempPost.likes.contains(_auth.profileData.user!.id)) {
       tempPost.likes.remove(_auth.profileData.user!.id);
@@ -141,8 +145,70 @@ class PostController extends GetxController {
     }
   }
 
+  void _getTempPostFromList(postId) {
+    var postIndex = _postList.indexWhere((element) => element.id == postId);
+    var tempPost = _postList.elementAt(postIndex);
+
+    if (_postList.contains(tempPost)) {
+      _postList.remove(tempPost);
+      _postList.refresh();
+    } else {
+      _postList.insert(postIndex, tempPost);
+      _postList.refresh();
+    }
+    update();
+  }
+
+  Future<void> _deletePost(String postId) async {
+    AppUtils.printLog("Post Delete Request...");
+
+    _getTempPostFromList(postId);
+
+    // try {
+    //   final response = await _apiProvider.deletePost(_auth.token, postId);
+    //
+    //   final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+    //
+    //   final apiResponse = CommonResponse.fromJson(decodedData);
+    //
+    //   if (response.statusCode == 200) {
+    //     AppUtils.showSnackBar(
+    //       apiResponse.message!,
+    //       StringValues.success,
+    //     );
+    //   } else {
+    //     _getTempPostFromList(postId);
+    //     AppUtils.showSnackBar(
+    //       apiResponse.message!,
+    //       StringValues.error,
+    //     );
+    //   }
+    // } on SocketException {
+    //   _getTempPostFromList(postId);
+    //   AppUtils.printLog(StringValues.internetConnError);
+    //   AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    // } on TimeoutException {
+    //   _getTempPostFromList(postId);
+    //   AppUtils.printLog(StringValues.connTimedOut);
+    //   AppUtils.printLog(StringValues.connTimedOut);
+    //   AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    // } on FormatException catch (e) {
+    //   _getTempPostFromList(postId);
+    //   AppUtils.printLog(StringValues.formatExcError);
+    //   AppUtils.printLog(e);
+    //   AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    // } catch (exc) {
+    //   _getTempPostFromList(postId);
+    //   AppUtils.printLog(StringValues.errorOccurred);
+    //   AppUtils.printLog(exc);
+    //   AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    // }
+  }
+
   Future<void> fetchAllPosts() async => await _fetchAllPosts();
 
   Future<void> toggleLikePost(String postId) async =>
       await _toggleLikePost(postId);
+
+  Future<void> deletePost(String postId) async => await _deletePost(postId);
 }

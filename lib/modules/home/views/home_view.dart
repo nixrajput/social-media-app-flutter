@@ -12,11 +12,18 @@ import 'package:social_media_app/modules/home/views/tab_views/trending_tab.dart'
 import 'package:social_media_app/modules/home/views/widgets/bottom_nav_bar.dart';
 import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView>
+    with AutomaticKeepAliveClientMixin<HomeView> {
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: GetBuilder<NavBarController>(
         builder: (controller) => IndexedStack(
@@ -45,4 +52,7 @@ class HomeView extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

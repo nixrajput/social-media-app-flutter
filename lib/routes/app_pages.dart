@@ -31,6 +31,8 @@ import 'package:social_media_app/modules/profile/views/followers_list_view.dart'
 import 'package:social_media_app/modules/profile/views/following_list_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/splash/views/splash_view.dart';
+import 'package:social_media_app/modules/users/bindings/user_profile_binding.dart';
+import 'package:social_media_app/modules/users/views/user_profile_view.dart';
 
 part 'app_routes.dart';
 
@@ -158,6 +160,13 @@ abstract class AppPages {
       name: _Routes.following,
       page: FollowingListView.new,
       binding: FollowingBinding(),
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.userProfile,
+      page: UserProfileView.new,
+      binding: UserProfileBinding(),
       transitionDuration: transitionDuration,
       transition: Transition.downToUp,
     ),

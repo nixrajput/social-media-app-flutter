@@ -25,6 +25,8 @@ abstract class AppRoutes {
   static const followers = _Routes.followers;
 
   static const createPost = _Routes.createPost;
+
+  static const userProfile = _Routes.userProfile;
 }
 
 abstract class _Routes {
@@ -52,4 +54,6 @@ abstract class _Routes {
   static const followers = '/followers';
 
   static const createPost = '/create_post';
+
+  static const userProfile = '/user_profile';
 }

@@ -78,6 +78,10 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.following);
   }
 
+  static void goToUserProfileView(String userId) {
+    Get.toNamed(AppRoutes.userProfile, arguments: userId);
+  }
+
   static void goToBack() {
     Get.back();
   }

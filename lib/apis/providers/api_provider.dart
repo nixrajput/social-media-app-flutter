@@ -113,6 +113,18 @@ class ApiProvider {
     return response;
   }
 
+  Future<http.Response> deletePost(String token, String postId) async {
+    final response = await _client.delete(
+      Uri.parse('${baseUrl!}${AppUrls.postEndpoint}/$postId'),
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer $token',
+      },
+    );
+
+    return response;
+  }
+
   Future<http.StreamedResponse> uploadProfilePicture(
     String token,
     http.MultipartFile multiPartFile,

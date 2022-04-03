@@ -46,8 +46,7 @@ class HomeTabView extends StatelessWidget {
                   ),
                 );
               }
-              if (logic.postData!.posts == null ||
-                  logic.postData!.posts!.isEmpty) {
+              if (logic.postData == null || logic.postList.isEmpty) {
                 return SliverFillRemaining(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -79,17 +78,11 @@ class HomeTabView extends StatelessWidget {
               }
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (ctx, index) => logic.postData!.posts != null
-                      ? PostWidget(
-                          post: logic.postData!.posts!.elementAt(index),
-                        )
-                      : const Center(
-                          child: Text(StringValues.unknownErrorOccurred),
-                        ),
-                  childCount: logic.postData?.posts != null
-                      ? logic.postData!.posts!.length
-                      : 1,
-                  addAutomaticKeepAlives: true,
+                  (ctx, index) {
+                    var post = logic.postList.elementAt(index);
+                    return PostWidget(post: post);
+                  },
+                  childCount: logic.postList.length,
                 ),
               );
             },

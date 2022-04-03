@@ -9,6 +9,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
 import 'package:social_media_app/modules/users/controllers/user_controller.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
 class TrendingTabView extends StatelessWidget {
   const TrendingTabView({Key? key}) : super(key: key);
@@ -87,6 +88,8 @@ class TrendingTabView extends StatelessWidget {
                         itemBuilder: (cxt, i) {
                           var user = logic.userList!.results!.elementAt(i);
                           return UserWidget(
+                            onTap: () =>
+                                RouteManagement.goToUserProfileView(user.id),
                             user: user,
                             bottomMargin:
                                 i == (logic.userList!.results!.length - 1)

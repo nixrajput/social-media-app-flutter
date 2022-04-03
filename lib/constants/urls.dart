@@ -10,8 +10,9 @@ abstract class AppUrls {
   static const String resetPasswordEndpoint = '/reset/password';
 
   static const String getFollowingPostsEndpoint = '/posts';
-  static const String createPostEndpoint = '/post/create';
-  static const String likePostEndpoint = '/post/like';
+  static const String postEndpoint = '/post';
+  static const String createPostEndpoint = '$postEndpoint/create';
+  static const String likePostEndpoint = '$postEndpoint/like';
 
   static const String profileDetailsEndpoint = '/me';
   static const String uploadProfilePicEndpoint = '/avatar/me';
