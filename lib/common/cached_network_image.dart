@@ -12,6 +12,7 @@ class NxNetworkImage extends StatelessWidget {
     this.height,
     this.maxWidth,
     this.maxHeight,
+    this.imageFit,
   }) : super(key: key);
 
   final String imageUrl;
@@ -20,6 +21,7 @@ class NxNetworkImage extends StatelessWidget {
   final double? height;
   final double? maxWidth;
   final double? maxHeight;
+  final BoxFit? imageFit;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class NxNetworkImage extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius ?? 0.0),
         child: CachedNetworkImage(
           imageUrl: imageUrl,
-          fit: BoxFit.cover,
+          fit: imageFit ?? BoxFit.cover,
           placeholder: (ctx, url) => const SizedBox(
             child: Center(
               child: CupertinoActivityIndicator(),

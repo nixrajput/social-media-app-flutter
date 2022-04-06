@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_indicators.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_options.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
@@ -22,33 +20,34 @@ import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class PostWidget extends StatelessWidget {
-  PostWidget({
+  const PostWidget({
     Key? key,
     required this.post,
   }) : super(key: key);
 
   final Post post;
 
-  final _auth = AuthController.find;
-  final _postController = PostController.find;
-
   @override
   Widget build(BuildContext context) {
+    final _auth = AuthController.find;
+    final _postController = PostController.find;
+
     return NxElevatedCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildPostHead(),
-          _buildPostBody(),
-          _buildPostFooter(),
+          _buildPostHead(_auth, _postController),
+          _buildPostBody(_postController),
+          _buildPostFooter(_auth, _postController),
         ],
       ),
     );
   }
 
-  Widget _buildPostHead() => Padding(
+  Widget _buildPostHead(AuthController _auth, PostController _postController) =>
+      Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,18 +116,18 @@ class PostWidget extends StatelessWidget {
                   onTap: () {
                     AppUtils.showBottomSheet(
                       [
-                        // if (post.owner.id == _auth.profileData.user!.id)
-                        //   ListTile(
-                        //     onTap: () {
-                        //       AppUtils.closeBottomSheet();
-                        //       _postController.deletePost(post.id);
-                        //     },
-                        //     leading: const Icon(CupertinoIcons.delete),
-                        //     title: Text(
-                        //       StringValues.delete,
-                        //       style: AppStyles.style16Bold,
-                        //     ),
-                        //   ),
+                        if (post.owner.id == _auth.profileData.user!.id)
+                          ListTile(
+                            onTap: () {
+                              AppUtils.closeBottomSheet();
+                              _postController.deletePost(post.id);
+                            },
+                            leading: const Icon(CupertinoIcons.delete),
+                            title: Text(
+                              StringValues.delete,
+                              style: AppStyles.style16Bold,
+                            ),
+                          ),
                         ListTile(
                           onTap: AppUtils.closeBottomSheet,
                           leading: const Icon(CupertinoIcons.share),
@@ -155,26 +154,29 @@ class PostWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildPostBody() => GestureDetector(
+  Widget _buildPostBody(PostController _postController) => GestureDetector(
         onDoubleTap: () {
           _postController.toggleLikePost(post.id);
         },
-        child: FlutterCarousel(
+        child: FlutterCarousel.builder(
+          itemCount: post.images!.length,
+          itemBuilder: (ctx, itemIndex, pageViewIndex) {
+            return NxNetworkImage(
+              imageUrl: post.images![itemIndex].url,
+              imageFit: BoxFit.cover,
+            );
+          },
           options: CarouselOptions(
-            height: Dimens.screenWidth,
-            floatingIndicator: true,
+            aspectRatio: 1 / 1,
             viewportFraction: 1.0,
             slideIndicator: CircularWaveSlideIndicator(),
           ),
-          items: post.images!
-              .map((img) => NxNetworkImage(
-                    imageUrl: img.url,
-                  ))
-              .toList(),
         ),
       );
 
-  Widget _buildPostFooter() => Padding(
+  Widget _buildPostFooter(
+          AuthController _auth, PostController _postController) =>
+      Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

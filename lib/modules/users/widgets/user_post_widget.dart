@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_indicators.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_options.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
@@ -156,18 +155,17 @@ class UserPostWidget extends StatelessWidget {
           onDoubleTap: () {
             logic.toggleLikePost(post.id);
           },
-          child: FlutterCarousel(
+          child: FlutterCarousel.builder(
+            itemCount: post.images!.length,
+            itemBuilder: (ctx, itemIndex, pageViewIndex) {
+              return NxNetworkImage(
+                imageUrl: post.images![itemIndex].url,
+              );
+            },
             options: CarouselOptions(
-              height: Dimens.screenWidth,
-              floatingIndicator: true,
+              aspectRatio: 1 / 1,
               viewportFraction: 1.0,
-              slideIndicator: CircularWaveSlideIndicator(),
             ),
-            items: post.images!
-                .map((img) => NxNetworkImage(
-                      imageUrl: img.url,
-                    ))
-                .toList(),
           ),
         ),
       );

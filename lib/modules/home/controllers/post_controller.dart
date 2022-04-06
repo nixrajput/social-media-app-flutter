@@ -20,7 +20,7 @@ class PostController extends GetxController {
 
   final _isLoading = false.obs;
   final _postData = PostResponse().obs;
-  final _postList = RxList<Post>();
+  final _postList = <Post>[].obs;
 
   bool get isLoading => _isLoading.value;
 
@@ -108,7 +108,6 @@ class PostController extends GetxController {
       final response = await _apiProvider.likeUnlikePost(_auth.token, postId);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
       final apiResponse = CommonResponse.fromJson(decodedData);
 
       if (response.statusCode == 200) {
@@ -145,64 +144,66 @@ class PostController extends GetxController {
     }
   }
 
-  void _getTempPostFromList(postId) {
-    var postIndex = _postList.indexWhere((element) => element.id == postId);
-    var tempPost = _postList.elementAt(postIndex);
-
-    if (_postList.contains(tempPost)) {
-      _postList.remove(tempPost);
-      _postList.refresh();
-    } else {
-      _postList.insert(postIndex, tempPost);
-      _postList.refresh();
-    }
-    update();
-  }
-
   Future<void> _deletePost(String postId) async {
     AppUtils.printLog("Post Delete Request...");
 
-    _getTempPostFromList(postId);
+    var postIndex = _postList.indexWhere((element) => element.id == postId);
+    var post = _postList.elementAt(postIndex);
 
-    // try {
-    //   final response = await _apiProvider.deletePost(_auth.token, postId);
-    //
-    //   final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-    //
-    //   final apiResponse = CommonResponse.fromJson(decodedData);
-    //
-    //   if (response.statusCode == 200) {
-    //     AppUtils.showSnackBar(
-    //       apiResponse.message!,
-    //       StringValues.success,
-    //     );
-    //   } else {
-    //     _getTempPostFromList(postId);
-    //     AppUtils.showSnackBar(
-    //       apiResponse.message!,
-    //       StringValues.error,
-    //     );
-    //   }
-    // } on SocketException {
-    //   _getTempPostFromList(postId);
-    //   AppUtils.printLog(StringValues.internetConnError);
-    //   AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
-    // } on TimeoutException {
-    //   _getTempPostFromList(postId);
-    //   AppUtils.printLog(StringValues.connTimedOut);
-    //   AppUtils.printLog(StringValues.connTimedOut);
-    //   AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    // } on FormatException catch (e) {
-    //   _getTempPostFromList(postId);
-    //   AppUtils.printLog(StringValues.formatExcError);
-    //   AppUtils.printLog(e);
-    //   AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    // } catch (exc) {
-    //   _getTempPostFromList(postId);
-    //   AppUtils.printLog(StringValues.errorOccurred);
-    //   AppUtils.printLog(exc);
-    //   AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    // }
+    if (postIndex > -1) {
+      _postList.remove(post);
+      _postList.refresh();
+      update();
+    }
+
+    try {
+      final response = await _apiProvider.deletePost(_auth.token, postId);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+      final apiResponse = CommonResponse.fromJson(decodedData);
+
+      if (response.statusCode == 200) {
+        AppUtils.showSnackBar(
+          apiResponse.message!,
+          StringValues.success,
+        );
+      } else {
+        _postList.insert(postIndex, post);
+        _postList.refresh();
+        update();
+        AppUtils.showSnackBar(
+          apiResponse.message!,
+          StringValues.error,
+        );
+      }
+    } on SocketException {
+      _postList.insert(postIndex, post);
+      _postList.refresh();
+      update();
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _postList.insert(postIndex, post);
+      _postList.refresh();
+      update();
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _postList.insert(postIndex, post);
+      _postList.refresh();
+      update();
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _postList.insert(postIndex, post);
+      _postList.refresh();
+      update();
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
   }
 
   Future<void> fetchAllPosts() async => await _fetchAllPosts();

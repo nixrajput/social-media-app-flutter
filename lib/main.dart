@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/apis/services/theme_controller.dart';
 import 'package:social_media_app/common/overlay.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
 import 'package:social_media_app/helpers/utils.dart';
@@ -32,6 +35,29 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (SchedulerBinding.instance!.window.platformBrightness ==
+        Brightness.light) {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          statusBarIconBrightness: Brightness.dark,
+          statusBarColor: ColorValues.lightBgColor,
+          statusBarBrightness: Brightness.light,
+          systemNavigationBarColor: ColorValues.lightBgColor,
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ),
+      );
+    } else {
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          statusBarIconBrightness: Brightness.light,
+          statusBarColor: ColorValues.darkBgColor,
+          statusBarBrightness: Brightness.dark,
+          systemNavigationBarColor: ColorValues.darkBgColor,
+          systemNavigationBarIconBrightness: Brightness.light,
+        ),
+      );
+    }
+
     return GetBuilder<AppThemeController>(
       builder: (logic) => ScreenUtilInit(
         designSize: const Size(392, 744),

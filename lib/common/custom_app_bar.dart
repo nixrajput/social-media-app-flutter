@@ -10,10 +10,14 @@ class NxAppBar extends StatelessWidget {
     Key? key,
     this.title,
     this.showDivider = false,
+    this.leading,
+    this.showBackBtn = true,
   }) : super(key: key);
 
   final String? title;
   final bool? showDivider;
+  final Widget? leading;
+  final bool? showBackBtn;
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +34,27 @@ class NxAppBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                InkWell(
-                  onTap: RouteManagement.goToBack,
-                  child: CircleAvatar(
-                    backgroundColor: Theme.of(context).dividerColor,
-                    radius: Dimens.fourteen,
-                    child: Icon(
-                      CupertinoIcons.left_chevron,
-                      color: ColorValues.whiteColor,
-                      size: Dimens.twenty,
+                if (showBackBtn == true)
+                  InkWell(
+                    onTap: RouteManagement.goToBack,
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).dividerColor,
+                      radius: Dimens.fourteen,
+                      child: Icon(
+                        CupertinoIcons.left_chevron,
+                        color: ColorValues.whiteColor,
+                        size: Dimens.twenty,
+                      ),
                     ),
                   ),
-                ),
                 Dimens.boxWidth16,
-                Text(
-                  title!,
-                  style: AppStyles.style18Bold,
-                )
+                if (leading != null) leading!,
+                if (leading != null) Dimens.boxWidth16,
+                if (title != null && title!.isNotEmpty)
+                  Text(
+                    title!,
+                    style: AppStyles.style18Bold,
+                  )
               ],
             ),
           ),

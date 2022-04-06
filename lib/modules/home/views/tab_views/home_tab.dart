@@ -16,79 +16,89 @@ class HomeTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          NxSliverAppBar(
-            isFloating: true,
-            bgColor: Theme.of(context).scaffoldBackgroundColor,
-            leading: Row(
+      child: SizedBox(
+        width: Dimens.screenWidth,
+        height: Dimens.screenHeight,
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            NxSliverAppBar(
+              bgColor: Theme.of(context).scaffoldBackgroundColor,
+              leading: Row(
+                children: [
+                  NxAssetImage(
+                    imgAsset: AssetValues.appIcon,
+                    width: Dimens.thirtyTwo,
+                    height: Dimens.thirtyTwo,
+                  ),
+                  Dimens.boxWidth8,
+                  Text(
+                    StringValues.appName,
+                    style: AppStyles.style18Bold,
+                  )
+                ],
+              ),
+            ),
+            _buildBody(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildBody() {
+    return GetBuilder<PostController>(
+      builder: (logic) {
+        if (logic.isLoading) {
+          return const SliverFillRemaining(
+            child: Center(
+              child: CupertinoActivityIndicator(),
+            ),
+          );
+        }
+        if (logic.postData == null || logic.postList.isEmpty) {
+          return SliverFillRemaining(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 NxAssetImage(
-                  imgAsset: AssetValues.appIcon,
-                  width: Dimens.thirtyTwo,
-                  height: Dimens.thirtyTwo,
+                  imgAsset: AssetValues.error,
+                  width: Dimens.hundred * 2,
+                  height: Dimens.hundred * 2,
                 ),
-                Dimens.boxWidth8,
+                Dimens.boxHeight8,
                 Text(
-                  StringValues.appName,
-                  style: AppStyles.style18Bold,
+                  StringValues.noPosts,
+                  style: AppStyles.style20Normal.copyWith(
+                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Dimens.boxHeight16,
+                NxOutlinedButton(
+                  width: Dimens.hundred * 1.4,
+                  padding: Dimens.edgeInsets8,
+                  label: StringValues.refresh,
+                  onTap: () => logic.fetchAllPosts(),
                 )
               ],
             ),
-          ),
-          GetBuilder<PostController>(
-            builder: (logic) {
-              if (logic.isLoading) {
-                return const SliverFillRemaining(
-                  child: Center(
-                    child: CupertinoActivityIndicator(),
-                  ),
-                );
-              }
-              if (logic.postData == null || logic.postList.isEmpty) {
-                return SliverFillRemaining(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      NxAssetImage(
-                        imgAsset: AssetValues.error,
-                        width: Dimens.hundred * 2,
-                        height: Dimens.hundred * 2,
-                      ),
-                      Dimens.boxHeight8,
-                      Text(
-                        StringValues.noPosts,
-                        style: AppStyles.style20Normal.copyWith(
-                          color: Theme.of(context).textTheme.subtitle1!.color,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Dimens.boxHeight16,
-                      NxOutlinedButton(
-                        width: Dimens.hundred * 1.4,
-                        padding: Dimens.edgeInsets8,
-                        label: StringValues.refresh,
-                        onTap: () => logic.fetchAllPosts(),
-                      )
-                    ],
-                  ),
-                );
-              }
-              return SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (ctx, index) {
-                    var post = logic.postList.elementAt(index);
-                    return PostWidget(post: post);
-                  },
-                  childCount: logic.postList.length,
-                ),
-              );
+          );
+        }
+
+        return SliverToBoxAdapter(
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: logic.postList.length,
+            itemBuilder: (__, i) {
+              var post = logic.postList[i];
+              return PostWidget(post: post);
             },
-          )
-        ],
-      ),
+          ),
+        );
+      },
     );
   }
 }
