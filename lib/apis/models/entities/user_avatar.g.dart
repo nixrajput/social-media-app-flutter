@@ -7,8 +7,8 @@ part of 'user_avatar.dart';
 // **************************************************************************
 
 UserAvatar _$UserAvatarFromJson(Map<String, dynamic> json) => UserAvatar(
-      publicId: json['public_id'] as String,
-      url: json['url'] as String,
+      publicId: json['public_id'] as String?,
+      url: json['url'] as String?,
     );
 
 Map<String, dynamic> _$UserAvatarToJson(UserAvatar instance) =>

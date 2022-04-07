@@ -12,14 +12,13 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       lname: json['lname'] as String,
       email: json['email'] as String,
       uname: json['uname'] as String,
+      profession: json['profession'] as String,
       avatar: json['avatar'] == null
           ? null
           : UserAvatar.fromJson(json['avatar'] as Map<String, dynamic>),
-      followers: json['followers'] as List<dynamic>,
-      following: json['following'] as List<dynamic>,
+      accountType: json['accountType'] as String,
       accountStatus: json['accountStatus'] as String,
       isVerified: json['isVerified'] as bool,
-      createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -28,10 +27,9 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'lname': instance.lname,
       'email': instance.email,
       'uname': instance.uname,
+      'profession': instance.profession,
       'avatar': instance.avatar,
-      'followers': instance.followers,
-      'following': instance.following,
+      'accountType': instance.accountType,
       'accountStatus': instance.accountStatus,
-      'createdAt': instance.createdAt.toIso8601String(),
       'isVerified': instance.isVerified,
     };

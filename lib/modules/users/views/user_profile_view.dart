@@ -178,9 +178,10 @@ class UserProfileView extends StatelessWidget {
 
   Widget _buildProfileImage(UserProfileController logic) {
     if (logic.userProfile.user != null &&
-        logic.userProfile.user!.avatar != null) {
+        logic.userProfile.user?.avatar != null &&
+        logic.userProfile.user?.avatar?.url != null) {
       return NxCircleNetworkImage(
-        imageUrl: logic.userProfile.user!.avatar!.url,
+        imageUrl: logic.userProfile.user!.avatar!.url!,
         radius: Dimens.sixtyFour,
       );
     }

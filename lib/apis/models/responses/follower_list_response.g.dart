@@ -11,7 +11,7 @@ FollowerListResponse _$FollowerListResponseFromJson(
     FollowerListResponse(
       success: json['success'] as bool?,
       results: (json['results'] as List<dynamic>?)
-          ?.map((e) => Follower.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => User.fromJson(e as Map<String, dynamic>))
           .toList(),
     )..count = json['count'] as int?;
 

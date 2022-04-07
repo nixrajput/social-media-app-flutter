@@ -18,19 +18,21 @@ class Profile {
     this.gender,
     this.dob,
     this.about,
+    this.profession,
     required this.posts,
     required this.followers,
     required this.following,
     required this.role,
+    required this.accountType,
     required this.accountStatus,
     required this.isVerified,
-    required this.createdAt,
     this.token,
     this.expiresAt,
     this.otp,
     this.resetPasswordToken,
     this.resetPasswordExpire,
     this.lastActive,
+    required this.createdAt,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) =>
@@ -68,6 +70,9 @@ class Profile {
   @JsonKey(name: 'about')
   String? about;
 
+  @JsonKey(name: 'profession')
+  String? profession;
+
   @JsonKey(name: 'posts')
   List<UserPost> posts;
 
@@ -80,11 +85,11 @@ class Profile {
   @JsonKey(name: 'role')
   String role;
 
+  @JsonKey(name: 'accountType')
+  String accountType;
+
   @JsonKey(name: 'accountStatus')
   String accountStatus;
-
-  @JsonKey(name: 'createdAt')
-  DateTime createdAt;
 
   @JsonKey(name: 'isVerified')
   bool isVerified;
@@ -106,4 +111,7 @@ class Profile {
 
   @JsonKey(name: 'lastActive')
   DateTime? lastActive;
+
+  @JsonKey(name: 'createdAt')
+  DateTime createdAt;
 }

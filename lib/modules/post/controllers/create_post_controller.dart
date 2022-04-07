@@ -21,6 +21,8 @@ class CreatePostController extends GetxController {
 
   final captionTextController = TextEditingController();
 
+  final FocusScopeNode focusNode = FocusScopeNode();
+
   final _pickedImageList = RxList<File>();
   final _isLoading = false.obs;
 

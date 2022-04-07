@@ -62,20 +62,21 @@ class PostWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    post.owner.avatar == null
+                    (post.owner.avatar != null &&
+                            post.owner.avatar?.url != null)
                         ? GestureDetector(
                             onTap: () => RouteManagement.goToUserProfileView(
                                 post.owner.id),
-                            child: NxCircleAssetImage(
-                              imgAsset: AssetValues.avatar,
+                            child: NxCircleNetworkImage(
+                              imageUrl: post.owner.avatar!.url!,
                               radius: Dimens.twenty,
                             ),
                           )
                         : GestureDetector(
                             onTap: () => RouteManagement.goToUserProfileView(
                                 post.owner.id),
-                            child: NxCircleNetworkImage(
-                              imageUrl: post.owner.avatar!.url,
+                            child: NxCircleAssetImage(
+                              imgAsset: AssetValues.avatar,
                               radius: Dimens.twenty,
                             ),
                           ),
@@ -162,7 +163,7 @@ class PostWidget extends StatelessWidget {
           itemCount: post.images!.length,
           itemBuilder: (ctx, itemIndex, pageViewIndex) {
             return NxNetworkImage(
-              imageUrl: post.images![itemIndex].url,
+              imageUrl: post.images![itemIndex].url!,
               imageFit: BoxFit.cover,
             );
           },

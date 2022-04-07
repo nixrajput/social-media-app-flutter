@@ -21,15 +21,16 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       gender: json['gender'] as String?,
       dob: json['dob'] as String?,
       about: json['about'] as String?,
+      profession: json['profession'] as String?,
       posts: (json['posts'] as List<dynamic>)
           .map((e) => UserPost.fromJson(e as Map<String, dynamic>))
           .toList(),
       followers: json['followers'] as List<dynamic>,
       following: json['following'] as List<dynamic>,
       role: json['role'] as String,
+      accountType: json['accountType'] as String,
       accountStatus: json['accountStatus'] as String,
       isVerified: json['isVerified'] as bool,
-      createdAt: DateTime.parse(json['createdAt'] as String),
       token: json['token'] as String?,
       expiresAt: json['expiresAt'] as String?,
       otp: json['otp'] as String?,
@@ -38,6 +39,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       lastActive: json['lastActive'] == null
           ? null
           : DateTime.parse(json['lastActive'] as String),
+      createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
@@ -51,12 +53,13 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'gender': instance.gender,
       'dob': instance.dob,
       'about': instance.about,
+      'profession': instance.profession,
       'posts': instance.posts,
       'followers': instance.followers,
       'following': instance.following,
       'role': instance.role,
+      'accountType': instance.accountType,
       'accountStatus': instance.accountStatus,
-      'createdAt': instance.createdAt.toIso8601String(),
       'isVerified': instance.isVerified,
       'token': instance.token,
       'expiresAt': instance.expiresAt,
@@ -64,4 +67,5 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'resetPasswordToken': instance.resetPasswordToken,
       'resetPasswordExpire': instance.resetPasswordExpire,
       'lastActive': instance.lastActive?.toIso8601String(),
+      'createdAt': instance.createdAt.toIso8601String(),
     };

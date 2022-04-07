@@ -11,12 +11,11 @@ class User {
     required this.lname,
     required this.email,
     required this.uname,
+    required this.profession,
     this.avatar,
-    required this.followers,
-    required this.following,
+    required this.accountType,
     required this.accountStatus,
     required this.isVerified,
-    required this.createdAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -38,20 +37,17 @@ class User {
   @JsonKey(name: 'uname')
   String uname;
 
+  @JsonKey(name: 'profession')
+  String profession;
+
   @JsonKey(name: 'avatar')
   UserAvatar? avatar;
 
-  @JsonKey(name: 'followers')
-  List<dynamic> followers;
-
-  @JsonKey(name: 'following')
-  List<dynamic> following;
+  @JsonKey(name: 'accountType')
+  String accountType;
 
   @JsonKey(name: 'accountStatus')
   String accountStatus;
-
-  @JsonKey(name: 'createdAt')
-  DateTime createdAt;
 
   @JsonKey(name: 'isVerified')
   bool isVerified;

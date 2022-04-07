@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/apis/models/entities/follower.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
@@ -16,7 +16,7 @@ class FollowerWidget extends StatelessWidget {
     this.bottomMargin,
   }) : super(key: key);
 
-  final Follower user;
+  final User user;
   final double? bottomMargin;
 
   @override
@@ -91,10 +91,10 @@ class FollowerWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileImage(Follower? user) {
-    if (user != null && user.avatar != null) {
+  Widget _buildProfileImage(User? user) {
+    if (user != null && user.avatar != null && user.avatar?.url != null) {
       return NxCircleNetworkImage(
-        imageUrl: user.avatar!.url,
+        imageUrl: user.avatar!.url!,
         radius: Dimens.twentyFour,
       );
     }

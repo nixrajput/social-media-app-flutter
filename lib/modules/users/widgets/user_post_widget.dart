@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_options.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
@@ -61,20 +60,21 @@ class UserPostWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    post.owner.avatar == null
+                    (post.owner.avatar != null &&
+                            post.owner.avatar?.url != null)
                         ? GestureDetector(
                             onTap: () => RouteManagement.goToUserProfileView(
                                 post.owner.id),
-                            child: NxCircleAssetImage(
-                              imgAsset: AssetValues.avatar,
+                            child: NxCircleNetworkImage(
+                              imageUrl: post.owner.avatar!.url!,
                               radius: Dimens.twenty,
                             ),
                           )
                         : GestureDetector(
                             onTap: () => RouteManagement.goToUserProfileView(
                                 post.owner.id),
-                            child: NxCircleNetworkImage(
-                              imageUrl: post.owner.avatar!.url,
+                            child: NxCircleAssetImage(
+                              imgAsset: AssetValues.avatar,
                               radius: Dimens.twenty,
                             ),
                           ),
@@ -159,12 +159,14 @@ class UserPostWidget extends StatelessWidget {
             itemCount: post.images!.length,
             itemBuilder: (ctx, itemIndex, pageViewIndex) {
               return NxNetworkImage(
-                imageUrl: post.images![itemIndex].url,
+                imageUrl: post.images![itemIndex].url!,
+                imageFit: BoxFit.cover,
               );
             },
             options: CarouselOptions(
               aspectRatio: 1 / 1,
               viewportFraction: 1.0,
+              slideIndicator: CircularWaveSlideIndicator(),
             ),
           ),
         ),

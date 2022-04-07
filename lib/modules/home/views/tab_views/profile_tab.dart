@@ -113,7 +113,7 @@ class ProfileTabView extends StatelessWidget {
     if (logic.profileData.user != null &&
         logic.profileData.user!.avatar != null) {
       return NxCircleNetworkImage(
-        imageUrl: logic.profileData.user!.avatar!.url,
+        imageUrl: logic.profileData.user!.avatar!.url!,
         radius: Dimens.sixtyFour,
       );
     }

@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:social_media_app/apis/models/entities/follower.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 
 part 'follower_list_response.g.dart';
 
@@ -22,5 +22,5 @@ class FollowerListResponse {
   int? count;
 
   @JsonKey(name: 'results')
-  List<Follower>? results;
+  List<User>? results;
 }

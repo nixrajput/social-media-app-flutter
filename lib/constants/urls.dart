@@ -19,6 +19,7 @@ abstract class AppUrls {
   static const String updateProfileDetailsEndpoint = '/update/me';
   static const String checkUsernameAvailableEndpoint = '/check/username';
   static const String updateUsernameEndpoint = '/update/username';
+
   static const String followUserEndpoint = '/follow';
   static const String getUsersEndpoint = '/users';
   static const String userDetailsEndpoint = '/user';

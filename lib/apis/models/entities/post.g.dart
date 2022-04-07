@@ -12,7 +12,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       images: (json['images'] as List<dynamic>?)
           ?.map((e) => PostImage.fromJson(e as Map<String, dynamic>))
           .toList(),
-      owner: PostOwner.fromJson(json['owner'] as Map<String, dynamic>),
+      owner: User.fromJson(json['owner'] as Map<String, dynamic>),
       likes: json['likes'] as List<dynamic>,
       comments: json['comments'] as List<dynamic>,
       postStatus: json['postStatus'] as String,

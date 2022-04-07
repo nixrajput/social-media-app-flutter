@@ -1,35 +1,36 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:social_media_app/apis/models/entities/phone.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/user_avatar.dart';
 
-part 'user_profile.g.dart';
+part 'user_details.g.dart';
 
 @JsonSerializable()
-class UserProfile {
-  UserProfile({
+class UserDetails {
+  UserDetails({
     required this.id,
     required this.fname,
     required this.lname,
     required this.email,
     required this.uname,
     this.avatar,
-    this.phone,
     this.gender,
     this.dob,
     this.about,
+    required this.profession,
     required this.posts,
     required this.followers,
     required this.following,
+    required this.role,
+    required this.accountType,
     required this.accountStatus,
     required this.isVerified,
     required this.createdAt,
   });
 
-  factory UserProfile.fromJson(Map<String, dynamic> json) =>
-      _$UserProfileFromJson(json);
+  factory UserDetails.fromJson(Map<String, dynamic> json) =>
+      _$UserDetailsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserProfileToJson(this);
+  Map<String, dynamic> toJson() => _$UserDetailsToJson(this);
 
   @JsonKey(name: '_id')
   String id;
@@ -49,9 +50,6 @@ class UserProfile {
   @JsonKey(name: 'avatar')
   UserAvatar? avatar;
 
-  @JsonKey(name: 'phone')
-  Phone? phone;
-
   @JsonKey(name: 'gender')
   String? gender;
 
@@ -60,6 +58,9 @@ class UserProfile {
 
   @JsonKey(name: 'about')
   String? about;
+
+  @JsonKey(name: 'profession')
+  String profession;
 
   @JsonKey(name: 'posts')
   List<Post> posts;
@@ -70,12 +71,18 @@ class UserProfile {
   @JsonKey(name: 'following')
   List<dynamic> following;
 
+  @JsonKey(name: 'role')
+  String role;
+
+  @JsonKey(name: 'accountType')
+  String accountType;
+
   @JsonKey(name: 'accountStatus')
   String accountStatus;
 
-  @JsonKey(name: 'createdAt')
-  DateTime createdAt;
-
   @JsonKey(name: 'isVerified')
   bool isVerified;
+
+  @JsonKey(name: 'createdAt')
+  DateTime createdAt;
 }

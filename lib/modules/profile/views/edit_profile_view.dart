@@ -199,9 +199,10 @@ class EditProfileView extends StatelessWidget {
 
   Widget _buildProfileImage(AuthController logic) {
     if (logic.profileData.user != null &&
-        logic.profileData.user!.avatar != null) {
+        logic.profileData.user?.avatar != null &&
+        logic.profileData.user?.avatar?.url != null) {
       return NxCircleNetworkImage(
-        imageUrl: logic.profileData.user!.avatar!.url,
+        imageUrl: logic.profileData.user!.avatar!.url!,
         radius: Dimens.sixtyFour,
       );
     }

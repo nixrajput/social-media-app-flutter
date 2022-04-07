@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/apis/models/responses/user_profile_response.dart';
+import 'package:social_media_app/apis/models/responses/user_details_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -17,7 +17,7 @@ class UserProfileController extends GetxController {
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final _userProfile = UserProfileResponse().obs;
+  final _userProfile = UserDetailsResponse().obs;
   final _isLoading = false.obs;
   final _hasError = false.obs;
   final _error = ''.obs;
@@ -26,11 +26,11 @@ class UserProfileController extends GetxController {
 
   bool get hasError => _hasError.value;
 
-  UserProfileResponse get userProfile => _userProfile.value;
+  UserDetailsResponse get userProfile => _userProfile.value;
 
   String? get error => _error.value;
 
-  set setUserProfileData(UserProfileResponse value) {
+  set setUserProfileData(UserDetailsResponse value) {
     _userProfile.value = value;
   }
 
@@ -50,12 +50,13 @@ class UserProfileController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.getUserDetails(userId, _auth.token);
+      final response =
+          await _apiProvider.getUserProfileDetails(userId, _auth.token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        setUserProfileData = UserProfileResponse.fromJson(decodedData);
+        setUserProfileData = UserDetailsResponse.fromJson(decodedData);
         _isLoading.value = false;
         _hasError.value = false;
         update();

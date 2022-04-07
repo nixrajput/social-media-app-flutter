@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/post_image.dart';
-import 'package:social_media_app/apis/models/entities/post_owner.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 
 part 'post.g.dart';
 
@@ -31,7 +31,7 @@ class Post {
   List<PostImage>? images;
 
   @JsonKey(name: 'owner')
-  PostOwner owner;
+  User owner;
 
   @JsonKey(name: 'likes')
   List<dynamic> likes;

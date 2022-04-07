@@ -198,7 +198,8 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getUserDetails(String userId, String token) async {
+  Future<http.Response> getUserProfileDetails(
+      String userId, String token) async {
     final response = await _client.get(
       Uri.parse('${baseUrl!}${AppUrls.userDetailsEndpoint}/$userId'),
       headers: {
