@@ -204,6 +204,17 @@ class PostWidget extends StatelessWidget {
                     '${post.likes.length} likes',
                     style: AppStyles.style14Bold,
                   ),
+                Dimens.boxWidth16,
+                const NxIconButton(
+                  icon: CupertinoIcons.chat_bubble,
+                  onTap: RouteManagement.goToPostDetailsView,
+                ),
+                Dimens.boxWidth4,
+                if (post.comments.isNotEmpty)
+                  Text(
+                    '${post.comments.length} comments',
+                    style: AppStyles.style14Bold,
+                  ),
               ],
             ),
             if (post.caption != null && post.caption!.isNotEmpty)
@@ -222,13 +233,14 @@ class PostWidget extends StatelessWidget {
                   ),
                 ],
               ),
-            Dimens.boxHeight4,
-            NxTextButton(
-              label: 'View All Comments',
-              onTap: () {},
-              textColor: ColorValues.grayColor,
-              fontSize: Dimens.fourteen,
-            ),
+            if (post.comments.isNotEmpty) Dimens.boxHeight4,
+            if (post.comments.isNotEmpty)
+              NxTextButton(
+                label: 'View All Comments',
+                onTap: RouteManagement.goToPostDetailsView,
+                textColor: ColorValues.grayColor,
+                fontSize: Dimens.fourteen,
+              ),
             Dimens.boxHeight4,
             Text(
               GetTimeAgo.parse(post.createdAt),

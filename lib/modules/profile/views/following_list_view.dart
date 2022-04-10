@@ -40,7 +40,7 @@ class FollowingListView extends StatelessWidget {
       child: GetBuilder<FollowingListController>(
         builder: (logic) {
           if (logic.isLoading) {
-            return const Center(child: CupertinoActivityIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (logic.followingList!.results == null ||
               logic.followingList!.results!.isEmpty) {

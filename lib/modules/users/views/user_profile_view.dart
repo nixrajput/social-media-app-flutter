@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
@@ -14,8 +15,8 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
 import 'package:social_media_app/modules/users/controllers/user_profile_controller.dart';
-import 'package:social_media_app/modules/users/widgets/user_post_widget.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class UserProfileView extends StatelessWidget {
@@ -51,10 +52,9 @@ class UserProfileView extends StatelessWidget {
         builder: (logic) {
           if (logic.isLoading) {
             return const Center(
-              child: CupertinoActivityIndicator(),
+              child: CircularProgressIndicator(),
             );
           }
-
           if (logic.hasError) {
             return Center(
               child: Column(
@@ -93,54 +93,8 @@ class UserProfileView extends StatelessWidget {
                         Row(
                           children: [
                             _buildProfileImage(logic),
-                            Dimens.boxWidth16,
-                            logic.userProfile.user!.id ==
-                                    _auth.profileData.user!.id
-                                ? NxOutlinedButton(
-                                    label: StringValues.editProfile,
-                                    onTap: RouteManagement.goToEditProfileView,
-                                    padding: Dimens.edgeInsets0_8,
-                                  )
-                                : NxOutlinedButton(
-                                    label: _auth.profileData.user!.following
-                                            .contains(
-                                                logic.userProfile.user!.id)
-                                        ? StringValues.following
-                                        : StringValues.follow,
-                                    bgColor: _auth.profileData.user!.following
-                                            .contains(
-                                                logic.userProfile.user!.id)
-                                        ? Colors.transparent
-                                        : Theme.of(Get.context!)
-                                            .textTheme
-                                            .bodyText1!
-                                            .color,
-                                    labelColor: _auth
-                                            .profileData.user!.following
-                                            .contains(
-                                                logic.userProfile.user!.id)
-                                        ? Theme.of(Get.context!)
-                                            .textTheme
-                                            .bodyText1!
-                                            .color
-                                        : Theme.of(Get.context!)
-                                            .scaffoldBackgroundColor,
-                                    borderStyle: _auth
-                                            .profileData.user!.following
-                                            .contains(
-                                                logic.userProfile.user!.id)
-                                        ? BorderStyle.solid
-                                        : BorderStyle.none,
-                                    borderWidth: _auth
-                                            .profileData.user!.following
-                                            .contains(
-                                                logic.userProfile.user!.id)
-                                        ? Dimens.one
-                                        : Dimens.zero,
-                                    onTap: () => _auth.followUnfollowUser(
-                                        logic.userProfile.user!.id),
-                                    padding: Dimens.edgeInsets0_8,
-                                  ),
+                            Dimens.boxWidth20,
+                            _buildHeaderButton(logic),
                           ],
                         ),
                         Dimens.boxHeight16,
@@ -158,15 +112,7 @@ class UserProfileView extends StatelessWidget {
                   ),
                 ),
                 Dimens.boxHeight8,
-                if ((logic.userProfile.user!.id == _auth.profileData.user!.id ||
-                        _auth.profileData.user!.following
-                            .contains(logic.userProfile.user!.id)) &&
-                    logic.userProfile.user!.posts.isNotEmpty)
-                  Column(
-                    children: logic.userProfile.user!.posts
-                        .map((item) => UserPostWidget(post: item))
-                        .toList(),
-                  ),
+                _buildUserPosts(logic),
                 Dimens.boxHeight16,
               ],
             ),
@@ -191,14 +137,59 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
+  _buildHeaderButton(UserProfileController logic) {
+    if (logic.userProfile.user!.id == _auth.profileData.user!.id) {
+      return NxOutlinedButton(
+        label: StringValues.editProfile,
+        onTap: RouteManagement.goToEditProfileView,
+        padding: Dimens.edgeInsets0_8,
+      );
+    }
+    return NxOutlinedButton(
+      label:
+          _auth.profileData.user!.following.contains(logic.userProfile.user!.id)
+              ? StringValues.following
+              : StringValues.follow,
+      bgColor:
+          _auth.profileData.user!.following.contains(logic.userProfile.user!.id)
+              ? Colors.transparent
+              : Theme.of(Get.context!).textTheme.bodyText1!.color,
+      labelColor:
+          _auth.profileData.user!.following.contains(logic.userProfile.user!.id)
+              ? Theme.of(Get.context!).textTheme.bodyText1!.color
+              : Theme.of(Get.context!).scaffoldBackgroundColor,
+      borderStyle:
+          _auth.profileData.user!.following.contains(logic.userProfile.user!.id)
+              ? BorderStyle.solid
+              : BorderStyle.none,
+      borderWidth:
+          _auth.profileData.user!.following.contains(logic.userProfile.user!.id)
+              ? Dimens.one
+              : Dimens.zero,
+      onTap: () => _auth.followUnfollowUser(logic.userProfile.user!.id),
+      padding: Dimens.edgeInsets0_8,
+    );
+  }
+
   Widget _buildUserDetails(UserProfileController logic) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            '${logic.userProfile.user!.fname} ${logic.userProfile.user!.lname}',
-            style: AppStyles.style18Bold,
+          Row(
+            children: [
+              Text(
+                '${logic.userProfile.user!.fname} ${logic.userProfile.user!.lname}',
+                style: AppStyles.style18Bold,
+              ),
+              if (logic.userProfile.user!.isVerified) Dimens.boxWidth4,
+              if (logic.userProfile.user!.isVerified)
+                Icon(
+                  CupertinoIcons.checkmark_seal,
+                  color: ColorValues.primaryColor,
+                  size: Dimens.sixTeen,
+                )
+            ],
           ),
           Text(
             "@${logic.userProfile.user!.uname}",
@@ -235,4 +226,103 @@ class UserProfileView extends StatelessWidget {
           ),
         ],
       );
+
+  _buildUserPosts(UserProfileController logic) {
+    if (logic.userProfile.user?.id == _auth.profileData.user!.id) {
+      if (logic.userProfile.user!.posts.isEmpty) {
+        return Center(
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: 16.h,
+              left: 16.0.w,
+              right: 16.0.w,
+            ),
+            child: Text(
+              StringValues.noPosts,
+              style: AppStyles.style20Normal.copyWith(
+                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      }
+      return Column(
+        children: logic.userProfile.user!.posts
+            .map((item) => PostWidget(post: item))
+            .toList(),
+      );
+    }
+
+    if (logic.userProfile.user!.accountType == StringValues.private) {
+      if (_auth.profileData.user!.following
+          .contains(logic.userProfile.user!.id)) {
+        if (logic.userProfile.user!.posts.isEmpty) {
+          return Center(
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: 16.h,
+                left: 16.0.w,
+                right: 16.0.w,
+              ),
+              child: Text(
+                StringValues.noPosts,
+                style: AppStyles.style20Normal.copyWith(
+                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        }
+        return Column(
+          children: logic.userProfile.user!.posts
+              .map((item) => PostWidget(post: item))
+              .toList(),
+        );
+      }
+
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 16.h,
+            left: 16.w,
+            right: 16.w,
+          ),
+          child: Text(
+            StringValues.privateAccountWarning,
+            style: AppStyles.style20Normal.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    if (logic.userProfile.user!.posts.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 16.h,
+            left: 16.0.w,
+            right: 16.0.w,
+          ),
+          child: Text(
+            StringValues.noPosts,
+            style: AppStyles.style20Normal.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      children: logic.userProfile.user!.posts
+          .map((item) => PostWidget(post: item))
+          .toList(),
+    );
+  }
 }

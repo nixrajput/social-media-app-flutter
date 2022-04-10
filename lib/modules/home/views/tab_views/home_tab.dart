@@ -4,11 +4,13 @@ import 'package:get/get.dart';
 import 'package:social_media_app/common/asset_image.dart';
 import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/common/sliver_app_bar.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
+import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
 
 class HomeTabView extends StatelessWidget {
   const HomeTabView({Key? key}) : super(key: key);
@@ -38,6 +40,15 @@ class HomeTabView extends StatelessWidget {
                   )
                 ],
               ),
+              actions: GetBuilder<CreatePostController>(
+                  builder: (con) => InkWell(
+                        onTap: con.createNewPost,
+                        child: Icon(
+                          CupertinoIcons.add_circled,
+                          size: Dimens.twentyEight,
+                          color: ColorValues.primaryColor,
+                        ),
+                      )),
             ),
             _buildBody(),
           ],
@@ -52,7 +63,7 @@ class HomeTabView extends StatelessWidget {
         if (logic.isLoading) {
           return const SliverFillRemaining(
             child: Center(
-              child: CupertinoActivityIndicator(),
+              child: CircularProgressIndicator(),
             ),
           );
         }

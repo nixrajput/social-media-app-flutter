@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:social_media_app/common/sliver_app_bar.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -25,14 +26,25 @@ class NotificationTabView extends StatelessWidget {
                 style: AppStyles.style18Bold,
               ),
             ),
-            SliverFillRemaining(
-              child: _buildNotificationBody(),
-            ),
+            _buildNotificationBody(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNotificationBody() => Column();
+  Widget _buildNotificationBody() => SliverFillRemaining(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Feature is in progress...",
+              style: AppStyles.style14Bold.copyWith(
+                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              ),
+            )
+          ],
+        ),
+      );
 }

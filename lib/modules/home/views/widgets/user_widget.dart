@@ -61,7 +61,7 @@ class UserWidget extends StatelessWidget {
                             if (user.isVerified)
                               Icon(
                                 CupertinoIcons.checkmark_seal,
-                                color: ColorValues.successColor,
+                                color: ColorValues.primaryColor,
                                 size: Dimens.sixTeen,
                               )
                           ],

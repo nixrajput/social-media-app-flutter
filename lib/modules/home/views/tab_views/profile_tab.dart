@@ -7,7 +7,6 @@ import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/count_widget.dart';
 import 'package:social_media_app/common/elevated_card.dart';
-import 'package:social_media_app/common/loading_indicator.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/common/sliver_app_bar.dart';
@@ -56,7 +55,7 @@ class ProfileTabView extends StatelessWidget {
   Widget _buildProfileBody() => GetBuilder<AuthController>(
         builder: (logic) => (logic.isLoading)
             ? const Center(
-                child: NxLoadingIndicator(),
+                child: CircularProgressIndicator(),
               )
             : logic.profileData.user == null
                 ? Center(

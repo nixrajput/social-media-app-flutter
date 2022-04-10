@@ -24,7 +24,7 @@ class SplashView extends StatelessWidget {
                 height: Dimens.hundred * 1.6,
               ),
               Dimens.boxHeight32,
-              const CupertinoActivityIndicator(),
+              const CircularProgressIndicator(),
             ],
           ),
         ),

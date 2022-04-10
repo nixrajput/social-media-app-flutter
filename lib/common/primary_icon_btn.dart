@@ -9,6 +9,8 @@ class NxIconButton extends StatelessWidget {
   final Color? bgColor;
   final EdgeInsets? padding;
   final double? borderRadius;
+  final double? width;
+  final double? height;
 
   const NxIconButton({
     Key? key,
@@ -19,6 +21,8 @@ class NxIconButton extends StatelessWidget {
     this.padding,
     this.iconSize,
     this.borderRadius,
+    this.width,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -26,6 +30,8 @@ class NxIconButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
+        width: width,
+        height: height,
         padding: padding ?? Dimens.edgeInsets0,
         decoration: BoxDecoration(
           color: bgColor ?? Colors.transparent,

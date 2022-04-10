@@ -22,15 +22,12 @@ abstract class AppUtils {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Center(
-            child: SizedBox(
-              height: Dimens.hundred,
-              child: CupertinoTheme(
-                data: CupertinoTheme.of(Get.context!).copyWith(
-                  brightness: Brightness.dark,
-                  primaryColor: Colors.white,
-                ),
-                child: const CupertinoActivityIndicator(),
+            child: CupertinoTheme(
+              data: CupertinoTheme.of(Get.context!).copyWith(
+                brightness: Brightness.dark,
+                primaryColor: Colors.white,
               ),
+              child: const CircularProgressIndicator(),
             ),
           ),
         ),

@@ -103,6 +103,8 @@ abstract class StringValues {
   static const usernameAvailable = 'Username available.';
   static const usernameNotAvailable = 'Username not available.';
   static const userIdNotFound = 'User Id not found.';
+  static const privateAccountWarning = 'Account is private.';
+  static const notFollowingWarning = 'You are not following the user.';
   static const exit = 'Exit';
   static const male = 'Male';
   static const female = 'Female';
@@ -111,6 +113,13 @@ abstract class StringValues {
   static const share = 'Share';
   static const report = 'Report';
   static const posts = 'Posts';
+  static const public = 'public';
+  static const private = 'private';
+  static const display = 'Display';
+  static const account = 'Account';
+  static const security = 'Security';
+  static const privacy = 'Privacy';
+  static const addComment = 'Add a comment';
 }
 
 abstract class AssetValues {
@@ -118,4 +127,14 @@ abstract class AssetValues {
   static const String avatar = 'assets/avatar.png';
   static const String vector1 = 'assets/vector-1.png';
   static const String error = 'assets/error.png';
+}
+
+extension StringCasingExtension on String {
+  String toCapitalized() =>
+      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
+
+  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
+      .split(' ')
+      .map((str) => str.toCapitalized())
+      .join(' ');
 }

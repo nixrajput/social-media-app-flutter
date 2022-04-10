@@ -41,7 +41,7 @@ class FollowersListView extends StatelessWidget {
         builder: (logic) {
           if (logic.isLoading) {
             return const Center(
-              child: CupertinoActivityIndicator(),
+              child: CircularProgressIndicator(),
             );
           }
           if (logic.followersList!.results == null ||

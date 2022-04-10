@@ -7,8 +7,10 @@ import 'package:social_media_app/modules/auth/views/login_view.dart';
 import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
 import 'package:social_media_app/modules/error/views/error_view.dart';
+import 'package:social_media_app/modules/home/bindings/comments_binding.dart';
 import 'package:social_media_app/modules/home/bindings/home_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
+import 'package:social_media_app/modules/home/views/post_details_view.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
 import 'package:social_media_app/modules/post/views/create_post_view.dart';
 import 'package:social_media_app/modules/profile/bindings/about_binding.dart';
@@ -167,6 +169,13 @@ abstract class AppPages {
       name: _Routes.userProfile,
       page: UserProfileView.new,
       binding: UserProfileBinding(),
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.postDetails,
+      page: PostDetailsView.new,
+      binding: CommentsBinding(),
       transitionDuration: transitionDuration,
       transition: Transition.downToUp,
     ),
