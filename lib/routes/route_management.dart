@@ -82,8 +82,8 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.userProfile, arguments: userId);
   }
 
-  static void goToPostDetailsView() {
-    Get.toNamed(AppRoutes.postDetails);
+  static void goToPostDetailsView(String postId) {
+    Get.toNamed(AppRoutes.postDetails, arguments: postId);
   }
 
   static void goToBack() {

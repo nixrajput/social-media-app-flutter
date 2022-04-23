@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 
 part 'comment.g.dart';
 
@@ -25,7 +26,7 @@ class Comment {
   final String comment;
 
   @JsonKey(name: 'user')
-  final String user;
+  final User user;
 
   @JsonKey(name: 'post')
   final String post;

@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
     return GetBuilder<AppThemeController>(
       builder: (logic) => ScreenUtilInit(
         designSize: const Size(392, 744),
-        builder: () => NxOverlayWidget(
+        builder: (_) => NxOverlayWidget(
           child: GetMaterialApp(
             title: StringValues.appName,
             debugShowCheckedModeBanner: false,

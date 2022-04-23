@@ -9,7 +9,7 @@ part of 'comment.dart';
 Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
       id: json['_id'] as String,
       comment: json['comment'] as String,
-      user: json['user'] as String,
+      user: User.fromJson(json['user'] as Map<String, dynamic>),
       post: json['post'] as String,
       likes: json['likes'] as List<dynamic>,
       createdAt: DateTime.parse(json['createdAt'] as String),

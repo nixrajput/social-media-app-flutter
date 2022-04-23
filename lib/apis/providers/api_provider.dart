@@ -270,6 +270,18 @@ class ApiProvider {
     return response;
   }
 
+  Future<http.Response> fetchPostDetails(String token, String postId) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.postEndpoint}?id=$postId'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
   Future<http.Response> addComment(
       String token, String postId, String comment) async {
     final response = await _client.post(

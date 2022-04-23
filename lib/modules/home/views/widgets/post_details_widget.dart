@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
-import 'package:social_media_app/apis/models/entities/post.dart';
+import 'package:social_media_app/apis/models/entities/post_details.dart';
 import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/cached_network_image.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
@@ -16,21 +16,21 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/modules/home/controllers/post_controller.dart';
+import 'package:social_media_app/modules/home/controllers/post_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
-class PostWidget extends StatelessWidget {
-  const PostWidget({
+class PostDetailsWidget extends StatelessWidget {
+  const PostDetailsWidget({
     Key? key,
     required this.post,
   }) : super(key: key);
 
-  final Post post;
+  final PostDetails post;
 
   @override
   Widget build(BuildContext context) {
     final _auth = AuthController.find;
-    final _postController = PostController.find;
+    final _postDetailsController = PostDetailsController.find;
 
     return NxElevatedCard(
       child: Column(
@@ -38,15 +38,16 @@ class PostWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildPostHead(_auth, _postController),
-          _buildPostBody(_postController),
-          _buildPostFooter(_auth, _postController),
+          _buildPostHead(_auth, _postDetailsController),
+          _buildPostBody(_postDetailsController),
+          _buildPostFooter(_auth, _postDetailsController),
         ],
       ),
     );
   }
 
-  Widget _buildPostHead(AuthController _auth, PostController _postController) =>
+  Widget _buildPostHead(
+          AuthController _auth, PostDetailsController _postController) =>
       Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
@@ -155,9 +156,10 @@ class PostWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildPostBody(PostController _postController) => GestureDetector(
+  Widget _buildPostBody(PostDetailsController _postController) =>
+      GestureDetector(
         onDoubleTap: () {
-          _postController.toggleLikePost(post.id);
+          _postController.toggleLikePost();
         },
         child: FlutterCarousel.builder(
           itemCount: post.images!.length,
@@ -176,7 +178,7 @@ class PostWidget extends StatelessWidget {
       );
 
   Widget _buildPostFooter(
-          AuthController _auth, PostController _postController) =>
+          AuthController _auth, PostDetailsController _postController) =>
       Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
@@ -192,7 +194,7 @@ class PostWidget extends StatelessWidget {
                       ? CupertinoIcons.heart_solid
                       : CupertinoIcons.heart,
                   onTap: () {
-                    _postController.toggleLikePost(post.id);
+                    _postController.toggleLikePost();
                   },
                   iconColor: post.likes.contains(_auth.profileData.user?.id)
                       ? ColorValues.primaryColor
