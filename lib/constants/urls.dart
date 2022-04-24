@@ -2,6 +2,7 @@ abstract class AppUrls {
   // Base URL
   static const String baseUrl =
       'https://nixlab-social-api.herokuapp.com/api/v1';
+  static const String baseUrl2 = 'https://zany-gold-foal-wig.cyclic.app/api/v1';
 
 //  Endpoints
   static const String loginEndpoint = '/login';

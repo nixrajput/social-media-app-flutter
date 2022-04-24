@@ -8,11 +8,11 @@ import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
 import 'package:social_media_app/modules/error/views/error_view.dart';
 import 'package:social_media_app/modules/home/bindings/home_binding.dart';
-import 'package:social_media_app/modules/home/bindings/post_details_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
-import 'package:social_media_app/modules/home/views/post_details_view.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
+import 'package:social_media_app/modules/post/bindings/post_details_binding.dart';
 import 'package:social_media_app/modules/post/views/create_post_view.dart';
+import 'package:social_media_app/modules/post/views/post_details_view.dart';
 import 'package:social_media_app/modules/profile/bindings/about_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/change_password_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/dob_binding.dart';
@@ -39,7 +39,7 @@ import 'package:social_media_app/modules/users/views/user_profile_view.dart';
 part 'app_routes.dart';
 
 abstract class AppPages {
-  static var transitionDuration = const Duration(milliseconds: 300);
+  static var transitionDuration = const Duration(milliseconds: 200);
 
   static final pages = [
     GetPage(

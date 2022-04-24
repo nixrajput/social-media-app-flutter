@@ -9,9 +9,10 @@ part of 'post_details_response.dart';
 PostDetailsResponse _$PostDetailsResponseFromJson(Map<String, dynamic> json) =>
     PostDetailsResponse(
       success: json['success'] as bool?,
-    )..post = json['post'] == null
-        ? null
-        : PostDetails.fromJson(json['post'] as Map<String, dynamic>);
+      post: json['post'] == null
+          ? null
+          : PostDetails.fromJson(json['post'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$PostDetailsResponseToJson(
         PostDetailsResponse instance) =>

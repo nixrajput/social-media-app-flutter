@@ -128,13 +128,14 @@ class AuthController extends GetxController {
         await _logout();
       }
     }
-    if (_profileData.value.user != null &&
-        _token.value == _profileData.value.user!.token) {
-      await _logout();
-      AppUtils.showSnackBar(
-        StringValues.tokenError,
-        StringValues.error,
-      );
+    if (_profileData.value.user != null) {
+      if (_profileData.value.user!.token == _token.value) {
+        await _logout();
+        AppUtils.showSnackBar(
+          StringValues.tokenError,
+          StringValues.error,
+        );
+      }
     }
   }
 

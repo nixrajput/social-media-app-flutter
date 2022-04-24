@@ -8,7 +8,7 @@ class HomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(HomeController.new);
-    Get.lazyPut(PostController.new);
+    Get.lazyPut(PostController.new, fenix: true);
     Get.lazyPut(CreatePostController.new);
     Get.lazyPut(UserController.new);
   }
