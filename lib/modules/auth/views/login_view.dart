@@ -70,31 +70,45 @@ class LoginView extends StatelessWidget {
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.mail,
-                          color: ColorValues.darkGrayColor,
-                        ),
+                        border: OutlineInputBorder(),
                         hintText: StringValues.email,
+                        hintStyle: TextStyle(
+                          color: ColorValues.grayColor,
+                        ),
                       ),
                       keyboardType: TextInputType.emailAddress,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.emailTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.boxHeight24,
                     TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.lock,
-                          color: ColorValues.darkGrayColor,
+                      obscureText: logic.showPassword,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        suffixIcon: InkWell(
+                          onTap: logic.toggleViewPassword,
+                          child: Icon(
+                            logic.showPassword
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash,
+                          ),
                         ),
                         hintText: StringValues.password,
+                        hintStyle: const TextStyle(
+                          color: ColorValues.grayColor,
+                        ),
                       ),
                       keyboardType: TextInputType.visiblePassword,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.passwordTextController,
                       onEditingComplete: logic.focusNode.unfocus,
                     ),
@@ -107,6 +121,7 @@ class LoginView extends StatelessWidget {
                     NxFilledButton(
                       onTap: () => logic.login(),
                       label: StringValues.login,
+                      fontSize: Dimens.sixTeen,
                       width: double.infinity,
                     ),
                     Dimens.boxHeight32,

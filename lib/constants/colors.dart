@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 
 abstract class ColorValues {
   static const MaterialColor primarySwatch = MaterialColor(
-    0xFFE0183C,
+    0xFF2878F0,
     {
-      50: Color.fromRGBO(224, 24, 60, .1),
-      100: Color.fromRGBO(224, 24, 60, .2),
-      200: Color.fromRGBO(224, 24, 60, .3),
-      300: Color.fromRGBO(224, 24, 60, .4),
-      400: Color.fromRGBO(224, 24, 60, .5),
-      500: Color.fromRGBO(224, 24, 60, .6),
-      600: Color.fromRGBO(224, 24, 60, .7),
-      700: Color.fromRGBO(224, 24, 60, .8),
-      800: Color.fromRGBO(224, 24, 60, .9),
-      900: Color.fromRGBO(224, 24, 60, 1),
+      50: Color.fromRGBO(40, 120, 240, .1),
+      100: Color.fromRGBO(40, 120, 240, .2),
+      200: Color.fromRGBO(40, 120, 240, .3),
+      300: Color.fromRGBO(40, 120, 240, .4),
+      400: Color.fromRGBO(40, 120, 240, .5),
+      500: Color.fromRGBO(40, 120, 240, .6),
+      600: Color.fromRGBO(40, 120, 240, .7),
+      700: Color.fromRGBO(40, 120, 240, .8),
+      800: Color.fromRGBO(40, 120, 240, .9),
+      900: Color.fromRGBO(40, 120, 240, 1),
     },
   );
 
-  static const Color primaryColor = Color(0xFFE0183C);
-  static const Color primaryLightColor = Color(0xFFCB6A7B);
+  static const Color primaryColor = Color(0xFF2878F0);
+  static const Color primaryLightColor = Color(0xFF72A3ED);
   static const Color primaryTextColor = Color(0xFF505050);
 
   static const Color successColor = Color(0xFF4CAF50);

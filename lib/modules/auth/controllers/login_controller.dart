@@ -22,14 +22,22 @@ class LoginController extends GetxController {
   final passwordTextController = TextEditingController();
 
   final FocusScopeNode focusNode = FocusScopeNode();
+  final _showPassword = true.obs;
 
   final _isLoading = false.obs;
 
   bool get isLoading => _isLoading.value;
 
+  bool get showPassword => _showPassword.value;
+
   void _clearLoginTextControllers() {
     emailTextController.clear();
     passwordTextController.clear();
+  }
+
+  void toggleViewPassword() {
+    _showPassword(!_showPassword.value);
+    update();
   }
 
   Future<void> _login(String email, String password) async {

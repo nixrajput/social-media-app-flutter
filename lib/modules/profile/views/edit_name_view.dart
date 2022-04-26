@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -61,29 +62,39 @@ class EditNameView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Dimens.boxHeight20,
+                  Dimens.boxHeight16,
                   TextFormField(
                     decoration: const InputDecoration(
                       hintText: StringValues.firstName,
                       border: OutlineInputBorder(),
+                      hintStyle: TextStyle(
+                        color: ColorValues.grayColor,
+                      ),
                     ),
                     maxLines: 1,
                     keyboardType: TextInputType.name,
                     textCapitalization: TextCapitalization.words,
-                    style: AppStyles.style16Normal,
+                    style: AppStyles.style16Normal.copyWith(
+                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    ),
                     controller: logic.fNameTextController,
                     onEditingComplete: logic.focusNode.nextFocus,
                   ),
-                  Dimens.boxHeight16,
+                  Dimens.boxHeight24,
                   TextFormField(
                     decoration: const InputDecoration(
                       hintText: StringValues.lastName,
                       border: OutlineInputBorder(),
+                      hintStyle: TextStyle(
+                        color: ColorValues.grayColor,
+                      ),
                     ),
                     maxLines: 1,
                     keyboardType: TextInputType.name,
                     textCapitalization: TextCapitalization.words,
-                    style: AppStyles.style16Normal,
+                    style: AppStyles.style16Normal.copyWith(
+                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    ),
                     controller: logic.lNameTextController,
                     onEditingComplete: logic.focusNode.unfocus,
                   ),

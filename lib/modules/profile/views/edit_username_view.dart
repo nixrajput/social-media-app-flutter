@@ -62,16 +62,21 @@ class EditUsernameView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Dimens.boxHeight20,
+                  Dimens.boxHeight16,
                   TextFormField(
                     decoration: const InputDecoration(
                       hintText: StringValues.username,
                       border: OutlineInputBorder(),
+                      hintStyle: TextStyle(
+                        color: ColorValues.grayColor,
+                      ),
                     ),
                     maxLines: 1,
                     initialValue: logic.username,
                     keyboardType: TextInputType.text,
-                    style: AppStyles.style16Normal,
+                    style: AppStyles.style16Normal.copyWith(
+                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    ),
                     onChanged: (value) {
                       logic.setUsername = value;
                     },

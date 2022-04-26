@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/asset_image.dart';
@@ -70,22 +69,26 @@ class ForgotPasswordView extends StatelessWidget {
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.mail,
-                          color: ColorValues.darkGrayColor,
-                        ),
+                        border: OutlineInputBorder(),
                         hintText: StringValues.email,
+                        hintStyle: TextStyle(
+                          color: ColorValues.grayColor,
+                        ),
                       ),
                       keyboardType: TextInputType.emailAddress,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.emailTextController,
-                      onEditingComplete: logic.focusNode.nextFocus,
+                      onEditingComplete: logic.focusNode.unfocus,
                     ),
                     Dimens.boxHeight32,
                     NxFilledButton(
                       onTap: () => logic.sendResetPasswordOTP(),
                       label: StringValues.getOtp,
+                      fontSize: Dimens.sixTeen,
                       width: double.infinity,
                     ),
                     Dimens.boxHeight32,

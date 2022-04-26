@@ -24,8 +24,24 @@ class ChangePasswordController extends GetxController {
   final FocusScopeNode focusNode = FocusScopeNode();
 
   final _isLoading = false.obs;
+  final _showPassword = true.obs;
+  final _showNewPassword = true.obs;
 
   bool get isLoading => _isLoading.value;
+
+  bool get showPassword => _showPassword.value;
+
+  bool get showNewPassword => _showNewPassword.value;
+
+  void toggleViewPassword() {
+    _showPassword(!_showPassword.value);
+    update();
+  }
+
+  void toggleViewNewPassword() {
+    _showNewPassword(!_showNewPassword.value);
+    update();
+  }
 
   Future<void> _changePassword(
     String oldPassword,

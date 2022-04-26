@@ -59,8 +59,7 @@ class EditGenderView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Dimens.boxHeight20,
-                Dimens.divider,
+                Dimens.boxHeight16,
                 RadioListTile(
                   onChanged: (value) {
                     logic.setGender = value.toString();
@@ -88,7 +87,6 @@ class EditGenderView extends StatelessWidget {
                   title: const Text(StringValues.others),
                   activeColor: ColorValues.primaryColor,
                 ),
-                Dimens.divider,
                 Dimens.boxHeight16,
               ],
             ),

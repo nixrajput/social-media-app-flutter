@@ -63,7 +63,7 @@ class EditDOBView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Dimens.boxHeight20,
+                  Dimens.boxHeight16,
                   GestureDetector(
                     onTap: () {
                       DatePicker.showDatePicker(
@@ -101,10 +101,16 @@ class EditDOBView extends StatelessWidget {
                       decoration: const InputDecoration(
                         hintText: StringValues.dob,
                         border: OutlineInputBorder(),
+                        hintStyle: TextStyle(
+                          color: ColorValues.grayColor,
+                        ),
                       ),
                       maxLines: 1,
                       keyboardType: TextInputType.datetime,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.dobTextController,
                       enabled: false,
                       onEditingComplete: logic.focusNode.unfocus,

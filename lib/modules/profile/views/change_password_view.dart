@@ -63,51 +63,81 @@ class ChangePasswordView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Dimens.boxHeight20,
+                  Dimens.boxHeight16,
                   TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      icon: Icon(
-                        CupertinoIcons.lock_open,
-                        color: ColorValues.darkGrayColor,
+                    obscureText: logic.showPassword,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      hintStyle: const TextStyle(
+                        color: ColorValues.grayColor,
                       ),
                       hintText: StringValues.oldPassword,
+                      suffixIcon: InkWell(
+                        onTap: logic.toggleViewPassword,
+                        child: Icon(
+                          logic.showPassword
+                              ? CupertinoIcons.eye
+                              : CupertinoIcons.eye_slash,
+                        ),
+                      ),
                     ),
                     keyboardType: TextInputType.visiblePassword,
                     maxLines: 1,
-                    style: AppStyles.style16Normal,
+                    style: AppStyles.style16Normal.copyWith(
+                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    ),
                     controller: logic.oldPasswordTextController,
                     onEditingComplete: logic.focusNode.nextFocus,
                   ),
-                  Dimens.boxHeight16,
+                  Dimens.boxHeight24,
                   TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      icon: Icon(
-                        CupertinoIcons.lock,
-                        color: ColorValues.darkGrayColor,
+                    obscureText: logic.showNewPassword,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      hintStyle: const TextStyle(
+                        color: ColorValues.grayColor,
                       ),
                       hintText: StringValues.newPassword,
+                      suffixIcon: InkWell(
+                        onTap: logic.toggleViewNewPassword,
+                        child: Icon(
+                          logic.showNewPassword
+                              ? CupertinoIcons.eye
+                              : CupertinoIcons.eye_slash,
+                        ),
+                      ),
                     ),
                     keyboardType: TextInputType.visiblePassword,
                     maxLines: 1,
-                    style: AppStyles.style16Normal,
+                    style: AppStyles.style16Normal.copyWith(
+                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    ),
                     controller: logic.newPasswordTextController,
                     onEditingComplete: logic.focusNode.nextFocus,
                   ),
-                  Dimens.boxHeight16,
+                  Dimens.boxHeight24,
                   TextFormField(
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      icon: Icon(
-                        CupertinoIcons.lock,
-                        color: ColorValues.darkGrayColor,
+                    obscureText: logic.showNewPassword,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      hintStyle: const TextStyle(
+                        color: ColorValues.grayColor,
                       ),
                       hintText: StringValues.confirmPassword,
+                      suffixIcon: InkWell(
+                        onTap: logic.toggleViewNewPassword,
+                        child: Icon(
+                          logic.showNewPassword
+                              ? CupertinoIcons.eye
+                              : CupertinoIcons.eye_slash,
+                        ),
+                      ),
                     ),
                     keyboardType: TextInputType.visiblePassword,
                     maxLines: 1,
-                    style: AppStyles.style16Normal,
+                    style: AppStyles.style16Normal.copyWith(
+                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    ),
                     controller: logic.confirmPasswordTextController,
                     onEditingComplete: logic.focusNode.unfocus,
                   ),

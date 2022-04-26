@@ -25,8 +25,11 @@ class RegisterController extends GetxController {
   final FocusScopeNode focusNode = FocusScopeNode();
 
   final _isLoading = false.obs;
+  final _showPassword = true.obs;
 
   bool get isLoading => _isLoading.value;
+
+  bool get showPassword => _showPassword.value;
 
   void _clearRegisterTextControllers() {
     fNameTextController.clear();
@@ -35,6 +38,11 @@ class RegisterController extends GetxController {
     unameTextController.clear();
     passwordTextController.clear();
     confirmPasswordTextController.clear();
+  }
+
+  void toggleViewPassword() {
+    _showPassword(!_showPassword.value);
+    update();
   }
 
   Future<void> _register(

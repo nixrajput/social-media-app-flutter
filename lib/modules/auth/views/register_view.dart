@@ -71,92 +71,126 @@ class RegisterView extends StatelessWidget {
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.person,
-                          color: ColorValues.darkGrayColor,
+                        border: OutlineInputBorder(),
+                        hintStyle: TextStyle(
+                          color: ColorValues.grayColor,
                         ),
                         hintText: StringValues.firstName,
                       ),
                       keyboardType: TextInputType.name,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.fNameTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.boxHeight24,
                     TextFormField(
                       decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.person,
-                          color: ColorValues.darkGrayColor,
+                        border: OutlineInputBorder(),
+                        hintStyle: TextStyle(
+                          color: ColorValues.grayColor,
                         ),
                         hintText: StringValues.lastName,
                       ),
                       keyboardType: TextInputType.name,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.lNameTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.boxHeight24,
                     TextFormField(
                       decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.mail,
-                          color: ColorValues.darkGrayColor,
-                        ),
+                        border: OutlineInputBorder(),
                         hintText: StringValues.email,
+                        hintStyle: TextStyle(
+                          color: ColorValues.grayColor,
+                        ),
                       ),
                       keyboardType: TextInputType.emailAddress,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.emailTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.boxHeight24,
                     TextFormField(
                       decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.info,
-                          color: ColorValues.darkGrayColor,
+                        border: OutlineInputBorder(),
+                        hintStyle: TextStyle(
+                          color: ColorValues.grayColor,
                         ),
                         hintText: StringValues.username,
                       ),
                       keyboardType: TextInputType.text,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.unameTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
                     ),
                     Dimens.boxHeight16,
                     TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.lock,
-                          color: ColorValues.darkGrayColor,
+                      obscureText: logic.showPassword,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        hintStyle: const TextStyle(
+                          color: ColorValues.grayColor,
                         ),
                         hintText: StringValues.password,
+                        suffixIcon: InkWell(
+                          onTap: logic.toggleViewPassword,
+                          child: Icon(
+                            logic.showPassword
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash,
+                          ),
+                        ),
                       ),
                       keyboardType: TextInputType.visiblePassword,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.passwordTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
                     ),
                     Dimens.boxHeight16,
                     TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.lock,
-                          color: ColorValues.darkGrayColor,
+                      obscureText: logic.showPassword,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        hintStyle: const TextStyle(
+                          color: ColorValues.grayColor,
                         ),
                         hintText: StringValues.confirmPassword,
+                        suffixIcon: InkWell(
+                          onTap: logic.toggleViewPassword,
+                          child: Icon(
+                            logic.showPassword
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash,
+                          ),
+                        ),
                       ),
                       keyboardType: TextInputType.visiblePassword,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.confirmPasswordTextController,
                       onEditingComplete: logic.focusNode.unfocus,
                     ),
@@ -164,6 +198,7 @@ class RegisterView extends StatelessWidget {
                     NxFilledButton(
                       onTap: () => logic.register(),
                       label: StringValues.register,
+                      fontSize: Dimens.sixTeen,
                       width: double.infinity,
                     ),
                     Dimens.boxHeight32,

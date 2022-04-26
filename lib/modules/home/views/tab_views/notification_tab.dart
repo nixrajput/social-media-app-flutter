@@ -39,7 +39,7 @@ class NotificationTabView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Feature is in progress...",
+              "Feature is coming soon",
               style: AppStyles.style14Bold.copyWith(
                 color: Theme.of(Get.context!).textTheme.subtitle1!.color,
               ),

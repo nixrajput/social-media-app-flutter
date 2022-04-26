@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/asset_image.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
@@ -70,47 +71,76 @@ class ResetPasswordView extends StatelessWidget {
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.number_circle,
-                          color: ColorValues.darkGrayColor,
+                        border: OutlineInputBorder(),
+                        hintStyle: TextStyle(
+                          color: ColorValues.grayColor,
                         ),
                         hintText: StringValues.otp,
                       ),
                       keyboardType: TextInputType.number,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(6),
+                      ],
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.otpTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.boxHeight24,
                     TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.lock,
-                          color: ColorValues.darkGrayColor,
+                      obscureText: logic.showPassword,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        hintStyle: const TextStyle(
+                          color: ColorValues.grayColor,
                         ),
                         hintText: StringValues.newPassword,
+                        suffixIcon: InkWell(
+                          onTap: logic.toggleViewPassword,
+                          child: Icon(
+                            logic.showPassword
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash,
+                          ),
+                        ),
                       ),
                       keyboardType: TextInputType.visiblePassword,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.passwordTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight16,
+                    Dimens.boxHeight24,
                     TextFormField(
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        icon: Icon(
-                          CupertinoIcons.lock,
-                          color: ColorValues.darkGrayColor,
+                      obscureText: logic.showPassword,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        hintStyle: const TextStyle(
+                          color: ColorValues.grayColor,
                         ),
                         hintText: StringValues.confirmPassword,
+                        suffixIcon: InkWell(
+                          onTap: logic.toggleViewPassword,
+                          child: Icon(
+                            logic.showPassword
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash,
+                          ),
+                        ),
                       ),
                       keyboardType: TextInputType.visiblePassword,
                       maxLines: 1,
-                      style: AppStyles.style16Normal,
+                      style: AppStyles.style16Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
                       controller: logic.confirmPasswordTextController,
                       onEditingComplete: logic.focusNode.unfocus,
                     ),
@@ -118,6 +148,7 @@ class ResetPasswordView extends StatelessWidget {
                     NxFilledButton(
                       onTap: () => logic.resetPassword(),
                       label: StringValues.resetPassword,
+                      fontSize: Dimens.sixTeen,
                       width: double.infinity,
                     ),
                     Dimens.boxHeight32,
