@@ -87,63 +87,6 @@ class PostController extends GetxController {
     }
   }
 
-  void _toggleLike(postId) {
-    var postIndex = _postList.indexWhere((element) => element.id == postId);
-    var tempPost = _postList.elementAt(postIndex);
-
-    if (tempPost.likes.contains(_auth.profileData.user!.id)) {
-      tempPost.likes.remove(_auth.profileData.user!.id);
-    } else {
-      tempPost.likes.add(_auth.profileData.user!.id);
-    }
-    update();
-  }
-
-  Future<void> _toggleLikePost(String postId) async {
-    AppUtils.printLog("Like/Unlike Post Request...");
-
-    _toggleLike(postId);
-
-    try {
-      final response = await _apiProvider.likeUnlikePost(_auth.token, postId);
-
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      final apiResponse = CommonResponse.fromJson(decodedData);
-
-      if (response.statusCode == 200) {
-        AppUtils.showSnackBar(
-          apiResponse.message!,
-          StringValues.success,
-        );
-      } else {
-        _toggleLike(postId);
-        AppUtils.showSnackBar(
-          apiResponse.message!,
-          StringValues.error,
-        );
-      }
-    } on SocketException {
-      _toggleLike(postId);
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _toggleLike(postId);
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _toggleLike(postId);
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    } catch (exc) {
-      _toggleLike(postId);
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    }
-  }
-
   Future<void> _deletePost(String postId) async {
     AppUtils.printLog("Post Delete Request...");
 
@@ -207,9 +150,6 @@ class PostController extends GetxController {
   }
 
   Future<void> fetchAllPosts() async => await _fetchAllPosts();
-
-  Future<void> toggleLikePost(String postId) async =>
-      await _toggleLikePost(postId);
 
   Future<void> deletePost(String postId) async => await _deletePost(postId);
 }

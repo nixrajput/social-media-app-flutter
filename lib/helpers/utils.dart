@@ -7,9 +7,11 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_media_app/common/asset_image.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
 
 abstract class AppUtils {
   static final storage = GetStorage();
@@ -59,6 +61,41 @@ abstract class AppUtils {
       margin: Dimens.edgeInsets16,
       borderRadius: Dimens.fifteen,
       snackStyle: SnackStyle.FLOATING,
+    );
+  }
+
+  static void showNoInternetDialog() {
+    closeDialog();
+    Get.dialog<void>(
+      WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          backgroundColor: Colors.black26,
+          body: Padding(
+            padding: Dimens.edgeInsets16,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                NxAssetImage(
+                  imgAsset: AssetValues.error,
+                  width: Dimens.hundred * 2,
+                  height: Dimens.hundred * 2,
+                ),
+                Dimens.boxHeight8,
+                Text(
+                  'No Internet!',
+                  textAlign: TextAlign.center,
+                  style: AppStyles.style24Bold.copyWith(
+                    color: ColorValues.whiteColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      barrierDismissible: false,
     );
   }
 
@@ -194,17 +231,6 @@ abstract class AppUtils {
   }
 
   static Future<dynamic> selectSingleImage({ImageSource? imageSource}) async {
-    final androidUiSettings = AndroidUiSettings(
-      toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-      toolbarTitle: StringValues.cropImage,
-      toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
-      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-    );
-    const iOsUiSettings = IOSUiSettings(
-      title: StringValues.cropImage,
-      minimumAspectRatio: 1.0,
-    );
-
     final _imagePicker = ImagePicker();
     final _imageCropper = ImageCropper();
     final pickedImage = await _imagePicker.pickImage(
@@ -220,13 +246,22 @@ abstract class AppUtils {
         sourcePath: pickedImage.path,
         aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
         cropStyle: CropStyle.circle,
-        androidUiSettings: androidUiSettings,
-        iosUiSettings: iOsUiSettings,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+            toolbarTitle: StringValues.cropImage,
+            toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+            backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+          ),
+          IOSUiSettings(
+            title: StringValues.cropImage,
+            minimumAspectRatio: 1.0,
+          ),
+        ],
         compressQuality: 70,
-        compressFormat: ImageCompressFormat.png,
       );
 
-      return croppedFile;
+      return File(croppedFile!.path);
     }
 
     return null;
@@ -239,7 +274,7 @@ abstract class AppUtils {
       toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
       backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
     );
-    const iOsUiSettings = IOSUiSettings(
+    final iOsUiSettings = IOSUiSettings(
       title: StringValues.cropImage,
       minimumAspectRatio: 1.0,
     );
@@ -259,12 +294,21 @@ abstract class AppUtils {
           maxHeight: 1920,
           sourcePath: pickedImage.path,
           aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-          androidUiSettings: androidUiSettings,
-          iosUiSettings: iOsUiSettings,
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+              toolbarTitle: StringValues.cropImage,
+              toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+              backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+            ),
+            IOSUiSettings(
+              title: StringValues.cropImage,
+              minimumAspectRatio: 1.0,
+            ),
+          ],
           compressQuality: 70,
-          compressFormat: ImageCompressFormat.png,
         );
-        imageList.add(croppedFile!);
+        imageList.add(File(croppedFile!.path));
       }
     }
 

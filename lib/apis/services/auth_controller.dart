@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/responses/login_response.dart';
@@ -15,6 +16,8 @@ class AuthController extends GetxController {
   static AuthController get find => Get.find();
 
   final _apiProvider = ApiProvider(http.Client());
+
+  StreamSubscription<dynamic>? _streamSubscription;
 
   final _token = ''.obs;
   final _isLoading = false.obs;
@@ -239,6 +242,18 @@ class AuthController extends GetxController {
     }
   }
 
+  void _checkForInternetConnectivity() {
+    _streamSubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      if (result != ConnectivityResult.none) {
+        AppUtils.closeDialog();
+      } else {
+        AppUtils.showNoInternetDialog();
+      }
+    });
+  }
+
   Future<void> followUnfollowUser(String userId) async {
     await _followUnfollowUser(userId);
   }
@@ -248,9 +263,21 @@ class AuthController extends GetxController {
   Future<void> getProfileDetails() async => await _getProfileDetails();
 
   @override
+  void onInit() {
+    _checkForInternetConnectivity();
+    super.onInit();
+  }
+
+  @override
   onReady() {
     ever(_token, _autoLogin);
     _token.bindStream(tokenStream);
     super.onReady();
+  }
+
+  @override
+  onClose() {
+    _streamSubscription?.cancel();
+    super.onClose();
   }
 }

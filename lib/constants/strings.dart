@@ -1,5 +1,5 @@
 abstract class StringValues {
-  static const appName = 'NixLab Social';
+  static const appName = 'Rippl!';
   static const welcome = 'Welcome';
   static const hello = 'Hello';
   static const register = 'Register';
@@ -105,6 +105,10 @@ abstract class StringValues {
   static const userIdNotFound = 'User Id not found.';
   static const privateAccountWarning = 'Account is private.';
   static const notFollowingWarning = 'You are not following the user.';
+  static const commentDeleteSuccess = 'Comment deleted.';
+  static const deleteConfirmationText = "Are you sure to delete?";
+  static const yes = 'Yes';
+  static const no = 'No';
   static const exit = 'Exit';
   static const male = 'Male';
   static const female = 'Female';
@@ -123,7 +127,9 @@ abstract class StringValues {
 }
 
 abstract class AssetValues {
-  static const String appIcon = 'assets/icon.png';
+  static const String appLogo = 'assets/logo_trans.png';
+  static const String appIcon = 'assets/icon_trans.png';
+  static const String appName = 'assets/app_name_trans.png';
   static const String avatar = 'assets/avatar.png';
   static const String vector1 = 'assets/vector-1.png';
   static const String error = 'assets/error.png';

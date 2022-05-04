@@ -16,6 +16,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
+import 'package:social_media_app/modules/home/controllers/post_like_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class PostDetailsWidget extends StatelessWidget {
@@ -29,7 +30,6 @@ class PostDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _auth = AuthController.find;
-    final _postController = PostController.find;
 
     return NxElevatedCard(
       child: Column(
@@ -37,16 +37,15 @@ class PostDetailsWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildPostHead(_auth, _postController),
-          _buildPostBody(_postController),
-          _buildPostFooter(_auth, _postController),
+          _buildPostHead(_auth),
+          _buildPostBody(),
+          _buildPostFooter(_auth),
         ],
       ),
     );
   }
 
-  Widget _buildPostHead(AuthController _auth, PostController _postController) =>
-      Padding(
+  Widget _buildPostHead(AuthController _auth) => Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +119,7 @@ class PostDetailsWidget extends StatelessWidget {
                           ListTile(
                             onTap: () {
                               AppUtils.closeBottomSheet();
-                              _postController.deletePost(post.id);
+                              Get.find<PostController>().deletePost(post.id);
                             },
                             leading: const Icon(CupertinoIcons.delete),
                             title: Text(
@@ -154,9 +153,9 @@ class PostDetailsWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildPostBody(PostController _postController) => GestureDetector(
+  Widget _buildPostBody() => GestureDetector(
         onDoubleTap: () {
-          _postController.toggleLikePost(post.id);
+          Get.find<PostLikeController>().toggleLikePost(post);
         },
         child: FlutterCarousel.builder(
           itemCount: post.images!.length,
@@ -174,36 +173,35 @@ class PostDetailsWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildPostFooter(
-          AuthController _auth, PostController _postController) =>
-      Padding(
+  Widget _buildPostFooter(AuthController _auth) => Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                NxIconButton(
-                  icon: post.likes.contains(_auth.profileData.user?.id)
-                      ? CupertinoIcons.heart_solid
-                      : CupertinoIcons.heart,
-                  onTap: () {
-                    _postController.toggleLikePost(post.id);
-                  },
-                  iconColor: post.likes.contains(_auth.profileData.user?.id)
-                      ? ColorValues.primaryColor
-                      : ColorValues.grayColor,
-                ),
-                Dimens.boxWidth4,
-                if (post.likes.isNotEmpty)
-                  Text(
-                    '${post.likes.length} likes',
-                    style: AppStyles.style14Bold,
+            GetBuilder<PostLikeController>(
+              builder: (con) => Row(
+                children: [
+                  NxIconButton(
+                    icon: post.likes.contains(_auth.profileData.user?.id)
+                        ? CupertinoIcons.heart_solid
+                        : CupertinoIcons.heart,
+                    onTap: () {
+                      con.toggleLikePost(post);
+                    },
+                    iconColor: post.likes.contains(_auth.profileData.user?.id)
+                        ? ColorValues.primaryColor
+                        : ColorValues.grayColor,
                   ),
-              ],
+                  Dimens.boxWidth4,
+                  if (post.likes.isNotEmpty)
+                    Text(
+                      '${post.likes.length} likes',
+                      style: AppStyles.style14Bold,
+                    ),
+                ],
+              ),
             ),
             if (post.caption != null && post.caption!.isNotEmpty)
               Dimens.boxHeight4,

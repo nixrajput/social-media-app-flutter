@@ -31,6 +31,7 @@ import 'package:social_media_app/modules/profile/views/edit_profile_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_username_view.dart';
 import 'package:social_media_app/modules/profile/views/followers_list_view.dart';
 import 'package:social_media_app/modules/profile/views/following_list_view.dart';
+import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/splash/views/splash_view.dart';
 import 'package:social_media_app/modules/users/bindings/user_profile_binding.dart';
@@ -78,6 +79,7 @@ abstract class AppPages {
     GetPage(
       name: _Routes.settings,
       page: SettingsView.new,
+      binding: SettingBinding(),
       transitionDuration: transitionDuration,
       transition: Transition.downToUp,
     ),

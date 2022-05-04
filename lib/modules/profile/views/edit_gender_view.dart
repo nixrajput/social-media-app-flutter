@@ -5,6 +5,7 @@ import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_gender_controller.dart';
 
 class EditGenderView extends StatelessWidget {
@@ -66,8 +67,12 @@ class EditGenderView extends StatelessWidget {
                   },
                   groupValue: logic.gender,
                   value: StringValues.male,
-                  title: const Text(StringValues.male),
+                  title: Text(
+                    StringValues.male,
+                    style: AppStyles.style16Bold,
+                  ),
                   activeColor: ColorValues.primaryColor,
+                  contentPadding: Dimens.edgeInsets0,
                 ),
                 RadioListTile(
                   onChanged: (value) {
@@ -75,8 +80,12 @@ class EditGenderView extends StatelessWidget {
                   },
                   groupValue: logic.gender,
                   value: StringValues.female,
-                  title: const Text(StringValues.female),
+                  title: Text(
+                    StringValues.female,
+                    style: AppStyles.style16Bold,
+                  ),
                   activeColor: ColorValues.primaryColor,
+                  contentPadding: Dimens.edgeInsets0,
                 ),
                 RadioListTile(
                   onChanged: (value) {
@@ -84,8 +93,12 @@ class EditGenderView extends StatelessWidget {
                   },
                   groupValue: logic.gender,
                   value: StringValues.others,
-                  title: const Text(StringValues.others),
+                  title: Text(
+                    StringValues.others,
+                    style: AppStyles.style16Bold,
+                  ),
                   activeColor: ColorValues.primaryColor,
+                  contentPadding: Dimens.edgeInsets0,
                 ),
                 Dimens.boxHeight16,
               ],

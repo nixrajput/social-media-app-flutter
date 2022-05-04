@@ -19,7 +19,7 @@ class SplashView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               NxAssetImage(
-                imgAsset: AssetValues.appIcon,
+                imgAsset: AssetValues.appLogo,
                 width: Dimens.hundred * 1.6,
                 height: Dimens.hundred * 1.6,
               ),

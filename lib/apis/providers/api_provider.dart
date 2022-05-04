@@ -308,9 +308,22 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> deleteComment(String token, String postId) async {
+  Future<http.Response> deleteComment(String token, String commentId) async {
     final response = await _client.delete(
-      Uri.parse('${baseUrl!}${AppUrls.deleteCommentEndpoint}?postId=$postId'),
+      Uri.parse('${baseUrl!}${AppUrls.deleteCommentEndpoint}?id=$commentId'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> likeUnlikeComment(
+      String token, String commentId) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.likeCommentEndpoint}?id=$commentId'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",

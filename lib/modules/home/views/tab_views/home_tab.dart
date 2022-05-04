@@ -29,20 +29,16 @@ class HomeTabView extends StatelessWidget {
               leading: Row(
                 children: [
                   NxAssetImage(
-                    imgAsset: AssetValues.appIcon,
-                    width: Dimens.thirtyTwo,
-                    height: Dimens.thirtyTwo,
+                    imgAsset: AssetValues.appName,
+                    width: Dimens.seventy,
+                    height: Dimens.sixty,
+                    fit: BoxFit.cover,
                   ),
-                  Dimens.boxWidth8,
-                  Text(
-                    StringValues.appName,
-                    style: AppStyles.style18Bold,
-                  )
                 ],
               ),
               actions: GetBuilder<CreatePostController>(
                   builder: (con) => InkWell(
-                        onTap: con.createNewPost,
+                        onTap: con.selectPostImages,
                         child: Icon(
                           CupertinoIcons.add_circled,
                           size: Dimens.twentyEight,

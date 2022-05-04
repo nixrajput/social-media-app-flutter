@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -42,27 +41,32 @@ class PostDetailsView extends StatelessWidget {
                   left: Dimens.zero,
                   right: Dimens.zero,
                   child: Container(
-                    color: Theme.of(Get.context!).scaffoldBackgroundColor,
+                    color: Theme.of(Get.context!).dialogTheme.backgroundColor,
                     width: Dimens.screenWidth.w,
-                    height: 40.h,
+                    height: 48.h,
                     child: Row(
                       children: [
                         Dimens.boxWidth4,
                         Expanded(
-                          child: TextFormField(
-                            controller: con.commentTextController,
-                            decoration: const InputDecoration(
-                              hintText: StringValues.addComment,
-                              border: InputBorder.none,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 4.r),
+                            child: TextFormField(
+                              controller: con.commentTextController,
+                              decoration: const InputDecoration(
+                                hintText: StringValues.addComment,
+                                border: InputBorder.none,
+                              ),
+                              minLines: 1,
+                              maxLines: 1,
                             ),
                           ),
                         ),
                         Dimens.boxWidth4,
                         NxIconButton(
-                          icon: CupertinoIcons.arrow_right,
+                          icon: Icons.send,
                           iconColor: ColorValues.whiteColor,
-                          height: 40.h,
-                          width: 40.w,
+                          height: 48.h,
+                          width: 48.w,
                           bgColor: ColorValues.primaryColor,
                           onTap: con.createNewComment,
                         )
@@ -83,16 +87,14 @@ class PostDetailsView extends StatelessWidget {
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: SizedBox(
-          height: Dimens.screenHeight - 40.h,
+          height: Dimens.screenHeight - 32.h,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GetBuilder<PostController>(
                 builder: (postLogic) => PostDetailsWidget(
-                  post: postLogic.postList.singleWhere(
-                    (element) => element.id == Get.arguments,
-                  ),
+                  post: Get.arguments[1],
                 ),
               ),
               Dimens.dividerWithHeight,
@@ -122,7 +124,11 @@ class PostDetailsView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: commentsLogic.commentsData.comments!
-                              .map((e) => CommentWidget(comment: e))
+                              .map((e) => InkWell(
+                                    child: CommentWidget(comment: e),
+                                    onLongPress: () =>
+                                        commentsLogic.deleteComment(e.id),
+                                  ))
                               .toList(),
                         ),
                     ],

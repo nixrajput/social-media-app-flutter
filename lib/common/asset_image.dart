@@ -11,6 +11,7 @@ class NxAssetImage extends StatelessWidget {
     this.maxWidth,
     this.maxHeight,
     this.scale,
+    this.fit,
   }) : super(key: key);
 
   final String imgAsset;
@@ -19,6 +20,7 @@ class NxAssetImage extends StatelessWidget {
   final double? maxWidth;
   final double? maxHeight;
   final double? scale;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class NxAssetImage extends StatelessWidget {
       ),
       child: Image.asset(
         imgAsset,
-        fit: BoxFit.contain,
+        fit: fit ?? BoxFit.contain,
         errorBuilder: (ctx, url, err) => const Icon(
           CupertinoIcons.info,
           color: ColorValues.errorColor,

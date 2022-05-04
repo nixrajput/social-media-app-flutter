@@ -9,6 +9,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/settings/controllers/account_type_controller.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({Key? key}) : super(key: key);
@@ -27,7 +28,6 @@ class SettingsView extends StatelessWidget {
               const NxAppBar(
                 title: StringValues.settings,
               ),
-              Dimens.boxHeight8,
               _buildSettingsBody(),
             ],
           ),
@@ -145,13 +145,18 @@ class SettingsView extends StatelessWidget {
           builder: (logic) => ListTile(
             onTap: () {
               AppUtils.showBottomSheet(
-                ["public", "private"]
+                [StringValues.public, StringValues.private]
                     .map(
-                      (item) => ListTile(
-                        onTap: AppUtils.closeBottomSheet,
-                        leading: Text(
-                          item.toTitleCase(),
-                          style: AppStyles.style16Bold.copyWith(),
+                      (item) => GetBuilder<AccountTypeController>(
+                        builder: (con) => ListTile(
+                          onTap: () {
+                            AppUtils.closeBottomSheet();
+                            con.updateAccountType(item);
+                          },
+                          leading: Text(
+                            item.toTitleCase(),
+                            style: AppStyles.style16Bold.copyWith(),
+                          ),
                         ),
                       ),
                     )
