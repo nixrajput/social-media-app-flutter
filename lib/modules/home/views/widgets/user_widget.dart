@@ -10,6 +10,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
 class UserWidget extends StatelessWidget {
   const UserWidget({
@@ -17,10 +18,12 @@ class UserWidget extends StatelessWidget {
     required this.user,
     this.bottomMargin,
     this.onTap,
+    this.bgColor,
   }) : super(key: key);
 
   final User user;
   final double? bottomMargin;
+  final Color? bgColor;
   final VoidCallback? onTap;
 
   @override
@@ -28,9 +31,9 @@ class UserWidget extends StatelessWidget {
     final _profile = ProfileController.find;
 
     return InkWell(
-      onTap: onTap,
+      onTap: onTap ?? () => RouteManagement.goToUserProfileView(user.id),
       child: Container(
-        width: double.infinity,
+        color: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
         margin: EdgeInsets.only(bottom: bottomMargin ?? Dimens.eight),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,7 +58,7 @@ class UserWidget extends StatelessWidget {
                           children: [
                             Text(
                               '${user.fname} ${user.lname}',
-                              style: AppStyles.style16Normal,
+                              style: AppStyles.style14Normal,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),
@@ -112,6 +115,7 @@ class UserWidget extends StatelessWidget {
                         : Dimens.zero,
                 onTap: () => logic.followUnfollowUser(user.id),
                 padding: Dimens.edgeInsets0_8,
+                fontSize: Dimens.twelve,
                 borderRadius: Dimens.twenty,
               ),
             ),
@@ -125,12 +129,12 @@ class UserWidget extends StatelessWidget {
     if (user != null && user.avatar != null && user.avatar?.url != null) {
       return NxCircleNetworkImage(
         imageUrl: user.avatar!.url!,
-        radius: Dimens.twentyFour,
+        radius: Dimens.twenty,
       );
     }
     return NxCircleAssetImage(
       imgAsset: AssetValues.avatar,
-      radius: Dimens.twentyFour,
+      radius: Dimens.twenty,
     );
   }
 }

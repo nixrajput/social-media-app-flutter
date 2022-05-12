@@ -35,5 +35,5 @@ abstract class ColorValues {
 
   static const Color lightBgColor = Color.fromRGBO(245, 245, 245, 1.0);
   static const Color darkBgColor = Color.fromRGBO(0, 27, 43, 1.0);
-  static const Color darkColor = Color.fromRGBO(44, 44, 50, 1.0);
+  static const Color darkColor = Color.fromARGB(255, 23, 39, 49);
 }

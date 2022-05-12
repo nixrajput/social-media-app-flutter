@@ -43,7 +43,7 @@ class AccountTypeController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await _profile.getProfileDetails();
+        await _profile.fetchProfileDetails();
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();

@@ -130,6 +130,9 @@ abstract class StringValues {
   static const privacy = 'Privacy';
   static const addComment = 'Add a comment';
   static const profileData = "profileData";
+  static const viewPost = "View Post";
+  static const people = "People";
+  static const feed = "Feed";
 }
 
 abstract class AssetValues {

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:social_media_app/common/shimmer_loading.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 
@@ -26,7 +27,7 @@ class NxNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width ?? double.infinity,
+      width: width ?? Dimens.screenWidth,
       height: height,
       constraints: BoxConstraints(
         maxWidth: maxWidth ?? Dimens.screenWidth,
@@ -37,10 +38,10 @@ class NxNetworkImage extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           fit: imageFit ?? BoxFit.cover,
-          placeholder: (ctx, url) => const SizedBox(
-            child: Center(
-              child: CupertinoActivityIndicator(),
-            ),
+          placeholder: (ctx, url) => ShimmerLoading(
+            width: width,
+            height: height,
+            color: ColorValues.grayColor.withOpacity(0.5),
           ),
           errorWidget: (ctx, url, err) => const Icon(
             CupertinoIcons.info,

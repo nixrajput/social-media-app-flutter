@@ -90,7 +90,7 @@ class PostWidget extends StatelessWidget {
                               post.owner.id),
                           child: Text(
                             "${post.owner.fname} ${post.owner.lname}",
-                            style: AppStyles.style16Bold,
+                            style: AppStyles.style14Bold,
                           ),
                         ),
                         GestureDetector(
@@ -116,6 +116,17 @@ class PostWidget extends StatelessWidget {
                   onTap: () {
                     AppUtils.showBottomSheet(
                       [
+                        ListTile(
+                          onTap: () {
+                            AppUtils.closeBottomSheet();
+                            RouteManagement.goToPostDetailsView(post.id, post);
+                          },
+                          leading: const Icon(CupertinoIcons.eye),
+                          title: Text(
+                            StringValues.viewPost,
+                            style: AppStyles.style16Bold,
+                          ),
+                        ),
                         if (post.owner.id == _profile.profileData.user!.id)
                           ListTile(
                             onTap: () {
@@ -158,17 +169,20 @@ class PostWidget extends StatelessWidget {
         onDoubleTap: () {
           Get.find<PostLikeController>().toggleLikePost(post);
         },
-        child: FlutterCarousel.builder(
-          itemCount: post.images!.length,
-          itemBuilder: (ctx, itemIndex, pageViewIndex) {
-            return NxNetworkImage(
-              imageUrl: post.images![itemIndex].url!,
-              imageFit: BoxFit.cover,
-            );
-          },
+        child: FlutterCarousel(
+          items: post.images!
+              .map((img) => NxNetworkImage(
+                    imageUrl: img.url!,
+                    imageFit: BoxFit.cover,
+                    width: Dimens.screenWidth,
+                    height: Dimens.screenWidth,
+                  ))
+              .toList(),
           options: CarouselOptions(
             aspectRatio: 1 / 1,
             viewportFraction: 1.0,
+            showIndicator: post.images!.length > 1 ? true : false,
+            floatingIndicator: false,
             slideIndicator: CircularWaveSlideIndicator(),
           ),
         ),
@@ -191,12 +205,13 @@ class PostWidget extends StatelessWidget {
                         icon: post.likes.contains(_profile.profileData.user?.id)
                             ? CupertinoIcons.heart_solid
                             : CupertinoIcons.heart,
+                        iconSize: Dimens.twenty,
                         onTap: () {
                           con.toggleLikePost(post);
                         },
                         iconColor:
                             post.likes.contains(_profile.profileData.user?.id)
-                                ? ColorValues.primaryColor
+                                ? ColorValues.errorColor
                                 : ColorValues.grayColor,
                       ),
                       Dimens.boxWidth4,
@@ -209,17 +224,24 @@ class PostWidget extends StatelessWidget {
                   ),
                 ),
                 Dimens.boxWidth16,
-                NxIconButton(
-                  icon: CupertinoIcons.chat_bubble,
+                GestureDetector(
                   onTap: () =>
                       RouteManagement.goToPostDetailsView(post.id, post),
-                ),
-                Dimens.boxWidth4,
-                if (post.comments.isNotEmpty)
-                  Text(
-                    '${post.comments.length} comments',
-                    style: AppStyles.style14Bold,
+                  child: Row(
+                    children: [
+                      Icon(
+                        CupertinoIcons.chat_bubble,
+                        size: Dimens.twenty,
+                      ),
+                      Dimens.boxWidth4,
+                      if (post.comments.isNotEmpty)
+                        Text(
+                          '${post.comments.length} comments',
+                          style: AppStyles.style14Bold,
+                        ),
+                    ],
                   ),
+                ),
               ],
             ),
             if (post.caption != null && post.caption!.isNotEmpty)

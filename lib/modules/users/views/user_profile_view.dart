@@ -186,8 +186,10 @@ class UserProfileView extends StatelessWidget {
               if (logic.userProfile.user!.isVerified) Dimens.boxWidth4,
               if (logic.userProfile.user!.isVerified)
                 Icon(
-                  CupertinoIcons.checkmark_seal,
-                  color: ColorValues.primaryColor,
+                  CupertinoIcons.checkmark_seal_fill,
+                  color: Theme.of(Get.context!).brightness == Brightness.dark
+                      ? Theme.of(Get.context!).textTheme.bodyText1?.color
+                      : ColorValues.primaryColor,
                   size: Dimens.sixTeen,
                 )
             ],

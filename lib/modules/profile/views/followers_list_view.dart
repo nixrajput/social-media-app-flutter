@@ -6,8 +6,8 @@ import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
 import 'package:social_media_app/modules/profile/controllers/followers_list_controller.dart';
-import 'package:social_media_app/modules/profile/widgets/follower_widget.dart';
 
 class FollowersListView extends StatelessWidget {
   const FollowersListView({Key? key}) : super(key: key);
@@ -80,7 +80,7 @@ class FollowersListView extends StatelessWidget {
               itemCount: logic.followersList!.results!.length,
               itemBuilder: (cxt, i) {
                 var user = logic.followersList!.results!.elementAt(i);
-                return FollowerWidget(
+                return UserWidget(
                   user: user,
                   bottomMargin: i == (logic.followersList!.results!.length - 1)
                       ? Dimens.zero

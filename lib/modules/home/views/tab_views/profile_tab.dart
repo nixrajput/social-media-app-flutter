@@ -6,10 +6,11 @@ import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/count_widget.dart';
+import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/common/primary_outlined_btn.dart';
-import 'package:social_media_app/common/sliver_app_bar.dart';
+import 'package:social_media_app/common/shimmer_loading.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -27,26 +28,40 @@ class ProfileTabView extends StatelessWidget {
         width: Dimens.screenWidth,
         height: Dimens.screenHeight,
         child: GetBuilder<ProfileController>(builder: (logic) {
-          return CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              NxSliverAppBar(
-                isPinned: true,
-                leading: Text(
-                  logic.profileData.user != null
-                      ? logic.profileData.user!.uname
-                      : StringValues.profile,
-                  style: AppStyles.style18Bold,
+          return RefreshIndicator(
+            onRefresh: logic.fetchProfileDetails,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                NxAppBar(
+                  padding: Dimens.edgeInsetsOnlyTop8.copyWith(
+                    left: Dimens.eight,
+                    bottom: Dimens.eight,
+                  ),
+                  leading: Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          logic.profileData.user != null
+                              ? logic.profileData.user!.uname
+                              : StringValues.profile,
+                          style: AppStyles.style18Bold,
+                        ),
+                        const Spacer(),
+                        const InkWell(
+                          onTap: RouteManagement.goToSettingsView,
+                          child: Icon(CupertinoIcons.gear_alt),
+                        ),
+                      ],
+                    ),
+                  ),
+                  showBackBtn: false,
                 ),
-                actions: const InkWell(
-                  onTap: RouteManagement.goToSettingsView,
-                  child: Icon(CupertinoIcons.gear_solid),
-                ),
-              ),
-              SliverFillRemaining(
-                child: _buildProfileBody(logic),
-              ),
-            ],
+                _buildProfileBody(logic),
+              ],
+            ),
           );
         }),
       ),
@@ -55,7 +70,63 @@ class ProfileTabView extends StatelessWidget {
 
   Widget _buildProfileBody(ProfileController logic) {
     if (logic.isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return Padding(
+        padding: Dimens.edgeInsets8_16,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: Dimens.sixtyFour,
+                  backgroundColor: ColorValues.grayColor.withOpacity(0.25),
+                ),
+                Dimens.boxWidth16,
+                ShimmerLoading(
+                  width: Dimens.hundred,
+                  height: Dimens.fourty,
+                ),
+              ],
+            ),
+            Dimens.boxHeight16,
+            ShimmerLoading(
+              width: Dimens.hundred * 1.2,
+              height: Dimens.twentyFour,
+            ),
+            Dimens.boxHeight4,
+            ShimmerLoading(
+              width: Dimens.hundred * 1.2,
+              height: Dimens.sixTeen,
+            ),
+            Dimens.boxHeight16,
+            ShimmerLoading(
+              width: Dimens.screenWidth * 0.75,
+              height: Dimens.sixTeen,
+            ),
+            Dimens.boxHeight16,
+            ShimmerLoading(
+              width: Dimens.screenWidth * 0.75,
+              height: Dimens.sixTeen,
+            ),
+            Dimens.boxHeight32,
+            Center(
+              child: ShimmerLoading(
+                width: Dimens.screenWidth * 0.8,
+                height: Dimens.fourtyEight,
+              ),
+            ),
+            Dimens.boxHeight16,
+            Center(
+              child: ShimmerLoading(
+                width: Dimens.screenWidth * 0.8,
+                height: Dimens.fourtyEight,
+              ),
+            ),
+          ],
+        ),
+      );
     }
     if (logic.profileData.user == null) {
       return Center(
@@ -73,38 +144,40 @@ class ProfileTabView extends StatelessWidget {
       );
     }
 
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          NxElevatedCard(
-            child: Padding(
-              padding: Dimens.edgeInsets8,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      _buildProfileImage(logic),
-                      Dimens.boxWidth16,
-                      const NxOutlinedButton(
-                        label: StringValues.editProfile,
-                        onTap: RouteManagement.goToEditProfileView,
-                      ),
-                    ],
-                  ),
-                  Dimens.boxHeight16,
-                  _buildUserDetails(logic),
-                ],
+    return Expanded(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            NxElevatedCard(
+              child: Padding(
+                padding: Dimens.edgeInsets8,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        _buildProfileImage(logic),
+                        Dimens.boxWidth16,
+                        const NxOutlinedButton(
+                          label: StringValues.editProfile,
+                          onTap: RouteManagement.goToEditProfileView,
+                        ),
+                      ],
+                    ),
+                    Dimens.boxHeight16,
+                    _buildUserDetails(logic),
+                  ],
+                ),
               ),
             ),
-          ),
-          Dimens.boxHeight20,
-          _buildActionButtons(logic),
-        ],
+            Dimens.boxHeight20,
+            _buildActionButtons(logic),
+          ],
+        ),
       ),
     );
   }
