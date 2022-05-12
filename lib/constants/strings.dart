@@ -100,6 +100,11 @@ abstract class StringValues {
   static const authDetailsFound = 'Auth details found.';
   static const authDetailsNotFound = 'Auth details not found.';
   static const authDetailsRemoved = 'Auth details removed.';
+  static const profileDetailsSaved = 'Profile details saved.';
+  static const profileDetailsNotSaved = "Profile details couldn't saved.";
+  static const profileDetailsFound = 'Profile details found.';
+  static const profileDetailsNotFound = 'Profile details not found.';
+  static const profileDetailsRemoved = 'Profile details removed.';
   static const usernameAvailable = 'Username available.';
   static const usernameNotAvailable = 'Username not available.';
   static const userIdNotFound = 'User Id not found.';
@@ -124,6 +129,7 @@ abstract class StringValues {
   static const security = 'Security';
   static const privacy = 'Privacy';
   static const addComment = 'Add a comment';
+  static const profileData = "profileData";
 }
 
 abstract class AssetValues {

@@ -6,15 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
+import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class NameController extends GetxController {
   static NameController get find => Get.find();
 
-  final _auth = AuthController.find;
+  final _profile = ProfileController.find;
+  final _auth = AuthService.find;
 
   final _apiProvider = ApiProvider(http.Client());
 
@@ -34,8 +36,8 @@ class NameController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_auth.profileData.user != null) {
-      var user = _auth.profileData.user!;
+    if (_profile.profileData.user != null) {
+      var user = _profile.profileData.user!;
       fNameTextController.text = user.fname;
       lNameTextController.text = user.lname;
     }
@@ -78,7 +80,7 @@ class NameController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await _auth.getProfileDetails();
+        await _profile.fetchProfileDetails();
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();
@@ -128,8 +130,8 @@ class NameController extends GetxController {
 
   Future<void> updateName() async {
     AppUtils.closeFocus();
-    if (fNameTextController.text.trim() == _auth.profileData.user!.fname &&
-        lNameTextController.text.trim() == _auth.profileData.user!.lname) {
+    if (fNameTextController.text.trim() == _profile.profileData.user!.fname &&
+        lNameTextController.text.trim() == _profile.profileData.user!.lname) {
       return;
     }
     await _updateName(

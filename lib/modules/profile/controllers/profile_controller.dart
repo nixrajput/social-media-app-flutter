@@ -2,56 +2,58 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/apis/models/responses/comments_response.dart';
+import 'package:social_media_app/apis/models/responses/profile_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
-import 'package:social_media_app/constants/colors.dart';
-import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/helpers/utils.dart';
 
-class CommentController extends GetxController {
-  static CommentController get find => Get.find();
+class ProfileController extends GetxController {
+  static ProfileController get find => Get.find();
 
   final _auth = AuthService.find;
+
   final _apiProvider = ApiProvider(http.Client());
 
-  final _isLoading = false.obs;
-  final _commentsData = CommentsResponse().obs;
+  var _isLoading = false;
+  ProfileResponse _profileData = ProfileResponse();
 
-  bool get isLoading => _isLoading.value;
+  bool get isLoading => _isLoading;
+  ProfileResponse get profileData => _profileData;
 
-  CommentsResponse get commentsData => _commentsData.value;
+  set setProfileData(ProfileResponse value) => _profileData = value;
 
-  set setComments(CommentsResponse response) {
-    _commentsData.value = response;
+  Future<bool> _getProfileDetails() async {
+    AppUtils.printLog("Fetching Local Profile Details...");
+
+    final decodedData = await AppUtils.readProfileDataFromLocalStorage();
+    if (decodedData != null) {
+      setProfileData = ProfileResponse.fromJson(decodedData);
+      return true;
+    } else {
+      AppUtils.printLog(StringValues.profileDetailsNotFound);
+    }
+    return false;
   }
 
-  Future<void> _fetchComments() async {
-    AppUtils.printLog("Fetch Comment Request...");
-
-    var postId = Get.arguments[0];
-
-    if (postId == '' || postId == null) return;
-
-    _isLoading.value = true;
+  Future<void> _fetchProfileDetails() async {
+    _isLoading = true;
     update();
-
+    AppUtils.printLog("Fetching Profile Details Request...");
     try {
-      final response = await _apiProvider.fetchComments(_auth.token, postId);
+      final response = await _apiProvider.getProfileDetails(_auth.token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        setComments = CommentsResponse.fromJson(decodedData);
-        _isLoading.value = false;
+        setProfileData = ProfileResponse.fromJson(decodedData);
+        await AppUtils.saveProfileDataToLocalStorage(decodedData);
+        _isLoading = false;
         update();
       } else {
-        _isLoading.value = false;
+        _isLoading = false;
         update();
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
@@ -59,24 +61,24 @@ class CommentController extends GetxController {
         );
       }
     } on SocketException {
-      _isLoading.value = false;
+      _isLoading = false;
       update();
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      _isLoading.value = false;
+      _isLoading = false;
       update();
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      _isLoading.value = false;
+      _isLoading = false;
       update();
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      _isLoading.value = false;
+      _isLoading = false;
       update();
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc);
@@ -84,84 +86,64 @@ class CommentController extends GetxController {
     }
   }
 
-  Future<void> _deleteComment(String commentId) async {
-    AppUtils.printLog("Delete Comment Request...");
+  void _toggleFollowUser(String userId) {
+    if (_profileData.user!.following.contains(userId)) {
+      _profileData.user!.following.remove(userId);
+    } else {
+      _profileData.user!.following.add(userId);
+    }
+    update();
+  }
 
-    if (commentId.isEmpty) return;
+  Future<void> _followUnfollowUser(String userId) async {
+    AppUtils.printLog("Follow/Unfollow User Request...");
+    _toggleFollowUser(userId);
 
     try {
-      final response = await _apiProvider.deleteComment(_auth.token, commentId);
+      final response =
+          await _apiProvider.followUnfollowUser(userId, _auth.token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await _fetchComments();
         AppUtils.showSnackBar(
-          StringValues.commentDeleteSuccess,
+          decodedData[StringValues.message],
           StringValues.success,
         );
       } else {
+        _toggleFollowUser(userId);
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } on SocketException {
+      _toggleFollowUser(userId);
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
+      _toggleFollowUser(userId);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
+      _toggleFollowUser(userId);
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
+      _toggleFollowUser(userId);
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
-  Future<void> fetchComments() async => await _fetchComments();
-
-  Future<void> deleteComment(String commentId) async {
-    AppUtils.showBottomSheet(
-      [
-        Text(
-          StringValues.deleteConfirmationText,
-          style: AppStyles.style20Bold,
-        ),
-        Dimens.boxHeight16,
-        ListTile(
-          onTap: () async {
-            AppUtils.closeBottomSheet();
-            await _deleteComment(commentId);
-          },
-          title: Text(
-            StringValues.yes,
-            style: AppStyles.style16Bold.copyWith(
-              color: ColorValues.successColor,
-            ),
-          ),
-        ),
-        ListTile(
-          onTap: AppUtils.closeBottomSheet,
-          title: Text(
-            StringValues.no,
-            style: AppStyles.style16Bold.copyWith(
-              color: ColorValues.errorColor,
-            ),
-          ),
-        ),
-      ],
-    );
+  Future<void> followUnfollowUser(String userId) async {
+    await _followUnfollowUser(userId);
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    _fetchComments();
-  }
+  Future<void> fetchProfileDetails() async => await _fetchProfileDetails();
+
+  Future<bool> getProfileDetails() async => await _getProfileDetails();
 }

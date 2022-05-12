@@ -6,15 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
+import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class UsernameController extends GetxController {
   static UsernameController get find => Get.find();
 
-  final _auth = AuthController.find;
+  final _profile = ProfileController.find;
+  final _auth = AuthService.find;
 
   final _apiProvider = ApiProvider(http.Client());
 
@@ -43,8 +45,8 @@ class UsernameController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_auth.profileData.user != null) {
-      var user = _auth.profileData.user!;
+    if (_profile.profileData.user != null) {
+      var user = _profile.profileData.user!;
       setUsername = user.uname;
     }
   }
@@ -60,7 +62,7 @@ class UsernameController extends GetxController {
       return;
     }
 
-    if (uname == _auth.profileData.user!.uname) {
+    if (uname == _profile.profileData.user!.uname) {
       _isUnameAvailable.value = StringValues.none;
       update();
       return;
@@ -121,7 +123,7 @@ class UsernameController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await _auth.getProfileDetails();
+        await _profile.fetchProfileDetails();
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();
@@ -174,7 +176,7 @@ class UsernameController extends GetxController {
     if (_username.value.isEmpty) {
       return;
     }
-    if (_username.value == _auth.profileData.user!.uname) {
+    if (_username.value == _profile.profileData.user!.uname) {
       return;
     }
     if (_isUnameAvailable.value == StringValues.error) {

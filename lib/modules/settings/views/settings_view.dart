@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/apis/services/theme_controller.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -9,6 +8,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/account_type_controller.dart';
 
 class SettingsView extends StatelessWidget {
@@ -141,7 +141,7 @@ class SettingsView extends StatelessWidget {
           ),
         ),
         Dimens.boxHeight4,
-        GetBuilder<AuthController>(
+        GetBuilder<ProfileController>(
           builder: (logic) => ListTile(
             onTap: () {
               AppUtils.showBottomSheet(

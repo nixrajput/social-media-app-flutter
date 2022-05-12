@@ -2,7 +2,6 @@
 
 A social media application developed using Flutter and GetX state management.
 
-
 ## Features
 
 - Login
@@ -24,11 +23,9 @@ A social media application developed using Flutter and GetX state management.
 - Like/Unlike Comment
 - Delete Comment
 
-
 ## Download APK
 
 [Download](https://github.com/nixrajput/social-media-app-flutter/releases/tag/v1.0.0-beta.03)
-
 
 ## Screenshots
 
@@ -48,7 +45,6 @@ A social media application developed using Flutter and GetX state management.
 
 <img src="screenshots/reset.png" alt="" width="400" />
 
-
 ## Connect With Me
 
 [<img align="left" alt="nixrajput | Website" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/globe-icon.svg" />][website]
@@ -62,7 +58,6 @@ A social media application developed using Flutter and GetX state management.
 [<img align="left" alt="nixrajput | Twitter" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/twitter-brands.svg" />][twitter]
 
 [<img align="left" alt="nixrajput | LinkedIn" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/linkedin-in-brands.svg" />][linkedin]
-
 
 [github]: https://github.com/nixrajput
 [website]: https://nixlab.co.in

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/asset_image.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
@@ -16,16 +15,16 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/users/controllers/user_profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class UserProfileView extends StatelessWidget {
-  UserProfileView({Key? key}) : super(key: key);
-
-  final _auth = AuthController.find;
+  const UserProfileView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final _profile = ProfileController.find;
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
@@ -38,7 +37,7 @@ class UserProfileView extends StatelessWidget {
               const NxAppBar(
                 title: StringValues.profile,
               ),
-              _buildBody(),
+              _buildBody(_profile),
             ],
           ),
         ),
@@ -46,7 +45,7 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(ProfileController profile) {
     return Expanded(
       child: GetBuilder<UserProfileController>(
         builder: (logic) {
@@ -94,7 +93,7 @@ class UserProfileView extends StatelessWidget {
                           children: [
                             _buildProfileImage(logic),
                             Dimens.boxWidth20,
-                            _buildHeaderButton(logic),
+                            _buildHeaderButton(logic, profile),
                           ],
                         ),
                         Dimens.boxHeight16,
@@ -112,7 +111,7 @@ class UserProfileView extends StatelessWidget {
                   ),
                 ),
                 Dimens.boxHeight8,
-                _buildUserPosts(logic),
+                _buildUserPosts(logic, profile),
                 Dimens.boxHeight16,
               ],
             ),
@@ -137,37 +136,39 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  _buildHeaderButton(UserProfileController logic) {
-    if (logic.userProfile.user!.id == _auth.profileData.user!.id) {
+  _buildHeaderButton(UserProfileController logic, ProfileController _profile) {
+    if (logic.userProfile.user!.id == _profile.profileData.user!.id) {
       return NxOutlinedButton(
         label: StringValues.editProfile,
         onTap: RouteManagement.goToEditProfileView,
         padding: Dimens.edgeInsets0_8,
       );
     }
-    return NxOutlinedButton(
-      label:
-          _auth.profileData.user!.following.contains(logic.userProfile.user!.id)
-              ? StringValues.following
-              : StringValues.follow,
-      bgColor:
-          _auth.profileData.user!.following.contains(logic.userProfile.user!.id)
-              ? Colors.transparent
-              : Theme.of(Get.context!).textTheme.bodyText1!.color,
-      labelColor:
-          _auth.profileData.user!.following.contains(logic.userProfile.user!.id)
-              ? Theme.of(Get.context!).textTheme.bodyText1!.color
-              : Theme.of(Get.context!).scaffoldBackgroundColor,
-      borderStyle:
-          _auth.profileData.user!.following.contains(logic.userProfile.user!.id)
-              ? BorderStyle.solid
-              : BorderStyle.none,
-      borderWidth:
-          _auth.profileData.user!.following.contains(logic.userProfile.user!.id)
-              ? Dimens.one
-              : Dimens.zero,
-      onTap: () => _auth.followUnfollowUser(logic.userProfile.user!.id),
-      padding: Dimens.edgeInsets0_8,
+    return GetBuilder<ProfileController>(
+      builder: (profile) => NxOutlinedButton(
+        label: profile.profileData.user!.following
+                .contains(logic.userProfile.user!.id)
+            ? StringValues.following
+            : StringValues.follow,
+        bgColor: profile.profileData.user!.following
+                .contains(logic.userProfile.user!.id)
+            ? Colors.transparent
+            : Theme.of(Get.context!).textTheme.bodyText1!.color,
+        labelColor: profile.profileData.user!.following
+                .contains(logic.userProfile.user!.id)
+            ? Theme.of(Get.context!).textTheme.bodyText1!.color
+            : Theme.of(Get.context!).scaffoldBackgroundColor,
+        borderStyle: profile.profileData.user!.following
+                .contains(logic.userProfile.user!.id)
+            ? BorderStyle.solid
+            : BorderStyle.none,
+        borderWidth: profile.profileData.user!.following
+                .contains(logic.userProfile.user!.id)
+            ? Dimens.one
+            : Dimens.zero,
+        onTap: () => profile.followUnfollowUser(logic.userProfile.user!.id),
+        padding: Dimens.edgeInsets0_8,
+      ),
     );
   }
 
@@ -227,8 +228,8 @@ class UserProfileView extends StatelessWidget {
         ],
       );
 
-  _buildUserPosts(UserProfileController logic) {
-    if (logic.userProfile.user?.id == _auth.profileData.user!.id) {
+  _buildUserPosts(UserProfileController logic, ProfileController _profile) {
+    if (logic.userProfile.user?.id == _profile.profileData.user!.id) {
       if (logic.userProfile.user!.posts.isEmpty) {
         return Center(
           child: Padding(
@@ -255,7 +256,7 @@ class UserProfileView extends StatelessWidget {
     }
 
     if (logic.userProfile.user!.accountType == StringValues.private) {
-      if (_auth.profileData.user!.following
+      if (_profile.profileData.user!.following
           .contains(logic.userProfile.user!.id)) {
         if (logic.userProfile.user!.posts.isEmpty) {
           return Center(

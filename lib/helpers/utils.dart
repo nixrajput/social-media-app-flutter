@@ -217,9 +217,33 @@ abstract class AppUtils {
     return null;
   }
 
+  static Future<void> saveProfileDataToLocalStorage(response) async {
+    if (response != null) {
+      final data = jsonEncode(response);
+
+      await storage.write(StringValues.profileData, data);
+      printLog(StringValues.profileDetailsSaved);
+    } else {
+      printLog(StringValues.profileDetailsNotSaved);
+    }
+  }
+
+  static Future<dynamic> readProfileDataFromLocalStorage() async {
+    if (storage.hasData(StringValues.profileData)) {
+      final data = await storage.read(StringValues.profileData);
+      var decodedData = jsonDecode(data);
+      printLog(StringValues.profileDetailsFound);
+      return decodedData;
+    }
+    printLog(StringValues.profileDetailsNotFound);
+    return null;
+  }
+
   static Future<void> clearLoginDataFromLocalStorage() async {
     await storage.remove(StringValues.loginData);
+    await storage.remove(StringValues.profileData);
     printLog(StringValues.authDetailsRemoved);
+    printLog(StringValues.profileDetailsRemoved);
   }
 
   static void printLog(message) {
@@ -268,17 +292,6 @@ abstract class AppUtils {
   }
 
   static Future<dynamic> selectMultipleImage() async {
-    final androidUiSettings = AndroidUiSettings(
-      toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-      toolbarTitle: StringValues.cropImage,
-      toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
-      backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-    );
-    final iOsUiSettings = IOSUiSettings(
-      title: StringValues.cropImage,
-      minimumAspectRatio: 1.0,
-    );
-
     final _imagePicker = ImagePicker();
     final _imageCropper = ImageCropper();
     var imageList = <File>[];

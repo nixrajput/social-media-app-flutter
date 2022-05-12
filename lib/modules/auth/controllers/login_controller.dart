@@ -7,14 +7,17 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/responses/login_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
+import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
 class LoginController extends GetxController {
   static LoginController get find => Get.find();
 
-  final _auth = AuthController.find;
+  final _auth = AuthService.find;
+  final _profile = ProfileController.find;
 
   final _apiProvider = ApiProvider(http.Client());
 
@@ -82,10 +85,13 @@ class LoginController extends GetxController {
         _auth.setToken = _token;
         _auth.setExpiresAt = _expiresAt;
         _auth.autoLogout();
+        await _profile.fetchProfileDetails();
+
         _clearLoginTextControllers();
 
         AppUtils.closeDialog();
         _isLoading.value = false;
+        RouteManagement.goToHomeView();
         update();
         AppUtils.showSnackBar(
           StringValues.loginSuccessful,

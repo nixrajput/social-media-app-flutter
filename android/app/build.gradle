@@ -45,6 +45,7 @@ android {
         applicationId "com.nixlab.social"
         minSdkVersion 20
         targetSdkVersion 31
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

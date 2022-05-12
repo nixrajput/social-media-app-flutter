@@ -6,15 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
+import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class AboutController extends GetxController {
   static AboutController get find => Get.find();
 
-  final _auth = AuthController.find;
+  final _auth = AuthService.find;
+  final _profile = ProfileController.find;
 
   final _apiProvider = ApiProvider(http.Client());
 
@@ -33,8 +35,8 @@ class AboutController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_auth.profileData.user != null) {
-      var user = _auth.profileData.user!;
+    if (_profile.profileData.user != null) {
+      var user = _profile.profileData.user!;
       aboutTextController.text = user.about ?? '';
     }
   }
@@ -54,7 +56,7 @@ class AboutController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await _auth.getProfileDetails();
+        await _profile.fetchProfileDetails();
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();
@@ -104,7 +106,7 @@ class AboutController extends GetxController {
 
   Future<void> updateAbout() async {
     AppUtils.closeFocus();
-    if (aboutTextController.text == _auth.profileData.user!.about) {
+    if (aboutTextController.text == _profile.profileData.user!.about) {
       return;
     }
     await _updateAbout(aboutTextController.text);

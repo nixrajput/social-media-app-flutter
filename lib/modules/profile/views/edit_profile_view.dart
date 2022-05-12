@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
@@ -11,6 +10,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class EditProfileView extends StatelessWidget {
@@ -41,14 +41,15 @@ class EditProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildEditProfileBody() => Expanded(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: NxElevatedCard(
-            child: Padding(
-              padding: Dimens.edgeInsets8,
-              child: GetBuilder<AuthController>(
-                builder: (logic) => Column(
+  Widget _buildEditProfileBody() =>
+      GetBuilder<ProfileController>(builder: (logic) {
+        return Expanded(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: NxElevatedCard(
+              child: Padding(
+                padding: Dimens.edgeInsets8,
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -194,10 +195,10 @@ class EditProfileView extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      );
+        );
+      });
 
-  Widget _buildProfileImage(AuthController logic) {
+  Widget _buildProfileImage(ProfileController logic) {
     if (logic.profileData.user != null &&
         logic.profileData.user?.avatar != null &&
         logic.profileData.user?.avatar?.url != null) {

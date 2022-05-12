@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 
 class FollowerWidget extends StatelessWidget {
   const FollowerWidget({
@@ -21,6 +21,7 @@ class FollowerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _profile = ProfileController.find;
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(bottom: bottomMargin ?? Dimens.eight),
@@ -64,24 +65,26 @@ class FollowerWidget extends StatelessWidget {
             ),
           ),
           Dimens.boxWidth8,
-          GetBuilder<AuthController>(
-            builder: (auth) => NxOutlinedButton(
-              label: auth.profileData.user!.following.contains(user.id)
+          GetBuilder<ProfileController>(
+            builder: (logic) => NxOutlinedButton(
+              label: _profile.profileData.user!.following.contains(user.id)
                   ? StringValues.following
                   : StringValues.follow,
-              bgColor: auth.profileData.user!.following.contains(user.id)
+              bgColor: _profile.profileData.user!.following.contains(user.id)
                   ? Colors.transparent
                   : Theme.of(context).textTheme.bodyText1!.color,
-              labelColor: auth.profileData.user!.following.contains(user.id)
+              labelColor: _profile.profileData.user!.following.contains(user.id)
                   ? Theme.of(context).textTheme.bodyText1!.color
                   : Theme.of(context).scaffoldBackgroundColor,
-              borderStyle: auth.profileData.user!.following.contains(user.id)
-                  ? BorderStyle.solid
-                  : BorderStyle.none,
-              borderWidth: auth.profileData.user!.following.contains(user.id)
-                  ? Dimens.one
-                  : Dimens.zero,
-              onTap: () => auth.followUnfollowUser(user.id),
+              borderStyle:
+                  _profile.profileData.user!.following.contains(user.id)
+                      ? BorderStyle.solid
+                      : BorderStyle.none,
+              borderWidth:
+                  _profile.profileData.user!.following.contains(user.id)
+                      ? Dimens.one
+                      : Dimens.zero,
+              onTap: () => logic.followUnfollowUser(user.id),
               padding: Dimens.edgeInsets0_8,
               borderRadius: Dimens.twenty,
             ),

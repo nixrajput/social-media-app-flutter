@@ -5,15 +5,17 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
+import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class GenderController extends GetxController {
   static GenderController get find => Get.find();
 
-  final _auth = AuthController.find;
+  final _profile = ProfileController.find;
+  final _auth = AuthService.find;
 
   final _apiProvider = ApiProvider(http.Client());
 
@@ -36,8 +38,8 @@ class GenderController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_auth.profileData.user != null) {
-      var user = _auth.profileData.user!;
+    if (_profile.profileData.user != null) {
+      var user = _profile.profileData.user!;
       setGender = user.gender ?? '';
     }
   }
@@ -63,7 +65,7 @@ class GenderController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await _auth.getProfileDetails();
+        await _profile.fetchProfileDetails();
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();
@@ -116,7 +118,7 @@ class GenderController extends GetxController {
     if (_gender.value.isEmpty) {
       return;
     }
-    if (_gender.value == _auth.profileData.user!.gender) {
+    if (_gender.value == _profile.profileData.user!.gender) {
       return;
     }
     await _updateGender(_gender.value.trim());

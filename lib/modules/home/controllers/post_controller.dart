@@ -8,14 +8,14 @@ import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/responses/common_response.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
+import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
 
 class PostController extends GetxController {
   static PostController get find => Get.find();
 
-  final _auth = AuthController.find;
+  final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
 
   final _isLoading = false.obs;

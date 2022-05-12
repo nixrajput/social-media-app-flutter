@@ -4,13 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
+import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/apis/services/theme_controller.dart';
 import 'package:social_media_app/common/overlay.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
 void main() async {
@@ -23,11 +24,26 @@ void main() async {
   }
 }
 
+bool isLogin = false;
+
 Future<void> initServices() async {
   await GetStorage.init();
   Get
     ..put(AppThemeController(), permanent: true)
-    ..put(AuthController(), permanent: true);
+    ..put(AuthService(), permanent: true)
+    ..put(ProfileController(), permanent: true);
+
+  await Get.find<AuthService>().getToken().then((value) async {
+    if (value.isNotEmpty) {
+      var hasData = await Get.find<ProfileController>().getProfileDetails();
+      if (hasData) {
+        isLogin = true;
+      }
+    }
+    isLogin
+        ? AppUtils.printLog("User is logged in.")
+        : AppUtils.printLog("User is not logged in.");
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -73,7 +89,7 @@ class MyApp extends StatelessWidget {
             theme: AppThemes.lightTheme,
             darkTheme: AppThemes.darkTheme,
             getPages: AppPages.pages,
-            initialRoute: AppRoutes.splash,
+            initialRoute: isLogin ? AppRoutes.home : AppRoutes.login,
           ),
         ),
       ),

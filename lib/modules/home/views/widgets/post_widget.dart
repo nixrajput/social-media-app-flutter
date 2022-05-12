@@ -4,7 +4,6 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
 import 'package:social_media_app/common/cached_network_image.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
@@ -18,6 +17,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_like_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class PostWidget extends StatelessWidget {
@@ -30,7 +30,7 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _auth = AuthController.find;
+    final _profile = ProfileController.find;
 
     return NxElevatedCard(
       child: Column(
@@ -38,15 +38,15 @@ class PostWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildPostHead(_auth),
+          _buildPostHead(_profile),
           _buildPostBody(),
-          _buildPostFooter(_auth),
+          _buildPostFooter(_profile),
         ],
       ),
     );
   }
 
-  Widget _buildPostHead(AuthController _auth) => Padding(
+  Widget _buildPostHead(ProfileController _profile) => Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +116,7 @@ class PostWidget extends StatelessWidget {
                   onTap: () {
                     AppUtils.showBottomSheet(
                       [
-                        if (post.owner.id == _auth.profileData.user!.id)
+                        if (post.owner.id == _profile.profileData.user!.id)
                           ListTile(
                             onTap: () {
                               AppUtils.closeBottomSheet();
@@ -174,7 +174,7 @@ class PostWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildPostFooter(AuthController _auth) => Padding(
+  Widget _buildPostFooter(ProfileController _profile) => Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,14 +188,14 @@ class PostWidget extends StatelessWidget {
                   builder: (con) => Row(
                     children: [
                       NxIconButton(
-                        icon: post.likes.contains(_auth.profileData.user?.id)
+                        icon: post.likes.contains(_profile.profileData.user?.id)
                             ? CupertinoIcons.heart_solid
                             : CupertinoIcons.heart,
                         onTap: () {
                           con.toggleLikePost(post);
                         },
                         iconColor:
-                            post.likes.contains(_auth.profileData.user?.id)
+                            post.likes.contains(_profile.profileData.user?.id)
                                 ? ColorValues.primaryColor
                                 : ColorValues.grayColor,
                       ),

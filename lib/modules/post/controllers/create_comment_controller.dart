@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_controller.dart';
+import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
@@ -14,7 +14,7 @@ import 'package:social_media_app/modules/post/controllers/comment_controller.dar
 class CreateCommentController extends GetxController {
   static CreateCommentController get find => Get.find();
 
-  final _auth = AuthController.find;
+  final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
   final _commentController = CommentController.find;
 
