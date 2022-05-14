@@ -42,7 +42,7 @@ class NxAppBar extends StatelessWidget {
                     child: CircleAvatar(
                       backgroundColor:
                           ColorValues.primaryColor.withOpacity(0.8),
-                      radius: Dimens.twelve,
+                      radius: Dimens.fourteen,
                       child: Icon(
                         CupertinoIcons.left_chevron,
                         color: ColorValues.whiteColor,
@@ -56,7 +56,7 @@ class NxAppBar extends StatelessWidget {
                 if (title != null && title!.isNotEmpty)
                   Text(
                     title!,
-                    style: AppStyles.style18Bold,
+                    style: AppStyles.style20Bold,
                   )
               ],
             ),

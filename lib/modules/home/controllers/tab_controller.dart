@@ -14,6 +14,7 @@ class TrendingTabController extends GetxController
   int _selectedIndex = 2;
 
   int get selectedIndex => _selectedIndex;
+
   TabController get controller => _controller!;
 
   @override

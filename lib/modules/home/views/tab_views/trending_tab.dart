@@ -34,7 +34,7 @@ class TrendingTabView extends StatelessWidget {
                             hintText: StringValues.search,
                             border: OutlineInputBorder(
                               borderRadius:
-                                  BorderRadius.circular(Dimens.fourty),
+                                  BorderRadius.circular(Dimens.sixTeen),
                             ),
                           ),
                         ),
@@ -42,6 +42,11 @@ class TrendingTabView extends StatelessWidget {
                       TabBar(
                         controller: tab.controller,
                         tabs: tab.tabs,
+                        unselectedLabelColor:
+                            Theme.of(context).textTheme.subtitle1?.color,
+                        labelColor:
+                            Theme.of(context).textTheme.bodyText1?.color,
+                        padding: Dimens.edgeInsets0,
                       ),
                     ],
                   ),

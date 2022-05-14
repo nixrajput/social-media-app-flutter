@@ -192,11 +192,11 @@ abstract class AppUtils {
     }
   }
 
-  static Future<void> saveLoginDataToLocalStorage(_token, _expiresAt) async {
-    if (_token!.isNotEmpty && _expiresAt!.isNotEmpty) {
+  static Future<void> saveLoginDataToLocalStorage(token, expiresAt) async {
+    if (token!.isNotEmpty && expiresAt!.isNotEmpty) {
       final data = jsonEncode({
-        StringValues.token: _token,
-        StringValues.expiresAt: _expiresAt,
+        StringValues.token: token,
+        StringValues.expiresAt: expiresAt,
       });
 
       await storage.write(StringValues.loginData, data);
@@ -255,16 +255,16 @@ abstract class AppUtils {
   }
 
   static Future<dynamic> selectSingleImage({ImageSource? imageSource}) async {
-    final _imagePicker = ImagePicker();
-    final _imageCropper = ImageCropper();
-    final pickedImage = await _imagePicker.pickImage(
+    final imagePicker = ImagePicker();
+    final imageCropper = ImageCropper();
+    final pickedImage = await imagePicker.pickImage(
       maxWidth: 1920.0,
       maxHeight: 1920.0,
       source: imageSource ?? ImageSource.gallery,
     );
 
     if (pickedImage != null) {
-      var croppedFile = await _imageCropper.cropImage(
+      var croppedFile = await imageCropper.cropImage(
         maxWidth: 1920,
         maxHeight: 1920,
         sourcePath: pickedImage.path,
@@ -292,17 +292,17 @@ abstract class AppUtils {
   }
 
   static Future<dynamic> selectMultipleImage() async {
-    final _imagePicker = ImagePicker();
-    final _imageCropper = ImageCropper();
+    final imagePicker = ImagePicker();
+    final imageCropper = ImageCropper();
     var imageList = <File>[];
-    final pickedImages = await _imagePicker.pickMultiImage(
+    final pickedImages = await imagePicker.pickMultiImage(
       maxWidth: 1920.0,
       maxHeight: 1920.0,
     );
 
     if (pickedImages != null) {
       for (var pickedImage in pickedImages) {
-        var croppedFile = await _imageCropper.cropImage(
+        var croppedFile = await imageCropper.cropImage(
           maxWidth: 1920,
           maxHeight: 1920,
           sourcePath: pickedImage.path,

@@ -28,7 +28,7 @@ class UserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _profile = ProfileController.find;
+    final profile = ProfileController.find;
 
     return InkWell(
       onTap: onTap ?? () => RouteManagement.goToUserProfileView(user.id),
@@ -93,32 +93,33 @@ class UserWidget extends StatelessWidget {
               ),
             ),
             Dimens.boxWidth8,
-            GetBuilder<ProfileController>(
-              builder: (logic) => NxOutlinedButton(
-                label: _profile.profileData.user!.following.contains(user.id)
-                    ? StringValues.following
-                    : StringValues.follow,
-                bgColor: _profile.profileData.user!.following.contains(user.id)
-                    ? Colors.transparent
-                    : Theme.of(context).textTheme.bodyText1!.color,
-                labelColor:
-                    _profile.profileData.user!.following.contains(user.id)
-                        ? Theme.of(context).textTheme.bodyText1!.color
-                        : Theme.of(context).scaffoldBackgroundColor,
-                borderStyle:
-                    _profile.profileData.user!.following.contains(user.id)
-                        ? BorderStyle.solid
-                        : BorderStyle.none,
-                borderWidth:
-                    _profile.profileData.user!.following.contains(user.id)
-                        ? Dimens.one
-                        : Dimens.zero,
-                onTap: () => logic.followUnfollowUser(user.id),
-                padding: Dimens.edgeInsets0_8,
-                fontSize: Dimens.twelve,
-                borderRadius: Dimens.twenty,
+            if (user.id != profile.profileData.user!.id)
+              GetBuilder<ProfileController>(
+                builder: (logic) => NxOutlinedButton(
+                  label: profile.profileData.user!.following.contains(user.id)
+                      ? StringValues.following
+                      : StringValues.follow,
+                  bgColor: profile.profileData.user!.following.contains(user.id)
+                      ? Colors.transparent
+                      : Theme.of(context).textTheme.bodyText1!.color,
+                  labelColor:
+                      profile.profileData.user!.following.contains(user.id)
+                          ? Theme.of(context).textTheme.bodyText1!.color
+                          : Theme.of(context).scaffoldBackgroundColor,
+                  borderStyle:
+                      profile.profileData.user!.following.contains(user.id)
+                          ? BorderStyle.solid
+                          : BorderStyle.none,
+                  borderWidth:
+                      profile.profileData.user!.following.contains(user.id)
+                          ? Dimens.one
+                          : Dimens.zero,
+                  onTap: () => logic.followUnfollowUser(user.id),
+                  padding: Dimens.edgeInsets0_8,
+                  fontSize: Dimens.twelve,
+                  borderRadius: Dimens.twenty,
+                ),
               ),
-            ),
           ],
         ),
       ),

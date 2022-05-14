@@ -35,9 +35,9 @@ class UserProfileController extends GetxController {
   }
 
   Future<void> _getUserProfileDetails() async {
-    String userId = Get.arguments;
+    var userId = Get.parameters["userId"];
 
-    if (userId.isEmpty) {
+    if (userId == null) {
       AppUtils.showSnackBar(
         StringValues.userIdNotFound,
         StringValues.error,
@@ -110,7 +110,7 @@ class UserProfileController extends GetxController {
 
   @override
   void onInit() async {
-    await _getUserProfileDetails();
     super.onInit();
+    await _getUserProfileDetails();
   }
 }

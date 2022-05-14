@@ -40,6 +40,7 @@ class UserController extends GetxController {
 
       if (response.statusCode == 200) {
         setUserListData = UserListResponse.fromJson(decodedData);
+        _userList.value.results!.shuffle();
         _isLoading.value = false;
         update();
       } else {

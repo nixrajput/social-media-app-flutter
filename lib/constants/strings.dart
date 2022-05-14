@@ -133,6 +133,7 @@ abstract class StringValues {
   static const viewPost = "View Post";
   static const people = "People";
   static const feed = "Feed";
+  static const help = "Help";
 }
 
 abstract class AssetValues {

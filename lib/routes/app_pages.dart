@@ -32,6 +32,12 @@ import 'package:social_media_app/modules/profile/views/edit_username_view.dart';
 import 'package:social_media_app/modules/profile/views/followers_list_view.dart';
 import 'package:social_media_app/modules/profile/views/following_list_view.dart';
 import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
+import 'package:social_media_app/modules/settings/views/pages/about_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/account_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/help_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/privacy_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/security_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/theme_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/splash/views/splash_view.dart';
 import 'package:social_media_app/modules/users/bindings/user_profile_binding.dart';
@@ -168,7 +174,7 @@ abstract class AppPages {
       transition: Transition.downToUp,
     ),
     GetPage(
-      name: _Routes.userProfile,
+      name: "${_Routes.userProfile}/:userId",
       page: UserProfileView.new,
       binding: UserProfileBinding(),
       transitionDuration: transitionDuration,
@@ -178,6 +184,45 @@ abstract class AppPages {
       name: _Routes.postDetails,
       page: PostDetailsView.new,
       binding: PostDetailsBinding(),
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+
+    //  SETTINGS PAGES
+
+    GetPage(
+      name: _Routes.accountSettings,
+      page: AccountSettingsView.new,
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.securitySettings,
+      page: SecuritySettingsView.new,
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.privacySettings,
+      page: PrivacySettingsView.new,
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.helpSettings,
+      page: HelpSettingsView.new,
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.aboutSettings,
+      page: AboutSettingsView.new,
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
+      name: _Routes.themeSettings,
+      page: ThemeSettingsView.new,
       transitionDuration: transitionDuration,
       transition: Transition.downToUp,
     ),

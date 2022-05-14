@@ -17,7 +17,9 @@ class AuthService extends GetxService {
   LoginResponse _loginData = LoginResponse();
 
   String get token => _token;
+
   String get expiresAt => _expiresAt;
+
   LoginResponse get loginData => _loginData;
 
   set setLoginData(LoginResponse value) => _loginData = value;
@@ -27,15 +29,14 @@ class AuthService extends GetxService {
   set setExpiresAt(String value) => _expiresAt = value;
 
   Future<String> getToken() async {
-    var _token = '';
+    var token = '';
     final decodedData = await AppUtils.readLoginDataFromLocalStorage();
     if (decodedData != null) {
       _expiresAt = decodedData[StringValues.expiresAt];
       setToken = decodedData[StringValues.token];
-      _token = decodedData[StringValues.token];
-      autoLogout();
+      token = decodedData[StringValues.token];
     }
-    return _token;
+    return token;
   }
 
   Future<void> _logout() async {
@@ -51,21 +52,14 @@ class AuthService extends GetxService {
 
   void autoLogout() async {
     if (_expiresAt.isNotEmpty) {
-      var _currentTimestamp =
+      var currentTimestamp =
           (DateTime.now().millisecondsSinceEpoch / 1000).round();
-      if (int.parse(_expiresAt) < _currentTimestamp) {
-        await _logout();
+      if (int.parse(_expiresAt) < currentTimestamp) {
+        setToken = '';
+        setExpiresAt = '';
+        await AppUtils.clearLoginDataFromLocalStorage();
       }
     }
-    // if (_profileData.value.user != null) {
-    //   if (_profileData.value.user!.token == _token.value) {
-    //     await _logout();
-    //     AppUtils.showSnackBar(
-    //       StringValues.tokenError,
-    //       StringValues.error,
-    //     );
-    //   }
-    // }
   }
 
   void _checkForInternetConnectivity() {

@@ -175,7 +175,7 @@ class ProfileTabView extends StatelessWidget {
               ),
             ),
             Dimens.boxHeight20,
-            _buildActionButtons(logic),
+            // _buildActionButtons(logic),
           ],
         ),
       ),
@@ -211,30 +211,49 @@ class ProfileTabView extends StatelessWidget {
               color: Theme.of(Get.context!).textTheme.subtitle1!.color,
             ),
           ),
-          if (logic.profileData.user!.about != null) Dimens.boxHeight8,
+          if (logic.profileData.user!.about != null) Dimens.boxHeight16,
           if (logic.profileData.user!.about != null)
             Text(
               logic.profileData.user!.about!,
               style: AppStyles.style14Normal,
             ),
-          Dimens.boxHeight8,
-          Text(
-            'Joined ${DateFormat.yMMMd().format(logic.profileData.user!.createdAt)}',
-            style: const TextStyle(color: ColorValues.grayColor),
+          Dimens.boxHeight16,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.calendar_today,
+                size: Dimens.sixTeen,
+                color: ColorValues.grayColor,
+              ),
+              Dimens.boxWidth4,
+              Expanded(
+                child: Text(
+                  'Joined - ${DateFormat.yMMMd().format(logic.profileData.user!.createdAt)}',
+                  style: const TextStyle(color: ColorValues.grayColor),
+                ),
+              ),
+            ],
           ),
           Dimens.boxHeight16,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              NxCountWidget(
-                title: StringValues.followers,
-                value: logic.profileData.user!.followers.length.toString(),
-                onTap: RouteManagement.goToFollowersListView,
+              Expanded(
+                child: NxCountWidget(
+                  title: StringValues.followers,
+                  value: logic.profileData.user!.followers.length.toString(),
+                  onTap: () => RouteManagement.goToFollowersListView(
+                      logic.profileData.user!.id),
+                ),
               ),
-              NxCountWidget(
-                title: StringValues.following,
-                value: logic.profileData.user!.following.length.toString(),
-                onTap: RouteManagement.goToFollowingListView,
+              Expanded(
+                child: NxCountWidget(
+                  title: StringValues.following,
+                  value: logic.profileData.user!.following.length.toString(),
+                  onTap: () => RouteManagement.goToFollowingListView(
+                      logic.profileData.user!.id),
+                ),
               ),
             ],
           ),

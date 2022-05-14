@@ -77,13 +77,13 @@ class LoginController extends GetxController {
       if (response.statusCode == 200) {
         _auth.setLoginData = LoginResponse.fromJson(decodedData);
 
-        var _token = _auth.loginData.token!;
-        var _expiresAt = _auth.loginData.expiresAt!;
+        var token = _auth.loginData.token!;
+        var expiresAt = _auth.loginData.expiresAt!;
 
-        await AppUtils.saveLoginDataToLocalStorage(_token, _expiresAt);
+        await AppUtils.saveLoginDataToLocalStorage(token, expiresAt);
 
-        _auth.setToken = _token;
-        _auth.setExpiresAt = _expiresAt;
+        _auth.setToken = token;
+        _auth.setExpiresAt = expiresAt;
         _auth.autoLogout();
         await _profile.fetchProfileDetails();
 

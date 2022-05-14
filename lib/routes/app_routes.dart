@@ -9,6 +9,12 @@ abstract class AppRoutes {
   static const register = _Routes.register;
 
   static const settings = _Routes.settings;
+  static const accountSettings = _Routes.accountSettings;
+  static const securitySettings = _Routes.securitySettings;
+  static const privacySettings = _Routes.privacySettings;
+  static const helpSettings = _Routes.helpSettings;
+  static const aboutSettings = _Routes.aboutSettings;
+  static const themeSettings = _Routes.themeSettings;
 
   static const forgotPassword = _Routes.forgotPassword;
   static const resetPassword = _Routes.resetPassword;
@@ -39,6 +45,12 @@ abstract class _Routes {
   static const register = '/register';
 
   static const settings = '/settings';
+  static const accountSettings = "/account_settings";
+  static const securitySettings = "/security_settings";
+  static const privacySettings = "/privacy_settings";
+  static const helpSettings = "/help_settings";
+  static const aboutSettings = "/about_settings";
+  static const themeSettings = "/theme_settings";
 
   static const forgotPassword = '/forgot_password';
   static const resetPassword = '/reset_password';

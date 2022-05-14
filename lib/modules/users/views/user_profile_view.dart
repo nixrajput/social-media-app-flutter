@@ -24,7 +24,7 @@ class UserProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _profile = ProfileController.find;
+    final profile = ProfileController.find;
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
@@ -37,7 +37,7 @@ class UserProfileView extends StatelessWidget {
               const NxAppBar(
                 title: StringValues.profile,
               ),
-              _buildBody(_profile),
+              _buildBody(profile),
             ],
           ),
         ),
@@ -46,16 +46,18 @@ class UserProfileView extends StatelessWidget {
   }
 
   Widget _buildBody(ProfileController profile) {
-    return Expanded(
-      child: GetBuilder<UserProfileController>(
-        builder: (logic) {
-          if (logic.isLoading) {
-            return const Center(
+    return GetBuilder<UserProfileController>(
+      builder: (logic) {
+        if (logic.isLoading) {
+          return const Expanded(
+            child: Center(
               child: CircularProgressIndicator(),
-            );
-          }
-          if (logic.hasError) {
-            return Center(
+            ),
+          );
+        }
+        if (logic.hasError) {
+          return Expanded(
+            child: Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -73,10 +75,12 @@ class UserProfileView extends StatelessWidget {
                   ),
                 ],
               ),
-            );
-          }
+            ),
+          );
+        }
 
-          return SingleChildScrollView(
+        return Expanded(
+          child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -97,7 +101,7 @@ class UserProfileView extends StatelessWidget {
                           ],
                         ),
                         Dimens.boxHeight16,
-                        _buildUserDetails(logic),
+                        _buildUserDetails(logic, profile),
                       ],
                     ),
                   ),
@@ -115,9 +119,9 @@ class UserProfileView extends StatelessWidget {
                 Dimens.boxHeight16,
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -136,8 +140,8 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  _buildHeaderButton(UserProfileController logic, ProfileController _profile) {
-    if (logic.userProfile.user!.id == _profile.profileData.user!.id) {
+  _buildHeaderButton(UserProfileController logic, ProfileController profile) {
+    if (logic.userProfile.user!.id == profile.profileData.user!.id) {
       return NxOutlinedButton(
         label: StringValues.editProfile,
         onTap: RouteManagement.goToEditProfileView,
@@ -172,7 +176,9 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildUserDetails(UserProfileController logic) => Column(
+  Widget _buildUserDetails(
+          UserProfileController logic, ProfileController profile) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -218,20 +224,74 @@ class UserProfileView extends StatelessWidget {
               NxCountWidget(
                 title: StringValues.followers,
                 value: logic.userProfile.user!.followers.length.toString(),
-                //onTap: RouteManagement.goToFollowersListView,
+                onTap: () {
+                  if (profile.profileData.user!.following
+                      .contains(logic.userProfile.user?.id)) {
+                    RouteManagement.goToFollowersListView(
+                        logic.userProfile.user!.id);
+                  }
+
+                  if (logic.userProfile.user!.accountType ==
+                      StringValues.public) {
+                    RouteManagement.goToFollowersListView(
+                        logic.userProfile.user!.id);
+                  }
+
+                  if (logic.userProfile.user!.accountType ==
+                          StringValues.private &&
+                      profile.profileData.user!.following
+                          .contains(logic.userProfile.user?.id)) {
+                    RouteManagement.goToFollowersListView(
+                        logic.userProfile.user!.id);
+                  }
+
+                  if (logic.userProfile.user!.id ==
+                      profile.profileData.user!.id) {
+                    RouteManagement.goToFollowersListView(
+                        logic.userProfile.user!.id);
+                  }
+                  return;
+                },
               ),
               NxCountWidget(
                 title: StringValues.following,
                 value: logic.userProfile.user!.following.length.toString(),
-                //onTap: RouteManagement.goToFollowingListView,
+                onTap: () {
+                  if (profile.profileData.user!.following
+                      .contains(logic.userProfile.user?.id)) {
+                    RouteManagement.goToFollowingListView(
+                        logic.userProfile.user!.id);
+                  }
+
+                  if (logic.userProfile.user!.accountType ==
+                      StringValues.public) {
+                    RouteManagement.goToFollowingListView(
+                        logic.userProfile.user!.id);
+                  }
+
+                  if (logic.userProfile.user!.accountType ==
+                          StringValues.private &&
+                      profile.profileData.user!.following
+                          .contains(logic.userProfile.user?.id)) {
+                    RouteManagement.goToFollowingListView(
+                        logic.userProfile.user!.id);
+                  }
+
+                  if (logic.userProfile.user!.id ==
+                      profile.profileData.user!.id) {
+                    RouteManagement.goToFollowingListView(
+                        logic.userProfile.user!.id);
+                  }
+                  return;
+                },
               ),
             ],
           ),
         ],
       );
 
-  _buildUserPosts(UserProfileController logic, ProfileController _profile) {
-    if (logic.userProfile.user?.id == _profile.profileData.user!.id) {
+  _buildUserPosts(UserProfileController logic, ProfileController profile) {
+    if (logic.userProfile.user!.id == profile.profileData.user!.id) {
       if (logic.userProfile.user!.posts.isEmpty) {
         return Center(
           child: Padding(
@@ -258,7 +318,7 @@ class UserProfileView extends StatelessWidget {
     }
 
     if (logic.userProfile.user!.accountType == StringValues.private) {
-      if (_profile.profileData.user!.following
+      if (profile.profileData.user!.following
           .contains(logic.userProfile.user!.id)) {
         if (logic.userProfile.user!.posts.isEmpty) {
           return Center(

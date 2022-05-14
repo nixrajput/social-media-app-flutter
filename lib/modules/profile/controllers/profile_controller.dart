@@ -21,6 +21,7 @@ class ProfileController extends GetxController {
   ProfileResponse _profileData = ProfileResponse();
 
   bool get isLoading => _isLoading;
+
   ProfileResponse get profileData => _profileData;
 
   set setProfileData(ProfileResponse value) => _profileData = value;

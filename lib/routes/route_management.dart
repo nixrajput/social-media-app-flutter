@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
+import 'package:social_media_app/modules/profile/controllers/followers_list_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/following_list_controller.dart';
+import 'package:social_media_app/modules/users/controllers/user_profile_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
 abstract class RouteManagement {
@@ -29,10 +32,6 @@ abstract class RouteManagement {
 
   static void goToHomeView() {
     Get.offAllNamed(AppRoutes.home);
-  }
-
-  static void goToSettingsView() {
-    Get.toNamed(AppRoutes.settings);
   }
 
   static void goToEditProfileView() {
@@ -71,20 +70,53 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.createPost);
   }
 
-  static void goToFollowersListView() {
-    Get.toNamed(AppRoutes.followers);
+  static void goToFollowersListView(String userId) {
+    Get.delete<FollowersListController>();
+    Get.toNamed(AppRoutes.followers, arguments: userId);
   }
 
-  static void goToFollowingListView() {
-    Get.toNamed(AppRoutes.following);
+  static void goToFollowingListView(String userId) {
+    Get.delete<FollowingListController>();
+    Get.toNamed(AppRoutes.following, arguments: userId);
   }
 
   static void goToUserProfileView(String userId) {
-    Get.toNamed(AppRoutes.userProfile, arguments: userId);
+    Get.delete<UserProfileController>();
+    Get.toNamed("${AppRoutes.userProfile}/$userId");
   }
 
   static void goToPostDetailsView(String postId, Post post) {
     Get.toNamed(AppRoutes.postDetails, arguments: [postId, post]);
+  }
+
+  // SETTINGS
+
+  static void goToSettingsView() {
+    Get.toNamed(AppRoutes.settings);
+  }
+
+  static void goToAccountSettingsView() {
+    Get.toNamed(AppRoutes.accountSettings);
+  }
+
+  static void goToSecuritySettingsView() {
+    Get.toNamed(AppRoutes.securitySettings);
+  }
+
+  static void goToPrivacySettingsView() {
+    Get.toNamed(AppRoutes.privacySettings);
+  }
+
+  static void goToHelpSettingsView() {
+    Get.toNamed(AppRoutes.helpSettings);
+  }
+
+  static void goToAboutSettingsView() {
+    Get.toNamed(AppRoutes.aboutSettings);
+  }
+
+  static void goToThemeSettingsView() {
+    Get.toNamed(AppRoutes.themeSettings);
   }
 
   static void goToBack() {

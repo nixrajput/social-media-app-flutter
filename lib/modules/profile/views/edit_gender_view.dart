@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
+import 'package:social_media_app/common/custom_radio_tile.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_gender_controller.dart';
 
 class EditGenderView extends StatelessWidget {
@@ -60,45 +59,35 @@ class EditGenderView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Dimens.boxHeight16,
-                RadioListTile(
+                NxRadioTile(
+                  padding: Dimens.edgeInsets16_0,
+                  onTap: () => logic.setGender = StringValues.male,
                   onChanged: (value) {
                     logic.setGender = value.toString();
                   },
-                  groupValue: logic.gender,
+                  title: StringValues.male,
                   value: StringValues.male,
-                  title: Text(
-                    StringValues.male,
-                    style: AppStyles.style16Bold,
-                  ),
-                  activeColor: ColorValues.primaryColor,
-                  contentPadding: Dimens.edgeInsets0,
+                  groupValue: logic.gender,
                 ),
-                RadioListTile(
+                NxRadioTile(
+                  padding: Dimens.edgeInsets16_0,
+                  onTap: () => logic.setGender = StringValues.female,
                   onChanged: (value) {
                     logic.setGender = value.toString();
                   },
-                  groupValue: logic.gender,
+                  title: StringValues.female,
                   value: StringValues.female,
-                  title: Text(
-                    StringValues.female,
-                    style: AppStyles.style16Bold,
-                  ),
-                  activeColor: ColorValues.primaryColor,
-                  contentPadding: Dimens.edgeInsets0,
+                  groupValue: logic.gender,
                 ),
-                RadioListTile(
+                NxRadioTile(
+                  padding: Dimens.edgeInsets16_0,
+                  onTap: () => logic.setGender = StringValues.others,
                   onChanged: (value) {
                     logic.setGender = value.toString();
                   },
-                  groupValue: logic.gender,
+                  title: StringValues.others,
                   value: StringValues.others,
-                  title: Text(
-                    StringValues.others,
-                    style: AppStyles.style16Bold,
-                  ),
-                  activeColor: ColorValues.primaryColor,
-                  contentPadding: Dimens.edgeInsets0,
+                  groupValue: logic.gender,
                 ),
                 Dimens.boxHeight16,
               ],

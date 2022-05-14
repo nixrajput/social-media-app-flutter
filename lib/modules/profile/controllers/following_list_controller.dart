@@ -9,12 +9,10 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 
 class FollowingListController extends GetxController {
   static FollowingListController get find => Get.find();
 
-  final _profile = ProfileController.find;
   final _auth = AuthService.find;
 
   final _apiProvider = ApiProvider(http.Client());
@@ -31,13 +29,18 @@ class FollowingListController extends GetxController {
   }
 
   Future<void> _getFollowersList() async {
+    var userId = Get.arguments;
+
+    if (userId == null) {
+      return;
+    }
+
     AppUtils.printLog("Get Following List Request...");
     _isLoading.value = true;
     update();
 
     try {
-      final response = await _apiProvider.getFollowingList(
-          _auth.token, _profile.profileData.user!.id);
+      final response = await _apiProvider.getFollowingList(_auth.token, userId);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

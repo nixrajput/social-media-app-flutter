@@ -38,7 +38,7 @@ class NxListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (leading != null) leading!,
-            if (title != null || subtitle != null) Dimens.boxWidth16,
+            if (title != null || subtitle != null) Dimens.boxWidth8,
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

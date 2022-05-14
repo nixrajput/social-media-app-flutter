@@ -29,7 +29,7 @@ class PostDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _profile = ProfileController.find;
+    final profile = ProfileController.find;
 
     return NxElevatedCard(
       child: Column(
@@ -37,15 +37,15 @@ class PostDetailsWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildPostHead(_profile),
+          _buildPostHead(profile),
           _buildPostBody(),
-          _buildPostFooter(_profile),
+          _buildPostFooter(profile),
         ],
       ),
     );
   }
 
-  Widget _buildPostHead(ProfileController _profile) => Padding(
+  Widget _buildPostHead(ProfileController profile) => Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +115,7 @@ class PostDetailsWidget extends StatelessWidget {
                   onTap: () {
                     AppUtils.showBottomSheet(
                       [
-                        if (post.owner.id == _profile.profileData.user!.id)
+                        if (post.owner.id == profile.profileData.user!.id)
                           ListTile(
                             onTap: () {
                               AppUtils.closeBottomSheet();
@@ -173,7 +173,7 @@ class PostDetailsWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildPostFooter(ProfileController _profile) => Padding(
+  Widget _buildPostFooter(ProfileController profile) => Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,16 +184,15 @@ class PostDetailsWidget extends StatelessWidget {
               builder: (con) => Row(
                 children: [
                   NxIconButton(
-                    icon: post.likes.contains(_profile.profileData.user?.id)
+                    icon: post.likes.contains(profile.profileData.user?.id)
                         ? CupertinoIcons.heart_solid
                         : CupertinoIcons.heart,
                     onTap: () {
                       con.toggleLikePost(post);
                     },
-                    iconColor:
-                        post.likes.contains(_profile.profileData.user?.id)
-                            ? ColorValues.primaryColor
-                            : ColorValues.grayColor,
+                    iconColor: post.likes.contains(profile.profileData.user?.id)
+                        ? ColorValues.primaryColor
+                        : ColorValues.grayColor,
                   ),
                   Dimens.boxWidth4,
                   if (post.likes.isNotEmpty)

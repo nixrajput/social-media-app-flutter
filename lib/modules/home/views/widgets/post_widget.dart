@@ -30,7 +30,7 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _profile = ProfileController.find;
+    final profile = ProfileController.find;
 
     return NxElevatedCard(
       child: Column(
@@ -38,15 +38,15 @@ class PostWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildPostHead(_profile),
+          _buildPostHead(profile),
           _buildPostBody(),
-          _buildPostFooter(_profile),
+          _buildPostFooter(profile),
         ],
       ),
     );
   }
 
-  Widget _buildPostHead(ProfileController _profile) => Padding(
+  Widget _buildPostHead(ProfileController profile) => Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +127,7 @@ class PostWidget extends StatelessWidget {
                             style: AppStyles.style16Bold,
                           ),
                         ),
-                        if (post.owner.id == _profile.profileData.user!.id)
+                        if (post.owner.id == profile.profileData.user!.id)
                           ListTile(
                             onTap: () {
                               AppUtils.closeBottomSheet();
@@ -188,7 +188,7 @@ class PostWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildPostFooter(ProfileController _profile) => Padding(
+  Widget _buildPostFooter(ProfileController profile) => Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,7 +202,7 @@ class PostWidget extends StatelessWidget {
                   builder: (con) => Row(
                     children: [
                       NxIconButton(
-                        icon: post.likes.contains(_profile.profileData.user?.id)
+                        icon: post.likes.contains(profile.profileData.user?.id)
                             ? CupertinoIcons.heart_solid
                             : CupertinoIcons.heart,
                         iconSize: Dimens.twenty,
@@ -210,7 +210,7 @@ class PostWidget extends StatelessWidget {
                           con.toggleLikePost(post);
                         },
                         iconColor:
-                            post.likes.contains(_profile.profileData.user?.id)
+                            post.likes.contains(profile.profileData.user?.id)
                                 ? ColorValues.errorColor
                                 : ColorValues.grayColor,
                       ),
@@ -265,8 +265,9 @@ class PostWidget extends StatelessWidget {
               NxTextButton(
                 label: 'View All Comments',
                 onTap: () => RouteManagement.goToPostDetailsView(post.id, post),
-                textColor: ColorValues.grayColor,
-                fontSize: Dimens.fourteen,
+                labelStyle: AppStyles.style14Normal.copyWith(
+                  color: ColorValues.grayColor,
+                ),
               ),
             Dimens.boxHeight4,
             Text(
