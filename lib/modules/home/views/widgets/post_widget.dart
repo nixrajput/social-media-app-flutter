@@ -236,7 +236,7 @@ class PostWidget extends StatelessWidget {
                       Dimens.boxWidth4,
                       if (post.comments.isNotEmpty)
                         Text(
-                          '${post.comments.length} comments',
+                          '${post.comments.length} ${StringValues.comments}',
                           style: AppStyles.style14Bold,
                         ),
                     ],

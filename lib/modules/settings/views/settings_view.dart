@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
@@ -9,9 +8,6 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
-import 'package:social_media_app/modules/settings/controllers/account_type_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class SettingsView extends StatelessWidget {
@@ -48,7 +44,7 @@ class SettingsView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 NxListTile(
-                  padding: Dimens.edgeInsets8_0,
+                  padding: Dimens.edgeInsets16_0,
                   leading: Icon(
                     Icons.account_circle_outlined,
                     size: Dimens.twentyEight,
@@ -63,7 +59,7 @@ class SettingsView extends StatelessWidget {
                   onTap: RouteManagement.goToAccountSettingsView,
                 ),
                 NxListTile(
-                  padding: Dimens.edgeInsets8_0,
+                  padding: Dimens.edgeInsets16_0,
                   leading: Icon(
                     Icons.verified_user_outlined,
                     size: Dimens.twentyEight,
@@ -78,7 +74,7 @@ class SettingsView extends StatelessWidget {
                   onTap: RouteManagement.goToSecuritySettingsView,
                 ),
                 NxListTile(
-                  padding: Dimens.edgeInsets8_0,
+                  padding: Dimens.edgeInsets16_0,
                   leading: Icon(
                     Icons.lock_outline,
                     size: Dimens.twentyEight,
@@ -93,7 +89,7 @@ class SettingsView extends StatelessWidget {
                   onTap: RouteManagement.goToPrivacySettingsView,
                 ),
                 NxListTile(
-                  padding: Dimens.edgeInsets8_0,
+                  padding: Dimens.edgeInsets16_0,
                   leading: Icon(
                     Icons.help_outline_outlined,
                     size: Dimens.twentyEight,
@@ -108,7 +104,7 @@ class SettingsView extends StatelessWidget {
                   onTap: RouteManagement.goToHelpSettingsView,
                 ),
                 NxListTile(
-                  padding: Dimens.edgeInsets8_0,
+                  padding: Dimens.edgeInsets16_0,
                   leading: Icon(
                     Icons.info_outline,
                     size: Dimens.twentyEight,
@@ -123,7 +119,7 @@ class SettingsView extends StatelessWidget {
                   onTap: RouteManagement.goToAboutSettingsView,
                 ),
                 NxListTile(
-                  padding: Dimens.edgeInsets8_0,
+                  padding: Dimens.edgeInsets16_0,
                   leading: Icon(
                     Icons.palette_outlined,
                     size: Dimens.twentyEight,
@@ -139,10 +135,10 @@ class SettingsView extends StatelessWidget {
                 ),
                 Dimens.boxHeight24,
                 Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: Dimens.edgeInsets4,
                   child: NxTextButton(
                     label: StringValues.logout,
-                    labelStyle: AppStyles.style24Normal.copyWith(
+                    labelStyle: AppStyles.style20Normal.copyWith(
                       color: ColorValues.primaryColor,
                       fontWeight: FontWeight.w500,
                     ),
@@ -154,50 +150,4 @@ class SettingsView extends StatelessWidget {
           ),
         ),
       );
-
-  _buildPrivacySettings() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          StringValues.privacy,
-          style: AppStyles.style14Normal.copyWith(
-            color: ColorValues.primaryColor,
-          ),
-        ),
-        Dimens.boxHeight4,
-        GetBuilder<ProfileController>(
-          builder: (logic) => ListTile(
-            onTap: () {
-              AppUtils.showBottomSheet(
-                [StringValues.public, StringValues.private]
-                    .map(
-                      (item) => GetBuilder<AccountTypeController>(
-                        builder: (con) => ListTile(
-                          onTap: () {
-                            AppUtils.closeBottomSheet();
-                            con.updateAccountType(item);
-                          },
-                          leading: Text(
-                            item.toTitleCase(),
-                            style: AppStyles.style16Bold.copyWith(),
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              );
-            },
-            leading: const Icon(CupertinoIcons.checkmark_shield),
-            title:
-                const Text('${StringValues.account} ${StringValues.privacy}'),
-            subtitle: Text(
-              logic.profileData.user!.accountType.toTitleCase(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

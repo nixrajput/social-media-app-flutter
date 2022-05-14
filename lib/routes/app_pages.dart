@@ -31,6 +31,7 @@ import 'package:social_media_app/modules/profile/views/edit_profile_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_username_view.dart';
 import 'package:social_media_app/modules/profile/views/followers_list_view.dart';
 import 'package:social_media_app/modules/profile/views/following_list_view.dart';
+import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
 import 'package:social_media_app/modules/settings/views/pages/about_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account_settings_view.dart';
@@ -82,13 +83,7 @@ abstract class AppPages {
       binding: HomeBinding(),
       transition: Transition.downToUp,
     ),
-    GetPage(
-      name: _Routes.settings,
-      page: SettingsView.new,
-      binding: SettingBinding(),
-      transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
-    ),
+
     GetPage(
       name: _Routes.forgotPassword,
       page: ForgotPasswordView.new,
@@ -191,6 +186,13 @@ abstract class AppPages {
     //  SETTINGS PAGES
 
     GetPage(
+      name: _Routes.settings,
+      page: SettingsView.new,
+      binding: SettingBinding(),
+      transitionDuration: transitionDuration,
+      transition: Transition.downToUp,
+    ),
+    GetPage(
       name: _Routes.accountSettings,
       page: AccountSettingsView.new,
       transitionDuration: transitionDuration,
@@ -205,6 +207,7 @@ abstract class AppPages {
     GetPage(
       name: _Routes.privacySettings,
       page: PrivacySettingsView.new,
+      binding: PrivacySettingBinding(),
       transitionDuration: transitionDuration,
       transition: Transition.downToUp,
     ),

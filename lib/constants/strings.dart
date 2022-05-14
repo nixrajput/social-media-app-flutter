@@ -134,6 +134,12 @@ abstract class StringValues {
   static const people = "People";
   static const feed = "Feed";
   static const help = "Help";
+  static const story = "Story";
+  static const mentions = "Mentions";
+  static const activity = "Activity";
+  static const status = "status";
+  static const comments = "Comments";
+  static const twoFaAuth = "Two-factor authentication";
 }
 
 abstract class AssetValues {

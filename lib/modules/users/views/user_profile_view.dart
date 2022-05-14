@@ -8,7 +8,6 @@ import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/count_widget.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
-import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -81,37 +80,36 @@ class UserProfileView extends StatelessWidget {
 
         return Expanded(
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                NxElevatedCard(
-                  child: Padding(
-                    padding: Dimens.edgeInsets8,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          children: [
-                            _buildProfileImage(logic),
-                            Dimens.boxWidth20,
-                            _buildHeaderButton(logic, profile),
-                          ],
-                        ),
-                        Dimens.boxHeight16,
-                        _buildUserDetails(logic, profile),
-                      ],
-                    ),
+                Padding(
+                  padding: Dimens.edgeInsets8,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          _buildProfileImage(logic),
+                          Dimens.boxWidth20,
+                          _buildHeaderButton(logic, profile),
+                        ],
+                      ),
+                      Dimens.boxHeight16,
+                      _buildUserDetails(logic, profile),
+                    ],
                   ),
                 ),
-                Dimens.boxHeight8,
+                Dimens.dividerWithHeight,
                 Padding(
                   padding: Dimens.edgeInsets0_8,
                   child: Text(
-                    StringValues.posts,
-                    style: AppStyles.style20Bold,
+                    "${StringValues.posts} (${logic.userProfile.user!.posts.length})",
+                    style: AppStyles.style16Bold,
                   ),
                 ),
                 Dimens.boxHeight8,
@@ -206,84 +204,101 @@ class UserProfileView extends StatelessWidget {
               color: Theme.of(Get.context!).textTheme.subtitle1!.color,
             ),
           ),
-          if (logic.userProfile.user!.about != null) Dimens.boxHeight8,
+          if (logic.userProfile.user!.about != null) Dimens.boxHeight16,
           if (logic.userProfile.user!.about != null)
             Text(
               logic.userProfile.user!.about!,
               style: AppStyles.style14Normal,
             ),
-          Dimens.boxHeight8,
-          Text(
-            'Joined ${DateFormat.yMMMd().format(logic.userProfile.user!.createdAt)}',
-            style: const TextStyle(color: ColorValues.grayColor),
+          Dimens.boxHeight16,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.calendar_today,
+                size: Dimens.fourteen,
+                color: ColorValues.grayColor,
+              ),
+              Dimens.boxWidth4,
+              Expanded(
+                child: Text(
+                  'Joined - ${DateFormat.yMMMd().format(logic.userProfile.user!.createdAt)}',
+                  style: const TextStyle(color: ColorValues.grayColor),
+                ),
+              ),
+            ],
           ),
           Dimens.boxHeight16,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              NxCountWidget(
-                title: StringValues.followers,
-                value: logic.userProfile.user!.followers.length.toString(),
-                onTap: () {
-                  if (profile.profileData.user!.following
-                      .contains(logic.userProfile.user?.id)) {
-                    RouteManagement.goToFollowersListView(
-                        logic.userProfile.user!.id);
-                  }
+              Expanded(
+                child: NxCountWidget(
+                  title: StringValues.followers,
+                  value: logic.userProfile.user!.followers.length.toString(),
+                  onTap: () {
+                    if (profile.profileData.user!.following
+                        .contains(logic.userProfile.user?.id)) {
+                      RouteManagement.goToFollowersListView(
+                          logic.userProfile.user!.id);
+                    }
 
-                  if (logic.userProfile.user!.accountType ==
-                      StringValues.public) {
-                    RouteManagement.goToFollowersListView(
-                        logic.userProfile.user!.id);
-                  }
+                    if (logic.userProfile.user!.accountType ==
+                        StringValues.public) {
+                      RouteManagement.goToFollowersListView(
+                          logic.userProfile.user!.id);
+                    }
 
-                  if (logic.userProfile.user!.accountType ==
-                          StringValues.private &&
-                      profile.profileData.user!.following
-                          .contains(logic.userProfile.user?.id)) {
-                    RouteManagement.goToFollowersListView(
-                        logic.userProfile.user!.id);
-                  }
+                    if (logic.userProfile.user!.accountType ==
+                            StringValues.private &&
+                        profile.profileData.user!.following
+                            .contains(logic.userProfile.user?.id)) {
+                      RouteManagement.goToFollowersListView(
+                          logic.userProfile.user!.id);
+                    }
 
-                  if (logic.userProfile.user!.id ==
-                      profile.profileData.user!.id) {
-                    RouteManagement.goToFollowersListView(
-                        logic.userProfile.user!.id);
-                  }
-                  return;
-                },
+                    if (logic.userProfile.user!.id ==
+                        profile.profileData.user!.id) {
+                      RouteManagement.goToFollowersListView(
+                          logic.userProfile.user!.id);
+                    }
+                    return;
+                  },
+                ),
               ),
-              NxCountWidget(
-                title: StringValues.following,
-                value: logic.userProfile.user!.following.length.toString(),
-                onTap: () {
-                  if (profile.profileData.user!.following
-                      .contains(logic.userProfile.user?.id)) {
-                    RouteManagement.goToFollowingListView(
-                        logic.userProfile.user!.id);
-                  }
+              Expanded(
+                child: NxCountWidget(
+                  title: StringValues.following,
+                  value: logic.userProfile.user!.following.length.toString(),
+                  onTap: () {
+                    if (profile.profileData.user!.following
+                        .contains(logic.userProfile.user?.id)) {
+                      RouteManagement.goToFollowingListView(
+                          logic.userProfile.user!.id);
+                    }
 
-                  if (logic.userProfile.user!.accountType ==
-                      StringValues.public) {
-                    RouteManagement.goToFollowingListView(
-                        logic.userProfile.user!.id);
-                  }
+                    if (logic.userProfile.user!.accountType ==
+                        StringValues.public) {
+                      RouteManagement.goToFollowingListView(
+                          logic.userProfile.user!.id);
+                    }
 
-                  if (logic.userProfile.user!.accountType ==
-                          StringValues.private &&
-                      profile.profileData.user!.following
-                          .contains(logic.userProfile.user?.id)) {
-                    RouteManagement.goToFollowingListView(
-                        logic.userProfile.user!.id);
-                  }
+                    if (logic.userProfile.user!.accountType ==
+                            StringValues.private &&
+                        profile.profileData.user!.following
+                            .contains(logic.userProfile.user?.id)) {
+                      RouteManagement.goToFollowingListView(
+                          logic.userProfile.user!.id);
+                    }
 
-                  if (logic.userProfile.user!.id ==
-                      profile.profileData.user!.id) {
-                    RouteManagement.goToFollowingListView(
-                        logic.userProfile.user!.id);
-                  }
-                  return;
-                },
+                    if (logic.userProfile.user!.id ==
+                        profile.profileData.user!.id) {
+                      RouteManagement.goToFollowingListView(
+                          logic.userProfile.user!.id);
+                    }
+                    return;
+                  },
+                ),
               ),
             ],
           ),

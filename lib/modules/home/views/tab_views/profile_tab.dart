@@ -1,20 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/count_widget.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
-import 'package:social_media_app/common/elevated_card.dart';
-import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/common/shimmer_loading.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -47,12 +46,18 @@ class ProfileTabView extends StatelessWidget {
                           logic.profileData.user != null
                               ? logic.profileData.user!.uname
                               : StringValues.profile,
-                          style: AppStyles.style18Bold,
+                          style: AppStyles.style20Bold,
                         ),
                         const Spacer(),
-                        const InkWell(
+                        InkWell(
                           onTap: RouteManagement.goToSettingsView,
-                          child: Icon(CupertinoIcons.gear_alt),
+                          child: Icon(
+                            CupertinoIcons.gear_alt_fill,
+                            color: Theme.of(Get.context!)
+                                .textTheme
+                                .bodyText1!
+                                .color,
+                          ),
                         ),
                       ],
                     ),
@@ -150,32 +155,39 @@ class ProfileTabView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            NxElevatedCard(
-              child: Padding(
-                padding: Dimens.edgeInsets8,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        _buildProfileImage(logic),
-                        Dimens.boxWidth16,
-                        const NxOutlinedButton(
-                          label: StringValues.editProfile,
-                          onTap: RouteManagement.goToEditProfileView,
-                        ),
-                      ],
-                    ),
-                    Dimens.boxHeight16,
-                    _buildUserDetails(logic),
-                  ],
-                ),
+            Padding(
+              padding: Dimens.edgeInsets8,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      _buildProfileImage(logic),
+                      Dimens.boxWidth16,
+                      const NxOutlinedButton(
+                        label: StringValues.editProfile,
+                        onTap: RouteManagement.goToEditProfileView,
+                      ),
+                    ],
+                  ),
+                  Dimens.boxHeight16,
+                  _buildUserDetails(logic),
+                ],
               ),
             ),
-            Dimens.boxHeight20,
-            // _buildActionButtons(logic),
+            Dimens.dividerWithHeight,
+            Padding(
+              padding: Dimens.edgeInsets0_8,
+              child: Text(
+                "${StringValues.posts} (${logic.profileData.user!.posts.length})",
+                style: AppStyles.style16Bold,
+              ),
+            ),
+            Dimens.boxHeight8,
+            _buildPosts(logic),
+            Dimens.boxHeight16,
           ],
         ),
       ),
@@ -201,9 +213,22 @@ class ProfileTabView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            '${logic.profileData.user!.fname} ${logic.profileData.user!.lname}',
-            style: AppStyles.style18Bold,
+          Row(
+            children: [
+              Text(
+                '${logic.profileData.user!.fname} ${logic.profileData.user!.lname}',
+                style: AppStyles.style18Bold,
+              ),
+              if (logic.profileData.user!.isVerified) Dimens.boxWidth4,
+              if (logic.profileData.user!.isVerified)
+                Icon(
+                  CupertinoIcons.checkmark_seal_fill,
+                  color: Theme.of(Get.context!).brightness == Brightness.dark
+                      ? Theme.of(Get.context!).textTheme.bodyText1?.color
+                      : ColorValues.primaryColor,
+                  size: Dimens.sixTeen,
+                )
+            ],
           ),
           Text(
             "@${logic.profileData.user!.uname}",
@@ -223,7 +248,7 @@ class ProfileTabView extends StatelessWidget {
             children: [
               Icon(
                 Icons.calendar_today,
-                size: Dimens.sixTeen,
+                size: Dimens.fourteen,
                 color: ColorValues.grayColor,
               ),
               Dimens.boxWidth4,
@@ -260,27 +285,30 @@ class ProfileTabView extends StatelessWidget {
         ],
       );
 
-  Widget _buildActionButtons(ProfileController logic) => Padding(
-        padding: Dimens.edgeInsets0_8,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            NxOutlinedButton(
-              label: StringValues.changePassword,
-              onTap: RouteManagement.goToChangePasswordView,
-              width: Dimens.screenWidth * 0.8,
-              height: Dimens.fourtyEight,
+  Widget _buildPosts(ProfileController logic) {
+    if (logic.profileData.user!.posts.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 16.h,
+            left: 16.0.w,
+            right: 16.0.w,
+          ),
+          child: Text(
+            StringValues.noPosts,
+            style: AppStyles.style20Normal.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
             ),
-            Dimens.boxHeight16,
-            NxFilledButton(
-              label: StringValues.logout,
-              onTap: AuthService.find.logout,
-              width: Dimens.screenWidth * 0.8,
-              height: Dimens.fourtyEight,
-            ),
-          ],
+            textAlign: TextAlign.center,
+          ),
         ),
       );
+    }
+
+    return Column(
+      children: logic.profileData.user!.posts
+          .map((item) => PostWidget(post: item))
+          .toList(),
+    );
+  }
 }

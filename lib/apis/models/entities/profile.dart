@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/phone.dart';
+import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/user_avatar.dart';
-import 'package:social_media_app/apis/models/entities/user_post.dart';
 
 part 'profile.g.dart';
 
@@ -12,13 +12,17 @@ class Profile {
     required this.fname,
     required this.lname,
     required this.email,
+    required this.emailVerified,
     required this.uname,
     this.avatar,
     this.phone,
+    required this.phoneVerified,
     this.gender,
     this.dob,
     this.about,
     this.profession,
+    this.location,
+    this.website,
     required this.posts,
     required this.followers,
     required this.following,
@@ -52,6 +56,9 @@ class Profile {
   @JsonKey(name: 'email')
   String email;
 
+  @JsonKey(name: 'emailVerified')
+  bool emailVerified;
+
   @JsonKey(name: 'uname')
   String uname;
 
@@ -60,6 +67,9 @@ class Profile {
 
   @JsonKey(name: 'phone')
   Phone? phone;
+
+  @JsonKey(name: 'phoneVerified')
+  bool phoneVerified;
 
   @JsonKey(name: 'gender')
   String? gender;
@@ -73,8 +83,14 @@ class Profile {
   @JsonKey(name: 'profession')
   String? profession;
 
+  @JsonKey(name: 'location')
+  String? location;
+
+  @JsonKey(name: 'website')
+  String? website;
+
   @JsonKey(name: 'posts')
-  List<UserPost> posts;
+  List<Post> posts;
 
   @JsonKey(name: 'followers')
   List<dynamic> followers;
