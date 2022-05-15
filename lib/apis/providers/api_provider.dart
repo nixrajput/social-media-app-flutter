@@ -332,4 +332,16 @@ class ApiProvider {
 
     return response;
   }
+
+  Future<http.Response> getNotifications(String token) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.getNotifications}'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
 }

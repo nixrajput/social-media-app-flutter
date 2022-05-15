@@ -140,6 +140,7 @@ abstract class StringValues {
   static const status = "status";
   static const comments = "Comments";
   static const twoFaAuth = "Two-factor authentication";
+  static const noNotifications = "No notifications yet.";
 }
 
 abstract class AssetValues {

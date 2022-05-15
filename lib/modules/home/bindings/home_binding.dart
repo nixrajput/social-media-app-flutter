@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:social_media_app/modules/home/controllers/home_controller.dart';
+import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_like_controller.dart';
 import 'package:social_media_app/modules/home/controllers/tab_controller.dart';
@@ -15,5 +16,6 @@ class HomeBinding extends Bindings {
     Get.lazyPut(PostLikeController.new);
     Get.lazyPut(CreatePostController.new);
     Get.lazyPut(UserController.new, fenix: true);
+    Get.lazyPut(NotificationController.new);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/tab_controller.dart';
@@ -47,6 +48,7 @@ class TrendingTabView extends StatelessWidget {
                         labelColor:
                             Theme.of(context).textTheme.bodyText1?.color,
                         padding: Dimens.edgeInsets0,
+                        indicatorColor: ColorValues.primaryColor,
                       ),
                     ],
                   ),

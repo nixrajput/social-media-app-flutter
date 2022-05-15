@@ -12,7 +12,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       lname: json['lname'] as String,
       email: json['email'] as String,
       uname: json['uname'] as String,
-      profession: json['profession'] as String,
+      profession: json['profession'] as String?,
       avatar: json['avatar'] == null
           ? null
           : UserAvatar.fromJson(json['avatar'] as Map<String, dynamic>),

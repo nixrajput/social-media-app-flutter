@@ -11,7 +11,7 @@ class User {
     required this.lname,
     required this.email,
     required this.uname,
-    required this.profession,
+    this.profession,
     this.avatar,
     required this.accountType,
     required this.accountStatus,
@@ -38,7 +38,7 @@ class User {
   String uname;
 
   @JsonKey(name: 'profession')
-  String profession;
+  String? profession;
 
   @JsonKey(name: 'avatar')
   UserAvatar? avatar;
