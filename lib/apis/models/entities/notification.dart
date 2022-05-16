@@ -17,9 +17,9 @@ class ApiNotification {
   });
 
   factory ApiNotification.fromJson(Map<String, dynamic> json) =>
-      _$NotificationFromJson(json);
+      _$ApiNotificationFromJson(json);
 
-  Map<String, dynamic> toJson() => _$NotificationToJson(this);
+  Map<String, dynamic> toJson() => _$ApiNotificationToJson(this);
 
   @JsonKey(name: '_id')
   String id;

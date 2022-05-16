@@ -16,6 +16,8 @@ abstract class AppRoutes {
   static const aboutSettings = _Routes.aboutSettings;
   static const themeSettings = _Routes.themeSettings;
 
+  static const loginActivitySettings = _Routes.loginActivitySettings;
+
   static const forgotPassword = _Routes.forgotPassword;
   static const resetPassword = _Routes.resetPassword;
   static const changePassword = _Routes.changePassword;
@@ -51,6 +53,8 @@ abstract class _Routes {
   static const helpSettings = "/help_settings";
   static const aboutSettings = "/about_settings";
   static const themeSettings = "/theme_settings";
+
+  static const loginActivitySettings = '/login_activity';
 
   static const forgotPassword = '/forgot_password';
   static const resetPassword = '/reset_password';

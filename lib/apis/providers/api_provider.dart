@@ -344,4 +344,31 @@ class ApiProvider {
 
     return response;
   }
+
+//  LOGIN INFO
+  Future<http.Response> saveLoginInfo(
+      String token, Map<String, dynamic> body) async {
+    final response = await _client.post(
+      Uri.parse('${baseUrl!}${AppUrls.saveLoginInfo}'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getLoginInfo(String token) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.getLoginInfo}'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
 }

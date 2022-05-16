@@ -38,6 +38,7 @@ Future<void> initServices() async {
       var hasData = await Get.find<ProfileController>().getProfileDetails();
       if (hasData) {
         isLogin = true;
+        await Get.find<AuthService>().saveLoginInfo();
       }
     }
     isLogin

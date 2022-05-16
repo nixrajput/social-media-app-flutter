@@ -64,6 +64,7 @@ class SecuritySettingsView extends StatelessWidget {
                   "${StringValues.login} ${StringValues.activity}",
                   style: AppStyles.style16Normal,
                 ),
+                onTap: RouteManagement.goToLoginActivityView,
               ),
               Dimens.boxHeight20,
               NxListTile(

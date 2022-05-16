@@ -119,6 +119,11 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.themeSettings);
   }
 
+  // SECURITY SETTINGS
+  static void goToLoginActivityView() {
+    Get.toNamed(AppRoutes.loginActivitySettings);
+  }
+
   static void goToBack() {
     Get.back();
   }

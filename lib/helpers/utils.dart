@@ -249,7 +249,7 @@ abstract class AppUtils {
   static void printLog(message) {
     debugPrint(
         "=======================================================================");
-    debugPrint(message.toString());
+    debugPrint(message.toString(), wrapWidth: 1024);
     debugPrint(
         "=======================================================================");
   }

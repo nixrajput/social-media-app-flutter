@@ -86,6 +86,7 @@ class LoginController extends GetxController {
         _auth.setExpiresAt = expiresAt;
         _auth.autoLogout();
         await _profile.fetchProfileDetails();
+        await _auth.saveLoginInfo();
 
         _clearLoginTextControllers();
 

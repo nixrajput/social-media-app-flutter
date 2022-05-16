@@ -6,7 +6,7 @@ part of 'notification.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ApiNotification _$NotificationFromJson(Map<String, dynamic> json) =>
+ApiNotification _$ApiNotificationFromJson(Map<String, dynamic> json) =>
     ApiNotification(
       id: json['_id'] as String,
       owner: User.fromJson(json['owner'] as Map<String, dynamic>),
@@ -18,7 +18,7 @@ ApiNotification _$NotificationFromJson(Map<String, dynamic> json) =>
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
-Map<String, dynamic> _$NotificationToJson(ApiNotification instance) =>
+Map<String, dynamic> _$ApiNotificationToJson(ApiNotification instance) =>
     <String, dynamic>{
       '_id': instance.id,
       'owner': instance.owner,

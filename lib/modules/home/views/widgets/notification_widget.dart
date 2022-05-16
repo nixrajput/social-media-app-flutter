@@ -35,11 +35,17 @@ class NotificationWidget extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: notification.user.uname,
-                        style: AppStyles.style14Bold,
+                        style: AppStyles.style14Bold.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
                       ),
                       TextSpan(
                         text: " ${notification.body}",
-                        style: AppStyles.style14Normal,
+                        style: AppStyles.style14Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
                       ),
                     ],
                   ),
