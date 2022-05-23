@@ -12,6 +12,9 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       images: (json['images'] as List<dynamic>?)
           ?.map((e) => PostImage.fromJson(e as Map<String, dynamic>))
           .toList(),
+      mediaFiles: (json['mediaFiles'] as List<dynamic>?)
+          ?.map((e) => PostMediaFile.fromJson(e as Map<String, dynamic>))
+          .toList(),
       owner: User.fromJson(json['owner'] as Map<String, dynamic>),
       likes: json['likes'] as List<dynamic>,
       comments: json['comments'] as List<dynamic>,
@@ -23,6 +26,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       '_id': instance.id,
       'caption': instance.caption,
       'images': instance.images,
+      'mediaFiles': instance.mediaFiles,
       'owner': instance.owner,
       'likes': instance.likes,
       'comments': instance.comments,

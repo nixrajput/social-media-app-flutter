@@ -18,6 +18,7 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await initServices();
     runApp(const MyApp());
+    await Get.find<AuthService>().saveLoginInfo();
   } catch (err) {
     AppUtils.printLog(err);
   }
@@ -38,7 +39,6 @@ Future<void> initServices() async {
       var hasData = await Get.find<ProfileController>().getProfileDetails();
       if (hasData) {
         isLogin = true;
-        await Get.find<AuthService>().saveLoginInfo();
       }
     }
     isLogin
@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
     return GetBuilder<AppThemeController>(
       builder: (logic) => ScreenUtilInit(
         designSize: const Size(392, 744),
-        builder: (_) => GetMaterialApp(
+        builder: (_, __) => GetMaterialApp(
           title: StringValues.appName,
           debugShowCheckedModeBanner: false,
           themeMode: _handleAppTheme(logic.themeMode),

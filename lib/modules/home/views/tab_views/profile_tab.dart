@@ -7,6 +7,7 @@ import 'package:social_media_app/common/circular_asset_image.dart';
 import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/count_widget.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
+import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/common/shimmer_loading.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -75,61 +76,13 @@ class ProfileTabView extends StatelessWidget {
 
   Widget _buildProfileBody(ProfileController logic) {
     if (logic.isLoading) {
-      return Padding(
-        padding: Dimens.edgeInsets8_16,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: Dimens.sixtyFour,
-                  backgroundColor: ColorValues.grayColor.withOpacity(0.25),
-                ),
-                Dimens.boxWidth16,
-                ShimmerLoading(
-                  width: Dimens.hundred,
-                  height: Dimens.fourty,
-                ),
-              ],
-            ),
-            Dimens.boxHeight16,
-            ShimmerLoading(
-              width: Dimens.hundred * 1.2,
-              height: Dimens.twentyFour,
-            ),
-            Dimens.boxHeight4,
-            ShimmerLoading(
-              width: Dimens.hundred * 1.2,
-              height: Dimens.sixTeen,
-            ),
-            Dimens.boxHeight16,
-            ShimmerLoading(
-              width: Dimens.screenWidth * 0.75,
-              height: Dimens.sixTeen,
-            ),
-            Dimens.boxHeight16,
-            ShimmerLoading(
-              width: Dimens.screenWidth * 0.75,
-              height: Dimens.sixTeen,
-            ),
-            Dimens.boxHeight32,
-            Center(
-              child: ShimmerLoading(
-                width: Dimens.screenWidth * 0.8,
-                height: Dimens.fourtyEight,
-              ),
-            ),
-            Dimens.boxHeight16,
-            Center(
-              child: ShimmerLoading(
-                width: Dimens.screenWidth * 0.8,
-                height: Dimens.fourtyEight,
-              ),
-            ),
-          ],
+      return Expanded(
+        child: Padding(
+          padding: Dimens.edgeInsets8,
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: _buildLoadingWidget(),
+          ),
         ),
       );
     }
@@ -309,6 +262,112 @@ class ProfileTabView extends StatelessWidget {
       children: logic.profileData.user!.posts
           .map((item) => PostWidget(post: item))
           .toList(),
+    );
+  }
+
+  _buildLoadingWidget() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          children: [
+            CircleAvatar(
+              radius: Dimens.sixtyFour,
+              backgroundColor: ColorValues.grayColor.withOpacity(0.25),
+            ),
+            Dimens.boxWidth16,
+            ShimmerLoading(
+              width: Dimens.hundred,
+              height: Dimens.fourty,
+            ),
+          ],
+        ),
+        Dimens.boxHeight16,
+        ShimmerLoading(
+          width: Dimens.hundred * 1.2,
+          height: Dimens.twentyFour,
+        ),
+        Dimens.boxHeight4,
+        ShimmerLoading(
+          width: Dimens.hundred * 1.2,
+          height: Dimens.sixTeen,
+        ),
+        Dimens.boxHeight16,
+        ShimmerLoading(
+          width: Dimens.screenWidth * 0.75,
+          height: Dimens.sixTeen,
+        ),
+        Dimens.boxHeight16,
+        ShimmerLoading(
+          width: Dimens.screenWidth * 0.75,
+          height: Dimens.sixTeen,
+        ),
+        Dimens.boxHeight32,
+        NxElevatedCard(
+          bgColor: ColorValues.grayColor.withOpacity(0.1),
+          padding: Dimens.edgeInsets8,
+          margin: Dimens.edgeInsets8_0,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: Dimens.twenty,
+                    backgroundColor: ColorValues.grayColor.withOpacity(0.25),
+                  ),
+                  Dimens.boxWidth8,
+                  Column(
+                    children: [
+                      ShimmerLoading(
+                        width: Dimens.hundred,
+                        height: Dimens.fourteen,
+                      ),
+                      Dimens.boxHeight4,
+                      ShimmerLoading(
+                        width: Dimens.hundred,
+                        height: Dimens.ten,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Dimens.boxHeight8,
+              ShimmerLoading(
+                height: Dimens.screenWidth * 0.8,
+              ),
+              Dimens.boxHeight8,
+              Row(
+                children: [
+                  ShimmerLoading(
+                    width: Dimens.eighty,
+                    height: Dimens.twenty,
+                  ),
+                  Dimens.boxWidth8,
+                  ShimmerLoading(
+                    width: Dimens.eighty,
+                    height: Dimens.twenty,
+                  ),
+                ],
+              ),
+              Dimens.boxHeight8,
+              ShimmerLoading(
+                width: Dimens.screenWidth * 0.75,
+                height: Dimens.sixTeen,
+              ),
+              Dimens.boxHeight8,
+              ShimmerLoading(
+                width: Dimens.screenWidth * 0.75,
+                height: Dimens.sixTeen,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

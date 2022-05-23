@@ -40,10 +40,7 @@ class PostLikeController extends GetxController {
       final apiResponse = CommonResponse.fromJson(decodedData);
 
       if (response.statusCode == 200) {
-        AppUtils.showSnackBar(
-          apiResponse.message!,
-          StringValues.success,
-        );
+        AppUtils.printLog(apiResponse.message!);
       } else {
         _toggleLike(post);
         AppUtils.showSnackBar(

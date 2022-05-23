@@ -17,6 +17,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_like_controller.dart';
+import 'package:social_media_app/modules/home/views/widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -30,23 +31,21 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profile = ProfileController.find;
-
     return NxElevatedCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildPostHead(profile),
+          _buildPostHead(),
           _buildPostBody(),
-          _buildPostFooter(profile),
+          _buildPostFooter(),
         ],
       ),
     );
   }
 
-  Widget _buildPostHead(ProfileController profile) => Padding(
+  Widget _buildPostHead() => Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,7 +126,8 @@ class PostWidget extends StatelessWidget {
                             style: AppStyles.style16Bold,
                           ),
                         ),
-                        if (post.owner.id == profile.profileData.user!.id)
+                        if (post.owner.id ==
+                            ProfileController.find.profileData.user!.id)
                           ListTile(
                             onTap: () {
                               AppUtils.closeBottomSheet();
@@ -165,18 +165,22 @@ class PostWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildPostBody() => GestureDetector(
+  Widget _buildPostBody() {
+    if (post.images != null && post.images!.isNotEmpty) {
+      return GestureDetector(
         onDoubleTap: () {
           Get.find<PostLikeController>().toggleLikePost(post);
         },
         child: FlutterCarousel(
           items: post.images!
-              .map((img) => NxNetworkImage(
-                    imageUrl: img.url!,
-                    imageFit: BoxFit.cover,
-                    width: Dimens.screenWidth,
-                    height: Dimens.screenWidth,
-                  ))
+              .map(
+                (img) => NxNetworkImage(
+                  imageUrl: img.url!,
+                  imageFit: BoxFit.cover,
+                  width: Dimens.screenWidth,
+                  height: Dimens.screenWidth,
+                ),
+              )
               .toList(),
           options: CarouselOptions(
             aspectRatio: 1 / 1,
@@ -187,8 +191,40 @@ class PostWidget extends StatelessWidget {
           ),
         ),
       );
+    }
+    return GestureDetector(
+      onDoubleTap: () {
+        Get.find<PostLikeController>().toggleLikePost(post);
+      },
+      child: FlutterCarousel(
+        items: post.mediaFiles!.map(
+          (img) {
+            if (img.mediaType == "video") {
+              return NxVideoPlayerWidget(
+                showFullControls: true,
+                url: img.link!.url!,
+              );
+            }
+            return NxNetworkImage(
+              imageUrl: img.link!.url!,
+              imageFit: BoxFit.cover,
+              width: Dimens.screenWidth,
+              height: Dimens.screenWidth,
+            );
+          },
+        ).toList(),
+        options: CarouselOptions(
+          aspectRatio: 1 / 1,
+          viewportFraction: 1.0,
+          showIndicator: post.mediaFiles!.length > 1 ? true : false,
+          floatingIndicator: false,
+          slideIndicator: CircularWaveSlideIndicator(),
+        ),
+      ),
+    );
+  }
 
-  Widget _buildPostFooter(ProfileController profile) => Padding(
+  Widget _buildPostFooter() => Padding(
         padding: Dimens.edgeInsets8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,17 +238,18 @@ class PostWidget extends StatelessWidget {
                   builder: (con) => Row(
                     children: [
                       NxIconButton(
-                        icon: post.likes.contains(profile.profileData.user?.id)
+                        icon: post.likes.contains(
+                                ProfileController.find.profileData.user?.id)
                             ? CupertinoIcons.heart_solid
                             : CupertinoIcons.heart,
                         iconSize: Dimens.twenty,
                         onTap: () {
                           con.toggleLikePost(post);
                         },
-                        iconColor:
-                            post.likes.contains(profile.profileData.user?.id)
-                                ? ColorValues.errorColor
-                                : ColorValues.grayColor,
+                        iconColor: post.likes.contains(
+                                ProfileController.find.profileData.user?.id)
+                            ? ColorValues.errorColor
+                            : ColorValues.grayColor,
                       ),
                       Dimens.boxWidth4,
                       if (post.likes.isNotEmpty)

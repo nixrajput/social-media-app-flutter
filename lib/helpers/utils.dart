@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 import 'package:social_media_app/common/asset_image.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -326,5 +328,59 @@ abstract class AppUtils {
     }
 
     return imageList;
+  }
+
+  static Future<dynamic> selectMultipleFiles() async {
+    final filePicker = FilePicker.platform;
+    final imageCropper = ImageCropper();
+    var fileList = <PlatformFile>[];
+    var resultList = <File>[];
+    final pickedFiles = await filePicker.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: ['png', 'jpg', 'jpeg', 'mp4', 'mkv'],
+      allowCompression: true,
+    );
+
+    if (pickedFiles != null) {
+      fileList = pickedFiles.files;
+
+      for (var pickedImage in fileList) {
+        var fileExt = pickedImage.extension;
+
+        if (['png', 'jpg', 'jpeg'].contains(fileExt)) {
+          var croppedFile = await imageCropper.cropImage(
+            maxWidth: 1920,
+            maxHeight: 1920,
+            sourcePath: pickedImage.path!,
+            aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+            uiSettings: [
+              AndroidUiSettings(
+                toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+                toolbarTitle: StringValues.cropImage,
+                toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+                backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+              ),
+              IOSUiSettings(
+                title: StringValues.cropImage,
+                minimumAspectRatio: 1.0,
+              ),
+            ],
+            compressQuality: 70,
+          );
+          resultList.add(File(croppedFile!.path));
+        } else {
+          resultList.add(File(pickedImage.path!));
+        }
+      }
+    }
+
+    return resultList;
+  }
+
+  static bool isVideoFile(String path) {
+    final mimeType = lookupMimeType(path);
+
+    return mimeType!.startsWith('video/');
   }
 }

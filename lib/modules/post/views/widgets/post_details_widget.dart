@@ -16,6 +16,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_like_controller.dart';
+import 'package:social_media_app/modules/home/views/widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -153,25 +154,62 @@ class PostDetailsWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildPostBody() => GestureDetector(
+  Widget _buildPostBody() {
+    if (post.images!.isNotEmpty) {
+      return GestureDetector(
         onDoubleTap: () {
           Get.find<PostLikeController>().toggleLikePost(post);
         },
-        child: FlutterCarousel.builder(
-          itemCount: post.images!.length,
-          itemBuilder: (ctx, itemIndex, pageViewIndex) {
-            return NxNetworkImage(
-              imageUrl: post.images![itemIndex].url!,
-              imageFit: BoxFit.cover,
-            );
-          },
+        child: FlutterCarousel(
+          items: post.images!
+              .map((img) => NxNetworkImage(
+                    imageUrl: img.url!,
+                    imageFit: BoxFit.cover,
+                    width: Dimens.screenWidth,
+                    height: Dimens.screenWidth,
+                  ))
+              .toList(),
           options: CarouselOptions(
             aspectRatio: 1 / 1,
             viewportFraction: 1.0,
+            showIndicator: post.images!.length > 1 ? true : false,
+            floatingIndicator: false,
             slideIndicator: CircularWaveSlideIndicator(),
           ),
         ),
       );
+    }
+    return GestureDetector(
+      onDoubleTap: () {
+        Get.find<PostLikeController>().toggleLikePost(post);
+      },
+      child: FlutterCarousel(
+        items: post.mediaFiles!.map(
+          (img) {
+            if (img.mediaType == "video") {
+              return NxVideoPlayerWidget(
+                showFullControls: true,
+                url: img.link!.url!,
+              );
+            }
+            return NxNetworkImage(
+              imageUrl: img.link!.url!,
+              imageFit: BoxFit.cover,
+              width: Dimens.screenWidth,
+              height: Dimens.screenWidth,
+            );
+          },
+        ).toList(),
+        options: CarouselOptions(
+          aspectRatio: 1 / 1,
+          viewportFraction: 1.0,
+          showIndicator: post.mediaFiles!.length > 1 ? true : false,
+          floatingIndicator: false,
+          slideIndicator: CircularWaveSlideIndicator(),
+        ),
+      ),
+    );
+  }
 
   Widget _buildPostFooter(ProfileController profile) => Padding(
         padding: Dimens.edgeInsets8,
@@ -191,7 +229,7 @@ class PostDetailsWidget extends StatelessWidget {
                       con.toggleLikePost(post);
                     },
                     iconColor: post.likes.contains(profile.profileData.user?.id)
-                        ? ColorValues.primaryColor
+                        ? ColorValues.errorColor
                         : ColorValues.grayColor,
                   ),
                   Dimens.boxWidth4,

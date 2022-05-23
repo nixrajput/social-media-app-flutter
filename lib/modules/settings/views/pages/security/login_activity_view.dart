@@ -81,7 +81,7 @@ class LoginActivityView extends StatelessWidget {
                                     style: AppStyles.style16Normal.copyWith(
                                       color: ColorValues.successColor,
                                     ),
-                                  )
+                                  ),
                               ],
                             ),
                             subtitle: Text(

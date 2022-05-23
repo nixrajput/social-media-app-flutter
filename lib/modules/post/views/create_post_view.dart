@@ -10,6 +10,8 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/home/views/widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
 
 class CreatePostView extends StatelessWidget {
@@ -71,7 +73,15 @@ class CreatePostView extends StatelessWidget {
                   itemBuilder: (ctx, itemIndex, pageViewIndex) {
                     return Stack(
                       children: [
-                        NxFileImage(file: logic.pickedImageList![itemIndex]),
+                        AppUtils.isVideoFile(
+                                logic.pickedImageList![itemIndex].path)
+                            ? NxVideoPlayerWidget(
+                                showFullControls: true,
+                                url: logic.pickedImageList![itemIndex].path,
+                              )
+                            : NxFileImage(
+                                file: logic.pickedImageList![itemIndex],
+                              ),
                         Positioned(
                           top: Dimens.four,
                           right: Dimens.four,

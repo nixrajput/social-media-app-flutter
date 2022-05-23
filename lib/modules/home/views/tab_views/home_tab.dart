@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/common/asset_image.dart';
+import 'package:social_media_app/common/elevated_card.dart';
 import 'package:social_media_app/common/primary_outlined_btn.dart';
+import 'package:social_media_app/common/shimmer_loading.dart';
 import 'package:social_media_app/common/sliver_app_bar.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -21,34 +23,101 @@ class HomeTabView extends StatelessWidget {
       child: SizedBox(
         width: Dimens.screenWidth,
         height: Dimens.screenHeight,
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            NxSliverAppBar(
-              bgColor: Theme.of(context).scaffoldBackgroundColor,
-              leading: Row(
+        child: RefreshIndicator(
+          onRefresh: () => PostController.find.fetchAllPosts(),
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              NxSliverAppBar(
+                bgColor: Theme.of(context).scaffoldBackgroundColor,
+                leading: Row(
+                  children: [
+                    NxAssetImage(
+                      imgAsset: AssetValues.appName,
+                      width: Dimens.seventy,
+                      height: Dimens.sixty,
+                      fit: BoxFit.cover,
+                    ),
+                  ],
+                ),
+                actions: GetBuilder<CreatePostController>(
+                    builder: (con) => InkWell(
+                          onTap: con.selectPostImages,
+                          child: Icon(
+                            CupertinoIcons.add_circled,
+                            size: Dimens.twentyEight,
+                            color: ColorValues.primaryColor,
+                          ),
+                        )),
+              ),
+              _buildBody(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildPostLoadingWidget() {
+    return NxElevatedCard(
+      bgColor: ColorValues.grayColor.withOpacity(0.1),
+      padding: Dimens.edgeInsets8,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: Dimens.twenty,
+                backgroundColor: ColorValues.grayColor.withOpacity(0.25),
+              ),
+              Dimens.boxWidth8,
+              Column(
                 children: [
-                  NxAssetImage(
-                    imgAsset: AssetValues.appName,
-                    width: Dimens.seventy,
-                    height: Dimens.sixty,
-                    fit: BoxFit.cover,
+                  ShimmerLoading(
+                    width: Dimens.hundred,
+                    height: Dimens.fourteen,
+                  ),
+                  Dimens.boxHeight4,
+                  ShimmerLoading(
+                    width: Dimens.hundred,
+                    height: Dimens.ten,
                   ),
                 ],
               ),
-              actions: GetBuilder<CreatePostController>(
-                  builder: (con) => InkWell(
-                        onTap: con.selectPostImages,
-                        child: Icon(
-                          CupertinoIcons.add_circled,
-                          size: Dimens.twentyEight,
-                          color: ColorValues.primaryColor,
-                        ),
-                      )),
-            ),
-            _buildBody(),
-          ],
-        ),
+            ],
+          ),
+          Dimens.boxHeight8,
+          ShimmerLoading(
+            height: Dimens.screenWidth * 0.8,
+          ),
+          Dimens.boxHeight8,
+          Row(
+            children: [
+              ShimmerLoading(
+                width: Dimens.eighty,
+                height: Dimens.twenty,
+              ),
+              Dimens.boxWidth8,
+              ShimmerLoading(
+                width: Dimens.eighty,
+                height: Dimens.twenty,
+              ),
+            ],
+          ),
+          Dimens.boxHeight8,
+          ShimmerLoading(
+            width: Dimens.screenWidth * 0.75,
+            height: Dimens.sixTeen,
+          ),
+          Dimens.boxHeight8,
+          ShimmerLoading(
+            width: Dimens.screenWidth * 0.75,
+            height: Dimens.sixTeen,
+          ),
+        ],
       ),
     );
   }
@@ -57,13 +126,18 @@ class HomeTabView extends StatelessWidget {
     return GetBuilder<PostController>(
       builder: (logic) {
         if (logic.isLoading) {
-          return const SliverFillRemaining(
-            child: Center(
-              child: CircularProgressIndicator(),
+          return SliverFillRemaining(
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildPostLoadingWidget(),
+                _buildPostLoadingWidget(),
+              ],
             ),
           );
         }
-        if (logic.postData == null || logic.postList.isEmpty) {
+        if (logic.postData == null || logic.postData!.posts!.isEmpty) {
           return SliverFillRemaining(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -98,9 +172,9 @@ class HomeTabView extends StatelessWidget {
           child: ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: logic.postList.length,
+            itemCount: logic.postData!.posts!.length,
             itemBuilder: (__, i) {
-              var post = logic.postList[i];
+              var post = logic.postData!.posts![i];
               return PostWidget(post: post);
             },
           ),

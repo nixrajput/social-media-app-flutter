@@ -41,7 +41,7 @@ class CreatePostController extends GetxController {
         final fileStream = http.ByteStream(pickedImage.openRead());
         final fileLength = await pickedImage.length();
         final multiPartFile = http.MultipartFile(
-          "images",
+          "mediaFiles",
           fileStream,
           fileLength,
           filename: pickedImage.path,
@@ -111,7 +111,8 @@ class CreatePostController extends GetxController {
   }
 
   Future<void> selectPostImages() async {
-    _pickedImageList.value = await AppUtils.selectMultipleImage();
+    _pickedImageList.value = await AppUtils.selectMultipleFiles();
+    update();
     if (_pickedImageList.isNotEmpty) {
       RouteManagement.goToCreatePostView();
     }
@@ -128,7 +129,8 @@ class CreatePostController extends GetxController {
     if (_pickedImageList.isNotEmpty) {
       await _createNewPost();
     } else {
-      _pickedImageList.value = await AppUtils.selectMultipleImage();
+      _pickedImageList.value = await AppUtils.selectMultipleFiles();
+      update();
     }
   }
 }

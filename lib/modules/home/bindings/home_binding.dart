@@ -11,10 +11,10 @@ class HomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(HomeController.new);
-    Get.lazyPut(TrendingTabController.new);
     Get.lazyPut(PostController.new, fenix: true);
-    Get.lazyPut(PostLikeController.new);
+    Get.lazyPut(PostLikeController.new, fenix: true);
     Get.lazyPut(CreatePostController.new);
+    Get.lazyPut(TrendingTabController.new);
     Get.lazyPut(UserController.new, fenix: true);
     Get.lazyPut(NotificationController.new);
   }

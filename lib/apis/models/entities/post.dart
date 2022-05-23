@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/post_image.dart';
+import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 
 part 'post.g.dart';
@@ -10,6 +11,7 @@ class Post {
     required this.id,
     this.caption,
     this.images,
+    this.mediaFiles,
     required this.owner,
     required this.likes,
     required this.comments,
@@ -29,6 +31,9 @@ class Post {
 
   @JsonKey(name: 'images')
   List<PostImage>? images;
+
+  @JsonKey(name: 'mediaFiles')
+  List<PostMediaFile>? mediaFiles;
 
   @JsonKey(name: 'owner')
   User owner;

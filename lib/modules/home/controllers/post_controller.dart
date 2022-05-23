@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/responses/common_response.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
@@ -20,22 +19,17 @@ class PostController extends GetxController {
 
   final _isLoading = false.obs;
   final _postData = PostResponse().obs;
-  final _postList = <Post>[].obs;
 
   bool get isLoading => _isLoading.value;
 
   PostResponse? get postData => _postData.value;
 
-  List<Post> get postList => _postList;
-
-  set setPostListData(List<Post> data) => _postList.value = data;
-
   set setPostData(PostResponse value) => _postData.value = value;
 
   @override
   void onInit() {
-    _fetchAllPosts();
     super.onInit();
+    _fetchAllPosts();
   }
 
   Future<void> _fetchAllPosts() async {
@@ -50,7 +44,7 @@ class PostController extends GetxController {
 
       if (response.statusCode == 200) {
         setPostData = PostResponse.fromJson(decodedData);
-        setPostListData = _postData.value.posts!;
+        _postData.refresh();
         _isLoading.value = false;
         update();
       } else {
@@ -90,12 +84,13 @@ class PostController extends GetxController {
   Future<void> _deletePost(String postId) async {
     AppUtils.printLog("Post Delete Request...");
 
-    var postIndex = _postList.indexWhere((element) => element.id == postId);
-    var post = _postList.elementAt(postIndex);
+    var postIndex =
+        _postData.value.posts!.indexWhere((element) => element.id == postId);
+    var post = _postData.value.posts!.elementAt(postIndex);
 
     if (postIndex > -1) {
-      _postList.remove(post);
-      _postList.refresh();
+      _postData.value.posts!.remove(post);
+      _postData.refresh();
       update();
     }
 
@@ -111,8 +106,8 @@ class PostController extends GetxController {
           StringValues.success,
         );
       } else {
-        _postList.insert(postIndex, post);
-        _postList.refresh();
+        _postData.value.posts!.insert(postIndex, post);
+        _postData.refresh();
         update();
         AppUtils.showSnackBar(
           apiResponse.message!,
@@ -120,28 +115,28 @@ class PostController extends GetxController {
         );
       }
     } on SocketException {
-      _postList.insert(postIndex, post);
-      _postList.refresh();
+      _postData.value.posts!.insert(postIndex, post);
+      _postData.refresh();
       update();
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      _postList.insert(postIndex, post);
-      _postList.refresh();
+      _postData.value.posts!.insert(postIndex, post);
+      _postData.refresh();
       update();
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      _postList.insert(postIndex, post);
-      _postList.refresh();
+      _postData.value.posts!.insert(postIndex, post);
+      _postData.refresh();
       update();
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      _postList.insert(postIndex, post);
-      _postList.refresh();
+      _postData.value.posts!.insert(postIndex, post);
+      _postData.refresh();
       update();
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc);
