@@ -31,6 +31,7 @@ class RegisterController extends GetxController {
   bool get isLoading => _isLoading.value;
 
   bool get showPassword => _showPassword.value;
+
   bool get showConfirmPassword => _showConfirmPassword.value;
 
   void _clearRegisterTextControllers() {

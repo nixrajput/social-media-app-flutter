@@ -54,22 +54,15 @@ class ResetPasswordView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      'Reset your password now',
+                      StringValues.resetYourPassword,
                       style: AppStyles.style28Bold.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     Dimens.boxHeight4,
-                    RichText(
-                      text: TextSpan(
-                        children: const [
-                          TextSpan(text: 'An OTP has been sent to your email'),
-                          TextSpan(
-                              text: 'address, please enter OTP and reset '),
-                          TextSpan(text: 'your password'),
-                        ],
-                        style: AppStyles.style12Normal.copyWith(),
-                      ),
+                    Text(
+                      StringValues.enterOtpYouGet,
+                      style: AppStyles.style12Normal,
                     ),
                     Dimens.boxHeight32,
                     Container(
@@ -164,6 +157,11 @@ class ResetPasswordView extends StatelessWidget {
                         controller: logic.confirmPasswordTextController,
                         onEditingComplete: logic.focusNode.unfocus,
                       ),
+                    ),
+                    Dimens.boxHeight32,
+                    const NxTextButton(
+                      label: StringValues.loginToAccount,
+                      onTap: RouteManagement.goToLoginView,
                     ),
                     Dimens.boxHeight32,
                     NxFilledButton(

@@ -5,6 +5,10 @@ abstract class StringValues {
   static const register = 'Register';
   static const login = 'Login';
   static const logout = 'Logout';
+  static const loginToAccount = 'Login To Account';
+  static const resendOtp = 'Resend OTP';
+  static const loginWelcome = 'Welcome, Login to continue';
+  static const registerWelcome = 'Hello! Register to get started';
   static const forgotPassword = 'Forgot Password';
   static const resetPassword = 'Reset Password';
   static const name = 'Name';
@@ -16,6 +20,12 @@ abstract class StringValues {
   static const confirmPassword = 'Confirm Password';
   static const newPassword = 'New Password';
   static const oldPassword = 'Old Password';
+  static const resetYourPassword = 'Reset your password';
+  static const forgotYourPassword = 'Forgot your password?';
+  static const enterEmailForOtp =
+      'Enter your email address and an OTP will be sent to your email address if account exists';
+  static const enterOtpYouGet =
+      'An OTP has been sent to your email address, please enter OTP and reset your password';
   static const settings = 'Settings';
   static const profile = 'Profile';
   static const doNotHaveAccount = "Don't have an account?";

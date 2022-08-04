@@ -52,23 +52,15 @@ class ForgotPasswordView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      'Forgot your password?',
+                      StringValues.forgotYourPassword,
                       style: AppStyles.style28Bold.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     Dimens.boxHeight4,
-                    RichText(
-                      text: TextSpan(
-                        children: const [
-                          TextSpan(text: 'Enter your email address and '),
-                          TextSpan(
-                              text:
-                                  'an OTP will be sent to your email address '),
-                          TextSpan(text: 'if account exists'),
-                        ],
-                        style: AppStyles.style12Normal.copyWith(),
-                      ),
+                    Text(
+                      StringValues.enterEmailForOtp,
+                      style: AppStyles.style12Normal,
                     ),
                     Dimens.boxHeight32,
                     Container(
@@ -93,6 +85,11 @@ class ForgotPasswordView extends StatelessWidget {
                         controller: logic.emailTextController,
                         onEditingComplete: logic.focusNode.unfocus,
                       ),
+                    ),
+                    Dimens.boxHeight32,
+                    const NxTextButton(
+                      label: StringValues.loginToAccount,
+                      onTap: RouteManagement.goToLoginView,
                     ),
                     Dimens.boxHeight32,
                     NxFilledButton(

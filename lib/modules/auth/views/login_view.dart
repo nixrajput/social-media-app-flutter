@@ -54,8 +54,8 @@ class LoginView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      'Welcome, Login to continue',
-                      style: AppStyles.style32Bold.copyWith(
+                      StringValues.loginWelcome,
+                      style: AppStyles.style28Bold.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
                     ),

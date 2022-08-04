@@ -55,8 +55,8 @@ class RegisterView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      'Hello! Register to get started',
-                      style: AppStyles.style32Bold.copyWith(
+                      StringValues.registerWelcome,
+                      style: AppStyles.style28Bold.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
                     ),

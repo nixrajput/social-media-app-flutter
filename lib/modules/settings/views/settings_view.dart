@@ -22,7 +22,7 @@ class SettingsView extends StatelessWidget {
           height: Dimens.screenHeight,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const NxAppBar(
                 title: StringValues.settings,
@@ -41,7 +41,7 @@ class SettingsView extends StatelessWidget {
           child: Padding(
             padding: Dimens.edgeInsets8,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 NxListTile(
                   padding: Dimens.edgeInsets16_0,
