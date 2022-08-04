@@ -6,7 +6,7 @@ import 'package:social_media_app/modules/auth/views/forgot_password_view.dart';
 import 'package:social_media_app/modules/auth/views/login_view.dart';
 import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
-import 'package:social_media_app/modules/error/views/error_view.dart';
+import 'package:social_media_app/modules/error/error_view.dart';
 import 'package:social_media_app/modules/home/bindings/home_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
@@ -42,7 +42,7 @@ import 'package:social_media_app/modules/settings/views/pages/security/login_act
 import 'package:social_media_app/modules/settings/views/pages/security_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/theme_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
-import 'package:social_media_app/modules/splash/views/splash_view.dart';
+import 'package:social_media_app/modules/splash/splash_view.dart';
 import 'package:social_media_app/modules/users/bindings/user_profile_binding.dart';
 import 'package:social_media_app/modules/users/views/user_profile_view.dart';
 

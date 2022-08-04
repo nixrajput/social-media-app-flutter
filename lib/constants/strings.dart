@@ -142,22 +142,3 @@ abstract class StringValues {
   static const twoFaAuth = "Two-factor authentication";
   static const noNotifications = "No notifications yet.";
 }
-
-abstract class AssetValues {
-  static const String appLogo = 'assets/logo_trans.png';
-  static const String appIcon = 'assets/icon_trans.png';
-  static const String appName = 'assets/app_name_trans.png';
-  static const String avatar = 'assets/avatar.png';
-  static const String vector1 = 'assets/vector-1.png';
-  static const String error = 'assets/error.png';
-}
-
-extension StringCasingExtension on String {
-  String toCapitalized() =>
-      length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
-
-  String toTitleCase() => replaceAll(RegExp(' +'), ' ')
-      .split(' ')
-      .map((str) => str.toCapitalized())
-      .join(' ');
-}

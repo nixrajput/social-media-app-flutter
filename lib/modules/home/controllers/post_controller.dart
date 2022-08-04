@@ -39,7 +39,6 @@ class PostController extends GetxController {
 
     try {
       final response = await _apiProvider.fetchAllPosts(_auth.token);
-
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {

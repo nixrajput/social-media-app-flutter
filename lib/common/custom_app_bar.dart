@@ -13,9 +13,11 @@ class NxAppBar extends StatelessWidget {
     this.leading,
     this.showBackBtn = true,
     this.padding,
+    this.titleStyle,
   }) : super(key: key);
 
   final String? title;
+  final TextStyle? titleStyle;
   final bool? showDivider;
   final Widget? leading;
   final bool? showBackBtn;
@@ -27,7 +29,7 @@ class NxAppBar extends StatelessWidget {
       width: Dimens.screenWidth,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
@@ -56,7 +58,7 @@ class NxAppBar extends StatelessWidget {
                 if (title != null && title!.isNotEmpty)
                   Text(
                     title!,
-                    style: AppStyles.style20Bold,
+                    style: titleStyle ?? AppStyles.style24Bold,
                   )
               ],
             ),

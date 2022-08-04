@@ -6,6 +6,7 @@ import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/custom_list_tile.dart';
 import 'package:social_media_app/common/elevated_card.dart';
+import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';

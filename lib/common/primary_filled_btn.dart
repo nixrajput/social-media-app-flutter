@@ -32,36 +32,32 @@ class NxFilledButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: height ?? Dimens.fiftyFour,
-      child: ElevatedButton(
-        onPressed: onTap,
-        style: ElevatedButton.styleFrom(
-          elevation: Dimens.zero,
-          padding: padding ?? Dimens.edgeInsets8,
-          primary: bgColor ?? ColorValues.primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-              borderRadius ?? Dimens.four,
-            ),
-          ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: width,
+        height: height ?? Dimens.fiftySix,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius ?? Dimens.eight),
+          gradient: ColorValues.primaryGrad,
+          color: bgColor,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (prefix != null) Container(child: prefix),
+            if (prefix != null) prefix!,
             if (prefix != null) Dimens.boxWidth4,
             Text(
-              label,
+              label.toUpperCase(),
               style: TextStyle(
                 color: labelColor ?? ColorValues.whiteColor,
-                fontSize: fontSize ?? Dimens.fourteen,
+                fontSize: fontSize ?? Dimens.sixTeen,
+                fontWeight: FontWeight.w700,
               ),
             ),
             if (suffix != null) Dimens.boxWidth4,
-            if (suffix != null) Container(child: suffix),
+            if (suffix != null) suffix!,
           ],
         ),
       ),

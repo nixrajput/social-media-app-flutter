@@ -18,7 +18,7 @@ abstract class ColorValues {
   );
 
   static const Color primaryColor = Color(0xFF2878F0);
-  static const Color primaryLightColor = Color(0xFF72A3ED);
+  static const Color primaryLightColor = Color(0xFF629AEE);
   static const Color primaryTextColor = Color(0xFF505050);
 
   static const Color successColor = Color(0xFF4CAF50);
@@ -34,6 +34,10 @@ abstract class ColorValues {
   static const Color lightGrayColor = Color(0xFFdbdbdb);
 
   static const Color lightBgColor = Color.fromRGBO(245, 245, 245, 1.0);
-  static const Color darkBgColor = Color.fromRGBO(0, 27, 43, 1.0);
-  static const Color darkColor = Color.fromARGB(255, 23, 39, 49);
+  static const Color darkBgColor = Color.fromRGBO(28, 29, 49, 1.0);
+  static const Color darkColor = Color.fromARGB(255, 51, 52, 70);
+
+  static const primaryGrad = LinearGradient(
+    colors: [primaryColor, primaryLightColor],
+  );
 }

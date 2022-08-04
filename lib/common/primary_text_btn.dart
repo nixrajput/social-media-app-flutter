@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 
 class NxTextButton extends StatelessWidget {
   final String label;
@@ -26,12 +27,12 @@ class NxTextButton extends StatelessWidget {
         padding: padding ?? Dimens.edgeInsets0,
         margin: margin ?? Dimens.edgeInsets0,
         child: Text(
-          label,
+          label.toTitleCase(),
           style: labelStyle ??
               TextStyle(
                 fontSize: Dimens.sixTeen,
-                fontWeight: FontWeight.bold,
-                color: ColorValues.primaryColor,
+                fontWeight: FontWeight.w700,
+                color: ColorValues.primaryLightColor,
               ),
         ),
       ),

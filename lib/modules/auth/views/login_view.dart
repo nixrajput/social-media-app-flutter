@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/common/asset_image.dart';
+import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/common/primary_text_btn.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -27,8 +27,12 @@ class LoginView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildImageHeader(),
-                Dimens.boxHeight16,
+                NxAppBar(
+                  title: StringValues.login,
+                  showBackBtn: false,
+                  padding: Dimens.edgeInsets8_16,
+                ),
+                Dimens.boxHeight32,
                 _buildLoginFields(),
               ],
             ),
@@ -37,25 +41,6 @@ class LoginView extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildImageHeader() => Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          NxAssetImage(
-            imgAsset: AssetValues.vector1,
-            maxHeight: Dimens.hundred * 2.0,
-          ),
-          Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Text(
-              StringValues.login,
-              style: AppStyles.style24Bold,
-            ),
-          ),
-        ],
-      );
 
   Widget _buildLoginFields() => GetBuilder<LoginController>(
         builder: (logic) => Expanded(
@@ -68,49 +53,66 @@ class LoginView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: StringValues.email,
-                        hintStyle: TextStyle(
-                          color: ColorValues.grayColor,
-                        ),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      maxLines: 1,
-                      style: AppStyles.style16Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
-                      ),
-                      controller: logic.emailTextController,
-                      onEditingComplete: logic.focusNode.nextFocus,
+                    Text(
+                      'Welcome, Login to continue',
+                      style: AppStyles.style32Bold,
                     ),
-                    Dimens.boxHeight24,
-                    TextFormField(
-                      obscureText: logic.showPassword,
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        suffixIcon: InkWell(
-                          onTap: logic.toggleViewPassword,
-                          child: Icon(
-                            logic.showPassword
-                                ? CupertinoIcons.eye
-                                : CupertinoIcons.eye_slash,
+                    Dimens.boxHeight32,
+                    Container(
+                      height: Dimens.fiftySix,
+                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimens.eight),
+                          ),
+                          hintText: StringValues.email,
+                          hintStyle: AppStyles.style14Normal.copyWith(
+                            color: ColorValues.grayColor,
                           ),
                         ),
-                        hintText: StringValues.password,
-                        hintStyle: const TextStyle(
-                          color: ColorValues.grayColor,
+                        keyboardType: TextInputType.emailAddress,
+                        maxLines: 1,
+                        style: AppStyles.style14Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
+                        controller: logic.emailTextController,
+                        onEditingComplete: logic.focusNode.nextFocus,
                       ),
-                      keyboardType: TextInputType.visiblePassword,
-                      maxLines: 1,
-                      style: AppStyles.style16Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    ),
+                    Dimens.boxHeight16,
+                    Container(
+                      height: Dimens.fiftySix,
+                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
+                      child: TextFormField(
+                        obscureText: logic.showPassword,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimens.eight),
+                          ),
+                          suffixIcon: InkWell(
+                            onTap: logic.toggleViewPassword,
+                            child: Icon(
+                              logic.showPassword
+                                  ? CupertinoIcons.eye
+                                  : CupertinoIcons.eye_slash,
+                            ),
+                          ),
+                          hintText: StringValues.password,
+                          hintStyle: const TextStyle(
+                            color: ColorValues.grayColor,
+                          ),
+                        ),
+                        keyboardType: TextInputType.visiblePassword,
+                        maxLines: 1,
+                        style: AppStyles.style16Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
+                        controller: logic.passwordTextController,
+                        onEditingComplete: logic.focusNode.unfocus,
                       ),
-                      controller: logic.passwordTextController,
-                      onEditingComplete: logic.focusNode.unfocus,
                     ),
                     Dimens.boxHeight32,
                     const NxTextButton(
@@ -131,7 +133,7 @@ class LoginView extends StatelessWidget {
                       children: [
                         Text(
                           StringValues.doNotHaveAccount,
-                          style: AppStyles.style16Normal,
+                          style: AppStyles.style14Normal,
                         ),
                         Dimens.boxWidth4,
                         const NxTextButton(
