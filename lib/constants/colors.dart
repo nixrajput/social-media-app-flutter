@@ -29,11 +29,11 @@ abstract class ColorValues {
   static const Color blackColor = Color(0xFF000000);
 
   static const Color grayColor = Color(0xFFb4b4b4);
-  static const Color darkGrayColor = Color(0xFF8d8d8d);
-  static const Color darkerGrayColor = Color(0xff575757);
-  static const Color lightGrayColor = Color(0xFFdbdbdb);
+  static const Color darkGrayColor = Color(0xff787878);
+  static const Color darkerGrayColor = Color(0xff505050);
+  static const Color lightGrayColor = Color(0xffd2d2d2);
 
-  static const Color lightBgColor = Color.fromRGBO(245, 245, 245, 1.0);
+  static const Color lightBgColor = Color.fromRGBO(240, 240, 240, 1.0);
   static const Color darkBgColor = Color.fromRGBO(28, 29, 49, 1.0);
   static const Color darkColor = Color.fromARGB(255, 51, 52, 70);
 

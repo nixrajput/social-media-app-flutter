@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/common/asset_image.dart';
+import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/common/primary_text_btn.dart';
-import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -25,10 +24,12 @@ class ForgotPasswordView extends StatelessWidget {
             height: Dimens.screenHeight,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _buildImageHeader(),
-                Dimens.boxHeight16,
+                NxAppBar(
+                  title: StringValues.forgotPassword,
+                  padding: Dimens.edgeInsets8_16,
+                ),
                 _buildForgotPasswordFields(),
               ],
             ),
@@ -37,25 +38,6 @@ class ForgotPasswordView extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildImageHeader() => Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          NxAssetImage(
-            imgAsset: AssetValues.vector1,
-            maxHeight: Dimens.hundred * 2.0,
-          ),
-          Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Text(
-              StringValues.forgotPassword,
-              style: AppStyles.style24Bold,
-            ),
-          ),
-        ],
-      );
 
   Widget _buildForgotPasswordFields() => GetBuilder<PasswordController>(
         builder: (logic) => Expanded(
@@ -66,61 +48,70 @@ class ForgotPasswordView extends StatelessWidget {
                 node: logic.focusNode,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: StringValues.email,
-                        hintStyle: TextStyle(
-                          color: ColorValues.grayColor,
+                    Dimens.boxHeight32,
+                    Text(
+                      'Forgot your password?',
+                      style: AppStyles.style28Bold.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    Dimens.boxHeight4,
+                    RichText(
+                      text: TextSpan(
+                        children: const [
+                          TextSpan(text: 'Enter your email address and '),
+                          TextSpan(
+                              text:
+                                  'an OTP will be sent to your email address '),
+                          TextSpan(text: 'if account exists'),
+                        ],
+                        style: AppStyles.style12Normal.copyWith(),
+                      ),
+                    ),
+                    Dimens.boxHeight32,
+                    Container(
+                      height: Dimens.fiftySix,
+                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimens.eight),
+                          ),
+                          hintText: StringValues.enterEmail,
+                          hintStyle: AppStyles.style14Normal.copyWith(
+                            color: ColorValues.grayColor,
+                          ),
                         ),
+                        keyboardType: TextInputType.emailAddress,
+                        maxLines: 1,
+                        style: AppStyles.style14Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
+                        controller: logic.emailTextController,
+                        onEditingComplete: logic.focusNode.unfocus,
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                      maxLines: 1,
-                      style: AppStyles.style16Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
-                      ),
-                      controller: logic.emailTextController,
-                      onEditingComplete: logic.focusNode.unfocus,
                     ),
                     Dimens.boxHeight32,
                     NxFilledButton(
                       onTap: () => logic.sendResetPasswordOTP(),
-                      label: StringValues.getOtp,
-                      fontSize: Dimens.sixTeen,
-                      width: double.infinity,
+                      label: StringValues.sendOtp,
                     ),
-                    Dimens.boxHeight32,
+                    Dimens.boxHeight48,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           StringValues.alreadyHaveOtp,
-                          style: AppStyles.style16Normal,
+                          style: AppStyles.style14Normal,
                         ),
                         Dimens.boxWidth4,
                         const NxTextButton(
                           label: StringValues.resetPassword,
                           onTap: RouteManagement.goToResetPasswordView,
-                        ),
-                      ],
-                    ),
-                    Dimens.boxHeight16,
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          StringValues.alreadyHaveAccount,
-                          style: AppStyles.style16Normal,
-                        ),
-                        Dimens.boxWidth4,
-                        const NxTextButton(
-                          label: StringValues.login,
-                          onTap: RouteManagement.goToLoginView,
                         ),
                       ],
                     ),

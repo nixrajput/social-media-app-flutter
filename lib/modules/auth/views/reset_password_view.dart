@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/common/asset_image.dart';
+import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/primary_filled_btn.dart';
 import 'package:social_media_app/common/primary_text_btn.dart';
-import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -27,10 +26,12 @@ class ResetPasswordView extends StatelessWidget {
             height: Dimens.screenHeight,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _buildImageHeader(),
-                Dimens.boxHeight16,
+                NxAppBar(
+                  title: StringValues.resetPassword,
+                  padding: Dimens.edgeInsets8_16,
+                ),
                 _buildResetPasswordFields(),
               ],
             ),
@@ -39,25 +40,6 @@ class ResetPasswordView extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildImageHeader() => Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          NxAssetImage(
-            imgAsset: AssetValues.vector1,
-            maxHeight: Dimens.hundred * 2.0,
-          ),
-          Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Text(
-              StringValues.resetPassword,
-              style: AppStyles.style24Bold,
-            ),
-          ),
-        ],
-      );
 
   Widget _buildResetPasswordFields() => GetBuilder<PasswordController>(
         builder: (logic) => Expanded(
@@ -68,98 +50,134 @@ class ResetPasswordView extends StatelessWidget {
                 node: logic.focusNode,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintStyle: TextStyle(
-                          color: ColorValues.grayColor,
-                        ),
-                        hintText: StringValues.otp,
+                    Dimens.boxHeight32,
+                    Text(
+                      'Reset your password now',
+                      style: AppStyles.style28Bold.copyWith(
+                        fontWeight: FontWeight.w900,
                       ),
-                      keyboardType: TextInputType.number,
-                      maxLines: 1,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(6),
-                      ],
-                      style: AppStyles.style16Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
-                      ),
-                      controller: logic.otpTextController,
-                      onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight24,
-                    TextFormField(
-                      obscureText: logic.showPassword,
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        hintStyle: const TextStyle(
-                          color: ColorValues.grayColor,
+                    Dimens.boxHeight4,
+                    RichText(
+                      text: TextSpan(
+                        children: const [
+                          TextSpan(text: 'An OTP has been sent to your email'),
+                          TextSpan(
+                              text: 'address, please enter OTP and reset '),
+                          TextSpan(text: 'your password'),
+                        ],
+                        style: AppStyles.style12Normal.copyWith(),
+                      ),
+                    ),
+                    Dimens.boxHeight32,
+                    Container(
+                      height: Dimens.fiftySix,
+                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimens.eight),
+                          ),
+                          hintStyle: AppStyles.style14Normal.copyWith(
+                            color: ColorValues.grayColor,
+                          ),
+                          hintText: StringValues.otp,
                         ),
-                        hintText: StringValues.newPassword,
-                        suffixIcon: InkWell(
-                          onTap: logic.toggleViewPassword,
-                          child: Icon(
-                            logic.showPassword
-                                ? CupertinoIcons.eye
-                                : CupertinoIcons.eye_slash,
+                        keyboardType: TextInputType.number,
+                        maxLines: 1,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(6),
+                        ],
+                        style: AppStyles.style14Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
+                        controller: logic.otpTextController,
+                        onEditingComplete: logic.focusNode.nextFocus,
+                      ),
+                    ),
+                    Dimens.boxHeight16,
+                    Container(
+                      height: Dimens.fiftySix,
+                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
+                      child: TextFormField(
+                        obscureText: logic.showPassword,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimens.eight),
+                          ),
+                          hintStyle: AppStyles.style14Normal.copyWith(
+                            color: ColorValues.grayColor,
+                          ),
+                          hintText: StringValues.newPassword,
+                          suffixIcon: InkWell(
+                            onTap: logic.toggleViewPassword,
+                            child: Icon(
+                              logic.showPassword
+                                  ? CupertinoIcons.eye
+                                  : CupertinoIcons.eye_slash,
+                            ),
                           ),
                         ),
-                      ),
-                      keyboardType: TextInputType.visiblePassword,
-                      maxLines: 1,
-                      style: AppStyles.style16Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
-                      ),
-                      controller: logic.passwordTextController,
-                      onEditingComplete: logic.focusNode.nextFocus,
-                    ),
-                    Dimens.boxHeight24,
-                    TextFormField(
-                      obscureText: logic.showPassword,
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        hintStyle: const TextStyle(
-                          color: ColorValues.grayColor,
+                        keyboardType: TextInputType.visiblePassword,
+                        maxLines: 1,
+                        style: AppStyles.style14Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
-                        hintText: StringValues.confirmPassword,
-                        suffixIcon: InkWell(
-                          onTap: logic.toggleViewPassword,
-                          child: Icon(
-                            logic.showPassword
-                                ? CupertinoIcons.eye
-                                : CupertinoIcons.eye_slash,
+                        controller: logic.passwordTextController,
+                        onEditingComplete: logic.focusNode.nextFocus,
+                      ),
+                    ),
+                    Dimens.boxHeight16,
+                    Container(
+                      height: Dimens.fiftySix,
+                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
+                      child: TextFormField(
+                        obscureText: logic.showPassword,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimens.eight),
+                          ),
+                          hintStyle: AppStyles.style14Normal.copyWith(
+                            color: ColorValues.grayColor,
+                          ),
+                          hintText: StringValues.confirmPassword,
+                          suffixIcon: InkWell(
+                            onTap: logic.toggleViewPassword,
+                            child: Icon(
+                              logic.showPassword
+                                  ? CupertinoIcons.eye
+                                  : CupertinoIcons.eye_slash,
+                            ),
                           ),
                         ),
+                        keyboardType: TextInputType.visiblePassword,
+                        maxLines: 1,
+                        style: AppStyles.style14Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
+                        controller: logic.confirmPasswordTextController,
+                        onEditingComplete: logic.focusNode.unfocus,
                       ),
-                      keyboardType: TextInputType.visiblePassword,
-                      maxLines: 1,
-                      style: AppStyles.style16Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
-                      ),
-                      controller: logic.confirmPasswordTextController,
-                      onEditingComplete: logic.focusNode.unfocus,
                     ),
                     Dimens.boxHeight32,
                     NxFilledButton(
                       onTap: () => logic.resetPassword(),
                       label: StringValues.resetPassword,
-                      fontSize: Dimens.sixTeen,
-                      width: double.infinity,
                     ),
-                    Dimens.boxHeight32,
+                    Dimens.boxHeight48,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           StringValues.doNotHaveOtp,
-                          style: AppStyles.style16Normal,
+                          style: AppStyles.style14Normal,
                         ),
                         Dimens.boxWidth4,
                         const NxTextButton(

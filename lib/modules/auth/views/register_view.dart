@@ -25,14 +25,13 @@ class RegisterView extends StatelessWidget {
             height: Dimens.screenHeight,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 NxAppBar(
                   title: StringValues.register,
                   showBackBtn: true,
                   padding: Dimens.edgeInsets8_16,
                 ),
-                Dimens.boxHeight32,
                 _buildRegistrationFields(),
               ],
             ),
@@ -51,72 +50,98 @@ class RegisterView extends StatelessWidget {
                 node: logic.focusNode,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Dimens.boxHeight32,
                     Text(
                       'Hello! Register to get started',
-                      style: AppStyles.style32Bold,
+                      style: AppStyles.style32Bold.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                     Dimens.boxHeight32,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintStyle: TextStyle(
-                            color: ColorValues.grayColor,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: Dimens.fiftySix,
+                            constraints:
+                                BoxConstraints(maxWidth: Dimens.screenWidth),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(Dimens.eight),
+                                ),
+                                hintStyle: AppStyles.style14Normal.copyWith(
+                                  color: ColorValues.grayColor,
+                                ),
+                                hintText: StringValues.firstName,
+                              ),
+                              keyboardType: TextInputType.name,
+                              maxLines: 1,
+                              style: AppStyles.style14Normal.copyWith(
+                                color: Theme.of(Get.context!)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color,
+                              ),
+                              controller: logic.fNameTextController,
+                              onEditingComplete: logic.focusNode.nextFocus,
+                            ),
                           ),
-                          hintText: StringValues.firstName,
                         ),
-                        keyboardType: TextInputType.name,
-                        maxLines: 1,
-                        style: AppStyles.style16Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        Dimens.boxWidth16,
+                        Expanded(
+                          child: Container(
+                            height: Dimens.fiftySix,
+                            constraints:
+                                BoxConstraints(maxWidth: Dimens.screenWidth),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(Dimens.eight),
+                                ),
+                                hintStyle: AppStyles.style14Normal.copyWith(
+                                  color: ColorValues.grayColor,
+                                ),
+                                hintText: StringValues.lastName,
+                              ),
+                              keyboardType: TextInputType.name,
+                              maxLines: 1,
+                              style: AppStyles.style14Normal.copyWith(
+                                color: Theme.of(Get.context!)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color,
+                              ),
+                              controller: logic.lNameTextController,
+                              onEditingComplete: logic.focusNode.nextFocus,
+                            ),
+                          ),
                         ),
-                        controller: logic.fNameTextController,
-                        onEditingComplete: logic.focusNode.nextFocus,
-                      ),
+                      ],
                     ),
                     Dimens.boxHeight16,
                     Container(
                       height: Dimens.fiftySix,
                       constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
                       child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintStyle: TextStyle(
-                            color: ColorValues.grayColor,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimens.eight),
                           ),
-                          hintText: StringValues.lastName,
-                        ),
-                        keyboardType: TextInputType.name,
-                        maxLines: 1,
-                        style: AppStyles.style16Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.lNameTextController,
-                        onEditingComplete: logic.focusNode.nextFocus,
-                      ),
-                    ),
-                    Dimens.boxHeight16,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
                           hintText: StringValues.email,
-                          hintStyle: TextStyle(
+                          hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
                           ),
                         ),
                         keyboardType: TextInputType.emailAddress,
                         maxLines: 1,
-                        style: AppStyles.style16Normal.copyWith(
+                        style: AppStyles.style14Normal.copyWith(
                           color:
                               Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
@@ -129,16 +154,18 @@ class RegisterView extends StatelessWidget {
                       height: Dimens.fiftySix,
                       constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
                       child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintStyle: TextStyle(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimens.eight),
+                          ),
+                          hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
                           ),
                           hintText: StringValues.username,
                         ),
                         keyboardType: TextInputType.text,
                         maxLines: 1,
-                        style: AppStyles.style16Normal.copyWith(
+                        style: AppStyles.style14Normal.copyWith(
                           color:
                               Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
@@ -153,8 +180,10 @@ class RegisterView extends StatelessWidget {
                       child: TextFormField(
                         obscureText: logic.showPassword,
                         decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          hintStyle: const TextStyle(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimens.eight),
+                          ),
+                          hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
                           ),
                           hintText: StringValues.password,
@@ -169,7 +198,7 @@ class RegisterView extends StatelessWidget {
                         ),
                         keyboardType: TextInputType.visiblePassword,
                         maxLines: 1,
-                        style: AppStyles.style16Normal.copyWith(
+                        style: AppStyles.style14Normal.copyWith(
                           color:
                               Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
@@ -182,17 +211,19 @@ class RegisterView extends StatelessWidget {
                       height: Dimens.fiftySix,
                       constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
                       child: TextFormField(
-                        obscureText: logic.showPassword,
+                        obscureText: logic.showConfirmPassword,
                         decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          hintStyle: const TextStyle(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(Dimens.eight),
+                          ),
+                          hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
                           ),
                           hintText: StringValues.confirmPassword,
                           suffixIcon: InkWell(
-                            onTap: logic.toggleViewPassword,
+                            onTap: logic.toggleViewConfirmPassword,
                             child: Icon(
-                              logic.showPassword
+                              logic.showConfirmPassword
                                   ? CupertinoIcons.eye
                                   : CupertinoIcons.eye_slash,
                             ),
@@ -200,7 +231,7 @@ class RegisterView extends StatelessWidget {
                         ),
                         keyboardType: TextInputType.visiblePassword,
                         maxLines: 1,
-                        style: AppStyles.style16Normal.copyWith(
+                        style: AppStyles.style14Normal.copyWith(
                           color:
                               Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
@@ -212,10 +243,8 @@ class RegisterView extends StatelessWidget {
                     NxFilledButton(
                       onTap: () => logic.register(),
                       label: StringValues.register,
-                      fontSize: Dimens.sixTeen,
-                      width: double.infinity,
                     ),
-                    Dimens.boxHeight32,
+                    Dimens.boxHeight48,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,

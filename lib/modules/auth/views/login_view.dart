@@ -25,14 +25,13 @@ class LoginView extends StatelessWidget {
             height: Dimens.screenHeight,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 NxAppBar(
                   title: StringValues.login,
                   showBackBtn: false,
                   padding: Dimens.edgeInsets8_16,
                 ),
-                Dimens.boxHeight32,
                 _buildLoginFields(),
               ],
             ),
@@ -51,11 +50,14 @@ class LoginView extends StatelessWidget {
                 node: logic.focusNode,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Dimens.boxHeight32,
                     Text(
                       'Welcome, Login to continue',
-                      style: AppStyles.style32Bold,
+                      style: AppStyles.style32Bold.copyWith(
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
                     Dimens.boxHeight32,
                     Container(
@@ -123,10 +125,8 @@ class LoginView extends StatelessWidget {
                     NxFilledButton(
                       onTap: () => logic.login(),
                       label: StringValues.login,
-                      fontSize: Dimens.sixTeen,
-                      width: double.infinity,
                     ),
-                    Dimens.boxHeight32,
+                    Dimens.boxHeight48,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,

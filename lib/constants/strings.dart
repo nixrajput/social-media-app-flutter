@@ -53,6 +53,7 @@ abstract class StringValues {
   static const search = 'Search';
   static const notifications = 'Notifications';
   static const theme = 'Theme';
+  static const sendOtp = 'Send OTP';
   static const getOtp = 'Get OTP';
   static const otp = 'OTP';
   static const otpSendSuccessful = 'OTP sent successfully to your email.';

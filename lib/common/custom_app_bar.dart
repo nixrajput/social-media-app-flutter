@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -14,6 +13,7 @@ class NxAppBar extends StatelessWidget {
     this.showBackBtn = true,
     this.padding,
     this.titleStyle,
+    this.bgColor,
   }) : super(key: key);
 
   final String? title;
@@ -22,11 +22,13 @@ class NxAppBar extends StatelessWidget {
   final Widget? leading;
   final bool? showBackBtn;
   final EdgeInsets? padding;
+  final Color? bgColor;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: Dimens.screenWidth,
+      color: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,17 +41,12 @@ class NxAppBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 if (showBackBtn == true)
-                  InkWell(
+                  GestureDetector(
                     onTap: RouteManagement.goToBack,
-                    child: CircleAvatar(
-                      backgroundColor:
-                          ColorValues.primaryColor.withOpacity(0.8),
-                      radius: Dimens.fourteen,
-                      child: Icon(
-                        CupertinoIcons.left_chevron,
-                        color: ColorValues.whiteColor,
-                        size: Dimens.sixTeen,
-                      ),
+                    child: Icon(
+                      CupertinoIcons.arrow_left,
+                      color: Theme.of(context).textTheme.subtitle1!.color,
+                      size: Dimens.twentyFour,
                     ),
                   ),
                 if (showBackBtn == true) Dimens.boxWidth16,
@@ -58,7 +55,10 @@ class NxAppBar extends StatelessWidget {
                 if (title != null && title!.isNotEmpty)
                   Text(
                     title!,
-                    style: titleStyle ?? AppStyles.style24Bold,
+                    style: titleStyle ??
+                        AppStyles.style20Bold.copyWith(
+                          color: Theme.of(context).textTheme.subtitle1!.color,
+                        ),
                   )
               ],
             ),

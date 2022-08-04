@@ -3,11 +3,11 @@ flutter_native_splash:
   # flutter pub run flutter_native_splash:remove
 
   #background_image: 'assets/images/splash.png'
-  color: "#F5F5F5"
-  image: "assets/logo_trans.png"
+  color: "#F0F0F0"
+  image: "assets/images/logo_trans.png"
 
   #background_image_dark: "assets/dark-background.png"
-  color_dark: "#001B2B"
-  image_dark: "assets/logo_trans.png"
+  color_dark: "#1C1D31"
+  image_dark: "assets/images/logo_trans.png"
 
   fullscreen: true

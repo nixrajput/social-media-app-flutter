@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/constants/styles.dart';
 
 class NxFilledButton extends StatelessWidget {
   const NxFilledButton({
@@ -37,6 +38,7 @@ class NxFilledButton extends StatelessWidget {
       child: Container(
         width: width,
         height: height ?? Dimens.fiftySix,
+        constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius ?? Dimens.eight),
           gradient: ColorValues.primaryGrad,
@@ -50,10 +52,9 @@ class NxFilledButton extends StatelessWidget {
             if (prefix != null) Dimens.boxWidth4,
             Text(
               label.toUpperCase(),
-              style: TextStyle(
+              style: AppStyles.style16Bold.copyWith(
                 color: labelColor ?? ColorValues.whiteColor,
                 fontSize: fontSize ?? Dimens.sixTeen,
-                fontWeight: FontWeight.w700,
               ),
             ),
             if (suffix != null) Dimens.boxWidth4,

@@ -26,10 +26,12 @@ class RegisterController extends GetxController {
 
   final _isLoading = false.obs;
   final _showPassword = true.obs;
+  final _showConfirmPassword = true.obs;
 
   bool get isLoading => _isLoading.value;
 
   bool get showPassword => _showPassword.value;
+  bool get showConfirmPassword => _showConfirmPassword.value;
 
   void _clearRegisterTextControllers() {
     fNameTextController.clear();
@@ -42,6 +44,11 @@ class RegisterController extends GetxController {
 
   void toggleViewPassword() {
     _showPassword(!_showPassword.value);
+    update();
+  }
+
+  void toggleViewConfirmPassword() {
+    _showConfirmPassword(!_showConfirmPassword.value);
     update();
   }
 
