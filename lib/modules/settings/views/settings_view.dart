@@ -142,7 +142,10 @@ class SettingsView extends StatelessWidget {
                       color: ColorValues.primaryColor,
                       fontWeight: FontWeight.w500,
                     ),
-                    onTap: AuthService.find.logout,
+                    onTap: () {
+                      RouteManagement.goToLoginView();
+                      AuthService.find.logout();
+                    },
                   ),
                 ),
               ],

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/phone.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
@@ -6,8 +7,8 @@ import 'package:social_media_app/apis/models/entities/user_avatar.dart';
 part 'profile.g.dart';
 
 @JsonSerializable()
-class Profile {
-  Profile({
+class Profile extends Equatable {
+  const Profile({
     required this.id,
     required this.fname,
     required this.lname,
@@ -45,89 +46,122 @@ class Profile {
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
 
   @JsonKey(name: '_id')
-  String id;
+  final String id;
 
   @JsonKey(name: 'fname')
-  String fname;
+  final String fname;
 
   @JsonKey(name: 'lname')
-  String lname;
+  final String lname;
 
   @JsonKey(name: 'email')
-  String email;
+  final String email;
 
   @JsonKey(name: 'emailVerified')
-  bool emailVerified;
+  final bool emailVerified;
 
   @JsonKey(name: 'uname')
-  String uname;
+  final String uname;
 
   @JsonKey(name: 'avatar')
-  UserAvatar? avatar;
+  final UserAvatar? avatar;
 
   @JsonKey(name: 'phone')
-  Phone? phone;
+  final Phone? phone;
 
   @JsonKey(name: 'phoneVerified')
-  bool phoneVerified;
+  final bool phoneVerified;
 
   @JsonKey(name: 'gender')
-  String? gender;
+  final String? gender;
 
   @JsonKey(name: 'dob')
-  String? dob;
+  final String? dob;
 
   @JsonKey(name: 'about')
-  String? about;
+  final String? about;
 
   @JsonKey(name: 'profession')
-  String? profession;
+  final String? profession;
 
   @JsonKey(name: 'location')
-  String? location;
+  final String? location;
 
   @JsonKey(name: 'website')
-  String? website;
+  final String? website;
 
   @JsonKey(name: 'posts')
-  List<Post> posts;
+  final List<Post> posts;
 
   @JsonKey(name: 'followers')
-  List<dynamic> followers;
+  final List<dynamic> followers;
 
   @JsonKey(name: 'following')
-  List<dynamic> following;
+  final List<dynamic> following;
 
   @JsonKey(name: 'role')
-  String role;
+  final String role;
 
   @JsonKey(name: 'accountType')
-  String accountType;
+  final String accountType;
 
   @JsonKey(name: 'accountStatus')
-  String accountStatus;
+  final String accountStatus;
 
   @JsonKey(name: 'isVerified')
-  bool isVerified;
+  final bool isVerified;
 
   @JsonKey(name: 'token')
-  String? token;
+  final String? token;
 
   @JsonKey(name: 'expiresAt')
-  String? expiresAt;
+  final int? expiresAt;
 
   @JsonKey(name: 'otp')
-  String? otp;
+  final String? otp;
 
   @JsonKey(name: 'resetPasswordToken')
-  String? resetPasswordToken;
+  final String? resetPasswordToken;
 
   @JsonKey(name: 'resetPasswordExpire')
-  String? resetPasswordExpire;
+  final String? resetPasswordExpire;
 
   @JsonKey(name: 'lastActive')
-  DateTime? lastActive;
+  final DateTime? lastActive;
 
   @JsonKey(name: 'createdAt')
-  DateTime createdAt;
+  final DateTime createdAt;
+
+  @override
+  List<Object?> get props => <Object?>[
+        id,
+        fname,
+        lname,
+        email,
+        emailVerified,
+        uname,
+        avatar,
+        phone,
+        phoneVerified,
+        gender,
+        dob,
+        about,
+        profession,
+        location,
+        website,
+        posts,
+        followers,
+        following,
+        role,
+        accountType,
+        accountStatus,
+        isVerified,
+        token,
+        expiresAt,
+        otp,
+        resetPasswordToken,
+        resetPasswordExpire,
+        lastActive,
+        createdAt,
+      ];
 }

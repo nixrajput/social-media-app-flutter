@@ -18,7 +18,7 @@ class ProfileController extends GetxController {
   final _apiProvider = ApiProvider(http.Client());
 
   var _isLoading = false;
-  ProfileResponse _profileData = ProfileResponse();
+  ProfileResponse _profileData = const ProfileResponse();
 
   bool get isLoading => _isLoading;
 

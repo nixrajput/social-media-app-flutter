@@ -74,6 +74,8 @@ class LoginController extends GetxController {
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
+      AppUtils.printLog(decodedData);
+
       if (response.statusCode == 200) {
         _auth.setLoginData = LoginResponse.fromJson(decodedData);
 
@@ -85,19 +87,29 @@ class LoginController extends GetxController {
         _auth.setToken = token;
         _auth.setExpiresAt = expiresAt;
         _auth.autoLogout();
-        await _profile.fetchProfileDetails();
-        await _auth.saveLoginInfo();
+        await _profile.fetchProfileDetails().then((_) {
+          // await _auth.saveLoginInfo();
 
-        _clearLoginTextControllers();
+          _clearLoginTextControllers();
 
-        AppUtils.closeDialog();
-        _isLoading.value = false;
-        RouteManagement.goToHomeView();
-        update();
-        AppUtils.showSnackBar(
-          StringValues.loginSuccessful,
-          StringValues.success,
-        );
+          AppUtils.closeDialog();
+          _isLoading.value = false;
+          RouteManagement.goToHomeView();
+          update();
+          AppUtils.showSnackBar(
+            StringValues.loginSuccessful,
+            StringValues.success,
+          );
+        }).catchError((_) {
+          AppUtils.closeDialog();
+          _isLoading.value = false;
+          update();
+          AppUtils.showSnackBar(
+            StringValues.errorOccurred,
+            StringValues.error,
+          );
+          return;
+        });
       } else {
         AppUtils.closeDialog();
         _isLoading.value = false;

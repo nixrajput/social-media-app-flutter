@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/media.dart';
 
 part 'post_media_file.g.dart';
 
 @JsonSerializable()
-class PostMediaFile {
-  PostMediaFile({
+class PostMediaFile extends Equatable {
+  const PostMediaFile({
     this.id,
     this.link,
     this.mediaType,
@@ -17,11 +18,18 @@ class PostMediaFile {
   Map<String, dynamic> toJson() => _$PostMediaFileToJson(this);
 
   @JsonKey(name: '_id')
-  String? id;
+  final String? id;
 
   @JsonKey(name: 'link')
-  Media? link;
+  final Media? link;
 
   @JsonKey(name: 'mediaType')
-  String? mediaType;
+  final String? mediaType;
+
+  @override
+  List<Object?> get props => <Object?>[
+        id,
+        link,
+        mediaType,
+      ];
 }

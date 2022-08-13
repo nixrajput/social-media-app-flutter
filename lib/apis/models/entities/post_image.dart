@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'post_image.g.dart';
 
 @JsonSerializable()
-class PostImage {
-  PostImage({
+class PostImage extends Equatable {
+  const PostImage({
     this.id,
     this.publicId,
     this.url,
@@ -16,11 +17,18 @@ class PostImage {
   Map<String, dynamic> toJson() => _$PostImageToJson(this);
 
   @JsonKey(name: '_id')
-  String? id;
+  final String? id;
 
   @JsonKey(name: 'public_id')
-  String? publicId;
+  final String? publicId;
 
   @JsonKey(name: 'url')
-  String? url;
+  final String? url;
+
+  @override
+  List<Object?> get props => <Object?>[
+        id,
+        publicId,
+        url,
+      ];
 }

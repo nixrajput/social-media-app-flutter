@@ -36,7 +36,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       accountStatus: json['accountStatus'] as String,
       isVerified: json['isVerified'] as bool,
       token: json['token'] as String?,
-      expiresAt: json['expiresAt'] as String?,
+      expiresAt: json['expiresAt'] as int?,
       otp: json['otp'] as String?,
       resetPasswordToken: json['resetPasswordToken'] as String?,
       resetPasswordExpire: json['resetPasswordExpire'] as String?,

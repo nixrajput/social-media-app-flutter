@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/user_avatar.dart';
 
 part 'user.g.dart';
 
 @JsonSerializable()
-class User {
-  User({
+class User extends Equatable {
+  const User({
     required this.id,
     required this.fname,
     required this.lname,
@@ -23,32 +24,46 @@ class User {
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   @JsonKey(name: '_id')
-  String id;
+  final String id;
 
   @JsonKey(name: 'fname')
-  String fname;
+  final String fname;
 
   @JsonKey(name: 'lname')
-  String lname;
+  final String lname;
 
   @JsonKey(name: 'email')
-  String email;
+  final String email;
 
   @JsonKey(name: 'uname')
-  String uname;
+  final String uname;
 
   @JsonKey(name: 'profession')
-  String? profession;
+  final String? profession;
 
   @JsonKey(name: 'avatar')
-  UserAvatar? avatar;
+  final UserAvatar? avatar;
 
   @JsonKey(name: 'accountType')
-  String accountType;
+  final String accountType;
 
   @JsonKey(name: 'accountStatus')
-  String accountStatus;
+  final String accountStatus;
 
   @JsonKey(name: 'isVerified')
-  bool isVerified;
+  final bool isVerified;
+
+  @override
+  List<Object?> get props => <Object?>[
+        id,
+        fname,
+        lname,
+        email,
+        uname,
+        avatar,
+        profession,
+        accountType,
+        accountStatus,
+        isVerified,
+      ];
 }

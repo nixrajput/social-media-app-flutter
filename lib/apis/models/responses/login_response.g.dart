@@ -11,7 +11,7 @@ LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
       success: json['success'] as bool?,
       message: json['message'] as String?,
       token: json['token'] as String?,
-      expiresAt: json['expiresAt'] as String?,
+      expiresAt: json['expiresAt'] as int?,
     );
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>

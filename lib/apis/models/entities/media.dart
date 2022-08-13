@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'media.g.dart';
 
 @JsonSerializable()
-class Media {
-  Media({
+class Media extends Equatable {
+  const Media({
     this.publicId,
     this.url,
   });
@@ -14,8 +15,14 @@ class Media {
   Map<String, dynamic> toJson() => _$MediaToJson(this);
 
   @JsonKey(name: 'public_id')
-  String? publicId;
+  final String? publicId;
 
   @JsonKey(name: 'url')
-  String? url;
+  final String? url;
+
+  @override
+  List<Object?> get props => <Object?>[
+        publicId,
+        url,
+      ];
 }

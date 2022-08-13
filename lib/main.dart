@@ -18,7 +18,7 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await initServices();
     runApp(const MyApp());
-    await Get.find<AuthService>().saveLoginInfo();
+    //await Get.find<AuthService>().saveLoginInfo();
   } catch (err) {
     AppUtils.printLog(err);
   }
@@ -39,6 +39,8 @@ Future<void> initServices() async {
       var hasData = await Get.find<ProfileController>().getProfileDetails();
       if (hasData) {
         isLogin = true;
+      } else {
+        await Get.find<AuthService>().logout();
       }
     }
     isLogin

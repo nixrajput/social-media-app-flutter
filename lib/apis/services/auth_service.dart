@@ -13,7 +13,6 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/permissions.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/routes/route_management.dart';
 
 class AuthService extends GetxService {
   static AuthService get find => Get.find();
@@ -23,15 +22,15 @@ class AuthService extends GetxService {
   StreamSubscription<dynamic>? _streamSubscription;
 
   String _token = '';
-  String _expiresAt = '';
+  int _expiresAt = 0;
   String _deviceId = '';
-  LoginResponse _loginData = LoginResponse();
+  LoginResponse _loginData = const LoginResponse();
 
   String get token => _token;
 
   String get deviceId => _deviceId;
 
-  String get expiresAt => _expiresAt;
+  int get expiresAt => _expiresAt;
 
   LoginResponse get loginData => _loginData;
 
@@ -39,7 +38,7 @@ class AuthService extends GetxService {
 
   set setToken(String value) => _token = value;
 
-  set setExpiresAt(String value) => _expiresAt = value;
+  set setExpiresAt(int value) => _expiresAt = value;
 
   Future<String> getToken() async {
     var token = '';
@@ -53,14 +52,10 @@ class AuthService extends GetxService {
   }
 
   Future<void> _logout() async {
-    RouteManagement.goToLoginView();
     setToken = '';
-    setExpiresAt = '';
+    setExpiresAt = 0;
     await AppUtils.clearLoginDataFromLocalStorage();
-    AppUtils.showSnackBar(
-      StringValues.logoutSuccessful,
-      StringValues.success,
-    );
+    AppUtils.printLog(StringValues.logoutSuccessful);
   }
 
   Future<dynamic> getCurrentLocation() async {
@@ -105,7 +100,6 @@ class AuthService extends GetxService {
       var deviceBrand = androidInfo.brand;
       var deviceModel = androidInfo.model;
       var deviceSystemVersion = androidInfo.version.release;
-      var deviceId = androidInfo.androidId;
 
       deviceInfo = <String, dynamic>{
         "deviceId": deviceId,
@@ -160,12 +154,12 @@ class AuthService extends GetxService {
   }
 
   void autoLogout() async {
-    if (_expiresAt.isNotEmpty) {
+    if (_expiresAt > 0) {
       var currentTimestamp =
           (DateTime.now().millisecondsSinceEpoch / 1000).round();
-      if (int.parse(_expiresAt) < currentTimestamp) {
+      if (_expiresAt < currentTimestamp) {
         setToken = '';
-        setExpiresAt = '';
+        setExpiresAt = 0;
         await AppUtils.clearLoginDataFromLocalStorage();
       }
     }

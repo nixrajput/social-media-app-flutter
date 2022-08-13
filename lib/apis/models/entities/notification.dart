@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 
 part 'notification.g.dart';
 
 @JsonSerializable()
-class ApiNotification {
-  ApiNotification({
+class ApiNotification extends Equatable {
+  const ApiNotification({
     required this.id,
     required this.owner,
     required this.user,
@@ -22,7 +23,7 @@ class ApiNotification {
   Map<String, dynamic> toJson() => _$ApiNotificationToJson(this);
 
   @JsonKey(name: '_id')
-  String id;
+  final String id;
 
   @JsonKey(name: 'owner')
   final User owner;
@@ -44,4 +45,16 @@ class ApiNotification {
 
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
+
+  @override
+  List<Object?> get props => <Object?>[
+        id,
+        owner,
+        user,
+        body,
+        refId,
+        type,
+        isRead,
+        createdAt,
+      ];
 }

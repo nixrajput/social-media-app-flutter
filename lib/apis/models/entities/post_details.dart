@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/comment.dart';
 import 'package:social_media_app/apis/models/entities/post_image.dart';
@@ -6,8 +7,8 @@ import 'package:social_media_app/apis/models/entities/user.dart';
 part 'post_details.g.dart';
 
 @JsonSerializable()
-class PostDetails {
-  PostDetails({
+class PostDetails extends Equatable {
+  const PostDetails({
     required this.id,
     this.caption,
     this.images,
@@ -24,26 +25,38 @@ class PostDetails {
   Map<String, dynamic> toJson() => _$PostDetailsToJson(this);
 
   @JsonKey(name: '_id')
-  String id;
+  final String id;
 
   @JsonKey(name: 'caption')
-  String? caption;
+  final String? caption;
 
   @JsonKey(name: 'images')
-  List<PostImage>? images;
+  final List<PostImage>? images;
 
   @JsonKey(name: 'owner')
-  User owner;
+  final User owner;
 
   @JsonKey(name: 'likes')
-  List<dynamic> likes;
+  final List<dynamic> likes;
 
   @JsonKey(name: 'comments')
-  List<Comment> comments;
+  final List<Comment> comments;
 
   @JsonKey(name: 'postStatus')
-  String postStatus;
+  final String postStatus;
 
   @JsonKey(name: 'createdAt')
-  DateTime createdAt;
+  final DateTime createdAt;
+
+  @override
+  List<Object?> get props => <Object?>[
+        id,
+        caption,
+        images,
+        owner,
+        likes,
+        comments,
+        postStatus,
+        createdAt,
+      ];
 }

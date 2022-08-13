@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/post_image.dart';
 import 'package:social_media_app/apis/models/entities/post_media_file.dart';
@@ -6,8 +7,8 @@ import 'package:social_media_app/apis/models/entities/user.dart';
 part 'post.g.dart';
 
 @JsonSerializable()
-class Post {
-  Post({
+class Post extends Equatable {
+  const Post({
     required this.id,
     this.caption,
     this.images,
@@ -24,29 +25,42 @@ class Post {
   Map<String, dynamic> toJson() => _$PostToJson(this);
 
   @JsonKey(name: '_id')
-  String id;
+  final String id;
 
   @JsonKey(name: 'caption')
-  String? caption;
+  final String? caption;
 
   @JsonKey(name: 'images')
-  List<PostImage>? images;
+  final List<PostImage>? images;
 
   @JsonKey(name: 'mediaFiles')
-  List<PostMediaFile>? mediaFiles;
+  final List<PostMediaFile>? mediaFiles;
 
   @JsonKey(name: 'owner')
-  User owner;
+  final User owner;
 
   @JsonKey(name: 'likes')
-  List<dynamic> likes;
+  final List<dynamic> likes;
 
   @JsonKey(name: 'comments')
-  List<dynamic> comments;
+  final List<dynamic> comments;
 
   @JsonKey(name: 'postStatus')
-  String postStatus;
+  final String postStatus;
 
   @JsonKey(name: 'createdAt')
-  DateTime createdAt;
+  final DateTime createdAt;
+
+  @override
+  List<Object?> get props => <Object?>[
+        id,
+        caption,
+        images,
+        mediaFiles,
+        owner,
+        likes,
+        comments,
+        postStatus,
+        createdAt,
+      ];
 }

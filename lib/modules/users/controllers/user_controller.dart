@@ -17,7 +17,7 @@ class UserController extends GetxController {
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final _userList = UserListResponse().obs;
+  final _userList = const UserListResponse().obs;
   final _isLoading = false.obs;
 
   bool get isLoading => _isLoading.value;

@@ -10,10 +10,11 @@ FollowerListResponse _$FollowerListResponseFromJson(
         Map<String, dynamic> json) =>
     FollowerListResponse(
       success: json['success'] as bool?,
+      count: json['count'] as int?,
       results: (json['results'] as List<dynamic>?)
           ?.map((e) => User.fromJson(e as Map<String, dynamic>))
           .toList(),
-    )..count = json['count'] as int?;
+    );
 
 Map<String, dynamic> _$FollowerListResponseToJson(
         FollowerListResponse instance) =>

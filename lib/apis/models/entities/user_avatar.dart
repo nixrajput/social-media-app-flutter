@@ -1,10 +1,11 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_avatar.g.dart';
 
 @JsonSerializable()
-class UserAvatar {
-  UserAvatar({
+class UserAvatar extends Equatable {
+  const UserAvatar({
     this.publicId,
     this.url,
   });
@@ -15,8 +16,11 @@ class UserAvatar {
   Map<String, dynamic> toJson() => _$UserAvatarToJson(this);
 
   @JsonKey(name: 'public_id')
-  String? publicId;
+  final String? publicId;
 
   @JsonKey(name: 'url')
-  String? url;
+  final String? url;
+
+  @override
+  List<Object?> get props => <Object?>[];
 }

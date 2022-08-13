@@ -1,11 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/profile.dart';
 
 part 'profile_response.g.dart';
 
 @JsonSerializable()
-class ProfileResponse {
-  ProfileResponse({
+class ProfileResponse extends Equatable {
+  const ProfileResponse({
     this.success,
     this.user,
   });
@@ -16,8 +17,14 @@ class ProfileResponse {
   Map<String, dynamic> toJson() => _$ProfileResponseToJson(this);
 
   @JsonKey(name: 'success')
-  bool? success;
+  final bool? success;
 
   @JsonKey(name: 'user')
-  Profile? user;
+  final Profile? user;
+
+  @override
+  List<Object?> get props => <Object?>[
+        success,
+        user,
+      ];
 }

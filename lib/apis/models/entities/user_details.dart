@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/user_avatar.dart';
@@ -5,8 +6,8 @@ import 'package:social_media_app/apis/models/entities/user_avatar.dart';
 part 'user_details.g.dart';
 
 @JsonSerializable()
-class UserDetails {
-  UserDetails({
+class UserDetails extends Equatable {
+  const UserDetails({
     required this.id,
     required this.fname,
     required this.lname,
@@ -33,56 +34,78 @@ class UserDetails {
   Map<String, dynamic> toJson() => _$UserDetailsToJson(this);
 
   @JsonKey(name: '_id')
-  String id;
+  final String id;
 
   @JsonKey(name: 'fname')
-  String fname;
+  final String fname;
 
   @JsonKey(name: 'lname')
-  String lname;
+  final String lname;
 
   @JsonKey(name: 'email')
-  String email;
+  final String email;
 
   @JsonKey(name: 'uname')
-  String uname;
+  final String uname;
 
   @JsonKey(name: 'avatar')
-  UserAvatar? avatar;
+  final UserAvatar? avatar;
 
   @JsonKey(name: 'gender')
-  String? gender;
+  final String? gender;
 
   @JsonKey(name: 'dob')
-  String? dob;
+  final String? dob;
 
   @JsonKey(name: 'about')
-  String? about;
+  final String? about;
 
   @JsonKey(name: 'profession')
-  String profession;
+  final String profession;
 
   @JsonKey(name: 'posts')
-  List<Post> posts;
+  final List<Post> posts;
 
   @JsonKey(name: 'followers')
-  List<dynamic> followers;
+  final List<dynamic> followers;
 
   @JsonKey(name: 'following')
-  List<dynamic> following;
+  final List<dynamic> following;
 
   @JsonKey(name: 'role')
-  String role;
+  final String role;
 
   @JsonKey(name: 'accountType')
-  String accountType;
+  final String accountType;
 
   @JsonKey(name: 'accountStatus')
-  String accountStatus;
+  final String accountStatus;
 
   @JsonKey(name: 'isVerified')
-  bool isVerified;
+  final bool isVerified;
 
   @JsonKey(name: 'createdAt')
-  DateTime createdAt;
+  final DateTime createdAt;
+
+  @override
+  List<Object?> get props => <Object?>[
+        id,
+        fname,
+        lname,
+        email,
+        uname,
+        avatar,
+        gender,
+        dob,
+        about,
+        profession,
+        posts,
+        followers,
+        following,
+        role,
+        accountType,
+        accountStatus,
+        isVerified,
+        createdAt,
+      ];
 }

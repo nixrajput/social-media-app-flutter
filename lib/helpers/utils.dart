@@ -142,7 +142,7 @@ abstract class AppUtils {
         margin: EdgeInsets.only(
           left: Dimens.sixTeen,
           right: Dimens.sixTeen,
-          bottom: Dimens.thirtyTwo,
+          bottom: Dimens.sixTeen,
         ),
         borderRadius: Dimens.four,
         padding: Dimens.edgeInsets16,
@@ -195,8 +195,9 @@ abstract class AppUtils {
     }
   }
 
-  static Future<void> saveLoginDataToLocalStorage(token, expiresAt) async {
-    if (token!.isNotEmpty && expiresAt!.isNotEmpty) {
+  static Future<void> saveLoginDataToLocalStorage(
+      String token, int expiresAt) async {
+    if (token.isNotEmpty && expiresAt > 0) {
       final data = jsonEncode({
         StringValues.token: token,
         StringValues.expiresAt: expiresAt,
