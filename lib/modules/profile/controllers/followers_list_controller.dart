@@ -40,7 +40,7 @@ class FollowersListController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.getFollowersList(_auth.token, userId);
+      final response = await _apiProvider.getFollowers(_auth.token, userId);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

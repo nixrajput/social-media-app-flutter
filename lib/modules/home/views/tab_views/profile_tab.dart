@@ -8,6 +8,7 @@ import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/common/count_widget.dart';
 import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/common/elevated_card.dart';
+import 'package:social_media_app/common/primary_icon_btn.dart';
 import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/common/shimmer_loading.dart';
 import 'package:social_media_app/constants/assets.dart';
@@ -15,7 +16,9 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
+import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -116,10 +119,102 @@ class ProfileTabView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
+                  Column(
                     children: [
-                      _buildProfileImage(logic),
-                      Dimens.boxWidth16,
+                      GestureDetector(
+                        onTap: () {
+                          Get.dialog(
+                            GetBuilder<EditProfilePictureController>(
+                              builder: (con) => MediaQuery.removeViewInsets(
+                                context: Get.context!,
+                                removeLeft: true,
+                                removeTop: true,
+                                removeRight: true,
+                                removeBottom: true,
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxHeight: Dimens.screenHeight,
+                                    maxWidth: Dimens.hundred * 6,
+                                  ),
+                                  child: Padding(
+                                    padding: Dimens.edgeInsets16,
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Material(
+                                        type: MaterialType.card,
+                                        color: Theme.of(Get.context!)
+                                            .scaffoldBackgroundColor,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(Dimens.eight)),
+                                        child: Padding(
+                                          padding: Dimens.edgeInsets16,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    'Profile picture',
+                                                    style:
+                                                        AppStyles.style20Bold,
+                                                  ),
+                                                  const Spacer(),
+                                                  NxIconButton(
+                                                    icon: Icons.close,
+                                                    iconSize: Dimens.thirtyTwo,
+                                                    onTap: AppUtils.closeDialog,
+                                                  ),
+                                                ],
+                                              ),
+                                              Dimens.boxHeight24,
+                                              _buildProfileImage(
+                                                logic,
+                                                size: Dimens.screenWidth * 0.5,
+                                              ),
+                                              Dimens.boxHeight32,
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: NxOutlinedButton(
+                                                      width: Dimens.screenWidth,
+                                                      label: 'Change',
+                                                      onTap: con.chooseImage,
+                                                    ),
+                                                  ),
+                                                  Dimens.boxWidth16,
+                                                  Expanded(
+                                                    child: NxOutlinedButton(
+                                                      width: Dimens.screenWidth,
+                                                      label: 'Remove',
+                                                      onTap: con
+                                                          .removeProfilePicture,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Dimens.boxHeight24,
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            barrierDismissible: false,
+                          );
+                        },
+                        child: _buildProfileImage(logic),
+                      ),
+                      Dimens.boxHeight16,
                       const NxOutlinedButton(
                         label: StringValues.editProfile,
                         onTap: RouteManagement.goToEditProfileView,
@@ -148,17 +243,17 @@ class ProfileTabView extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileImage(ProfileController logic) {
+  Widget _buildProfileImage(ProfileController logic, {double? size}) {
     if (logic.profileData.user != null &&
         logic.profileData.user!.avatar != null) {
       return NxCircleNetworkImage(
         imageUrl: logic.profileData.user!.avatar!.url!,
-        radius: Dimens.sixtyFour,
+        radius: size ?? Dimens.eighty,
       );
     }
     return NxCircleAssetImage(
       imgAsset: AssetValues.avatar,
-      radius: Dimens.sixtyFour,
+      radius: size ?? Dimens.eighty,
     );
   }
 

@@ -34,7 +34,7 @@ class UserController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.getUsers(_auth.token);
+      final response = await _apiProvider.getRecommendedUsers(_auth.token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

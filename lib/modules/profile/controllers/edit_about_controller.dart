@@ -50,8 +50,7 @@ class AboutController extends GetxController {
     update();
 
     try {
-      final response =
-          await _apiProvider.updateProfileDetails(body, _auth.token);
+      final response = await _apiProvider.updateProfile(_auth.token, body);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

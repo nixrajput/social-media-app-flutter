@@ -6,7 +6,7 @@ part 'user_details_response.g.dart';
 
 @JsonSerializable()
 class UserDetailsResponse extends Equatable {
-  UserDetailsResponse({
+  const UserDetailsResponse({
     this.success,
     this.user,
   });

@@ -50,10 +50,11 @@ class UserProfileController extends GetxController {
     update();
 
     try {
-      final response =
-          await _apiProvider.getUserProfileDetails(userId, _auth.token);
+      final response = await _apiProvider.getUserDetails(_auth.token, userId);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      print(decodedData);
 
       if (response.statusCode == 200) {
         setUserProfileData = UserDetailsResponse.fromJson(decodedData);

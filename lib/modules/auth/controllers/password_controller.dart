@@ -59,7 +59,7 @@ class PasswordController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.sendPasswordResetEmail(body);
+      final response = await _apiProvider.forgotPassword(body);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

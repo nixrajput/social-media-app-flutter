@@ -82,7 +82,7 @@ class ChangePasswordController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.changePassword(body, _auth.token);
+      final response = await _apiProvider.changePassword(_auth.token, body);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

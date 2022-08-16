@@ -34,7 +34,7 @@ class SecuritySettingsController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.getLoginInfo(_auth.token);
+      final response = await _apiProvider.getDeviceInfo(_auth.token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

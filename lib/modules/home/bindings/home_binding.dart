@@ -5,6 +5,7 @@ import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_like_controller.dart';
 import 'package:social_media_app/modules/home/controllers/tab_controller.dart';
 import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
 import 'package:social_media_app/modules/users/controllers/user_controller.dart';
 
 class HomeBinding extends Bindings {
@@ -17,5 +18,6 @@ class HomeBinding extends Bindings {
     Get.lazyPut(TrendingTabController.new);
     Get.lazyPut(UserController.new, fenix: true);
     Get.lazyPut(NotificationController.new);
+    Get.lazyPut(EditProfilePictureController.new, fenix: true);
   }
 }

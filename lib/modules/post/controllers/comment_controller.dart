@@ -21,7 +21,7 @@ class CommentController extends GetxController {
   final _apiProvider = ApiProvider(http.Client());
 
   final _isLoading = false.obs;
-  final _commentsData = CommentsResponse().obs;
+  final _commentsData = const CommentsResponse().obs;
 
   bool get isLoading => _isLoading.value;
 
@@ -42,7 +42,7 @@ class CommentController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.fetchComments(_auth.token, postId);
+      final response = await _apiProvider.getComments(_auth.token, postId);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
@@ -90,7 +90,8 @@ class CommentController extends GetxController {
     if (commentId.isEmpty) return;
 
     try {
-      final response = await _apiProvider.deleteComment(_auth.token, commentId);
+      final response =
+          await _apiProvider.deleteDeviceInfo(_auth.token, commentId);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

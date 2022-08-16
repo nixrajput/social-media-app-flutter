@@ -8,8 +8,14 @@ part 'post_response.g.dart';
 class PostResponse extends Equatable {
   const PostResponse({
     this.success,
-    this.count,
-    this.posts,
+    this.currentPage,
+    this.totalPages,
+    this.limit,
+    this.hasPrevPage,
+    this.prevPage,
+    this.hasNextPage,
+    this.nextPage,
+    this.results,
   });
 
   factory PostResponse.fromJson(Map<String, dynamic> json) =>
@@ -20,16 +26,40 @@ class PostResponse extends Equatable {
   @JsonKey(name: 'success')
   final bool? success;
 
-  @JsonKey(name: 'count')
-  final int? count;
+  @JsonKey(name: 'currentPage')
+  final int? currentPage;
 
-  @JsonKey(name: 'posts')
-  final List<Post>? posts;
+  @JsonKey(name: 'totalPages')
+  final int? totalPages;
+
+  @JsonKey(name: 'limit')
+  final int? limit;
+
+  @JsonKey(name: 'hasPrevPage')
+  final bool? hasPrevPage;
+
+  @JsonKey(name: 'prevPage')
+  final String? prevPage;
+
+  @JsonKey(name: 'hasNextPage')
+  final bool? hasNextPage;
+
+  @JsonKey(name: 'nextPage')
+  final String? nextPage;
+
+  @JsonKey(name: 'results')
+  final List<Post>? results;
 
   @override
   List<Object?> get props => <Object?>[
         success,
-        count,
-        posts,
+        currentPage,
+        totalPages,
+        limit,
+        hasPrevPage,
+        prevPage,
+        hasNextPage,
+        nextPage,
+        results,
       ];
 }

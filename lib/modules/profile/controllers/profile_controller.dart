@@ -102,7 +102,7 @@ class ProfileController extends GetxController {
 
     try {
       final response =
-          await _apiProvider.followUnfollowUser(userId, _auth.token);
+          await _apiProvider.followUnfollowUser(_auth.token, userId);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

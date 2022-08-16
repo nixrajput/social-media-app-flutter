@@ -138,7 +138,7 @@ class HomeTabView extends StatelessWidget {
             ),
           );
         }
-        if (logic.postData == null || logic.postData!.posts!.isEmpty) {
+        if (logic.postData == null || logic.postData!.results!.isEmpty) {
           return SliverFillRemaining(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -173,9 +173,9 @@ class HomeTabView extends StatelessWidget {
           child: ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: logic.postData!.posts!.length,
+            itemCount: logic.postData!.results!.length,
             itemBuilder: (__, i) {
-              var post = logic.postData!.posts![i];
+              var post = logic.postData!.results![i];
               return PostWidget(post: post);
             },
           ),

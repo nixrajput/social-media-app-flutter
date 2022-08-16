@@ -71,8 +71,7 @@ class UsernameController extends GetxController {
     AppUtils.printLog("Check Username Request...");
 
     try {
-      final response =
-          await _apiProvider.checkUsernameAvailability(uname, _auth.token);
+      final response = await _apiProvider.checkUsername(uname, _auth.token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
@@ -118,7 +117,7 @@ class UsernameController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.updateUsername(uname, _auth.token);
+      final response = await _apiProvider.changeUsername(uname, _auth.token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

@@ -126,7 +126,7 @@ class AuthService extends GetxService {
     AppUtils.printLog("Save LoginInfo Request...");
 
     try {
-      final response = await _apiProvider.saveLoginInfo(_token, body);
+      final response = await _apiProvider.saveDeviceInfo(_token, body);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

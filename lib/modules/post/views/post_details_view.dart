@@ -6,7 +6,6 @@ import 'package:social_media_app/common/primary_icon_btn.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/create_comment_controller.dart';
@@ -23,24 +22,22 @@ class PostDetailsView extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: Stack(
+            fit: StackFit.expand,
             children: [
-              SizedBox(
-                width: Dimens.screenWidth,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const NxAppBar(title: StringValues.post),
-                    _buildBody(),
-                  ],
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const NxAppBar(title: StringValues.post),
+                  _buildBody(),
+                ],
               ),
-              GetBuilder<CreateCommentController>(
-                builder: (con) => Positioned(
-                  bottom: Dimens.zero,
-                  left: Dimens.zero,
-                  right: Dimens.zero,
-                  child: Container(
+              Positioned(
+                bottom: Dimens.zero,
+                left: Dimens.zero,
+                right: Dimens.zero,
+                child: GetBuilder<CreateCommentController>(
+                  builder: (con) => Container(
                     color: Theme.of(Get.context!).dialogTheme.backgroundColor,
                     width: Dimens.screenWidth.w,
                     height: 48.h,
@@ -86,57 +83,42 @@ class PostDetailsView extends StatelessWidget {
     return Expanded(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        child: SizedBox(
-          height: Dimens.screenHeight - 32.h,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GetBuilder<PostController>(
-                builder: (postLogic) => PostDetailsWidget(
-                  post: Get.arguments[1],
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GetBuilder<PostController>(
+              builder: (postLogic) => PostDetailsWidget(
+                post: Get.arguments[1],
               ),
-              Dimens.dividerWithHeight,
-              GetBuilder<CommentController>(
-                builder: (commentsLogic) {
-                  if (commentsLogic.isLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: Dimens.edgeInsets0_8,
-                        child: Text(
-                          "Comments (${commentsLogic.commentsData.count})",
-                          style: AppStyles.style16Bold,
-                        ),
-                      ),
-                      if (commentsLogic.commentsData.comments != null)
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: commentsLogic.commentsData.comments!
-                              .map((e) => InkWell(
-                                    child: CommentWidget(comment: e),
-                                    onLongPress: () =>
-                                        commentsLogic.deleteComment(e.id),
-                                  ))
-                              .toList(),
-                        ),
-                    ],
+            ),
+            Dimens.dividerWithHeight,
+            GetBuilder<CommentController>(
+              builder: (commentsLogic) {
+                if (commentsLogic.isLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
-                },
-              ),
-            ],
-          ),
+                }
+                if (commentsLogic.commentsData.results!.isEmpty) {
+                  return const SizedBox();
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: commentsLogic.commentsData.results!
+                      .map((e) => InkWell(
+                            child: CommentWidget(comment: e),
+                            onLongPress: () =>
+                                commentsLogic.deleteComment(e.id),
+                          ))
+                      .toList(),
+                );
+              },
+            ),
+            Dimens.boxHeight64,
+          ],
         ),
       ),
     );

@@ -18,7 +18,7 @@ class PostController extends GetxController {
   final _apiProvider = ApiProvider(http.Client());
 
   final _isLoading = false.obs;
-  final _postData = PostResponse().obs;
+  final _postData = const PostResponse().obs;
 
   bool get isLoading => _isLoading.value;
 
@@ -38,7 +38,7 @@ class PostController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.fetchAllPosts(_auth.token);
+      final response = await _apiProvider.getPosts(_auth.token);
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
@@ -84,11 +84,11 @@ class PostController extends GetxController {
     AppUtils.printLog("Post Delete Request...");
 
     var postIndex =
-        _postData.value.posts!.indexWhere((element) => element.id == postId);
-    var post = _postData.value.posts!.elementAt(postIndex);
+        _postData.value.results!.indexWhere((element) => element.id == postId);
+    var post = _postData.value.results!.elementAt(postIndex);
 
     if (postIndex > -1) {
-      _postData.value.posts!.remove(post);
+      _postData.value.results!.remove(post);
       _postData.refresh();
       update();
     }
@@ -105,7 +105,7 @@ class PostController extends GetxController {
           StringValues.success,
         );
       } else {
-        _postData.value.posts!.insert(postIndex, post);
+        _postData.value.results!.insert(postIndex, post);
         _postData.refresh();
         update();
         AppUtils.showSnackBar(
@@ -114,27 +114,27 @@ class PostController extends GetxController {
         );
       }
     } on SocketException {
-      _postData.value.posts!.insert(postIndex, post);
+      _postData.value.results!.insert(postIndex, post);
       _postData.refresh();
       update();
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      _postData.value.posts!.insert(postIndex, post);
+      _postData.value.results!.insert(postIndex, post);
       _postData.refresh();
       update();
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      _postData.value.posts!.insert(postIndex, post);
+      _postData.value.results!.insert(postIndex, post);
       _postData.refresh();
       update();
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      _postData.value.posts!.insert(postIndex, post);
+      _postData.value.results!.insert(postIndex, post);
       _postData.refresh();
       update();
       AppUtils.printLog(StringValues.errorOccurred);

@@ -17,7 +17,7 @@ class NotificationController extends GetxController {
   final _apiProvider = ApiProvider(http.Client());
 
   final _isLoading = false.obs;
-  final _notifications = NotificationResponse().obs;
+  final _notifications = const NotificationResponse().obs;
 
   bool get isLoading => _isLoading.value;
 

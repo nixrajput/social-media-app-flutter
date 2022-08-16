@@ -22,5 +22,5 @@ class UserAvatar extends Equatable {
   final String? url;
 
   @override
-  List<Object?> get props => <Object?>[];
+  List<Object?> get props => <Object?>[publicId, url];
 }

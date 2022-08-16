@@ -29,7 +29,7 @@ class NotificationTabView extends StatelessWidget {
                   title: StringValues.notifications,
                   showBackBtn: false,
                 ),
-                _buildNotificationBody(logic),
+                // _buildNotificationBody(logic),
               ],
             ),
           ),
@@ -45,7 +45,7 @@ class NotificationTabView extends StatelessWidget {
         child: CircularProgressIndicator(),
       ));
     }
-    if (logic.notifications == null || logic.notifications!.count! < 1) {
+    if (logic.notifications == null || logic.notifications!.count! <= 0) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
