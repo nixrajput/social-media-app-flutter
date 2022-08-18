@@ -102,23 +102,21 @@ class UserWidget extends StatelessWidget {
                       : StringValues.follow,
                   bgColor: profile.profileData.user!.following.contains(user.id)
                       ? Colors.transparent
-                      : Theme.of(context).textTheme.bodyText1!.color,
-                  labelColor:
-                      profile.profileData.user!.following.contains(user.id)
-                          ? Theme.of(context).textTheme.bodyText1!.color
-                          : Theme.of(context).scaffoldBackgroundColor,
+                      : ColorValues.primaryColor,
+                  borderColor: Theme.of(context).textTheme.bodyText1!.color,
                   borderStyle:
                       profile.profileData.user!.following.contains(user.id)
                           ? BorderStyle.solid
                           : BorderStyle.none,
-                  borderWidth:
-                      profile.profileData.user!.following.contains(user.id)
-                          ? Dimens.one
-                          : Dimens.zero,
                   onTap: () => logic.followUnfollowUser(user.id),
                   padding: Dimens.edgeInsets0_8,
-                  fontSize: Dimens.twelve,
-                  borderRadius: Dimens.twenty,
+                  borderWidth: Dimens.one,
+                  height: Dimens.thirtySix,
+                  labelStyle: AppStyles.style14Normal.copyWith(
+                    color: profile.profileData.user!.following.contains(user.id)
+                        ? Theme.of(context).textTheme.bodyText1!.color
+                        : ColorValues.whiteColor,
+                  ),
                 ),
               ),
           ],

@@ -18,9 +18,9 @@ abstract class AppThemes {
     ),
     dividerColor: ColorValues.grayColor,
     snackBarTheme: const SnackBarThemeData(
-      backgroundColor: ColorValues.darkBgColor,
+      backgroundColor: ColorValues.whiteColor,
       contentTextStyle: TextStyle(
-        color: ColorValues.whiteColor,
+        color: ColorValues.darkColor,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -56,11 +56,11 @@ abstract class AppThemes {
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
       backgroundColor: ColorValues.darkColor,
     ),
-    dividerColor: ColorValues.darkerGrayColor,
+    dividerColor: ColorValues.darkGrayColor,
     snackBarTheme: const SnackBarThemeData(
-      backgroundColor: ColorValues.lightBgColor,
+      backgroundColor: ColorValues.darkColor,
       contentTextStyle: TextStyle(
-        color: ColorValues.blackColor,
+        color: ColorValues.whiteColor,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(

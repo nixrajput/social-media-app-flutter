@@ -143,7 +143,7 @@ class SettingsView extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                     onTap: () {
-                      RouteManagement.goToLoginView();
+                      RouteManagement.goToWelcomeView();
                       AuthService.find.logout();
                     },
                   ),

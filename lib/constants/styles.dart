@@ -97,4 +97,16 @@ abstract class AppStyles {
     fontWeight: FontWeight.w700,
     fontFamily: 'Lato',
   );
+
+  static TextStyle style40Normal = TextStyle(
+    fontSize: Dimens.fourty,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Lato',
+  );
+
+  static TextStyle style40Bold = TextStyle(
+    fontSize: Dimens.fourty,
+    fontWeight: FontWeight.w700,
+    fontFamily: 'Lato',
+  );
 }

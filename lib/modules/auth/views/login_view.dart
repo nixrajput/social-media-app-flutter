@@ -29,7 +29,6 @@ class LoginView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.login,
-                  showBackBtn: false,
                   padding: Dimens.edgeInsets8_16,
                 ),
                 _buildLoginFields(),
@@ -136,9 +135,12 @@ class LoginView extends StatelessWidget {
                           style: AppStyles.style14Normal,
                         ),
                         Dimens.boxWidth4,
-                        const NxTextButton(
+                        NxTextButton(
                           label: StringValues.register,
-                          onTap: RouteManagement.goToRegisterView,
+                          onTap: () {
+                            RouteManagement.goToBack();
+                            RouteManagement.goToRegisterView();
+                          },
                         ),
                       ],
                     ),

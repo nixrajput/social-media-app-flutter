@@ -9,12 +9,12 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
 import 'package:social_media_app/global_widgets/circular_asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_network_image.dart';
 import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_like_controller.dart';
@@ -40,6 +40,7 @@ class PostWidget extends StatelessWidget {
         children: [
           _buildPostHead(),
           _buildPostBody(),
+          Dimens.boxHeight4,
           _buildPostFooter(),
         ],
       ),
@@ -111,7 +112,7 @@ class PostWidget extends StatelessWidget {
                   ],
                 ),
                 NxIconButton(
-                  icon: CupertinoIcons.chevron_down,
+                  icon: CupertinoIcons.ellipsis_vertical,
                   iconSize: Dimens.twenty,
                   onTap: () {
                     AppUtils.showBottomSheet(
@@ -225,7 +226,7 @@ class PostWidget extends StatelessWidget {
   }
 
   Widget _buildPostFooter() => Padding(
-        padding: Dimens.edgeInsets8,
+        padding: Dimens.edgeInsets8_16,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -233,79 +234,106 @@ class PostWidget extends StatelessWidget {
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GetBuilder<PostLikeController>(
-                  builder: (con) => Row(
-                    children: [
-                      NxIconButton(
-                        icon: post.likes.contains(
-                                ProfileController.find.profileData.user?.id)
-                            ? CupertinoIcons.heart_solid
-                            : CupertinoIcons.heart,
-                        iconSize: Dimens.twenty,
-                        onTap: () {
-                          con.toggleLikePost(post);
-                        },
-                        iconColor: post.likes.contains(
-                                ProfileController.find.profileData.user?.id)
-                            ? ColorValues.errorColor
-                            : ColorValues.grayColor,
-                      ),
-                      Dimens.boxWidth4,
-                      if (post.likes.isNotEmpty)
-                        Text(
-                          '${post.likes.length} likes',
-                          style: AppStyles.style14Bold,
+                  builder: (con) => GestureDetector(
+                    onTap: () => con.toggleLikePost(post),
+                    child: Container(
+                      padding: Dimens.edgeInsets8_16,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(Get.context!).dividerColor,
                         ),
-                    ],
+                        borderRadius: BorderRadius.circular(Dimens.thirtyTwo),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            post.likes.contains(
+                                    ProfileController.find.profileData.user?.id)
+                                ? Icons.favorite
+                                : Icons.favorite_outline,
+                            color: post.likes.contains(
+                                    ProfileController.find.profileData.user?.id)
+                                ? ColorValues.errorColor
+                                : ColorValues.grayColor,
+                          ),
+                          Dimens.boxWidth8,
+                          Text(
+                            '${post.likes.length}'.toCountingFormat(),
+                            style: AppStyles.style14Normal,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-                Dimens.boxWidth16,
                 GestureDetector(
                   onTap: () =>
                       RouteManagement.goToPostDetailsView(post.id, post),
-                  child: Row(
-                    children: [
-                      Icon(
-                        CupertinoIcons.chat_bubble,
-                        size: Dimens.twenty,
+                  child: Container(
+                    padding: Dimens.edgeInsets8_16,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(Get.context!).dividerColor,
                       ),
-                      Dimens.boxWidth4,
-                      if (post.comments.isNotEmpty)
-                        Text(
-                          '${post.comments.length} ${StringValues.comments}',
-                          style: AppStyles.style14Bold,
+                      borderRadius: BorderRadius.circular(Dimens.thirtyTwo),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.messenger_outline,
+                          color: ColorValues.grayColor,
                         ),
+                        Dimens.boxWidth8,
+                        Text(
+                          '${post.comments.length}'.toCountingFormat(),
+                          style: AppStyles.style14Normal,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: Dimens.edgeInsets8_16,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Theme.of(Get.context!).dividerColor,
+                    ),
+                    borderRadius: BorderRadius.circular(Dimens.thirtyTwo),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.bookmark_outline,
+                        color: ColorValues.grayColor,
+                      ),
+                      Dimens.boxWidth8,
+                      Text(
+                        '${0}'.toCountingFormat(),
+                        style: AppStyles.style14Normal,
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
+            Dimens.boxHeight4,
             if (post.caption != null && post.caption!.isNotEmpty)
               Dimens.boxHeight4,
             if (post.caption != null && post.caption!.isNotEmpty)
-              Row(
-                children: [
-                  Text(
-                    post.owner.uname,
-                    style: AppStyles.style14Bold,
-                  ),
-                  Dimens.boxWidth4,
-                  Text(
-                    post.caption!,
-                    style: AppStyles.style14Normal,
-                  ),
-                ],
+              Text(
+                post.caption!,
+                style: AppStyles.style14Normal,
               ),
-            if (post.comments.isNotEmpty) Dimens.boxHeight4,
-            if (post.comments.isNotEmpty)
-              NxTextButton(
-                label: 'View All Comments',
-                onTap: () => RouteManagement.goToPostDetailsView(post.id, post),
-                labelStyle: AppStyles.style14Normal.copyWith(
-                  color: ColorValues.grayColor,
-                ),
-              ),
+
             Dimens.boxHeight4,
             Text(
               GetTimeAgo.parse(post.createdAt),

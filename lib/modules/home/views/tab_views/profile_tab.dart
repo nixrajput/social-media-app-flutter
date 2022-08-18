@@ -156,8 +156,15 @@ class ProfileTabView extends StatelessWidget {
                     ),
                   ),
                   Dimens.boxHeight12,
-                  const NxOutlinedButton(
-                    label: StringValues.editProfile,
+                  NxOutlinedButton(
+                    label: StringValues.editProfile.toTitleCase(),
+                    padding: Dimens.edgeInsets0_8,
+                    height: Dimens.thirtySix,
+                    borderColor:
+                        Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    labelStyle: AppStyles.style14Normal.copyWith(
+                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    ),
                     onTap: RouteManagement.goToEditProfileView,
                   ),
                 ],

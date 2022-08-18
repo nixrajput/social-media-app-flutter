@@ -180,34 +180,63 @@ abstract class AppUtils {
           right: Dimens.sixTeen,
           bottom: Dimens.sixTeen,
         ),
-        borderRadius: Dimens.four,
+        borderRadius: Dimens.eight,
         padding: Dimens.edgeInsets16,
         snackStyle: SnackStyle.FLOATING,
         messageText: Text(
           message,
-          style: TextStyle(
-            color: Theme.of(Get.context!).scaffoldBackgroundColor,
+          style: AppStyles.style16Normal.copyWith(
+            color: renderTextColor(type),
           ),
         ),
         icon: Icon(
-          type == StringValues.error
-              ? CupertinoIcons.clear_circled_solid
-              : type == StringValues.success
-                  ? CupertinoIcons.check_mark_circled_solid
-                  : CupertinoIcons.info_circle_fill,
-          color: type == StringValues.error
-              ? ColorValues.errorColor
-              : type == StringValues.success
-                  ? ColorValues.successColor
-                  : type == StringValues.warning
-                      ? ColorValues.warningColor
-                      : Theme.of(Get.context!).iconTheme.color,
+          renderIcon(type),
+          color: renderIconColor(type),
         ),
         shouldIconPulse: false,
         backgroundColor: Theme.of(Get.context!).snackBarTheme.backgroundColor!,
         duration: Duration(seconds: duration ?? 2),
       ),
     );
+  }
+
+  static Color renderTextColor(String type) {
+    if (type == StringValues.error) {
+      return ColorValues.errorColor;
+    }
+    if (type == StringValues.success) {
+      return ColorValues.successColor;
+    }
+    if (type == StringValues.warning) {
+      return ColorValues.warningColor;
+    }
+    return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+  }
+
+  static Color renderIconColor(String type) {
+    if (type == StringValues.error) {
+      return ColorValues.errorColor;
+    }
+    if (type == StringValues.success) {
+      return ColorValues.successColor;
+    }
+    if (type == StringValues.warning) {
+      return ColorValues.warningColor;
+    }
+    return Theme.of(Get.context!).iconTheme.color!;
+  }
+
+  static IconData renderIcon(String type) {
+    if (type == StringValues.error) {
+      return CupertinoIcons.clear_circled_solid;
+    }
+    if (type == StringValues.success) {
+      return CupertinoIcons.check_mark_circled_solid;
+    }
+    if (type == StringValues.warning) {
+      return CupertinoIcons.info_circle_fill;
+    }
+    return CupertinoIcons.info_circle_fill;
   }
 
   /// Close any open snack bar.

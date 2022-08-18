@@ -159,9 +159,12 @@ class ResetPasswordView extends StatelessWidget {
                       ),
                     ),
                     Dimens.boxHeight32,
-                    const NxTextButton(
+                    NxTextButton(
                       label: StringValues.loginToAccount,
-                      onTap: RouteManagement.goToLoginView,
+                      onTap: () {
+                        RouteManagement.goToBack();
+                        RouteManagement.goToLoginView();
+                      },
                     ),
                     Dimens.boxHeight32,
                     NxFilledButton(
@@ -178,9 +181,12 @@ class ResetPasswordView extends StatelessWidget {
                           style: AppStyles.style14Normal,
                         ),
                         Dimens.boxWidth4,
-                        const NxTextButton(
+                        NxTextButton(
                           label: StringValues.getOtp,
-                          onTap: RouteManagement.goToForgotPasswordView,
+                          onTap: () {
+                            RouteManagement.goToBack();
+                            RouteManagement.goToForgotPasswordView();
+                          },
                         ),
                       ],
                     ),

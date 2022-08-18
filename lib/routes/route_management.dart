@@ -6,16 +6,12 @@ import 'package:social_media_app/modules/users/controllers/user_profile_controll
 import 'package:social_media_app/routes/app_pages.dart';
 
 abstract class RouteManagement {
+  static void goToWelcomeView() {
+    Get.offAllNamed(AppRoutes.welcome);
+  }
+
   static void goToLoginView() {
-    Get.offAllNamed(AppRoutes.login);
-  }
-
-  static void goToSplashView() {
-    Get.offAllNamed(AppRoutes.splash);
-  }
-
-  static void goToErrorView() {
-    Get.offAllNamed(AppRoutes.error);
+    Get.toNamed(AppRoutes.login);
   }
 
   static void goToRegisterView() {
@@ -27,7 +23,7 @@ abstract class RouteManagement {
   }
 
   static void goToResetPasswordView() {
-    Get.offAndToNamed(AppRoutes.resetPassword);
+    Get.toNamed(AppRoutes.resetPassword);
   }
 
   static void goToHomeView() {

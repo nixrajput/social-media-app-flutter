@@ -1,6 +1,7 @@
 abstract class StringValues {
   static const appName = 'Rippl!';
   static const welcome = 'Welcome';
+  static const to = 'to';
   static const hello = 'Hello';
   static const register = 'Register';
   static const login = 'Login';

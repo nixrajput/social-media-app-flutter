@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
           getPages: AppPages.pages,
-          initialRoute: isLogin ? AppRoutes.home : AppRoutes.login,
+          initialRoute: isLogin ? AppRoutes.home : AppRoutes.welcome,
         ),
       ),
     );

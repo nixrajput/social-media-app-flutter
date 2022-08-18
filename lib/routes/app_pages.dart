@@ -6,7 +6,6 @@ import 'package:social_media_app/modules/auth/views/forgot_password_view.dart';
 import 'package:social_media_app/modules/auth/views/login_view.dart';
 import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
-import 'package:social_media_app/modules/error/error_view.dart';
 import 'package:social_media_app/modules/home/bindings/home_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
@@ -42,41 +41,35 @@ import 'package:social_media_app/modules/settings/views/pages/security/login_act
 import 'package:social_media_app/modules/settings/views/pages/security_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/theme_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
-import 'package:social_media_app/modules/splash/splash_view.dart';
 import 'package:social_media_app/modules/users/bindings/user_profile_binding.dart';
 import 'package:social_media_app/modules/users/views/user_profile_view.dart';
+import 'package:social_media_app/modules/welcome/welcome_view.dart';
 
 part 'app_routes.dart';
 
 abstract class AppPages {
-  static var transitionDuration = const Duration(milliseconds: 200);
+  static var transitionDuration = const Duration(milliseconds: 500);
 
   static final pages = [
     GetPage(
-      name: _Routes.splash,
-      page: SplashView.new,
+      name: _Routes.welcome,
+      page: WelcomeView.new,
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
-    ),
-    GetPage(
-      name: _Routes.error,
-      page: ErrorView.new,
-      transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: _Routes.login,
       page: LoginView.new,
       transitionDuration: transitionDuration,
       binding: LoginBinding(),
-      transition: Transition.downToUp,
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: _Routes.register,
       page: RegisterView.new,
       transitionDuration: transitionDuration,
       binding: RegisterBinding(),
-      transition: Transition.downToUp,
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: _Routes.home,
@@ -91,21 +84,21 @@ abstract class AppPages {
       page: ForgotPasswordView.new,
       transitionDuration: transitionDuration,
       binding: PasswordBinding(),
-      transition: Transition.downToUp,
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: _Routes.resetPassword,
       page: ResetPasswordView.new,
       transitionDuration: transitionDuration,
       binding: PasswordBinding(),
-      transition: Transition.downToUp,
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: _Routes.changePassword,
       page: ChangePasswordView.new,
       transitionDuration: transitionDuration,
       binding: ChangePasswordBinding(),
-      transition: Transition.downToUp,
+      transition: Transition.cupertino,
     ),
     GetPage(
       name: _Routes.editProfile,
