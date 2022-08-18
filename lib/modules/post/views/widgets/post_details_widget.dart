@@ -4,16 +4,16 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
-import 'package:social_media_app/common/cached_network_image.dart';
-import 'package:social_media_app/common/circular_asset_image.dart';
-import 'package:social_media_app/common/circular_network_image.dart';
-import 'package:social_media_app/common/elevated_card.dart';
-import 'package:social_media_app/common/primary_icon_btn.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/cached_network_image.dart';
+import 'package:social_media_app/global_widgets/circular_asset_image.dart';
+import 'package:social_media_app/global_widgets/circular_network_image.dart';
+import 'package:social_media_app/global_widgets/elevated_card.dart';
+import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_like_controller.dart';
@@ -156,7 +156,7 @@ class PostDetailsWidget extends StatelessWidget {
       );
 
   Widget _buildPostBody() {
-    if (post.images!.isNotEmpty) {
+    if (post.images != null && post.images!.isNotEmpty) {
       return GestureDetector(
         onDoubleTap: () {
           Get.find<PostLikeController>().toggleLikePost(post);
@@ -189,7 +189,6 @@ class PostDetailsWidget extends StatelessWidget {
           (img) {
             if (img.mediaType == "video") {
               return NxVideoPlayerWidget(
-                showFullControls: true,
                 url: img.link!.url!,
               );
             }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/common/asset_image.dart';
-import 'package:social_media_app/common/custom_app_bar.dart';
-import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/asset_image.dart';
+import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
 import 'package:social_media_app/modules/profile/controllers/following_list_controller.dart';
 

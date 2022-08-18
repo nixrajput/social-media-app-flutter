@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:social_media_app/common/shimmer_loading.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/global_widgets/shimmer_loading.dart';
 
 class NxNetworkImage extends StatelessWidget {
   const NxNetworkImage({

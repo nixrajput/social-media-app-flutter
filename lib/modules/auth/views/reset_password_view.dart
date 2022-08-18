@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/common/custom_app_bar.dart';
-import 'package:social_media_app/common/primary_filled_btn.dart';
-import 'package:social_media_app/common/primary_text_btn.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/auth/controllers/password_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 

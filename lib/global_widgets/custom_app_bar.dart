@@ -28,7 +28,7 @@ class NxAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: Dimens.screenWidth,
-      color: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
+      color: bgColor ?? Colors.transparent,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,

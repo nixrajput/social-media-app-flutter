@@ -9,12 +9,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
-import 'package:social_media_app/common/asset_image.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/asset_image.dart';
 
 abstract class AppUtils {
   static final storage = GetStorage();
@@ -38,6 +38,42 @@ abstract class AppUtils {
         ),
       ),
       barrierDismissible: false,
+    );
+  }
+
+  /// Show Simple Dialog
+
+  static void showSimpleDialog(Widget child,
+      {bool barrierDismissible = false}) {
+    Get.dialog(
+      MediaQuery.removeViewInsets(
+        context: Get.context!,
+        removeLeft: true,
+        removeTop: true,
+        removeRight: true,
+        removeBottom: true,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: Dimens.screenHeight,
+            maxWidth: Dimens.hundred * 6,
+          ),
+          child: Padding(
+            padding: Dimens.edgeInsets16,
+            child: Align(
+              alignment: Alignment.center,
+              child: Material(
+                type: MaterialType.card,
+                color: Theme.of(Get.context!).scaffoldBackgroundColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(Dimens.eight),
+                ),
+                child: child,
+              ),
+            ),
+          ),
+        ),
+      ),
+      barrierDismissible: barrierDismissible,
     );
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 
 class HelpSettingsView extends StatelessWidget {
   const HelpSettingsView({Key? key}) : super(key: key);

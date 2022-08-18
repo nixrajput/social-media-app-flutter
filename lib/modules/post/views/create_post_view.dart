@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/common/custom_app_bar.dart';
-import 'package:social_media_app/common/file_image.dart';
-import 'package:social_media_app/common/primary_filled_btn.dart';
-import 'package:social_media_app/common/primary_icon_btn.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/file_image.dart';
+import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
+import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/views/widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
@@ -76,7 +76,6 @@ class CreatePostView extends StatelessWidget {
                         AppUtils.isVideoFile(
                                 logic.pickedImageList![itemIndex].path)
                             ? NxVideoPlayerWidget(
-                                showFullControls: true,
                                 url: logic.pickedImageList![itemIndex].path,
                               )
                             : NxFileImage(

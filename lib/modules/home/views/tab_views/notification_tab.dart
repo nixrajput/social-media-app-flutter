@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/common/asset_image.dart';
-import 'package:social_media_app/common/custom_app_bar.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/asset_image.dart';
+import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/notification_widget.dart';
 
@@ -29,7 +29,7 @@ class NotificationTabView extends StatelessWidget {
                   title: StringValues.notifications,
                   showBackBtn: false,
                 ),
-                // _buildNotificationBody(logic),
+                _buildNotificationBody(logic),
               ],
             ),
           ),
@@ -45,7 +45,7 @@ class NotificationTabView extends StatelessWidget {
         child: CircularProgressIndicator(),
       ));
     }
-    if (logic.notifications == null || logic.notifications!.count! <= 0) {
+    if (logic.notifications == null || logic.notifications!.results!.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

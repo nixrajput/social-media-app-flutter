@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/services/theme_controller.dart';
-import 'package:social_media_app/common/custom_app_bar.dart';
-import 'package:social_media_app/common/custom_radio_tile.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_radio_tile.dart';
 
 class ThemeSettingsView extends StatelessWidget {
   const ThemeSettingsView({Key? key}) : super(key: key);

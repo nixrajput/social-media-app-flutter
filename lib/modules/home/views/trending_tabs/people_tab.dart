@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/common/primary_outlined_btn.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
 import 'package:social_media_app/modules/users/controllers/user_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';

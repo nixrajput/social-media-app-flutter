@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/notification.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
-import 'package:social_media_app/common/circular_asset_image.dart';
-import 'package:social_media_app/common/circular_network_image.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/circular_asset_image.dart';
+import 'package:social_media_app/global_widgets/circular_network_image.dart';
 
 class NotificationWidget extends StatelessWidget {
   const NotificationWidget({Key? key, required this.notification})

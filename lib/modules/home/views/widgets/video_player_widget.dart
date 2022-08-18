@@ -4,12 +4,14 @@ import 'package:flutter/services.dart';
 
 class NxVideoPlayerWidget extends StatefulWidget {
   final String? url;
-  final bool showFullControls;
+  final BetterPlayerConfiguration? configuration;
+  final bool? showControls;
 
   const NxVideoPlayerWidget({
     Key? key,
     this.url,
-    required this.showFullControls,
+    this.configuration,
+    this.showControls = true,
   }) : super(key: key);
 
   @override
@@ -18,16 +20,23 @@ class NxVideoPlayerWidget extends StatefulWidget {
 
 class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
   late BetterPlayerController _playerController;
-  bool isPlaying = false;
+  bool showControls = true;
   Duration videoTimePlayed = const Duration(seconds: 0);
 
   @override
   initState() {
     super.initState();
-    isPlaying = widget.showFullControls;
-
+    showControls = widget.showControls!;
     playerControllerShow();
-    _playerController.setVolume(0.0);
+    _playerController.setVolume(0.5);
+    _playerController.addEventsListener((evt) {
+      debugPrint('event: ${evt.betterPlayerEventType}');
+      if (evt.betterPlayerEventType == BetterPlayerEventType.play) {
+        setState(() {
+          showControls = false;
+        });
+      }
+    });
   }
 
   playerControllerShow() {
@@ -39,26 +48,30 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
     );
 
     _playerController = BetterPlayerController(
-      BetterPlayerConfiguration(
-        autoPlay: false,
-        fit: BoxFit.contain,
-        aspectRatio: 1 / 1,
-        autoDetectFullscreenAspectRatio: true,
-        autoDetectFullscreenDeviceOrientation: true,
-        deviceOrientationsOnFullScreen: [
-          DeviceOrientation.landscapeLeft,
-          DeviceOrientation.landscapeRight,
-          DeviceOrientation.portraitUp,
-          DeviceOrientation.portraitDown,
-        ],
-        controlsConfiguration: isPlaying
-            ? const BetterPlayerControlsConfiguration()
-            : const BetterPlayerControlsConfiguration(
-                enableFullscreen: true,
-                showControlsOnInitialize: false,
-                showControls: false,
-              ),
-      ),
+      widget.configuration ??
+          BetterPlayerConfiguration(
+            autoPlay: false,
+            fit: BoxFit.contain,
+            aspectRatio: 1 / 1,
+            autoDetectFullscreenAspectRatio: true,
+            autoDetectFullscreenDeviceOrientation: true,
+            deviceOrientationsOnFullScreen: [
+              DeviceOrientation.landscapeLeft,
+              DeviceOrientation.landscapeRight,
+              DeviceOrientation.portraitUp,
+              DeviceOrientation.portraitDown,
+            ],
+            controlsConfiguration: BetterPlayerControlsConfiguration(
+              enableFullscreen: true,
+              enablePip: true,
+              pipMenuIcon: Icons.picture_in_picture,
+              showControlsOnInitialize: false,
+              enablePlayPause: false,
+              enableSkips: false,
+              //controlsHideTime: const Duration(milliseconds: 100),
+              showControls: showControls,
+            ),
+          ),
       betterPlayerDataSource: betterPlayerDataSource,
     );
   }
@@ -69,8 +82,15 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BetterPlayer(
-      controller: _playerController,
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          showControls = !showControls;
+        });
+      },
+      child: BetterPlayer(
+        controller: _playerController,
+      ),
     );
   }
 }

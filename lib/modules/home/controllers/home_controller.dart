@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/common/keep_alive_page.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/global_widgets/keep_alive_page.dart';
 import 'package:social_media_app/modules/home/views/tab_views/home_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/notification_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/profile_tab.dart';

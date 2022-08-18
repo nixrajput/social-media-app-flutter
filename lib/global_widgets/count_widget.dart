@@ -12,10 +12,14 @@ class NxCountWidget extends StatelessWidget {
     this.padding,
     this.borderRadius,
     this.onTap,
+    this.titleStyle,
+    this.valueStyle,
   }) : super(key: key);
 
   final String title;
+  final TextStyle? titleStyle;
   final String value;
+  final TextStyle? valueStyle;
   final Color? bgColor;
   final EdgeInsets? padding;
   final double? borderRadius;
@@ -38,11 +42,15 @@ class NxCountWidget extends StatelessWidget {
           children: [
             Text(
               value,
-              style: AppStyles.style16Bold,
+              style: valueStyle ?? AppStyles.style16Bold,
             ),
+            Dimens.boxHeight8,
             Text(
               title,
-              style: const TextStyle(color: ColorValues.grayColor),
+              style: titleStyle ??
+                  AppStyles.style14Normal.copyWith(
+                    color: ColorValues.grayColor,
+                  ),
             ),
           ],
         ),
