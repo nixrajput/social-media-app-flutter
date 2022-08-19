@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math' show Random;
 
 import 'package:connectivity/connectivity.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/apis/models/responses/login_response.dart';
+import 'package:social_media_app/apis/models/entities/location_info.dart';
+import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/permissions.dart';
 import 'package:social_media_app/helpers/utils.dart';
 
 class AuthService extends GetxService {
@@ -24,7 +24,7 @@ class AuthService extends GetxService {
   String _token = '';
   int _expiresAt = 0;
   String _deviceId = '';
-  LoginResponse _loginData = const LoginResponse();
+  AuthResponse _loginData = const AuthResponse();
 
   String get token => _token;
 
@@ -32,9 +32,9 @@ class AuthService extends GetxService {
 
   int get expiresAt => _expiresAt;
 
-  LoginResponse get loginData => _loginData;
+  AuthResponse get loginData => _loginData;
 
-  set setLoginData(LoginResponse value) => _loginData = value;
+  set setLoginData(AuthResponse value) => _loginData = value;
 
   set setToken(String value) => _token = value;
 
@@ -47,6 +47,7 @@ class AuthService extends GetxService {
       _expiresAt = decodedData[StringValues.expiresAt];
       setToken = decodedData[StringValues.token];
       token = decodedData[StringValues.token];
+      await getDeviceId();
     }
     return token;
   }
@@ -58,25 +59,25 @@ class AuthService extends GetxService {
     AppUtils.printLog(StringValues.logoutSuccessful);
   }
 
-  Future<dynamic> getCurrentLocation() async {
-    var hasPerm = await AppPermissions.checkLocationPermission();
-    if (!hasPerm) {
-      return;
-    }
-    var position = await Geolocator.getCurrentPosition();
-    var loc =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    var locationInfo = <String, dynamic>{
-      "street": loc.first.street,
-      "locality": loc.first.locality,
-      "city": loc.first.subAdministrativeArea,
-      "state": loc.first.administrativeArea,
-      "country": loc.first.country,
-      "countryCode": loc.first.isoCountryCode,
-      "pincode": loc.first.postalCode
-    };
-    AppUtils.printLog("Location Info: $locationInfo");
-    return locationInfo;
+  Future<void> getDeviceId() async {
+    final devData = GetStorage();
+
+    const chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    var rnd = Random();
+
+    var devId = String.fromCharCodes(
+      Iterable.generate(
+        16,
+        (_) => chars.codeUnitAt(rnd.nextInt(chars.length)),
+      ),
+    );
+
+    await devData.writeIfNull('deviceId', devId);
+
+    _deviceId = devData.read('deviceId');
+
+    AppUtils.printLog("deviceId: $_deviceId");
   }
 
   Future<dynamic> getDeviceInfo() async {
@@ -84,27 +85,20 @@ class AuthService extends GetxService {
     Map<String, dynamic> deviceInfo;
     if (GetPlatform.isIOS) {
       var iosInfo = await deviceInfoPlugin.iosInfo;
-      var deviceBrand = iosInfo.utsname.machine;
-      var deviceModel = iosInfo.model;
+      var deviceModel = iosInfo.utsname.machine;
       var deviceSystemVersion = iosInfo.utsname.release;
-      var deviceId = iosInfo.identifierForVendor;
 
       deviceInfo = <String, dynamic>{
-        "deviceId": deviceId,
         "model": deviceModel,
-        "brand": deviceBrand,
         "osVersion": deviceSystemVersion
       };
     } else {
       var androidInfo = await deviceInfoPlugin.androidInfo;
-      var deviceBrand = androidInfo.brand;
       var deviceModel = androidInfo.model;
       var deviceSystemVersion = androidInfo.version.release;
 
       deviceInfo = <String, dynamic>{
-        "deviceId": deviceId,
         "model": deviceModel,
-        "brand": deviceBrand,
         "osVersion": deviceSystemVersion
       };
     }
@@ -112,12 +106,44 @@ class AuthService extends GetxService {
     return deviceInfo;
   }
 
+  Future<LocationInfo> getLocationInfo() async {
+    var locationInfo = const LocationInfo();
+    try {
+      final response = await _apiProvider.getLocationInfo();
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        locationInfo = LocationInfo.fromJson(decodedData);
+      } else {
+        AppUtils.printLog(StringValues.message);
+      }
+    } on SocketException {
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+
+    return locationInfo;
+  }
+
   Future<void> saveLoginInfo() async {
     var deviceInfo = await getDeviceInfo();
-    _deviceId = deviceInfo['deviceId'];
-    var locationInfo = await getCurrentLocation();
+    var locationInfo = await getLocationInfo();
 
     final body = {
+      "deviceId": _deviceId,
       'deviceInfo': deviceInfo,
       'locationInfo': locationInfo,
       'lastActive': DateTime.now().toIso8601String(),

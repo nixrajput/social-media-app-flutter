@@ -9,7 +9,6 @@ import 'package:social_media_app/global_widgets/circular_asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_network_image.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
-import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -30,9 +29,11 @@ class EditProfileView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const NxAppBar(
+                NxAppBar(
                   title: StringValues.editProfile,
+                  padding: Dimens.edgeInsets8_16,
                 ),
+                Dimens.boxHeight24,
                 _buildEditProfileBody(),
               ],
             ),
@@ -47,152 +48,130 @@ class EditProfileView extends StatelessWidget {
         return Expanded(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            child: NxElevatedCard(
-              child: Padding(
-                padding: Dimens.edgeInsets8,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Dimens.boxHeight8,
-                    GetBuilder<EditProfilePictureController>(
-                      builder: (con) => GestureDetector(
-                        onTap: con.chooseImage,
-                        child: _buildProfileImage(logic),
+            child: Padding(
+              padding: Dimens.edgeInsets0_16,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GetBuilder<EditProfilePictureController>(
+                    builder: (con) => GestureDetector(
+                      onTap: con.chooseImage,
+                      child: _buildProfileImage(logic),
+                    ),
+                  ),
+                  Dimens.boxHeight16,
+                  NxListTile(
+                    leading: const Icon(CupertinoIcons.person),
+                    title: Text(
+                      StringValues.name,
+                      style: AppStyles.style12Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
                       ),
                     ),
-                    Dimens.boxHeight16,
-                    Dimens.dividerWithHeight,
-                    NxListTile(
-                      leading: const Icon(CupertinoIcons.person),
-                      title: Text(
-                        StringValues.name,
-                        style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
-                        ),
-                      ),
-                      subtitle: Text(
-                        '${logic.profileData.user!.fname} ${logic.profileData.user!.lname}',
-                        style: AppStyles.style16Normal,
-                      ),
-                      onTap: RouteManagement.goToEditNameView,
+                    subtitle: Text(
+                      '${logic.profileData.user!.fname} ${logic.profileData.user!.lname}',
+                      style: AppStyles.style16Normal,
                     ),
-                    Dimens.dividerWithHeight,
-                    NxListTile(
-                      leading: const Icon(CupertinoIcons.at),
-                      title: Text(
-                        StringValues.username,
-                        style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
-                        ),
-                      ),
-                      subtitle: Text(
-                        logic.profileData.user!.uname,
-                        style: AppStyles.style16Normal,
-                      ),
-                      onTap: RouteManagement.goToEditUsernameView,
-                    ),
-                    Dimens.dividerWithHeight,
-                    NxListTile(
-                      leading: const Icon(CupertinoIcons.mail),
-                      title: Text(
-                        StringValues.email,
-                        style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
-                        ),
-                      ),
-                      subtitle: Text(
-                        logic.profileData.user!.email,
-                        style: AppStyles.style16Normal,
+                    onTap: RouteManagement.goToEditNameView,
+                  ),
+                  Dimens.dividerWithHeight,
+                  NxListTile(
+                    leading: const Icon(CupertinoIcons.at),
+                    title: Text(
+                      StringValues.username,
+                      style: AppStyles.style12Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
                       ),
                     ),
-                    Dimens.dividerWithHeight,
-                    NxListTile(
-                      leading: const Icon(CupertinoIcons.doc_text),
-                      title: Text(
-                        StringValues.about,
-                        style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
-                        ),
-                      ),
-                      subtitle: Text(
-                        logic.profileData.user!.about ??
-                            StringValues.writeSomethingAboutYou,
-                        style: AppStyles.style16Normal.copyWith(
-                          color: logic.profileData.user!.about == null
-                              ? Theme.of(Get.context!)
-                                  .textTheme
-                                  .subtitle1
-                                  ?.color
-                              : Theme.of(Get.context!)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.color,
-                        ),
-                        maxLines: 3,
-                      ),
-                      onTap: RouteManagement.goToEditAboutView,
+                    subtitle: Text(
+                      logic.profileData.user!.uname,
+                      style: AppStyles.style16Normal,
                     ),
-                    Dimens.dividerWithHeight,
-                    NxListTile(
-                      leading: const Icon(Icons.cake_outlined),
-                      title: Text(
-                        StringValues.birthDate,
-                        style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
-                        ),
+                    onTap: RouteManagement.goToEditUsernameView,
+                  ),
+                  Dimens.dividerWithHeight,
+                  NxListTile(
+                    leading: const Icon(CupertinoIcons.mail),
+                    title: Text(
+                      StringValues.email,
+                      style: AppStyles.style12Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
                       ),
-                      subtitle: Text(
-                        logic.profileData.user!.dob ?? StringValues.dobFormat,
-                        style: AppStyles.style16Normal.copyWith(
-                          color: logic.profileData.user!.dob == null
-                              ? Theme.of(Get.context!)
-                                  .textTheme
-                                  .subtitle1
-                                  ?.color
-                              : Theme.of(Get.context!)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.color,
-                        ),
-                      ),
-                      onTap: RouteManagement.goToEditDOBView,
                     ),
-                    Dimens.dividerWithHeight,
-                    NxListTile(
-                      leading: const Icon(Icons.male_outlined),
-                      title: Text(
-                        StringValues.gender,
-                        style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
-                        ),
-                      ),
-                      subtitle: Text(
-                        logic.profileData.user!.gender ?? StringValues.select,
-                        style: AppStyles.style16Normal.copyWith(
-                          color: logic.profileData.user!.gender == null
-                              ? Theme.of(Get.context!)
-                                  .textTheme
-                                  .subtitle1
-                                  ?.color
-                              : Theme.of(Get.context!)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.color,
-                        ),
-                      ),
-                      onTap: RouteManagement.goToEditGenderView,
+                    subtitle: Text(
+                      logic.profileData.user!.email,
+                      style: AppStyles.style16Normal,
                     ),
-                    Dimens.dividerWithHeight,
-                    Dimens.boxHeight16,
-                  ],
-                ),
+                  ),
+                  Dimens.dividerWithHeight,
+                  NxListTile(
+                    leading: const Icon(CupertinoIcons.doc_text),
+                    title: Text(
+                      StringValues.about,
+                      style: AppStyles.style12Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                    ),
+                    subtitle: Text(
+                      logic.profileData.user!.about ??
+                          StringValues.writeSomethingAboutYou,
+                      style: AppStyles.style16Normal.copyWith(
+                        color: logic.profileData.user!.about == null
+                            ? Theme.of(Get.context!).textTheme.subtitle1?.color
+                            : Theme.of(Get.context!).textTheme.bodyText1?.color,
+                      ),
+                      maxLines: 3,
+                    ),
+                    onTap: RouteManagement.goToEditAboutView,
+                  ),
+                  Dimens.dividerWithHeight,
+                  NxListTile(
+                    leading: const Icon(Icons.cake_outlined),
+                    title: Text(
+                      StringValues.birthDate,
+                      style: AppStyles.style12Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                    ),
+                    subtitle: Text(
+                      logic.profileData.user!.dob ?? StringValues.dobFormat,
+                      style: AppStyles.style16Normal.copyWith(
+                        color: logic.profileData.user!.dob == null
+                            ? Theme.of(Get.context!).textTheme.subtitle1?.color
+                            : Theme.of(Get.context!).textTheme.bodyText1?.color,
+                      ),
+                    ),
+                    onTap: RouteManagement.goToEditDOBView,
+                  ),
+                  Dimens.dividerWithHeight,
+                  NxListTile(
+                    leading: const Icon(Icons.male_outlined),
+                    title: Text(
+                      StringValues.gender,
+                      style: AppStyles.style12Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                    ),
+                    subtitle: Text(
+                      logic.profileData.user!.gender ?? StringValues.select,
+                      style: AppStyles.style16Normal.copyWith(
+                        color: logic.profileData.user!.gender == null
+                            ? Theme.of(Get.context!).textTheme.subtitle1?.color
+                            : Theme.of(Get.context!).textTheme.bodyText1?.color,
+                      ),
+                    ),
+                    onTap: RouteManagement.goToEditGenderView,
+                  ),
+                  Dimens.dividerWithHeight,
+                  Dimens.boxHeight16,
+                ],
               ),
             ),
           ),
@@ -205,12 +184,12 @@ class EditProfileView extends StatelessWidget {
         logic.profileData.user?.avatar?.url != null) {
       return NxCircleNetworkImage(
         imageUrl: logic.profileData.user!.avatar!.url!,
-        radius: Dimens.sixtyFour,
+        radius: Dimens.eighty,
       );
     }
     return NxCircleAssetImage(
       imgAsset: AssetValues.avatar,
-      radius: Dimens.sixtyFour,
+      radius: Dimens.eighty,
     );
   }
 }

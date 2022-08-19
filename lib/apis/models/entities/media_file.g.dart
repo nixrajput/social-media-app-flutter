@@ -1,17 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'media.dart';
+part of 'media_file.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Media _$MediaFromJson(Map<String, dynamic> json) => Media(
+MediaFile _$MediaFileFromJson(Map<String, dynamic> json) => MediaFile(
       publicId: json['public_id'] as String?,
       url: json['url'] as String?,
     );
 
-Map<String, dynamic> _$MediaToJson(Media instance) => <String, dynamic>{
+Map<String, dynamic> _$MediaFileToJson(MediaFile instance) => <String, dynamic>{
       'public_id': instance.publicId,
       'url': instance.url,
     };

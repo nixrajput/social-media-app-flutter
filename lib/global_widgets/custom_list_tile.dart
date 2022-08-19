@@ -11,11 +11,13 @@ class NxListTile extends StatelessWidget {
     this.bgColor,
     this.onTap,
     this.onLongPressed,
+    this.trailing,
   }) : super(key: key);
 
   final Widget? leading;
   final Widget? title;
   final Widget? subtitle;
+  final Widget? trailing;
   final EdgeInsets? padding;
   final Color? bgColor;
   final VoidCallback? onTap;
@@ -28,8 +30,8 @@ class NxListTile extends StatelessWidget {
       onLongPress: onLongPressed,
       child: Container(
         color: bgColor ?? Colors.transparent,
-        padding: padding ?? Dimens.edgeInsets0,
-        width: double.infinity,
+        padding: padding ?? Dimens.edgeInsets8_0,
+        width: Dimens.screenWidth,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
         ),
@@ -37,20 +39,29 @@ class NxListTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (leading != null) leading!,
-            if (title != null || subtitle != null) Dimens.boxWidth8,
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (title != null) title!,
-                  if (subtitle != null) Dimens.boxHeight4,
-                  if (subtitle != null) subtitle!
+                  if (leading != null) leading!,
+                  if (title != null || subtitle != null) Dimens.boxWidth8,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (title != null) title!,
+                        if (subtitle != null) Dimens.boxHeight2,
+                        if (subtitle != null) subtitle!
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            )
+            ),
+            if (trailing != null) const Spacer(),
+            if (trailing != null) trailing!,
           ],
         ),
       ),

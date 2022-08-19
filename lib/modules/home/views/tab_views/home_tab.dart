@@ -42,14 +42,17 @@ class HomeTabView extends StatelessWidget {
                   ],
                 ),
                 actions: GetBuilder<CreatePostController>(
-                    builder: (con) => InkWell(
-                          onTap: con.selectPostImages,
-                          child: Icon(
-                            CupertinoIcons.add_circled,
-                            size: Dimens.twentyEight,
-                            color: ColorValues.primaryColor,
-                          ),
-                        )),
+                  builder: (con) => InkWell(
+                    onTap: con.selectPostImages,
+                    child: Icon(
+                      CupertinoIcons.add_circled,
+                      size: Dimens.twentyEight,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? ColorValues.primaryColor
+                          : ColorValues.whiteColor,
+                    ),
+                  ),
+                ),
               ),
               _buildBody(),
             ],

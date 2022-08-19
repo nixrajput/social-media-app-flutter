@@ -17,7 +17,7 @@ class FollowersListController extends GetxController {
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final _followersList = FollowerListResponse().obs;
+  final _followersList = const FollowerListResponse().obs;
   final _isLoading = false.obs;
 
   bool get isLoading => _isLoading.value;

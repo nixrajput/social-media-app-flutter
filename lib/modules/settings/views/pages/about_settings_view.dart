@@ -16,10 +16,12 @@ class AboutSettingsView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               NxAppBar(
                 title: StringValues.about,
+                padding: Dimens.edgeInsets8_16,
               ),
+              Dimens.boxHeight16,
               // _buildBody(),
             ],
           ),

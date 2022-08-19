@@ -19,13 +19,13 @@ class TrendingTabView extends StatelessWidget {
           height: Dimens.screenHeight,
           child: GetBuilder<TrendingTabController>(
             builder: (tab) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: Dimens.edgeInsets8,
-                    child: Column(
+              return Padding(
+                padding: Dimens.edgeInsets8_16,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
@@ -68,14 +68,14 @@ class TrendingTabView extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: TabBarView(
-                      controller: tab.controller,
-                      children: tab.tabViews,
+                    Expanded(
+                      child: TabBarView(
+                        controller: tab.controller,
+                        children: tab.tabViews,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           ),

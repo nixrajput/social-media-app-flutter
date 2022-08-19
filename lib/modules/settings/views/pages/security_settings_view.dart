@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -22,9 +21,11 @@ class SecuritySettingsView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const NxAppBar(
+              NxAppBar(
                 title: StringValues.security,
+                padding: Dimens.edgeInsets8_16,
               ),
+              Dimens.boxHeight16,
               _buildBody(),
             ],
           ),
@@ -35,17 +36,17 @@ class SecuritySettingsView extends StatelessWidget {
 
   Widget _buildBody() {
     return Expanded(
-      child: Padding(
-        padding: Dimens.edgeInsets8,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: Dimens.edgeInsets0_16,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Dimens.boxHeight8,
               NxListTile(
                 leading: Icon(
                   Icons.key_outlined,
+                  size: Dimens.twentyFour,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
@@ -54,10 +55,10 @@ class SecuritySettingsView extends StatelessWidget {
                 ),
                 onTap: RouteManagement.goToChangePasswordView,
               ),
-              Dimens.boxHeight20,
               NxListTile(
                 leading: Icon(
-                  CupertinoIcons.location,
+                  Icons.location_on_outlined,
+                  size: Dimens.twentyFour,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
@@ -66,10 +67,10 @@ class SecuritySettingsView extends StatelessWidget {
                 ),
                 onTap: RouteManagement.goToLoginActivityView,
               ),
-              Dimens.boxHeight20,
               NxListTile(
                 leading: Icon(
                   Icons.security_outlined,
+                  size: Dimens.twentyFour,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
@@ -77,7 +78,7 @@ class SecuritySettingsView extends StatelessWidget {
                   style: AppStyles.style16Normal,
                 ),
               ),
-              Dimens.boxHeight20,
+              Dimens.boxHeight16,
             ],
           ),
         ),

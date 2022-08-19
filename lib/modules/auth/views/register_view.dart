@@ -56,7 +56,7 @@ class RegisterView extends StatelessWidget {
                     Dimens.boxHeight32,
                     Text(
                       StringValues.registerWelcome,
-                      style: AppStyles.style28Bold.copyWith(
+                      style: AppStyles.style32Bold.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -242,7 +242,7 @@ class RegisterView extends StatelessWidget {
                     Dimens.boxHeight32,
                     NxFilledButton(
                       onTap: () => logic.register(),
-                      label: StringValues.register,
+                      label: StringValues.register.toUpperCase(),
                     ),
                     Dimens.boxHeight48,
                     Row(

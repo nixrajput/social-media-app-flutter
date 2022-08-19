@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/apis/models/responses/login_response.dart';
+import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -77,7 +77,7 @@ class LoginController extends GetxController {
       AppUtils.printLog(decodedData);
 
       if (response.statusCode == 200) {
-        _auth.setLoginData = LoginResponse.fromJson(decodedData);
+        _auth.setLoginData = AuthResponse.fromJson(decodedData);
 
         var token = _auth.loginData.token!;
         var expiresAt = _auth.loginData.expiresAt!;
@@ -87,8 +87,8 @@ class LoginController extends GetxController {
         _auth.setToken = token;
         _auth.setExpiresAt = expiresAt;
         _auth.autoLogout();
-        await _profile.fetchProfileDetails().then((_) {
-          // await _auth.saveLoginInfo();
+        await _profile.fetchProfileDetails().then((_) async {
+          await _auth.saveLoginInfo();
 
           _clearLoginTextControllers();
 

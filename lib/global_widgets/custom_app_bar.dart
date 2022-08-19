@@ -45,19 +45,19 @@ class NxAppBar extends StatelessWidget {
                     onTap: RouteManagement.goToBack,
                     child: Icon(
                       CupertinoIcons.arrow_left,
-                      color: Theme.of(context).textTheme.subtitle1!.color,
+                      color: Theme.of(context).textTheme.bodyText1!.color,
                       size: Dimens.twentyFour,
                     ),
                   ),
                 if (showBackBtn == true) Dimens.boxWidth16,
                 if (leading != null) leading!,
-                if (leading != null) Dimens.boxWidth16,
+                if (leading != null && title != null) Dimens.boxWidth16,
                 if (title != null && title!.isNotEmpty)
                   Text(
                     title!,
                     style: titleStyle ??
                         AppStyles.style20Bold.copyWith(
-                          color: Theme.of(context).textTheme.subtitle1!.color,
+                          color: Theme.of(context).textTheme.bodyText1!.color,
                         ),
                   )
               ],

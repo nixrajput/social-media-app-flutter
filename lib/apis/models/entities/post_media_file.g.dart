@@ -11,7 +11,7 @@ PostMediaFile _$PostMediaFileFromJson(Map<String, dynamic> json) =>
       id: json['_id'] as String?,
       link: json['link'] == null
           ? null
-          : Media.fromJson(json['link'] as Map<String, dynamic>),
+          : MediaFile.fromJson(json['link'] as Map<String, dynamic>),
       mediaType: json['mediaType'] as String?,
     );
 

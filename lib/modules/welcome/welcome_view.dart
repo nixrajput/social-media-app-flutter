@@ -46,20 +46,20 @@ class WelcomeView extends StatelessWidget {
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    Dimens.boxHeight48,
+                    Dimens.boxHeight32,
                     NxAssetImage(
                       imgAsset: AssetValues.welcome,
-                      fit: BoxFit.cover,
-                      width: Dimens.screenWidth,
+                      fit: BoxFit.contain,
+                      height: Dimens.screenWidth * 0.75,
                     ),
                     Dimens.boxHeight48,
-                    const NxFilledButton(
-                      label: StringValues.login,
+                    NxFilledButton(
+                      label: StringValues.login.toUpperCase(),
                       onTap: RouteManagement.goToLoginView,
                     ),
                     Dimens.boxHeight20,
-                    const NxOutlinedButton(
-                      label: StringValues.register,
+                    NxOutlinedButton(
+                      label: StringValues.register.toUpperCase(),
                       onTap: RouteManagement.goToRegisterView,
                     ),
                     Dimens.boxHeight60,

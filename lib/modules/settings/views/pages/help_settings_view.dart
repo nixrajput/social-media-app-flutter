@@ -17,9 +17,11 @@ class HelpSettingsView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const NxAppBar(
+              NxAppBar(
                 title: StringValues.help,
+                padding: Dimens.edgeInsets8_16,
               ),
+              Dimens.boxHeight16,
               // _buildBody(),
             ],
           ),

@@ -17,7 +17,7 @@ class FollowingListController extends GetxController {
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final _followingList = FollowerListResponse().obs;
+  final _followingList = const FollowerListResponse().obs;
   final _isLoading = false.obs;
 
   bool get isLoading => _isLoading.value;
@@ -28,7 +28,7 @@ class FollowingListController extends GetxController {
     _followingList.value = value;
   }
 
-  Future<void> _getFollowersList() async {
+  Future<void> _getFollowingList() async {
     var userId = Get.arguments;
 
     if (userId == null) {
@@ -82,13 +82,13 @@ class FollowingListController extends GetxController {
     }
   }
 
-  Future<void> getFollowersList() async {
-    await _getFollowersList();
+  Future<void> getFollowingList() async {
+    await _getFollowingList();
   }
 
   @override
   void onInit() async {
-    await _getFollowersList();
+    await _getFollowingList();
     super.onInit();
   }
 }

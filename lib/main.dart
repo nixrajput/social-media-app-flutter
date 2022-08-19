@@ -18,7 +18,6 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await initServices();
     runApp(const MyApp());
-    //await Get.find<AuthService>().saveLoginInfo();
   } catch (err) {
     AppUtils.printLog(err);
   }

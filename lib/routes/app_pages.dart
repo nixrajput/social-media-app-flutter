@@ -21,7 +21,6 @@ import 'package:social_media_app/modules/profile/bindings/following_list_binding
 import 'package:social_media_app/modules/profile/bindings/gender_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/name_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/username_binding.dart';
-import 'package:social_media_app/modules/profile/views/change_password_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_about_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_dob_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_gender_view.dart';
@@ -37,6 +36,7 @@ import 'package:social_media_app/modules/settings/views/pages/about_settings_vie
 import 'package:social_media_app/modules/settings/views/pages/account_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/help_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/security/change_password_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/security/login_activity_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/security_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/theme_settings_view.dart';
@@ -49,34 +49,35 @@ part 'app_routes.dart';
 
 abstract class AppPages {
   static var transitionDuration = const Duration(milliseconds: 500);
+  static var defaultTransition = Transition.circularReveal;
 
   static final pages = [
     GetPage(
       name: _Routes.welcome,
       page: WelcomeView.new,
       transitionDuration: transitionDuration,
-      transition: Transition.cupertino,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.login,
       page: LoginView.new,
       transitionDuration: transitionDuration,
       binding: LoginBinding(),
-      transition: Transition.cupertino,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.register,
       page: RegisterView.new,
       transitionDuration: transitionDuration,
       binding: RegisterBinding(),
-      transition: Transition.cupertino,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.home,
       page: HomeView.new,
       transitionDuration: transitionDuration,
       binding: HomeBinding(),
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
 
     GetPage(
@@ -84,98 +85,98 @@ abstract class AppPages {
       page: ForgotPasswordView.new,
       transitionDuration: transitionDuration,
       binding: PasswordBinding(),
-      transition: Transition.cupertino,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.resetPassword,
       page: ResetPasswordView.new,
       transitionDuration: transitionDuration,
       binding: PasswordBinding(),
-      transition: Transition.cupertino,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.changePassword,
       page: ChangePasswordView.new,
       transitionDuration: transitionDuration,
       binding: ChangePasswordBinding(),
-      transition: Transition.cupertino,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.editProfile,
       page: EditProfileView.new,
       transitionDuration: transitionDuration,
       binding: EditProfileBinding(),
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.editName,
       page: EditNameView.new,
       transitionDuration: transitionDuration,
       binding: NameBinding(),
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.editUsername,
       page: EditUsernameView.new,
       transitionDuration: transitionDuration,
       binding: UsernameBinding(),
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.editAbout,
       page: EditAboutView.new,
       transitionDuration: transitionDuration,
       binding: AboutBinding(),
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.editDob,
       page: EditDOBView.new,
       transitionDuration: transitionDuration,
       binding: DOBBinding(),
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.editGender,
       page: EditGenderView.new,
       transitionDuration: transitionDuration,
       binding: GenderBinding(),
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.createPost,
       page: CreatePostView.new,
       transitionDuration: transitionDuration,
       binding: CreatePostBinding(),
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.followers,
       page: FollowersListView.new,
       binding: FollowersBinding(),
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.following,
       page: FollowingListView.new,
       binding: FollowingBinding(),
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: "${_Routes.userProfile}/:userId",
       page: UserProfileView.new,
       binding: UserProfileBinding(),
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.postDetails,
       page: PostDetailsView.new,
       binding: PostDetailsBinding(),
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
 
     //  SETTINGS PAGES
@@ -185,45 +186,45 @@ abstract class AppPages {
       page: SettingsView.new,
       binding: SettingBinding(),
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.accountSettings,
       page: AccountSettingsView.new,
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.securitySettings,
       page: SecuritySettingsView.new,
       binding: SecuritySettingBinding(),
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.privacySettings,
       page: PrivacySettingsView.new,
       binding: PrivacySettingBinding(),
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.helpSettings,
       page: HelpSettingsView.new,
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.aboutSettings,
       page: AboutSettingsView.new,
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
     GetPage(
       name: _Routes.themeSettings,
       page: ThemeSettingsView.new,
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
 
     //  SECURITY SETTINGS
@@ -232,7 +233,7 @@ abstract class AppPages {
       page: LoginActivityView.new,
       binding: SecuritySettingBinding(),
       transitionDuration: transitionDuration,
-      transition: Transition.downToUp,
+      transition: defaultTransition,
     ),
   ];
 }

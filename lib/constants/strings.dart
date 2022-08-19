@@ -21,6 +21,7 @@ abstract class StringValues {
   static const confirmPassword = 'Confirm Password';
   static const newPassword = 'New Password';
   static const oldPassword = 'Old Password';
+  static const currentPassword = "Current Password";
   static const resetYourPassword = 'Reset your password';
   static const forgotYourPassword = 'Forgot your password?';
   static const enterEmailForOtp =
@@ -97,12 +98,16 @@ abstract class StringValues {
   static const trending = 'Trending';
   static const refresh = 'Refresh';
   static const followUserLine =
-      'Do follow some users to see their latest posts.';
+      'Do follow some users to see their latest posts';
   static const noPosts = 'No posts to show.';
   static const writeSomethingAboutYou = 'Write something about you...';
   static const dobFormat = 'dd mmm, yyyy';
   static const select = 'Select';
-  static const noData = 'No data to show.';
+  static const noData = 'No data to show at the moment';
+  static const noFollowing = "You are not following any users at the moment.";
+  static const noFollower =
+      "You are not being followed by any users at the moment.";
+  static const nothingToShow = "Nothing to show at the moment";
   static const internetConnError =
       'Internet connection is poor or unavailable.';
   static const connTimedOut = 'Connection timed out.';
@@ -138,6 +143,7 @@ abstract class StringValues {
   static const private = 'private';
   static const display = 'Display';
   static const account = 'Account';
+  static const accountPrivacy = 'Account Privacy';
   static const security = 'Security';
   static const privacy = 'Privacy';
   static const addComment = 'Add a comment';
@@ -152,5 +158,5 @@ abstract class StringValues {
   static const status = "status";
   static const comments = "Comments";
   static const twoFaAuth = "Two-factor authentication";
-  static const noNotifications = "No notifications yet.";
+  static const noNotifications = "No notifications at the moment.";
 }

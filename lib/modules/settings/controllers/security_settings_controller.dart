@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/apis/models/responses/login_info_response.dart';
+import 'package:social_media_app/apis/models/responses/device_info_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -17,15 +17,15 @@ class SecuritySettingsController extends GetxController {
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final _loginInfo = LoginInfoResponse().obs;
+  final _deviceInfo = const DeviceInfoResponse().obs;
   final _isLoading = false.obs;
 
   bool get isLoading => _isLoading.value;
 
-  LoginInfoResponse? get loginInfo => _loginInfo.value;
+  DeviceInfoResponse? get deviceInfo => _deviceInfo.value;
 
-  set setLoginInfoData(LoginInfoResponse value) {
-    _loginInfo.value = value;
+  set setDeviceInfoData(DeviceInfoResponse value) {
+    _deviceInfo.value = value;
   }
 
   Future<void> _getLoginInfo() async {
@@ -39,7 +39,7 @@ class SecuritySettingsController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        setLoginInfoData = LoginInfoResponse.fromJson(decodedData);
+        setDeviceInfoData = DeviceInfoResponse.fromJson(decodedData);
         _isLoading.value = false;
         update();
       } else {

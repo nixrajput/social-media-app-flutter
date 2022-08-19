@@ -42,21 +42,23 @@ class PeopleTab extends StatelessWidget {
           );
         }
         return Padding(
-          padding: Dimens.edgeInsets8,
+          padding: EdgeInsets.only(
+            top: Dimens.eight,
+          ),
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: logic.userList!.results!
-                    .map(
-                      (user) => UserWidget(
-                        onTap: () =>
-                            RouteManagement.goToUserProfileView(user.id),
-                        user: user,
-                        bottomMargin: Dimens.eight,
-                      ),
-                    )
-                    .toList()),
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: logic.userList!.results!
+                  .map(
+                    (user) => UserWidget(
+                      onTap: () => RouteManagement.goToUserProfileView(user.id),
+                      user: user,
+                      bottomMargin: Dimens.twelve,
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
         );
       },

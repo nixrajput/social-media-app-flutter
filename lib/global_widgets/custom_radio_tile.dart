@@ -39,10 +39,10 @@ class NxRadioTile extends StatelessWidget {
           children: [
             Text(
               title,
-              style: titleStyle ?? AppStyles.style18Normal,
+              style: titleStyle ?? AppStyles.style16Normal,
             ),
             Transform.scale(
-              scale: 1.5,
+              scale: 1.25,
               child: Radio(
                 value: value,
                 groupValue: groupValue,

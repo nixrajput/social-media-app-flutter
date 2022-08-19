@@ -1,7 +1,6 @@
 abstract class AppUrls {
   // Base URL
-  static const String baseUrl2 =
-      'https://nixlab-social-api.herokuapp.com/api/v1';
+  static const String locationUrl = 'http://ip-api.com/json';
   static const String baseUrl = 'https://social-api.nixlab.co.in/api/v1';
 
 //  Endpoints

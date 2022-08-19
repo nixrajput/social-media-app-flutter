@@ -1,18 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'media.g.dart';
+part 'media_file.g.dart';
 
 @JsonSerializable()
-class Media extends Equatable {
-  const Media({
+class MediaFile extends Equatable {
+  const MediaFile({
     this.publicId,
     this.url,
   });
 
-  factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);
+  factory MediaFile.fromJson(Map<String, dynamic> json) =>
+      _$MediaFileFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MediaToJson(this);
+  Map<String, dynamic> toJson() => _$MediaFileToJson(this);
 
   @JsonKey(name: 'public_id')
   final String? publicId;

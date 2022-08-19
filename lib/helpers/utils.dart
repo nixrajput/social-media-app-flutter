@@ -17,8 +17,6 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
 
 abstract class AppUtils {
-  static final storage = GetStorage();
-
   static void showLoadingDialog() {
     closeDialog();
     Get.dialog<void>(
@@ -29,10 +27,25 @@ abstract class AppUtils {
           body: Center(
             child: CupertinoTheme(
               data: CupertinoTheme.of(Get.context!).copyWith(
-                brightness: Brightness.dark,
+                brightness: Brightness.light,
                 primaryColor: Colors.white,
               ),
-              child: const CircularProgressIndicator(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(
+                    color: ColorValues.whiteColor,
+                  ),
+                  Dimens.boxHeight8,
+                  Text(
+                    'Please wait...',
+                    style: AppStyles.style20Normal.copyWith(
+                      color: ColorValues.whiteColor,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -262,6 +275,7 @@ abstract class AppUtils {
 
   static Future<void> saveLoginDataToLocalStorage(
       String token, int expiresAt) async {
+    final storage = GetStorage();
     if (token.isNotEmpty && expiresAt > 0) {
       final data = jsonEncode({
         StringValues.token: token,
@@ -276,6 +290,7 @@ abstract class AppUtils {
   }
 
   static Future<dynamic> readLoginDataFromLocalStorage() async {
+    final storage = GetStorage();
     if (storage.hasData(StringValues.loginData)) {
       final data = await storage.read(StringValues.loginData);
       var decodedData = jsonDecode(data) as Map<String, dynamic>;
@@ -287,6 +302,7 @@ abstract class AppUtils {
   }
 
   static Future<void> saveProfileDataToLocalStorage(response) async {
+    final storage = GetStorage();
     if (response != null) {
       final data = jsonEncode(response);
 
@@ -298,6 +314,7 @@ abstract class AppUtils {
   }
 
   static Future<dynamic> readProfileDataFromLocalStorage() async {
+    final storage = GetStorage();
     if (storage.hasData(StringValues.profileData)) {
       final data = await storage.read(StringValues.profileData);
       var decodedData = jsonDecode(data);
@@ -309,6 +326,7 @@ abstract class AppUtils {
   }
 
   static Future<void> clearLoginDataFromLocalStorage() async {
+    final storage = GetStorage();
     await storage.remove(StringValues.loginData);
     await storage.remove(StringValues.profileData);
     printLog(StringValues.authDetailsRemoved);

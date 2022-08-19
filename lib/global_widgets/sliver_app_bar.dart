@@ -30,7 +30,7 @@ class NxSliverAppBar extends StatelessWidget {
       elevation: Dimens.zero,
       backgroundColor: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
       flexibleSpace: Padding(
-        padding: Dimens.edgeInsets8,
+        padding: Dimens.edgeInsets8_16,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

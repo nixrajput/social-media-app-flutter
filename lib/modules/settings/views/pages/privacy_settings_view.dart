@@ -1,13 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
+import 'package:social_media_app/global_widgets/custom_radio_tile.dart';
+import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
+import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/account_type_controller.dart';
 
@@ -25,9 +26,11 @@ class PrivacySettingsView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const NxAppBar(
+              NxAppBar(
                 title: StringValues.privacy,
+                padding: Dimens.edgeInsets8_16,
               ),
+              Dimens.boxHeight16,
               _buildBody(),
             ],
           ),
@@ -39,7 +42,7 @@ class PrivacySettingsView extends StatelessWidget {
   Widget _buildBody() {
     return Expanded(
       child: Padding(
-        padding: Dimens.edgeInsets8,
+        padding: Dimens.edgeInsets0_16,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -48,43 +51,27 @@ class PrivacySettingsView extends StatelessWidget {
               GetBuilder<ProfileController>(
                 builder: (logic) => NxListTile(
                   leading: Icon(
-                    CupertinoIcons.lock,
+                    Icons.lock_outline,
+                    size: Dimens.twentyFour,
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   ),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${StringValues.private.toTitleCase()} ${StringValues.account}',
-                        style: AppStyles.style16Bold,
-                      ),
-                      GetBuilder<AccountTypeController>(
-                        init: AccountTypeController(),
-                        builder: (con) => Switch(
-                          value: logic.profileData.user!.accountType ==
-                                  StringValues.private
-                              ? true
-                              : false,
-                          onChanged: (value) {
-                            if (value == false) {
-                              con.updateAccountType(StringValues.public);
-                              return;
-                            }
-                            con.updateAccountType(StringValues.private);
-                          },
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          activeColor: ColorValues.primaryColor,
-                        ),
-                      )
-                    ],
+                  title: Text(
+                    StringValues.accountPrivacy,
+                    style: AppStyles.style16Normal,
                   ),
+                  subtitle: Text(
+                    logic.profileData.user!.accountType.toTitleCase(),
+                    style: AppStyles.style14Normal.copyWith(
+                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                    ),
+                  ),
+                  onTap: () => _showAccountPrivacyDialog(logic),
                 ),
               ),
-              Dimens.boxHeight16,
               NxListTile(
                 leading: Icon(
-                  CupertinoIcons.add_circled,
+                  Icons.add_circle_outline,
+                  size: Dimens.twentyFour,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
@@ -92,10 +79,10 @@ class PrivacySettingsView extends StatelessWidget {
                   style: AppStyles.style16Normal,
                 ),
               ),
-              Dimens.boxHeight20,
               NxListTile(
                 leading: Icon(
-                  CupertinoIcons.chat_bubble,
+                  Icons.chat_bubble_outline,
+                  size: Dimens.twentyFour,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
@@ -103,10 +90,10 @@ class PrivacySettingsView extends StatelessWidget {
                   style: AppStyles.style16Normal,
                 ),
               ),
-              Dimens.boxHeight20,
               NxListTile(
                 leading: Icon(
-                  CupertinoIcons.memories,
+                  Icons.history_outlined,
+                  size: Dimens.twentyFour,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
@@ -114,21 +101,10 @@ class PrivacySettingsView extends StatelessWidget {
                   style: AppStyles.style16Normal,
                 ),
               ),
-              Dimens.boxHeight20,
-              NxListTile(
-                leading: Icon(
-                  CupertinoIcons.at,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
-                title: Text(
-                  StringValues.mentions,
-                  style: AppStyles.style16Normal,
-                ),
-              ),
-              Dimens.boxHeight20,
               NxListTile(
                 leading: Icon(
                   Icons.online_prediction,
+                  size: Dimens.twentyFour,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
@@ -136,7 +112,57 @@ class PrivacySettingsView extends StatelessWidget {
                   style: AppStyles.style16Normal,
                 ),
               ),
-              Dimens.boxHeight20,
+              Dimens.boxHeight16,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showAccountPrivacyDialog(ProfileController logic) {
+    AppUtils.showSimpleDialog(
+      GetBuilder<AccountTypeController>(
+        init: AccountTypeController(),
+        builder: (con) => Padding(
+          padding: Dimens.edgeInsets16,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    StringValues.accountPrivacy,
+                    style: AppStyles.style20Bold,
+                  ),
+                  const Spacer(),
+                  NxIconButton(
+                    icon: Icons.close,
+                    iconSize: Dimens.thirtyTwo,
+                    onTap: AppUtils.closeDialog,
+                  ),
+                ],
+              ),
+              Dimens.boxHeight24,
+              Column(
+                children: [StringValues.public, StringValues.private]
+                    .map(
+                      (val) => NxRadioTile(
+                        padding: Dimens.edgeInsets8_0,
+                        onTap: () => con.updateAccountType(val),
+                        onChanged: (value) {
+                          con.updateAccountType(val);
+                        },
+                        title: val.toTitleCase(),
+                        value: val,
+                        groupValue: logic.profileData.user!.accountType,
+                      ),
+                    )
+                    .toList(),
+              ),
+              Dimens.boxHeight24,
             ],
           ),
         ),

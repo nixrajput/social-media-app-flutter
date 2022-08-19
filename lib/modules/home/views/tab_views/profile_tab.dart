@@ -9,13 +9,11 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
-import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_network_image.dart';
 import 'package:social_media_app/global_widgets/count_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_shape_painter.dart';
-import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/shimmer_loading.dart';
@@ -45,17 +43,6 @@ class ProfileTabView extends StatelessWidget {
   }
 
   Widget _buildWidget(ProfileController logic) {
-    if (logic.isLoading) {
-      return Expanded(
-        child: Column(
-          children: [
-            _buildProfileHeader(logic),
-            _buildLoadingWidget(),
-          ],
-        ),
-      );
-    }
-
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Stack(
@@ -65,11 +52,15 @@ class ProfileTabView extends StatelessWidget {
             painter: CustomShapePainter(),
           ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildProfileHeader(logic),
-              logic.profileData.user == null
-                  ? _buildErrorBody(logic)
-                  : _buildProfileBody(logic),
+              logic.isLoading
+                  ? _buildLoadingWidget()
+                  : logic.profileData.user == null
+                      ? _buildErrorBody(logic)
+                      : _buildProfileBody(logic),
             ],
           ),
         ],
@@ -79,10 +70,7 @@ class ProfileTabView extends StatelessWidget {
 
   Widget _buildProfileHeader(ProfileController logic) {
     return NxAppBar(
-      padding: Dimens.edgeInsetsOnlyTop8.copyWith(
-        left: Dimens.eight,
-        bottom: Dimens.eight,
-      ),
+      padding: Dimens.edgeInsets8_16,
       leading: Expanded(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,10 +82,11 @@ class ProfileTabView extends StatelessWidget {
               style: AppStyles.style20Bold,
             ),
             const Spacer(),
-            InkWell(
+            GestureDetector(
               onTap: RouteManagement.goToSettingsView,
               child: Icon(
-                CupertinoIcons.gear_alt_fill,
+                Icons.menu,
+                size: Dimens.twentyFour,
                 color: Theme.of(Get.context!).textTheme.bodyText1!.color,
               ),
             ),
@@ -112,67 +101,17 @@ class ProfileTabView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Dimens.boxHeight16,
         Padding(
-          padding: Dimens.edgeInsets8,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Column(
-                children: [
-                  GestureDetector(
-                    onTap: () => _showProfilePictureDialog(logic),
-                    child: _buildProfileImage(logic),
-                  ),
-                  Dimens.boxHeight16,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${logic.profileData.user!.fname} ${logic.profileData.user!.lname}',
-                        style: AppStyles.style18Bold,
-                      ),
-                      if (logic.profileData.user!.isVerified) Dimens.boxWidth4,
-                      if (logic.profileData.user!.isVerified)
-                        Icon(
-                          CupertinoIcons.checkmark_seal_fill,
-                          color: Theme.of(Get.context!).brightness ==
-                                  Brightness.dark
-                              ? Theme.of(Get.context!)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.color
-                              : ColorValues.primaryColor,
-                          size: Dimens.sixTeen,
-                        )
-                    ],
-                  ),
-                  Dimens.boxHeight4,
-                  Text(
-                    "@${logic.profileData.user!.uname}",
-                    style: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-                    ),
-                  ),
-                  Dimens.boxHeight12,
-                  NxOutlinedButton(
-                    label: StringValues.editProfile.toTitleCase(),
-                    padding: Dimens.edgeInsets0_8,
-                    height: Dimens.thirtySix,
-                    borderColor:
-                        Theme.of(Get.context!).textTheme.bodyText1!.color,
-                    labelStyle: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                    ),
-                    onTap: RouteManagement.goToEditProfileView,
-                  ),
-                ],
-              ),
-              _buildUserDetails(logic),
-            ],
-          ),
+          padding: Dimens.edgeInsets0_16,
+          child: _buildUserDetails(logic),
         ),
+        Dimens.boxHeight16,
+        Padding(
+          padding: Dimens.edgeInsets0_16,
+          child: _buildCountDetails(logic),
+        ),
+        Dimens.boxHeight8,
         Dimens.dividerWithHeight,
         Dimens.boxHeight8,
         _buildPosts(logic),
@@ -186,6 +125,52 @@ class ProfileTabView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () => _showProfilePictureDialog(logic),
+                child: _buildProfileImage(logic),
+              ),
+              Dimens.boxHeight16,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${logic.profileData.user!.fname} ${logic.profileData.user!.lname}',
+                    style: AppStyles.style18Bold,
+                  ),
+                  if (logic.profileData.user!.isVerified) Dimens.boxWidth4,
+                  if (logic.profileData.user!.isVerified)
+                    Icon(
+                      CupertinoIcons.checkmark_seal_fill,
+                      color: Theme.of(Get.context!).brightness ==
+                              Brightness.dark
+                          ? Theme.of(Get.context!).textTheme.bodyText1?.color
+                          : ColorValues.primaryColor,
+                      size: Dimens.sixTeen,
+                    )
+                ],
+              ),
+              Dimens.boxHeight4,
+              Text(
+                "@${logic.profileData.user!.uname}",
+                style: AppStyles.style14Normal.copyWith(
+                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                ),
+              ),
+              Dimens.boxHeight12,
+              NxOutlinedButton(
+                label: StringValues.editProfile.toTitleCase(),
+                padding: Dimens.edgeInsets0_8,
+                height: Dimens.thirtySix,
+                borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                labelStyle: AppStyles.style14Normal.copyWith(
+                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                ),
+                onTap: RouteManagement.goToEditProfileView,
+              ),
+            ],
+          ),
           if (logic.profileData.user!.about != null) Dimens.boxHeight8,
           if (logic.profileData.user!.about != null)
             Text(
@@ -210,13 +195,12 @@ class ProfileTabView extends StatelessWidget {
               ),
             ],
           ),
-          Dimens.boxHeight16,
-          _buildCountDetails(logic),
         ],
       );
 
   Container _buildCountDetails(ProfileController logic) {
     return Container(
+      width: Dimens.screenWidth,
       padding: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
         color: Theme.of(Get.context!).dialogTheme.backgroundColor!,
@@ -368,148 +352,73 @@ class ProfileTabView extends StatelessWidget {
   }
 
   _buildErrorBody(ProfileController logic) {
-    return Expanded(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            NxAssetImage(
-              imgAsset: AssetValues.error,
-              width: Dimens.hundred * 1.8,
-              height: Dimens.hundred * 1.8,
+    return SizedBox(
+      width: Dimens.screenWidth,
+      height: Dimens.screenHeight,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            StringValues.userNotFoundError,
+            style: AppStyles.style32Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
             ),
-            Dimens.boxHeight8,
-            Text(
-              StringValues.userNotFoundError,
-              style: AppStyles.style18Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            Dimens.boxHeight20,
-            NxOutlinedButton(
-              width: Dimens.hundred * 1.4,
-              padding: Dimens.edgeInsets8,
-              label: StringValues.refresh,
-              onTap: logic.fetchProfileDetails,
-            )
-          ],
-        ),
+            textAlign: TextAlign.center,
+          ),
+          Dimens.boxHeight16,
+          NxOutlinedButton(
+            width: Dimens.hundred,
+            height: Dimens.thirtySix,
+            label: StringValues.refresh,
+            onTap: logic.fetchProfileDetails,
+          )
+        ],
       ),
     );
   }
 
   _buildLoadingWidget() {
-    return Expanded(
-      child: Padding(
-        padding: Dimens.edgeInsets8,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: Dimens.sixtyFour,
-                    backgroundColor: ColorValues.grayColor.withOpacity(0.25),
-                  ),
-                  Dimens.boxWidth16,
-                  ShimmerLoading(
-                    width: Dimens.hundred,
-                    height: Dimens.fourty,
-                  ),
-                ],
-              ),
-              Dimens.boxHeight16,
-              ShimmerLoading(
-                width: Dimens.hundred * 1.2,
-                height: Dimens.twentyFour,
-              ),
-              Dimens.boxHeight4,
-              ShimmerLoading(
-                width: Dimens.hundred * 1.2,
-                height: Dimens.sixTeen,
-              ),
-              Dimens.boxHeight16,
-              ShimmerLoading(
-                width: Dimens.screenWidth * 0.75,
-                height: Dimens.sixTeen,
-              ),
-              Dimens.boxHeight16,
-              ShimmerLoading(
-                width: Dimens.screenWidth * 0.75,
-                height: Dimens.sixTeen,
-              ),
-              Dimens.boxHeight32,
-              NxElevatedCard(
-                bgColor: ColorValues.grayColor.withOpacity(0.1),
-                padding: Dimens.edgeInsets8,
-                margin: Dimens.edgeInsets8_0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          radius: Dimens.twenty,
-                          backgroundColor:
-                              ColorValues.grayColor.withOpacity(0.25),
-                        ),
-                        Dimens.boxWidth8,
-                        Column(
-                          children: [
-                            ShimmerLoading(
-                              width: Dimens.hundred,
-                              height: Dimens.fourteen,
-                            ),
-                            Dimens.boxHeight4,
-                            ShimmerLoading(
-                              width: Dimens.hundred,
-                              height: Dimens.ten,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Dimens.boxHeight8,
-                    ShimmerLoading(
-                      height: Dimens.screenWidth * 0.8,
-                    ),
-                    Dimens.boxHeight8,
-                    Row(
-                      children: [
-                        ShimmerLoading(
-                          width: Dimens.eighty,
-                          height: Dimens.twenty,
-                        ),
-                        Dimens.boxWidth8,
-                        ShimmerLoading(
-                          width: Dimens.eighty,
-                          height: Dimens.twenty,
-                        ),
-                      ],
-                    ),
-                    Dimens.boxHeight8,
-                    ShimmerLoading(
-                      width: Dimens.screenWidth * 0.75,
-                      height: Dimens.sixTeen,
-                    ),
-                    Dimens.boxHeight8,
-                    ShimmerLoading(
-                      width: Dimens.screenWidth * 0.75,
-                      height: Dimens.sixTeen,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+    return Padding(
+      padding: Dimens.edgeInsets0_16,
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              radius: Dimens.eighty,
+              backgroundColor: ColorValues.grayColor.withOpacity(0.25),
+            ),
+            Dimens.boxHeight16,
+            ShimmerLoading(
+              width: Dimens.hundred * 1.2,
+              height: Dimens.twentyFour,
+            ),
+            Dimens.boxHeight4,
+            ShimmerLoading(
+              width: Dimens.hundred * 1.2,
+              height: Dimens.sixTeen,
+            ),
+            Dimens.boxHeight16,
+            ShimmerLoading(
+              width: Dimens.hundred,
+              height: Dimens.fourty,
+            ),
+            Dimens.boxHeight16,
+            ShimmerLoading(
+              width: Dimens.screenWidth * 0.75,
+              height: Dimens.sixTeen,
+            ),
+            Dimens.boxHeight16,
+            ShimmerLoading(
+              width: Dimens.screenWidth * 0.75,
+              height: Dimens.sixTeen,
+            ),
+            Dimens.boxHeight32,
+          ],
         ),
       ),
     );

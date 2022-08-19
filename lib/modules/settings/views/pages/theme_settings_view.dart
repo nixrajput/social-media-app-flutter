@@ -20,9 +20,11 @@ class ThemeSettingsView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const NxAppBar(
+              NxAppBar(
                 title: StringValues.theme,
+                padding: Dimens.edgeInsets8_16,
               ),
+              Dimens.boxHeight8,
               _buildBody(),
             ],
           ),
@@ -34,7 +36,7 @@ class ThemeSettingsView extends StatelessWidget {
   Widget _buildBody() {
     return Expanded(
       child: Padding(
-        padding: Dimens.edgeInsets8,
+        padding: Dimens.edgeInsets0_16,
         child: SingleChildScrollView(
           child: GetBuilder<AppThemeController>(
             builder: (logic) {

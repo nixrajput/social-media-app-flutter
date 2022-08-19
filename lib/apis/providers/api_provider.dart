@@ -62,6 +62,19 @@ class ApiProvider {
     return response;
   }
 
+  /// Location Info ------------------------------------------------------------
+
+  Future<http.Response> getLocationInfo() async {
+    final response = await _client.get(
+      Uri.parse(AppUrls.locationUrl),
+      headers: {
+        "content-type": "application/json",
+      },
+    );
+
+    return response;
+  }
+
   /// User ---------------------------------------------------------------------
 
   Future<http.Response> getProfileDetails(String token) async {

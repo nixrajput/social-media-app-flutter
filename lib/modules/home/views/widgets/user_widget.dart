@@ -34,107 +34,119 @@ class UserWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap ?? () => RouteManagement.goToUserProfileView(user.id),
       child: Container(
-        color: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
+        width: Dimens.screenWidth,
         margin: EdgeInsets.only(bottom: bottomMargin ?? Dimens.eight),
+        constraints: BoxConstraints(
+          maxWidth: Dimens.screenWidth,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildProfileImage(user),
-                  Dimens.boxWidth8,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxWidth: Dimens.screenWidth * 0.5,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${user.fname} ${user.lname}',
-                              style: AppStyles.style14Normal,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
-                            if (user.isVerified) Dimens.boxWidth4,
-                            if (user.isVerified)
-                              Icon(
-                                CupertinoIcons.checkmark_seal_fill,
-                                color: Theme.of(Get.context!).brightness ==
-                                        Brightness.dark
-                                    ? Theme.of(Get.context!)
-                                        .textTheme
-                                        .bodyText1
-                                        ?.color
-                                    : ColorValues.primaryColor,
-                                size: Dimens.sixTeen,
-                              )
-                          ],
-                        ),
-                      ),
-                      Text(
-                        user.uname,
-                        style: TextStyle(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Dimens.boxWidth8,
-            if (user.id != profile.profileData.user!.id)
-              GetBuilder<ProfileController>(
-                builder: (logic) => NxOutlinedButton(
-                  label: profile.profileData.user!.following.contains(user.id)
-                      ? StringValues.following
-                      : StringValues.follow,
-                  bgColor: profile.profileData.user!.following.contains(user.id)
-                      ? Colors.transparent
-                      : ColorValues.primaryColor,
-                  borderColor: Theme.of(context).textTheme.bodyText1!.color,
-                  borderStyle:
-                      profile.profileData.user!.following.contains(user.id)
-                          ? BorderStyle.solid
-                          : BorderStyle.none,
-                  onTap: () => logic.followUnfollowUser(user.id),
-                  padding: Dimens.edgeInsets0_8,
-                  borderWidth: Dimens.one,
-                  height: Dimens.thirtySix,
-                  labelStyle: AppStyles.style14Normal.copyWith(
-                    color: profile.profileData.user!.following.contains(user.id)
-                        ? Theme.of(context).textTheme.bodyText1!.color
-                        : ColorValues.whiteColor,
-                  ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildProfileImage(),
+                Dimens.boxWidth12,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildUserUsername(),
+                    _buildUserFullName(),
+                  ],
                 ),
-              ),
+              ],
+            ),
+            if (user.id != profile.profileData.user!.id)
+              _buildFollowAction(profile),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildProfileImage(User? user) {
-    if (user != null && user.avatar != null && user.avatar?.url != null) {
+  Widget _buildUserUsername() => SizedBox(
+        width: Dimens.screenWidth * 0.45,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Flexible(
+              child: RichText(
+                text: TextSpan(
+                  text: user.uname.toLowerCase(),
+                  style: AppStyles.style14Bold.copyWith(
+                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  ),
+                ),
+                maxLines: 1,
+              ),
+            ),
+            if (user.isVerified) Dimens.boxWidth4,
+            if (user.isVerified)
+              Icon(
+                CupertinoIcons.checkmark_seal_fill,
+                color: Theme.of(Get.context!).brightness == Brightness.dark
+                    ? Theme.of(Get.context!).textTheme.bodyText1?.color
+                    : ColorValues.primaryColor,
+                size: Dimens.sixTeen,
+              )
+          ],
+        ),
+      );
+
+  Widget _buildUserFullName() => SizedBox(
+        width: Dimens.screenWidth * 0.45,
+        child: RichText(
+          text: TextSpan(
+            text: '${user.fname} ${user.lname}',
+            style: AppStyles.style14Normal.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            ),
+          ),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+        ),
+      );
+
+  Widget _buildFollowAction(ProfileController profile) =>
+      GetBuilder<ProfileController>(
+        builder: (logic) => NxOutlinedButton(
+          label: profile.profileData.user!.following.contains(user.id)
+              ? StringValues.following
+              : StringValues.follow,
+          bgColor: profile.profileData.user!.following.contains(user.id)
+              ? Colors.transparent
+              : ColorValues.primaryColor,
+          borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+          borderStyle: profile.profileData.user!.following.contains(user.id)
+              ? BorderStyle.solid
+              : BorderStyle.none,
+          onTap: () => logic.followUnfollowUser(user.id),
+          padding: Dimens.edgeInsets0_8,
+          borderWidth: Dimens.one,
+          width: Dimens.eighty,
+          height: Dimens.thirtyTwo,
+          borderRadius: Dimens.eight,
+          labelStyle: AppStyles.style14Normal.copyWith(
+            color: profile.profileData.user!.following.contains(user.id)
+                ? Theme.of(Get.context!).textTheme.bodyText1!.color
+                : ColorValues.whiteColor,
+          ),
+        ),
+      );
+
+  Widget _buildProfileImage() {
+    if (user.avatar != null && user.avatar?.url != null) {
       return NxCircleNetworkImage(
         imageUrl: user.avatar!.url!,
-        radius: Dimens.twenty,
+        radius: Dimens.twentyFour,
       );
     }
     return NxCircleAssetImage(
       imgAsset: AssetValues.avatar,
-      radius: Dimens.twenty,
+      radius: Dimens.twentyFour,
     );
   }
 }

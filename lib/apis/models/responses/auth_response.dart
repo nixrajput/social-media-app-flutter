@@ -1,21 +1,21 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'login_response.g.dart';
+part 'auth_response.g.dart';
 
 @JsonSerializable()
-class LoginResponse extends Equatable {
-  const LoginResponse({
+class AuthResponse extends Equatable {
+  const AuthResponse({
     this.success,
     this.message,
     this.token,
     this.expiresAt,
   });
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json) =>
-      _$LoginResponseFromJson(json);
+  factory AuthResponse.fromJson(Map<String, dynamic> json) =>
+      _$AuthResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
+  Map<String, dynamic> toJson() => _$AuthResponseToJson(this);
 
   @JsonKey(name: 'success')
   final bool? success;

@@ -55,7 +55,7 @@ class ResetPasswordView extends StatelessWidget {
                     Dimens.boxHeight32,
                     Text(
                       StringValues.resetYourPassword,
-                      style: AppStyles.style28Bold.copyWith(
+                      style: AppStyles.style32Bold.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
                     ),
@@ -169,7 +169,7 @@ class ResetPasswordView extends StatelessWidget {
                     Dimens.boxHeight32,
                     NxFilledButton(
                       onTap: () => logic.resetPassword(),
-                      label: StringValues.resetPassword,
+                      label: StringValues.resetPassword.toUpperCase(),
                     ),
                     Dimens.boxHeight48,
                     Row(

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
@@ -24,9 +22,11 @@ class FollowingListView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const NxAppBar(
+              NxAppBar(
                 title: StringValues.following,
+                padding: Dimens.edgeInsets8_16,
               ),
+              Dimens.boxHeight24,
               _buildBody(),
             ],
           ),
@@ -42,48 +42,45 @@ class FollowingListView extends StatelessWidget {
           if (logic.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (logic.followingList!.results == null ||
+          if (logic.followingList == null ||
               logic.followingList!.results!.isEmpty) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                NxAssetImage(
-                  imgAsset: AssetValues.error,
-                  width: Dimens.hundred * 2,
-                  height: Dimens.hundred * 2,
-                ),
-                Dimens.boxHeight8,
-                Text(
-                  StringValues.noData,
-                  style: AppStyles.style20Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            return Padding(
+              padding: Dimens.edgeInsets0_16,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    StringValues.noFollowing,
+                    style: AppStyles.style32Bold.copyWith(
+                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                Dimens.boxHeight16,
-                NxOutlinedButton(
-                  width: Dimens.hundred * 1.4,
-                  padding: Dimens.edgeInsets8,
-                  label: StringValues.refresh,
-                  onTap: () => logic.getFollowersList(),
-                )
-              ],
+                  Dimens.boxHeight16,
+                  NxOutlinedButton(
+                    width: Dimens.hundred,
+                    height: Dimens.thirtySix,
+                    label: StringValues.refresh,
+                    onTap: () => logic.getFollowingList(),
+                  )
+                ],
+              ),
             );
           }
           return Padding(
-            padding: Dimens.edgeInsets8,
+            padding: Dimens.edgeInsets0_16,
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
               itemCount: logic.followingList!.results!.length,
               itemBuilder: (cxt, i) {
-                var user = logic.followingList!.results!.elementAt(i);
+                var user = logic.followingList!.results![i];
                 return UserWidget(
                   user: user,
                   bottomMargin: i == (logic.followingList!.results!.length - 1)
                       ? Dimens.zero
-                      : Dimens.eight,
+                      : Dimens.sixTeen,
                 );
               },
             ),

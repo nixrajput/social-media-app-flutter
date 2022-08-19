@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -19,11 +18,13 @@ class AccountSettingsView extends StatelessWidget {
           height: Dimens.screenHeight,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const NxAppBar(
+              NxAppBar(
+                padding: Dimens.edgeInsets8_16,
                 title: StringValues.account,
               ),
+              Dimens.boxHeight16,
               _buildBody(),
             ],
           ),
@@ -35,16 +36,16 @@ class AccountSettingsView extends StatelessWidget {
   Widget _buildBody() {
     return Expanded(
       child: Padding(
-        padding: Dimens.edgeInsets8,
+        padding: Dimens.edgeInsets0_16,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Dimens.boxHeight8,
               NxListTile(
                 leading: Icon(
-                  CupertinoIcons.mail,
+                  Icons.mail_outline,
+                  size: Dimens.twentyFour,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
@@ -52,10 +53,10 @@ class AccountSettingsView extends StatelessWidget {
                   style: AppStyles.style16Normal,
                 ),
               ),
-              Dimens.boxHeight20,
               NxListTile(
                 leading: Icon(
-                  CupertinoIcons.phone,
+                  Icons.phone_outlined,
+                  size: Dimens.twentyFour,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
@@ -63,7 +64,7 @@ class AccountSettingsView extends StatelessWidget {
                   style: AppStyles.style16Normal,
                 ),
               ),
-              Dimens.boxHeight20,
+              Dimens.boxHeight16,
             ],
           ),
         ),

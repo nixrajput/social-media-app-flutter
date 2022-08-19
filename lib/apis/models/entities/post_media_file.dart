@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:social_media_app/apis/models/entities/media.dart';
+import 'package:social_media_app/apis/models/entities/media_file.dart';
 
 part 'post_media_file.g.dart';
 
@@ -21,7 +21,7 @@ class PostMediaFile extends Equatable {
   final String? id;
 
   @JsonKey(name: 'link')
-  final Media? link;
+  final MediaFile? link;
 
   @JsonKey(name: 'mediaType')
   final String? mediaType;
