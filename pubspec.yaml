@@ -41,7 +41,7 @@ dependencies:
   path_provider: ^2.0.11
   video_compress: ^3.1.1
   better_player: ^0.0.83
-  mime: ^1.0.2
+  path: ^1.8.1
 
   flutter_screenutil: ^5.5.3+2
   permission_handler: ^10.0.0

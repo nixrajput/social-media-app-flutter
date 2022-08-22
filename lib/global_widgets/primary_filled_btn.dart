@@ -42,11 +42,17 @@ class NxFilledButton extends StatelessWidget {
         height: height ?? Dimens.fiftySix,
         padding: padding,
         constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadius ?? Dimens.eight),
-          gradient: ColorValues.primaryGrad,
-          color: bgColor,
-        ),
+        decoration: bgColor == null
+            ? BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(borderRadius ?? Dimens.eight),
+                gradient: ColorValues.primaryGrad,
+              )
+            : BoxDecoration(
+                borderRadius:
+                    BorderRadius.circular(borderRadius ?? Dimens.eight),
+                color: bgColor,
+              ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,

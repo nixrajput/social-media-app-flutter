@@ -177,25 +177,16 @@ class ApiProvider {
 
   /// Post ---------------------------------------------------------------------
 
-  Future<http.StreamedResponse> createPost(
-    String token,
-    String? caption,
-    List<http.MultipartFile> multiPartFiles,
-  ) async {
-    final request = http.MultipartRequest(
-      "POST",
+  Future<http.Response> createPost(
+      String token, Map<String, dynamic> body) async {
+    final response = await _client.post(
       Uri.parse(baseUrl! + AppUrls.createPostEndpoint),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
     );
-
-    request.headers.addAll({
-      "content-type": "application/json",
-      "authorization": "Bearer $token",
-    });
-
-    request.files.addAll(multiPartFiles);
-    if (caption != null) request.fields['caption'] = caption;
-
-    final response = await request.send();
 
     return response;
   }

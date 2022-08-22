@@ -14,7 +14,9 @@ import 'package:social_media_app/global_widgets/cached_network_image.dart';
 import 'package:social_media_app/global_widgets/circular_asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_network_image.dart';
 import 'package:social_media_app/global_widgets/elevated_card.dart';
+import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
+import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_like_controller.dart';
@@ -306,7 +308,7 @@ class PostWidget extends StatelessWidget {
             ListTile(
               onTap: () {
                 AppUtils.closeBottomSheet();
-                Get.find<PostController>().deletePost(post.id);
+                _showDeletePostOptions();
               },
               leading: const Icon(CupertinoIcons.delete),
               title: Text(
@@ -332,4 +334,53 @@ class PostWidget extends StatelessWidget {
           ),
         ],
       );
+
+  Future<void> _showDeletePostOptions() async {
+    AppUtils.showSimpleDialog(
+      Padding(
+        padding: Dimens.edgeInsets16,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              StringValues.deleteConfirmationText,
+              style: AppStyles.style20Bold,
+            ),
+            Dimens.boxHeight40,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                NxOutlinedButton(
+                  width: Dimens.hundred,
+                  height: Dimens.thirtySix,
+                  label: 'No',
+                  borderColor:
+                      Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  labelStyle: AppStyles.style14Normal.copyWith(
+                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  ),
+                  onTap: AppUtils.closeDialog,
+                ),
+                Dimens.boxWidth32,
+                NxFilledButton(
+                  width: Dimens.hundred,
+                  height: Dimens.thirtySix,
+                  label: 'Yes',
+                  bgColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  labelStyle: AppStyles.style14Normal.copyWith(
+                    color: Theme.of(Get.context!).scaffoldBackgroundColor,
+                  ),
+                  onTap: () async {
+                    AppUtils.closeDialog();
+                    await Get.find<PostController>().deletePost(post.id);
+                  },
+                ),
+              ],
+            ),
+            Dimens.boxHeight16,
+          ],
+        ),
+      ),
+    );
+  }
 }

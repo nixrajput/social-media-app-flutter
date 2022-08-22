@@ -766,7 +766,7 @@ packages:
     source: hosted
     version: "1.7.0"
   mime:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: mime
       url: "https://pub.dartlang.org"
@@ -794,7 +794,7 @@ packages:
     source: hosted
     version: "2.0.2"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       url: "https://pub.dartlang.org"

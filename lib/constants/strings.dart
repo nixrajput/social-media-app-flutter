@@ -13,6 +13,7 @@ abstract class StringValues {
   static const forgotPassword = 'Forgot Password';
   static const resetPassword = 'Reset Password';
   static const name = 'Name';
+  static const next = 'Next';
   static const firstName = 'First Name';
   static const lastName = 'Last Name';
   static const email = 'Email';

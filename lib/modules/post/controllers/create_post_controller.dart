@@ -2,12 +2,15 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloudinary/cloudinary.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/extensions/file_extensions.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -23,42 +26,103 @@ class CreatePostController extends GetxController {
 
   final FocusScopeNode focusNode = FocusScopeNode();
 
-  final _pickedImageList = RxList<File>();
+  final _pickedFileList = RxList<File>();
   final _isLoading = false.obs;
 
-  List<File>? get pickedImageList => _pickedImageList;
+  List<File>? get pickedFileList => _pickedFileList;
 
   bool get isLoading => _isLoading.value;
 
+  final cloudinary =
+      Cloudinary.unsignedConfig(cloudName: AppSecrets.cloudinaryCloudName);
+
   Future<void> _createNewPost() async {
+    var mediaFiles = <Object>[];
+
+    for (var file in _pickedFileList) {
+      var filePath = file.path;
+      var sizeInKb = file.sizeToKb();
+      print('$sizeInKb KB');
+      if (AppUtils.isVideoFile(filePath)) {
+        if (sizeInKb > 30 * 1024) {
+          AppUtils.showSnackBar(
+            'Video file size must be lower than 30 MB',
+            StringValues.warning,
+          );
+          return;
+        }
+      } else {
+        if (sizeInKb > 2048) {
+          AppUtils.showSnackBar(
+            'Image file size must be lower than 2 MB',
+            StringValues.warning,
+          );
+          return;
+        }
+      }
+    }
+
     AppUtils.showLoadingDialog();
     _isLoading.value = true;
     update();
 
-    try {
-      var imageList = <http.MultipartFile>[];
-      for (var pickedImage in _pickedImageList) {
-        final fileStream = http.ByteStream(pickedImage.openRead());
-        final fileLength = await pickedImage.length();
-        final multiPartFile = http.MultipartFile(
-          "mediaFiles",
-          fileStream,
-          fileLength,
-          filename: pickedImage.path,
-        );
-
-        imageList.add(multiPartFile);
+    for (var file in _pickedFileList) {
+      if (AppUtils.isVideoFile(file.path)) {
+        await cloudinary
+            .unsignedUpload(
+          uploadPreset: AppSecrets.uploadPreset,
+          file: file.path,
+          resourceType: CloudinaryResourceType.video,
+          folder: "social_media_api/posts/videos",
+          progressCallback: (count, total) {
+            var progress = ((count / total) * 100).toStringAsFixed(2);
+            AppUtils.printLog('Uploading : $progress %');
+          },
+        )
+            .then((value) {
+          mediaFiles.add({
+            "public_id": value.publicId,
+            "url": value.secureUrl,
+            "mediaType": "video"
+          });
+        }).catchError((err) {
+          AppUtils.printLog(err);
+          AppUtils.showSnackBar('Video upload failed.', StringValues.error);
+        });
+      } else {
+        await cloudinary
+            .unsignedUpload(
+          uploadPreset: AppSecrets.uploadPreset,
+          file: file.path,
+          resourceType: CloudinaryResourceType.image,
+          folder: "social_media_api/posts/images",
+          progressCallback: (count, total) {
+            var progress = ((count / total) * 100).toStringAsFixed(2);
+            AppUtils.printLog('Uploading : $progress %');
+          },
+        )
+            .then((value) {
+          mediaFiles.add({
+            "public_id": value.publicId,
+            "url": value.secureUrl,
+            "mediaType": "image"
+          });
+        }).catchError((err) {
+          AppUtils.printLog(err);
+          AppUtils.showSnackBar('image upload failed.', StringValues.error);
+        });
       }
+    }
 
-      final response = await _apiProvider.createPost(
-        _auth.token,
-        captionTextController.text,
-        imageList,
-      );
+    try {
+      final body = {
+        "caption": captionTextController.text,
+        "mediaFiles": mediaFiles,
+      };
 
-      final responseDataFromStream = await http.Response.fromStream(response);
-      final decodedData =
-          jsonDecode(utf8.decode(responseDataFromStream.bodyBytes));
+      final response = await _apiProvider.createPost(_auth.token, body);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 201) {
         captionTextController.clear();
@@ -66,6 +130,7 @@ class CreatePostController extends GetxController {
         _isLoading.value = false;
         update();
         AppUtils.closeDialog();
+        RouteManagement.goToBack();
         RouteManagement.goToBack();
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
@@ -111,25 +176,25 @@ class CreatePostController extends GetxController {
   }
 
   Future<void> selectPostImages() async {
-    _pickedImageList.value = await AppUtils.selectMultipleFiles();
+    _pickedFileList.value = await AppUtils.selectMultipleFiles();
     update();
-    if (_pickedImageList.isNotEmpty) {
+    if (_pickedFileList.isNotEmpty) {
       RouteManagement.goToCreatePostView();
     }
   }
 
   Future<void> removePostImage(int index) async {
-    if (_pickedImageList.isNotEmpty) {
-      _pickedImageList.removeAt(index);
+    if (_pickedFileList.isNotEmpty) {
+      _pickedFileList.removeAt(index);
       update();
     }
   }
 
   Future<void> createNewPost() async {
-    if (_pickedImageList.isNotEmpty) {
+    if (_pickedFileList.isNotEmpty) {
       await _createNewPost();
     } else {
-      _pickedImageList.value = await AppUtils.selectMultipleFiles();
+      _pickedFileList.value = await AppUtils.selectMultipleFiles();
       update();
     }
   }

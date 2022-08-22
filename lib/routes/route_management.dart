@@ -66,6 +66,10 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.createPost);
   }
 
+  static void goToAddCaptionView() {
+    Get.toNamed(AppRoutes.addCaption);
+  }
+
   static void goToFollowersListView(String userId) {
     Get.delete<FollowersListController>();
     Get.toNamed(AppRoutes.followers, arguments: userId);

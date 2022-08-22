@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mime/mime.dart';
+import 'package:path/path.dart' as p;
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -19,7 +19,7 @@ import 'package:social_media_app/global_widgets/asset_image.dart';
 abstract class AppUtils {
   /// Show Loading Dialog
 
-  static void showLoadingDialog() {
+  static void showLoadingDialog({double? value}) {
     closeDialog();
     Get.dialog<void>(
       WillPopScope(
@@ -43,6 +43,7 @@ abstract class AppUtils {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CircularProgressIndicator(
+                    value: value,
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   ),
                   Dimens.boxHeight12,
@@ -484,7 +485,7 @@ abstract class AppUtils {
                 minimumAspectRatio: 1.0,
               ),
             ],
-            compressQuality: 70,
+            compressQuality: 100,
           );
           resultList.add(File(croppedFile!.path));
         } else {
@@ -497,8 +498,10 @@ abstract class AppUtils {
   }
 
   static bool isVideoFile(String path) {
-    final mimeType = lookupMimeType(path);
-
-    return mimeType!.startsWith('video/');
+    const videoFilesTypes = [".mp4", ".mkv"];
+    var ext = p.extension(path);
+    printLog('extension : $ext');
+    printLog(videoFilesTypes.contains(ext).toString());
+    return videoFilesTypes.contains(ext);
   }
 }
