@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
-import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/extensions/file_extensions.dart';
 import 'package:social_media_app/helpers/utils.dart';
@@ -33,16 +32,18 @@ class CreatePostController extends GetxController {
 
   bool get isLoading => _isLoading.value;
 
-  final cloudinary =
-      Cloudinary.unsignedConfig(cloudName: AppSecrets.cloudinaryCloudName);
+  var cloudName =
+      const String.fromEnvironment('CLOUDINARY_CLOUD_NAME', defaultValue: '');
+  var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
+      defaultValue: '');
 
   Future<void> _createNewPost() async {
+    final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
     var mediaFiles = <Object>[];
 
     for (var file in _pickedFileList) {
       var filePath = file.path;
       var sizeInKb = file.sizeToKb();
-      print('$sizeInKb KB');
       if (AppUtils.isVideoFile(filePath)) {
         if (sizeInKb > 30 * 1024) {
           AppUtils.showSnackBar(
@@ -70,7 +71,7 @@ class CreatePostController extends GetxController {
       if (AppUtils.isVideoFile(file.path)) {
         await cloudinary
             .unsignedUpload(
-          uploadPreset: AppSecrets.uploadPreset,
+          uploadPreset: uploadPreset,
           file: file.path,
           resourceType: CloudinaryResourceType.video,
           folder: "social_media_api/posts/videos",
@@ -92,7 +93,7 @@ class CreatePostController extends GetxController {
       } else {
         await cloudinary
             .unsignedUpload(
-          uploadPreset: AppSecrets.uploadPreset,
+          uploadPreset: uploadPreset,
           file: file.path,
           resourceType: CloudinaryResourceType.image,
           folder: "social_media_api/posts/images",
