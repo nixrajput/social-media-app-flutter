@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/extensions/file_extensions.dart';
 import 'package:social_media_app/helpers/utils.dart';
@@ -32,10 +33,10 @@ class CreatePostController extends GetxController {
 
   bool get isLoading => _isLoading.value;
 
-  var cloudName =
-      const String.fromEnvironment('CLOUDINARY_CLOUD_NAME', defaultValue: '');
+  var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME',
+      defaultValue: AppSecrets.cloudinaryCloudName);
   var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
-      defaultValue: '');
+      defaultValue: AppSecrets.uploadPreset);
 
   Future<void> _createNewPost() async {
     final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
