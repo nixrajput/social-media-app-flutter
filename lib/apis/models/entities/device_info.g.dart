@@ -10,7 +10,7 @@ DeviceInfo _$DeviceInfoFromJson(Map<String, dynamic> json) => DeviceInfo(
       id: json['_id'] as String?,
       user: json['user'] as String?,
       deviceId: json['deviceId'] as String?,
-      deviceInfo: json['deviceInfo'],
+      deviceInfo: json['deviceInfo'] as Map<String, dynamic>?,
       locationInfo: json['locationInfo'] == null
           ? null
           : LocationInfo.fromJson(json['locationInfo'] as Map<String, dynamic>),

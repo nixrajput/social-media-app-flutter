@@ -99,7 +99,7 @@ class ProfileTabView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Dimens.boxHeight16,
+        Dimens.boxHeight24,
         Padding(
           padding: Dimens.edgeInsets0_16,
           child: _buildUserDetails(logic),
@@ -163,7 +163,7 @@ class ProfileTabView extends StatelessWidget {
               ),
             ],
           ),
-          if (logic.profileData.user!.about != null) Dimens.boxHeight8,
+          Dimens.boxHeight16,
           if (logic.profileData.user!.about != null)
             Text(
               logic.profileData.user!.about!,
@@ -188,44 +188,24 @@ class ProfileTabView extends StatelessWidget {
             ],
           ),
           Dimens.boxHeight24,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: NxOutlinedButton(
-                  label: StringValues.editProfile.toTitleCase(),
-                  width: Dimens.hundred,
-                  height: Dimens.thirtyTwo,
-                  padding: Dimens.edgeInsets0_8,
-                  borderRadius: Dimens.eight,
-                  borderColor:
-                      Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  labelStyle: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  ),
-                  onTap: RouteManagement.goToEditProfileView,
-                ),
-              ),
-              Dimens.boxWidth16,
-              Expanded(
-                child: NxOutlinedButton(
-                  label: StringValues.moreDetails.toTitleCase(),
-                  width: Dimens.hundred,
-                  height: Dimens.thirtyTwo,
-                  padding: Dimens.edgeInsets0_8,
-                  borderRadius: Dimens.eight,
-                  borderColor:
-                      Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  labelStyle: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  ),
-                  onTap: RouteManagement.goToEditProfileView,
-                ),
-              ),
-            ],
-          ),
+          _buildActionBtn(),
         ],
       );
+
+  Widget _buildActionBtn() {
+    return NxOutlinedButton(
+      label: StringValues.editProfile.toTitleCase(),
+      width: Dimens.screenWidth,
+      height: Dimens.thirtySix,
+      padding: Dimens.edgeInsets0_8,
+      borderRadius: Dimens.eight,
+      borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+      labelStyle: AppStyles.style14Normal.copyWith(
+        color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+      ),
+      onTap: RouteManagement.goToEditProfileView,
+    );
+  }
 
   Container _buildCountDetails(ProfileController logic) {
     return Container(

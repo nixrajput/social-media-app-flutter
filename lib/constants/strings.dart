@@ -104,9 +104,8 @@ abstract class StringValues {
   static const dobFormat = 'dd mmm, yyyy';
   static const select = 'Select';
   static const noData = 'No data to show at the moment';
-  static const noFollowing = "You are not following any users at the moment.";
-  static const noFollower =
-      "You are not being followed by any users at the moment.";
+  static const noFollowing = "Not following anyone yet.";
+  static const noFollower = "No followers yet.";
   static const nothingToShow = "Nothing to show at the moment";
   static const internetConnError =
       'Internet connection is poor or unavailable.';

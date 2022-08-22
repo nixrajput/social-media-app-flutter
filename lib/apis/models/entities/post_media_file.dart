@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:social_media_app/apis/models/entities/media_file.dart';
 
 part 'post_media_file.g.dart';
 
@@ -8,7 +7,8 @@ part 'post_media_file.g.dart';
 class PostMediaFile extends Equatable {
   const PostMediaFile({
     this.id,
-    this.link,
+    this.publicId,
+    this.url,
     this.mediaType,
   });
 
@@ -20,8 +20,11 @@ class PostMediaFile extends Equatable {
   @JsonKey(name: '_id')
   final String? id;
 
-  @JsonKey(name: 'link')
-  final MediaFile? link;
+  @JsonKey(name: 'public_id')
+  final String? publicId;
+
+  @JsonKey(name: 'url')
+  final String? url;
 
   @JsonKey(name: 'mediaType')
   final String? mediaType;
@@ -29,7 +32,8 @@ class PostMediaFile extends Equatable {
   @override
   List<Object?> get props => <Object?>[
         id,
-        link,
+        publicId,
+        url,
         mediaType,
       ];
 }

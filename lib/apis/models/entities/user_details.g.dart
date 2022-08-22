@@ -14,7 +14,7 @@ UserDetails _$UserDetailsFromJson(Map<String, dynamic> json) => UserDetails(
       uname: json['uname'] as String,
       avatar: json['avatar'] == null
           ? null
-          : UserAvatar.fromJson(json['avatar'] as Map<String, dynamic>),
+          : MediaFile.fromJson(json['avatar'] as Map<String, dynamic>),
       gender: json['gender'] as String?,
       dob: json['dob'] as String?,
       about: json['about'] as String?,

@@ -189,11 +189,11 @@ class PostDetailsWidget extends StatelessWidget {
           (img) {
             if (img.mediaType == "video") {
               return NxVideoPlayerWidget(
-                url: img.link!.url!,
+                url: img.url!,
               );
             }
             return NxNetworkImage(
-              imageUrl: img.link!.url!,
+              imageUrl: img.url!,
               imageFit: BoxFit.cover,
               width: Dimens.screenWidth,
               height: Dimens.screenWidth,

@@ -22,7 +22,7 @@ class PostThumbnailWidget extends StatelessWidget {
 
     return post.mediaFiles![0].mediaType == "video"
         ? NxVideoPlayerWidget(
-            url: post.mediaFiles![0].link!.url!,
+            url: post.mediaFiles![0].url!,
             showControls: false,
             configuration: const BetterPlayerConfiguration(
               autoPlay: false,
@@ -36,7 +36,7 @@ class PostThumbnailWidget extends StatelessWidget {
             ),
           )
         : NxNetworkImage(
-            imageUrl: post.mediaFiles![0].link!.url!,
+            imageUrl: post.mediaFiles![0].url!,
           );
   }
 }

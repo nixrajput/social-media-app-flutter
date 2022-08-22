@@ -76,13 +76,13 @@ class ProfileController extends GetxController {
       _isLoading = false;
       update();
       AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
+      AppUtils.printLog(e.toString());
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading = false;
       update();
       AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
+      AppUtils.printLog(exc.toString());
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }

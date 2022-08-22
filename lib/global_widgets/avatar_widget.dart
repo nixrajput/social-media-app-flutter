@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/apis/models/entities/user_avatar.dart';
+import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/global_widgets/circular_asset_image.dart';
@@ -13,7 +13,7 @@ class AvatarWidget extends StatelessWidget {
     this.fit,
   }) : super(key: key);
 
-  final UserAvatar? avatar;
+  final MediaFile? avatar;
   final double? size;
   final BoxFit? fit;
 

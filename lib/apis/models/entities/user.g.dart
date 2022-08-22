@@ -15,7 +15,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       profession: json['profession'] as String?,
       avatar: json['avatar'] == null
           ? null
-          : UserAvatar.fromJson(json['avatar'] as Map<String, dynamic>),
+          : MediaFile.fromJson(json['avatar'] as Map<String, dynamic>),
       accountType: json['accountType'] as String,
       accountStatus: json['accountStatus'] as String,
       isVerified: json['isVerified'] as bool,

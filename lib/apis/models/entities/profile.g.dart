@@ -15,7 +15,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       uname: json['uname'] as String,
       avatar: json['avatar'] == null
           ? null
-          : UserAvatar.fromJson(json['avatar'] as Map<String, dynamic>),
+          : MediaFile.fromJson(json['avatar'] as Map<String, dynamic>),
       phone: json['phone'] == null
           ? null
           : Phone.fromJson(json['phone'] as Map<String, dynamic>),
@@ -43,6 +43,9 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       lastActive: json['lastActive'] == null
           ? null
           : DateTime.parse(json['lastActive'] as String),
+      loggedInDevices: (json['loggedInDevices'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
@@ -75,5 +78,6 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'resetPasswordToken': instance.resetPasswordToken,
       'resetPasswordExpire': instance.resetPasswordExpire,
       'lastActive': instance.lastActive?.toIso8601String(),
+      'loggedInDevices': instance.loggedInDevices,
       'createdAt': instance.createdAt.toIso8601String(),
     };

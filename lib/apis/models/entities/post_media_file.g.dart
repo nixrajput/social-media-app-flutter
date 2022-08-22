@@ -9,15 +9,15 @@ part of 'post_media_file.dart';
 PostMediaFile _$PostMediaFileFromJson(Map<String, dynamic> json) =>
     PostMediaFile(
       id: json['_id'] as String?,
-      link: json['link'] == null
-          ? null
-          : MediaFile.fromJson(json['link'] as Map<String, dynamic>),
+      publicId: json['public_id'] as String?,
+      url: json['url'] as String?,
       mediaType: json['mediaType'] as String?,
     );
 
 Map<String, dynamic> _$PostMediaFileToJson(PostMediaFile instance) =>
     <String, dynamic>{
       '_id': instance.id,
-      'link': instance.link,
+      'public_id': instance.publicId,
+      'url': instance.url,
       'mediaType': instance.mediaType,
     };

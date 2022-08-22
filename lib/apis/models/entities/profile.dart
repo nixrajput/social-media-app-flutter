@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/phone.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
-import 'package:social_media_app/apis/models/entities/user_avatar.dart';
 
 part 'profile.g.dart';
 
@@ -37,6 +37,7 @@ class Profile extends Equatable {
     this.resetPasswordToken,
     this.resetPasswordExpire,
     this.lastActive,
+    this.loggedInDevices,
     required this.createdAt,
   });
 
@@ -64,7 +65,7 @@ class Profile extends Equatable {
   final String uname;
 
   @JsonKey(name: 'avatar')
-  final UserAvatar? avatar;
+  final MediaFile? avatar;
 
   @JsonKey(name: 'phone')
   final Phone? phone;
@@ -129,6 +130,9 @@ class Profile extends Equatable {
   @JsonKey(name: 'lastActive')
   final DateTime? lastActive;
 
+  @JsonKey(name: 'loggedInDevices')
+  final List<String>? loggedInDevices;
+
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
 
@@ -162,6 +166,7 @@ class Profile extends Equatable {
         resetPasswordToken,
         resetPasswordExpire,
         lastActive,
+        loggedInDevices,
         createdAt,
       ];
 }

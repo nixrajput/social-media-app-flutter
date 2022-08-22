@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
-import 'package:social_media_app/apis/models/entities/user_avatar.dart';
 
 part 'user_details.g.dart';
 
@@ -49,7 +49,7 @@ class UserDetails extends Equatable {
   final String uname;
 
   @JsonKey(name: 'avatar')
-  final UserAvatar? avatar;
+  final MediaFile? avatar;
 
   @JsonKey(name: 'gender')
   final String? gender;

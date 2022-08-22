@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/notification.dart';
-import 'package:social_media_app/apis/models/entities/user.dart';
-import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/circular_asset_image.dart';
-import 'package:social_media_app/global_widgets/circular_network_image.dart';
+import 'package:social_media_app/global_widgets/avatar_widget.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
 class NotificationWidget extends StatelessWidget {
   const NotificationWidget({Key? key, required this.notification})
@@ -22,7 +20,14 @@ class NotificationWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildProfileImage(notification.user),
+          GestureDetector(
+            onTap: () =>
+                RouteManagement.goToUserProfileView(notification.user.id),
+            child: AvatarWidget(
+              avatar: notification.user.avatar,
+              size: Dimens.twentyFour,
+            ),
+          ),
           Dimens.boxWidth8,
           Expanded(
             child: Column(
@@ -62,19 +67,6 @@ class NotificationWidget extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildProfileImage(User? user) {
-    if (user != null && user.avatar != null && user.avatar?.url != null) {
-      return NxCircleNetworkImage(
-        imageUrl: user.avatar!.url!,
-        radius: Dimens.twentyFour,
-      );
-    }
-    return NxCircleAssetImage(
-      imgAsset: AssetValues.avatar,
-      radius: Dimens.twentyFour,
     );
   }
 }
