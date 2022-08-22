@@ -28,6 +28,7 @@ dependencies:
   http: ^0.13.5
   intl: ^0.17.0
   get_time_ago: ^1.1.5
+  cloudinary: ^1.0.0
 
   url_launcher: ^6.1.5
   animations: ^2.0.3
@@ -50,9 +51,9 @@ dependencies:
 
   get: ^4.6.5
   get_storage: ^2.0.3
-  built_value: ^8.4.0
+  built_value: ^8.4.1
   json_annotation: ^4.6.0
-  equatable: ^2.0.4
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -60,7 +61,7 @@ dev_dependencies:
 
   flutter_lints: ^2.0.1
   flutter_launcher_icons: ^0.10.0
-  flutter_native_splash: ^2.2.7
+  flutter_native_splash: ^2.2.8
 
   build_runner: ^2.2.0
   json_serializable: ^6.3.1
@@ -84,6 +85,10 @@ flutter:
           weight: 700
         - asset: assets/fonts/Lato-Black.ttf
           weight: 900
-        - asset: assets/fonts/Lato-Light.ttf
+        - asset: assets/fonts/Lato-Italic.ttf
           style: italic
+
+    - family: Muge
+      fonts:
+        - asset: assets/fonts/MugeRegular.ttf
 

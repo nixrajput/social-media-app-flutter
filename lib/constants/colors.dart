@@ -19,7 +19,6 @@ abstract class ColorValues {
 
   static const Color primaryColor = Color(0xFF2878F0);
   static const Color primaryLightColor = Color(0xFF629AEE);
-  static const Color primaryTextColor = Color(0xFF505050);
 
   static const Color successColor = Color(0xFF4CAF50);
   static const Color errorColor = Color(0xFFF44336);
@@ -32,6 +31,11 @@ abstract class ColorValues {
   static const Color darkGrayColor = Color(0xff787878);
   static const Color darkerGrayColor = Color(0xff505050);
   static const Color lightGrayColor = Color(0xffd2d2d2);
+
+  static const Color lightBodyTextColor = Color(0xFF3C3C3C);
+  static const Color lightSubtitleTextColor = Color(0xFF6E6E6E);
+  static const Color darkBodyTextColor = Color(0xFFE8E8E8);
+  static const Color darkSubtitleTextColor = Color(0xFFA0A0A0);
 
   static const Color lightBgColor = Color.fromRGBO(240, 240, 240, 1.0);
   static const Color darkBgColor = Color.fromRGBO(28, 29, 49, 1.0);

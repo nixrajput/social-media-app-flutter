@@ -17,7 +17,7 @@ class UserProfileController extends GetxController {
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final _userProfile = UserDetailsResponse().obs;
+  final _userProfile = const UserDetailsResponse().obs;
   final _isLoading = false.obs;
   final _hasError = false.obs;
   final _error = ''.obs;
@@ -53,8 +53,6 @@ class UserProfileController extends GetxController {
       final response = await _apiProvider.getUserDetails(_auth.token, userId);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      print(decodedData);
 
       if (response.statusCode == 200) {
         setUserProfileData = UserDetailsResponse.fromJson(decodedData);

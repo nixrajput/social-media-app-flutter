@@ -51,91 +51,112 @@ class ChangePasswordView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      TextFormField(
-                        obscureText: logic.showPassword,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
-                          ),
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
-                          ),
-                          hintText: StringValues.currentPassword,
-                          suffixIcon: InkWell(
-                            onTap: logic.toggleViewPassword,
-                            child: Icon(
-                              logic.showPassword
-                                  ? CupertinoIcons.eye
-                                  : CupertinoIcons.eye_slash,
+                      Container(
+                        height: Dimens.fiftySix,
+                        constraints:
+                            BoxConstraints(maxWidth: Dimens.screenWidth),
+                        child: TextFormField(
+                          obscureText: logic.showPassword,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(Dimens.eight),
+                            ),
+                            hintStyle: AppStyles.style14Normal.copyWith(
+                              color: ColorValues.grayColor,
+                            ),
+                            hintText: StringValues.currentPassword,
+                            suffixIcon: InkWell(
+                              onTap: logic.toggleViewPassword,
+                              child: Icon(
+                                logic.showPassword
+                                    ? CupertinoIcons.eye
+                                    : CupertinoIcons.eye_slash,
+                              ),
                             ),
                           ),
+                          keyboardType: TextInputType.visiblePassword,
+                          maxLines: 1,
+                          style: AppStyles.style14Normal.copyWith(
+                            color: Theme.of(Get.context!)
+                                .textTheme
+                                .bodyText1!
+                                .color,
+                          ),
+                          controller: logic.oldPasswordTextController,
+                          onEditingComplete: logic.focusNode.nextFocus,
                         ),
-                        keyboardType: TextInputType.visiblePassword,
-                        maxLines: 1,
-                        style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.oldPasswordTextController,
-                        onEditingComplete: logic.focusNode.nextFocus,
                       ),
-                      Dimens.boxHeight24,
-                      TextFormField(
-                        obscureText: logic.showNewPassword,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
-                          ),
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
-                          ),
-                          hintText: StringValues.newPassword,
-                          suffixIcon: InkWell(
-                            onTap: logic.toggleViewNewPassword,
-                            child: Icon(
-                              logic.showNewPassword
-                                  ? CupertinoIcons.eye
-                                  : CupertinoIcons.eye_slash,
+                      Dimens.boxHeight16,
+                      Container(
+                        height: Dimens.fiftySix,
+                        constraints:
+                            BoxConstraints(maxWidth: Dimens.screenWidth),
+                        child: TextFormField(
+                          obscureText: logic.showNewPassword,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(Dimens.eight),
+                            ),
+                            hintStyle: AppStyles.style14Normal.copyWith(
+                              color: ColorValues.grayColor,
+                            ),
+                            hintText: StringValues.newPassword,
+                            suffixIcon: InkWell(
+                              onTap: logic.toggleViewNewPassword,
+                              child: Icon(
+                                logic.showNewPassword
+                                    ? CupertinoIcons.eye
+                                    : CupertinoIcons.eye_slash,
+                              ),
                             ),
                           ),
+                          keyboardType: TextInputType.visiblePassword,
+                          maxLines: 1,
+                          style: AppStyles.style14Normal.copyWith(
+                            color: Theme.of(Get.context!)
+                                .textTheme
+                                .bodyText1!
+                                .color,
+                          ),
+                          controller: logic.newPasswordTextController,
+                          onEditingComplete: logic.focusNode.nextFocus,
                         ),
-                        keyboardType: TextInputType.visiblePassword,
-                        maxLines: 1,
-                        style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.newPasswordTextController,
-                        onEditingComplete: logic.focusNode.nextFocus,
                       ),
-                      Dimens.boxHeight24,
-                      TextFormField(
-                        obscureText: logic.showNewPassword,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
-                          ),
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
-                          ),
-                          hintText: StringValues.confirmPassword,
-                          suffixIcon: InkWell(
-                            onTap: logic.toggleViewNewPassword,
-                            child: Icon(
-                              logic.showNewPassword
-                                  ? CupertinoIcons.eye
-                                  : CupertinoIcons.eye_slash,
+                      Dimens.boxHeight16,
+                      Container(
+                        height: Dimens.fiftySix,
+                        constraints:
+                            BoxConstraints(maxWidth: Dimens.screenWidth),
+                        child: TextFormField(
+                          obscureText: logic.showNewPassword,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(Dimens.eight),
+                            ),
+                            hintStyle: AppStyles.style14Normal.copyWith(
+                              color: ColorValues.grayColor,
+                            ),
+                            hintText: StringValues.confirmPassword,
+                            suffixIcon: InkWell(
+                              onTap: logic.toggleViewNewPassword,
+                              child: Icon(
+                                logic.showNewPassword
+                                    ? CupertinoIcons.eye
+                                    : CupertinoIcons.eye_slash,
+                              ),
                             ),
                           ),
+                          keyboardType: TextInputType.visiblePassword,
+                          maxLines: 1,
+                          style: AppStyles.style14Normal.copyWith(
+                            color: Theme.of(Get.context!)
+                                .textTheme
+                                .bodyText1!
+                                .color,
+                          ),
+                          controller: logic.confirmPasswordTextController,
+                          onEditingComplete: logic.focusNode.unfocus,
                         ),
-                        keyboardType: TextInputType.visiblePassword,
-                        maxLines: 1,
-                        style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.confirmPasswordTextController,
-                        onEditingComplete: logic.focusNode.unfocus,
                       ),
                       Dimens.boxHeight40,
                       NxFilledButton(

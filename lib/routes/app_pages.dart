@@ -21,14 +21,14 @@ import 'package:social_media_app/modules/profile/bindings/following_list_binding
 import 'package:social_media_app/modules/profile/bindings/gender_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/name_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/username_binding.dart';
-import 'package:social_media_app/modules/profile/views/edit_about_view.dart';
-import 'package:social_media_app/modules/profile/views/edit_dob_view.dart';
-import 'package:social_media_app/modules/profile/views/edit_gender_view.dart';
-import 'package:social_media_app/modules/profile/views/edit_name_view.dart';
-import 'package:social_media_app/modules/profile/views/edit_profile_view.dart';
-import 'package:social_media_app/modules/profile/views/edit_username_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_views/edit_about_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_views/edit_dob_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_views/edit_gender_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_views/edit_name_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_views/edit_username_view.dart';
 import 'package:social_media_app/modules/profile/views/followers_list_view.dart';
 import 'package:social_media_app/modules/profile/views/following_list_view.dart';
+import 'package:social_media_app/modules/profile/views/profile_details_view.dart';
 import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/security_settings_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
@@ -103,7 +103,7 @@ abstract class AppPages {
     ),
     GetPage(
       name: _Routes.editProfile,
-      page: EditProfileView.new,
+      page: ProfileDetailsView.new,
       transitionDuration: transitionDuration,
       binding: EditProfileBinding(),
       transition: defaultTransition,

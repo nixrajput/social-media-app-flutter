@@ -71,7 +71,7 @@ class UsernameController extends GetxController {
     AppUtils.printLog("Check Username Request...");
 
     try {
-      final response = await _apiProvider.checkUsername(uname, _auth.token);
+      final response = await _apiProvider.checkUsername(_auth.token, uname);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

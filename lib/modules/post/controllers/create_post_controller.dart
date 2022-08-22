@@ -62,7 +62,7 @@ class CreatePostController extends GetxController {
 
       if (response.statusCode == 201) {
         captionTextController.clear();
-        await _postController.fetchAllPosts();
+        await _postController.fetchPosts();
         _isLoading.value = false;
         update();
         AppUtils.closeDialog();

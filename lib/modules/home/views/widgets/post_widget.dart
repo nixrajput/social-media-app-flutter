@@ -114,52 +114,7 @@ class PostWidget extends StatelessWidget {
                 NxIconButton(
                   icon: CupertinoIcons.ellipsis_vertical,
                   iconSize: Dimens.twenty,
-                  onTap: () {
-                    AppUtils.showBottomSheet(
-                      [
-                        ListTile(
-                          onTap: () {
-                            AppUtils.closeBottomSheet();
-                            RouteManagement.goToPostDetailsView(post.id, post);
-                          },
-                          leading: const Icon(CupertinoIcons.eye),
-                          title: Text(
-                            StringValues.viewPost,
-                            style: AppStyles.style16Bold,
-                          ),
-                        ),
-                        if (post.owner.id ==
-                            ProfileController.find.profileData.user!.id)
-                          ListTile(
-                            onTap: () {
-                              AppUtils.closeBottomSheet();
-                              Get.find<PostController>().deletePost(post.id);
-                            },
-                            leading: const Icon(CupertinoIcons.delete),
-                            title: Text(
-                              StringValues.delete,
-                              style: AppStyles.style16Bold,
-                            ),
-                          ),
-                        ListTile(
-                          onTap: AppUtils.closeBottomSheet,
-                          leading: const Icon(CupertinoIcons.share),
-                          title: Text(
-                            StringValues.share,
-                            style: AppStyles.style16Bold,
-                          ),
-                        ),
-                        ListTile(
-                          onTap: AppUtils.closeBottomSheet,
-                          leading: const Icon(CupertinoIcons.reply),
-                          title: Text(
-                            StringValues.report,
-                            style: AppStyles.style16Bold,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                  onTap: _showHeaderOptionBottomSheet,
                 ),
               ],
             ),
@@ -180,11 +135,11 @@ class PostWidget extends StatelessWidget {
                   imageUrl: img.url!,
                   imageFit: BoxFit.cover,
                   width: Dimens.screenWidth,
-                  height: Dimens.screenWidth,
                 ),
               )
               .toList(),
           options: CarouselOptions(
+            height: Dimens.screenWidth * 0.75,
             aspectRatio: 1 / 1,
             viewportFraction: 1.0,
             showIndicator: post.images!.length > 1 ? true : false,
@@ -210,11 +165,11 @@ class PostWidget extends StatelessWidget {
               imageUrl: img.link!.url!,
               imageFit: BoxFit.cover,
               width: Dimens.screenWidth,
-              height: Dimens.screenWidth,
             );
           },
         ).toList(),
         options: CarouselOptions(
+          height: Dimens.screenWidth * 0.75,
           aspectRatio: 1 / 1,
           viewportFraction: 1.0,
           showIndicator: post.mediaFiles!.length > 1 ? true : false,
@@ -237,21 +192,17 @@ class PostWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GetBuilder<PostLikeController>(
-                  builder: (con) => GestureDetector(
-                    onTap: () => con.toggleLikePost(post),
-                    child: Container(
-                      padding: Dimens.edgeInsets8_16,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(Get.context!).dividerColor,
-                        ),
-                        borderRadius: BorderRadius.circular(Dimens.thirtyTwo),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
+                  builder: (con) => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        onTap: () => con.toggleLikePost(post),
+                        child: CircleAvatar(
+                          backgroundColor:
+                              Theme.of(Get.context!).scaffoldBackgroundColor,
+                          radius: Dimens.twenty,
+                          child: Icon(
                             post.likes.contains(
                                     ProfileController.find.profileData.user?.id)
                                 ? Icons.favorite
@@ -261,67 +212,59 @@ class PostWidget extends StatelessWidget {
                                 ? ColorValues.errorColor
                                 : ColorValues.grayColor,
                           ),
-                          Dimens.boxWidth8,
-                          Text(
-                            '${post.likes.length}'.toCountingFormat(),
-                            style: AppStyles.style14Normal,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () =>
-                      RouteManagement.goToPostDetailsView(post.id, post),
-                  child: Container(
-                    padding: Dimens.edgeInsets8_16,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(Get.context!).dividerColor,
-                      ),
-                      borderRadius: BorderRadius.circular(Dimens.thirtyTwo),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.messenger_outline,
-                          color: ColorValues.grayColor,
                         ),
-                        Dimens.boxWidth8,
-                        Text(
-                          '${post.comments.length}'.toCountingFormat(),
-                          style: AppStyles.style14Normal,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: Dimens.edgeInsets8_16,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Theme.of(Get.context!).dividerColor,
-                    ),
-                    borderRadius: BorderRadius.circular(Dimens.thirtyTwo),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.bookmark_outline,
-                        color: ColorValues.grayColor,
                       ),
                       Dimens.boxWidth8,
                       Text(
-                        '${0}'.toCountingFormat(),
-                        style: AppStyles.style14Normal,
+                        '${post.likes.length}'.toCountingFormat(),
+                        style: AppStyles.style14Bold,
                       ),
                     ],
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () =>
+                          RouteManagement.goToPostDetailsView(post.id, post),
+                      child: CircleAvatar(
+                        backgroundColor:
+                            Theme.of(Get.context!).scaffoldBackgroundColor,
+                        radius: Dimens.twenty,
+                        child: const Icon(
+                          Icons.messenger_outline,
+                          color: ColorValues.grayColor,
+                        ),
+                      ),
+                    ),
+                    Dimens.boxWidth8,
+                    Text(
+                      '${post.comments.length}'.toCountingFormat(),
+                      style: AppStyles.style14Bold,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor:
+                          Theme.of(Get.context!).scaffoldBackgroundColor,
+                      radius: Dimens.twenty,
+                      child: const Icon(
+                        Icons.bookmark_outline,
+                        color: ColorValues.grayColor,
+                      ),
+                    ),
+                    Dimens.boxWidth8,
+                    Text(
+                      '${0}'.toCountingFormat(),
+                      style: AppStyles.style14Bold,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -344,5 +287,49 @@ class PostWidget extends StatelessWidget {
             // const Divider(thickness: 0.25),
           ],
         ),
+      );
+
+  _showHeaderOptionBottomSheet() => AppUtils.showBottomSheet(
+        [
+          ListTile(
+            onTap: () {
+              AppUtils.closeBottomSheet();
+              RouteManagement.goToPostDetailsView(post.id, post);
+            },
+            leading: const Icon(CupertinoIcons.eye),
+            title: Text(
+              StringValues.viewPost,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          if (post.owner.id == ProfileController.find.profileData.user!.id)
+            ListTile(
+              onTap: () {
+                AppUtils.closeBottomSheet();
+                Get.find<PostController>().deletePost(post.id);
+              },
+              leading: const Icon(CupertinoIcons.delete),
+              title: Text(
+                StringValues.delete,
+                style: AppStyles.style16Bold,
+              ),
+            ),
+          ListTile(
+            onTap: AppUtils.closeBottomSheet,
+            leading: const Icon(CupertinoIcons.share),
+            title: Text(
+              StringValues.share,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: AppUtils.closeBottomSheet,
+            leading: const Icon(CupertinoIcons.reply),
+            title: Text(
+              StringValues.report,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+        ],
       );
 }

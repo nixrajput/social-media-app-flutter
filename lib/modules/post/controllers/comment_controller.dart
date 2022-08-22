@@ -90,8 +90,7 @@ class CommentController extends GetxController {
     if (commentId.isEmpty) return;
 
     try {
-      final response =
-          await _apiProvider.deleteDeviceInfo(_auth.token, commentId);
+      final response = await _apiProvider.deleteComment(_auth.token, commentId);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 

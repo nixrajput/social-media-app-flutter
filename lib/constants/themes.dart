@@ -32,10 +32,20 @@ abstract class AppThemes {
     ),
     textTheme: const TextTheme().copyWith(
       bodyText1: const TextStyle(
-        color: ColorValues.darkBgColor,
+        color: ColorValues.lightBodyTextColor,
+        fontFamily: 'Lato',
+      ),
+      bodyText2: const TextStyle(
+        color: ColorValues.lightBodyTextColor,
+        fontFamily: 'Lato',
       ),
       subtitle1: const TextStyle(
-        color: ColorValues.darkGrayColor,
+        color: ColorValues.lightSubtitleTextColor,
+        fontFamily: 'Lato',
+      ),
+      subtitle2: const TextStyle(
+        color: ColorValues.lightSubtitleTextColor,
+        fontFamily: 'Lato',
       ),
     ),
     brightness: Brightness.light,
@@ -72,10 +82,20 @@ abstract class AppThemes {
     ),
     textTheme: const TextTheme().copyWith(
       bodyText1: const TextStyle(
-        color: ColorValues.lightBgColor,
+        color: ColorValues.darkBodyTextColor,
+        fontFamily: 'Lato',
+      ),
+      bodyText2: const TextStyle(
+        color: ColorValues.darkBodyTextColor,
+        fontFamily: 'Lato',
       ),
       subtitle1: const TextStyle(
-        color: ColorValues.grayColor,
+        color: ColorValues.darkSubtitleTextColor,
+        fontFamily: 'Lato',
+      ),
+      subtitle2: const TextStyle(
+        color: ColorValues.darkSubtitleTextColor,
+        fontFamily: 'Lato',
       ),
     ),
     brightness: Brightness.dark,

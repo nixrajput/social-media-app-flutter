@@ -7,6 +7,7 @@ import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/welcome/widgets/welcome_shape_painter.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -26,12 +27,12 @@ class WelcomeView extends StatelessWidget {
             SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Padding(
-                padding: Dimens.edgeInsets16,
+                padding: Dimens.edgeInsets0_16,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Dimens.boxHeight60,
+                    Dimens.boxHeight48,
                     Text(
                       "${StringValues.welcome} ${StringValues.to}"
                           .toTitleCase(),
@@ -39,30 +40,32 @@ class WelcomeView extends StatelessWidget {
                       style: AppStyles.style20Normal,
                     ),
                     Dimens.boxHeight8,
-                    Text(
-                      StringValues.appName,
-                      textAlign: TextAlign.center,
-                      style: AppStyles.style40Bold.copyWith(
-                        fontWeight: FontWeight.w900,
+                    Center(
+                      child: AppUtils.buildAppLogo(fontSize: Dimens.fourty),
+                    ),
+                    Dimens.boxHeight24,
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: Dimens.screenWidth,
+                        maxHeight: Dimens.screenHeight,
+                      ),
+                      child: NxAssetImage(
+                        imgAsset: AssetValues.welcome,
+                        height: Dimens.screenWidth,
+                        fit: BoxFit.contain,
                       ),
                     ),
-                    Dimens.boxHeight32,
-                    NxAssetImage(
-                      imgAsset: AssetValues.welcome,
-                      fit: BoxFit.contain,
-                      height: Dimens.screenWidth * 0.75,
-                    ),
-                    Dimens.boxHeight48,
+                    Dimens.boxHeight24,
                     NxFilledButton(
                       label: StringValues.login.toUpperCase(),
                       onTap: RouteManagement.goToLoginView,
                     ),
-                    Dimens.boxHeight20,
+                    Dimens.boxHeight16,
                     NxOutlinedButton(
                       label: StringValues.register.toUpperCase(),
                       onTap: RouteManagement.goToRegisterView,
                     ),
-                    Dimens.boxHeight60,
+                    Dimens.boxHeight48,
                   ],
                 ),
               ),

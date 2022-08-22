@@ -159,4 +159,26 @@ abstract class StringValues {
   static const comments = "Comments";
   static const twoFaAuth = "Two-factor authentication";
   static const noNotifications = "No notifications at the moment.";
+  static const profession = 'Profession';
+  static const nameHelpText =
+      "Help people discover your account by using the name you're known by: either your full name, nickname, or business name.";
+  static const accountSettingsHelp =
+      'See information about your account, download an archive of your data or learn about account deactivation options.';
+  static const securitySettingsHelp =
+      "Manage your account's security and keep tracks of your account's usage.";
+  static const privacySettingsHelp =
+      "Manage what information you see and share on Rippl.";
+  static const helpSettingsHelp =
+      "Get help from Rippl support and report any bug or problem.";
+  static const aboutSettingsHelp = "See information about the application.";
+  static const themeSettingsHelp = "Manage application theme modes.";
+  static const deactivateAccount = 'Deactivate Account';
+  static const downloadArchiveOfData = 'Download an archive of your data';
+  static const changeEmail = 'Change Email address';
+  static const changePhoneNo = 'Change Phone number';
+  static const verification = 'Verification';
+  static const request = 'Request';
+  static const twoFaAuthHelpText =
+      'Help protect your account from unauthorised access by requiring a second authentication method in addition to your password.';
+  static const moreDetails = 'More Details';
 }

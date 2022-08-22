@@ -2,13 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
-import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/circular_asset_image.dart';
-import 'package:social_media_app/global_widgets/circular_network_image.dart';
+import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -47,7 +45,13 @@ class UserWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildProfileImage(),
+                Hero(
+                  tag: user.id,
+                  child: AvatarWidget(
+                    avatar: user.avatar,
+                    size: Dimens.twentyFour,
+                  ),
+                ),
                 Dimens.boxWidth12,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +130,7 @@ class UserWidget extends StatelessWidget {
           onTap: () => logic.followUnfollowUser(user.id),
           padding: Dimens.edgeInsets0_8,
           borderWidth: Dimens.one,
-          width: Dimens.eighty,
+          width: Dimens.hundred,
           height: Dimens.thirtyTwo,
           borderRadius: Dimens.eight,
           labelStyle: AppStyles.style14Normal.copyWith(
@@ -136,17 +140,4 @@ class UserWidget extends StatelessWidget {
           ),
         ),
       );
-
-  Widget _buildProfileImage() {
-    if (user.avatar != null && user.avatar?.url != null) {
-      return NxCircleNetworkImage(
-        imageUrl: user.avatar!.url!,
-        radius: Dimens.twentyFour,
-      );
-    }
-    return NxCircleAssetImage(
-      imgAsset: AssetValues.avatar,
-      radius: Dimens.twentyFour,
-    );
-  }
 }

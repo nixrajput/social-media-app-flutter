@@ -17,6 +17,8 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
 
 abstract class AppUtils {
+  /// Show Loading Dialog
+
   static void showLoadingDialog() {
     closeDialog();
     Get.dialog<void>(
@@ -25,23 +27,29 @@ abstract class AppUtils {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Center(
-            child: CupertinoTheme(
-              data: CupertinoTheme.of(Get.context!).copyWith(
-                brightness: Brightness.light,
-                primaryColor: Colors.white,
+            child: Container(
+              padding: Dimens.edgeInsets16,
+              decoration: BoxDecoration(
+                color: Theme.of(Get.context!).dialogTheme.backgroundColor,
+                borderRadius: BorderRadius.circular(Dimens.eight),
+              ),
+              constraints: BoxConstraints(
+                maxWidth: Dimens.screenWidth,
+                maxHeight: Dimens.screenHeight,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const CircularProgressIndicator(
-                    color: ColorValues.whiteColor,
+                  CircularProgressIndicator(
+                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   ),
-                  Dimens.boxHeight8,
+                  Dimens.boxHeight12,
                   Text(
                     'Please wait...',
-                    style: AppStyles.style20Normal.copyWith(
-                      color: ColorValues.whiteColor,
+                    style: AppStyles.style16Bold.copyWith(
+                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                     ),
                   ),
                 ],
@@ -53,6 +61,17 @@ abstract class AppUtils {
       barrierDismissible: false,
     );
   }
+
+  /// Text Logo
+
+  static buildAppLogo({double? fontSize}) => Text(
+        StringValues.appName.toUpperCase(),
+        style: AppStyles.style24Bold.copyWith(
+          fontFamily: "Muge",
+          fontSize: fontSize,
+          letterSpacing: Dimens.four,
+        ),
+      );
 
   /// Show Simple Dialog
 
@@ -116,6 +135,8 @@ abstract class AppUtils {
     );
   }
 
+  /// Show No Internet Dialog
+
   static void showNoInternetDialog() {
     closeDialog();
     Get.dialog<void>(
@@ -151,6 +172,8 @@ abstract class AppUtils {
     );
   }
 
+  /// Show BottomSheet
+
   static void showBottomSheet(List<Widget> children, {double? borderRadius}) {
     closeBottomSheet();
     Get.bottomSheet(
@@ -173,6 +196,8 @@ abstract class AppUtils {
     );
   }
 
+  /// Show Overlay
+
   static void showOverlay(Function func) {
     Get.showOverlay(
       loadingWidget: const CupertinoActivityIndicator(),
@@ -183,6 +208,8 @@ abstract class AppUtils {
       },
     );
   }
+
+  /// Show SnackBar
 
   static void showSnackBar(String message, String type, {int? duration}) {
     closeSnackBar();
@@ -213,6 +240,8 @@ abstract class AppUtils {
     );
   }
 
+  /// Render Text Color
+
   static Color renderTextColor(String type) {
     if (type == StringValues.error) {
       return ColorValues.errorColor;
@@ -226,6 +255,8 @@ abstract class AppUtils {
     return Theme.of(Get.context!).textTheme.bodyText1!.color!;
   }
 
+  /// Render Icon Color
+
   static Color renderIconColor(String type) {
     if (type == StringValues.error) {
       return ColorValues.errorColor;
@@ -238,6 +269,8 @@ abstract class AppUtils {
     }
     return Theme.of(Get.context!).iconTheme.color!;
   }
+
+  /// Render Icon
 
   static IconData renderIcon(String type) {
     if (type == StringValues.error) {

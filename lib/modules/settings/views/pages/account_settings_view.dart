@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 
@@ -49,7 +50,7 @@ class AccountSettingsView extends StatelessWidget {
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
-                  StringValues.email,
+                  StringValues.changeEmail.toTitleCase(),
                   style: AppStyles.style16Normal,
                 ),
               ),
@@ -60,7 +61,40 @@ class AccountSettingsView extends StatelessWidget {
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
-                  StringValues.phoneNo,
+                  StringValues.changePhoneNo.toTitleCase(),
+                  style: AppStyles.style16Normal,
+                ),
+              ),
+              NxListTile(
+                leading: Icon(
+                  Icons.verified_outlined,
+                  size: Dimens.twentyFour,
+                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                ),
+                title: Text(
+                  '${StringValues.verification.toTitleCase()} ${StringValues.request.toTitleCase()}',
+                  style: AppStyles.style16Normal,
+                ),
+              ),
+              NxListTile(
+                leading: Icon(
+                  Icons.download_outlined,
+                  size: Dimens.twentyFour,
+                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                ),
+                title: Text(
+                  StringValues.downloadArchiveOfData,
+                  style: AppStyles.style16Normal,
+                ),
+              ),
+              NxListTile(
+                leading: Icon(
+                  Icons.heart_broken_outlined,
+                  size: Dimens.twentyFour,
+                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                ),
+                title: Text(
+                  StringValues.deactivateAccount,
                   style: AppStyles.style16Normal,
                 ),
               ),

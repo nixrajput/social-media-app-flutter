@@ -51,8 +51,8 @@ class HomeController extends GetxController {
     currentPageIndex = index;
     pageController.animateToPage(
       index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInCubic,
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.easeInOut,
     );
     update();
   }

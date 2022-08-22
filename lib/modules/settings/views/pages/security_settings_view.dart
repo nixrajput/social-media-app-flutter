@@ -50,7 +50,7 @@ class SecuritySettingsView extends StatelessWidget {
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
-                  StringValues.password,
+                  StringValues.changePassword,
                   style: AppStyles.style16Normal,
                 ),
                 onTap: RouteManagement.goToChangePasswordView,
@@ -76,6 +76,14 @@ class SecuritySettingsView extends StatelessWidget {
                 title: Text(
                   StringValues.twoFaAuth,
                   style: AppStyles.style16Normal,
+                ),
+                subtitle: RichText(
+                  text: TextSpan(
+                    text: StringValues.twoFaAuthHelpText,
+                    style: AppStyles.style14Normal.copyWith(
+                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                    ),
+                  ),
                 ),
               ),
               Dimens.boxHeight16,

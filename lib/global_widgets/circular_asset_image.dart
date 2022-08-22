@@ -7,18 +7,24 @@ class NxCircleAssetImage extends StatelessWidget {
     Key? key,
     required this.imgAsset,
     this.radius,
+    this.fit,
   }) : super(key: key);
 
   final String imgAsset;
   final double? radius;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
       backgroundColor: ColorValues.grayColor,
       radius: radius ?? Dimens.fourtyEight,
-      foregroundImage: AssetImage(
-        imgAsset,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(radius ?? Dimens.fourtyEight),
+        child: Image.asset(
+          imgAsset,
+          fit: fit ?? BoxFit.cover,
+        ),
       ),
     );
   }

@@ -9,26 +9,32 @@ class NxCircleNetworkImage extends StatelessWidget {
     Key? key,
     required this.imageUrl,
     this.radius,
+    this.fit,
   }) : super(key: key);
 
   final String imageUrl;
   final double? radius;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
       backgroundColor: ColorValues.grayColor,
       radius: radius ?? Dimens.fourtyEight,
-      foregroundImage: CachedNetworkImageProvider(
-        imageUrl,
-        errorListener: () => const Icon(
-          CupertinoIcons.info,
-          color: ColorValues.errorColor,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(radius ?? Dimens.fourtyEight),
+        child: CachedNetworkImage(
+          imageUrl: imageUrl,
+          fit: fit ?? BoxFit.cover,
+          progressIndicatorBuilder: (ctx, _, progress) =>
+              CircularProgressIndicator(
+            value: progress.progress,
+          ),
+          errorWidget: (ctx, _, child) => const Icon(
+            CupertinoIcons.info,
+            color: ColorValues.errorColor,
+          ),
         ),
-      ),
-      onForegroundImageError: (obj, stc) => const Icon(
-        CupertinoIcons.info,
-        color: ColorValues.errorColor,
       ),
     );
   }

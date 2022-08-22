@@ -369,7 +369,7 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> deleteDeviceInfo(String token, String commentId) async {
+  Future<http.Response> deleteComment(String token, String commentId) async {
     final response = await _client.delete(
       Uri.parse('${baseUrl! + AppUrls.deleteCommentEndpoint}?id=$commentId'),
       headers: {
@@ -434,7 +434,7 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> deleteComment(String token, String deviceId) async {
+  Future<http.Response> deleteDeviceInfo(String token, String deviceId) async {
     final response = await _client.delete(
       Uri.parse(
           '${baseUrl! + AppUrls.deleteDeviceInfoEndpoint}?deviceId=$deviceId'),

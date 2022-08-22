@@ -140,6 +140,7 @@ class AuthService extends GetxService {
 
   Future<void> saveLoginInfo() async {
     var deviceInfo = await getDeviceInfo();
+    await getDeviceId();
     var locationInfo = await getLocationInfo();
 
     final body = {

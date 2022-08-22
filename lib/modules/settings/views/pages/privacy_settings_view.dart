@@ -59,12 +59,6 @@ class PrivacySettingsView extends StatelessWidget {
                     StringValues.accountPrivacy,
                     style: AppStyles.style16Normal,
                   ),
-                  subtitle: Text(
-                    logic.profileData.user!.accountType.toTitleCase(),
-                    style: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-                    ),
-                  ),
                   onTap: () => _showAccountPrivacyDialog(logic),
                 ),
               ),

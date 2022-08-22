@@ -112,7 +112,7 @@ packages:
       name: built_value
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.4.0"
+    version: "8.4.1"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -169,6 +169,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  cloudinary:
+    dependency: "direct main"
+    description:
+      name: cloudinary
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   code_builder:
     dependency: transitive
     description:
@@ -309,6 +316,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.6"
   emoji_picker_flutter:
     dependency: "direct main"
     description:
@@ -322,7 +336,7 @@ packages:
       name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -439,7 +453,7 @@ packages:
       name: flutter_native_splash
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.7"
+    version: "2.2.8"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -1338,5 +1352,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.17.0 <3.0.0"
+  dart: ">=2.17.6 <3.0.0"
   flutter: ">=3.0.0"

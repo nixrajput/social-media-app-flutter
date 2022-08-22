@@ -29,7 +29,7 @@ class NotificationTabView extends StatelessWidget {
                   padding: Dimens.edgeInsets8_16,
                   showBackBtn: false,
                 ),
-                Dimens.boxHeight24,
+                Dimens.boxHeight16,
                 _buildNotificationBody(logic),
               ],
             ),

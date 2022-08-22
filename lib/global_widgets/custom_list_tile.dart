@@ -30,7 +30,7 @@ class NxListTile extends StatelessWidget {
       onLongPress: onLongPressed,
       child: Container(
         color: bgColor ?? Colors.transparent,
-        padding: padding ?? Dimens.edgeInsets8_0,
+        padding: padding ?? Dimens.edgeInsets12_0,
         width: Dimens.screenWidth,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
@@ -41,10 +41,10 @@ class NxListTile extends StatelessWidget {
           children: [
             Expanded(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   if (leading != null) leading!,
-                  if (title != null || subtitle != null) Dimens.boxWidth8,
+                  if (title != null || subtitle != null) Dimens.boxWidth16,
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,

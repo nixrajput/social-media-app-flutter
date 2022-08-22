@@ -55,6 +55,15 @@ class SettingsView extends StatelessWidget {
                     StringValues.account,
                     style: AppStyles.style16Normal,
                   ),
+                  subtitle: RichText(
+                    text: TextSpan(
+                      text: StringValues.accountSettingsHelp,
+                      style: AppStyles.style14Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                    ),
+                  ),
                   onTap: RouteManagement.goToAccountSettingsView,
                 ),
                 NxListTile(
@@ -67,6 +76,15 @@ class SettingsView extends StatelessWidget {
                   title: Text(
                     StringValues.security,
                     style: AppStyles.style16Normal,
+                  ),
+                  subtitle: RichText(
+                    text: TextSpan(
+                      text: StringValues.securitySettingsHelp,
+                      style: AppStyles.style14Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                    ),
                   ),
                   onTap: RouteManagement.goToSecuritySettingsView,
                 ),
@@ -81,6 +99,15 @@ class SettingsView extends StatelessWidget {
                     StringValues.privacy,
                     style: AppStyles.style16Normal,
                   ),
+                  subtitle: RichText(
+                    text: TextSpan(
+                      text: StringValues.privacySettingsHelp,
+                      style: AppStyles.style14Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                    ),
+                  ),
                   onTap: RouteManagement.goToPrivacySettingsView,
                 ),
                 NxListTile(
@@ -93,6 +120,15 @@ class SettingsView extends StatelessWidget {
                   title: Text(
                     StringValues.help,
                     style: AppStyles.style16Normal,
+                  ),
+                  subtitle: RichText(
+                    text: TextSpan(
+                      text: StringValues.helpSettingsHelp,
+                      style: AppStyles.style14Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                    ),
                   ),
                   onTap: RouteManagement.goToHelpSettingsView,
                 ),
@@ -107,6 +143,15 @@ class SettingsView extends StatelessWidget {
                     StringValues.about,
                     style: AppStyles.style16Normal,
                   ),
+                  subtitle: RichText(
+                    text: TextSpan(
+                      text: StringValues.aboutSettingsHelp,
+                      style: AppStyles.style14Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                    ),
+                  ),
                   onTap: RouteManagement.goToAboutSettingsView,
                 ),
                 NxListTile(
@@ -119,6 +164,15 @@ class SettingsView extends StatelessWidget {
                   title: Text(
                     StringValues.theme,
                     style: AppStyles.style16Normal,
+                  ),
+                  subtitle: RichText(
+                    text: TextSpan(
+                      text: StringValues.themeSettingsHelp,
+                      style: AppStyles.style14Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                    ),
                   ),
                   onTap: RouteManagement.goToThemeSettingsView,
                 ),
