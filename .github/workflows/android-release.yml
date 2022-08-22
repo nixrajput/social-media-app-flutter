@@ -17,7 +17,7 @@ jobs:
         with:
           flutter-version: '3.0.5'
       - run: flutter pub get
-      - run: flutter build apk --dart-define=CLOUDINARY_CLOUD_NAME=${{secrets.CLOUDINARY_CLOUD_NAME}} --dart-define=CLOUDINARY_UPLOAD_PRESET=${{secrets.CLOUDINARY_UPLOAD_PRESET}} --split-per-abi --obfuscate
+      - run: flutter build apk --dart-define=CLOUDINARY_CLOUD_NAME=${{secrets.CLOUDINARY_CLOUD_NAME}} --dart-define=CLOUDINARY_UPLOAD_PRESET=${{secrets.CLOUDINARY_UPLOAD_PRESET}} --split-per-abi --obfuscate --split-debug-info=/DebugInfo
       - name: Create a Release in GitHub
         uses: ncipollo/release-action@v1
         with:
