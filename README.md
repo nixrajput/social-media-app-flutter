@@ -29,6 +29,10 @@ A social media application developed using Flutter and GetX state management.
 
 ## Screenshots
 
+### Welcome Screen
+
+<img src="screenshots/welcome.png" alt="" width="400" />
+
 ### Login Screen
 
 <img src="screenshots/login.png" alt="" width="400" />
@@ -37,13 +41,13 @@ A social media application developed using Flutter and GetX state management.
 
 <img src="screenshots/register.png" alt="" width="400" />
 
-### Forgot Password Screen
+### Profile Screen
 
-<img src="screenshots/forgot.png" alt="" width="400" />
+<img src="screenshots/profile.png" alt="" width="400" />
 
-### Reset Password Screen
+### Settings Screen
 
-<img src="screenshots/reset.png" alt="" width="400" />
+<img src="screenshots/settings.png" alt="" width="400" />
 
 ## Connect With Me
 
