@@ -17,7 +17,6 @@ jobs:
         with:
           flutter-version: '3.0.5'
       - run: flutter pub get
-      - run: flutter test
       - run: flutter build apk --release --split-per-abi
       - run: flutter build appbundle
       - name: Create a Release in GitHub
