@@ -14,13 +14,13 @@ import 'package:social_media_app/global_widgets/cached_network_image.dart';
 import 'package:social_media_app/global_widgets/circular_asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_network_image.dart';
 import 'package:social_media_app/global_widgets/elevated_card.dart';
-import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
-import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/video_player_widget.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_like_controller.dart';
-import 'package:social_media_app/modules/home/views/widgets/video_player_widget.dart';
+import 'package:social_media_app/modules/home/views/widgets/post_view_widget.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -133,10 +133,16 @@ class PostWidget extends StatelessWidget {
         child: FlutterCarousel(
           items: post.images!
               .map(
-                (img) => NxNetworkImage(
-                  imageUrl: img.url!,
-                  imageFit: BoxFit.cover,
-                  width: Dimens.screenWidth,
+                (img) => GestureDetector(
+                  onTap: () => Get.to(() => PostViewWidget(post: post)),
+                  child: Hero(
+                    tag: post.id,
+                    child: NxNetworkImage(
+                      imageUrl: img.url!,
+                      imageFit: BoxFit.cover,
+                      width: Dimens.screenWidth,
+                    ),
+                  ),
                 ),
               )
               .toList(),
@@ -159,14 +165,27 @@ class PostWidget extends StatelessWidget {
         items: post.mediaFiles!.map(
           (img) {
             if (img.mediaType == "video") {
-              return NxVideoPlayerWidget(
-                url: img.url!,
+              return GestureDetector(
+                onTap: () => Get.to(() => PostViewWidget(post: post)),
+                child: Hero(
+                  tag: post.id,
+                  child: NxVideoPlayerWidget(
+                    url: img.url!,
+                    isSmallPlayer: true,
+                  ),
+                ),
               );
             }
-            return NxNetworkImage(
-              imageUrl: img.url!,
-              imageFit: BoxFit.cover,
-              width: Dimens.screenWidth,
+            return GestureDetector(
+              onTap: () => Get.to(() => PostViewWidget(post: post)),
+              child: Hero(
+                tag: post.id,
+                child: NxNetworkImage(
+                  imageUrl: img.url!,
+                  imageFit: BoxFit.cover,
+                  width: Dimens.screenWidth,
+                ),
+              ),
             );
           },
         ).toList(),
@@ -344,31 +363,24 @@ class PostWidget extends StatelessWidget {
           children: [
             Text(
               StringValues.deleteConfirmationText,
-              style: AppStyles.style20Bold,
+              style: AppStyles.style14Normal,
             ),
-            Dimens.boxHeight40,
+            Dimens.boxHeight24,
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                NxOutlinedButton(
-                  width: Dimens.hundred,
-                  height: Dimens.thirtySix,
-                  label: 'No',
-                  borderColor:
-                      Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  labelStyle: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                NxTextButton(
+                  label: StringValues.no,
+                  labelStyle: AppStyles.style16Bold.copyWith(
+                    color: ColorValues.errorColor,
                   ),
                   onTap: AppUtils.closeDialog,
                 ),
                 Dimens.boxWidth32,
-                NxFilledButton(
-                  width: Dimens.hundred,
-                  height: Dimens.thirtySix,
-                  label: 'Yes',
-                  bgColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  labelStyle: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(Get.context!).scaffoldBackgroundColor,
+                NxTextButton(
+                  label: StringValues.yes,
+                  labelStyle: AppStyles.style16Bold.copyWith(
+                    color: ColorValues.successColor,
                   ),
                   onTap: () async {
                     AppUtils.closeDialog();
@@ -377,7 +389,7 @@ class PostWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Dimens.boxHeight16,
+            Dimens.boxHeight8,
           ],
         ),
       ),

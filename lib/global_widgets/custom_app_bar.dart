@@ -14,12 +14,14 @@ class NxAppBar extends StatelessWidget {
     this.padding,
     this.titleStyle,
     this.bgColor,
+    this.backBtnColor,
   }) : super(key: key);
 
   final String? title;
   final TextStyle? titleStyle;
   final bool? showDivider;
   final Widget? leading;
+  final Color? backBtnColor;
   final bool? showBackBtn;
   final EdgeInsets? padding;
   final Color? bgColor;
@@ -45,7 +47,8 @@ class NxAppBar extends StatelessWidget {
                     onTap: RouteManagement.goToBack,
                     child: Icon(
                       CupertinoIcons.arrow_left,
-                      color: Theme.of(context).textTheme.bodyText1!.color,
+                      color: backBtnColor ??
+                          Theme.of(context).textTheme.bodyText1!.color,
                       size: Dimens.twentyFour,
                     ),
                   ),

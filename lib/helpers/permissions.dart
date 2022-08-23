@@ -59,4 +59,23 @@ abstract class AppPermissions {
     }
     return true;
   }
+
+// static Future<bool> checkPipPermission() async {
+//   var status = await Permission.;
+//   if (status.isDenied) {
+//     if (await Permission.location.request().isGranted) {
+//       return true;
+//     }
+//     return false;
+//   }
+//   if (status.isRestricted) {
+//     AppUtils.showError('Location Permission Error');
+//     return false;
+//   }
+//   if (status.isPermanentlyDenied) {
+//     await openAppSettings();
+//     return false;
+//   }
+//   return true;
+// }
 }

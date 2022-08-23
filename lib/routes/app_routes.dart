@@ -36,6 +36,7 @@ abstract class AppRoutes {
   static const createPost = _Routes.createPost;
   static const addCaption = _Routes.addCaption;
   static const postDetails = _Routes.postDetails;
+  static const postMediaView = _Routes.postMediaView;
   static const comments = _Routes.comments;
 
   static const userProfile = _Routes.userProfile;
@@ -77,6 +78,7 @@ abstract class _Routes {
   static const createPost = '/create_post';
   static const addCaption = '/add-caption';
   static const postDetails = '/post_details';
+  static const postMediaView = '/post-media-view';
   static const comments = '/comments';
 
   static const userProfile = '/user_profile';

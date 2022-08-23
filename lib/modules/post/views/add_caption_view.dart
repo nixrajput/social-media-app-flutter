@@ -78,7 +78,7 @@ class AddCaptionView extends StatelessWidget {
                     Dimens.boxHeight40,
                     NxFilledButton(
                       onTap: logic.createNewPost,
-                      label: StringValues.next.toUpperCase(),
+                      label: StringValues.post.toUpperCase(),
                     ),
                     Dimens.boxHeight16,
                   ],

@@ -67,7 +67,7 @@ class LoginView extends StatelessWidget {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(Dimens.eight),
                           ),
-                          hintText: StringValues.email,
+                          hintText: StringValues.emailOrUsername,
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
                           ),

@@ -1,8 +1,9 @@
-import 'package:better_player/better_player.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
+import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
-import 'package:social_media_app/modules/home/views/widgets/video_player_widget.dart';
+import 'package:social_media_app/global_widgets/video_player_widget.dart';
 
 class PostThumbnailWidget extends StatelessWidget {
   const PostThumbnailWidget({
@@ -14,6 +15,13 @@ class PostThumbnailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(Dimens.eight),
+      child: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
     if (post.images != null && post.images!.isNotEmpty) {
       return NxNetworkImage(
         imageUrl: post.images![0].url!,
@@ -21,19 +29,22 @@ class PostThumbnailWidget extends StatelessWidget {
     }
 
     return post.mediaFiles![0].mediaType == "video"
-        ? NxVideoPlayerWidget(
-            url: post.mediaFiles![0].url!,
-            showControls: false,
-            configuration: const BetterPlayerConfiguration(
-              autoPlay: false,
-              fit: BoxFit.contain,
-              aspectRatio: 1 / 1,
-              controlsConfiguration: BetterPlayerControlsConfiguration(
-                enableFullscreen: true,
-                showControlsOnInitialize: false,
+        ? Stack(
+            children: [
+              NxVideoPlayerWidget(
+                url: post.mediaFiles![0].url!,
                 showControls: false,
               ),
-            ),
+              Positioned(
+                bottom: Dimens.four,
+                right: Dimens.four,
+                child: Icon(
+                  Icons.play_circle_outline_rounded,
+                  color: ColorValues.whiteColor,
+                  size: Dimens.twenty,
+                ),
+              ),
+            ],
           )
         : NxNetworkImage(
             imageUrl: post.mediaFiles![0].url!,

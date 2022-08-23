@@ -18,6 +18,7 @@ abstract class StringValues {
   static const lastName = 'Last Name';
   static const email = 'Email';
   static const username = 'Username';
+  static const emailOrUsername = 'Email or username';
   static const password = 'Password';
   static const confirmPassword = 'Confirm Password';
   static const newPassword = 'New Password';
@@ -125,10 +126,13 @@ abstract class StringValues {
   static const usernameAvailable = 'Username available.';
   static const usernameNotAvailable = 'Username not available.';
   static const userIdNotFound = 'User Id not found.';
-  static const privateAccountWarning = 'Account is private.';
+  static const privateAccountWarning = 'This Account is private';
+  static const followAccountText =
+      'Follow this account to see their photos and videos.';
   static const notFollowingWarning = 'You are not following the user.';
   static const commentDeleteSuccess = 'Comment deleted.';
-  static const deleteConfirmationText = "Are you sure to delete?";
+  static const deleteConfirmationText =
+      "Are you sure you want to delete it? You can confirm your choice by selecting the option below.";
   static const yes = 'Yes';
   static const no = 'No';
   static const exit = 'Exit';

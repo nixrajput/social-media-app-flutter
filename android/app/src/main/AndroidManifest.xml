@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
    <application
         android:label="Rippl!"
@@ -21,7 +22,9 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
-            tools:targetApi="honeycomb">
+            android:supportsPictureInPicture="true"
+            tools:targetApi="n"
+            tools:ignore="Instantiatable">
 
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
@@ -36,7 +39,8 @@
        <activity
            android:name="com.yalantis.ucrop.UCropActivity"
            android:screenOrientation="fullSensor"
-           android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+           android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+           tools:ignore="MissingClass" />
 
         <meta-data
             android:name="flutterEmbedding"
