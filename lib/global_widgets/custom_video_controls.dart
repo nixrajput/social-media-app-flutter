@@ -8,8 +8,7 @@ class CustomControlsWidget extends StatefulWidget {
   final Function(bool visbility)? onControlsVisibilityChanged;
   final bool? showControls;
   final String timeLeft;
-  final String duration;
-  final bool isSmallPlayer;
+  final bool? isSmallPlayer;
 
   const CustomControlsWidget({
     Key? key,
@@ -17,8 +16,7 @@ class CustomControlsWidget extends StatefulWidget {
     this.onControlsVisibilityChanged,
     this.showControls = true,
     required this.timeLeft,
-    required this.duration,
-    required this.isSmallPlayer,
+    this.isSmallPlayer = false,
   }) : super(key: key);
 
   @override
@@ -26,16 +24,20 @@ class CustomControlsWidget extends StatefulWidget {
 }
 
 class CustomControlsWidgetState extends State<CustomControlsWidget> {
+  bool isMuted = false;
+
   @override
   Widget build(BuildContext context) {
-    if (!widget.showControls!) return const SizedBox();
+    if (widget.showControls! == false) {
+      return const SizedBox();
+    }
     return Positioned.fill(
       child: Column(
-        mainAxisAlignment: widget.isSmallPlayer
+        mainAxisAlignment: widget.isSmallPlayer!
             ? MainAxisAlignment.end
             : MainAxisAlignment.spaceBetween,
         children: [
-          if (!widget.isSmallPlayer)
+          if (widget.isSmallPlayer! == false)
             Align(
               alignment: Alignment.topRight,
               child: Padding(
@@ -108,13 +110,34 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
                         ? Icons.pause
                         : Icons.play_arrow_rounded,
                     color: ColorValues.whiteColor,
-                    size: widget.isSmallPlayer
+                    size: widget.isSmallPlayer!
                         ? Dimens.twentyEight
                         : Dimens.thirtyTwo,
                   ),
                 ),
-                RichText(
-                  text: TextSpan(text: widget.timeLeft),
+                // RichText(
+                //   text: TextSpan(text: widget.timeLeft),
+                // ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      setState(() {
+                        isMuted = !isMuted;
+                      });
+                      if (isMuted) {
+                        widget.controller!.setVolume(0.0);
+                      } else {
+                        widget.controller!.setVolume(0.5);
+                      }
+                    });
+                  },
+                  child: Icon(
+                    isMuted ? Icons.volume_off : Icons.volume_up,
+                    color: ColorValues.whiteColor,
+                    size: widget.isSmallPlayer!
+                        ? Dimens.twentyEight
+                        : Dimens.thirtyTwo,
+                  ),
                 ),
               ],
             ),

@@ -165,14 +165,12 @@ class PostWidget extends StatelessWidget {
         items: post.mediaFiles!.map(
           (img) {
             if (img.mediaType == "video") {
-              return GestureDetector(
-                onTap: () => Get.to(() => PostViewWidget(post: post)),
-                child: Hero(
-                  tag: post.id,
-                  child: NxVideoPlayerWidget(
-                    url: img.url!,
-                    isSmallPlayer: true,
-                  ),
+              return Hero(
+                tag: post.id,
+                child: NxVideoPlayerWidget(
+                  url: img.url!,
+                  isSmallPlayer: true,
+                  onTap: () => Get.to(() => PostViewWidget(post: post)),
                 ),
               );
             }

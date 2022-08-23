@@ -15,6 +15,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
+import 'package:video_compress/video_compress.dart';
 
 abstract class AppUtils {
   /// Show Loading Dialog
@@ -497,11 +498,21 @@ abstract class AppUtils {
     return resultList;
   }
 
+  /// Check if video file
   static bool isVideoFile(String path) {
     const videoFilesTypes = [".mp4", ".mkv"];
     var ext = p.extension(path);
-    printLog('extension : $ext');
-    printLog(videoFilesTypes.contains(ext).toString());
+    // printLog('extension : $ext');
+    // printLog(videoFilesTypes.contains(ext).toString());
     return videoFilesTypes.contains(ext);
+  }
+
+  /// Get Video Thumbnail
+  static Future<File> getVideoThumb(String path) async {
+    var thumbFile = await VideoCompress.getFileThumbnail(
+      path,
+      quality: 50,
+    );
+    return thumbFile;
   }
 }

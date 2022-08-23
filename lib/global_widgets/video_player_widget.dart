@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/global_widgets/custom_video_controls.dart';
 import 'package:social_media_app/helpers/utils.dart';
 
@@ -9,6 +13,7 @@ class NxVideoPlayerWidget extends StatefulWidget {
   final BetterPlayerConfiguration? configuration;
   final bool? showControls;
   final bool? isSmallPlayer;
+  final VoidCallback? onTap;
 
   const NxVideoPlayerWidget({
     Key? key,
@@ -16,6 +21,7 @@ class NxVideoPlayerWidget extends StatefulWidget {
     this.configuration,
     this.showControls = true,
     this.isSmallPlayer = false,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -41,30 +47,22 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
     _playerController.addEventsListener((evt) {
       AppUtils.printLog('event: ${evt.betterPlayerEventType}');
       AppUtils.printLog(evt.parameters.toString());
-      if (evt.betterPlayerEventType == BetterPlayerEventType.pipStart) {
-        setState(() {
-          showControls = false;
-        });
-      }
-      if (evt.betterPlayerEventType == BetterPlayerEventType.pipStop) {
-        setState(() {
-          showControls = true;
-        });
-      }
-      if (evt.parameters != null && evt.parameters!.containsKey('progress')) {
-        var progressMin = evt.parameters!['progress']
-            .toString()
-            .split(":")[1]
-            .toString()
-            .substring(0, 2);
-        var progressSec = evt.parameters!['progress']
-            .toString()
-            .split(":")[2]
-            .toString()
-            .substring(0, 2);
-        setState(() {
-          timeLeft = "$progressMin:$progressSec";
-        });
+      if (evt.betterPlayerEventType == BetterPlayerEventType.initialized) {
+        if (evt.parameters != null && evt.parameters!.containsKey('progress')) {
+          var progressMin = evt.parameters!['progress']
+              .toString()
+              .split(":")[1]
+              .toString()
+              .substring(0, 2);
+          var progressSec = evt.parameters!['progress']
+              .toString()
+              .split(":")[2]
+              .toString()
+              .substring(0, 2);
+          setState(() {
+            timeLeft = "$progressMin:$progressSec";
+          });
+        }
       }
     });
   }
@@ -89,11 +87,29 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
           BetterPlayerConfiguration(
             autoDispose: true,
             autoPlay: false,
-            looping: true,
             fit: BoxFit.cover,
             aspectRatio: 1 / 1,
             autoDetectFullscreenAspectRatio: true,
-            //showPlaceholderUntilPlay: true,
+            showPlaceholderUntilPlay: true,
+            placeholder: FutureBuilder<File>(
+              future: AppUtils.getVideoThumb(widget.url!),
+              builder: (ctx, data) {
+                if (data.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (!data.hasData) {
+                  return Container(
+                    color: ColorValues.grayColor.withOpacity(0.5),
+                  );
+                }
+                return Image.file(
+                  data.data!,
+                  fit: BoxFit.cover,
+                  width: Dimens.screenWidth,
+                  height: Dimens.screenWidth,
+                );
+              },
+            ),
             expandToFill: true,
             autoDetectFullscreenDeviceOrientation: true,
             deviceOrientationsOnFullScreen: [
@@ -102,10 +118,6 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
               DeviceOrientation.portraitUp,
             ],
             controlsConfiguration: BetterPlayerControlsConfiguration(
-              enableFullscreen: true,
-              enablePip: true,
-              pipMenuIcon: Icons.picture_in_picture,
-              enableOverflowMenu: false,
               showControlsOnInitialize: false,
               playerTheme: BetterPlayerTheme.custom,
               customControlsBuilder:
@@ -115,8 +127,7 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
                 onControlsVisibilityChanged: onControlsVisibilityChanged,
                 showControls: showControls,
                 timeLeft: timeLeft,
-                duration: duration,
-                isSmallPlayer: widget.isSmallPlayer ?? false,
+                isSmallPlayer: widget.isSmallPlayer,
               ),
             ),
           ),
@@ -130,9 +141,22 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BetterPlayer(
-      controller: _playerController,
-      key: _betterPlayerKey,
+    return GestureDetector(
+      onTap: () {
+        if (_playerController.isPlaying() == true) {
+          setState(() {
+            showControls = !showControls;
+          });
+        } else {
+          if (widget.isSmallPlayer == true) {
+            widget.onTap!.call();
+          }
+        }
+      },
+      child: BetterPlayer(
+        controller: _playerController,
+        key: _betterPlayerKey,
+      ),
     );
   }
 }
