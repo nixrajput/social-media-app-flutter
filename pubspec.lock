@@ -21,7 +21,7 @@ packages:
       name: animations
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.4"
   archive:
     dependency: transitive
     description:
@@ -505,7 +505,7 @@ packages:
       name: geocoding
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.5"
   geocoding_platform_interface:
     dependency: transitive
     description:

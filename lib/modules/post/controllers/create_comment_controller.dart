@@ -85,7 +85,7 @@ class CreateCommentController extends GetxController {
     AppUtils.closeFocus();
     if (commentTextController.text.isEmpty) return;
 
-    var postId = Get.arguments[0];
+    var postId = Get.arguments;
 
     if (postId == '' || postId == null) return;
 

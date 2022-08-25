@@ -9,9 +9,6 @@ part of 'post.dart';
 Post _$PostFromJson(Map<String, dynamic> json) => Post(
       id: json['_id'] as String,
       caption: json['caption'] as String?,
-      images: (json['images'] as List<dynamic>?)
-          ?.map((e) => PostImage.fromJson(e as Map<String, dynamic>))
-          .toList(),
       mediaFiles: (json['mediaFiles'] as List<dynamic>?)
           ?.map((e) => PostMediaFile.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -25,7 +22,6 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       '_id': instance.id,
       'caption': instance.caption,
-      'images': instance.images,
       'mediaFiles': instance.mediaFiles,
       'owner': instance.owner,
       'likes': instance.likes,

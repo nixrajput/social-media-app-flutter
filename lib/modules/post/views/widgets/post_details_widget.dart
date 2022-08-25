@@ -156,30 +156,6 @@ class PostDetailsWidget extends StatelessWidget {
       );
 
   Widget _buildPostBody() {
-    if (post.images != null && post.images!.isNotEmpty) {
-      return GestureDetector(
-        onDoubleTap: () {
-          Get.find<PostLikeController>().toggleLikePost(post);
-        },
-        child: FlutterCarousel(
-          items: post.images!
-              .map((img) => NxNetworkImage(
-                    imageUrl: img.url!,
-                    imageFit: BoxFit.cover,
-                    width: Dimens.screenWidth,
-                    height: Dimens.screenWidth,
-                  ))
-              .toList(),
-          options: CarouselOptions(
-            aspectRatio: 1 / 1,
-            viewportFraction: 1.0,
-            showIndicator: post.images!.length > 1 ? true : false,
-            floatingIndicator: false,
-            slideIndicator: CircularWaveSlideIndicator(),
-          ),
-        ),
-      );
-    }
     return GestureDetector(
       onDoubleTap: () {
         Get.find<PostLikeController>().toggleLikePost(post);

@@ -10,10 +10,10 @@ import 'package:social_media_app/global_widgets/video_player_widget.dart';
 class PostViewWidget extends StatelessWidget {
   const PostViewWidget({
     Key? key,
-    this.post,
+    required this.post,
   }) : super(key: key);
 
-  final Post? post;
+  final Post post;
 
   @override
   Widget build(BuildContext context) {
@@ -36,59 +36,33 @@ class PostViewWidget extends StatelessWidget {
   }
 
   Widget _buildBody() {
-    if (post!.images != null && post!.images!.isNotEmpty) {
-      return Hero(
-        tag: post!.id,
-        child: FlutterCarousel(
-          items: post!.images!
-              .map(
-                (img) => NxNetworkImage(
-                  imageUrl: img.url!,
-                  imageFit: BoxFit.cover,
-                  width: Dimens.screenWidth,
-                ),
-              )
-              .toList(),
-          options: CarouselOptions(
-            height: Dimens.screenWidth,
-            aspectRatio: 1 / 1,
-            viewportFraction: 1.0,
-            showIndicator: post!.images!.length > 1 ? true : false,
-            floatingIndicator: false,
-            slideIndicator: CircularWaveSlideIndicator(
-              indicatorBackgroundColor: ColorValues.darkGrayColor,
-              currentIndicatorColor: ColorValues.lightBgColor,
-            ),
-          ),
-        ),
-      );
-    }
-    return FlutterCarousel(
-      items: post!.mediaFiles!.map(
-        (img) {
-          if (img.mediaType == "video") {
-            return NxVideoPlayerWidget(
-              url: img.url!,
-              showControls: true,
-              isSmallPlayer: false,
+    return Hero(
+      tag: post.id,
+      child: FlutterCarousel(
+        items: post.mediaFiles!.map(
+          (img) {
+            if (img.mediaType == "video") {
+              return NxVideoPlayerWidget(
+                url: img.url!,
+              );
+            }
+            return NxNetworkImage(
+              height: Dimens.screenWidth,
+              imageUrl: img.url!,
+              imageFit: BoxFit.cover,
+              width: Dimens.screenWidth,
             );
-          }
-          return NxNetworkImage(
-            height: Dimens.screenWidth,
-            imageUrl: img.url!,
-            imageFit: BoxFit.cover,
-            width: Dimens.screenWidth,
-          );
-        },
-      ).toList(),
-      options: CarouselOptions(
-        aspectRatio: 1 / 1,
-        viewportFraction: 1.0,
-        showIndicator: post!.mediaFiles!.length > 1 ? true : false,
-        floatingIndicator: false,
-        slideIndicator: CircularWaveSlideIndicator(
-          indicatorBackgroundColor: ColorValues.darkGrayColor,
-          currentIndicatorColor: ColorValues.lightBgColor,
+          },
+        ).toList(),
+        options: CarouselOptions(
+          aspectRatio: 1 / 1,
+          viewportFraction: 1.0,
+          showIndicator: post.mediaFiles!.length > 1 ? true : false,
+          floatingIndicator: false,
+          slideIndicator: CircularWaveSlideIndicator(
+            indicatorBackgroundColor: ColorValues.darkGrayColor,
+            currentIndicatorColor: ColorValues.lightBgColor,
+          ),
         ),
       ),
     );

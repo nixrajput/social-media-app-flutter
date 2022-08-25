@@ -264,7 +264,9 @@ class UserProfileView extends StatelessWidget {
                 if (logic.userProfile.user!.accountType ==
                         StringValues.private &&
                     !profile.profileData.user!.following
-                        .contains(logic.userProfile.user?.id)) {
+                        .contains(logic.userProfile.user!.id) &&
+                    logic.userProfile.user!.id !=
+                        profile.profileData.user!.id) {
                   return;
                 }
                 RouteManagement.goToFollowersListView(
@@ -281,7 +283,9 @@ class UserProfileView extends StatelessWidget {
                 if (logic.userProfile.user!.accountType ==
                         StringValues.private &&
                     !profile.profileData.user!.following
-                        .contains(logic.userProfile.user?.id)) {
+                        .contains(logic.userProfile.user!.id) &&
+                    logic.userProfile.user!.id !=
+                        profile.profileData.user!.id) {
                   return;
                 }
                 RouteManagement.goToFollowingListView(
@@ -300,7 +304,8 @@ class UserProfileView extends StatelessWidget {
 
     if (logic.userProfile.user!.accountType == StringValues.private &&
         !profile.profileData.user!.following
-            .contains(logic.userProfile.user?.id)) {
+            .contains(logic.userProfile.user!.id) &&
+        logic.userProfile.user!.id != profile.profileData.user!.id) {
       return Center(
         child: Padding(
           padding: EdgeInsets.only(
@@ -352,7 +357,7 @@ class UserProfileView extends StatelessWidget {
         itemBuilder: (ctx, i) {
           var post = user.posts[i];
 
-          return PostThumbnailWidget(post: post);
+          return PostThumbnailWidget(mediaFile: post.mediaFiles!.first);
         },
       ),
     );

@@ -125,38 +125,6 @@ class PostWidget extends StatelessWidget {
       );
 
   Widget _buildPostBody() {
-    if (post.images != null && post.images!.isNotEmpty) {
-      return GestureDetector(
-        onDoubleTap: () {
-          Get.find<PostLikeController>().toggleLikePost(post);
-        },
-        child: FlutterCarousel(
-          items: post.images!
-              .map(
-                (img) => GestureDetector(
-                  onTap: () => Get.to(() => PostViewWidget(post: post)),
-                  child: Hero(
-                    tag: post.id,
-                    child: NxNetworkImage(
-                      imageUrl: img.url!,
-                      imageFit: BoxFit.cover,
-                      width: Dimens.screenWidth,
-                    ),
-                  ),
-                ),
-              )
-              .toList(),
-          options: CarouselOptions(
-            height: Dimens.screenWidth * 0.75,
-            aspectRatio: 1 / 1,
-            viewportFraction: 1.0,
-            showIndicator: post.images!.length > 1 ? true : false,
-            floatingIndicator: false,
-            slideIndicator: CircularWaveSlideIndicator(),
-          ),
-        ),
-      );
-    }
     return GestureDetector(
       onDoubleTap: () {
         Get.find<PostLikeController>().toggleLikePost(post);
@@ -247,7 +215,7 @@ class PostWidget extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () =>
-                          RouteManagement.goToPostDetailsView(post.id, post),
+                          RouteManagement.goToPostCommentsView(post.id),
                       child: CircleAvatar(
                         backgroundColor:
                             Theme.of(Get.context!).scaffoldBackgroundColor,
@@ -310,17 +278,17 @@ class PostWidget extends StatelessWidget {
 
   _showHeaderOptionBottomSheet() => AppUtils.showBottomSheet(
         [
-          ListTile(
-            onTap: () {
-              AppUtils.closeBottomSheet();
-              RouteManagement.goToPostDetailsView(post.id, post);
-            },
-            leading: const Icon(CupertinoIcons.eye),
-            title: Text(
-              StringValues.viewPost,
-              style: AppStyles.style16Bold,
-            ),
-          ),
+          // ListTile(
+          //   onTap: () {
+          //     AppUtils.closeBottomSheet();
+          //     RouteManagement.goToPostDetailsView(post.id, post);
+          //   },
+          //   leading: const Icon(CupertinoIcons.eye),
+          //   title: Text(
+          //     StringValues.viewPost,
+          //     style: AppStyles.style16Bold,
+          //   ),
+          // ),
           if (post.owner.id == ProfileController.find.profileData.user!.id)
             ListTile(
               onTap: () {

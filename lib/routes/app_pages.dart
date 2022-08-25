@@ -12,6 +12,7 @@ import 'package:social_media_app/modules/post/bindings/create_post_binding.dart'
 import 'package:social_media_app/modules/post/bindings/post_details_binding.dart';
 import 'package:social_media_app/modules/post/views/add_caption_view.dart';
 import 'package:social_media_app/modules/post/views/create_post_view.dart';
+import 'package:social_media_app/modules/post/views/post_comment_view.dart';
 import 'package:social_media_app/modules/post/views/post_details_view.dart';
 import 'package:social_media_app/modules/profile/bindings/about_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/change_password_binding.dart';
@@ -157,6 +158,14 @@ abstract class AppPages {
     GetPage(
       name: _Routes.addCaption,
       page: AddCaptionView.new,
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.comments,
+      page: PostCommentView.new,
+      binding: PostDetailsBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),

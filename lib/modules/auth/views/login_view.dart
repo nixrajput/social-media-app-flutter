@@ -72,13 +72,13 @@ class LoginView extends StatelessWidget {
                             color: ColorValues.grayColor,
                           ),
                         ),
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.text,
                         maxLines: 1,
                         style: AppStyles.style14Normal.copyWith(
                           color:
                               Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
-                        controller: logic.emailTextController,
+                        controller: logic.emailUnameTextController,
                         onEditingComplete: logic.focusNode.nextFocus,
                       ),
                     ),

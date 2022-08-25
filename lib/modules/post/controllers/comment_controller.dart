@@ -34,7 +34,7 @@ class CommentController extends GetxController {
   Future<void> _fetchComments() async {
     AppUtils.printLog("Fetch Comment Request...");
 
-    var postId = Get.arguments[0];
+    var postId = Get.arguments;
 
     if (postId == '' || postId == null) return;
 

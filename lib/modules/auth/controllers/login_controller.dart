@@ -21,7 +21,7 @@ class LoginController extends GetxController {
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final emailTextController = TextEditingController();
+  final emailUnameTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
   final FocusScopeNode focusNode = FocusScopeNode();
@@ -34,7 +34,7 @@ class LoginController extends GetxController {
   bool get showPassword => _showPassword.value;
 
   void _clearLoginTextControllers() {
-    emailTextController.clear();
+    emailUnameTextController.clear();
     passwordTextController.clear();
   }
 
@@ -60,7 +60,7 @@ class LoginController extends GetxController {
     }
 
     final body = {
-      'email': email,
+      'emailUname': email,
       'password': password,
     };
 
@@ -152,7 +152,7 @@ class LoginController extends GetxController {
   Future<void> login() async {
     AppUtils.closeFocus();
     await _login(
-      emailTextController.text.trim(),
+      emailUnameTextController.text.trim(),
       passwordTextController.text.trim(),
     );
   }

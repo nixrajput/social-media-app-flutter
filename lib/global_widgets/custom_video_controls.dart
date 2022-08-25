@@ -28,26 +28,24 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.showControls! == false) {
-      return const SizedBox();
-    }
-    return Positioned.fill(
-      child: Column(
-        mainAxisAlignment: widget.isSmallPlayer!
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.spaceBetween,
-        children: [
-          if (widget.isSmallPlayer! == false)
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: Dimens.edgeInsetsOnlyTop4.copyWith(
-                  right: Dimens.four,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
+    if (widget.showControls! == true) {
+      return Positioned.fill(
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            mainAxisAlignment: widget.isSmallPlayer!
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (widget.isSmallPlayer! == false)
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: Dimens.edgeInsetsOnlyTop4.copyWith(
+                      right: Dimens.four,
+                    ),
+                    child: InkWell(
                       child: CircleAvatar(
                         backgroundColor:
                             ColorValues.blackColor.withOpacity(0.75),
@@ -68,82 +66,61 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
                         }
                       }),
                     ),
-                    Dimens.boxWidth4,
+                  ),
+                ),
+              Padding(
+                padding: Dimens.edgeInsets8,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
                     InkWell(
-                      child: CircleAvatar(
-                        backgroundColor:
-                            ColorValues.blackColor.withOpacity(0.75),
-                        radius: Dimens.sixTeen,
-                        child: Icon(
-                          Icons.picture_in_picture_alt,
-                          color: Colors.white,
-                          size: Dimens.sixTeen,
-                        ),
+                      onTap: () {
+                        setState(() {
+                          if (widget.controller!.isPlaying()!) {
+                            widget.controller!.pause();
+                          } else {
+                            widget.controller!.play();
+                          }
+                        });
+                      },
+                      child: Icon(
+                        widget.controller!.isPlaying()!
+                            ? Icons.pause
+                            : Icons.play_arrow_rounded,
+                        color: ColorValues.whiteColor,
+                        size: widget.isSmallPlayer!
+                            ? Dimens.twentyEight
+                            : Dimens.thirtyTwo,
                       ),
-                      onTap: () => setState(() {
-                        widget.controller!.enablePictureInPicture(
-                            widget.controller!.betterPlayerGlobalKey!);
-                      }),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isMuted = !isMuted;
+                          if (isMuted) {
+                            widget.controller!.setVolume(0.0);
+                          } else {
+                            widget.controller!.setVolume(0.5);
+                          }
+                        });
+                      },
+                      child: Icon(
+                        isMuted ? Icons.volume_off : Icons.volume_up,
+                        color: ColorValues.whiteColor,
+                        size: widget.isSmallPlayer!
+                            ? Dimens.twentyEight
+                            : Dimens.thirtyTwo,
+                      ),
                     ),
                   ],
                 ),
               ),
-            ),
-          Padding(
-            padding: Dimens.edgeInsets8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      if (widget.controller!.isPlaying()!) {
-                        widget.controller!.pause();
-                      } else {
-                        widget.controller!.play();
-                      }
-                    });
-                  },
-                  child: Icon(
-                    widget.controller!.isPlaying()!
-                        ? Icons.pause
-                        : Icons.play_arrow_rounded,
-                    color: ColorValues.whiteColor,
-                    size: widget.isSmallPlayer!
-                        ? Dimens.twentyEight
-                        : Dimens.thirtyTwo,
-                  ),
-                ),
-                // RichText(
-                //   text: TextSpan(text: widget.timeLeft),
-                // ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      setState(() {
-                        isMuted = !isMuted;
-                      });
-                      if (isMuted) {
-                        widget.controller!.setVolume(0.0);
-                      } else {
-                        widget.controller!.setVolume(0.5);
-                      }
-                    });
-                  },
-                  child: Icon(
-                    isMuted ? Icons.volume_off : Icons.volume_up,
-                    color: ColorValues.whiteColor,
-                    size: widget.isSmallPlayer!
-                        ? Dimens.twentyEight
-                        : Dimens.thirtyTwo,
-                  ),
-                ),
-              ],
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        ),
+      );
+    }
+    return const SizedBox();
   }
 }

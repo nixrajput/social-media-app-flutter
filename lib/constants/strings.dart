@@ -167,7 +167,7 @@ abstract class StringValues {
   static const nameHelpText =
       "Help people discover your account by using the name you're known by: either your full name, nickname, or business name.";
   static const accountSettingsHelp =
-      'See information about your account, download an archive of your data or learn about account deactivation options.';
+      'See information about your account and learn about account deactivation options.';
   static const securitySettingsHelp =
       "Manage your account's security and keep tracks of your account's usage.";
   static const privacySettingsHelp =

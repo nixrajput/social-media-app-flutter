@@ -17,7 +17,8 @@ class CommentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: Dimens.edgeInsets8,
+      padding: Dimens.edgeInsets0,
+      margin: Dimens.edgeInsetsOnlyBottom16,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -26,7 +27,7 @@ class CommentWidget extends StatelessWidget {
           Row(
             children: [
               _buildProfileImage(comment.user),
-              Dimens.boxWidth4,
+              Dimens.boxWidth8,
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

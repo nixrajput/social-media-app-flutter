@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:social_media_app/apis/models/entities/post.dart';
+import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
@@ -10,10 +10,10 @@ import 'package:social_media_app/helpers/utils.dart';
 class PostThumbnailWidget extends StatelessWidget {
   const PostThumbnailWidget({
     Key? key,
-    required this.post,
+    required this.mediaFile,
   }) : super(key: key);
 
-  final Post post;
+  final PostMediaFile mediaFile;
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +24,11 @@ class PostThumbnailWidget extends StatelessWidget {
   }
 
   Widget _buildBody() {
-    if (post.images != null && post.images!.isNotEmpty) {
-      return NxNetworkImage(
-        imageUrl: post.images![0].url!,
-      );
-    }
-
-    if (post.mediaFiles![0].mediaType == "video") {
+    if (mediaFile.mediaType == "video") {
       return Stack(
         children: [
           FutureBuilder<File>(
-            future: AppUtils.getVideoThumb(post.mediaFiles![0].url!),
+            future: AppUtils.getVideoThumb(mediaFile.url!),
             builder: (ctx, data) {
               if (data.connectionState == ConnectionState.waiting) {
                 return Container(
@@ -74,7 +68,7 @@ class PostThumbnailWidget extends StatelessWidget {
     }
 
     return NxNetworkImage(
-      imageUrl: post.mediaFiles![0].url!,
+      imageUrl: mediaFile.url!,
     );
   }
 }

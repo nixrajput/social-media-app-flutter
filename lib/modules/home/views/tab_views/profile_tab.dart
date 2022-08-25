@@ -288,7 +288,9 @@ class ProfileTabView extends StatelessWidget {
         itemBuilder: (ctx, i) {
           var post = logic.profileData.user!.posts[i];
 
-          return PostThumbnailWidget(post: post);
+          return PostThumbnailWidget(
+            mediaFile: post.mediaFiles!.first,
+          );
         },
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:social_media_app/apis/models/entities/post_image.dart';
 import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 
@@ -11,7 +10,6 @@ class Post extends Equatable {
   const Post({
     required this.id,
     this.caption,
-    this.images,
     this.mediaFiles,
     required this.owner,
     required this.likes,
@@ -29,9 +27,6 @@ class Post extends Equatable {
 
   @JsonKey(name: 'caption')
   final String? caption;
-
-  @JsonKey(name: 'images')
-  final List<PostImage>? images;
 
   @JsonKey(name: 'mediaFiles')
   final List<PostMediaFile>? mediaFiles;
@@ -55,7 +50,6 @@ class Post extends Equatable {
   List<Object?> get props => <Object?>[
         id,
         caption,
-        images,
         mediaFiles,
         owner,
         likes,
