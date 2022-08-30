@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
-import 'package:social_media_app/modules/users/controllers/user_controller.dart';
+import 'package:social_media_app/modules/user/controllers/user_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class PeopleTab extends StatelessWidget {
@@ -62,14 +63,19 @@ class PeopleTab extends StatelessWidget {
                       )
                       .toList(),
                 ),
-                if (logic.isMoreLoading || logic.userData!.hasNextPage!)
-                  Dimens.boxHeight8,
+                if (logic.isMoreLoading) Dimens.boxHeight8,
                 if (logic.isMoreLoading)
                   const Center(child: CircularProgressIndicator()),
-                if (logic.userData!.hasNextPage!)
+                if (!logic.isMoreLoading && logic.userData!.hasNextPage!)
                   Center(
-                    child:
-                        NxTextButton(label: 'Load more', onTap: logic.loadMore),
+                    child: NxTextButton(
+                      label: 'Load more people',
+                      onTap: logic.loadMore,
+                      labelStyle: AppStyles.style14Bold.copyWith(
+                        color: ColorValues.primaryLightColor,
+                      ),
+                      padding: Dimens.edgeInsets8_0,
+                    ),
                   ),
                 Dimens.boxHeight16,
               ],

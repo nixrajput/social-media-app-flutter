@@ -22,6 +22,10 @@ abstract class AppRoutes {
   static const forgotPassword = _Routes.forgotPassword;
   static const resetPassword = _Routes.resetPassword;
   static const changePassword = _Routes.changePassword;
+  static const sendVerifyAccountOtp = _Routes.sendVerifyAccountOtp;
+  static const verifyAccount = _Routes.verifyAccount;
+  static const sendVerifyEmailOtp = _Routes.sendVerifyEmailOtp;
+  static const verifyEmail = _Routes.verifyEmail;
 
   static const editProfile = _Routes.editProfile;
   static const editName = _Routes.editName;
@@ -64,6 +68,10 @@ abstract class _Routes {
   static const forgotPassword = '/forgot_password';
   static const resetPassword = '/reset_password';
   static const changePassword = '/change_password';
+  static const sendVerifyAccountOtp = '/send_account_verification_otp';
+  static const verifyAccount = '/verify_account';
+  static const sendVerifyEmailOtp = '/send_email_verification_otp';
+  static const verifyEmail = '/verify_email';
 
   static const editProfile = '/edit_profile';
   static const editName = '/edit_name';

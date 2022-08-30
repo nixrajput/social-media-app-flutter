@@ -150,7 +150,7 @@ class AuthService extends GetxService {
       'lastActive': DateTime.now().toIso8601String(),
     };
 
-    AppUtils.printLog("Save LoginInfo Request...");
+    AppUtils.printLog("Save LoginInfo Request");
 
     try {
       final response = await _apiProvider.saveDeviceInfo(_token, body);
@@ -159,21 +159,27 @@ class AuthService extends GetxService {
 
       if (response.statusCode == 200) {
         AppUtils.printLog(decodedData[StringValues.message]);
+        AppUtils.printLog("Save LoginInfo Success");
       } else {
         AppUtils.printLog(decodedData[StringValues.message]);
+        AppUtils.printLog("Save LoginInfo Error");
       }
     } on SocketException {
+      AppUtils.printLog("Save LoginInfo Error");
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
+      AppUtils.printLog("Save LoginInfo Error");
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
+      AppUtils.printLog("Save LoginInfo Error");
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
+      AppUtils.printLog("Save LoginInfo Error");
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);

@@ -104,14 +104,19 @@ class HomeTabView extends StatelessWidget {
                     .map((post) => PostWidget(post: post))
                     .toList(),
               ),
-              if (logic.isMoreLoading || logic.postData!.hasNextPage!)
-                Dimens.boxHeight8,
+              if (logic.isMoreLoading) Dimens.boxHeight8,
               if (logic.isMoreLoading)
                 const Center(child: CircularProgressIndicator()),
-              if (logic.postData!.hasNextPage!)
+              if (!logic.isMoreLoading && logic.postData!.hasNextPage!)
                 Center(
-                  child:
-                      NxTextButton(label: 'Load more', onTap: logic.loadMore),
+                  child: NxTextButton(
+                    label: 'Load more posts',
+                    onTap: logic.loadMore,
+                    labelStyle: AppStyles.style14Bold.copyWith(
+                      color: ColorValues.primaryLightColor,
+                    ),
+                    padding: Dimens.edgeInsets8_0,
+                  ),
                 ),
               Dimens.boxHeight16,
             ],

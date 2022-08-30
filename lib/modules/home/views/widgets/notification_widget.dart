@@ -25,7 +25,7 @@ class NotificationWidget extends StatelessWidget {
                 RouteManagement.goToUserProfileView(notification.user.id),
             child: AvatarWidget(
               avatar: notification.user.avatar,
-              size: Dimens.twentyFour,
+              size: Dimens.twenty,
             ),
           ),
           Dimens.boxWidth8,
@@ -58,7 +58,7 @@ class NotificationWidget extends StatelessWidget {
                 Dimens.boxHeight4,
                 Text(
                   GetTimeAgo.parse(notification.createdAt),
-                  style: TextStyle(
+                  style: AppStyles.style12Normal.copyWith(
                     color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                   ),
                 ),

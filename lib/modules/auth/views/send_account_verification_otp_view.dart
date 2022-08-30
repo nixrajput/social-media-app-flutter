@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -8,11 +7,11 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/modules/auth/controllers/login_controller.dart';
+import 'package:social_media_app/modules/auth/controllers/account_verification_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
-class LoginView extends StatelessWidget {
-  const LoginView({Key? key}) : super(key: key);
+class SendAccountVerificationOtpView extends StatelessWidget {
+  const SendAccountVerificationOtpView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +27,10 @@ class LoginView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 NxAppBar(
-                  title: StringValues.login,
+                  title: StringValues.verifyAccount,
                   padding: Dimens.edgeInsets8_16,
                 ),
-                _buildLoginFields(),
+                _buildBody(),
               ],
             ),
           ),
@@ -40,7 +39,7 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginFields() => GetBuilder<LoginController>(
+  Widget _buildBody() => GetBuilder<AccountVerificationController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
@@ -53,10 +52,15 @@ class LoginView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      StringValues.loginWelcome,
+                      StringValues.verifyYourAccount,
                       style: AppStyles.style32Bold.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
+                    ),
+                    Dimens.boxHeight4,
+                    Text(
+                      StringValues.enterEmailForOtp,
+                      style: AppStyles.style12Normal,
                     ),
                     Dimens.boxHeight32,
                     Container(
@@ -67,68 +71,33 @@ class LoginView extends StatelessWidget {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(Dimens.eight),
                           ),
-                          hintText: StringValues.emailOrUsername,
+                          hintText: StringValues.enterEmail,
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
                           ),
                         ),
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.emailAddress,
                         maxLines: 1,
                         style: AppStyles.style14Normal.copyWith(
                           color:
                               Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
-                        controller: logic.emailUnameTextController,
-                        onEditingComplete: logic.focusNode.nextFocus,
-                      ),
-                    ),
-                    Dimens.boxHeight16,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        obscureText: logic.showPassword,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
-                          ),
-                          suffixIcon: InkWell(
-                            onTap: logic.toggleViewPassword,
-                            child: Icon(
-                              logic.showPassword
-                                  ? CupertinoIcons.eye
-                                  : CupertinoIcons.eye_slash,
-                            ),
-                          ),
-                          hintText: StringValues.password,
-                          hintStyle: const TextStyle(
-                            color: ColorValues.grayColor,
-                          ),
-                        ),
-                        keyboardType: TextInputType.visiblePassword,
-                        maxLines: 1,
-                        style: AppStyles.style16Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.passwordTextController,
+                        controller: logic.emailTextController,
                         onEditingComplete: logic.focusNode.unfocus,
                       ),
                     ),
                     Dimens.boxHeight32,
-                    const NxTextButton(
-                      label: StringValues.forgotPassword,
-                      onTap: RouteManagement.goToForgotPasswordView,
-                    ),
-                    Dimens.boxHeight16,
-                    const NxTextButton(
-                      label: StringValues.verifyAccount,
-                      onTap: RouteManagement.goToSendVerifyAccountOtpView,
+                    NxTextButton(
+                      label: StringValues.loginToAccount,
+                      onTap: () {
+                        RouteManagement.goToBack();
+                        RouteManagement.goToLoginView();
+                      },
                     ),
                     Dimens.boxHeight32,
                     NxFilledButton(
-                      onTap: () => logic.login(),
-                      label: StringValues.login.toUpperCase(),
+                      onTap: () => logic.sendVerifyAccountOtp(),
+                      label: StringValues.sendOtp.toUpperCase(),
                     ),
                     Dimens.boxHeight48,
                     Row(
@@ -136,15 +105,15 @@ class LoginView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          StringValues.doNotHaveAccount,
+                          StringValues.alreadyHaveOtp,
                           style: AppStyles.style14Normal,
                         ),
                         Dimens.boxWidth4,
                         NxTextButton(
-                          label: StringValues.register,
+                          label: StringValues.verifyAccount,
                           onTap: () {
                             RouteManagement.goToBack();
-                            RouteManagement.goToRegisterView();
+                            RouteManagement.goToVerifyAccountView();
                           },
                         ),
                       ],

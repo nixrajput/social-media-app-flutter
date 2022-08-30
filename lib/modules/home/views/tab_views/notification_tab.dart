@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/notification_widget.dart';
 
@@ -47,7 +49,7 @@ class NotificationTabView extends StatelessWidget {
         ),
       );
     }
-    if (logic.notifications == null || logic.notifications!.results!.isEmpty) {
+    if (logic.notificationData == null || logic.notificationList.isEmpty) {
       return Expanded(
         child: Padding(
           padding: Dimens.edgeInsets0_16,
@@ -76,16 +78,38 @@ class NotificationTabView extends StatelessWidget {
       );
     }
 
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Padding(
-        padding: Dimens.edgeInsets0_16,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: logic.notifications!.results!
-              .map((item) => NotificationWidget(notification: item))
-              .toList(),
+    return Expanded(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: Dimens.edgeInsets0_16,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: logic.notificationList
+                    .map((item) => NotificationWidget(notification: item))
+                    .toList(),
+              ),
+              if (logic.isMoreLoading) Dimens.boxHeight8,
+              if (logic.isMoreLoading)
+                const Center(child: CircularProgressIndicator()),
+              if (!logic.isMoreLoading && logic.notificationData!.hasNextPage!)
+                NxTextButton(
+                  label: 'Load more notifications',
+                  onTap: logic.loadMore,
+                  labelStyle: AppStyles.style14Bold.copyWith(
+                    color: ColorValues.primaryLightColor,
+                  ),
+                  padding: Dimens.edgeInsets8_0,
+                ),
+              Dimens.boxHeight16,
+            ],
+          ),
         ),
       ),
     );

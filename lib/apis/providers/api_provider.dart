@@ -52,7 +52,31 @@ class ApiProvider {
 
   Future<http.Response> resetPassword(Map<String, dynamic> body) async {
     final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.resetPasswordEndpoint),
+      Uri.parse('${baseUrl!}${AppUrls.resetPasswordEndpoint}'),
+      headers: {
+        "content-type": "application/json",
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> sendVerifyAccountOtp(Map<String, dynamic> body) async {
+    final response = await _client.post(
+      Uri.parse('${baseUrl!}${AppUrls.verifyAccountEndpoint}'),
+      headers: {
+        "content-type": "application/json",
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> verifyAccount(Map<String, dynamic> body) async {
+    final response = await _client.put(
+      Uri.parse('${baseUrl!}${AppUrls.verifyAccountEndpoint}'),
       headers: {
         "content-type": "application/json",
       },
@@ -294,9 +318,11 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getFollowers(String token, String userId) async {
+  Future<http.Response> getFollowers(String token, String userId,
+      {int? page, int? limit}) async {
     final response = await _client.get(
-      Uri.parse('${baseUrl! + AppUrls.getFollowersEndpoint}?id=$userId'),
+      Uri.parse(
+          '${baseUrl! + AppUrls.getFollowersEndpoint}?id=$userId&page=$page&limit=$limit'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -306,9 +332,11 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getFollowings(String token, String userId) async {
+  Future<http.Response> getFollowings(String token, String userId,
+      {int? page, int? limit}) async {
     final response = await _client.get(
-      Uri.parse('${baseUrl! + AppUrls.getFollowingEndpoint}?id=$userId'),
+      Uri.parse(
+          '${baseUrl! + AppUrls.getFollowingEndpoint}?id=$userId&page=$page&limit=$limit'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -385,9 +413,11 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getNotifications(String token) async {
+  Future<http.Response> getNotifications(String token,
+      {int? page, int? limit}) async {
     final response = await _client.get(
-      Uri.parse(baseUrl! + AppUrls.getNotifications),
+      Uri.parse(
+          '${baseUrl!}${AppUrls.getNotifications}?page=$page&limit=$limit'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",

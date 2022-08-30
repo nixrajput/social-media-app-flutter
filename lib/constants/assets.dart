@@ -5,4 +5,5 @@ abstract class AssetValues {
   static const String avatar = 'assets/images/avatar.png';
   static const String welcome = 'assets/images/welcome.png';
   static const String error = 'assets/images/error.png';
+  static const String makeInIndia = 'assets/images/mki.png';
 }

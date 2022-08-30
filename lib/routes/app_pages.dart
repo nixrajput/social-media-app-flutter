@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:social_media_app/modules/auth/bindings/account_verification_binding.dart';
 import 'package:social_media_app/modules/auth/bindings/login_binding.dart';
 import 'package:social_media_app/modules/auth/bindings/password_binding.dart';
 import 'package:social_media_app/modules/auth/bindings/register_binding.dart';
@@ -6,6 +7,12 @@ import 'package:social_media_app/modules/auth/views/forgot_password_view.dart';
 import 'package:social_media_app/modules/auth/views/login_view.dart';
 import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
+import 'package:social_media_app/modules/auth/views/send_account_verification_otp_view.dart';
+import 'package:social_media_app/modules/auth/views/verify_account_view.dart';
+import 'package:social_media_app/modules/follower/bindings/followers_list_binding.dart';
+import 'package:social_media_app/modules/follower/bindings/following_list_binding.dart';
+import 'package:social_media_app/modules/follower/views/followers_list_view.dart';
+import 'package:social_media_app/modules/follower/views/following_list_view.dart';
 import 'package:social_media_app/modules/home/bindings/home_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
@@ -18,8 +25,6 @@ import 'package:social_media_app/modules/profile/bindings/about_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/change_password_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/dob_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/edit_profile_binding.dart';
-import 'package:social_media_app/modules/profile/bindings/followers_list_binding.dart';
-import 'package:social_media_app/modules/profile/bindings/following_list_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/gender_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/name_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/username_binding.dart';
@@ -28,8 +33,6 @@ import 'package:social_media_app/modules/profile/views/edit_views/edit_dob_view.
 import 'package:social_media_app/modules/profile/views/edit_views/edit_gender_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_name_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_username_view.dart';
-import 'package:social_media_app/modules/profile/views/followers_list_view.dart';
-import 'package:social_media_app/modules/profile/views/following_list_view.dart';
 import 'package:social_media_app/modules/profile/views/profile_details_view.dart';
 import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/security_settings_binding.dart';
@@ -43,8 +46,8 @@ import 'package:social_media_app/modules/settings/views/pages/security/login_act
 import 'package:social_media_app/modules/settings/views/pages/security_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/theme_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
-import 'package:social_media_app/modules/users/bindings/user_profile_binding.dart';
-import 'package:social_media_app/modules/users/views/user_profile_view.dart';
+import 'package:social_media_app/modules/user/bindings/user_profile_binding.dart';
+import 'package:social_media_app/modules/user/views/user_profile_view.dart';
 import 'package:social_media_app/modules/welcome/welcome_view.dart';
 
 part 'app_routes.dart';
@@ -96,6 +99,26 @@ abstract class AppPages {
       binding: PasswordBinding(),
       transition: defaultTransition,
     ),
+
+    /// Send Verify Account Otp
+    GetPage(
+      name: _Routes.sendVerifyAccountOtp,
+      page: SendAccountVerificationOtpView.new,
+      transitionDuration: transitionDuration,
+      binding: AccountVerificationBinding(),
+      transition: defaultTransition,
+    ),
+
+    /// Verify Account
+    GetPage(
+      name: _Routes.verifyAccount,
+      page: VerifyAccountView.new,
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    /// --------------------------------------------------------------
+
     GetPage(
       name: _Routes.changePassword,
       page: ChangePasswordView.new,

@@ -135,28 +135,6 @@ class SettingsView extends StatelessWidget {
                 NxListTile(
                   padding: Dimens.edgeInsets16_0,
                   leading: Icon(
-                    Icons.info_outline,
-                    size: Dimens.twentyFour,
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  ),
-                  title: Text(
-                    StringValues.about,
-                    style: AppStyles.style16Normal,
-                  ),
-                  subtitle: RichText(
-                    text: TextSpan(
-                      text: StringValues.aboutSettingsHelp,
-                      style: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
-                    ),
-                  ),
-                  onTap: RouteManagement.goToAboutSettingsView,
-                ),
-                NxListTile(
-                  padding: Dimens.edgeInsets16_0,
-                  leading: Icon(
                     Icons.palette_outlined,
                     size: Dimens.twentyFour,
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
@@ -175,6 +153,28 @@ class SettingsView extends StatelessWidget {
                     ),
                   ),
                   onTap: RouteManagement.goToThemeSettingsView,
+                ),
+                NxListTile(
+                  padding: Dimens.edgeInsets16_0,
+                  leading: Icon(
+                    Icons.info_outline,
+                    size: Dimens.twentyFour,
+                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  ),
+                  title: Text(
+                    StringValues.about,
+                    style: AppStyles.style16Normal,
+                  ),
+                  subtitle: RichText(
+                    text: TextSpan(
+                      text: StringValues.aboutSettingsHelp,
+                      style: AppStyles.style14Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                    ),
+                  ),
+                  onTap: RouteManagement.goToAboutSettingsView,
                 ),
                 Dimens.boxHeight24,
                 NxFilledButton(

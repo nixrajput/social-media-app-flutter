@@ -8,6 +8,7 @@ abstract class AppUrls {
   static const String registerEndpoint = '/register';
   static const String forgotPasswordEndpoint = '/forgot-password';
   static const String resetPasswordEndpoint = '/reset-password';
+  static const String verifyAccountEndpoint = '/verify-account';
 
   static const String getPostsEndpoint = '/get-posts';
   static const String postEndpoint = '/post';

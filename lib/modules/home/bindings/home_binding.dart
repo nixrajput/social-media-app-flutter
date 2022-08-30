@@ -6,7 +6,7 @@ import 'package:social_media_app/modules/home/controllers/post_like_controller.d
 import 'package:social_media_app/modules/home/controllers/tab_controller.dart';
 import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
-import 'package:social_media_app/modules/users/controllers/user_controller.dart';
+import 'package:social_media_app/modules/user/controllers/user_controller.dart';
 
 class HomeBinding extends Bindings {
   @override

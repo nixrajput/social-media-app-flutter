@@ -14,7 +14,9 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_compress/video_compress.dart';
 
 abstract class AppUtils {
@@ -79,6 +81,7 @@ abstract class AppUtils {
 
   static void showSimpleDialog(Widget child,
       {bool barrierDismissible = false}) {
+    closeDialog();
     Get.dialog(
       MediaQuery.removeViewInsets(
         context: Get.context!,
@@ -226,7 +229,7 @@ abstract class AppUtils {
         padding: Dimens.edgeInsets16,
         snackStyle: SnackStyle.FLOATING,
         messageText: Text(
-          message,
+          message.toCapitalized(),
           style: AppStyles.style16Normal.copyWith(
             color: renderTextColor(type),
           ),
@@ -237,7 +240,7 @@ abstract class AppUtils {
         ),
         shouldIconPulse: false,
         backgroundColor: Theme.of(Get.context!).snackBarTheme.backgroundColor!,
-        duration: Duration(seconds: duration ?? 2),
+        duration: Duration(seconds: duration ?? 5),
       ),
     );
   }
@@ -514,5 +517,15 @@ abstract class AppUtils {
       quality: 50,
     );
     return thumbFile;
+  }
+
+  /// Open Url
+  static Future<void> openUrl(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      showSnackBar("Couldn't launch url", StringValues.error);
+    }
   }
 }

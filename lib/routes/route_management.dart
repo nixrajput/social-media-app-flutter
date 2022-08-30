@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
-import 'package:social_media_app/modules/profile/controllers/followers_list_controller.dart';
-import 'package:social_media_app/modules/profile/controllers/following_list_controller.dart';
-import 'package:social_media_app/modules/users/controllers/user_profile_controller.dart';
+import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
+import 'package:social_media_app/modules/follower/controllers/following_list_controller.dart';
+import 'package:social_media_app/modules/user/controllers/user_profile_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
 abstract class RouteManagement {
@@ -24,6 +24,14 @@ abstract class RouteManagement {
 
   static void goToResetPasswordView() {
     Get.toNamed(AppRoutes.resetPassword);
+  }
+
+  static void goToSendVerifyAccountOtpView() {
+    Get.toNamed(AppRoutes.sendVerifyAccountOtp);
+  }
+
+  static void goToVerifyAccountView() {
+    Get.toNamed(AppRoutes.verifyAccount);
   }
 
   static void goToHomeView() {

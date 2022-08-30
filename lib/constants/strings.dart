@@ -1,5 +1,6 @@
 abstract class StringValues {
   static const appName = 'Rippl!';
+  static const appVersion = '1.0.0';
   static const welcome = 'Welcome';
   static const to = 'to';
   static const hello = 'Hello';
@@ -12,6 +13,7 @@ abstract class StringValues {
   static const registerWelcome = 'Hello! Register to get started';
   static const forgotPassword = 'Forgot Password';
   static const resetPassword = 'Reset Password';
+  static const verifyAccount = 'Verify Account';
   static const name = 'Name';
   static const next = 'Next';
   static const firstName = 'First Name';
@@ -26,10 +28,11 @@ abstract class StringValues {
   static const currentPassword = "Current Password";
   static const resetYourPassword = 'Reset your password';
   static const forgotYourPassword = 'Forgot your password?';
+  static const verifyYourAccount = 'Verify your account';
   static const enterEmailForOtp =
       'Enter your email address and an OTP will be sent to your email address if account exists';
   static const enterOtpYouGet =
-      'An OTP has been sent to your email address, please enter OTP and reset your password';
+      'An OTP has been sent to your email address, please enter OTP to proceed';
   static const settings = 'Settings';
   static const profile = 'Profile';
   static const doNotHaveAccount = "Don't have an account?";
@@ -74,6 +77,7 @@ abstract class StringValues {
   static const doNotHaveOtp = "Don't have an OTP?";
   static const alreadyHaveOtp = "Already have an OTP?";
   static const passwordChangeSuccessful = 'Password changed successfully.';
+  static const verifyAccountSuccessful = 'Account verified successfully.';
   static const editProfile = 'Edit Profile';
   static const updateProfileSuccessful = 'Profile updated successfully.';
   static const updateUsernameSuccessful = 'Username updated successfully.';
@@ -185,4 +189,9 @@ abstract class StringValues {
   static const twoFaAuthHelpText =
       'Help protect your account from unauthorised access by requiring a second authentication method in addition to your password.';
   static const moreDetails = 'More Details';
+  static const websiteUrl = 'https://nixlab.co.in';
+  static const appDownloadUrl =
+      'https://github.com/nixrajput/social-media-app-flutter/releases';
+  static const appGithubUrl =
+      'https://github.com/nixrajput/social-media-app-flutter';
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/modules/follower/controllers/following_list_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
-import 'package:social_media_app/modules/profile/controllers/following_list_controller.dart';
 
 class FollowingListView extends StatelessWidget {
   const FollowingListView({Key? key}) : super(key: key);
@@ -42,8 +44,7 @@ class FollowingListView extends StatelessWidget {
           if (logic.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (logic.followingList == null ||
-              logic.followingList!.results!.isEmpty) {
+          if (logic.followingData == null || logic.followingList.isEmpty) {
             return Padding(
               padding: Dimens.edgeInsets0_16,
               child: Column(
@@ -68,21 +69,45 @@ class FollowingListView extends StatelessWidget {
               ),
             );
           }
-          return Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: logic.followingList!.results!.length,
-              itemBuilder: (cxt, i) {
-                var user = logic.followingList!.results![i];
-                return UserWidget(
-                  user: user,
-                  bottomMargin: i == (logic.followingList!.results!.length - 1)
-                      ? Dimens.zero
-                      : Dimens.sixTeen,
-                );
-              },
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: Dimens.edgeInsets0_16,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: logic.followingList
+                        .map(
+                          (user) => UserWidget(
+                            user: user,
+                            bottomMargin: Dimens.sixTeen,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                  if (logic.isMoreLoading) Dimens.boxHeight8,
+                  if (logic.isMoreLoading)
+                    const Center(child: CircularProgressIndicator()),
+                  if (!logic.isMoreLoading && logic.followingData!.hasNextPage!)
+                    Center(
+                      child: NxTextButton(
+                        label: 'Load more followings',
+                        onTap: logic.loadMore,
+                        labelStyle: AppStyles.style14Bold.copyWith(
+                          color: ColorValues.primaryLightColor,
+                        ),
+                        padding: Dimens.edgeInsets8_0,
+                      ),
+                    ),
+                  Dimens.boxHeight16,
+                ],
+              ),
             ),
           );
         },

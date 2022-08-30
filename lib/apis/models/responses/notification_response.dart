@@ -8,7 +8,13 @@ part 'notification_response.g.dart';
 class NotificationResponse extends Equatable {
   const NotificationResponse({
     this.success,
-    this.count,
+    this.currentPage,
+    this.totalPages,
+    this.limit,
+    this.hasPrevPage,
+    this.prevPage,
+    this.hasNextPage,
+    this.nextPage,
     this.results,
   });
 
@@ -20,8 +26,26 @@ class NotificationResponse extends Equatable {
   @JsonKey(name: 'success')
   final bool? success;
 
-  @JsonKey(name: 'count')
-  final int? count;
+  @JsonKey(name: 'currentPage')
+  final int? currentPage;
+
+  @JsonKey(name: 'totalPages')
+  final int? totalPages;
+
+  @JsonKey(name: 'limit')
+  final int? limit;
+
+  @JsonKey(name: 'hasPrevPage')
+  final bool? hasPrevPage;
+
+  @JsonKey(name: 'prevPage')
+  final String? prevPage;
+
+  @JsonKey(name: 'hasNextPage')
+  final bool? hasNextPage;
+
+  @JsonKey(name: 'nextPage')
+  final String? nextPage;
 
   @JsonKey(name: 'results')
   final List<ApiNotification>? results;
@@ -29,7 +53,13 @@ class NotificationResponse extends Equatable {
   @override
   List<Object?> get props => <Object?>[
         success,
-        count,
+        currentPage,
+        totalPages,
+        limit,
+        hasPrevPage,
+        prevPage,
+        hasNextPage,
+        nextPage,
         results,
       ];
 }

@@ -1,6 +1,9 @@
 # social_media_app
 
-A social media application developed using Flutter and GetX state management.
+A social media application developed using Flutter and GetX state management for 
+sharing and connecting with people around the world. 
+It is a mobile app that allows users to share their photos and videos with 
+other users.
 
 ## Features
 
@@ -9,10 +12,11 @@ A social media application developed using Flutter and GetX state management.
 - Forgot Password
 - Reset Password
 - Change Password
+- Account Verification
 - Get Profile Details
 - Update Profile Details
 - Upload Profile Picture
-- Delete Profile
+- Follow/Unfollow User
 - Create Post
 - Fetch Posts
 - Like/Unlike Post
@@ -22,6 +26,7 @@ A social media application developed using Flutter and GetX state management.
 - Get Comments
 - Like/Unlike Comment
 - Delete Comment
+- Customized Settings
 
 ## Download APK
 

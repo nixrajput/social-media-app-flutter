@@ -27,13 +27,15 @@ class ProfileController extends GetxController {
   set setProfileData(ProfileResponse value) => _profileData = value;
 
   Future<bool> _getProfileDetails() async {
-    AppUtils.printLog("Fetching Local Profile Details...");
+    AppUtils.printLog("Loading Profile Details Request");
 
     final decodedData = await AppUtils.readProfileDataFromLocalStorage();
     if (decodedData != null) {
       setProfileData = ProfileResponse.fromJson(decodedData);
+      AppUtils.printLog("Loading Profile Details Success");
       return true;
     } else {
+      AppUtils.printLog("Loading Profile Details Error");
       AppUtils.printLog(StringValues.profileDetailsNotFound);
     }
     return false;
@@ -42,7 +44,7 @@ class ProfileController extends GetxController {
   Future<void> _fetchProfileDetails() async {
     _isLoading = true;
     update();
-    AppUtils.printLog("Fetching Profile Details Request...");
+    AppUtils.printLog("Fetching Profile Details Request");
     try {
       final response = await _apiProvider.getProfileDetails(_auth.token);
 
@@ -53,9 +55,11 @@ class ProfileController extends GetxController {
         await AppUtils.saveProfileDataToLocalStorage(decodedData);
         _isLoading = false;
         update();
+        AppUtils.printLog("Fetching Profile Details Success");
       } else {
         _isLoading = false;
         update();
+        AppUtils.printLog("Fetching Profile Details Error");
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
@@ -64,23 +68,27 @@ class ProfileController extends GetxController {
     } on SocketException {
       _isLoading = false;
       update();
+      AppUtils.printLog("Fetching Profile Details Error");
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isLoading = false;
       update();
+      AppUtils.printLog("Fetching Profile Details Error");
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading = false;
       update();
+      AppUtils.printLog("Fetching Profile Details Error");
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e.toString());
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading = false;
       update();
+      AppUtils.printLog("Fetching Profile Details Error");
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc.toString());
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
@@ -97,7 +105,7 @@ class ProfileController extends GetxController {
   }
 
   Future<void> _followUnfollowUser(String userId) async {
-    AppUtils.printLog("Follow/Unfollow User Request...");
+    AppUtils.printLog("Follow/Unfollow User Request");
     _toggleFollowUser(userId);
 
     try {
@@ -111,29 +119,35 @@ class ProfileController extends GetxController {
           decodedData[StringValues.message],
           StringValues.success,
         );
+        AppUtils.printLog("Follow/Unfollow User Success");
       } else {
         _toggleFollowUser(userId);
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
+        AppUtils.printLog("Follow/Unfollow User Error");
       }
     } on SocketException {
       _toggleFollowUser(userId);
+      AppUtils.printLog("Follow/Unfollow User Error");
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _toggleFollowUser(userId);
+      AppUtils.printLog("Follow/Unfollow User Error");
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _toggleFollowUser(userId);
+      AppUtils.printLog("Follow/Unfollow User Error");
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleFollowUser(userId);
+      AppUtils.printLog("Follow/Unfollow User Error");
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);

@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/create_comment_controller.dart';
 import 'package:social_media_app/modules/post/views/widgets/comment_widget.dart';
@@ -98,20 +100,41 @@ class PostCommentView extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     );
                   }
-                  if (commentsLogic.commentsData.results!.isEmpty) {
+                  if (commentsLogic.commentList.isEmpty) {
                     return const SizedBox();
                   }
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
-                    children: commentsLogic.commentsData.results!
-                        .map((e) => InkWell(
-                              child: CommentWidget(comment: e),
-                              onLongPress: () =>
-                                  commentsLogic.deleteComment(e.id),
-                            ))
-                        .toList(),
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: commentsLogic.commentList
+                            .map((e) => InkWell(
+                                  child: CommentWidget(comment: e),
+                                  onLongPress: () => commentsLogic
+                                      .showDeleteCommentOptions(e.id),
+                                ))
+                            .toList(),
+                      ),
+                      if (commentsLogic.isMoreLoading) Dimens.boxHeight8,
+                      if (commentsLogic.isMoreLoading)
+                        const Center(child: CircularProgressIndicator()),
+                      if (!commentsLogic.isMoreLoading &&
+                          commentsLogic.commentsData.hasNextPage!)
+                        NxTextButton(
+                          label: 'View more comments',
+                          onTap: commentsLogic.loadMore,
+                          labelStyle: AppStyles.style14Bold.copyWith(
+                            color: ColorValues.primaryLightColor,
+                          ),
+                          padding: Dimens.edgeInsets8_0,
+                        ),
+                      Dimens.boxHeight16,
+                    ],
                   );
                 },
               ),

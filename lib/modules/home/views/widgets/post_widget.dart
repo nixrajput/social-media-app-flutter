@@ -341,8 +341,9 @@ class PostWidget extends StatelessWidget {
                     color: ColorValues.errorColor,
                   ),
                   onTap: AppUtils.closeDialog,
+                  padding: Dimens.edgeInsets8,
                 ),
-                Dimens.boxWidth32,
+                Dimens.boxWidth16,
                 NxTextButton(
                   label: StringValues.yes,
                   labelStyle: AppStyles.style16Bold.copyWith(
@@ -352,10 +353,10 @@ class PostWidget extends StatelessWidget {
                     AppUtils.closeDialog();
                     await Get.find<PostController>().deletePost(post.id);
                   },
+                  padding: Dimens.edgeInsets8,
                 ),
               ],
             ),
-            Dimens.boxHeight8,
           ],
         ),
       ),

@@ -290,6 +290,7 @@ class ProfileTabView extends StatelessWidget {
 
           return PostThumbnailWidget(
             mediaFile: post.mediaFiles!.first,
+            post: post,
           );
         },
       ),
