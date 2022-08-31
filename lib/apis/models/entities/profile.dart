@@ -27,6 +27,8 @@ class Profile extends Equatable {
     required this.posts,
     required this.followers,
     required this.following,
+    required this.followersCount,
+    required this.followingsCount,
     required this.role,
     required this.accountType,
     required this.accountStatus,
@@ -100,6 +102,12 @@ class Profile extends Equatable {
   @JsonKey(name: 'following')
   final List<dynamic> following;
 
+  @JsonKey(name: 'followersCount')
+  final int followersCount;
+
+  @JsonKey(name: 'followingsCount')
+  final int followingsCount;
+
   @JsonKey(name: 'role')
   final String role;
 
@@ -156,6 +164,8 @@ class Profile extends Equatable {
         posts,
         followers,
         following,
+        followingsCount,
+        followersCount,
         role,
         accountType,
         accountStatus,

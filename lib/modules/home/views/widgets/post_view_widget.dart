@@ -37,7 +37,7 @@ class PostViewWidget extends StatelessWidget {
 
   Widget _buildBody() {
     return Hero(
-      tag: post.id,
+      tag: post.id!,
       child: FlutterCarousel(
         items: post.mediaFiles!.map(
           (img) {

@@ -14,6 +14,7 @@ abstract class AppUrls {
   static const String postEndpoint = '/post';
   static const String createPostEndpoint = '/create-post';
   static const String likePostEndpoint = '/like-post';
+  static const String getPostLikedUsersEndpoint = '/get-post-liked-users';
 
   static const String addCommentEndpoint = '/add-comment';
   static const String getCommentsEndpoint = '/get-comments';

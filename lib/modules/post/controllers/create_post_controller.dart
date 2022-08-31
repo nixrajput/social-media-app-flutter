@@ -6,6 +6,7 @@ import 'package:cloudinary/cloudinary.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/secrets.dart';
@@ -128,7 +129,9 @@ class CreatePostController extends GetxController {
 
       if (response.statusCode == 201) {
         captionTextController.clear();
-        await _postController.fetchPosts();
+        //await _postController.fetchPosts();
+        _postController.postList.insert(0, Post.fromJson(decodedData['post']));
+        _postController.update();
         _isLoading.value = false;
         update();
         AppUtils.closeDialog();

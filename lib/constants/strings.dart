@@ -186,6 +186,7 @@ abstract class StringValues {
   static const changePhoneNo = 'Change Phone number';
   static const verification = 'Verification';
   static const request = 'Request';
+  static const likes = 'Likes';
   static const twoFaAuthHelpText =
       'Help protect your account from unauthorised access by requiring a second authentication method in addition to your password.';
   static const moreDetails = 'More Details';

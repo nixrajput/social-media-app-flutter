@@ -4,9 +4,10 @@ import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
-import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
+import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class SettingsView extends StatelessWidget {
@@ -176,9 +177,18 @@ class SettingsView extends StatelessWidget {
                   ),
                   onTap: RouteManagement.goToAboutSettingsView,
                 ),
-                Dimens.boxHeight24,
-                NxFilledButton(
-                  label: StringValues.logout.toUpperCase(),
+                Dimens.boxHeight32,
+                NxOutlinedButton(
+                  label: StringValues.logout.toTitleCase(),
+                  width: Dimens.screenWidth,
+                  height: Dimens.thirtySix,
+                  padding: Dimens.edgeInsets0_8,
+                  borderRadius: Dimens.eight,
+                  borderColor:
+                      Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  labelStyle: AppStyles.style14Bold.copyWith(
+                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  ),
                   onTap: () {
                     RouteManagement.goToWelcomeView();
                     AuthService.find.logout();

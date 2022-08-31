@@ -27,7 +27,7 @@ class PostThumbnailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => RouteManagement.goToPostDetailsView(post.id, post),
+      onTap: () => RouteManagement.goToPostDetailsView(post.id!, post),
       onLongPress: () => _showHeaderOptionBottomSheet(post),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Dimens.eight),
@@ -94,7 +94,7 @@ class PostThumbnailWidget extends StatelessWidget {
             ListTile(
               onTap: () async {
                 AppUtils.closeBottomSheet();
-                await _showDeletePostOptions(post.id);
+                await _showDeletePostOptions(post.id!);
               },
               leading: const Icon(CupertinoIcons.delete),
               title: Text(

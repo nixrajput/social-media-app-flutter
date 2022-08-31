@@ -258,40 +258,6 @@ class CommentController extends GetxController {
     );
   }
 
-  // Future<void> deleteComment(String commentId) async {
-  //   AppUtils.showBottomSheet(
-  //     [
-  //       Text(
-  //         StringValues.deleteConfirmationText,
-  //         style: AppStyles.style20Bold,
-  //       ),
-  //       Dimens.boxHeight16,
-  //       ListTile(
-  //         onTap: () async {
-  //           AppUtils.closeBottomSheet();
-  //           await _deleteComment(commentId);
-  //         },
-  //         title: Text(
-  //           StringValues.yes,
-  //           style: AppStyles.style16Bold.copyWith(
-  //             color: ColorValues.successColor,
-  //           ),
-  //         ),
-  //       ),
-  //       ListTile(
-  //         onTap: AppUtils.closeBottomSheet,
-  //         title: Text(
-  //           StringValues.no,
-  //           style: AppStyles.style16Bold.copyWith(
-  //             color: ColorValues.errorColor,
-  //           ),
-  //         ),
-  //         padding: Dimens.edgeInsets8,
-  //       ),
-  //     ],
-  //   );
-  // }
-
   @override
   void onInit() {
     super.onInit();

@@ -13,6 +13,8 @@ abstract class AppThemes {
     shadowColor: ColorValues.lightGrayColor,
     cardTheme: const CardTheme(color: ColorValues.whiteColor),
     dialogTheme: const DialogTheme(backgroundColor: ColorValues.whiteColor),
+    dialogBackgroundColor: ColorValues.whiteColor,
+    errorColor: ColorValues.errorColor,
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
       backgroundColor: ColorValues.whiteColor,
     ),
@@ -63,6 +65,8 @@ abstract class AppThemes {
     bottomAppBarColor: ColorValues.darkBgColor,
     cardTheme: const CardTheme(color: ColorValues.darkColor),
     dialogTheme: const DialogTheme(backgroundColor: ColorValues.darkColor),
+    dialogBackgroundColor: ColorValues.darkColor,
+    errorColor: ColorValues.errorColor,
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
       backgroundColor: ColorValues.darkColor,
     ),

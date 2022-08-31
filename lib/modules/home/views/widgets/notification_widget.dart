@@ -17,6 +17,11 @@ class NotificationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: Dimens.edgeInsetsOnlyBottom16,
+      padding: Dimens.edgeInsets8,
+      decoration: BoxDecoration(
+        color: Theme.of(Get.context!).dialogBackgroundColor,
+        borderRadius: BorderRadius.circular(Dimens.eight),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

@@ -34,6 +34,7 @@ abstract class Dimens {
   static double ten = 10.r;
   static double five = 5.r;
   static double fifteen = 15.r;
+  static double thirteen = 13.r;
   static double four = 4.r;
   static double two = 2.r;
   static double fourteen = 14.r;

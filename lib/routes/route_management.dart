@@ -82,6 +82,10 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.comments, arguments: postId);
   }
 
+  static void goToPostPostLikedUsersView(String postId) {
+    Get.toNamed(AppRoutes.postLikedUsers, arguments: postId);
+  }
+
   static void goToFollowersListView(String userId) {
     Get.delete<FollowersListController>();
     Get.toNamed(AppRoutes.followers, arguments: userId);

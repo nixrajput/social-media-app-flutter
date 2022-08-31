@@ -323,7 +323,7 @@ class ProfileTabView extends StatelessWidget {
               ),
               Dimens.boxHeight24,
               AvatarWidget(
-                avatar: logic.profileData.user!.avatar!,
+                avatar: logic.profileData.user?.avatar,
                 size: Dimens.screenWidth * 0.4,
               ),
               Dimens.boxHeight40,

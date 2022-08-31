@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:social_media_app/constants/colors.dart';
-import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/global_widgets/custom_video_controls.dart';
 import 'package:social_media_app/helpers/utils.dart';
 
@@ -90,26 +86,26 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
             fit: BoxFit.cover,
             aspectRatio: 1 / 1,
             autoDetectFullscreenAspectRatio: true,
-            showPlaceholderUntilPlay: true,
-            placeholder: FutureBuilder<File>(
-              future: AppUtils.getVideoThumb(widget.url!),
-              builder: (ctx, data) {
-                if (data.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (!data.hasData) {
-                  return Container(
-                    color: ColorValues.grayColor.withOpacity(0.5),
-                  );
-                }
-                return Image.file(
-                  data.data!,
-                  fit: BoxFit.cover,
-                  width: Dimens.screenWidth,
-                  height: Dimens.screenWidth,
-                );
-              },
-            ),
+            showPlaceholderUntilPlay: false,
+            // placeholder: FutureBuilder<File>(
+            //   future: AppUtils.getVideoThumb(widget.url!),
+            //   builder: (ctx, data) {
+            //     if (data.connectionState == ConnectionState.waiting) {
+            //       return const Center(child: CircularProgressIndicator());
+            //     }
+            //     if (!data.hasData) {
+            //       return Container(
+            //         color: ColorValues.grayColor.withOpacity(0.5),
+            //       );
+            //     }
+            //     return Image.file(
+            //       data.data!,
+            //       fit: BoxFit.cover,
+            //       width: Dimens.screenWidth,
+            //       height: Dimens.screenWidth,
+            //     );
+            //   },
+            // ),
             expandToFill: true,
             autoDetectFullscreenDeviceOrientation: true,
             deviceOrientationsOnFullScreen: [

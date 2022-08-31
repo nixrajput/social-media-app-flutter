@@ -18,12 +18,14 @@ class UserWidget extends StatelessWidget {
     this.bottomMargin,
     this.onTap,
     this.bgColor,
+    this.avatarSize,
   }) : super(key: key);
 
   final User user;
   final double? bottomMargin;
   final Color? bgColor;
   final VoidCallback? onTap;
+  final double? avatarSize;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class UserWidget extends StatelessWidget {
                   tag: user.id,
                   child: AvatarWidget(
                     avatar: user.avatar,
-                    size: Dimens.twentyFour,
+                    size: avatarSize ?? Dimens.twentyFour,
                   ),
                 ),
                 Dimens.boxWidth12,

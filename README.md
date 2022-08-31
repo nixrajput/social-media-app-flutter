@@ -46,13 +46,17 @@ other users.
 
 <img src="screenshots/register.png" alt="" width="400" />
 
+### Home Screen
+
+<img src="screenshots/home.png" alt="" width="400" />
+
 ### Profile Screen
 
 <img src="screenshots/profile.png" alt="" width="400" />
 
-### Settings Screen
+### Notification Screen
 
-<img src="screenshots/settings.png" alt="" width="400" />
+<img src="screenshots/notification.png" alt="" width="400" />
 
 ## Connect With Me
 

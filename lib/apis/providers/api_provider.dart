@@ -240,6 +240,18 @@ class ApiProvider {
     return response;
   }
 
+  Future<http.Response> getPostLikedUsers(String token, String postId) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.getPostLikedUsersEndpoint}?id=$postId'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
   Future<http.Response> deletePost(String token, String postId) async {
     final response = await _client.delete(
       Uri.parse('${baseUrl!}${AppUrls.postEndpoint}?id=$postId'),
@@ -413,6 +425,8 @@ class ApiProvider {
     return response;
   }
 
+  /// Notification -------------------------------------------------------------
+
   Future<http.Response> getNotifications(String token,
       {int? page, int? limit}) async {
     final response = await _client.get(
@@ -427,7 +441,7 @@ class ApiProvider {
     return response;
   }
 
-  /// Device Info ----------------------------------------------------------------
+  /// Device Info --------------------------------------------------------------
 
   Future<http.Response> saveDeviceInfo(
       String token, Map<String, dynamic> body) async {
