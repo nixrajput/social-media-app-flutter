@@ -19,56 +19,89 @@ class UserWidget extends StatelessWidget {
     this.onTap,
     this.bgColor,
     this.avatarSize,
+    this.borderRadius,
+    this.padding,
+    required this.totalLength,
+    required this.index,
   }) : super(key: key);
 
   final User user;
+  final int totalLength;
+  final int index;
   final double? bottomMargin;
-  final Color? bgColor;
   final VoidCallback? onTap;
   final double? avatarSize;
+  final EdgeInsets? padding;
+  final Color? bgColor;
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
     final profile = ProfileController.find;
-
     return InkWell(
       onTap: onTap ?? () => RouteManagement.goToUserProfileView(user.id),
-      child: Container(
-        width: Dimens.screenWidth,
-        margin: EdgeInsets.only(bottom: bottomMargin ?? Dimens.eight),
-        constraints: BoxConstraints(
-          maxWidth: Dimens.screenWidth,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: Dimens.screenWidth,
+            margin: EdgeInsets.only(bottom: bottomMargin ?? Dimens.zero),
+            padding: padding ?? Dimens.edgeInsets8,
+            constraints: BoxConstraints(
+              maxWidth: Dimens.screenWidth,
+            ),
+            decoration: BoxDecoration(
+              color: bgColor ?? Theme.of(Get.context!).dialogBackgroundColor,
+              borderRadius: (index == 0 || index == totalLength - 1)
+                  ? BorderRadius.only(
+                      topLeft: Radius.circular(
+                          index == 0 ? Dimens.eight : Dimens.zero),
+                      topRight: Radius.circular(
+                          index == 0 ? Dimens.eight : Dimens.zero),
+                      bottomLeft: Radius.circular(index == totalLength - 1
+                          ? Dimens.eight
+                          : Dimens.zero),
+                      bottomRight: Radius.circular(index == totalLength - 1
+                          ? Dimens.eight
+                          : Dimens.zero),
+                    )
+                  : const BorderRadius.all(Radius.zero),
+            ),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Hero(
-                  tag: user.id,
-                  child: AvatarWidget(
-                    avatar: user.avatar,
-                    size: avatarSize ?? Dimens.twentyFour,
-                  ),
-                ),
-                Dimens.boxWidth12,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildUserUsername(),
-                    _buildUserFullName(),
+                    Hero(
+                      tag: user.id,
+                      child: AvatarWidget(
+                        avatar: user.avatar,
+                        size: avatarSize ?? Dimens.twenty,
+                      ),
+                    ),
+                    Dimens.boxWidth12,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildUserUsername(),
+                        _buildUserFullName(),
+                      ],
+                    ),
                   ],
                 ),
+                if (user.id != profile.profileData.user!.id)
+                  _buildFollowAction(profile),
               ],
             ),
-            if (user.id != profile.profileData.user!.id)
-              _buildFollowAction(profile),
-          ],
-        ),
+          ),
+          if (index != totalLength - 1) Dimens.divider,
+        ],
       ),
     );
   }
@@ -132,10 +165,9 @@ class UserWidget extends StatelessWidget {
           onTap: () => logic.followUnfollowUser(user.id),
           padding: Dimens.edgeInsets0_8,
           borderWidth: Dimens.one,
-          width: Dimens.hundred,
           height: Dimens.thirtyTwo,
           borderRadius: Dimens.eight,
-          labelStyle: AppStyles.style14Normal.copyWith(
+          labelStyle: AppStyles.style13Normal.copyWith(
             color: profile.profileData.user!.following.contains(user.id)
                 ? Theme.of(Get.context!).textTheme.bodyText1!.color
                 : ColorValues.whiteColor,

@@ -43,47 +43,65 @@ class SecuritySettingsView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              /// Change Password
+
               NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(Dimens.eight),
+                  topRight: Radius.circular(Dimens.eight),
+                ),
                 leading: Icon(
                   Icons.key_outlined,
-                  size: Dimens.twentyFour,
+                  size: Dimens.twenty,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
                   StringValues.changePassword,
-                  style: AppStyles.style16Normal,
+                  style: AppStyles.style14Bold,
                 ),
                 onTap: RouteManagement.goToChangePasswordView,
               ),
+
+              Dimens.divider,
+
+              /// Login Activity
+
               NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                 leading: Icon(
                   Icons.location_on_outlined,
-                  size: Dimens.twentyFour,
+                  size: Dimens.twenty,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
                   "${StringValues.login} ${StringValues.activity}",
-                  style: AppStyles.style16Normal,
+                  style: AppStyles.style14Bold,
                 ),
                 onTap: RouteManagement.goToLoginActivityView,
               ),
+
+              Dimens.divider,
+
+              /// 2-FA
+
               NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(Dimens.eight),
+                  bottomRight: Radius.circular(Dimens.eight),
+                ),
                 leading: Icon(
                   Icons.security_outlined,
-                  size: Dimens.twentyFour,
+                  size: Dimens.twenty,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
                   StringValues.twoFaAuth,
-                  style: AppStyles.style16Normal,
-                ),
-                subtitle: RichText(
-                  text: TextSpan(
-                    text: StringValues.twoFaAuthHelpText,
-                    style: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-                    ),
-                  ),
+                  style: AppStyles.style14Bold,
                 ),
               ),
               Dimens.boxHeight16,

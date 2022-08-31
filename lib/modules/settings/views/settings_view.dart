@@ -7,7 +7,6 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
-import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class SettingsView extends StatelessWidget {
@@ -28,7 +27,7 @@ class SettingsView extends StatelessWidget {
                 padding: Dimens.edgeInsets8_16,
                 title: StringValues.settings,
               ),
-              Dimens.boxHeight8,
+              Dimens.boxHeight16,
               _buildSettingsBody(),
             ],
           ),
@@ -45,8 +44,15 @@ class SettingsView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                /// Account
+
                 NxListTile(
-                  padding: Dimens.edgeInsets16_0,
+                  padding: Dimens.edgeInsets12_8,
+                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(Dimens.eight),
+                    topRight: Radius.circular(Dimens.eight),
+                  ),
                   leading: Icon(
                     Icons.account_circle_outlined,
                     size: Dimens.twentyFour,
@@ -54,21 +60,18 @@ class SettingsView extends StatelessWidget {
                   ),
                   title: Text(
                     StringValues.account,
-                    style: AppStyles.style16Normal,
-                  ),
-                  subtitle: RichText(
-                    text: TextSpan(
-                      text: StringValues.accountSettingsHelp,
-                      style: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
-                    ),
+                    style: AppStyles.style16Bold,
                   ),
                   onTap: RouteManagement.goToAccountSettingsView,
                 ),
+
+                Dimens.divider,
+
+                /// Security
+
                 NxListTile(
-                  padding: Dimens.edgeInsets16_0,
+                  padding: Dimens.edgeInsets12_8,
+                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.verified_user_outlined,
                     size: Dimens.twentyFour,
@@ -76,21 +79,18 @@ class SettingsView extends StatelessWidget {
                   ),
                   title: Text(
                     StringValues.security,
-                    style: AppStyles.style16Normal,
-                  ),
-                  subtitle: RichText(
-                    text: TextSpan(
-                      text: StringValues.securitySettingsHelp,
-                      style: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
-                    ),
+                    style: AppStyles.style16Bold,
                   ),
                   onTap: RouteManagement.goToSecuritySettingsView,
                 ),
+
+                Dimens.divider,
+
+                /// Privacy
+
                 NxListTile(
-                  padding: Dimens.edgeInsets16_0,
+                  padding: Dimens.edgeInsets12_8,
+                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.lock_outline,
                     size: Dimens.twentyFour,
@@ -98,21 +98,18 @@ class SettingsView extends StatelessWidget {
                   ),
                   title: Text(
                     StringValues.privacy,
-                    style: AppStyles.style16Normal,
-                  ),
-                  subtitle: RichText(
-                    text: TextSpan(
-                      text: StringValues.privacySettingsHelp,
-                      style: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
-                    ),
+                    style: AppStyles.style16Bold,
                   ),
                   onTap: RouteManagement.goToPrivacySettingsView,
                 ),
+
+                Dimens.divider,
+
+                /// Help
+
                 NxListTile(
-                  padding: Dimens.edgeInsets16_0,
+                  padding: Dimens.edgeInsets12_8,
+                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.help_outline_outlined,
                     size: Dimens.twentyFour,
@@ -120,21 +117,18 @@ class SettingsView extends StatelessWidget {
                   ),
                   title: Text(
                     StringValues.help,
-                    style: AppStyles.style16Normal,
-                  ),
-                  subtitle: RichText(
-                    text: TextSpan(
-                      text: StringValues.helpSettingsHelp,
-                      style: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
-                    ),
+                    style: AppStyles.style16Bold,
                   ),
                   onTap: RouteManagement.goToHelpSettingsView,
                 ),
+
+                Dimens.divider,
+
+                /// Theme
+
                 NxListTile(
-                  padding: Dimens.edgeInsets16_0,
+                  padding: Dimens.edgeInsets12_8,
+                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.palette_outlined,
                     size: Dimens.twentyFour,
@@ -142,21 +136,18 @@ class SettingsView extends StatelessWidget {
                   ),
                   title: Text(
                     StringValues.theme,
-                    style: AppStyles.style16Normal,
-                  ),
-                  subtitle: RichText(
-                    text: TextSpan(
-                      text: StringValues.themeSettingsHelp,
-                      style: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
-                    ),
+                    style: AppStyles.style16Bold,
                   ),
                   onTap: RouteManagement.goToThemeSettingsView,
                 ),
+
+                Dimens.divider,
+
+                /// About
+
                 NxListTile(
-                  padding: Dimens.edgeInsets16_0,
+                  padding: Dimens.edgeInsets12_8,
+                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.info_outline,
                     size: Dimens.twentyFour,
@@ -164,34 +155,53 @@ class SettingsView extends StatelessWidget {
                   ),
                   title: Text(
                     StringValues.about,
-                    style: AppStyles.style16Normal,
-                  ),
-                  subtitle: RichText(
-                    text: TextSpan(
-                      text: StringValues.aboutSettingsHelp,
-                      style: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
-                    ),
+                    style: AppStyles.style16Bold,
                   ),
                   onTap: RouteManagement.goToAboutSettingsView,
                 ),
-                Dimens.boxHeight32,
-                NxOutlinedButton(
-                  label: StringValues.logout.toTitleCase(),
-                  width: Dimens.screenWidth,
-                  height: Dimens.thirtySix,
-                  padding: Dimens.edgeInsets0_8,
-                  borderRadius: Dimens.eight,
-                  borderColor:
-                      Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  labelStyle: AppStyles.style14Bold.copyWith(
+
+                Dimens.divider,
+
+                /// Check for update
+
+                NxListTile(
+                  padding: Dimens.edgeInsets12_8,
+                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                  leading: Icon(
+                    Icons.loop_outlined,
+                    size: Dimens.twentyFour,
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   ),
-                  onTap: () {
+                  title: Text(
+                    StringValues.checkForUpdates.toTitleCase(),
+                    style: AppStyles.style16Bold,
+                  ),
+                  // onTap: RouteManagement.goToAboutSettingsView,
+                ),
+
+                Dimens.divider,
+
+                /// Logout
+
+                NxListTile(
+                  padding: Dimens.edgeInsets12_8,
+                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(Dimens.eight),
+                    bottomRight: Radius.circular(Dimens.eight),
+                  ),
+                  leading: Icon(
+                    Icons.logout_outlined,
+                    size: Dimens.twentyFour,
+                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  ),
+                  title: Text(
+                    StringValues.logout,
+                    style: AppStyles.style16Bold,
+                  ),
+                  onTap: () async {
+                    await AuthService.find.logout();
                     RouteManagement.goToWelcomeView();
-                    AuthService.find.logout();
                   },
                 ),
                 Dimens.boxHeight16,

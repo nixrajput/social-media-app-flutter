@@ -36,8 +36,8 @@ import 'package:social_media_app/modules/profile/views/edit_views/edit_gender_vi
 import 'package:social_media_app/modules/profile/views/edit_views/edit_name_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_username_view.dart';
 import 'package:social_media_app/modules/profile/views/profile_details_view.dart';
+import 'package:social_media_app/modules/settings/bindings/login_device_info_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
-import 'package:social_media_app/modules/settings/bindings/security_settings_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
 import 'package:social_media_app/modules/settings/views/pages/about_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account_settings_view.dart';
@@ -250,7 +250,7 @@ abstract class AppPages {
     GetPage(
       name: _Routes.securitySettings,
       page: SecuritySettingsView.new,
-      binding: SecuritySettingBinding(),
+      binding: LoginDeviceInfoBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
@@ -284,7 +284,7 @@ abstract class AppPages {
     GetPage(
       name: _Routes.loginActivitySettings,
       page: LoginActivityView.new,
-      binding: SecuritySettingBinding(),
+      binding: LoginDeviceInfoBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),

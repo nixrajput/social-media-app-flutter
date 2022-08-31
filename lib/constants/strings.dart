@@ -88,6 +88,7 @@ abstract class StringValues {
   static const unfollow = 'Unfollow';
   static const changePassword = 'Change Password';
   static const about = 'About';
+  static const checkForUpdates = 'Check for updates';
   static const userNotFoundError = 'User details not found.';
   static const save = 'Save';
   static const dob = 'DOB';
@@ -105,6 +106,7 @@ abstract class StringValues {
   static const refresh = 'Refresh';
   static const followUserLine =
       'Do follow some users to see their latest posts';
+  static const loginActivity = 'Login Activity';
   static const noPosts = 'No posts to show.';
   static const writeSomethingAboutYou = 'Write something about you...';
   static const dobFormat = 'dd mmm, yyyy';
@@ -168,6 +170,7 @@ abstract class StringValues {
   static const twoFaAuth = "Two-factor authentication";
   static const noNotifications = "No notifications at the moment.";
   static const profession = 'Profession';
+  static const moments = 'Moments';
   static const nameHelpText =
       "Help people discover your account by using the name you're known by: either your full name, nickname, or business name.";
   static const accountSettingsHelp =
@@ -185,6 +188,8 @@ abstract class StringValues {
   static const changeEmail = 'Change Email address';
   static const changePhoneNo = 'Change Phone number';
   static const verification = 'Verification';
+  static const applyForSelfVerify = 'Apply for self verification';
+  static const applyForBlueTick = 'Apply for blue tick';
   static const request = 'Request';
   static const likes = 'Likes';
   static const twoFaAuthHelpText =

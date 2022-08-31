@@ -48,62 +48,84 @@ class PrivacySettingsView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              /// Account Privacy
+
               GetBuilder<ProfileController>(
                 builder: (logic) => NxListTile(
+                  padding: Dimens.edgeInsets12_8,
+                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(Dimens.eight),
+                    topRight: Radius.circular(Dimens.eight),
+                  ),
                   leading: Icon(
                     Icons.lock_outline,
-                    size: Dimens.twentyFour,
+                    size: Dimens.twenty,
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   ),
                   title: Text(
                     StringValues.accountPrivacy,
-                    style: AppStyles.style16Normal,
+                    style: AppStyles.style14Bold,
                   ),
                   onTap: () => _showAccountPrivacyDialog(logic),
                 ),
               ),
+
+              Dimens.divider,
+
+              /// Posts
+
               NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                 leading: Icon(
                   Icons.add_circle_outline,
-                  size: Dimens.twentyFour,
+                  size: Dimens.twenty,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
                   StringValues.posts,
-                  style: AppStyles.style16Normal,
+                  style: AppStyles.style14Bold,
                 ),
               ),
+
+              Dimens.divider,
+
+              /// Comments
+
               NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                 leading: Icon(
                   Icons.chat_bubble_outline,
-                  size: Dimens.twentyFour,
+                  size: Dimens.twenty,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
                   StringValues.comments,
-                  style: AppStyles.style16Normal,
+                  style: AppStyles.style14Bold,
                 ),
               ),
+
+              Dimens.divider,
+
+              /// Moments
+
               NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(Dimens.eight),
+                  bottomRight: Radius.circular(Dimens.eight),
+                ),
                 leading: Icon(
                   Icons.history_outlined,
-                  size: Dimens.twentyFour,
+                  size: Dimens.twenty,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
-                  StringValues.story,
-                  style: AppStyles.style16Normal,
-                ),
-              ),
-              NxListTile(
-                leading: Icon(
-                  Icons.online_prediction,
-                  size: Dimens.twentyFour,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
-                title: Text(
-                  "${StringValues.activity} ${StringValues.status.toTitleCase()}",
-                  style: AppStyles.style16Normal,
+                  StringValues.moments,
+                  style: AppStyles.style14Bold,
                 ),
               ),
               Dimens.boxHeight16,
@@ -129,7 +151,7 @@ class PrivacySettingsView extends StatelessWidget {
                 children: [
                   Text(
                     StringValues.accountPrivacy,
-                    style: AppStyles.style20Bold,
+                    style: AppStyles.style16Bold,
                   ),
                   const Spacer(),
                   NxIconButton(
@@ -141,21 +163,59 @@ class PrivacySettingsView extends StatelessWidget {
               ),
               Dimens.boxHeight24,
               Column(
-                children: [StringValues.public, StringValues.private]
-                    .map(
-                      (val) => NxRadioTile(
-                        padding: Dimens.edgeInsets8_0,
-                        onTap: () => con.updateAccountType(val),
-                        onChanged: (value) {
-                          con.updateAccountType(val);
-                        },
-                        title: val.toTitleCase(),
-                        value: val,
-                        groupValue: logic.profileData.user!.accountType,
-                      ),
-                    )
-                    .toList(),
+                children: [
+                  NxRadioTile(
+                    padding: Dimens.edgeInsets8,
+                    bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(Dimens.eight),
+                      topRight: Radius.circular(Dimens.eight),
+                    ),
+                    onTap: () => con.updateAccountType(StringValues.public),
+                    onChanged: (value) {
+                      con.updateAccountType(StringValues.public);
+                    },
+                    title: StringValues.public.toTitleCase(),
+                    titleStyle: AppStyles.style14Bold,
+                    value: StringValues.public,
+                    groupValue: logic.profileData.user!.accountType,
+                  ),
+                  Dimens.divider,
+                  NxRadioTile(
+                    padding: Dimens.edgeInsets8,
+                    bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(Dimens.eight),
+                      bottomRight: Radius.circular(Dimens.eight),
+                    ),
+                    onTap: () => con.updateAccountType(StringValues.public),
+                    onChanged: (value) {
+                      con.updateAccountType(StringValues.public);
+                    },
+                    title: StringValues.public.toTitleCase(),
+                    titleStyle: AppStyles.style14Bold,
+                    value: StringValues.public,
+                    groupValue: logic.profileData.user!.accountType,
+                  ),
+                ],
               ),
+              // Column(
+              //   children: [StringValues.public, StringValues.private]
+              //       .map(
+              //         (val) => NxRadioTile(
+              //           padding: Dimens.edgeInsets12_8,
+              //           bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+              //           onTap: () => con.updateAccountType(val),
+              //           onChanged: (value) {
+              //             con.updateAccountType(val);
+              //           },
+              //           title: val.toTitleCase(),
+              //           value: val,
+              //           groupValue: logic.profileData.user!.accountType,
+              //         ),
+              //       )
+              //       .toList(),
+              // ),
               Dimens.boxHeight24,
             ],
           ),

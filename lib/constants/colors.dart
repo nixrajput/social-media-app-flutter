@@ -32,6 +32,9 @@ abstract class ColorValues {
   static const Color darkerGrayColor = Color(0xff505050);
   static const Color lightGrayColor = Color(0xffd2d2d2);
 
+  static const Color darkDividerColor = Color(0xff707070);
+  static const Color lightDividerColor = Color(0xffc2c2c2);
+
   static const Color lightBodyTextColor = Color(0xFF3C3C3C);
   static const Color lightSubtitleTextColor = Color(0xFF6E6E6E);
   static const Color darkBodyTextColor = Color(0xFFE8E8E8);

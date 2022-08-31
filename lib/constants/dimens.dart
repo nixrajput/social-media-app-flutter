@@ -138,6 +138,16 @@ abstract class Dimens {
     horizontal: eight,
   );
 
+  static EdgeInsets edgeInsets12_8 = EdgeInsets.symmetric(
+    vertical: twelve,
+    horizontal: eight,
+  );
+
+  static EdgeInsets edgeInsets8_12 = EdgeInsets.symmetric(
+    vertical: eight,
+    horizontal: twelve,
+  );
+
   static EdgeInsets edgeInsets0 = EdgeInsets.zero;
 
   static EdgeInsets edgeInsets4 = EdgeInsets.all(four);

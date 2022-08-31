@@ -80,20 +80,21 @@ class FollowersListView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: logic.followersList
-                        .map(
-                          (user) => UserWidget(
-                            user: user,
-                            bottomMargin: Dimens.sixTeen,
-                          ),
-                        )
-                        .toList(),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: logic.followersList.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (ctx, index) {
+                      var item = logic.followersList.elementAt(index);
+                      return UserWidget(
+                        user: item,
+                        totalLength: logic.followersList.length,
+                        index: index,
+                      );
+                    },
                   ),
-                  if (logic.isMoreLoading) Dimens.boxHeight8,
+                  if (logic.isMoreLoading || logic.followersData!.hasNextPage!)
+                    Dimens.boxHeight8,
                   if (logic.isMoreLoading)
                     const Center(child: CircularProgressIndicator()),
                   if (!logic.isMoreLoading && logic.followersData!.hasNextPage!)

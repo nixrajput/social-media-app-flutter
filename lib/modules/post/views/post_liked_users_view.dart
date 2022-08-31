@@ -43,13 +43,13 @@ class PostLikedUsersView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GetBuilder<PostLikedUsersController>(
-                builder: (commentsLogic) {
-                  if (commentsLogic.isLoading) {
+                builder: (logic) {
+                  if (logic.isLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
-                  if (commentsLogic.postLikedUsersList.isEmpty) {
+                  if (logic.postLikedUsersList.isEmpty) {
                     return const SizedBox();
                   }
                   return Column(
@@ -57,26 +57,28 @@ class PostLikedUsersView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: commentsLogic.postLikedUsersList
-                            .map((e) => UserWidget(
-                                  user: e.likedBy!,
-                                  avatarSize: Dimens.twenty,
-                                  bottomMargin: Dimens.sixTeen,
-                                ))
-                            .toList(),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: logic.postLikedUsersList.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (ctx, index) {
+                          var item =
+                              logic.postLikedUsersList.elementAt(index).likedBy;
+                          return UserWidget(
+                            user: item!,
+                            totalLength: logic.postLikedUsersList.length,
+                            index: index,
+                          );
+                        },
                       ),
-                      if (commentsLogic.isMoreLoading) Dimens.boxHeight8,
-                      if (commentsLogic.isMoreLoading)
+                      if (logic.isMoreLoading) Dimens.boxHeight8,
+                      if (logic.isMoreLoading)
                         const Center(child: CircularProgressIndicator()),
-                      if (!commentsLogic.isMoreLoading &&
-                          commentsLogic.postLikedUsersData.hasNextPage!)
+                      if (!logic.isMoreLoading &&
+                          logic.postLikedUsersData.hasNextPage!)
                         NxTextButton(
                           label: 'View more',
-                          onTap: commentsLogic.loadMore,
+                          onTap: logic.loadMore,
                           labelStyle: AppStyles.style14Bold.copyWith(
                             color: ColorValues.primaryLightColor,
                           ),

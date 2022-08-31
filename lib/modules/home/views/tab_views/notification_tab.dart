@@ -88,24 +88,33 @@ class NotificationTabView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: logic.notificationList
-                    .map((item) => NotificationWidget(notification: item))
-                    .toList(),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: logic.notificationList.length,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (ctx, index) {
+                  var item = logic.notificationList.elementAt(index);
+                  return NotificationWidget(
+                    notification: item,
+                    totalLength: logic.notificationList.length,
+                    index: index,
+                  );
+                },
               ),
-              if (logic.isMoreLoading) Dimens.boxHeight8,
+              if (logic.isMoreLoading || logic.notificationData!.hasNextPage!)
+                Dimens.boxHeight8,
               if (logic.isMoreLoading)
                 const Center(child: CircularProgressIndicator()),
               if (!logic.isMoreLoading && logic.notificationData!.hasNextPage!)
-                NxTextButton(
-                  label: 'Load more notifications',
-                  onTap: logic.loadMore,
-                  labelStyle: AppStyles.style14Bold.copyWith(
-                    color: ColorValues.primaryLightColor,
+                Center(
+                  child: NxTextButton(
+                    label: 'Load more notifications',
+                    onTap: logic.loadMore,
+                    labelStyle: AppStyles.style14Bold.copyWith(
+                      color: ColorValues.primaryLightColor,
+                    ),
+                    padding: Dimens.edgeInsets8_0,
                   ),
-                  padding: Dimens.edgeInsets8_0,
                 ),
               Dimens.boxHeight16,
             ],

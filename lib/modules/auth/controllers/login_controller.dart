@@ -11,6 +11,7 @@ import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
+import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class LoginController extends GetxController {
@@ -89,7 +90,7 @@ class LoginController extends GetxController {
         _auth.autoLogout();
         await _profile.fetchProfileDetails().then((_) async {
           await _auth.saveLoginInfo();
-
+          await LoginDeviceInfoController.find.getLoginDeviceInfo();
           _clearLoginTextControllers();
 
           AppUtils.closeDialog();

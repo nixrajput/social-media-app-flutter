@@ -18,7 +18,7 @@ abstract class AppThemes {
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
       backgroundColor: ColorValues.whiteColor,
     ),
-    dividerColor: ColorValues.grayColor,
+    dividerColor: ColorValues.lightDividerColor,
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: ColorValues.whiteColor,
       contentTextStyle: TextStyle(
@@ -70,7 +70,7 @@ abstract class AppThemes {
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
       backgroundColor: ColorValues.darkColor,
     ),
-    dividerColor: ColorValues.darkGrayColor,
+    dividerColor: ColorValues.darkDividerColor,
     snackBarTheme: const SnackBarThemeData(
       backgroundColor: ColorValues.darkColor,
       contentTextStyle: TextStyle(

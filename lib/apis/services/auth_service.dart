@@ -13,6 +13,7 @@ import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 
 class AuthService extends GetxService {
   static AuthService get find => Get.find();
@@ -53,10 +54,14 @@ class AuthService extends GetxService {
   }
 
   Future<void> _logout() async {
+    AppUtils.printLog("Logout Request");
+    AppUtils.showLoadingDialog();
+    await LoginDeviceInfoController.find.deleteLoginDeviceInfo(_deviceId);
     setToken = '';
     setExpiresAt = 0;
     await AppUtils.clearLoginDataFromLocalStorage();
-    AppUtils.printLog(StringValues.logoutSuccessful);
+    AppUtils.closeDialog();
+    AppUtils.printLog("Logout Success");
   }
 
   Future<void> getDeviceId() async {

@@ -43,59 +43,98 @@ class AccountSettingsView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              /// Change Email Address
+
               NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(Dimens.eight),
+                  topRight: Radius.circular(Dimens.eight),
+                ),
                 leading: Icon(
                   Icons.mail_outline,
-                  size: Dimens.twentyFour,
+                  size: Dimens.twenty,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
                   StringValues.changeEmail.toTitleCase(),
-                  style: AppStyles.style16Normal,
+                  style: AppStyles.style14Bold,
                 ),
               ),
+
+              Dimens.divider,
+
+              /// Add or Change Phone Number
+
               NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                 leading: Icon(
                   Icons.phone_outlined,
-                  size: Dimens.twentyFour,
+                  size: Dimens.twenty,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
                   StringValues.changePhoneNo.toTitleCase(),
-                  style: AppStyles.style16Normal,
+                  style: AppStyles.style14Bold,
                 ),
               ),
+
+              Dimens.divider,
+
+              /// Apply for Self Verification
+
               NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                leading: Icon(
+                  Icons.verified_user_outlined,
+                  size: Dimens.twenty,
+                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                ),
+                title: Text(
+                  StringValues.applyForSelfVerify.toTitleCase(),
+                  style: AppStyles.style14Bold,
+                ),
+              ),
+              Dimens.divider,
+
+              /// Apply for Blue Tick
+
+              NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                 leading: Icon(
                   Icons.verified_outlined,
-                  size: Dimens.twentyFour,
+                  size: Dimens.twenty,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
-                  '${StringValues.verification.toTitleCase()} ${StringValues.request.toTitleCase()}',
-                  style: AppStyles.style16Normal,
+                  StringValues.applyForBlueTick.toTitleCase(),
+                  style: AppStyles.style14Bold,
                 ),
               ),
+
+              Dimens.divider,
+
+              /// Deactivate Account
+
               NxListTile(
-                leading: Icon(
-                  Icons.download_outlined,
-                  size: Dimens.twentyFour,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(Dimens.eight),
+                  bottomRight: Radius.circular(Dimens.eight),
                 ),
-                title: Text(
-                  StringValues.downloadArchiveOfData,
-                  style: AppStyles.style16Normal,
-                ),
-              ),
-              NxListTile(
                 leading: Icon(
                   Icons.heart_broken_outlined,
-                  size: Dimens.twentyFour,
+                  size: Dimens.twenty,
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
                   StringValues.deactivateAccount,
-                  style: AppStyles.style16Normal,
+                  style: AppStyles.style14Bold,
                 ),
               ),
               Dimens.boxHeight16,

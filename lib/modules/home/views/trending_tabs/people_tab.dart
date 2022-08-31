@@ -50,20 +50,22 @@ class PeopleTab extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: logic.userList
-                      .map(
-                        (user) => UserWidget(
-                          onTap: () =>
-                              RouteManagement.goToUserProfileView(user.id),
-                          user: user,
-                          bottomMargin: Dimens.twelve,
-                        ),
-                      )
-                      .toList(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: logic.userList.length,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (ctx, index) {
+                    var item = logic.userList.elementAt(index);
+                    return UserWidget(
+                      user: item,
+                      totalLength: logic.userList.length,
+                      index: index,
+                      onTap: () => RouteManagement.goToUserProfileView(item.id),
+                    );
+                  },
                 ),
-                if (logic.isMoreLoading) Dimens.boxHeight8,
+                if (logic.isMoreLoading || logic.userData!.hasNextPage!)
+                  Dimens.boxHeight8,
                 if (logic.isMoreLoading)
                   const Center(child: CircularProgressIndicator()),
                 if (!logic.isMoreLoading && logic.userData!.hasNextPage!)

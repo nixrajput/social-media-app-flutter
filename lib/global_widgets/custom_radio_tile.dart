@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/styles.dart';
 
 class NxRadioTile extends StatelessWidget {
@@ -13,7 +12,9 @@ class NxRadioTile extends StatelessWidget {
       this.padding,
       this.titleStyle,
       this.activeColor,
-      this.onTap})
+      this.onTap,
+      this.bgColor,
+      this.borderRadius})
       : super(key: key);
 
   final Function(dynamic) onChanged;
@@ -25,6 +26,8 @@ class NxRadioTile extends StatelessWidget {
   final EdgeInsets? padding;
   final Color? activeColor;
   final Function()? onTap;
+  final Color? bgColor;
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -33,23 +36,27 @@ class NxRadioTile extends StatelessWidget {
       child: Container(
         margin: margin,
         padding: padding,
+        decoration: BoxDecoration(
+          color: bgColor ?? Colors.transparent,
+          borderRadius: borderRadius ?? const BorderRadius.all(Radius.zero),
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: titleStyle ?? AppStyles.style16Normal,
-            ),
-            Transform.scale(
-              scale: 1.25,
-              child: Radio(
-                value: value,
-                groupValue: groupValue,
-                onChanged: onChanged,
-                activeColor: activeColor ?? ColorValues.primaryColor,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            Expanded(
+              child: Text(
+                title,
+                style: titleStyle ?? AppStyles.style14Bold,
               ),
+            ),
+            Radio(
+              value: value,
+              groupValue: groupValue,
+              onChanged: onChanged,
+              activeColor:
+                  activeColor ?? Theme.of(context).textTheme.bodyText1!.color,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
           ],
         ),

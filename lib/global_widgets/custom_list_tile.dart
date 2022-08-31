@@ -23,7 +23,7 @@ class NxListTile extends StatelessWidget {
   final Color? bgColor;
   final VoidCallback? onTap;
   final VoidCallback? onLongPressed;
-  final double? borderRadius;
+  final BorderRadius? borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +37,16 @@ class NxListTile extends StatelessWidget {
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-            color: bgColor ?? Colors.transparent,
-            borderRadius: BorderRadius.circular(borderRadius ?? Dimens.zero)),
+          color: bgColor ?? Colors.transparent,
+          borderRadius: borderRadius ?? BorderRadius.circular(Dimens.zero),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   if (leading != null) leading!,
                   if (title != null || subtitle != null) Dimens.boxWidth16,

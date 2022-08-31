@@ -21,6 +21,7 @@ class NxOutlinedButton extends StatelessWidget {
     this.borderWidth,
     this.labelStyle,
     this.borderStyle,
+    this.minWidth,
   }) : super(key: key);
 
   final Color? bgColor;
@@ -36,6 +37,7 @@ class NxOutlinedButton extends StatelessWidget {
   final double? height;
   final double? fontSize;
   final double? borderWidth;
+  final double? minWidth;
   final BorderStyle? borderStyle;
   final TextStyle? labelStyle;
 
@@ -47,7 +49,10 @@ class NxOutlinedButton extends StatelessWidget {
         width: width,
         height: height ?? Dimens.fiftySix,
         padding: padding,
-        constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
+        constraints: BoxConstraints(
+          maxWidth: Dimens.screenWidth,
+          minWidth: minWidth ?? Dimens.eighty,
+        ),
         decoration: BoxDecoration(
           border: Border.all(
             color: borderColor ?? ColorValues.primaryColor,
