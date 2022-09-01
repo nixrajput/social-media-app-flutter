@@ -2,6 +2,7 @@ abstract class AppUrls {
   // Base URL
   static const String locationUrl = 'http://ip-api.com/json';
   static const String baseUrl = 'https://social-api.nixlab.co.in/api/v1';
+  static const String githubApiUrl = 'https://api.github.com';
 
 //  Endpoints
   static const String loginEndpoint = '/login';
@@ -43,4 +44,7 @@ abstract class AppUrls {
   static const String getFollowingEndpoint = '/get-followings';
 
   static const String getNotifications = '/get-notifications';
+
+  static const String checkAppUpdateEndpoint =
+      '/repos/nixrajput/social-media-app-flutter/releases/latest';
 }

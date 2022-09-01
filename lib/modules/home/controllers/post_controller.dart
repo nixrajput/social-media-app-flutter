@@ -12,7 +12,9 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
+import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 
 class PostController extends GetxController {
   static PostController get find => Get.find();
@@ -40,7 +42,10 @@ class PostController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _fetchPosts();
+    _fetchPosts().then((_) async {
+      await LoginDeviceInfoController.find.getLoginDeviceInfo();
+      await AppUpdateController.find.checkAppUpdate(showLoading: false);
+    });
   }
 
   Future<void> _fetchPosts({int? page}) async {

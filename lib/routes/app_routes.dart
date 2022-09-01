@@ -45,6 +45,8 @@ abstract class AppRoutes {
   static const postLikedUsers = _Routes.postLikedUsers;
 
   static const userProfile = _Routes.userProfile;
+
+  static const appUpdate = _Routes.appUpdate;
 }
 
 abstract class _Routes {
@@ -92,4 +94,6 @@ abstract class _Routes {
   static const postLikedUsers = '/post_liked_users';
 
   static const userProfile = '/user_profile';
+
+  static const appUpdate = '/app_update';
 }

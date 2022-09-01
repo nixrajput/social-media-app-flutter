@@ -1,6 +1,5 @@
 abstract class StringValues {
   static const appName = 'Rippl!';
-  static const appVersion = '1.0.0';
   static const welcome = 'Welcome';
   static const to = 'to';
   static const hello = 'Hello';
@@ -200,4 +199,6 @@ abstract class StringValues {
       'https://github.com/nixrajput/social-media-app-flutter/releases';
   static const appGithubUrl =
       'https://github.com/nixrajput/social-media-app-flutter';
+  static const appUpdateAvailable = 'App update available';
+  static const appVersion = '1.0.1+01';
 }

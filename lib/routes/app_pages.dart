@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:social_media_app/modules/app_update/app_update_view.dart';
 import 'package:social_media_app/modules/auth/bindings/account_verification_binding.dart';
 import 'package:social_media_app/modules/auth/bindings/login_binding.dart';
 import 'package:social_media_app/modules/auth/bindings/password_binding.dart';
@@ -285,6 +286,14 @@ abstract class AppPages {
       name: _Routes.loginActivitySettings,
       page: LoginActivityView.new,
       binding: LoginDeviceInfoBinding(),
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    /// App Update -------------------------------------------------------------
+    GetPage(
+      name: _Routes.appUpdate,
+      page: AppUpdateView.new,
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),

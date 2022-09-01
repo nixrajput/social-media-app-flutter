@@ -16,6 +16,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
+import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_compress/video_compress.dart';
 
@@ -167,6 +168,55 @@ abstract class AppUtils {
                   style: AppStyles.style24Bold.copyWith(
                     color: ColorValues.whiteColor,
                   ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  /// Show No Internet Dialog
+
+  static void showAppUpdateDialog() {
+    closeDialog();
+    Get.dialog<void>(
+      WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          backgroundColor: Colors.black26,
+          body: Padding(
+            padding: Dimens.edgeInsets16,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                NxAssetImage(
+                  imgAsset: AssetValues.error,
+                  width: Dimens.hundred * 2,
+                  height: Dimens.hundred * 2,
+                ),
+                Dimens.boxHeight8,
+                Text(
+                  'App update available',
+                  textAlign: TextAlign.center,
+                  style: AppStyles.style24Bold.copyWith(
+                    color: ColorValues.whiteColor,
+                  ),
+                ),
+                NxOutlinedButton(
+                  label: 'Download Latest APK',
+                  borderColor:
+                      Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  padding: Dimens.edgeInsets0_8,
+                  width: Dimens.screenWidth,
+                  height: Dimens.thirtySix,
+                  labelStyle: AppStyles.style14Normal.copyWith(
+                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  ),
+                  onTap: closeDialog,
                 ),
               ],
             ),

@@ -7,6 +7,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
+import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class SettingsView extends StatelessWidget {
@@ -176,7 +177,7 @@ class SettingsView extends StatelessWidget {
                     StringValues.checkForUpdates.toTitleCase(),
                     style: AppStyles.style16Bold,
                   ),
-                  // onTap: RouteManagement.goToAboutSettingsView,
+                  onTap: () => AppUpdateController.find.checkAppUpdate(),
                 ),
 
                 Dimens.divider,

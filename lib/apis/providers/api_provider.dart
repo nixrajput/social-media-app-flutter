@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/urls.dart';
 
 class ApiProvider {
@@ -476,6 +477,20 @@ class ApiProvider {
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  /// App Update ---------------------------------------------------------------
+
+  Future<http.Response> getLatestReleaseInfo() async {
+    final response = await _client.get(
+      Uri.parse(AppUrls.githubApiUrl + AppUrls.checkAppUpdateEndpoint),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer ${AppSecrets.githubToken}",
       },
     );
 
