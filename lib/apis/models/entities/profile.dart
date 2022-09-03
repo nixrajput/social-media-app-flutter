@@ -1,14 +1,12 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/phone.dart';
-import 'package:social_media_app/apis/models/entities/post.dart';
 
 part 'profile.g.dart';
 
 @JsonSerializable()
-class Profile extends Equatable {
-  const Profile({
+class Profile {
+  Profile({
     required this.id,
     required this.fname,
     required this.lname,
@@ -24,22 +22,15 @@ class Profile extends Equatable {
     this.profession,
     this.location,
     this.website,
-    required this.posts,
-    required this.followers,
-    required this.following,
+    required this.postsCount,
     required this.followersCount,
-    required this.followingsCount,
+    required this.followingCount,
     required this.role,
-    required this.accountType,
+    required this.accountPrivacy,
     required this.accountStatus,
+    required this.verificationStatus,
+    required this.isValid,
     required this.isVerified,
-    this.token,
-    this.expiresAt,
-    this.otp,
-    this.resetPasswordToken,
-    this.resetPasswordExpire,
-    this.lastActive,
-    this.loggedInDevices,
     required this.createdAt,
   });
 
@@ -52,131 +43,74 @@ class Profile extends Equatable {
   final String id;
 
   @JsonKey(name: 'fname')
-  final String fname;
+  String fname;
 
   @JsonKey(name: 'lname')
-  final String lname;
+  String lname;
 
   @JsonKey(name: 'email')
-  final String email;
+  String email;
 
   @JsonKey(name: 'emailVerified')
-  final bool emailVerified;
+  bool emailVerified;
 
   @JsonKey(name: 'uname')
-  final String uname;
+  String uname;
 
   @JsonKey(name: 'avatar')
   final MediaFile? avatar;
 
   @JsonKey(name: 'phone')
-  final Phone? phone;
+  Phone? phone;
 
   @JsonKey(name: 'phoneVerified')
-  final bool phoneVerified;
+  bool phoneVerified;
 
   @JsonKey(name: 'gender')
-  final String? gender;
+  String? gender;
 
   @JsonKey(name: 'dob')
-  final String? dob;
+  String? dob;
 
   @JsonKey(name: 'about')
-  final String? about;
+  String? about;
 
   @JsonKey(name: 'profession')
-  final String? profession;
+  String? profession;
 
   @JsonKey(name: 'location')
   final String? location;
 
   @JsonKey(name: 'website')
-  final String? website;
-
-  @JsonKey(name: 'posts')
-  final List<Post> posts;
-
-  @JsonKey(name: 'followers')
-  final List<dynamic> followers;
-
-  @JsonKey(name: 'following')
-  final List<dynamic> following;
+  String? website;
 
   @JsonKey(name: 'followersCount')
-  final int followersCount;
+  int followersCount;
 
-  @JsonKey(name: 'followingsCount')
-  final int followingsCount;
+  @JsonKey(name: 'postsCount')
+  int postsCount;
+
+  @JsonKey(name: 'followingCount')
+  int followingCount;
 
   @JsonKey(name: 'role')
   final String role;
 
-  @JsonKey(name: 'accountType')
-  final String accountType;
+  @JsonKey(name: 'accountPrivacy')
+  String accountPrivacy;
 
   @JsonKey(name: 'accountStatus')
-  final String accountStatus;
+  String accountStatus;
+
+  @JsonKey(name: 'verificationStatus')
+  String verificationStatus;
+
+  @JsonKey(name: 'isValid')
+  bool isValid;
 
   @JsonKey(name: 'isVerified')
-  final bool isVerified;
-
-  @JsonKey(name: 'token')
-  final String? token;
-
-  @JsonKey(name: 'expiresAt')
-  final int? expiresAt;
-
-  @JsonKey(name: 'otp')
-  final String? otp;
-
-  @JsonKey(name: 'resetPasswordToken')
-  final String? resetPasswordToken;
-
-  @JsonKey(name: 'resetPasswordExpire')
-  final String? resetPasswordExpire;
-
-  @JsonKey(name: 'lastActive')
-  final DateTime? lastActive;
-
-  @JsonKey(name: 'loggedInDevices')
-  final List<String>? loggedInDevices;
+  bool isVerified;
 
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
-
-  @override
-  List<Object?> get props => <Object?>[
-        id,
-        fname,
-        lname,
-        email,
-        emailVerified,
-        uname,
-        avatar,
-        phone,
-        phoneVerified,
-        gender,
-        dob,
-        about,
-        profession,
-        location,
-        website,
-        posts,
-        followers,
-        following,
-        followingsCount,
-        followersCount,
-        role,
-        accountType,
-        accountStatus,
-        isVerified,
-        token,
-        expiresAt,
-        otp,
-        resetPasswordToken,
-        resetPasswordExpire,
-        lastActive,
-        loggedInDevices,
-        createdAt,
-      ];
 }

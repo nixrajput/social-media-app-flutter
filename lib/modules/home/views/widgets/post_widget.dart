@@ -252,7 +252,7 @@ class _PostWidgetState extends State<PostWidget> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: '${widget.post.likes.length}'
+                              text: '${widget.post.likesCount}'
                                   .toCountingFormat(),
                               style: AppStyles.style14Bold.copyWith(
                                 color: Theme.of(Get.context!)
@@ -285,7 +285,7 @@ class _PostWidgetState extends State<PostWidget> {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: '${widget.post.comments.length}'
+                              text: '${widget.post.commentsCount}'
                                   .toCountingFormat(),
                               style: AppStyles.style14Bold.copyWith(
                                 color: Theme.of(Get.context!)
@@ -323,14 +323,10 @@ class _PostWidgetState extends State<PostWidget> {
                         Theme.of(Get.context!).scaffoldBackgroundColor,
                     radius: Dimens.twenty,
                     child: Icon(
-                      widget.post.likes.any((element) =>
-                              element.likedBy ==
-                              ProfileController.find.profileData.user!.id)
+                      widget.post.isLiked
                           ? Icons.favorite
                           : Icons.favorite_outline,
-                      color: widget.post.likes.any((element) =>
-                              element.likedBy ==
-                              ProfileController.find.profileData.user!.id)
+                      color: widget.post.isLiked
                           ? ColorValues.errorColor
                           : ColorValues.grayColor,
                     ),
@@ -379,7 +375,7 @@ class _PostWidgetState extends State<PostWidget> {
           //   ),
           // ),
           if (widget.post.owner.id ==
-              ProfileController.find.profileData.user!.id)
+              ProfileController.find.profileDetails.user!.id)
             ListTile(
               onTap: () {
                 AppUtils.closeBottomSheet();

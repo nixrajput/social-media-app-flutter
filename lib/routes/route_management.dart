@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/following_list_controller.dart';
-import 'package:social_media_app/modules/user/controllers/user_profile_controller.dart';
+import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
 abstract class RouteManagement {
@@ -97,8 +97,8 @@ abstract class RouteManagement {
   }
 
   static void goToUserProfileView(String userId) {
-    Get.delete<UserProfileController>();
-    Get.toNamed("${AppRoutes.userProfile}/$userId");
+    Get.delete<UserDetailsController>();
+    Get.toNamed("${AppRoutes.userProfile}/$userId", arguments: userId);
   }
 
   static void goToPostDetailsView(String postId, Post post) {

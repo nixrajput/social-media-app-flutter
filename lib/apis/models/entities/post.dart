@@ -1,21 +1,18 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:social_media_app/apis/models/entities/post_like.dart';
 import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 
 part 'post.g.dart';
 
 @JsonSerializable()
-class Post extends Equatable {
-  const Post({
+class Post {
+  Post({
     this.id,
     this.caption,
     this.mediaFiles,
     required this.owner,
-    required this.likes,
     required this.likesCount,
-    required this.comments,
+    required this.isLiked,
     required this.commentsCount,
     required this.postStatus,
     required this.createdAt,
@@ -37,35 +34,18 @@ class Post extends Equatable {
   @JsonKey(name: 'owner')
   final User owner;
 
-  @JsonKey(name: 'likes')
-  final List<PostLike> likes;
-
   @JsonKey(name: 'likesCount')
-  final int likesCount;
-
-  @JsonKey(name: 'comments')
-  final List<String> comments;
+  int likesCount;
 
   @JsonKey(name: 'commentsCount')
-  final int commentsCount;
+  int commentsCount;
+
+  @JsonKey(name: 'isLiked')
+  bool isLiked;
 
   @JsonKey(name: 'postStatus')
-  final String postStatus;
+  String postStatus;
 
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
-
-  @override
-  List<Object?> get props => <Object?>[
-        id,
-        caption,
-        mediaFiles,
-        owner,
-        likes,
-        likesCount,
-        comments,
-        commentsCount,
-        postStatus,
-        createdAt,
-      ];
 }

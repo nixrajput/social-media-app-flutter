@@ -20,6 +20,7 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await initServices();
     runApp(const MyApp());
+    await AppUpdateController.find.checkAppUpdate(showLoading: false);
   } catch (err) {
     AppUtils.printLog(err);
   }
@@ -39,7 +40,7 @@ Future<void> initServices() async {
   await Get.find<AuthService>().getToken().then((value) async {
     Get.find<AuthService>().autoLogout();
     if (value.isNotEmpty) {
-      var hasData = await Get.find<ProfileController>().getProfileDetails();
+      var hasData = await Get.find<ProfileController>().loadProfileDetails();
       if (hasData) {
         isLogin = true;
       } else {

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -9,12 +8,14 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/count_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_shape_painter.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/shimmer_loading.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
@@ -56,7 +57,7 @@ class ProfileTabView extends StatelessWidget {
               _buildProfileHeader(logic),
               logic.isLoading
                   ? _buildLoadingWidget()
-                  : logic.profileData.user == null
+                  : logic.profileDetails.user == null
                       ? _buildErrorBody(logic)
                       : _buildProfileBody(logic),
             ],
@@ -74,8 +75,8 @@ class ProfileTabView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              logic.profileData.user != null
-                  ? logic.profileData.user!.uname
+              logic.profileDetails.user != null
+                  ? logic.profileDetails.user!.uname
                   : StringValues.profile,
               style: AppStyles.style20Bold,
             ),
@@ -99,7 +100,7 @@ class ProfileTabView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Dimens.boxHeight24,
+        Dimens.boxHeight16,
         Padding(
           padding: Dimens.edgeInsets0_16,
           child: _buildUserDetails(logic),
@@ -128,9 +129,9 @@ class ProfileTabView extends StatelessWidget {
               GestureDetector(
                 onTap: () => _showProfilePictureDialog(logic),
                 child: Hero(
-                  tag: logic.profileData.user!.id,
+                  tag: logic.profileDetails.user!.id,
                   child: AvatarWidget(
-                    avatar: logic.profileData.user!.avatar,
+                    avatar: logic.profileDetails.user!.avatar,
                   ),
                 ),
               ),
@@ -139,11 +140,11 @@ class ProfileTabView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '${logic.profileData.user!.fname} ${logic.profileData.user!.lname}',
+                    '${logic.profileDetails.user!.fname} ${logic.profileDetails.user!.lname}',
                     style: AppStyles.style18Bold,
                   ),
-                  if (logic.profileData.user!.isVerified) Dimens.boxWidth4,
-                  if (logic.profileData.user!.isVerified)
+                  if (logic.profileDetails.user!.isVerified) Dimens.boxWidth4,
+                  if (logic.profileDetails.user!.isVerified)
                     Icon(
                       CupertinoIcons.checkmark_seal_fill,
                       color: Theme.of(Get.context!).brightness ==
@@ -156,7 +157,7 @@ class ProfileTabView extends StatelessWidget {
               ),
               Dimens.boxHeight4,
               Text(
-                "@${logic.profileData.user!.uname}",
+                "@${logic.profileDetails.user!.uname}",
                 style: AppStyles.style14Normal.copyWith(
                   color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                 ),
@@ -164,9 +165,9 @@ class ProfileTabView extends StatelessWidget {
             ],
           ),
           Dimens.boxHeight16,
-          if (logic.profileData.user!.about != null)
+          if (logic.profileDetails.user!.about != null)
             Text(
-              logic.profileData.user!.about!,
+              logic.profileDetails.user!.about!,
               style: AppStyles.style14Normal,
             ),
           Dimens.boxHeight8,
@@ -175,14 +176,16 @@ class ProfileTabView extends StatelessWidget {
             children: [
               Icon(
                 Icons.calendar_today,
-                size: Dimens.fourteen,
-                color: ColorValues.grayColor,
+                size: Dimens.twelve,
+                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
               ),
-              Dimens.boxWidth4,
+              Dimens.boxWidth8,
               Expanded(
                 child: Text(
-                  'Joined - ${DateFormat.yMMMd().format(logic.profileData.user!.createdAt)}',
-                  style: const TextStyle(color: ColorValues.grayColor),
+                  'Joined - ${DateFormat.yMMMd().format(logic.profileDetails.user!.createdAt)}',
+                  style: AppStyles.style12Bold.copyWith(
+                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                  ),
                 ),
               ),
             ],
@@ -222,7 +225,7 @@ class ProfileTabView extends StatelessWidget {
             child: NxCountWidget(
               title: StringValues.posts,
               valueStyle: AppStyles.style24Bold,
-              value: logic.profileData.user!.posts.length
+              value: logic.profileDetails.user!.postsCount
                   .toString()
                   .toCountingFormat(),
             ),
@@ -231,22 +234,22 @@ class ProfileTabView extends StatelessWidget {
             child: NxCountWidget(
               title: StringValues.followers,
               valueStyle: AppStyles.style24Bold,
-              value: logic.profileData.user!.followers.length
+              value: logic.profileDetails.user!.followersCount
                   .toString()
                   .toCountingFormat(),
               onTap: () => RouteManagement.goToFollowersListView(
-                  logic.profileData.user!.id),
+                  logic.profileDetails.user!.id),
             ),
           ),
           Expanded(
             child: NxCountWidget(
               title: StringValues.following,
               valueStyle: AppStyles.style24Bold,
-              value: logic.profileData.user!.following.length
+              value: logic.profileDetails.user!.followingCount
                   .toString()
                   .toCountingFormat(),
               onTap: () => RouteManagement.goToFollowingListView(
-                  logic.profileData.user!.id),
+                  logic.profileDetails.user!.id),
             ),
           ),
         ],
@@ -255,14 +258,10 @@ class ProfileTabView extends StatelessWidget {
   }
 
   Widget _buildPosts(ProfileController logic) {
-    if (logic.profileData.user!.posts.isEmpty) {
+    if (logic.postList.isEmpty) {
       return Center(
         child: Padding(
-          padding: EdgeInsets.only(
-            top: 16.h,
-            left: 16.0.w,
-            right: 16.0.w,
-          ),
+          padding: Dimens.edgeInsets16,
           child: Text(
             StringValues.noPosts,
             style: AppStyles.style20Normal.copyWith(
@@ -276,23 +275,47 @@ class ProfileTabView extends StatelessWidget {
 
     return Padding(
       padding: Dimens.edgeInsets0_16,
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: logic.profileData.user!.posts.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: Dimens.eight,
-          mainAxisSpacing: Dimens.eight,
-        ),
-        itemBuilder: (ctx, i) {
-          var post = logic.profileData.user!.posts[i];
-
-          return PostThumbnailWidget(
-            mediaFile: post.mediaFiles!.first,
-            post: post,
-          );
-        },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (logic.isPostLoading)
+            const Center(child: NxCircularProgressIndicator())
+          else
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: logic.postList.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                crossAxisSpacing: Dimens.eight,
+                mainAxisSpacing: Dimens.eight,
+              ),
+              itemBuilder: (ctx, i) {
+                var post = logic.postList[i];
+                return PostThumbnailWidget(
+                  mediaFile: post.mediaFiles!.first,
+                  post: post,
+                );
+              },
+            ),
+          if (logic.isMorePostLoading || logic.postData!.hasNextPage!)
+            Dimens.boxHeight16,
+          if (logic.isMorePostLoading)
+            const Center(child: NxCircularProgressIndicator()),
+          if (!logic.isMorePostLoading && logic.postData!.hasNextPage!)
+            Center(
+              child: NxTextButton(
+                label: 'Load more posts',
+                onTap: logic.loadMore,
+                labelStyle: AppStyles.style14Bold.copyWith(
+                  color: ColorValues.primaryLightColor,
+                ),
+                padding: Dimens.edgeInsets8_0,
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -323,7 +346,7 @@ class ProfileTabView extends StatelessWidget {
               ),
               Dimens.boxHeight24,
               AvatarWidget(
-                avatar: logic.profileData.user?.avatar,
+                avatar: logic.profileDetails.user?.avatar,
                 size: Dimens.screenWidth * 0.4,
               ),
               Dimens.boxHeight40,

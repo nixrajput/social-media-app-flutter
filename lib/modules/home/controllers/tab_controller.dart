@@ -11,7 +11,7 @@ class TrendingTabController extends GetxController
   static TrendingTabController get find => Get.find();
 
   TabController? _controller;
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
 
   int get selectedIndex => _selectedIndex;
 
@@ -23,6 +23,7 @@ class TrendingTabController extends GetxController
     _controller = TabController(length: tabs.length, vsync: this);
     _controller?.addListener(() {
       _selectedIndex = _controller!.index;
+      update();
     });
   }
 

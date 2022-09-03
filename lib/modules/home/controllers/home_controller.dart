@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/global_widgets/keep_alive_page.dart';
+import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/modules/home/views/tab_views/home_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/notification_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/profile_tab.dart';
@@ -32,8 +35,27 @@ class HomeController extends GetxController {
       icon: Icon(CupertinoIcons.number),
       label: StringValues.search,
     ),
-    const BottomNavigationBarItem(
-      icon: Icon(CupertinoIcons.bell),
+    BottomNavigationBarItem(
+      icon: GetBuilder<NotificationController>(
+        builder: (logic) => Stack(
+          children: [
+            const Icon(CupertinoIcons.bell),
+            if (logic.notificationList.map((e) => e.isRead).contains(false))
+              Positioned(
+                right: Dimens.two,
+                top: Dimens.zero,
+                child: Container(
+                  width: Dimens.eight,
+                  height: Dimens.eight,
+                  decoration: const BoxDecoration(
+                    color: ColorValues.errorColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
       label: StringValues.notifications,
     ),
     const BottomNavigationBarItem(
@@ -51,8 +73,8 @@ class HomeController extends GetxController {
     currentPageIndex = index;
     pageController.animateToPage(
       index,
-      duration: const Duration(milliseconds: 100),
-      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOutCirc,
     );
     update();
   }

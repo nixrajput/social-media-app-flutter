@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'post_like_response.dart';
+part of 'follower_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostLikeResponse _$PostLikeResponseFromJson(Map<String, dynamic> json) =>
-    PostLikeResponse(
+FollowerResponse _$FollowerResponseFromJson(Map<String, dynamic> json) =>
+    FollowerResponse(
       success: json['success'] as bool?,
       currentPage: json['currentPage'] as int?,
       totalPages: json['totalPages'] as int?,
@@ -17,11 +17,11 @@ PostLikeResponse _$PostLikeResponseFromJson(Map<String, dynamic> json) =>
       hasNextPage: json['hasNextPage'] as bool?,
       nextPage: json['nextPage'] as String?,
       results: (json['results'] as List<dynamic>?)
-          ?.map((e) => LikeDetails.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Follower.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$PostLikeResponseToJson(PostLikeResponse instance) =>
+Map<String, dynamic> _$FollowerResponseToJson(FollowerResponse instance) =>
     <String, dynamic>{
       'success': instance.success,
       'currentPage': instance.currentPage,

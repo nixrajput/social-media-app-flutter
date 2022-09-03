@@ -1,12 +1,11 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
 
 part 'user.g.dart';
 
 @JsonSerializable()
-class User extends Equatable {
-  const User({
+class User {
+  User({
     required this.id,
     required this.fname,
     required this.lname,
@@ -14,9 +13,11 @@ class User extends Equatable {
     required this.uname,
     this.profession,
     this.avatar,
-    required this.accountType,
+    required this.accountPrivacy,
+    required this.followingStatus,
     required this.accountStatus,
     required this.isVerified,
+    required this.createdAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -44,26 +45,18 @@ class User extends Equatable {
   @JsonKey(name: 'avatar')
   final MediaFile? avatar;
 
-  @JsonKey(name: 'accountType')
-  final String accountType;
+  @JsonKey(name: 'accountPrivacy')
+  String accountPrivacy;
+
+  @JsonKey(name: 'followingStatus')
+  String followingStatus;
 
   @JsonKey(name: 'accountStatus')
   final String accountStatus;
 
   @JsonKey(name: 'isVerified')
-  final bool isVerified;
+  bool isVerified;
 
-  @override
-  List<Object?> get props => <Object?>[
-        id,
-        fname,
-        lname,
-        email,
-        uname,
-        avatar,
-        profession,
-        accountType,
-        accountStatus,
-        isVerified,
-      ];
+  @JsonKey(name: 'createdAt')
+  final DateTime createdAt;
 }

@@ -10,30 +10,8 @@ import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 
-enum UpgradeMethod {
-  all,
-  hot,
-  increment,
-}
-
-const apkLink =
-    'https://github.com/nixrajput/social-media-app-flutter/releases/download/v1.0.0-stable.04/app.apk';
-
-class AppUpdateView extends StatefulWidget {
+class AppUpdateView extends StatelessWidget {
   const AppUpdateView({super.key});
-
-  @override
-  AppUpdateViewState createState() => AppUpdateViewState();
-}
-
-class AppUpdateViewState extends State<AppUpdateView> {
-  int? id;
-  bool? isAutoRequestInstall = false;
-
-  UpgradeMethod? upgradeMethod;
-
-  String? iosVersion = "";
-  String? androidVersion = "";
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +33,7 @@ class AppUpdateViewState extends State<AppUpdateView> {
         builder: (logic) {
           if (logic.isLoading) {
             return Center(
-              child: _buildDownloadWindow(),
+              child: _buildDownloadWindow(logic),
             );
           }
           return Center(
@@ -79,7 +57,8 @@ class AppUpdateViewState extends State<AppUpdateView> {
                   Dimens.boxHeight8,
                   RichText(
                     text: TextSpan(
-                      text: 'Current Version : ${logic.currentVersion}',
+                      text:
+                          'Current Version : ${logic.version}+${logic.buildNumber}',
                       style: AppStyles.style14Normal.copyWith(
                         color:
                             Theme.of(Get.context!).textTheme.subtitle1!.color,
@@ -130,7 +109,7 @@ class AppUpdateViewState extends State<AppUpdateView> {
     );
   }
 
-  Widget _buildDownloadWindow() => StreamBuilder(
+  Widget _buildDownloadWindow(AppUpdateController logic) => StreamBuilder(
         stream: RUpgrade.stream,
         builder: (_, AsyncSnapshot<DownloadInfo> snapshot) {
           if (snapshot.hasData) {
@@ -150,7 +129,7 @@ class AppUpdateViewState extends State<AppUpdateView> {
                       child: Text(
                         snapshot.data!.status == DownloadStatus.STATUS_RUNNING
                             ? snapshot.data!.getSpeedString()
-                            : getStatus(snapshot.data!.status),
+                            : logic.getStatus(snapshot.data!.status),
                         style: AppStyles.style14Bold.copyWith(
                           color:
                               Theme.of(Get.context!).textTheme.bodyText1!.color,
@@ -187,30 +166,6 @@ class AppUpdateViewState extends State<AppUpdateView> {
           }
         },
       );
-
-  String getStatus(DownloadStatus? status) {
-    if (status == DownloadStatus.STATUS_FAILED) {
-      id = null;
-      upgradeMethod = null;
-      return 'Failed';
-    } else if (status == DownloadStatus.STATUS_PAUSED) {
-      return 'Paused';
-    } else if (status == DownloadStatus.STATUS_PENDING) {
-      return 'Pending';
-    } else if (status == DownloadStatus.STATUS_RUNNING) {
-      return 'Downloading';
-    } else if (status == DownloadStatus.STATUS_SUCCESSFUL) {
-      return 'Successful';
-    } else if (status == DownloadStatus.STATUS_CANCEL) {
-      id = null;
-      upgradeMethod = null;
-      return 'Cancelled';
-    } else {
-      id = null;
-      upgradeMethod = null;
-      return 'Unknown';
-    }
-  }
 }
 
 class CircleDownloadWidget extends StatelessWidget {
@@ -231,7 +186,7 @@ class CircleDownloadWidget extends StatelessWidget {
       child: CustomPaint(
         painter: CircleDownloadCustomPainter(
           backgroundColor ?? Theme.of(context).dialogBackgroundColor,
-          Theme.of(context).primaryColor,
+          ColorValues.primaryColor,
           progress,
         ),
         child: child,

@@ -10,6 +10,7 @@ class NxIconButton extends StatelessWidget {
   final EdgeInsets? padding;
   final double? borderRadius;
   final double? width;
+  final bool? centerIcon;
   final double? height;
 
   const NxIconButton({
@@ -23,6 +24,7 @@ class NxIconButton extends StatelessWidget {
     this.borderRadius,
     this.width,
     this.height,
+    this.centerIcon = true,
   }) : super(key: key);
 
   @override
@@ -41,11 +43,19 @@ class NxIconButton extends StatelessWidget {
             ),
           ),
         ),
-        child: Icon(
-          icon,
-          size: iconSize ?? Dimens.twentyFour,
-          color: iconColor ?? Theme.of(context).iconTheme.color,
-        ),
+        child: centerIcon!
+            ? Center(
+                child: Icon(
+                  icon,
+                  size: iconSize ?? Dimens.twentyFour,
+                  color: iconColor ?? Theme.of(context).iconTheme.color,
+                ),
+              )
+            : Icon(
+                icon,
+                size: iconSize ?? Dimens.twentyFour,
+                color: iconColor ?? Theme.of(context).iconTheme.color,
+              ),
       ),
     );
   }

@@ -38,8 +38,8 @@ class GenderController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_profile.profileData.user != null) {
-      var user = _profile.profileData.user!;
+    if (_profile.profileDetails.user != null) {
+      var user = _profile.profileDetails.user!;
       setGender = user.gender ?? '';
     }
   }
@@ -117,7 +117,7 @@ class GenderController extends GetxController {
     if (_gender.value.isEmpty) {
       return;
     }
-    if (_gender.value == _profile.profileData.user!.gender) {
+    if (_gender.value == _profile.profileDetails.user!.gender) {
       return;
     }
     await _updateGender(_gender.value.trim());

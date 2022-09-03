@@ -53,14 +53,14 @@ class AuthService extends GetxService {
     return token;
   }
 
-  Future<void> _logout() async {
+  Future<void> _logout(bool showLoading) async {
     AppUtils.printLog("Logout Request");
-    AppUtils.showLoadingDialog();
+    if (showLoading) AppUtils.showLoadingDialog();
     await LoginDeviceInfoController.find.deleteLoginDeviceInfo(_deviceId);
     setToken = '';
     setExpiresAt = 0;
     await AppUtils.clearLoginDataFromLocalStorage();
-    AppUtils.closeDialog();
+    if (showLoading) AppUtils.closeDialog();
     AppUtils.printLog("Logout Success");
   }
 
@@ -215,7 +215,8 @@ class AuthService extends GetxService {
     });
   }
 
-  Future<void> logout() async => await _logout();
+  Future<void> logout({showLoading = false}) async =>
+      await _logout(showLoading);
 
   @override
   void onInit() {

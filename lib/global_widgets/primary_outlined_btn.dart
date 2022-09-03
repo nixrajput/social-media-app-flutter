@@ -47,11 +47,11 @@ class NxOutlinedButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
-        height: height ?? Dimens.fiftySix,
+        height: height,
         padding: padding,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
-          minWidth: minWidth ?? Dimens.eighty,
+          minWidth: minWidth ?? Dimens.sixtyFour,
         ),
         decoration: BoxDecoration(
           border: Border.all(
@@ -64,6 +64,7 @@ class NxOutlinedButton extends StatelessWidget {
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (prefix != null) prefix!,

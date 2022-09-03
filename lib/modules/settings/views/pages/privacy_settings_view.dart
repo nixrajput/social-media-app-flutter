@@ -178,7 +178,7 @@ class PrivacySettingsView extends StatelessWidget {
                     title: StringValues.public.toTitleCase(),
                     titleStyle: AppStyles.style14Bold,
                     value: StringValues.public,
-                    groupValue: logic.profileData.user!.accountType,
+                    groupValue: logic.profileDetails.user!.accountPrivacy,
                   ),
                   Dimens.divider,
                   NxRadioTile(
@@ -195,27 +195,10 @@ class PrivacySettingsView extends StatelessWidget {
                     title: StringValues.public.toTitleCase(),
                     titleStyle: AppStyles.style14Bold,
                     value: StringValues.public,
-                    groupValue: logic.profileData.user!.accountType,
+                    groupValue: logic.profileDetails.user!.accountPrivacy,
                   ),
                 ],
               ),
-              // Column(
-              //   children: [StringValues.public, StringValues.private]
-              //       .map(
-              //         (val) => NxRadioTile(
-              //           padding: Dimens.edgeInsets12_8,
-              //           bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-              //           onTap: () => con.updateAccountType(val),
-              //           onChanged: (value) {
-              //             con.updateAccountType(val);
-              //           },
-              //           title: val.toTitleCase(),
-              //           value: val,
-              //           groupValue: logic.profileData.user!.accountType,
-              //         ),
-              //       )
-              //       .toList(),
-              // ),
               Dimens.boxHeight24,
             ],
           ),

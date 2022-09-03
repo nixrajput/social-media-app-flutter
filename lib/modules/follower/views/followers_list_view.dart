@@ -85,7 +85,7 @@ class FollowersListView extends StatelessWidget {
                     itemCount: logic.followersList.length,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (ctx, index) {
-                      var item = logic.followersList.elementAt(index);
+                      var item = logic.followersList.elementAt(index).user;
                       return UserWidget(
                         user: item,
                         totalLength: logic.followersList.length,

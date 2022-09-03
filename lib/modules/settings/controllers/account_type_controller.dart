@@ -28,7 +28,7 @@ class AccountTypeController extends GetxController {
     }
 
     final body = {
-      'accountType': accountType,
+      'accountPrivacy': accountType,
     };
 
     AppUtils.printLog("Update Account Type Request...");

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/apis/models/entities/device_info.dart';
+import 'package:social_media_app/apis/models/entities/login_device_info.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -20,7 +20,7 @@ class LoginDeviceInfoWidget extends StatelessWidget {
     required this.index,
   }) : super(key: key);
 
-  final DeviceInfo item;
+  final LoginDeviceInfo item;
   final int totalLength;
   final int index;
 

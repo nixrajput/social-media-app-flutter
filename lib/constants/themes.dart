@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/styles.dart';
 
 abstract class AppThemes {
   static final lightTheme = ThemeData(
@@ -11,18 +12,19 @@ abstract class AppThemes {
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.lightBgColor),
     bottomAppBarColor: ColorValues.lightBgColor,
     shadowColor: ColorValues.lightGrayColor,
-    cardTheme: const CardTheme(color: ColorValues.whiteColor),
-    dialogTheme: const DialogTheme(backgroundColor: ColorValues.whiteColor),
-    dialogBackgroundColor: ColorValues.whiteColor,
+    cardTheme: const CardTheme(color: ColorValues.lightDialogColor),
+    dialogTheme:
+        const DialogTheme(backgroundColor: ColorValues.lightDialogColor),
+    dialogBackgroundColor: ColorValues.lightDialogColor,
     errorColor: ColorValues.errorColor,
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
-      backgroundColor: ColorValues.whiteColor,
+      backgroundColor: ColorValues.lightDialogColor,
     ),
     dividerColor: ColorValues.lightDividerColor,
-    snackBarTheme: const SnackBarThemeData(
-      backgroundColor: ColorValues.whiteColor,
-      contentTextStyle: TextStyle(
-        color: ColorValues.darkColor,
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: ColorValues.lightDialogColor,
+      contentTextStyle: AppStyles.style14Normal.copyWith(
+        color: ColorValues.darkBgColor,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -63,16 +65,17 @@ abstract class AppThemes {
     shadowColor: ColorValues.lightGrayColor,
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.darkBgColor),
     bottomAppBarColor: ColorValues.darkBgColor,
-    cardTheme: const CardTheme(color: ColorValues.darkColor),
-    dialogTheme: const DialogTheme(backgroundColor: ColorValues.darkColor),
-    dialogBackgroundColor: ColorValues.darkColor,
+    cardTheme: const CardTheme(color: ColorValues.darkDialogColor),
+    dialogTheme:
+        const DialogTheme(backgroundColor: ColorValues.darkDialogColor),
+    dialogBackgroundColor: ColorValues.darkDialogColor,
     errorColor: ColorValues.errorColor,
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
-      backgroundColor: ColorValues.darkColor,
+      backgroundColor: ColorValues.darkDialogColor,
     ),
     dividerColor: ColorValues.darkDividerColor,
     snackBarTheme: const SnackBarThemeData(
-      backgroundColor: ColorValues.darkColor,
+      backgroundColor: ColorValues.darkDialogColor,
       contentTextStyle: TextStyle(
         color: ColorValues.whiteColor,
       ),

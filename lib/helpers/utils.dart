@@ -16,7 +16,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
-import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_compress/video_compress.dart';
 
@@ -46,9 +46,9 @@ abstract class AppUtils {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CircularProgressIndicator(
-                    value: value,
+                  NxCircularProgressIndicator(
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    size: Dimens.fourtyEight,
                   ),
                   Dimens.boxHeight12,
                   Text(
@@ -82,7 +82,6 @@ abstract class AppUtils {
 
   static void showSimpleDialog(Widget child,
       {bool barrierDismissible = false}) {
-    closeDialog();
     Get.dialog(
       MediaQuery.removeViewInsets(
         context: Get.context!,
@@ -158,65 +157,16 @@ abstract class AppUtils {
               children: [
                 NxAssetImage(
                   imgAsset: AssetValues.error,
-                  width: Dimens.hundred * 2,
-                  height: Dimens.hundred * 2,
+                  width: Dimens.hundred * 1.6,
+                  height: Dimens.hundred * 1.6,
                 ),
-                Dimens.boxHeight8,
+                Dimens.boxHeight16,
                 Text(
                   'No Internet!',
                   textAlign: TextAlign.center,
                   style: AppStyles.style24Bold.copyWith(
                     color: ColorValues.whiteColor,
                   ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      barrierDismissible: false,
-    );
-  }
-
-  /// Show No Internet Dialog
-
-  static void showAppUpdateDialog() {
-    closeDialog();
-    Get.dialog<void>(
-      WillPopScope(
-        onWillPop: () async => false,
-        child: Scaffold(
-          backgroundColor: Colors.black26,
-          body: Padding(
-            padding: Dimens.edgeInsets16,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                NxAssetImage(
-                  imgAsset: AssetValues.error,
-                  width: Dimens.hundred * 2,
-                  height: Dimens.hundred * 2,
-                ),
-                Dimens.boxHeight8,
-                Text(
-                  'App update available',
-                  textAlign: TextAlign.center,
-                  style: AppStyles.style24Bold.copyWith(
-                    color: ColorValues.whiteColor,
-                  ),
-                ),
-                NxOutlinedButton(
-                  label: 'Download Latest APK',
-                  borderColor:
-                      Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  padding: Dimens.edgeInsets0_8,
-                  width: Dimens.screenWidth,
-                  height: Dimens.thirtySix,
-                  labelStyle: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  ),
-                  onTap: closeDialog,
                 ),
               ],
             ),
@@ -290,7 +240,7 @@ abstract class AppUtils {
         ),
         shouldIconPulse: false,
         backgroundColor: Theme.of(Get.context!).snackBarTheme.backgroundColor!,
-        duration: Duration(seconds: duration ?? 5),
+        duration: Duration(seconds: duration ?? 3),
       ),
     );
   }
@@ -389,6 +339,8 @@ abstract class AppUtils {
     return null;
   }
 
+  /// Profile Data -------------------------------------------------------------
+
   static Future<void> saveProfileDataToLocalStorage(response) async {
     final storage = GetStorage();
     if (response != null) {
@@ -420,6 +372,39 @@ abstract class AppUtils {
     printLog(StringValues.authDetailsRemoved);
     printLog(StringValues.profileDetailsRemoved);
   }
+
+  /// --------------------------------------------------------------------------
+
+  /// Profile Post Data --------------------------------------------------------
+
+  static Future<void> saveProfilePostDataToLocalStorage(postData) async {
+    final storage = GetStorage();
+    if (postData != null) {
+      await storage.write("profilePosts", jsonEncode(postData));
+      printLog("Profile Post Data Saved To Local Storage");
+    } else {
+      printLog("Failed To Save Profile Post Data To Local Storage");
+    }
+  }
+
+  static Future<dynamic> readProfilePostDataFromLocalStorage() async {
+    final storage = GetStorage();
+    if (storage.hasData("profilePosts")) {
+      final data = await storage.read("profilePosts");
+      printLog("Profile Post Data Fetched From Local Storage");
+      return jsonDecode(data);
+    }
+    printLog("Failed To Fetch Profile Post Data From Local Storage");
+    return null;
+  }
+
+  static Future<void> deleteProfilePostDataFromLocalStorage() async {
+    final storage = GetStorage();
+    await storage.remove("profilePosts");
+    printLog("Profile Post Data Deleted From Local Storage");
+  }
+
+  /// --------------------------------------------------------------------------
 
   static void printLog(message) {
     debugPrint(

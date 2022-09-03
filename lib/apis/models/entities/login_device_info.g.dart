@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'device_info.dart';
+part of 'login_device_info.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-DeviceInfo _$DeviceInfoFromJson(Map<String, dynamic> json) => DeviceInfo(
+LoginDeviceInfo _$LoginDeviceInfoFromJson(Map<String, dynamic> json) =>
+    LoginDeviceInfo(
       id: json['_id'] as String?,
       user: json['user'] as String?,
       deviceId: json['deviceId'] as String?,
@@ -21,7 +22,7 @@ DeviceInfo _$DeviceInfoFromJson(Map<String, dynamic> json) => DeviceInfo(
           : DateTime.parse(json['createdAt'] as String),
     );
 
-Map<String, dynamic> _$DeviceInfoToJson(DeviceInfo instance) =>
+Map<String, dynamic> _$LoginDeviceInfoToJson(LoginDeviceInfo instance) =>
     <String, dynamic>{
       '_id': instance.id,
       'user': instance.user,

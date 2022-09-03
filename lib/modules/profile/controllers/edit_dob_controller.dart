@@ -35,8 +35,8 @@ class DOBController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_profile.profileData.user != null) {
-      var user = _profile.profileData.user!;
+    if (_profile.profileDetails.user != null) {
+      var user = _profile.profileDetails.user!;
       dobTextController.text = user.dob ?? '';
     }
   }
@@ -111,7 +111,7 @@ class DOBController extends GetxController {
 
   Future<void> updateDOB() async {
     AppUtils.closeFocus();
-    if (dobTextController.text.trim() == _profile.profileData.user!.dob) {
+    if (dobTextController.text.trim() == _profile.profileDetails.user!.dob) {
       return;
     }
     await _updateDOB(dobTextController.text.trim());

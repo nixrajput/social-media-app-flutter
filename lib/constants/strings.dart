@@ -83,6 +83,7 @@ abstract class StringValues {
   static const tokenError = 'Token is expired or invalid.';
   static const followers = 'Followers';
   static const following = 'Following';
+  static const requested = 'Requested';
   static const follow = 'Follow';
   static const unfollow = 'Unfollow';
   static const changePassword = 'Change Password';
@@ -170,6 +171,10 @@ abstract class StringValues {
   static const noNotifications = "No notifications at the moment.";
   static const profession = 'Profession';
   static const moments = 'Moments';
+  static const accept = 'Accept';
+  static const remove = 'Remove';
+  static const confirm = 'Confirm';
+
   static const nameHelpText =
       "Help people discover your account by using the name you're known by: either your full name, nickname, or business name.";
   static const accountSettingsHelp =

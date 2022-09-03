@@ -35,14 +35,15 @@ abstract class ColorValues {
   static const Color darkDividerColor = Color(0xff707070);
   static const Color lightDividerColor = Color(0xffc2c2c2);
 
-  static const Color lightBodyTextColor = Color(0xFF3C3C3C);
-  static const Color lightSubtitleTextColor = Color(0xFF6E6E6E);
+  static const Color lightBodyTextColor = Color(0xFF323232);
+  static const Color lightSubtitleTextColor = Color(0xFF737373);
   static const Color darkBodyTextColor = Color(0xFFE8E8E8);
   static const Color darkSubtitleTextColor = Color(0xFFA0A0A0);
 
-  static const Color lightBgColor = Color.fromRGBO(240, 240, 240, 1.0);
+  static const Color lightBgColor = Color.fromRGBO(236, 236, 236, 1.0);
+  static const Color lightDialogColor = Color.fromRGBO(250, 250, 250, 1.0);
   static const Color darkBgColor = Color.fromRGBO(28, 29, 49, 1.0);
-  static const Color darkColor = Color.fromARGB(255, 51, 52, 70);
+  static const Color darkDialogColor = Color.fromARGB(255, 51, 52, 70);
 
   static const primaryGrad = LinearGradient(
     colors: [primaryColor, primaryLightColor],

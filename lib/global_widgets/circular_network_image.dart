@@ -10,19 +10,36 @@ class NxCircleNetworkImage extends StatelessWidget {
     required this.imageUrl,
     this.radius,
     this.fit,
+    this.bgColor,
   }) : super(key: key);
 
   final String imageUrl;
   final double? radius;
   final BoxFit? fit;
+  final Color? bgColor;
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: ColorValues.grayColor,
-      radius: radius ?? Dimens.fourtyEight,
+    return Container(
+      width: radius != null ? radius! * 2 : Dimens.fourtyEight * 2,
+      height: radius != null ? radius! * 2 : Dimens.fourtyEight * 2,
+      constraints: BoxConstraints(
+        maxWidth: radius != null ? radius! * 2 : Dimens.fourtyEight * 2,
+        maxHeight: radius != null ? radius! * 2 : Dimens.fourtyEight * 2,
+      ),
+      decoration: BoxDecoration(
+        color: bgColor ?? Theme.of(context).dividerColor,
+        borderRadius: BorderRadius.circular(
+          radius != null ? radius! * 2 : Dimens.fourtyEight * 2,
+        ),
+        border: Border.all(
+          color: Theme.of(context).dividerColor,
+        ),
+      ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(radius ?? Dimens.fourtyEight),
+        borderRadius: BorderRadius.circular(
+          radius != null ? radius! * 2 : Dimens.fourtyEight * 2,
+        ),
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           fit: fit ?? BoxFit.cover,

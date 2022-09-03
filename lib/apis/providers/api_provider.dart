@@ -293,9 +293,77 @@ class ApiProvider {
     return response;
   }
 
+  Future<http.Response> cancelFollowRequest(String token, String userId) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl! + AppUrls.cancelFollowRequestEndpoint}?id=$userId'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getFollowRequests(String token,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.getFollowRequests}?page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> acceptFollowRequest(
+      String token, String notificationId) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.acceptFollowRequestEndpoint}?id=$notificationId'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> removeFollowRequest(
+      String token, String notificationId) async {
+    final response = await _client.delete(
+      Uri.parse(
+          '${baseUrl! + AppUrls.removeFollowRequestEndpoint}?id=$notificationId'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
   Future<http.Response> getUserDetails(String token, String userId) async {
     final response = await _client.get(
       Uri.parse('${baseUrl! + AppUrls.userDetailsEndpoint}?id=$userId'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getUserPosts(String token, String userId,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.getUserPostsEndpoint}?id=$userId&page=$page&limit=$limit'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -432,7 +500,19 @@ class ApiProvider {
       {int? page, int? limit}) async {
     final response = await _client.get(
       Uri.parse(
-          '${baseUrl!}${AppUrls.getNotifications}?page=$page&limit=$limit'),
+          '${baseUrl!}${AppUrls.getNotificationsEndpoint}?page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> markNotificationRead(String token, String id) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.markNotificationsReadEndpoint}?id=$id'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",

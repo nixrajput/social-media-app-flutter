@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -9,14 +8,16 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/count_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_shape_painter.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/shimmer_loading.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
-import 'package:social_media_app/modules/user/controllers/user_profile_controller.dart';
+import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class UserProfileView extends StatelessWidget {
@@ -29,9 +30,9 @@ class UserProfileView extends StatelessWidget {
         child: SizedBox(
           width: Dimens.screenWidth,
           height: Dimens.screenHeight,
-          child: GetBuilder<UserProfileController>(builder: (logic) {
+          child: GetBuilder<UserDetailsController>(builder: (logic) {
             return RefreshIndicator(
-              onRefresh: logic.getUserProfileDetails,
+              onRefresh: logic.fetchUserDetails,
               child: _buildWidget(logic),
             );
           }),
@@ -40,7 +41,7 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildWidget(UserProfileController logic) {
+  Widget _buildWidget(UserDetailsController logic) {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Stack(
@@ -56,7 +57,7 @@ class UserProfileView extends StatelessWidget {
               _buildProfileHeader(logic),
               logic.isLoading
                   ? _buildLoadingWidget()
-                  : logic.userProfile.user == null
+                  : logic.userDetails.user == null
                       ? _buildErrorBody(logic)
                       : _buildProfileBody(logic),
             ],
@@ -66,8 +67,8 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileHeader(UserProfileController logic) {
-    final user = logic.userProfile.user;
+  Widget _buildProfileHeader(UserDetailsController logic) {
+    final user = logic.userDetails.user;
     return NxAppBar(
       padding: Dimens.edgeInsets8_16,
       leading: Expanded(
@@ -75,7 +76,7 @@ class UserProfileView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              logic.userProfile.user != null
+              logic.userDetails.user != null
                   ? user!.uname
                   : StringValues.profile,
               style: AppStyles.style20Bold,
@@ -94,11 +95,11 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileBody(UserProfileController logic) {
+  Widget _buildProfileBody(UserDetailsController logic) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Dimens.boxHeight24,
+        Dimens.boxHeight16,
         Padding(
           padding: Dimens.edgeInsets0_16,
           child: _buildUserDetails(logic),
@@ -117,8 +118,8 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildUserDetails(UserProfileController logic) {
-    final user = logic.userProfile.user;
+  Widget _buildUserDetails(UserDetailsController logic) {
+    final user = logic.userDetails.user;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -171,14 +172,16 @@ class UserProfileView extends StatelessWidget {
           children: [
             Icon(
               Icons.calendar_today,
-              size: Dimens.fourteen,
-              color: ColorValues.grayColor,
+              size: Dimens.twelve,
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
             ),
-            Dimens.boxWidth4,
+            Dimens.boxWidth8,
             Expanded(
               child: Text(
                 'Joined - ${DateFormat.yMMMd().format(user.createdAt)}',
-                style: const TextStyle(color: ColorValues.grayColor),
+                style: AppStyles.style12Bold.copyWith(
+                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                ),
               ),
             ),
           ],
@@ -189,54 +192,93 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildActionBtn(UserProfileController logic) {
-    return GetBuilder<ProfileController>(
-      builder: (profile) {
-        if (logic.userProfile.user!.id == profile.profileData.user!.id) {
-          return NxOutlinedButton(
-            label: StringValues.editProfile.toTitleCase(),
-            width: Dimens.screenWidth,
-            height: Dimens.thirtySix,
-            padding: Dimens.edgeInsets0_8,
-            borderRadius: Dimens.eight,
-            borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
-            labelStyle: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-            ),
-            onTap: RouteManagement.goToEditProfileView,
-          );
+  String getFollowStatus(String status) {
+    if (status == "following") {
+      return StringValues.following;
+    }
+
+    if (status == "requested") {
+      return StringValues.requested;
+    }
+
+    return StringValues.follow;
+  }
+
+  Color getButtonColor(String status) {
+    if (status == "following") {
+      return Colors.transparent;
+    }
+
+    if (status == "requested") {
+      return Colors.transparent;
+    }
+
+    return ColorValues.primaryColor;
+  }
+
+  BorderStyle getBorderStyle(String status) {
+    if (status == "following") {
+      return BorderStyle.solid;
+    }
+
+    if (status == "requested") {
+      return BorderStyle.solid;
+    }
+
+    return BorderStyle.none;
+  }
+
+  Color getLabelColor(String status) {
+    if (status == "following") {
+      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    }
+
+    if (status == "requested") {
+      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    }
+
+    return ColorValues.whiteColor;
+  }
+
+  Widget _buildActionBtn(UserDetailsController logic) {
+    if (logic.userDetails.user!.followingStatus == "self") {
+      return NxOutlinedButton(
+        label: StringValues.editProfile.toTitleCase(),
+        width: Dimens.screenWidth,
+        height: Dimens.thirtySix,
+        padding: Dimens.edgeInsets0_8,
+        borderRadius: Dimens.eight,
+        borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+        labelStyle: AppStyles.style14Normal.copyWith(
+          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+        ),
+        onTap: RouteManagement.goToEditProfileView,
+      );
+    }
+
+    return NxOutlinedButton(
+      label: getFollowStatus(logic.userDetails.user!.followingStatus),
+      bgColor: getButtonColor(logic.userDetails.user!.followingStatus),
+      borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+      borderStyle: getBorderStyle(logic.userDetails.user!.followingStatus),
+      onTap: () {
+        if (logic.userDetails.user!.followingStatus == "requested") {
+          logic.cancelFollowRequest(logic.userDetails.user!);
+          return;
         }
-        return NxOutlinedButton(
-          label: profile.profileData.user!.following
-                  .contains(logic.userProfile.user!.id)
-              ? StringValues.following
-              : StringValues.follow,
-          bgColor: profile.profileData.user!.following
-                  .contains(logic.userProfile.user!.id)
-              ? Colors.transparent
-              : ColorValues.primaryColor,
-          borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
-          borderStyle: profile.profileData.user!.following
-                  .contains(logic.userProfile.user!.id)
-              ? BorderStyle.solid
-              : BorderStyle.none,
-          onTap: () => profile.followUnfollowUser(logic.userProfile.user!.id),
-          padding: Dimens.edgeInsets0_8,
-          width: Dimens.screenWidth,
-          height: Dimens.thirtySix,
-          labelStyle: AppStyles.style14Normal.copyWith(
-            color: profile.profileData.user!.following
-                    .contains(logic.userProfile.user!.id)
-                ? Theme.of(Get.context!).textTheme.bodyText1!.color
-                : ColorValues.whiteColor,
-          ),
-        );
+        logic.followUnfollowUser(logic.userDetails.user!);
       },
+      padding: Dimens.edgeInsets0_8,
+      width: Dimens.screenWidth,
+      height: Dimens.thirtySix,
+      labelStyle: AppStyles.style14Normal.copyWith(
+        color: getLabelColor(logic.userDetails.user!.followingStatus),
+      ),
     );
   }
 
-  Container _buildCountDetails(UserProfileController logic) {
-    final user = logic.userProfile.user;
+  Container _buildCountDetails(UserDetailsController logic) {
+    final user = logic.userDetails.user;
     final profile = ProfileController.find;
     return Container(
       width: Dimens.screenWidth,
@@ -252,25 +294,22 @@ class UserProfileView extends StatelessWidget {
             child: NxCountWidget(
               title: StringValues.posts,
               valueStyle: AppStyles.style24Bold,
-              value: user!.posts.length.toString().toCountingFormat(),
+              value: user!.postsCount.toString().toCountingFormat(),
             ),
           ),
           Expanded(
             child: NxCountWidget(
               title: StringValues.followers,
               valueStyle: AppStyles.style24Bold,
-              value: user.followers.length.toString().toCountingFormat(),
+              value: user.followersCount.toString().toCountingFormat(),
               onTap: () {
-                if (logic.userProfile.user!.accountType ==
-                        StringValues.private &&
-                    !profile.profileData.user!.following
-                        .contains(logic.userProfile.user!.id) &&
-                    logic.userProfile.user!.id !=
-                        profile.profileData.user!.id) {
+                if (logic.userDetails.user!.accountPrivacy == "private" &&
+                    (logic.userDetails.user!.followingStatus != "following" &&
+                        logic.userDetails.user!.followingStatus != "self")) {
                   return;
                 }
                 RouteManagement.goToFollowersListView(
-                    logic.userProfile.user!.id);
+                    logic.userDetails.user!.id);
               },
             ),
           ),
@@ -278,18 +317,15 @@ class UserProfileView extends StatelessWidget {
             child: NxCountWidget(
               title: StringValues.following,
               valueStyle: AppStyles.style24Bold,
-              value: user.following.length.toString().toCountingFormat(),
+              value: user.followingCount.toString().toCountingFormat(),
               onTap: () {
-                if (logic.userProfile.user!.accountType ==
-                        StringValues.private &&
-                    !profile.profileData.user!.following
-                        .contains(logic.userProfile.user!.id) &&
-                    logic.userProfile.user!.id !=
-                        profile.profileData.user!.id) {
+                if (logic.userDetails.user!.accountPrivacy == "private" &&
+                    (logic.userDetails.user!.followingStatus != "following" &&
+                        logic.userDetails.user!.followingStatus != "self")) {
                   return;
                 }
                 RouteManagement.goToFollowingListView(
-                    logic.userProfile.user!.id);
+                    logic.userDetails.user!.id);
               },
             ),
           ),
@@ -298,21 +334,15 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildPosts(UserProfileController logic) {
-    final user = logic.userProfile.user;
-    final profile = ProfileController.find;
+  Widget _buildPosts(UserDetailsController logic) {
+    final user = logic.userDetails.user!;
 
-    if (logic.userProfile.user!.accountType == StringValues.private &&
-        !profile.profileData.user!.following
-            .contains(logic.userProfile.user!.id) &&
-        logic.userProfile.user!.id != profile.profileData.user!.id) {
+    if (user.accountPrivacy == "private" &&
+        (user.followingStatus != "following" &&
+            user.followingStatus != "self")) {
       return Center(
         child: Padding(
-          padding: EdgeInsets.only(
-            top: 16.h,
-            left: 16.0.w,
-            right: 16.0.w,
-          ),
+          padding: Dimens.edgeInsets16,
           child: Text(
             StringValues.privateAccountWarning,
             style: AppStyles.style32Bold.copyWith(
@@ -324,49 +354,74 @@ class UserProfileView extends StatelessWidget {
       );
     }
 
-    if (user!.posts.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: 16.h,
-            left: 16.0.w,
-            right: 16.0.w,
-          ),
-          child: Text(
-            StringValues.noPosts,
-            style: AppStyles.style32Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
-
     return Padding(
       padding: Dimens.edgeInsets0_16,
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: user.posts.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: Dimens.eight,
-          mainAxisSpacing: Dimens.eight,
-        ),
-        itemBuilder: (ctx, i) {
-          var post = user.posts[i];
-
-          return PostThumbnailWidget(
-            mediaFile: post.mediaFiles!.first,
-            post: post,
-          );
-        },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (logic.isPostLoading)
+            const Center(child: NxCircularProgressIndicator())
+          else if (logic.postList.isEmpty)
+            Center(
+              child: Padding(
+                padding: Dimens.edgeInsets16,
+                child: Text(
+                  StringValues.noPosts,
+                  style: AppStyles.style32Bold.copyWith(
+                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
+          else
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: logic.postList.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: Dimens.eight,
+                    mainAxisSpacing: Dimens.eight,
+                  ),
+                  itemBuilder: (ctx, i) {
+                    var post = logic.postList[i];
+                    return PostThumbnailWidget(
+                      mediaFile: post.mediaFiles!.first,
+                      post: post,
+                    );
+                  },
+                ),
+                if (logic.isMorePostLoading || logic.postData!.hasNextPage!)
+                  Dimens.boxHeight16,
+                if (logic.isMorePostLoading)
+                  const Center(child: NxCircularProgressIndicator()),
+                if (!logic.isMorePostLoading && logic.postData!.hasNextPage!)
+                  Center(
+                    child: NxTextButton(
+                      label: 'Load more posts',
+                      onTap: logic.loadMore,
+                      labelStyle: AppStyles.style14Bold.copyWith(
+                        color: ColorValues.primaryLightColor,
+                      ),
+                      padding: Dimens.edgeInsets8_0,
+                    ),
+                  ),
+              ],
+            ),
+        ],
       ),
     );
   }
 
-  _buildErrorBody(UserProfileController logic) {
+  _buildErrorBody(UserDetailsController logic) {
     return SizedBox(
       width: Dimens.screenWidth,
       height: Dimens.screenHeight,
@@ -386,7 +441,7 @@ class UserProfileView extends StatelessWidget {
             width: Dimens.hundred,
             height: Dimens.thirtySix,
             label: StringValues.refresh,
-            onTap: logic.getUserProfileDetails,
+            onTap: logic.fetchUserDetails,
           )
         ],
       ),

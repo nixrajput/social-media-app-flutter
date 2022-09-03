@@ -64,6 +64,7 @@ class WelcomeView extends StatelessWidget {
                     NxOutlinedButton(
                       label: StringValues.register.toUpperCase(),
                       onTap: RouteManagement.goToRegisterView,
+                      height: Dimens.fiftySix,
                     ),
                     Dimens.boxHeight48,
                   ],

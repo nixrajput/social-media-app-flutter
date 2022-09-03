@@ -95,8 +95,8 @@ class UserWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (user.id != profile.profileData.user!.id)
-                  _buildFollowAction(profile),
+                if (user.id != profile.profileDetails.user!.id)
+                  _buildFollowAction(),
               ],
             ),
           ),
@@ -115,7 +115,7 @@ class UserWidget extends StatelessWidget {
               child: RichText(
                 text: TextSpan(
                   text: user.uname.toLowerCase(),
-                  style: AppStyles.style14Bold.copyWith(
+                  style: AppStyles.style15Bold.copyWith(
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   ),
                 ),
@@ -129,7 +129,7 @@ class UserWidget extends StatelessWidget {
                 color: Theme.of(Get.context!).brightness == Brightness.dark
                     ? Theme.of(Get.context!).textTheme.bodyText1?.color
                     : ColorValues.primaryColor,
-                size: Dimens.sixTeen,
+                size: Dimens.fourteen,
               )
           ],
         ),
@@ -149,29 +149,74 @@ class UserWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildFollowAction(ProfileController profile) =>
-      GetBuilder<ProfileController>(
+  Widget _buildFollowAction() => GetBuilder<ProfileController>(
         builder: (logic) => NxOutlinedButton(
-          label: profile.profileData.user!.following.contains(user.id)
-              ? StringValues.following
-              : StringValues.follow,
-          bgColor: profile.profileData.user!.following.contains(user.id)
-              ? Colors.transparent
-              : ColorValues.primaryColor,
+          label: getFollowStatus(user.followingStatus),
+          bgColor: getButtonColor(user.followingStatus),
           borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
-          borderStyle: profile.profileData.user!.following.contains(user.id)
-              ? BorderStyle.solid
-              : BorderStyle.none,
-          onTap: () => logic.followUnfollowUser(user.id),
+          borderStyle: getBorderStyle(user.followingStatus),
+          onTap: () {
+            if (user.followingStatus == "requested") {
+              logic.cancelFollowRequest(user);
+              return;
+            }
+            logic.followUnfollowUser(user);
+          },
           padding: Dimens.edgeInsets0_8,
           borderWidth: Dimens.one,
           height: Dimens.thirtyTwo,
           borderRadius: Dimens.eight,
           labelStyle: AppStyles.style13Normal.copyWith(
-            color: profile.profileData.user!.following.contains(user.id)
-                ? Theme.of(Get.context!).textTheme.bodyText1!.color
-                : ColorValues.whiteColor,
+            color: getLabelColor(user.followingStatus),
           ),
         ),
       );
+
+  String getFollowStatus(String status) {
+    if (status == "following") {
+      return StringValues.following;
+    }
+
+    if (status == "requested") {
+      return StringValues.requested;
+    }
+
+    return StringValues.follow;
+  }
+
+  Color getButtonColor(String status) {
+    if (status == "following") {
+      return Colors.transparent;
+    }
+
+    if (status == "requested") {
+      return Colors.transparent;
+    }
+
+    return ColorValues.primaryColor;
+  }
+
+  BorderStyle getBorderStyle(String status) {
+    if (status == "following") {
+      return BorderStyle.solid;
+    }
+
+    if (status == "requested") {
+      return BorderStyle.solid;
+    }
+
+    return BorderStyle.none;
+  }
+
+  Color getLabelColor(String status) {
+    if (status == "following") {
+      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    }
+
+    if (status == "requested") {
+      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    }
+
+    return ColorValues.whiteColor;
+  }
 }

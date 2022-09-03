@@ -5,7 +5,7 @@ class CustomShapePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paintFill = Paint()..style = PaintingStyle.fill;
-    paintFill.color = Theme.of(Get.context!).dialogTheme.backgroundColor!;
+    paintFill.color = Theme.of(Get.context!).dialogBackgroundColor;
 
     var path = Path();
 

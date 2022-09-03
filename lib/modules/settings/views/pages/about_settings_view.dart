@@ -8,6 +8,7 @@ import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 
 class AboutSettingsView extends StatelessWidget {
   const AboutSettingsView({Key? key}) : super(key: key);
@@ -50,7 +51,8 @@ class AboutSettingsView extends StatelessWidget {
                 AppUtils.buildAppLogo(fontSize: Dimens.fourty),
                 RichText(
                   text: TextSpan(
-                    text: 'VERSION ${StringValues.appVersion}',
+                    text:
+                        'VERSION  ${AppUpdateController.find.version}+${AppUpdateController.find.buildNumber}',
                     style: AppStyles.style14Normal.copyWith(
                       color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                     ),

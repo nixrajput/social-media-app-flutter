@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:social_media_app/apis/models/entities/device_info.dart';
+import 'package:social_media_app/apis/models/entities/login_device_info.dart';
 
 part 'device_info_response.g.dart';
 
@@ -24,7 +24,7 @@ class DeviceInfoResponse extends Equatable {
   final int? count;
 
   @JsonKey(name: 'results')
-  final List<DeviceInfo>? results;
+  final List<LoginDeviceInfo>? results;
 
   @override
   List<Object?> get props => <Object?>[

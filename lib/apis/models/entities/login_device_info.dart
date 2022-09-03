@@ -2,11 +2,11 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/location_info.dart';
 
-part 'device_info.g.dart';
+part 'login_device_info.g.dart';
 
 @JsonSerializable()
-class DeviceInfo extends Equatable {
-  const DeviceInfo({
+class LoginDeviceInfo extends Equatable {
+  const LoginDeviceInfo({
     this.id,
     this.user,
     this.deviceId,
@@ -17,10 +17,10 @@ class DeviceInfo extends Equatable {
     this.createdAt,
   });
 
-  factory DeviceInfo.fromJson(Map<String, dynamic> json) =>
-      _$DeviceInfoFromJson(json);
+  factory LoginDeviceInfo.fromJson(Map<String, dynamic> json) =>
+      _$LoginDeviceInfoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DeviceInfoToJson(this);
+  Map<String, dynamic> toJson() => _$LoginDeviceInfoToJson(this);
 
   @JsonKey(name: '_id')
   final String? id;

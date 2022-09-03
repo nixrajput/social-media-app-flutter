@@ -35,8 +35,8 @@ class AboutController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_profile.profileData.user != null) {
-      var user = _profile.profileData.user!;
+    if (_profile.profileDetails.user != null) {
+      var user = _profile.profileDetails.user!;
       aboutTextController.text = user.about ?? '';
     }
   }
@@ -105,7 +105,7 @@ class AboutController extends GetxController {
 
   Future<void> updateAbout() async {
     AppUtils.closeFocus();
-    if (aboutTextController.text == _profile.profileData.user!.about) {
+    if (aboutTextController.text == _profile.profileDetails.user!.about) {
       return;
     }
     await _updateAbout(aboutTextController.text);

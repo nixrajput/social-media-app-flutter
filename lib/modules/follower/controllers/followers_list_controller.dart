@@ -4,8 +4,8 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/apis/models/entities/user.dart';
-import 'package:social_media_app/apis/models/responses/user_list_response.dart';
+import 'package:social_media_app/apis/models/entities/follower.dart';
+import 'package:social_media_app/apis/models/responses/follower_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -18,21 +18,21 @@ class FollowersListController extends GetxController {
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final _followersData = const UserListResponse().obs;
+  final _followersData = const FollowerResponse().obs;
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
 
-  final List<User> _followersList = [];
+  final List<Follower> _followersList = [];
 
   bool get isLoading => _isLoading.value;
 
   bool get isMoreLoading => _isMoreLoading.value;
 
-  UserListResponse? get followersData => _followersData.value;
+  FollowerResponse? get followersData => _followersData.value;
 
-  List<User> get followersList => _followersList;
+  List<Follower> get followersList => _followersList;
 
-  set setFollowersListData(UserListResponse value) {
+  set setFollowersListData(FollowerResponse value) {
     _followersData.value = value;
   }
 
@@ -53,7 +53,7 @@ class FollowersListController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        setFollowersListData = UserListResponse.fromJson(decodedData);
+        setFollowersListData = FollowerResponse.fromJson(decodedData);
         _followersList.clear();
         _followersList.addAll(_followersData.value.results!);
         _isLoading.value = false;
@@ -119,7 +119,7 @@ class FollowersListController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        setFollowersListData = UserListResponse.fromJson(decodedData);
+        setFollowersListData = FollowerResponse.fromJson(decodedData);
         _followersList.addAll(_followersData.value.results!);
         _isMoreLoading.value = false;
         update();

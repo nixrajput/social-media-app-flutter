@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/apis/models/entities/device_info.dart';
+import 'package:social_media_app/apis/models/entities/login_device_info.dart';
 import 'package:social_media_app/apis/models/responses/common_response.dart';
 import 'package:social_media_app/apis/models/responses/device_info_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
@@ -21,13 +21,13 @@ class LoginDeviceInfoController extends GetxController {
 
   final _loginDeviceInfoData = const DeviceInfoResponse().obs;
   final _isLoading = false.obs;
-  final List<DeviceInfo> _loginDeviceInfoList = [];
+  final List<LoginDeviceInfo> _loginDeviceInfoList = [];
 
   bool get isLoading => _isLoading.value;
 
   DeviceInfoResponse? get deviceInfo => _loginDeviceInfoData.value;
 
-  List<DeviceInfo> get loginDeviceInfoList => _loginDeviceInfoList;
+  List<LoginDeviceInfo> get loginDeviceInfoList => _loginDeviceInfoList;
 
   set setLoginDeviceInfoData(DeviceInfoResponse value) =>
       _loginDeviceInfoData.value = value;

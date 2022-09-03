@@ -1,17 +1,17 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 
 part 'comment.g.dart';
 
 @JsonSerializable()
-class Comment extends Equatable {
-  const Comment({
+class Comment {
+  Comment({
     required this.id,
     required this.comment,
     required this.user,
     required this.post,
-    required this.likes,
+    required this.likesCount,
+    required this.commentStatus,
     required this.createdAt,
   });
 
@@ -32,19 +32,12 @@ class Comment extends Equatable {
   @JsonKey(name: 'post')
   final String post;
 
-  @JsonKey(name: 'likes')
-  final List<dynamic> likes;
+  @JsonKey(name: 'likesCount')
+  int likesCount;
+
+  @JsonKey(name: 'commentStatus')
+  String commentStatus;
 
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
-
-  @override
-  List<Object?> get props => <Object?>[
-        id,
-        comment,
-        user,
-        post,
-        likes,
-        createdAt,
-      ];
 }

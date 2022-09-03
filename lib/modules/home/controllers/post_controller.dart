@@ -5,22 +5,18 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/post.dart';
-import 'package:social_media_app/apis/models/entities/post_like.dart';
 import 'package:social_media_app/apis/models/responses/common_response.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/modules/app_update/app_update_controller.dart';
-import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 
 class PostController extends GetxController {
   static PostController get find => Get.find();
 
   final _auth = AuthService.find;
-  final _profile = ProfileController.find;
   final _apiProvider = ApiProvider(http.Client());
 
   final _isLoading = false.obs;
@@ -44,7 +40,6 @@ class PostController extends GetxController {
     super.onInit();
     _fetchPosts().then((_) async {
       await LoginDeviceInfoController.find.getLoginDeviceInfo();
-      await AppUpdateController.find.checkAppUpdate(showLoading: false);
     });
   }
 
@@ -221,20 +216,17 @@ class PostController extends GetxController {
   }
 
   void _toggleLike(Post post) {
-    var isLiked = post.likes
-        .any((element) => element.likedBy == _profile.profileData.user!.id);
-
-    if (isLiked == true) {
-      var tempPost = post.likes.firstWhere(
-          (element) => element.likedBy == _profile.profileData.user!.id);
-      post.likes.remove(tempPost);
+    if (post.isLiked) {
+      post.isLiked = false;
+      post.likesCount--;
+      update();
+      return;
     } else {
-      post.likes.add(PostLike(
-        likedBy: _profile.profileData.user!.id,
-        likedAt: DateTime.now(),
-      ));
+      post.isLiked = true;
+      post.likesCount++;
+      update();
+      return;
     }
-    update();
   }
 
   Future<void> _toggleLikePost(Post post) async {

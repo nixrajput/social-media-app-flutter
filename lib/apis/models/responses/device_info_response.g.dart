@@ -11,7 +11,7 @@ DeviceInfoResponse _$DeviceInfoResponseFromJson(Map<String, dynamic> json) =>
       success: json['success'] as bool?,
       count: json['count'] as int?,
       results: (json['results'] as List<dynamic>?)
-          ?.map((e) => DeviceInfo.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => LoginDeviceInfo.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

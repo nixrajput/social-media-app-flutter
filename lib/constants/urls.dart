@@ -38,12 +38,17 @@ abstract class AppUrls {
 
   static const String searchUserEndpoint = '/search-user';
   static const String followUserEndpoint = '/follow-user';
+  static const String getFollowRequests = '/get-follow-requests';
+  static const String acceptFollowRequestEndpoint = '/accept-follow-request';
+  static const String removeFollowRequestEndpoint = '/remove-follow-request';
+  static const String cancelFollowRequestEndpoint = '/cancel-follow-request';
   static const String getRecommendUsersEndpoint = '/get-recommend-users';
   static const String userDetailsEndpoint = '/user-details';
   static const String getFollowersEndpoint = '/get-followers';
   static const String getFollowingEndpoint = '/get-followings';
-
-  static const String getNotifications = '/get-notifications';
+  static const String getUserPostsEndpoint = '/get-user-posts';
+  static const String getNotificationsEndpoint = '/get-notifications';
+  static const String markNotificationsReadEndpoint = '/mark-read-notification';
 
   static const String checkAppUpdateEndpoint =
       '/repos/nixrajput/social-media-app-flutter/releases/latest';

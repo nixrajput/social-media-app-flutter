@@ -1,13 +1,11 @@
-import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
-import 'package:social_media_app/apis/models/entities/post.dart';
 
 part 'user_details.g.dart';
 
 @JsonSerializable()
-class UserDetails extends Equatable {
-  const UserDetails({
+class UserDetails {
+  UserDetails({
     required this.id,
     required this.fname,
     required this.lname,
@@ -17,12 +15,14 @@ class UserDetails extends Equatable {
     this.gender,
     this.dob,
     this.about,
-    required this.profession,
-    required this.posts,
-    required this.followers,
-    required this.following,
+    this.website,
+    this.profession,
+    required this.followersCount,
+    required this.followingCount,
+    required this.followingStatus,
+    required this.postsCount,
     required this.role,
-    required this.accountType,
+    required this.accountPrivacy,
     required this.accountStatus,
     required this.isVerified,
     required this.createdAt,
@@ -61,22 +61,28 @@ class UserDetails extends Equatable {
   final String? about;
 
   @JsonKey(name: 'profession')
-  final String profession;
+  final String? profession;
 
-  @JsonKey(name: 'posts')
-  final List<Post> posts;
+  @JsonKey(name: 'website')
+  final String? website;
 
-  @JsonKey(name: 'followers')
-  final List<dynamic> followers;
+  @JsonKey(name: 'postsCount')
+  int postsCount;
 
-  @JsonKey(name: 'following')
-  final List<dynamic> following;
+  @JsonKey(name: 'followersCount')
+  int followersCount;
+
+  @JsonKey(name: 'followingCount')
+  int followingCount;
+
+  @JsonKey(name: 'followingStatus')
+  String followingStatus;
 
   @JsonKey(name: 'role')
   final String role;
 
-  @JsonKey(name: 'accountType')
-  final String accountType;
+  @JsonKey(name: 'accountPrivacy')
+  final String accountPrivacy;
 
   @JsonKey(name: 'accountStatus')
   final String accountStatus;
@@ -86,26 +92,4 @@ class UserDetails extends Equatable {
 
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
-
-  @override
-  List<Object?> get props => <Object?>[
-        id,
-        fname,
-        lname,
-        email,
-        uname,
-        avatar,
-        gender,
-        dob,
-        about,
-        profession,
-        posts,
-        followers,
-        following,
-        role,
-        accountType,
-        accountStatus,
-        isVerified,
-        createdAt,
-      ];
 }

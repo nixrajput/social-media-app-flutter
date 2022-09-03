@@ -14,7 +14,7 @@ import 'package:social_media_app/modules/follower/bindings/followers_list_bindin
 import 'package:social_media_app/modules/follower/bindings/following_list_binding.dart';
 import 'package:social_media_app/modules/follower/views/followers_list_view.dart';
 import 'package:social_media_app/modules/follower/views/following_list_view.dart';
-import 'package:social_media_app/modules/home/bindings/home_binding.dart';
+import 'package:social_media_app/modules/home/bindings/initial_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
 import 'package:social_media_app/modules/post/bindings/post_details_binding.dart';
@@ -49,8 +49,8 @@ import 'package:social_media_app/modules/settings/views/pages/security/login_act
 import 'package:social_media_app/modules/settings/views/pages/security_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/theme_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
-import 'package:social_media_app/modules/user/bindings/user_profile_binding.dart';
-import 'package:social_media_app/modules/user/views/user_profile_view.dart';
+import 'package:social_media_app/modules/user/user_details_binding.dart';
+import 'package:social_media_app/modules/user/user_profile_view.dart';
 import 'package:social_media_app/modules/welcome/welcome_view.dart';
 
 part 'app_routes.dart';
@@ -84,7 +84,7 @@ abstract class AppPages {
       name: _Routes.home,
       page: HomeView.new,
       transitionDuration: transitionDuration,
-      binding: HomeBinding(),
+      binding: InitialBinding(),
       transition: defaultTransition,
     ),
 

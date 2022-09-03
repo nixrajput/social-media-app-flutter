@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:social_media_app/apis/models/entities/like_details.dart';
+import 'package:social_media_app/apis/models/entities/follower.dart';
 
-part 'post_like_response.g.dart';
+part 'follower_response.g.dart';
 
 @JsonSerializable()
-class PostLikeResponse extends Equatable {
-  const PostLikeResponse({
+class FollowerResponse extends Equatable {
+  const FollowerResponse({
     this.success,
     this.currentPage,
     this.totalPages,
@@ -18,10 +18,10 @@ class PostLikeResponse extends Equatable {
     this.results,
   });
 
-  factory PostLikeResponse.fromJson(Map<String, dynamic> json) =>
-      _$PostLikeResponseFromJson(json);
+  factory FollowerResponse.fromJson(Map<String, dynamic> json) =>
+      _$FollowerResponseFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PostLikeResponseToJson(this);
+  Map<String, dynamic> toJson() => _$FollowerResponseToJson(this);
 
   @JsonKey(name: 'success')
   final bool? success;
@@ -48,7 +48,7 @@ class PostLikeResponse extends Equatable {
   final String? nextPage;
 
   @JsonKey(name: 'results')
-  final List<LikeDetails>? results;
+  final List<Follower>? results;
 
   @override
   List<Object?> get props => <Object?>[

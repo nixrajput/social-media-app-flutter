@@ -31,7 +31,7 @@ class ProfileDetailsView extends StatelessWidget {
                   title: StringValues.editProfile,
                   padding: Dimens.edgeInsets8_16,
                 ),
-                Dimens.boxHeight24,
+                Dimens.boxHeight16,
                 _buildEditProfileBody(),
               ],
             ),
@@ -50,15 +50,17 @@ class ProfileDetailsView extends StatelessWidget {
                 padding: Dimens.edgeInsets0_16,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GetBuilder<EditProfilePictureController>(
-                      builder: (con) => GestureDetector(
-                        onTap: con.chooseImage,
-                        child: Hero(
-                          tag: logic.profileData.user!.id,
-                          child: AvatarWidget(
-                            avatar: logic.profileData.user!.avatar,
+                    Center(
+                      child: GetBuilder<EditProfilePictureController>(
+                        builder: (con) => GestureDetector(
+                          onTap: con.chooseImage,
+                          child: Hero(
+                            tag: logic.profileDetails.user!.id,
+                            child: AvatarWidget(
+                              avatar: logic.profileDetails.user!.avatar,
+                            ),
                           ),
                         ),
                       ),
@@ -74,7 +76,7 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        '${logic.profileData.user!.fname} ${logic.profileData.user!.lname}',
+                        '${logic.profileDetails.user!.fname} ${logic.profileDetails.user!.lname}',
                         style: AppStyles.style16Normal,
                       ),
                       onTap: RouteManagement.goToEditNameView,
@@ -89,7 +91,7 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileData.user!.uname,
+                        logic.profileDetails.user!.uname,
                         style: AppStyles.style16Normal,
                       ),
                       onTap: RouteManagement.goToEditUsernameView,
@@ -104,10 +106,10 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileData.user!.about ??
+                        logic.profileDetails.user!.about ??
                             StringValues.writeSomethingAboutYou,
                         style: AppStyles.style16Normal.copyWith(
-                          color: logic.profileData.user!.about == null
+                          color: logic.profileDetails.user!.about == null
                               ? Theme.of(Get.context!)
                                   .textTheme
                                   .subtitle1
@@ -131,21 +133,23 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        (logic.profileData.user!.profession == null ||
-                                logic.profileData.user!.profession == 'user')
+                        (logic.profileDetails.user!.profession == null ||
+                                logic.profileDetails.user!.profession == 'user')
                             ? 'Add your profession'
-                            : logic.profileData.user!.profession!,
+                            : logic.profileDetails.user!.profession!,
                         style: AppStyles.style16Normal.copyWith(
-                          color: (logic.profileData.user!.profession == null ||
-                                  logic.profileData.user!.profession == 'user')
-                              ? Theme.of(Get.context!)
-                                  .textTheme
-                                  .subtitle1
-                                  ?.color
-                              : Theme.of(Get.context!)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.color,
+                          color:
+                              (logic.profileDetails.user!.profession == null ||
+                                      logic.profileDetails.user!.profession ==
+                                          'user')
+                                  ? Theme.of(Get.context!)
+                                      .textTheme
+                                      .subtitle1
+                                      ?.color
+                                  : Theme.of(Get.context!)
+                                      .textTheme
+                                      .bodyText1
+                                      ?.color,
                         ),
                       ),
                     ),
@@ -159,9 +163,10 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileData.user!.dob ?? StringValues.dobFormat,
+                        logic.profileDetails.user!.dob ??
+                            StringValues.dobFormat,
                         style: AppStyles.style16Normal.copyWith(
-                          color: logic.profileData.user!.dob == null
+                          color: logic.profileDetails.user!.dob == null
                               ? Theme.of(Get.context!)
                                   .textTheme
                                   .subtitle1
@@ -184,9 +189,10 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileData.user!.gender ?? StringValues.select,
+                        logic.profileDetails.user!.gender ??
+                            StringValues.select,
                         style: AppStyles.style16Normal.copyWith(
-                          color: logic.profileData.user!.gender == null
+                          color: logic.profileDetails.user!.gender == null
                               ? Theme.of(Get.context!)
                                   .textTheme
                                   .subtitle1

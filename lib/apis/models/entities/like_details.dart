@@ -2,20 +2,20 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 
-part 'post_like_details.g.dart';
+part 'like_details.g.dart';
 
 @JsonSerializable()
-class PostLikeDetails extends Equatable {
-  const PostLikeDetails({
+class LikeDetails extends Equatable {
+  const LikeDetails({
     this.id,
     this.likedBy,
     this.likedAt,
   });
 
-  factory PostLikeDetails.fromJson(Map<String, dynamic> json) =>
-      _$PostLikeDetailsFromJson(json);
+  factory LikeDetails.fromJson(Map<String, dynamic> json) =>
+      _$LikeDetailsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PostLikeDetailsToJson(this);
+  Map<String, dynamic> toJson() => _$LikeDetailsToJson(this);
 
   @JsonKey(name: '_id')
   final String? id;

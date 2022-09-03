@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/apis/models/entities/post_like_details.dart';
+import 'package:social_media_app/apis/models/entities/like_details.dart';
 import 'package:social_media_app/apis/models/responses/post_like_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
@@ -20,7 +20,7 @@ class PostLikedUsersController extends GetxController {
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
   final _postLikedUsersData = const PostLikeResponse().obs;
-  final List<PostLikeDetails> _postLikedUsersList = [];
+  final List<LikeDetails> _postLikedUsersList = [];
 
   bool get isLoading => _isLoading.value;
 
@@ -28,7 +28,7 @@ class PostLikedUsersController extends GetxController {
 
   PostLikeResponse get postLikedUsersData => _postLikedUsersData.value;
 
-  List<PostLikeDetails> get postLikedUsersList => _postLikedUsersList;
+  List<LikeDetails> get postLikedUsersList => _postLikedUsersList;
 
   set setPostLikedUsersData(PostLikeResponse response) {
     _postLikedUsersData.value = response;
