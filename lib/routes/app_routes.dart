@@ -18,6 +18,17 @@ abstract class AppRoutes {
   static const themeSettings = _Routes.themeSettings;
 
   static const loginActivitySettings = _Routes.loginActivitySettings;
+  static const accountPrivacySettings = _Routes.accountPrivacySettings;
+  static const twoFASettings = _Routes.twoFASettings;
+  static const postSettings = _Routes.postSettings;
+  static const commentsSettings = _Routes.commentsSettings;
+  static const momentsSettings = _Routes.momentsSettings;
+  static const blockedUsersSettings = _Routes.blockedUsersSettings;
+  static const changeEmailSettings = _Routes.changeEmailSettings;
+  static const changePhoneSettings = _Routes.changePhoneSettings;
+  static const applyForSelfVerifySettings = _Routes.applyForSelfVerifySettings;
+  static const applyForBlueTickSettings = _Routes.applyForBlueTickSettings;
+  static const deactivateAccountSettings = _Routes.deactivateAccountSettings;
 
   static const forgotPassword = _Routes.forgotPassword;
   static const resetPassword = _Routes.resetPassword;
@@ -66,7 +77,18 @@ abstract class _Routes {
   static const aboutSettings = "/about_settings";
   static const themeSettings = "/theme_settings";
 
-  static const loginActivitySettings = '/login_activity';
+  static const accountPrivacySettings = '/account_privacy_settings';
+  static const twoFASettings = '/two_fa_settings';
+  static const postSettings = '/post_settings';
+  static const commentsSettings = '/comments_settings';
+  static const momentsSettings = '/moments_settings';
+  static const blockedUsersSettings = '/blocked_users_settings';
+  static const loginActivitySettings = '/login_activity_settings';
+  static const changeEmailSettings = '/change_email_settings';
+  static const changePhoneSettings = '/change_phone_settings';
+  static const applyForSelfVerifySettings = '/apply_for_self_verify_settings';
+  static const applyForBlueTickSettings = '/apply_for_blue_tick_settings';
+  static const deactivateAccountSettings = '/deactivate_account_settings';
 
   static const forgotPassword = '/forgot_password';
   static const resetPassword = '/reset_password';

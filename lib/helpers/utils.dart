@@ -21,11 +21,34 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:video_compress/video_compress.dart';
 
 abstract class AppUtils {
+  /// Close any open snack bar.
+
+  static void closeSnackBar() {
+    if (Get.isSnackbarOpen) Get.back<void>();
+  }
+
+  /// Close any open dialog.
+
+  static void closeDialog() {
+    if (Get.isDialogOpen!) Get.back<void>();
+  }
+
+  /// Close any open bottom sheet.
+
+  static void closeBottomSheet() {
+    if (Get.isBottomSheetOpen ?? false) Get.back<void>();
+  }
+
+  static void closeFocus() {
+    if (FocusManager.instance.primaryFocus!.hasFocus) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    }
+  }
+
   /// Show Loading Dialog
 
-  static void showLoadingDialog({double? value}) {
-    closeDialog();
-    Get.dialog<void>(
+  static void showLoadingDialog({double? value, bool? barrierDismissible}) {
+    Get.dialog(
       WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
@@ -53,7 +76,7 @@ abstract class AppUtils {
                   Dimens.boxHeight12,
                   Text(
                     'Please wait...',
-                    style: AppStyles.style16Bold.copyWith(
+                    style: AppStyles.style16Normal.copyWith(
                       color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                     ),
                   ),
@@ -63,7 +86,7 @@ abstract class AppUtils {
           ),
         ),
       ),
-      barrierDismissible: false,
+      barrierDismissible: barrierDismissible ?? false,
     );
   }
 
@@ -116,7 +139,6 @@ abstract class AppUtils {
 
   static void showError(String message) {
     closeSnackBar();
-    closeDialog();
     closeBottomSheet();
     if (message.isEmpty) return;
     Get.rawSnackbar(
@@ -148,7 +170,6 @@ abstract class AppUtils {
       WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-          backgroundColor: Colors.black26,
           body: Padding(
             padding: Dimens.edgeInsets16,
             child: Column(
@@ -165,7 +186,7 @@ abstract class AppUtils {
                   'No Internet!',
                   textAlign: TextAlign.center,
                   style: AppStyles.style24Bold.copyWith(
-                    color: ColorValues.whiteColor,
+                    color: ColorValues.errorColor,
                   ),
                 ),
               ],
@@ -288,27 +309,6 @@ abstract class AppUtils {
       return CupertinoIcons.info_circle_fill;
     }
     return CupertinoIcons.info_circle_fill;
-  }
-
-  /// Close any open snack bar.
-  static void closeSnackBar() {
-    if (Get.isSnackbarOpen) Get.back<void>();
-  }
-
-  /// Close any open dialog.
-  static void closeDialog() {
-    if (Get.isDialogOpen ?? false) Get.back<void>();
-  }
-
-  /// Close any open bottom sheet.
-  static void closeBottomSheet() {
-    if (Get.isBottomSheetOpen ?? false) Get.back<void>();
-  }
-
-  static void closeFocus() {
-    if (FocusManager.instance.primaryFocus!.hasFocus) {
-      FocusManager.instance.primaryFocus?.unfocus();
-    }
   }
 
   static Future<void> saveLoginDataToLocalStorage(

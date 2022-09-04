@@ -10,8 +10,8 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 
-class AccountTypeController extends GetxController {
-  static AccountTypeController get find => Get.find();
+class AccountPrivacyController extends GetxController {
+  static AccountPrivacyController get find => Get.find();
 
   final _profile = ProfileController.find;
   final _auth = AuthService.find;
@@ -22,16 +22,16 @@ class AccountTypeController extends GetxController {
 
   bool get isLoading => _isLoading.value;
 
-  Future<void> _updateAccountType(String accountType) async {
-    if (accountType.isEmpty) {
+  Future<void> _changeAccountPrivacy(String accountPrivacy) async {
+    if (accountPrivacy.isEmpty) {
       return;
     }
 
     final body = {
-      'accountPrivacy': accountType,
+      'accountPrivacy': accountPrivacy,
     };
 
-    AppUtils.printLog("Update Account Type Request...");
+    AppUtils.printLog("Update AccountPrivacy Request");
     AppUtils.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -41,16 +41,20 @@ class AccountTypeController extends GetxController {
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
+      AppUtils.printLog(response.statusCode);
+
       if (response.statusCode == 200) {
-        await _profile.fetchProfileDetails();
+        await _profile.fetchProfileDetails(fetchPost: false);
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();
+        AppUtils.printLog("Update AccountPrivacy Success");
         AppUtils.showSnackBar(
           StringValues.updateProfileSuccessful,
           StringValues.success,
         );
       } else {
+        AppUtils.printLog("Update AccountPrivacy Error");
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();
@@ -63,19 +67,21 @@ class AccountTypeController extends GetxController {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
+      AppUtils.printLog("Update AccountPrivacy Error");
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog("Update AccountPrivacy Error");
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
+      AppUtils.printLog("Update AccountPrivacy Error");
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
@@ -83,14 +89,15 @@ class AccountTypeController extends GetxController {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
+      AppUtils.printLog("Update AccountPrivacy Error");
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
-  Future<void> updateAccountType(String accountType) async {
+  Future<void> changeAccountPrivacy(String accountPrivacy) async {
     AppUtils.closeFocus();
-    await _updateAccountType(accountType.trim());
+    await _changeAccountPrivacy(accountPrivacy.trim());
   }
 }

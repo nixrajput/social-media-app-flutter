@@ -4,16 +4,15 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
-import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
+import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
-import 'package:social_media_app/global_widgets/circular_asset_image.dart';
-import 'package:social_media_app/global_widgets/circular_network_image.dart';
 import 'package:social_media_app/global_widgets/elevated_card.dart';
+import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
@@ -70,51 +69,23 @@ class _PostWidgetState extends State<PostWidget> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    (widget.post.owner.avatar != null &&
-                            widget.post.owner.avatar?.url != null)
-                        ? GestureDetector(
-                            onTap: () => RouteManagement.goToUserProfileView(
-                                widget.post.owner.id),
-                            child: NxCircleNetworkImage(
-                              imageUrl: widget.post.owner.avatar!.url!,
-                              radius: Dimens.twenty,
-                            ),
-                          )
-                        : GestureDetector(
-                            onTap: () => RouteManagement.goToUserProfileView(
-                                widget.post.owner.id),
-                            child: NxCircleAssetImage(
-                              imgAsset: AssetValues.avatar,
-                              radius: Dimens.twenty,
-                            ),
-                          ),
+                    GestureDetector(
+                      onTap: () => RouteManagement.goToUserProfileView(
+                        widget.post.owner.id,
+                      ),
+                      child: AvatarWidget(
+                        avatar: widget.post.owner.avatar,
+                        size: Dimens.twenty,
+                      ),
+                    ),
                     Dimens.boxWidth8,
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        GestureDetector(
-                          onTap: () => RouteManagement.goToUserProfileView(
-                              widget.post.owner.id),
-                          child: Text(
-                            "${widget.post.owner.fname} ${widget.post.owner.lname}",
-                            style: AppStyles.style14Bold,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => RouteManagement.goToUserProfileView(
-                              widget.post.owner.id),
-                          child: Text(
-                            "@${widget.post.owner.uname}",
-                            style: TextStyle(
-                              color: Theme.of(Get.context!)
-                                  .textTheme
-                                  .subtitle1!
-                                  .color,
-                            ),
-                          ),
-                        )
+                        _buildFullName(),
+                        _buildUsername(),
                       ],
                     ),
                   ],
@@ -134,6 +105,7 @@ class _PostWidgetState extends State<PostWidget> {
                     NxIconButton(
                       icon: CupertinoIcons.ellipsis_vertical,
                       iconSize: Dimens.twenty,
+                      iconColor: Theme.of(context).textTheme.bodyText1!.color,
                       onTap: _showHeaderOptionBottomSheet,
                     ),
                   ],
@@ -141,6 +113,46 @@ class _PostWidgetState extends State<PostWidget> {
               ],
             ),
           ],
+        ),
+      );
+
+  Widget _buildFullName() => GestureDetector(
+        onTap: () => RouteManagement.goToUserProfileView(
+          widget.post.owner.id,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RichText(
+              text: TextSpan(
+                text: '${widget.post.owner.fname} ${widget.post.owner.lname}',
+                style: AppStyles.style14Bold.copyWith(
+                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                ),
+              ),
+              maxLines: 1,
+            ),
+            if (widget.post.owner.isVerified) Dimens.boxWidth4,
+            if (widget.post.owner.isVerified)
+              Icon(
+                CupertinoIcons.checkmark_seal_fill,
+                color: Theme.of(Get.context!).brightness == Brightness.dark
+                    ? Theme.of(Get.context!).textTheme.bodyText1?.color
+                    : ColorValues.primaryColor,
+                size: Dimens.fourteen,
+              )
+          ],
+        ),
+      );
+
+  Widget _buildUsername() => GestureDetector(
+        onTap: () => RouteManagement.goToUserProfileView(widget.post.owner.id),
+        child: Text(
+          "@${widget.post.owner.uname}",
+          style: TextStyle(
+            color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+          ),
         ),
       );
 
@@ -228,13 +240,8 @@ class _PostWidgetState extends State<PostWidget> {
             if (widget.post.caption != null && widget.post.caption!.isNotEmpty)
               Dimens.boxHeight4,
             if (widget.post.caption != null && widget.post.caption!.isNotEmpty)
-              RichText(
-                text: TextSpan(
-                  text: widget.post.caption!,
-                  style: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  ),
-                ),
+              NxExpandableText(
+                text: widget.post.caption!,
               ),
             Dimens.dividerWithHeight,
             Padding(

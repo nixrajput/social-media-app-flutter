@@ -105,7 +105,7 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.postDetails, arguments: [postId, post]);
   }
 
-  // SETTINGS
+  /// Settings Pages -----------------------------------------------------------
 
   static void goToSettingsView() {
     Get.toNamed(AppRoutes.settings);
@@ -135,17 +135,37 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.themeSettings);
   }
 
-  /// Go to App Update View
+  /// --------------------------------------------------------------------------
+
+  /// Go to App Update View ----------------------------------------------------
+
   static void goToAppUpdateView() {
     Get.offAllNamed(AppRoutes.appUpdate);
   }
 
-  // SECURITY SETTINGS
+  /// --------------------------------------------------------------------------
+
+  /// Security Settings Pages --------------------------------------------------
+
   static void goToLoginActivityView() {
     Get.toNamed(AppRoutes.loginActivitySettings);
   }
 
+  /// --------------------------------------------------------------------------
+
+  /// Privacy Settings Pages --------------------------------------------------
+
+  static void goToChangeAccountPrivacyView() {
+    Get.toNamed(AppRoutes.accountPrivacySettings);
+  }
+
+  /// --------------------------------------------------------------------------
+
+  /// Go to back Page / Close Pages --------------------------------------------
+
   static void goToBack() {
     Get.back();
   }
+
+  /// --------------------------------------------------------------------------
 }

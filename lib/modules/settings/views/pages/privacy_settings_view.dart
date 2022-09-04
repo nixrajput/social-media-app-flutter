@@ -3,14 +3,10 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
-import 'package:social_media_app/global_widgets/custom_radio_tile.dart';
-import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
-import 'package:social_media_app/modules/settings/controllers/account_type_controller.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
 class PrivacySettingsView extends StatelessWidget {
   const PrivacySettingsView({Key? key}) : super(key: key);
@@ -67,7 +63,7 @@ class PrivacySettingsView extends StatelessWidget {
                     StringValues.accountPrivacy,
                     style: AppStyles.style14Bold,
                   ),
-                  onTap: () => _showAccountPrivacyDialog(logic),
+                  onTap: RouteManagement.goToChangeAccountPrivacyView,
                 ),
               ),
 
@@ -129,77 +125,6 @@ class PrivacySettingsView extends StatelessWidget {
                 ),
               ),
               Dimens.boxHeight16,
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _showAccountPrivacyDialog(ProfileController logic) {
-    AppUtils.showSimpleDialog(
-      GetBuilder<AccountTypeController>(
-        init: AccountTypeController(),
-        builder: (con) => Padding(
-          padding: Dimens.edgeInsets16,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    StringValues.accountPrivacy,
-                    style: AppStyles.style16Bold,
-                  ),
-                  const Spacer(),
-                  NxIconButton(
-                    icon: Icons.close,
-                    iconSize: Dimens.thirtyTwo,
-                    onTap: AppUtils.closeDialog,
-                  ),
-                ],
-              ),
-              Dimens.boxHeight24,
-              Column(
-                children: [
-                  NxRadioTile(
-                    padding: Dimens.edgeInsets8,
-                    bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(Dimens.eight),
-                      topRight: Radius.circular(Dimens.eight),
-                    ),
-                    onTap: () => con.updateAccountType(StringValues.public),
-                    onChanged: (value) {
-                      con.updateAccountType(StringValues.public);
-                    },
-                    title: StringValues.public.toTitleCase(),
-                    titleStyle: AppStyles.style14Bold,
-                    value: StringValues.public,
-                    groupValue: logic.profileDetails.user!.accountPrivacy,
-                  ),
-                  Dimens.divider,
-                  NxRadioTile(
-                    padding: Dimens.edgeInsets8,
-                    bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(Dimens.eight),
-                      bottomRight: Radius.circular(Dimens.eight),
-                    ),
-                    onTap: () => con.updateAccountType(StringValues.public),
-                    onChanged: (value) {
-                      con.updateAccountType(StringValues.public);
-                    },
-                    title: StringValues.public.toTitleCase(),
-                    titleStyle: AppStyles.style14Bold,
-                    value: StringValues.public,
-                    groupValue: logic.profileDetails.user!.accountPrivacy,
-                  ),
-                ],
-              ),
-              Dimens.boxHeight24,
             ],
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:social_media_app/apis/models/entities/comment.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
+import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 
 class CommentWidget extends StatelessWidget {
   const CommentWidget({Key? key, required this.comment}) : super(key: key);
@@ -54,12 +55,8 @@ class CommentWidget extends StatelessWidget {
                       ],
                     ),
                     Dimens.boxHeight4,
-                    RichText(
-                      text: TextSpan(
-                          text: comment.comment,
-                          style: AppStyles.style14Normal.copyWith(
-                            color: Theme.of(context).textTheme.bodyText1!.color,
-                          )),
+                    NxExpandableText(
+                      text: comment.comment,
                     ),
                   ],
                 ),
