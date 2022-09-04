@@ -8,7 +8,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
-import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class UserWidget extends StatelessWidget {

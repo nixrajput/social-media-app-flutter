@@ -45,6 +45,12 @@ abstract class AppRoutes {
   static const editDob = _Routes.editDob;
   static const editGender = _Routes.editGender;
   static const editPhone = _Routes.editPhone;
+  static const editProfession = _Routes.editProfession;
+  static const editLocation = _Routes.editLocation;
+  static const editWebsite = _Routes.editWebsite;
+
+  static const reactivateAccount = _Routes.reactivateAccount;
+
   static const following = _Routes.following;
   static const followers = _Routes.followers;
 
@@ -105,6 +111,12 @@ abstract class _Routes {
   static const editDob = '/edit_dob';
   static const editGender = '/edit_gender';
   static const editPhone = '/edit_phone';
+  static const editProfession = '/edit_profession';
+  static const editLocation = '/edit_location';
+  static const editWebsite = '/edit_website';
+
+  static const reactivateAccount = '/reactivate_account';
+
   static const following = '/following';
   static const followers = '/followers';
 

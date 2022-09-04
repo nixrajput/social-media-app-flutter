@@ -8,7 +8,7 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class EditProfilePictureController extends GetxController {
   static EditProfilePictureController get find => Get.find();
@@ -62,7 +62,7 @@ class EditProfilePictureController extends GetxController {
 
       if (response.statusCode == 200) {
         AppUtils.closeDialog();
-        await _profile.fetchProfileDetails();
+        await _profile.fetchProfileDetails(fetchPost: false);
         _isLoading.value = false;
         update();
         AppUtils.showSnackBar(

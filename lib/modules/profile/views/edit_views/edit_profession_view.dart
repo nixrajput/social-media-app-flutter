@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/data.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
-import 'package:social_media_app/modules/profile/controllers/edit_about_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/edit_profession_controller.dart';
 
-class EditAboutView extends StatelessWidget {
-  const EditAboutView({Key? key}) : super(key: key);
+class EditProfessionView extends StatelessWidget {
+  const EditProfessionView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class EditAboutView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 NxAppBar(
-                  title: StringValues.about,
+                  title: StringValues.profession,
                   padding: Dimens.edgeInsets8_16,
                 ),
                 Dimens.boxHeight24,
@@ -38,7 +38,7 @@ class EditAboutView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() => GetBuilder<EditAboutController>(
+  Widget _buildBody() => GetBuilder<EditProfessionController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
@@ -50,33 +50,32 @@ class EditAboutView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      constraints: BoxConstraints(
-                        maxWidth: Dimens.screenWidth,
-                        minHeight: Dimens.fiftySix,
-                      ),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          hintText: StringValues.writeSomethingAboutYou,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
-                          ),
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
-                          ),
-                        ),
-                        keyboardType: TextInputType.multiline,
-                        maxLines: 4,
-                        style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.aboutTextController,
-                        onEditingComplete: logic.focusNode.unfocus,
+                      height: Dimens.fiftySix,
+                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
+                      child: DropdownButton(
+                        elevation: 0,
+                        dropdownColor:
+                            Theme.of(Get.context!).dialogBackgroundColor,
+                        hint: const Text(StringValues.profession),
+                        isExpanded: true,
+                        menuMaxHeight: Dimens.screenHeight * 0.6,
+                        value: logic.profession,
+                        borderRadius: BorderRadius.circular(Dimens.eight),
+                        items: StaticData.occupationList
+                            .map(
+                              (String e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e.toTitleCase()),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (String? value) =>
+                            logic.onProfessionChanged(value),
                       ),
                     ),
                     Dimens.boxHeight40,
                     NxFilledButton(
-                      onTap: logic.updateAbout,
+                      onTap: logic.updateProfession,
                       label: StringValues.save.toUpperCase(),
                     ),
                     Dimens.boxHeight16,

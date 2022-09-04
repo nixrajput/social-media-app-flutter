@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 
@@ -42,17 +41,10 @@ class NxFilledButton extends StatelessWidget {
         height: height ?? Dimens.fiftySix,
         padding: padding,
         constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-        decoration: bgColor == null
-            ? BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(borderRadius ?? Dimens.eight),
-                gradient: ColorValues.primaryGrad,
-              )
-            : BoxDecoration(
-                borderRadius:
-                    BorderRadius.circular(borderRadius ?? Dimens.eight),
-                color: bgColor,
-              ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius ?? Dimens.eight),
+          color: bgColor ?? Theme.of(context).textTheme.bodyText1!.color,
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +55,8 @@ class NxFilledButton extends StatelessWidget {
               label,
               style: labelStyle ??
                   AppStyles.style16Bold.copyWith(
-                    color: labelColor ?? ColorValues.whiteColor,
+                    color:
+                        labelColor ?? Theme.of(context).scaffoldBackgroundColor,
                     fontSize: fontSize ?? Dimens.sixTeen,
                   ),
             ),

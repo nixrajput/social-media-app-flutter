@@ -30,7 +30,7 @@ abstract class AppUtils {
   /// Close any open dialog.
 
   static void closeDialog() {
-    if (Get.isDialogOpen!) Get.back<void>();
+    if (Get.isDialogOpen ?? false) Get.back<void>();
   }
 
   /// Close any open bottom sheet.

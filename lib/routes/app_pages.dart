@@ -24,19 +24,21 @@ import 'package:social_media_app/modules/post/views/create_post_view.dart';
 import 'package:social_media_app/modules/post/views/post_comment_view.dart';
 import 'package:social_media_app/modules/post/views/post_details_view.dart';
 import 'package:social_media_app/modules/post/views/post_liked_users_view.dart';
-import 'package:social_media_app/modules/profile/bindings/about_binding.dart';
-import 'package:social_media_app/modules/profile/bindings/change_password_binding.dart';
-import 'package:social_media_app/modules/profile/bindings/dob_binding.dart';
-import 'package:social_media_app/modules/profile/bindings/edit_profile_binding.dart';
-import 'package:social_media_app/modules/profile/bindings/gender_binding.dart';
-import 'package:social_media_app/modules/profile/bindings/name_binding.dart';
-import 'package:social_media_app/modules/profile/bindings/username_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/edit_about_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/edit_dob_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/edit_gender_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/edit_name_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/edit_profession_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/edit_profile_picture_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/edit_username_binding.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_about_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_dob_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_gender_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_name_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_views/edit_profession_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_username_view.dart';
 import 'package:social_media_app/modules/profile/views/profile_details_view.dart';
+import 'package:social_media_app/modules/settings/bindings/change_password_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/login_device_info_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
@@ -126,58 +128,58 @@ abstract class AppPages {
     /// Edit Profile Pages -----------------------------------------------------
 
     GetPage(
-      name: _Routes.changePassword,
-      page: ChangePasswordView.new,
-      transitionDuration: transitionDuration,
-      binding: ChangePasswordBinding(),
-      transition: defaultTransition,
-    ),
-
-    GetPage(
       name: _Routes.editProfile,
       page: ProfileDetailsView.new,
       transitionDuration: transitionDuration,
-      binding: EditProfileBinding(),
+      binding: EditProfilePictureBinding(),
       transition: defaultTransition,
     ),
 
     GetPage(
       name: _Routes.editName,
       page: EditNameView.new,
+      binding: EditNameBinding(),
       transitionDuration: transitionDuration,
-      binding: NameBinding(),
       transition: defaultTransition,
     ),
 
     GetPage(
       name: _Routes.editUsername,
       page: EditUsernameView.new,
+      binding: EditUsernameBinding(),
       transitionDuration: transitionDuration,
-      binding: UsernameBinding(),
       transition: defaultTransition,
     ),
 
     GetPage(
       name: _Routes.editAbout,
       page: EditAboutView.new,
+      binding: EditAboutBinding(),
       transitionDuration: transitionDuration,
-      binding: AboutBinding(),
       transition: defaultTransition,
     ),
 
     GetPage(
       name: _Routes.editDob,
       page: EditDOBView.new,
+      binding: EditDOBBinding(),
       transitionDuration: transitionDuration,
-      binding: DOBBinding(),
       transition: defaultTransition,
     ),
 
     GetPage(
       name: _Routes.editGender,
       page: EditGenderView.new,
+      binding: EditGenderBinding(),
       transitionDuration: transitionDuration,
-      binding: GenderBinding(),
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.editProfession,
+      page: EditProfessionView.new,
+      binding: EditProfessionBinding(),
+      transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
 
@@ -309,6 +311,15 @@ abstract class AppPages {
     /// ------------------------------------------------------------------------
 
     ///  SECURITY SETTINGS -----------------------------------------------------
+
+    GetPage(
+      name: _Routes.changePassword,
+      page: ChangePasswordView.new,
+      transitionDuration: transitionDuration,
+      binding: ChangePasswordBinding(),
+      transition: defaultTransition,
+    ),
+
     GetPage(
       name: _Routes.loginActivitySettings,
       page: LoginActivityView.new,

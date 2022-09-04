@@ -11,7 +11,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
-import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
@@ -20,7 +20,10 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await initServices();
     runApp(const MyApp());
-    await AppUpdateController.find.checkAppUpdate(showLoading: false);
+    await AppUpdateController.find.checkAppUpdate(
+      showLoading: false,
+      showAlert: false,
+    );
   } catch (err) {
     AppUtils.printLog(err);
   }

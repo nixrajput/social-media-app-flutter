@@ -6,6 +6,7 @@ import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
 abstract class RouteManagement {
+  /// Welcome ------------------------------------------------------------------
   static void goToWelcomeView() {
     Get.offAllNamed(AppRoutes.welcome);
   }
@@ -38,12 +39,12 @@ abstract class RouteManagement {
     Get.offAllNamed(AppRoutes.home);
   }
 
+  /// --------------------------------------------------------------------------
+
+  /// Edit Profile -------------------------------------------------------------
+
   static void goToEditProfileView() {
     Get.toNamed(AppRoutes.editProfile);
-  }
-
-  static void goToChangePasswordView() {
-    Get.toNamed(AppRoutes.changePassword);
   }
 
   static void goToEditNameView() {
@@ -69,6 +70,14 @@ abstract class RouteManagement {
   static void goToEditPhoneView() {
     Get.toNamed(AppRoutes.editPhone);
   }
+
+  static void goToEditProfessionView() {
+    Get.toNamed(AppRoutes.editProfession);
+  }
+
+  /// --------------------------------------------------------------------------
+
+  /// Profile & User -----------------------------------------------------------
 
   static void goToCreatePostView() {
     Get.toNamed(AppRoutes.createPost);
@@ -104,6 +113,8 @@ abstract class RouteManagement {
   static void goToPostDetailsView(String postId, Post post) {
     Get.toNamed(AppRoutes.postDetails, arguments: [postId, post]);
   }
+
+  /// --------------------------------------------------------------------------
 
   /// Settings Pages -----------------------------------------------------------
 
@@ -149,6 +160,10 @@ abstract class RouteManagement {
 
   static void goToLoginActivityView() {
     Get.toNamed(AppRoutes.loginActivitySettings);
+  }
+
+  static void goToChangePasswordView() {
+    Get.toNamed(AppRoutes.changePassword);
   }
 
   /// --------------------------------------------------------------------------

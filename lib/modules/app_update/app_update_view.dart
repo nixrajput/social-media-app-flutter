@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:get/get.dart';
 import 'package:r_upgrade/r_upgrade.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -54,25 +55,18 @@ class AppUpdateView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Dimens.boxHeight8,
-                  RichText(
-                    text: TextSpan(
-                      text:
-                          'Current Version : ${logic.version}+${logic.buildNumber}',
-                      style: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
+                  Dimens.boxHeight16,
+                  Container(
+                    height: Dimens.hundred * 2.4,
+                    decoration: BoxDecoration(
+                      color: Theme.of(Get.context!).dialogBackgroundColor,
+                      borderRadius: BorderRadius.circular(Dimens.eight),
                     ),
-                  ),
-                  Dimens.boxHeight4,
-                  RichText(
-                    text: TextSpan(
-                      text: 'Latest Version : ${logic.latestVersion}',
-                      style: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
+                    child: Markdown(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      padding: Dimens.edgeInsets8,
+                      data: logic.changelog,
                     ),
                   ),
                   Dimens.boxHeight16,
@@ -89,13 +83,14 @@ class AppUpdateView extends StatelessWidget {
                   Dimens.boxHeight20,
                   NxOutlinedButton(
                     label: 'Update Now'.toTitleCase(),
+                    bgColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
                     borderColor:
                         Theme.of(Get.context!).textTheme.bodyText1!.color,
                     padding: Dimens.edgeInsets0_8,
                     width: Dimens.screenWidth,
                     height: Dimens.thirtySix,
                     labelStyle: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      color: Theme.of(Get.context!).scaffoldBackgroundColor,
                     ),
                     onTap: () => logic.downloadAppUpdate(),
                   ),

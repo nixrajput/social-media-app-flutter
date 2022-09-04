@@ -3,7 +3,7 @@ description: A social media app using Flutter, Dart, GetX, and REST API that all
 
 publish_to: "none"
 
-version: 1.0.1+03
+version: 1.0.1+05
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -43,6 +43,7 @@ dependencies:
   video_compress: ^3.1.1
   better_player: ^0.0.83
   path: ^1.8.2
+  flutter_markdown: ^0.6.10+5
 
   flutter_screenutil: ^5.5.4
   permission_handler: ^10.0.0

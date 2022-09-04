@@ -28,7 +28,9 @@ class AppUpdateController extends GetxController {
   final _latestVersion = ''.obs;
   final _version = ''.obs;
   final _buildNumber = ''.obs;
+  final _changelog = ''.obs;
 
+  /// Getters
   bool get isLoading => _isLoading.value;
 
   bool get hasUpdate => _hasUpdate.value;
@@ -39,17 +41,16 @@ class AppUpdateController extends GetxController {
 
   String get version => _version.value;
 
-  set version(value) => _version.value = value;
-
   String get buildNumber => _buildNumber.value;
+
+  String get changelog => _changelog.value;
+
+  /// Setters
+  set version(value) => _version.value = value;
 
   set buildNumber(value) => _buildNumber.value = value;
 
-  @override
-  onInit() {
-    super.onInit();
-    RUpgrade.setDebug(true);
-  }
+  set changelog(value) => _changelog.value = value;
 
   Future<void> _getPackageInfo() async {
     AppUtils.printLog("Getting package info...");
@@ -60,7 +61,7 @@ class AppUpdateController extends GetxController {
     AppUtils.printLog('buildNumber: $buildNumber');
   }
 
-  Future<void> _checkAppUpdate(bool showLoading) async {
+  Future<void> _checkAppUpdate(bool showLoading, bool showAlert) async {
     await _getPackageInfo();
 
     AppUtils.printLog("Check App Update Request");
@@ -79,10 +80,10 @@ class AppUpdateController extends GetxController {
 
       if (response.statusCode == 200) {
         String latestVersion = decodedData['tag_name'];
-        //String latestVersion = 'v1.0.1+03';
 
         if (latestVersion.contains('+')) {
           _latestVersion.value = latestVersion.substring(1);
+          changelog = decodedData['body'];
           var splitLatestVer = latestVersion.substring(1).split('+');
 
           var latestBuildVersion = splitLatestVer[0];
@@ -128,8 +129,9 @@ class AppUpdateController extends GetxController {
           if (_hasUpdate.value == true) {
             AppUtils.printLog("Update found");
             List<dynamic> assets = decodedData['assets'];
-            var apk =
-                assets.singleWhere((element) => element['name'] == 'app.apk');
+            var apk = assets.singleWhere(
+              (element) => element['name'] == 'app-release.apk',
+            );
 
             if (apk != null) {
               _apkDownloadLink.value = apk['browser_download_url'];
@@ -146,6 +148,9 @@ class AppUpdateController extends GetxController {
             }
             _isLoading.value = false;
             update();
+            if (showAlert) {
+              AppUtils.showSnackBar('You have the latest version.', '');
+            }
             AppUtils.printLog("No update found");
           }
         } else {
@@ -263,8 +268,9 @@ class AppUpdateController extends GetxController {
     }
   }
 
-  Future<void> checkAppUpdate({bool showLoading = true}) async =>
-      await _checkAppUpdate(showLoading);
+  Future<void> checkAppUpdate(
+          {bool showLoading = true, bool showAlert = true}) async =>
+      await _checkAppUpdate(showLoading, showAlert);
 
   Future<void> downloadAppUpdate() async => await _downloadAppUpdate();
 

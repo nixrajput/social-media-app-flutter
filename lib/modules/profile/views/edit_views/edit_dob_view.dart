@@ -39,7 +39,7 @@ class EditDOBView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() => GetBuilder<DOBController>(
+  Widget _buildBody() => GetBuilder<EditDOBController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(

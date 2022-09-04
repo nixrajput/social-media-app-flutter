@@ -42,8 +42,8 @@ abstract class ColorValues {
 
   static const Color lightBgColor = Color.fromRGBO(236, 236, 236, 1.0);
   static const Color lightDialogColor = Color.fromRGBO(250, 250, 250, 1.0);
-  static const Color darkBgColor = Color.fromRGBO(28, 29, 49, 1.0);
-  static const Color darkDialogColor = Color.fromARGB(255, 51, 52, 70);
+  static const Color darkBgColor = Color.fromRGBO(18, 18, 30, 1.0);
+  static const Color darkDialogColor = Color.fromARGB(255, 41, 42, 56);
 
   static const primaryGrad = LinearGradient(
     colors: [primaryColor, primaryLightColor],

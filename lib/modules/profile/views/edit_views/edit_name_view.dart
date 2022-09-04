@@ -38,7 +38,7 @@ class EditNameView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() => GetBuilder<NameController>(
+  Widget _buildBody() => GetBuilder<EditNameController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(

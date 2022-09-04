@@ -18,8 +18,8 @@ import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/shimmer_loading.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
-import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class ProfileTabView extends StatelessWidget {

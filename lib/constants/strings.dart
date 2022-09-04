@@ -174,9 +174,12 @@ abstract class StringValues {
   static const accept = 'Accept';
   static const remove = 'Remove';
   static const confirm = 'Confirm';
-
+  static const reportIssue = 'Report an issue';
+  static const sendUsSuggestions = 'Send us suggestions';
+  static const privacyPolicy = 'Privacy Policy';
+  static const termsOfUse = 'Terms of Use';
   static const nameHelpText =
-      "Help people discover your account by using the name you're known by: either your full name, nickname, or business name.";
+      "Either your full name, nickname, or business name.";
   static const accountSettingsHelp =
       'See information about your account and learn about account deactivation options.';
   static const securitySettingsHelp =

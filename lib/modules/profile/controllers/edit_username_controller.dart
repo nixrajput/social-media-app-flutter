@@ -9,11 +9,11 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
-class UsernameController extends GetxController {
-  static UsernameController get find => Get.find();
+class EditUsernameController extends GetxController {
+  static EditUsernameController get find => Get.find();
 
   final _profile = ProfileController.find;
   final _auth = AuthService.find;
@@ -68,7 +68,7 @@ class UsernameController extends GetxController {
       return;
     }
 
-    AppUtils.printLog("Check Username Request...");
+    AppUtils.printLog("Check Username Request");
 
     try {
       final response = await _apiProvider.checkUsername(_auth.token, uname);
@@ -79,23 +79,28 @@ class UsernameController extends GetxController {
         AppUtils.printLog(decodedData);
         _isUnameAvailable.value = StringValues.success;
         update();
+        AppUtils.printLog("Check Username Success");
       } else {
         AppUtils.printLog(decodedData);
         _isUnameAvailable.value = StringValues.error;
         update();
+        AppUtils.printLog("Check Username Error");
       }
     } on SocketException {
+      AppUtils.printLog("Check Username Error");
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog("Check Username Error");
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
+      AppUtils.printLog("Check Username Error");
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
+      AppUtils.printLog("Check Username Error");
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
@@ -111,21 +116,22 @@ class UsernameController extends GetxController {
       return;
     }
 
-    AppUtils.printLog("Update Username Request...");
+    AppUtils.printLog("Update Username Request");
     AppUtils.showLoadingDialog();
     _isLoading.value = true;
     update();
 
     try {
-      final response = await _apiProvider.changeUsername(uname, _auth.token);
+      final response = await _apiProvider.changeUsername(_auth.token, uname);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await _profile.fetchProfileDetails();
+        await _profile.fetchProfileDetails(fetchPost: false);
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();
+        AppUtils.printLog("Update Username Success");
         RouteManagement.goToBack();
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
@@ -135,6 +141,7 @@ class UsernameController extends GetxController {
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();
+        AppUtils.printLog("Update Username Error");
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
@@ -144,19 +151,21 @@ class UsernameController extends GetxController {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
+      AppUtils.printLog("Update Username Error");
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog("Update Username Error");
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
+      AppUtils.printLog("Update Username Error");
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
@@ -164,6 +173,7 @@ class UsernameController extends GetxController {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
+      AppUtils.printLog("Update Username Error");
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
@@ -175,7 +185,7 @@ class UsernameController extends GetxController {
     if (_username.value.isEmpty) {
       return;
     }
-    if (_username.value == _profile.profileDetails.user!.uname) {
+    if (_username.value == _profile.profileDetails.user!.uname.trim()) {
       return;
     }
     if (_isUnameAvailable.value == StringValues.error) {
@@ -187,6 +197,6 @@ class UsernameController extends GetxController {
   }
 
   Future<void> checkUsername(String username) async {
-    await _checkUsername(username);
+    await _checkUsername(username.trim());
   }
 }

@@ -5,7 +5,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_radio_tile.dart';
-import 'package:social_media_app/modules/profile/controllers/profile_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/account_privacy_controller.dart';
 
 class AccountPrivacyView extends StatelessWidget {

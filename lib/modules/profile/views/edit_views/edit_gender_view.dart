@@ -37,7 +37,7 @@ class EditGenderView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() => GetBuilder<GenderController>(
+  Widget _buildBody() => GetBuilder<EditGenderController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
