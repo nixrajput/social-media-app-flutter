@@ -87,6 +87,18 @@ class ApiProvider {
     return response;
   }
 
+  Future<http.Response> validateToken(String token) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.validateTokenEndpoint}?token=$token'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
   /// Location Info ------------------------------------------------------------
 
   Future<http.Response> getLocationInfo() async {
@@ -175,26 +187,78 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> sendEmailVerificationOtp(String token) async {
-    final response = await _client.get(
-      Uri.parse(baseUrl! + AppUrls.verifyEmailEndpoint),
+  Future<http.Response> sendChangeEmailOtp(
+    String token,
+    Map<String, dynamic> body,
+  ) async {
+    final response = await _client.post(
+      Uri.parse(baseUrl! + AppUrls.changeEmailEndpoint),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
       },
+      body: jsonEncode(body),
     );
 
     return response;
   }
 
-  Future<http.Response> verifyEmail(String token, String otp) async {
-    final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.verifyEmailEndpoint),
+  Future<http.Response> changeEmail(
+    String token,
+    Map<String, dynamic> body,
+  ) async {
+    final response = await _client.put(
+      Uri.parse(baseUrl! + AppUrls.changeEmailEndpoint),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
       },
-      body: jsonEncode({'otp': otp}),
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> sendAddChangePhoneOtp(
+    String token,
+    Map<String, dynamic> body,
+  ) async {
+    final response = await _client.post(
+      Uri.parse(baseUrl! + AppUrls.addChangePhoneEndpoint),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> addChangePhone(
+    String token,
+    Map<String, dynamic> body,
+  ) async {
+    final response = await _client.put(
+      Uri.parse(baseUrl! + AppUrls.addChangePhoneEndpoint),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> verifyPassword(String token, String password) async {
+    final response = await _client.post(
+      Uri.parse(baseUrl! + AppUrls.verifyPasswordEndpoint),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode({"password": password}),
     );
 
     return response;

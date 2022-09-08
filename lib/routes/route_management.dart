@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
@@ -75,6 +76,10 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.editProfession);
   }
 
+  static void goToEditWebsiteView() {
+    Get.toNamed(AppRoutes.editWebsite);
+  }
+
   /// --------------------------------------------------------------------------
 
   /// Profile & User -----------------------------------------------------------
@@ -148,10 +153,14 @@ abstract class RouteManagement {
 
   /// --------------------------------------------------------------------------
 
-  /// Go to App Update View ----------------------------------------------------
+  /// Account Settings Pages --------------------------------------------------
 
-  static void goToAppUpdateView() {
-    Get.offAllNamed(AppRoutes.appUpdate);
+  static void goToChangeEmailSettingsView() {
+    Get.toNamed(AppRoutes.changeEmailSettings);
+  }
+
+  static void goToChangePhoneSettingsView() {
+    Get.toNamed(AppRoutes.changePhoneSettings);
   }
 
   /// --------------------------------------------------------------------------
@@ -172,6 +181,22 @@ abstract class RouteManagement {
 
   static void goToChangeAccountPrivacyView() {
     Get.toNamed(AppRoutes.accountPrivacySettings);
+  }
+
+  /// --------------------------------------------------------------------------
+
+  /// Go to App Update View ----------------------------------------------------
+
+  static void goToAppUpdateView() {
+    Get.offAllNamed(AppRoutes.appUpdate);
+  }
+
+  /// --------------------------------------------------------------------------
+
+  /// Go to Verify Password View -----------------------------------------------
+
+  static void goToVerifyPasswordView(VoidCallback cb) {
+    Get.toNamed(AppRoutes.verifyPassword, arguments: cb);
   }
 
   /// --------------------------------------------------------------------------

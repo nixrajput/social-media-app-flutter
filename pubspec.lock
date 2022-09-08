@@ -225,13 +225,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
-  country_code_picker:
-    dependency: "direct main"
-    description:
-      name: country_code_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2"
   cross_file:
     dependency: transitive
     description:
@@ -372,6 +365,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  fl_country_code_picker:
+    dependency: "direct main"
+    description:
+      name: fl_country_code_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -397,7 +397,7 @@ packages:
       name: flutter_carousel_widget
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.2.0"
   flutter_datetime_picker:
     dependency: "direct main"
     description:
@@ -460,7 +460,7 @@ packages:
       name: flutter_native_splash
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.8"
+    version: "2.2.9"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -582,7 +582,7 @@ packages:
       name: get_time_ago
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.5"
+    version: "1.1.6"
   glob:
     dependency: transitive
     description:
@@ -786,13 +786,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  modal_bottom_sheet:
-    dependency: transitive
-    description:
-      name: modal_bottom_sheet
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
   octo_image:
     dependency: transitive
     description:
@@ -1024,6 +1017,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.5"
+  scrollable_positioned_list:
+    dependency: transitive
+    description:
+      name: scrollable_positioned_list
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.3"
   share:
     dependency: "direct main"
     description:
@@ -1218,13 +1218,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
-  universal_platform:
-    dependency: transitive
-    description:
-      name: universal_platform
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0+1"
   url_launcher:
     dependency: "direct main"
     description:

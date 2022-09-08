@@ -37,6 +37,7 @@ abstract class AppRoutes {
   static const verifyAccount = _Routes.verifyAccount;
   static const sendVerifyEmailOtp = _Routes.sendVerifyEmailOtp;
   static const verifyEmail = _Routes.verifyEmail;
+  static const verifyPassword = _Routes.verifyPassword;
 
   static const editProfile = _Routes.editProfile;
   static const editName = _Routes.editName;
@@ -103,6 +104,7 @@ abstract class _Routes {
   static const verifyAccount = '/verify_account';
   static const sendVerifyEmailOtp = '/send_email_verification_otp';
   static const verifyEmail = '/verify_email';
+  static const verifyPassword = '/verify_password';
 
   static const editProfile = '/edit_profile';
   static const editName = '/edit_name';

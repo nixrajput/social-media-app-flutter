@@ -50,12 +50,12 @@ class ThemeSettingsView extends StatelessWidget {
                     topLeft: Radius.circular(Dimens.eight),
                     topRight: Radius.circular(Dimens.eight),
                   ),
-                  onTap: () => logic.setThemeMode(appThemeModes.elementAt(0)),
+                  onTap: () => logic.setThemeMode(AppThemeModes.system),
                   onChanged: (value) {
                     logic.setThemeMode(value);
                   },
-                  title: appThemeModes.elementAt(0).toString(),
-                  value: appThemeModes.elementAt(0).toString(),
+                  title: StringValues.system.toString(),
+                  value: AppThemeModes.system,
                   groupValue: logic.themeMode,
                 ),
 
@@ -66,12 +66,12 @@ class ThemeSettingsView extends StatelessWidget {
                 NxRadioTile(
                   padding: Dimens.edgeInsets8,
                   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                  onTap: () => logic.setThemeMode(appThemeModes.elementAt(1)),
+                  onTap: () => logic.setThemeMode(AppThemeModes.light),
                   onChanged: (value) {
                     logic.setThemeMode(value);
                   },
-                  title: appThemeModes.elementAt(1).toString(),
-                  value: appThemeModes.elementAt(1).toString(),
+                  title: StringValues.light.toString(),
+                  value: AppThemeModes.light,
                   groupValue: logic.themeMode,
                 ),
 
@@ -86,12 +86,12 @@ class ThemeSettingsView extends StatelessWidget {
                     bottomLeft: Radius.circular(Dimens.eight),
                     bottomRight: Radius.circular(Dimens.eight),
                   ),
-                  onTap: () => logic.setThemeMode(appThemeModes.elementAt(2)),
+                  onTap: () => logic.setThemeMode(AppThemeModes.dark),
                   onChanged: (value) {
                     logic.setThemeMode(value);
                   },
-                  title: appThemeModes.elementAt(2).toString(),
-                  value: appThemeModes.elementAt(2).toString(),
+                  title: StringValues.dark.toString(),
+                  value: AppThemeModes.dark,
                   groupValue: logic.themeMode,
                 ),
               ],

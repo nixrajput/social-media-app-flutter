@@ -59,12 +59,11 @@ class ProfileController extends GetxController {
         setPostData = PostResponse.fromJson(decodedPostData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
+        AppUtils.printLog("Loading Profile Details From Local Storage Success");
+        return true;
       } else {
         AppUtils.printLog("Profile Post Data Not Found");
       }
-
-      AppUtils.printLog("Loading Profile Details From Local Storage Success");
-      return true;
     } else {
       AppUtils.printLog("Loading Profile Details From Local Storage Error");
       AppUtils.printLog(StringValues.profileDetailsNotFound);

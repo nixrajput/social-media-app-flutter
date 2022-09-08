@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
-import 'package:social_media_app/apis/models/entities/phone.dart';
 
 part 'profile.g.dart';
 
@@ -15,7 +14,8 @@ class Profile {
     required this.uname,
     this.avatar,
     this.phone,
-    required this.phoneVerified,
+    this.countryCode,
+    this.phoneVerified,
     this.gender,
     this.dob,
     this.about,
@@ -40,7 +40,7 @@ class Profile {
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
 
   @JsonKey(name: '_id')
-  final String id;
+  String id;
 
   @JsonKey(name: 'fname')
   String fname;
@@ -58,13 +58,16 @@ class Profile {
   String uname;
 
   @JsonKey(name: 'avatar')
-  final MediaFile? avatar;
+  MediaFile? avatar;
 
   @JsonKey(name: 'phone')
-  Phone? phone;
+  String? phone;
+
+  @JsonKey(name: 'countryCode')
+  String? countryCode;
 
   @JsonKey(name: 'phoneVerified')
-  bool phoneVerified;
+  bool? phoneVerified;
 
   @JsonKey(name: 'gender')
   String? gender;
@@ -79,7 +82,7 @@ class Profile {
   String? profession;
 
   @JsonKey(name: 'location')
-  final String? location;
+  String? location;
 
   @JsonKey(name: 'website')
   String? website;
@@ -94,7 +97,7 @@ class Profile {
   int followingCount;
 
   @JsonKey(name: 'role')
-  final String role;
+  String role;
 
   @JsonKey(name: 'accountPrivacy')
   String accountPrivacy;
@@ -112,5 +115,5 @@ class Profile {
   bool isVerified;
 
   @JsonKey(name: 'createdAt')
-  final DateTime createdAt;
+  DateTime createdAt;
 }

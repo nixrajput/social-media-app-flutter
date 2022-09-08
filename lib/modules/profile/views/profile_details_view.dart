@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/data.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -231,10 +232,6 @@ class ProfileDetailsView extends StatelessWidget {
                     NxListTile(
                       padding: Dimens.edgeInsets12_8,
                       bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(Dimens.eight),
-                        bottomRight: Radius.circular(Dimens.eight),
-                      ),
                       leading: const Icon(Icons.male_outlined),
                       title: Text(
                         StringValues.gender,
@@ -259,6 +256,39 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       onTap: RouteManagement.goToEditGenderView,
+                    ),
+
+                    Dimens.divider,
+
+                    /// Website
+
+                    NxListTile(
+                      padding: Dimens.edgeInsets12_8,
+                      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(Dimens.eight),
+                        bottomRight: Radius.circular(Dimens.eight),
+                      ),
+                      leading: const Icon(Icons.link),
+                      title: Text(
+                        StringValues.website,
+                        style: AppStyles.style12Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                        ),
+                      ),
+                      subtitle: Text(
+                        logic.profileDetails.user!.website ?? 'Add website',
+                        style: AppStyles.style16Normal.copyWith(
+                          color: logic.profileDetails.user!.website == null
+                              ? Theme.of(Get.context!)
+                                  .textTheme
+                                  .subtitle1
+                                  ?.color
+                              : ColorValues.primaryColor,
+                        ),
+                      ),
+                      onTap: RouteManagement.goToEditWebsiteView,
                     ),
                     Dimens.boxHeight16,
                   ],

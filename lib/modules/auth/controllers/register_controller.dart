@@ -113,7 +113,7 @@ class RegisterController extends GetxController {
       'confirmPassword': confPassword,
     };
 
-    AppUtils.printLog("User Registration Request...");
+    AppUtils.printLog("User Registration Request");
     AppUtils.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -128,15 +128,18 @@ class RegisterController extends GetxController {
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();
+        AppUtils.printLog("User Registration Success");
         AppUtils.showSnackBar(
           StringValues.registrationSuccessful,
           StringValues.success,
         );
-        RouteManagement.goToLoginView();
+        RouteManagement.goToBack();
+        RouteManagement.goToSendVerifyAccountOtpView();
       } else {
         AppUtils.closeDialog();
         _isLoading.value = false;
         update();
+        AppUtils.printLog("User Registration Error");
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
@@ -146,19 +149,21 @@ class RegisterController extends GetxController {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
+      AppUtils.printLog("User Registration Error");
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.printLog("User Registration Error");
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
+      AppUtils.printLog("User Registration Error");
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
@@ -166,6 +171,7 @@ class RegisterController extends GetxController {
       AppUtils.closeDialog();
       _isLoading.value = false;
       update();
+      AppUtils.printLog("User Registration Error");
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);

@@ -171,6 +171,33 @@ class ProfileTabView extends StatelessWidget {
               style: AppStyles.style14Normal,
             ),
           Dimens.boxHeight8,
+          if (logic.profileDetails.user!.website != null)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.link,
+                  size: Dimens.sixTeen,
+                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                ),
+                Dimens.boxWidth8,
+                InkWell(
+                  onTap: () => AppUtils.openUrl(
+                      Uri.parse(logic.profileDetails.user!.website!)),
+                  child: Text(
+                    logic.profileDetails.user!.website!.contains('https://') ||
+                            logic.profileDetails.user!.website!
+                                .contains('http://')
+                        ? Uri.parse(logic.profileDetails.user!.website!).host
+                        : logic.profileDetails.user!.website!,
+                    style: AppStyles.style13Bold.copyWith(
+                      color: ColorValues.primaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          Dimens.boxHeight8,
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

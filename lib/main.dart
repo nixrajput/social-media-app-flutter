@@ -14,6 +14,7 @@ import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
+import 'package:social_media_app/translations/app_translations.dart';
 
 void main() async {
   try {
@@ -43,11 +44,13 @@ Future<void> initServices() async {
   await Get.find<AuthService>().getToken().then((value) async {
     Get.find<AuthService>().autoLogout();
     if (value.isNotEmpty) {
-      var hasData = await Get.find<ProfileController>().loadProfileDetails();
-      if (hasData) {
-        isLogin = true;
-      } else {
-        await Get.find<AuthService>().logout();
+      var tokenValid = await Get.find<AuthService>().validateToken(value);
+
+      if (tokenValid) {
+        var hasData = await Get.find<ProfileController>().loadProfileDetails();
+        if (hasData) {
+          isLogin = true;
+        }
       }
     }
     isLogin
@@ -72,6 +75,7 @@ class MyApp extends StatelessWidget {
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
       );
+      //AppThemeController.find.setThemeMode(AppThemeModes.light);
     } else {
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
@@ -82,6 +86,7 @@ class MyApp extends StatelessWidget {
           systemNavigationBarIconBrightness: Brightness.light,
         ),
       );
+      //AppThemeController.find.setThemeMode(AppThemeModes.dark);
     }
 
     return GetBuilder<AppThemeController>(
@@ -95,16 +100,19 @@ class MyApp extends StatelessWidget {
           darkTheme: AppThemes.darkTheme,
           getPages: AppPages.pages,
           initialRoute: isLogin ? AppRoutes.home : AppRoutes.welcome,
+          translations: AppTranslation(),
+          locale: Get.deviceLocale,
+          fallbackLocale: const Locale('en', 'US'),
         ),
       ),
     );
   }
 
-  _handleAppTheme(mode) {
-    if (mode == StringValues.dark) {
+  _handleAppTheme(AppThemeModes mode) {
+    if (mode == AppThemeModes.dark) {
       return ThemeMode.dark;
     }
-    if (mode == StringValues.light) {
+    if (mode == AppThemeModes.light) {
       return ThemeMode.light;
     }
     return ThemeMode.system;

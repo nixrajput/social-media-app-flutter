@@ -31,43 +31,36 @@ class NxAppBar extends StatelessWidget {
     return Container(
       width: Dimens.screenWidth,
       color: bgColor ?? Colors.transparent,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: padding ?? Dimens.edgeInsets8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                if (showBackBtn == true)
-                  GestureDetector(
-                    onTap: RouteManagement.goToBack,
-                    child: Icon(
-                      CupertinoIcons.arrow_left,
-                      color: backBtnColor ??
-                          Theme.of(context).textTheme.bodyText1!.color,
-                      size: Dimens.twentyFour,
+      child: Padding(
+        padding: padding ?? Dimens.edgeInsets8,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (showBackBtn == true)
+              GestureDetector(
+                onTap: RouteManagement.goToBack,
+                child: Icon(
+                  CupertinoIcons.arrow_left,
+                  color: backBtnColor ??
+                      Theme.of(context).textTheme.bodyText1!.color,
+                  size: Dimens.twentyFour,
+                ),
+              ),
+            if (showBackBtn == true) Dimens.boxWidth16,
+            if (leading != null) leading!,
+            if (leading != null && title != null) Dimens.boxWidth16,
+            if (title != null && title!.isNotEmpty)
+              Text(
+                title!,
+                style: titleStyle ??
+                    AppStyles.style20Bold.copyWith(
+                      color: Theme.of(context).textTheme.bodyText1!.color,
+                      height: 1.0,
                     ),
-                  ),
-                if (showBackBtn == true) Dimens.boxWidth16,
-                if (leading != null) leading!,
-                if (leading != null && title != null) Dimens.boxWidth16,
-                if (title != null && title!.isNotEmpty)
-                  Text(
-                    title!,
-                    style: titleStyle ??
-                        AppStyles.style20Bold.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
-                        ),
-                  )
-              ],
-            ),
-          ),
-          if (showDivider == true) Dimens.divider,
-        ],
+              )
+          ],
+        ),
       ),
     );
   }

@@ -29,8 +29,11 @@ abstract class AppUrls {
   static const String updateProfileEndpoint = '/update-profile';
   static const String checkUsernameEndpoint = '/check-username';
   static const String changeUsernameEndpoint = '/change-username';
-  static const String verifyEmailEndpoint = '/verify-email';
   static const String deleteProfileEndpoint = '/delete-profile';
+  static const String validateTokenEndpoint = '/validate-token';
+  static const String addChangePhoneEndpoint = '/add-change-phone';
+  static const String changeEmailEndpoint = '/change-email';
+  static const String verifyPasswordEndpoint = '/verify-password';
 
   static const String saveLoginInfoEndpoint = '/save-device-info';
   static const String getLoginInfoEndpoint = '/get-device-info';

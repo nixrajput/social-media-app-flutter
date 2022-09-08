@@ -37,7 +37,7 @@ class NxListTile extends StatelessWidget {
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: bgColor ?? Colors.transparent,
+          color: bgColor ?? Theme.of(context).dialogTheme.backgroundColor,
           borderRadius: borderRadius ?? BorderRadius.circular(Dimens.zero),
         ),
         child: Row(

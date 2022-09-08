@@ -28,6 +28,8 @@ abstract class StringValues {
   static const resetYourPassword = 'Reset your password';
   static const forgotYourPassword = 'Forgot your password?';
   static const verifyYourAccount = 'Verify your account';
+  static const verifyPassword = 'Verify Password';
+  static const enterDifferentEmail = 'Enter an email other than current email';
   static const enterEmailForOtp =
       'Enter your email address and an OTP will be sent to your email address if account exists';
   static const enterOtpYouGet =
@@ -55,12 +57,18 @@ abstract class StringValues {
   static const enterOldPassword = 'Enter current password';
   static const enterNewPassword = 'Enter a new password';
   static const enterOtp = 'Enter the OTP';
+  static const enterWebsiteUrl = 'Enter your website URL';
   static const enterConfirmPassword = 'Retype your password';
   static const errorOccurred = 'An error occurred, please try again.';
   static const unknownErrorOccurred = 'An unknown error occurred.';
-  static const loginSuccessful = 'Logged in successfully.';
-  static const registrationSuccessful = 'Registered successfully.';
+  static const loginSuccessful = 'Logged in successfully';
+  static const registrationSuccessful =
+      'Account registered successfully, please verify your account';
   static const logoutSuccessful = 'Logged out successfully.';
+  static const enterValidUrl = 'Enter a valid website URL';
+  static const enterPhoneNo = 'Enter a valid phone number';
+  static const enterDifferentPhoneNo =
+      'Enter a phone number other than current phone number';
   static const token = 'token';
   static const expiresAt = 'expiresAt';
   static const loginData = 'loginData';
@@ -178,6 +186,7 @@ abstract class StringValues {
   static const sendUsSuggestions = 'Send us suggestions';
   static const privacyPolicy = 'Privacy Policy';
   static const termsOfUse = 'Terms of Use';
+  static const website = 'Website';
   static const nameHelpText =
       "Either your full name, nickname, or business name.";
   static const accountSettingsHelp =
@@ -192,8 +201,10 @@ abstract class StringValues {
   static const themeSettingsHelp = "Manage application theme modes.";
   static const deactivateAccount = 'Deactivate Account';
   static const downloadArchiveOfData = 'Download an archive of your data';
-  static const changeEmail = 'Change Email address';
-  static const changePhoneNo = 'Change Phone number';
+  static const changeEmailAddress = 'Change Email Address';
+  static const changeEmail = 'Change Email';
+  static const changePhoneNo = 'Change Phone Number';
+  static const changePhone = 'Change Phone';
   static const verification = 'Verification';
   static const applyForSelfVerify = 'Apply for self verification';
   static const applyForBlueTick = 'Apply for blue tick';
@@ -203,6 +214,7 @@ abstract class StringValues {
       'Help protect your account from unauthorised access by requiring a second authentication method in addition to your password.';
   static const moreDetails = 'More Details';
   static const websiteUrl = 'https://nixlab.co.in';
+  static const portfolioUrl = 'https://nixrajput.nixlab.co.in';
   static const appDownloadUrl =
       'https://github.com/nixrajput/social-media-app-flutter/releases';
   static const appGithubUrl =

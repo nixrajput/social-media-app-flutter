@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/assets.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -107,16 +108,41 @@ class AboutSettingsView extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(Dimens.hundred),
-                child: NxAssetImage(
-                  imgAsset: AssetValues.makeInIndia,
-                  fit: BoxFit.cover,
-                  width: Dimens.hundred,
-                  height: Dimens.hundred,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Made with ❤️ by',
+                  style: AppStyles.style14Normal.copyWith(
+                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                  ),
                 ),
-              ),
+                Dimens.boxHeight4,
+                InkWell(
+                  onTap: () =>
+                      AppUtils.openUrl(Uri.parse(StringValues.portfolioUrl)),
+                  child: Text(
+                    'Nikhil Rajput',
+                    style: AppStyles.style16Bold.copyWith(
+                      color: ColorValues.primaryColor,
+                    ),
+                  ),
+                ),
+                Dimens.boxHeight16,
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(Dimens.hundred),
+                    child: NxAssetImage(
+                      imgAsset: AssetValues.makeInIndia,
+                      fit: BoxFit.cover,
+                      width: Dimens.sixtyFour,
+                      height: Dimens.sixtyFour,
+                    ),
+                  ),
+                ),
+              ],
             ),
             Dimens.boxHeight16,
           ],

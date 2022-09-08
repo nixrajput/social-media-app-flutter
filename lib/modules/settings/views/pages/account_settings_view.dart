@@ -6,6 +6,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
 class AccountSettingsView extends StatelessWidget {
   const AccountSettingsView({Key? key}) : super(key: key);
@@ -58,8 +59,11 @@ class AccountSettingsView extends StatelessWidget {
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
                 title: Text(
-                  StringValues.changeEmail.toTitleCase(),
+                  StringValues.changeEmailAddress.toTitleCase(),
                   style: AppStyles.style14Bold,
+                ),
+                onTap: () => RouteManagement.goToVerifyPasswordView(
+                  RouteManagement.goToChangeEmailSettingsView,
                 ),
               ),
 
@@ -78,6 +82,9 @@ class AccountSettingsView extends StatelessWidget {
                 title: Text(
                   StringValues.changePhoneNo.toTitleCase(),
                   style: AppStyles.style14Bold,
+                ),
+                onTap: () => RouteManagement.goToVerifyPasswordView(
+                  RouteManagement.goToChangePhoneSettingsView,
                 ),
               ),
 

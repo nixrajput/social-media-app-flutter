@@ -3,7 +3,7 @@ description: A social media app using Flutter, Dart, GetX, and REST API that all
 
 publish_to: "none"
 
-version: 1.0.1+05
+version: 1.0.1+06
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -23,12 +23,12 @@ dependencies:
   image_cropper: ^3.0.0
   cached_network_image: ^3.2.2
   photo_view: ^0.14.0
-  flutter_carousel_widget: ^1.1.0
+  flutter_carousel_widget: ^1.2.0
 
   connectivity: ^3.0.6
   http: ^0.13.5
   intl: ^0.17.0
-  get_time_ago: ^1.1.5
+  get_time_ago: ^1.1.6
   cloudinary: ^1.0.0
   r_upgrade: ^0.3.8+2
 
@@ -49,7 +49,7 @@ dependencies:
   permission_handler: ^10.0.0
   pattern_formatter: ^2.0.0
   flutter_datetime_picker: ^1.5.1
-  country_code_picker: ^2.0.2
+  fl_country_code_picker: ^0.0.3
 
   get: ^4.6.5
   get_storage: ^2.0.3
@@ -63,7 +63,7 @@ dev_dependencies:
 
   flutter_lints: ^2.0.1
   flutter_launcher_icons: ^0.10.0
-  flutter_native_splash: ^2.2.8
+  flutter_native_splash: ^2.2.9
 
   build_runner: ^2.2.0
   json_serializable: ^6.3.1

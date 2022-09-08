@@ -37,7 +37,7 @@ abstract class ColorValues {
 
   static const Color lightBodyTextColor = Color(0xFF323232);
   static const Color lightSubtitleTextColor = Color(0xFF737373);
-  static const Color darkBodyTextColor = Color(0xFFE8E8E8);
+  static const Color darkBodyTextColor = Color(0xFFDCDCDC);
   static const Color darkSubtitleTextColor = Color(0xFFA0A0A0);
 
   static const Color lightBgColor = Color.fromRGBO(236, 236, 236, 1.0);

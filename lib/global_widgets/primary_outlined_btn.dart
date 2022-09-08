@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 
@@ -55,7 +54,7 @@ class NxOutlinedButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: borderColor ?? ColorValues.primaryColor,
+            color: borderColor ?? Theme.of(context).textTheme.bodyText1!.color!,
             width: borderWidth ?? Dimens.one * 1.5,
             style: borderStyle ?? BorderStyle.solid,
           ),
@@ -73,7 +72,8 @@ class NxOutlinedButton extends StatelessWidget {
               label,
               style: labelStyle ??
                   AppStyles.style16Bold.copyWith(
-                    color: labelColor ?? ColorValues.primaryColor,
+                    color: labelColor ??
+                        Theme.of(context).textTheme.bodyText1!.color,
                     fontSize: fontSize ?? Dimens.sixTeen,
                   ),
             ),

@@ -16,10 +16,9 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       avatar: json['avatar'] == null
           ? null
           : MediaFile.fromJson(json['avatar'] as Map<String, dynamic>),
-      phone: json['phone'] == null
-          ? null
-          : Phone.fromJson(json['phone'] as Map<String, dynamic>),
-      phoneVerified: json['phoneVerified'] as bool,
+      phone: json['phone'] as String?,
+      countryCode: json['countryCode'] as String?,
+      phoneVerified: json['phoneVerified'] as bool?,
       gender: json['gender'] as String?,
       dob: json['dob'] as String?,
       about: json['about'] as String?,
@@ -47,6 +46,7 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'uname': instance.uname,
       'avatar': instance.avatar,
       'phone': instance.phone,
+      'countryCode': instance.countryCode,
       'phoneVerified': instance.phoneVerified,
       'gender': instance.gender,
       'dob': instance.dob,

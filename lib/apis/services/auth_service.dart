@@ -53,6 +53,41 @@ class AuthService extends GetxService {
     return token;
   }
 
+  Future<bool> _validateToken(String token) async {
+    var isValid = true;
+    try {
+      final response = await _apiProvider.validateToken(token);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      AppUtils.printLog(decodedData);
+
+      if (response.statusCode == 200) {
+        AppUtils.printLog(decodedData[StringValues.message]);
+      } else {
+        isValid = false;
+        AppUtils.printLog(decodedData[StringValues.message]);
+        await AppUtils.clearLoginDataFromLocalStorage();
+      }
+    } on SocketException {
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+
+    return isValid;
+  }
+
   Future<void> _logout(bool showLoading) async {
     AppUtils.printLog("Logout Request");
     if (showLoading) AppUtils.showLoadingDialog();
@@ -121,13 +156,12 @@ class AuthService extends GetxService {
       if (response.statusCode == 200) {
         locationInfo = LocationInfo.fromJson(decodedData);
       } else {
-        AppUtils.printLog(StringValues.message);
+        AppUtils.printLog(decodedData[StringValues.message]);
       }
     } on SocketException {
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
@@ -176,7 +210,6 @@ class AuthService extends GetxService {
     } on TimeoutException {
       AppUtils.printLog("Save LoginInfo Error");
       AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       AppUtils.printLog("Save LoginInfo Error");
@@ -217,6 +250,8 @@ class AuthService extends GetxService {
 
   Future<void> logout({showLoading = false}) async =>
       await _logout(showLoading);
+
+  Future<bool> validateToken(String token) async => await _validateToken(token);
 
   @override
   void onInit() {

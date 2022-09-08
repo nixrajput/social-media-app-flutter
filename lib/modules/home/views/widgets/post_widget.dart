@@ -16,6 +16,7 @@ import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
+import 'package:social_media_app/helpers/get_time_ago_msg.dart';
 import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -90,25 +91,11 @@ class _PostWidgetState extends State<PostWidget> {
                     ),
                   ],
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      GetTimeAgo.parse(widget.post.createdAt),
-                      style: AppStyles.style12Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
-                    ),
-                    Dimens.boxWidth8,
-                    NxIconButton(
-                      icon: CupertinoIcons.ellipsis_vertical,
-                      iconSize: Dimens.twenty,
-                      iconColor: Theme.of(context).textTheme.bodyText1!.color,
-                      onTap: _showHeaderOptionBottomSheet,
-                    ),
-                  ],
+                NxIconButton(
+                  icon: CupertinoIcons.ellipsis_vertical,
+                  iconSize: Dimens.twenty,
+                  iconColor: Theme.of(context).textTheme.bodyText1!.color,
+                  onTap: _showHeaderOptionBottomSheet,
                 ),
               ],
             ),
@@ -248,73 +235,80 @@ class _PostWidgetState extends State<PostWidget> {
               padding: Dimens.edgeInsets0_4,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  GestureDetector(
-                    onTap: () => RouteManagement.goToPostPostLikedUsersView(
-                        widget.post.id!),
-                    child: Padding(
-                      padding: Dimens.edgeInsets4,
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: '${widget.post.likesCount}'
-                                  .toCountingFormat(),
-                              style: AppStyles.style14Bold.copyWith(
-                                color: Theme.of(Get.context!)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color,
-                              ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () => RouteManagement.goToPostPostLikedUsersView(
+                            widget.post.id!),
+                        child: Padding(
+                          padding: Dimens.edgeInsets4,
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '${widget.post.likesCount}'
+                                      .toCountingFormat(),
+                                  style: AppStyles.style14Bold.copyWith(
+                                    color: Theme.of(Get.context!)
+                                        .textTheme
+                                        .bodyText1!
+                                        .color,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '  Likes',
+                                  style: AppStyles.style14Bold.copyWith(
+                                    color: Theme.of(Get.context!)
+                                        .textTheme
+                                        .subtitle1!
+                                        .color,
+                                  ),
+                                ),
+                              ],
                             ),
-                            TextSpan(
-                              text: '  Likes',
-                              style: AppStyles.style14Bold.copyWith(
-                                color: Theme.of(Get.context!)
-                                    .textTheme
-                                    .subtitle1!
-                                    .color,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Dimens.boxWidth16,
-                  GestureDetector(
-                    onTap: () =>
-                        RouteManagement.goToPostCommentsView(widget.post.id!),
-                    child: Padding(
-                      padding: Dimens.edgeInsets4,
-                      child: RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: '${widget.post.commentsCount}'
-                                  .toCountingFormat(),
-                              style: AppStyles.style14Bold.copyWith(
-                                color: Theme.of(Get.context!)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color,
-                              ),
+                      Dimens.boxWidth16,
+                      GestureDetector(
+                        onTap: () => RouteManagement.goToPostCommentsView(
+                            widget.post.id!),
+                        child: Padding(
+                          padding: Dimens.edgeInsets4,
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: '${widget.post.commentsCount}'
+                                      .toCountingFormat(),
+                                  style: AppStyles.style14Bold.copyWith(
+                                    color: Theme.of(Get.context!)
+                                        .textTheme
+                                        .bodyText1!
+                                        .color,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '  Comments',
+                                  style: AppStyles.style14Bold.copyWith(
+                                    color: Theme.of(Get.context!)
+                                        .textTheme
+                                        .subtitle1!
+                                        .color,
+                                  ),
+                                ),
+                              ],
                             ),
-                            TextSpan(
-                              text: '  Comments',
-                              style: AppStyles.style14Bold.copyWith(
-                                color: Theme.of(Get.context!)
-                                    .textTheme
-                                    .subtitle1!
-                                    .color,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
+                  _buildPostTime(),
                 ],
               ),
             ),
@@ -367,6 +361,19 @@ class _PostWidgetState extends State<PostWidget> {
           ],
         ),
       );
+
+  Widget _buildPostTime() {
+    GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
+    return Text(
+      GetTimeAgo.parse(
+        widget.post.createdAt,
+        pattern: 'dd MMM yyyy hh:mm a',
+      ),
+      style: AppStyles.style12Normal.copyWith(
+        color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+      ),
+    );
+  }
 
   _showHeaderOptionBottomSheet() => AppUtils.showBottomSheet(
         [

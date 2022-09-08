@@ -46,8 +46,15 @@ class EditGenderView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  /// Male
+
                   NxRadioTile(
-                    padding: Dimens.edgeInsets16_0,
+                    padding: Dimens.edgeInsets8,
+                    bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(Dimens.eight),
+                      topRight: Radius.circular(Dimens.eight),
+                    ),
                     onTap: () => logic.setGender = StringValues.male,
                     onChanged: (value) {
                       logic.setGender = value.toString();
@@ -56,8 +63,14 @@ class EditGenderView extends StatelessWidget {
                     value: StringValues.male,
                     groupValue: logic.gender,
                   ),
+
+                  Dimens.divider,
+
+                  /// Female
+
                   NxRadioTile(
-                    padding: Dimens.edgeInsets16_0,
+                    padding: Dimens.edgeInsets8,
+                    bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                     onTap: () => logic.setGender = StringValues.female,
                     onChanged: (value) {
                       logic.setGender = value.toString();
@@ -66,8 +79,18 @@ class EditGenderView extends StatelessWidget {
                     value: StringValues.female,
                     groupValue: logic.gender,
                   ),
+
+                  Dimens.divider,
+
+                  /// Others
+
                   NxRadioTile(
-                    padding: Dimens.edgeInsets16_0,
+                    padding: Dimens.edgeInsets8,
+                    bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(Dimens.eight),
+                      bottomRight: Radius.circular(Dimens.eight),
+                    ),
                     onTap: () => logic.setGender = StringValues.others,
                     onChanged: (value) {
                       logic.setGender = value.toString();

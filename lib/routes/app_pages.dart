@@ -31,18 +31,24 @@ import 'package:social_media_app/modules/profile/bindings/edit_name_binding.dart
 import 'package:social_media_app/modules/profile/bindings/edit_profession_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/edit_profile_picture_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/edit_username_binding.dart';
+import 'package:social_media_app/modules/profile/bindings/edit_website_binding.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_about_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_dob_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_gender_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_name_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_profession_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_username_view.dart';
+import 'package:social_media_app/modules/profile/views/edit_views/edit_website_view.dart';
 import 'package:social_media_app/modules/profile/views/profile_details_view.dart';
+import 'package:social_media_app/modules/settings/bindings/change_email_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/change_password_binding.dart';
+import 'package:social_media_app/modules/settings/bindings/change_phone_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/login_device_info_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
 import 'package:social_media_app/modules/settings/views/pages/about_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/account/change_email_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/account/change_phone_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/help_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy/account_privacy_view.dart';
@@ -54,6 +60,8 @@ import 'package:social_media_app/modules/settings/views/pages/theme_settings_vie
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/user/user_details_binding.dart';
 import 'package:social_media_app/modules/user/user_profile_view.dart';
+import 'package:social_media_app/modules/verify_password/verify_password_bindings.dart';
+import 'package:social_media_app/modules/verify_password/verify_password_view.dart';
 import 'package:social_media_app/modules/welcome/welcome_view.dart';
 
 part 'app_routes.dart';
@@ -179,6 +187,14 @@ abstract class AppPages {
       name: _Routes.editProfession,
       page: EditProfessionView.new,
       binding: EditProfessionBinding(),
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.editWebsite,
+      page: EditWebsiteView.new,
+      binding: EditWebsiteBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
@@ -310,6 +326,26 @@ abstract class AppPages {
 
     /// ------------------------------------------------------------------------
 
+    /// ACCOUNT SETTINGS -------------------------------------------------------
+
+    GetPage(
+      name: _Routes.changeEmailSettings,
+      page: ChangeEmailView.new,
+      transitionDuration: transitionDuration,
+      binding: ChangeEmailBinding(),
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.changePhoneSettings,
+      page: ChangePhoneView.new,
+      transitionDuration: transitionDuration,
+      binding: ChangePhoneBinding(),
+      transition: defaultTransition,
+    ),
+
+    /// ------------------------------------------------------------------------
+
     ///  SECURITY SETTINGS -----------------------------------------------------
 
     GetPage(
@@ -343,9 +379,22 @@ abstract class AppPages {
     /// ------------------------------------------------------------------------
 
     /// App Update -------------------------------------------------------------
+
     GetPage(
       name: _Routes.appUpdate,
       page: AppUpdateView.new,
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    /// ------------------------------------------------------------------------
+
+    /// App Update -------------------------------------------------------------
+
+    GetPage(
+      name: _Routes.verifyPassword,
+      page: VerifyPasswordView.new,
+      binding: VerifyPasswordBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
