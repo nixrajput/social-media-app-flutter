@@ -18,23 +18,23 @@ Created with [previewed.app](https://previewed.app).
 
 ### Welcome
 
-![Welcome Screen]('https://githubusercontent.com/nixrajput/social-media-app-flutter/master/screenshots/image1.png')
+![Welcome Screen](screenshots/image1.png)
 
 ### Login
 
-![Login Screen]('https://githubusercontent.com/nixrajput/social-media-app-flutter/master/screenshots/image2.png')
+![Login Screen](screenshots/image2.png)
 
 ### About
 
-![About Screen]('https://githubusercontent.com/nixrajput/social-media-app-flutter/master/screenshots/image3.png')
+![About Screen](screenshots/image3.png)
 
 ### Home
 
-![Home Screen]('https://githubusercontent.com/nixrajput/social-media-app-flutter/master/screenshots/image4.png')
+![Home Screen](screenshots/image4.png)
 
 ### Profile
 
-![Profile Screen]('https://githubusercontent.com/nixrajput/social-media-app-flutter/master/screenshots/image5.png')
+![Profile Screen](screenshots/image5.png)
 
 ## Download
 
