@@ -10,11 +10,13 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class NotificationController extends GetxController {
   static NotificationController get find => Get.find();
 
   final _auth = AuthService.find;
+  final profile = ProfileController.find;
   final _apiProvider = ApiProvider(http.Client());
 
   final _isLoadingNotification = false.obs;
@@ -342,7 +344,7 @@ class NotificationController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        AppUtils.printLog(decodedData);
+        await profile.fetchProfileDetails(fetchPost: false);
         AppUtils.printLog("Accept FollowRequest Success");
       } else {
         AppUtils.printLog("Accept FollowRequest Error");

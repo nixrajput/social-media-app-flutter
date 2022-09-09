@@ -405,7 +405,7 @@ class UserProfileView extends StatelessWidget {
                   Center(
                     child: NxTextButton(
                       label: 'Load more posts',
-                      onTap: logic.loadMore,
+                      onTap: logic.loadMoreUserPosts,
                       labelStyle: AppStyles.style14Bold.copyWith(
                         color: ColorValues.primaryLightColor,
                       ),

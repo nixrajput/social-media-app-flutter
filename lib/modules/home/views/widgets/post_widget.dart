@@ -23,20 +23,13 @@ import 'package:social_media_app/modules/home/controllers/profile_controller.dar
 import 'package:social_media_app/modules/home/views/widgets/post_view_widget.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
-class PostWidget extends StatefulWidget {
+class PostWidget extends StatelessWidget {
   const PostWidget({
     Key? key,
     required this.post,
   }) : super(key: key);
 
   final Post post;
-
-  @override
-  State<PostWidget> createState() => _PostWidgetState();
-}
-
-class _PostWidgetState extends State<PostWidget> {
-  int _currentItem = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +65,10 @@ class _PostWidgetState extends State<PostWidget> {
                   children: [
                     GestureDetector(
                       onTap: () => RouteManagement.goToUserProfileView(
-                        widget.post.owner.id,
+                        post.owner.id,
                       ),
                       child: AvatarWidget(
-                        avatar: widget.post.owner.avatar,
+                        avatar: post.owner.avatar,
                         size: Dimens.twenty,
                       ),
                     ),
@@ -94,7 +87,7 @@ class _PostWidgetState extends State<PostWidget> {
                 NxIconButton(
                   icon: CupertinoIcons.ellipsis_vertical,
                   iconSize: Dimens.twenty,
-                  iconColor: Theme.of(context).textTheme.bodyText1!.color,
+                  iconColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   onTap: _showHeaderOptionBottomSheet,
                 ),
               ],
@@ -105,7 +98,7 @@ class _PostWidgetState extends State<PostWidget> {
 
   Widget _buildFullName() => GestureDetector(
         onTap: () => RouteManagement.goToUserProfileView(
-          widget.post.owner.id,
+          post.owner.id,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -113,15 +106,15 @@ class _PostWidgetState extends State<PostWidget> {
           children: [
             RichText(
               text: TextSpan(
-                text: '${widget.post.owner.fname} ${widget.post.owner.lname}',
+                text: '${post.owner.fname} ${post.owner.lname}',
                 style: AppStyles.style14Bold.copyWith(
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
               ),
               maxLines: 1,
             ),
-            if (widget.post.owner.isVerified) Dimens.boxWidth4,
-            if (widget.post.owner.isVerified)
+            if (post.owner.isVerified) Dimens.boxWidth4,
+            if (post.owner.isVerified)
               Icon(
                 CupertinoIcons.checkmark_seal_fill,
                 color: Theme.of(Get.context!).brightness == Brightness.dark
@@ -134,9 +127,9 @@ class _PostWidgetState extends State<PostWidget> {
       );
 
   Widget _buildUsername() => GestureDetector(
-        onTap: () => RouteManagement.goToUserProfileView(widget.post.owner.id),
+        onTap: () => RouteManagement.goToUserProfileView(post.owner.id),
         child: Text(
-          "@${widget.post.owner.uname}",
+          "@${post.owner.uname}",
           style: TextStyle(
             color: Theme.of(Get.context!).textTheme.subtitle1!.color,
           ),
@@ -144,77 +137,79 @@ class _PostWidgetState extends State<PostWidget> {
       );
 
   Widget _buildPostBody() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GestureDetector(
-          onDoubleTap: () => PostController.find.toggleLikePost(widget.post),
-          child: FlutterCarousel(
-            items: widget.post.mediaFiles!.map(
-              (img) {
-                if (img.mediaType == "video") {
-                  return Hero(
-                    tag: widget.post.id!,
-                    child: NxVideoPlayerWidget(
-                      url: img.url!,
-                      isSmallPlayer: true,
-                      onTap: () =>
-                          Get.to(() => PostViewWidget(post: widget.post)),
+    var currentItem = 0;
+    return StatefulBuilder(builder: (context, setInnerState) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onDoubleTap: () => PostController.find.toggleLikePost(post),
+            child: FlutterCarousel(
+              items: post.mediaFiles!.map(
+                (media) {
+                  if (media.mediaType == "video") {
+                    return Hero(
+                      tag: post.id!,
+                      child: NxVideoPlayerWidget(
+                        url: media.url!,
+                        isSmallPlayer: true,
+                        showControls: true,
+                        onTap: () => Get.to(() => PostViewWidget(post: post)),
+                      ),
+                    );
+                  }
+                  return GestureDetector(
+                    onTap: () => Get.to(() => PostViewWidget(post: post)),
+                    child: Hero(
+                      tag: post.id!,
+                      child: NxNetworkImage(
+                        imageUrl: media.url!,
+                        imageFit: BoxFit.cover,
+                        width: Dimens.screenWidth,
+                      ),
                     ),
                   );
-                }
-                return GestureDetector(
-                  onTap: () => Get.to(() => PostViewWidget(post: widget.post)),
-                  child: Hero(
-                    tag: widget.post.id!,
-                    child: NxNetworkImage(
-                      imageUrl: img.url!,
-                      imageFit: BoxFit.cover,
-                      width: Dimens.screenWidth,
+                },
+              ).toList(),
+              options: CarouselOptions(
+                  height: Dimens.screenWidth * 0.75,
+                  aspectRatio: 1 / 1,
+                  viewportFraction: 1.0,
+                  showIndicator: false,
+                  onPageChanged: (int index, CarouselPageChangedReason reason) {
+                    setInnerState(() {
+                      currentItem = index;
+                    });
+                  }),
+            ),
+          ),
+          if (post.mediaFiles!.length > 1) Dimens.boxHeight8,
+          if (post.mediaFiles!.length > 1)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: post.mediaFiles!.asMap().entries.map(
+                (entry) {
+                  return Container(
+                    width: Dimens.eight,
+                    height: Dimens.eight,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: Dimens.two,
                     ),
-                  ),
-                );
-              },
-            ).toList(),
-            options: CarouselOptions(
-                height: Dimens.screenWidth * 0.75,
-                aspectRatio: 1 / 1,
-                viewportFraction: 1.0,
-                showIndicator: false,
-                onPageChanged: (int index, CarouselPageChangedReason reason) {
-                  AppUtils.printLog(reason);
-                  setState(() {
-                    _currentItem = index;
-                  });
-                }),
-          ),
-        ),
-        if (widget.post.mediaFiles!.length > 1) Dimens.boxHeight8,
-        if (widget.post.mediaFiles!.length > 1)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: widget.post.mediaFiles!.asMap().entries.map(
-              (entry) {
-                return Container(
-                  width: Dimens.eight,
-                  height: Dimens.eight,
-                  margin: EdgeInsets.symmetric(
-                    horizontal: Dimens.two,
-                  ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: (Theme.of(context).brightness == Brightness.dark
-                            ? ColorValues.whiteColor
-                            : ColorValues.blackColor)
-                        .withOpacity(_currentItem == entry.key ? 0.9 : 0.4),
-                  ),
-                );
-              },
-            ).toList(),
-          ),
-      ],
-    );
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: (Theme.of(context).brightness == Brightness.dark
+                              ? ColorValues.whiteColor
+                              : ColorValues.blackColor)
+                          .withOpacity(currentItem == entry.key ? 0.9 : 0.4),
+                    ),
+                  );
+                },
+              ).toList(),
+            ),
+        ],
+      );
+    });
   }
 
   Widget _buildPostFooter() => Padding(
@@ -224,11 +219,11 @@ class _PostWidgetState extends State<PostWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (widget.post.caption != null && widget.post.caption!.isNotEmpty)
+            if (post.caption != null && post.caption!.isNotEmpty)
               Dimens.boxHeight4,
-            if (widget.post.caption != null && widget.post.caption!.isNotEmpty)
+            if (post.caption != null && post.caption!.isNotEmpty)
               NxExpandableText(
-                text: widget.post.caption!,
+                text: post.caption!,
               ),
             Dimens.dividerWithHeight,
             Padding(
@@ -243,15 +238,14 @@ class _PostWidgetState extends State<PostWidget> {
                     children: [
                       GestureDetector(
                         onTap: () => RouteManagement.goToPostPostLikedUsersView(
-                            widget.post.id!),
+                            post.id!),
                         child: Padding(
                           padding: Dimens.edgeInsets4,
                           child: RichText(
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: '${widget.post.likesCount}'
-                                      .toCountingFormat(),
+                                  text: '${post.likesCount}'.toCountingFormat(),
                                   style: AppStyles.style14Bold.copyWith(
                                     color: Theme.of(Get.context!)
                                         .textTheme
@@ -275,15 +269,15 @@ class _PostWidgetState extends State<PostWidget> {
                       ),
                       Dimens.boxWidth16,
                       GestureDetector(
-                        onTap: () => RouteManagement.goToPostCommentsView(
-                            widget.post.id!),
+                        onTap: () =>
+                            RouteManagement.goToPostCommentsView(post.id!),
                         child: Padding(
                           padding: Dimens.edgeInsets4,
                           child: RichText(
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: '${widget.post.commentsCount}'
+                                  text: '${post.commentsCount}'
                                       .toCountingFormat(),
                                   style: AppStyles.style14Bold.copyWith(
                                     color: Theme.of(Get.context!)
@@ -318,24 +312,21 @@ class _PostWidgetState extends State<PostWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                  onTap: () => PostController.find.toggleLikePost(widget.post),
+                  onTap: () => PostController.find.toggleLikePost(post),
                   child: CircleAvatar(
                     backgroundColor:
                         Theme.of(Get.context!).scaffoldBackgroundColor,
                     radius: Dimens.twenty,
                     child: Icon(
-                      widget.post.isLiked
-                          ? Icons.favorite
-                          : Icons.favorite_outline,
-                      color: widget.post.isLiked
+                      post.isLiked ? Icons.favorite : Icons.favorite_outline,
+                      color: post.isLiked
                           ? ColorValues.errorColor
                           : ColorValues.grayColor,
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () =>
-                      RouteManagement.goToPostCommentsView(widget.post.id!),
+                  onTap: () => RouteManagement.goToPostCommentsView(post.id!),
                   child: CircleAvatar(
                     backgroundColor:
                         Theme.of(Get.context!).scaffoldBackgroundColor,
@@ -366,7 +357,7 @@ class _PostWidgetState extends State<PostWidget> {
     GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
     return Text(
       GetTimeAgo.parse(
-        widget.post.createdAt,
+        post.createdAt,
         pattern: 'dd MMM yyyy hh:mm a',
       ),
       style: AppStyles.style12Normal.copyWith(
@@ -377,19 +368,7 @@ class _PostWidgetState extends State<PostWidget> {
 
   _showHeaderOptionBottomSheet() => AppUtils.showBottomSheet(
         [
-          // ListTile(
-          //   onTap: () {
-          //     AppUtils.closeBottomSheet();
-          //     RouteManagement.goToPostDetailsView(post.id, post);
-          //   },
-          //   leading: const Icon(CupertinoIcons.eye),
-          //   title: Text(
-          //     StringValues.viewPost,
-          //     style: AppStyles.style16Bold,
-          //   ),
-          // ),
-          if (widget.post.owner.id ==
-              ProfileController.find.profileDetails.user!.id)
+          if (post.owner.id == ProfileController.find.profileDetails.user!.id)
             ListTile(
               onTap: () {
                 AppUtils.closeBottomSheet();
@@ -451,8 +430,7 @@ class _PostWidgetState extends State<PostWidget> {
                   ),
                   onTap: () async {
                     AppUtils.closeDialog();
-                    await Get.find<PostController>()
-                        .deletePost(widget.post.id!);
+                    await Get.find<PostController>().deletePost(post.id!);
                   },
                   padding: Dimens.edgeInsets8,
                 ),

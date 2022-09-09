@@ -160,103 +160,7 @@ https://www.contributor-covenant.org/translations.
 
 ```js
 .
-├── src
-│   ├── config
-│   │   ├── config.env
-│   │
-│   ├── constants
-│   │   ├── responseMessages.js
-|   |
-│   ├── helpers
-│   │   ├── catchAsyncError.js
-│   │   ├── errorHandler.js
-│   │
-│   ├── middlewares
-│   │   ├── auth.js
-│   │   ├── error.js
-│   │   ├── multer.js
-|   |
-│   ├── models
-|   |   ├── index.js
-│   │   ├── comment
-│   │   │   ├── comment.js
-│   │   │
-│   │   ├── device-info
-│   │   │   ├── deviceInfo.js
-│   │   │
-│   │   ├── post
-│   │   │   ├── post.js
-│   │   │
-│   │   ├── user
-│   │   │   ├── user.js
-│   │   │
-│   │   ├── notification
-│   │   │   ├── notification.js
-│   │   │
-│   │   ├── otp
-│   │   │   ├── otp.js
-│   │   │
-│   │   ├── hashtag
-│   │   │   ├── hashtag.js
-│   │   │
-│   │   ├── report
-│   │   │   ├── report.js
-│   │ 
-│   ├── modules
-│   │   ├── auth
-│   │   │   ├── index.js
-│   │   │   ├── controllers
-│   │   │   │   ├── index.js
-│   │   │   │   ├── forgot-password
-│   │   │   │   │   ├── forgotPassword.js
-│   │   │   │   │ 
-│   │   │   │   ├── login
-│   │   │   │   │   ├── login.js
-│   │   │   │   │
-│   │   │   │   ├── logout
-│   │   │   │   │   ├── logout.js
-│   │   │   │   │
-│   │   │   │   ├── register
-│   │   │   │   │   ├── register.js
-│   │   │   │   │
-│   │   │   │   ├── reset-password
-│   │   │   │   │   ├── resetPassword.js
-│   │   │   │   │
-│   │   │   │   ├── verify-account
-│   │   │   │   │   ├── verifyAccount.js
-│   │   │   │   │   ├── verifyAccountOtp.js
-│   │   │   │   │
-│   │   │   │   
-│   │   │   ├── routes
-│   │   │   │   ├── index.js
-│   │   │   
-│   │   │   
-│   │   ├── admin
-│   │   │   ├── index.js
-│   │   │   ├── controllers
-│   │   │   │   ├── index.js
-│   │   │   │   ├── user
-│   │   │   │   │   ├── deleteUser.js
-│   │   │   │   │   ├── getAllUsers.js
-│   │   │   │   │   ├── getUserDetails.js
-│   │   │   │   │   ├── updateUser.js
-│   │   │   │   │   ├── updateUserRole.js
-│   │   │   │   │   ├── searchUser.js
-│   │   │   │   │   ├── updateAccountStatus.js
-│   │   │   │   │   ├── updateVerificationStatus.js
-│   │   │   │   │
-│   │   │   │   ├── post
-│   │   │   │   │   ├── deletePost.js
-│   │   │   │   │   ├── getAllPosts.js
-│   │   │   │   │   ├── getPostDetails.js
-│   │   │   │   │   ├── updatePost.js
-│   │   │   │   │   ├── updatePostStatus.js
-│   │   │   │   │   ├── searchPost.js
-│   │   │   │   
-│   │   │   ├── routes
-│   │   │   │   ├── index.js
-│   │   │
-│   │   ├── user
+├── lib
 |
 ├── .gitignore
 |
@@ -266,7 +170,7 @@ https://www.contributor-covenant.org/translations.
 |
 ├── LICENSE.md
 |
-├── package.json
+├── pubspec.yaml
 |
 ├── package-lock.yaml
 |

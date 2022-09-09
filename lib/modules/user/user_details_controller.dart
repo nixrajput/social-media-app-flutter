@@ -18,6 +18,7 @@ class UserDetailsController extends GetxController {
   static UserDetailsController get find => Get.find();
 
   final _auth = AuthService.find;
+  final profile = ProfileController.find;
   final _apiProvider = ApiProvider(http.Client());
 
   final _isLoading = false.obs;
@@ -76,10 +77,10 @@ class UserDetailsController extends GetxController {
           if (_userDetails.value.user!.followingStatus == "following" ||
               _userDetails.value.user!.id ==
                   ProfileController.find.profileDetails.user!.id) {
-            await _fetchPosts();
+            await _fetchUserPosts();
           }
         } else {
-          await _fetchPosts();
+          await _fetchUserPosts();
         }
       } else {
         _isLoading.value = false;
@@ -115,7 +116,7 @@ class UserDetailsController extends GetxController {
     }
   }
 
-  Future<void> _fetchPosts({int? page}) async {
+  Future<void> _fetchUserPosts({int? page}) async {
     AppUtils.printLog("Fetching Profile Posts Request");
     _isPostLoading.value = true;
     update();
@@ -175,7 +176,7 @@ class UserDetailsController extends GetxController {
     }
   }
 
-  Future<void> _loadMore({int? page}) async {
+  Future<void> _loadMoreUserPosts({int? page}) async {
     AppUtils.printLog("Fetching More Profile Posts Request");
     _isMorePostLoading.value = true;
     update();
@@ -274,6 +275,7 @@ class UserDetailsController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
+        await profile.fetchProfileDetails(fetchPost: false);
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
@@ -365,10 +367,10 @@ class UserDetailsController extends GetxController {
 
   Future<void> fetchUserDetails() async => await _fetchUserDetails();
 
-  Future<void> fetchPosts() async => await _fetchPosts();
+  Future<void> fetchUserPosts() async => await _fetchUserPosts();
 
-  Future<void> loadMore() async =>
-      await _loadMore(page: _postData.value.currentPage! + 1);
+  Future<void> loadMoreUserPosts() async =>
+      await _loadMoreUserPosts(page: _postData.value.currentPage! + 1);
 
   Future<void> followUnfollowUser(UserDetails user) async =>
       await _followUnfollowUser(user);

@@ -18,52 +18,88 @@ class PostViewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorValues.blackColor,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            NxAppBar(
-              padding: Dimens.edgeInsets8_16,
-              backBtnColor: ColorValues.lightBgColor,
-            ),
-            Expanded(child: Center(child: _buildBody())),
-          ],
+        child: SizedBox(
+          width: Dimens.screenWidth,
+          height: Dimens.screenHeight,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              NxAppBar(
+                padding: Dimens.edgeInsets8_16,
+              ),
+              Expanded(child: Center(child: _buildBody())),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildBody() {
-    return Hero(
-      tag: post.id!,
-      child: FlutterCarousel(
-        items: post.mediaFiles!.map(
-          (img) {
-            if (img.mediaType == "video") {
-              return NxVideoPlayerWidget(
-                url: img.url!,
-              );
-            }
-            return NxNetworkImage(
-              height: Dimens.screenWidth,
-              imageUrl: img.url!,
-              imageFit: BoxFit.cover,
-              width: Dimens.screenWidth,
-            );
-          },
-        ).toList(),
-        options: CarouselOptions(
-          aspectRatio: 1 / 1,
-          viewportFraction: 1.0,
-          showIndicator: post.mediaFiles!.length > 1 ? true : false,
-          floatingIndicator: false,
-          slideIndicator: CircularWaveSlideIndicator(
-            indicatorBackgroundColor: ColorValues.darkGrayColor,
-            currentIndicatorColor: ColorValues.lightBgColor,
+    var currentItem = 0;
+    return StatefulBuilder(
+      builder: (context, setInnerState) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Hero(
+            tag: post.id!,
+            child: FlutterCarousel(
+              items: post.mediaFiles!.map(
+                (media) {
+                  if (media.mediaType == "video") {
+                    return NxVideoPlayerWidget(
+                      url: media.url!,
+                      showControls: true,
+                    );
+                  }
+                  return NxNetworkImage(
+                    height: Dimens.screenWidth,
+                    imageUrl: media.url!,
+                    imageFit: BoxFit.cover,
+                    width: Dimens.screenWidth,
+                  );
+                },
+              ).toList(),
+              options: CarouselOptions(
+                aspectRatio: 1 / 1,
+                viewportFraction: 1.0,
+                showIndicator: false,
+                onPageChanged: (int index, CarouselPageChangedReason reason) {
+                  setInnerState(() {
+                    currentItem = index;
+                  });
+                },
+              ),
+            ),
           ),
-        ),
+          if (post.mediaFiles!.length > 1) Dimens.boxHeight8,
+          if (post.mediaFiles!.length > 1)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: post.mediaFiles!.asMap().entries.map(
+                (entry) {
+                  return Container(
+                    width: Dimens.eight,
+                    height: Dimens.eight,
+                    margin: EdgeInsets.symmetric(
+                      horizontal: Dimens.two,
+                    ),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: (Theme.of(context).brightness == Brightness.dark
+                              ? ColorValues.whiteColor
+                              : ColorValues.blackColor)
+                          .withOpacity(currentItem == entry.key ? 0.9 : 0.4),
+                    ),
+                  );
+                },
+              ).toList(),
+            ),
+        ],
       ),
     );
   }

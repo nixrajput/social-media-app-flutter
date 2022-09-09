@@ -63,6 +63,7 @@ class CreatePostView extends StatelessWidget {
                                   ? NxVideoPlayerWidget(
                                       url:
                                           logic.pickedFileList![itemIndex].path,
+                                      showControls: true,
                                     )
                                   : NxFileImage(
                                       file: logic.pickedFileList![itemIndex],

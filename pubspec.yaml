@@ -3,7 +3,7 @@ description: A social media app using Flutter, Dart, GetX, and REST API that all
 
 publish_to: "none"
 
-version: 1.0.1+06
+version: 1.0.1+07
 
 environment:
   sdk: ">=2.17.0 <3.0.0"

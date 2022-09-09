@@ -12,6 +12,34 @@ Right now, the app is only available for Android devices.
 We are open to contributions. If you would like to contribute, please read the
 [contribution guidelines](CONTRIBUTING.md).
 
+## Demo
+
+Created with [previewed.app](https://previewed.app).
+
+### Welcome
+
+![Welcome Screen]('https://githubusercontent.com/nixrajput/social-media-app-flutter/master/screenshots/image1.png')
+
+### Login
+
+![Login Screen]('https://githubusercontent.com/nixrajput/social-media-app-flutter/master/screenshots/image2.png')
+
+### About
+
+![About Screen]('https://githubusercontent.com/nixrajput/social-media-app-flutter/master/screenshots/image3.png')
+
+### Home
+
+![Home Screen]('https://githubusercontent.com/nixrajput/social-media-app-flutter/master/screenshots/image4.png')
+
+### Profile
+
+![Profile Screen]('https://githubusercontent.com/nixrajput/social-media-app-flutter/master/screenshots/image5.png')
+
+## Download
+
+You can download the app from the [releases page][releases].
+
 ## Getting Started
 
 For help getting started with Flutter, view online
@@ -59,41 +87,12 @@ conduct, and the process for submitting pull requests to us.
 * [ ] Search Suggestions
 * [x] Settings
 * [ ] Support
+* [ ] Dynamic Theme
 
 ## License
 
 This project is licensed under the GPL-3.0 License - see the
 [LICENSE.md](LICENSE.md) file for details
-
-## Download
-
-You can download the app from the [releases page][releases].
-
-## Screenshots
-
-### Welcome Screen
-
-<img src="screenshots/welcome.png" alt="" width="400" />
-
-### Login Screen
-
-<img src="screenshots/login.png" alt="" width="400" />
-
-### Registration Screen
-
-<img src="screenshots/register.png" alt="" width="400" />
-
-### Home Screen
-
-<img src="screenshots/home.png" alt="" width="400" />
-
-### Profile Screen
-
-<img src="screenshots/profile.png" alt="" width="400" />
-
-### Notification Screen
-
-<img src="screenshots/notification.png" alt="" width="400" />
 
 ## Connect With Me
 
