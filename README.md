@@ -87,7 +87,7 @@ conduct, and the process for submitting pull requests to us.
 * [ ] Search Suggestions
 * [x] Settings
 * [ ] Support
-* [ ] Dynamic Theme
+* [x] Dynamic Theme
 
 ## License
 
