@@ -2,168 +2,83 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloudinary/cloudinary.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
-import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/extensions/file_extensions.dart';
 import 'package:social_media_app/helpers/utils.dart';
-import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
-class EditProfilePictureController extends GetxController {
-  static EditProfilePictureController get find => Get.find();
-
-  final _profile = ProfileController.find;
-  final _auth = AuthService.find;
+class ReactivateAccountController extends GetxController {
+  static ReactivateAccountController get find => Get.find();
 
   final _apiProvider = ApiProvider(http.Client());
 
-  final _pickedImage = Rxn<File>();
+  final emailTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
+  final otpTextController = TextEditingController();
+
+  final FocusScopeNode focusNode = FocusScopeNode();
 
   final _isLoading = false.obs;
+  final _otpSent = false.obs;
+  final _showPassword = true.obs;
 
   bool get isLoading => _isLoading.value;
 
-  File? get pickedImage => _pickedImage.value;
+  bool get otpSent => _otpSent.value;
 
-  var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME',
-      defaultValue: AppSecrets.cloudinaryCloudName);
-  var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
-      defaultValue: AppSecrets.uploadPreset);
+  bool get showPassword => _showPassword.value;
 
-  Future<void> chooseImage() async {
-    _pickedImage.value = await AppUtils.selectSingleImage();
-
-    if (_pickedImage.value != null) {
-      AppUtils.printLog(_pickedImage.value!.path);
-      await _uploadProfilePicture();
-    }
+  void _clearTextControllers() {
+    emailTextController.clear();
+    passwordTextController.clear();
+    otpTextController.clear();
   }
 
-  Future<void> _uploadProfilePicture() async {
-    final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
-    AppUtils.printLog("Update Profile Picture Request");
+  void toggleViewPassword() {
+    _showPassword(!_showPassword.value);
+    update();
+  }
 
-    var filePath = _pickedImage.value!.path;
-    var sizeInKb = _pickedImage.value!.sizeToKb();
-    if (sizeInKb > 2048) {
+  Future<void> _sendReactivateAccountOtp(String email, String password) async {
+    if (email.isEmpty) {
       AppUtils.showSnackBar(
-        'Image file size must be lower than 2 MB',
+        StringValues.enterEmail,
         StringValues.warning,
       );
       return;
     }
 
-    AppUtils.showLoadingDialog();
-    _isLoading.value = true;
-    update();
-
-    String? publicId = '';
-    String? url = '';
-
-    await cloudinary
-        .unsignedUpload(
-      uploadPreset: uploadPreset,
-      file: filePath,
-      resourceType: CloudinaryResourceType.image,
-      folder: "social_media_api/avatars",
-      progressCallback: (count, total) {
-        var progress = ((count / total) * 100).toStringAsFixed(2);
-        AppUtils.printLog('Uploading : $progress %');
-      },
-    )
-        .then((value) {
-      publicId = value.publicId;
-      url = value.secureUrl;
-    }).catchError((err) {
-      AppUtils.printLog(err);
-      AppUtils.showSnackBar('image upload failed.', StringValues.error);
-    });
+    if (password.isEmpty) {
+      AppUtils.showSnackBar(
+        StringValues.enterPassword,
+        StringValues.warning,
+      );
+      return;
+    }
 
     final body = {
-      "public_id": publicId,
-      "url": url,
+      'email': email,
+      'password': password,
     };
 
-    try {
-      final response = await _apiProvider.uploadProfilePicture(
-        _auth.token,
-        body,
-      );
-
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtils.closeDialog();
-        AppUtils.printLog("Update Profile Picture Success");
-        await _profile.fetchProfileDetails(fetchPost: false);
-        _isLoading.value = false;
-        update();
-        AppUtils.showSnackBar(
-          decodedData[StringValues.message],
-          StringValues.success,
-        );
-      } else {
-        AppUtils.closeDialog();
-        AppUtils.printLog("Update Profile Picture Error");
-        _isLoading.value = false;
-        update();
-        AppUtils.showSnackBar(
-          decodedData[StringValues.message],
-          StringValues.error,
-        );
-      }
-    } on SocketException {
-      AppUtils.closeDialog();
-      AppUtils.printLog("Update Profile Picture Error");
-      _isLoading.value = false;
-      update();
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtils.closeDialog();
-      AppUtils.printLog("Update Profile Picture Error");
-      _isLoading.value = false;
-      update();
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtils.closeDialog();
-      AppUtils.printLog("Update Profile Picture Error");
-      _isLoading.value = false;
-      update();
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    } catch (exc) {
-      AppUtils.closeDialog();
-      AppUtils.printLog("Update Profile Picture Error");
-      _isLoading.value = false;
-      update();
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    }
-  }
-
-  Future<void> _removeProfilePicture() async {
-    AppUtils.printLog("Remove Profile Picture Request");
+    AppUtils.printLog("Send Reactivate Account OTP Request");
     AppUtils.showLoadingDialog();
     _isLoading.value = true;
     update();
 
     try {
-      final response = await _apiProvider.deleteProfilePicture(_auth.token);
+      final response = await _apiProvider.sendReactivateAccountOtp(body);
+
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
+        AppUtils.printLog("Send Reactivate Account OTP Success");
         AppUtils.closeDialog();
-        AppUtils.printLog("Remove Profile Picture Success");
-        await _profile.fetchProfileDetails();
         _isLoading.value = false;
+        _otpSent.value = true;
         update();
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
@@ -171,9 +86,9 @@ class EditProfilePictureController extends GetxController {
         );
       } else {
         AppUtils.closeDialog();
-        AppUtils.printLog("Remove Profile Picture Error");
         _isLoading.value = false;
         update();
+        AppUtils.printLog("Send Reactivate Account OTP Error");
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
@@ -181,44 +96,127 @@ class EditProfilePictureController extends GetxController {
       }
     } on SocketException {
       AppUtils.closeDialog();
-      AppUtils.printLog("Remove Profile Picture Error");
       _isLoading.value = false;
       update();
+      AppUtils.printLog("Send Reactivate Account OTP Error");
       AppUtils.printLog(StringValues.internetConnError);
       AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       AppUtils.closeDialog();
-      AppUtils.printLog("Remove Profile Picture Error");
       _isLoading.value = false;
       update();
+      AppUtils.printLog("Send Reactivate Account OTP Error");
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       AppUtils.closeDialog();
-      AppUtils.printLog("Remove Profile Picture Error");
       _isLoading.value = false;
       update();
+      AppUtils.printLog("Send Reactivate Account OTP Error");
       AppUtils.printLog(StringValues.formatExcError);
       AppUtils.printLog(e);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtils.closeDialog();
-      AppUtils.printLog("Remove Profile Picture Error");
       _isLoading.value = false;
       update();
+      AppUtils.printLog("Send Reactivate Account OTP Error");
       AppUtils.printLog(StringValues.errorOccurred);
       AppUtils.printLog(exc);
       AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
-  Future<void> uploadProfilePicture() async {
-    AppUtils.closeFocus();
-    await _uploadProfilePicture();
+  Future<void> _reactivateAccount(String otp) async {
+    if (otp.isEmpty) {
+      AppUtils.showSnackBar(
+        StringValues.enterOtp,
+        StringValues.warning,
+      );
+      return;
+    }
+
+    final body = {
+      'email': emailTextController.text.trim(),
+      'password': passwordTextController.text.trim(),
+      'otp': otp,
+    };
+
+    AppUtils.printLog("Reactivate Account Request");
+    AppUtils.showLoadingDialog();
+    _isLoading.value = true;
+    update();
+
+    try {
+      final response = await _apiProvider.reactivateAccount(body);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        _clearTextControllers();
+        AppUtils.closeDialog();
+        _isLoading.value = false;
+        update();
+        AppUtils.printLog("Reactivate Account Success");
+        RouteManagement.goToBack();
+        RouteManagement.goToLoginView();
+        AppUtils.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+        );
+      } else {
+        AppUtils.closeDialog();
+        _isLoading.value = false;
+        update();
+        AppUtils.printLog("Reactivate Account Error");
+        AppUtils.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } on SocketException {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog("Reactivate Account Error");
+      AppUtils.printLog(StringValues.internetConnError);
+      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog("Reactivate Account Error");
+      AppUtils.printLog(StringValues.connTimedOut);
+      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog("Reactivate Account Error");
+      AppUtils.printLog(StringValues.formatExcError);
+      AppUtils.printLog(e);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtils.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtils.printLog("Reactivate Account Error");
+      AppUtils.printLog(StringValues.errorOccurred);
+      AppUtils.printLog(exc);
+      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
   }
 
-  Future<void> removeProfilePicture() async {
+  Future<void> sendReactivateAccountOtp() async {
     AppUtils.closeFocus();
-    await _removeProfilePicture();
+    await _sendReactivateAccountOtp(
+      emailTextController.text.trim(),
+      passwordTextController.text.trim(),
+    );
+  }
+
+  Future<void> reactivateAccount() async {
+    AppUtils.closeFocus();
+    await _reactivateAccount(otpTextController.text.trim());
   }
 }

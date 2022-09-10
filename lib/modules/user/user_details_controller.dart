@@ -73,14 +73,16 @@ class UserDetailsController extends GetxController {
 
         /// Fetching Posts with conditions
 
-        if (_userDetails.value.user!.accountPrivacy == "private") {
-          if (_userDetails.value.user!.followingStatus == "following" ||
-              _userDetails.value.user!.id ==
-                  ProfileController.find.profileDetails.user!.id) {
+        if (_userDetails.value.user!.accountStatus == "active") {
+          if (_userDetails.value.user!.accountPrivacy == "private") {
+            if (_userDetails.value.user!.followingStatus == "following" ||
+                _userDetails.value.user!.id ==
+                    ProfileController.find.profileDetails.user!.id) {
+              await _fetchUserPosts();
+            }
+          } else {
             await _fetchUserPosts();
           }
-        } else {
-          await _fetchUserPosts();
         }
       } else {
         _isLoading.value = false;

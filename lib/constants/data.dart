@@ -768,6 +768,8 @@ abstract class StaticData {
     "rental clerk",
     "repair worker",
     "reporter",
+    "research scholar",
+    "reservation clerk",
     "residential advisor",
     "resort desk clerk",
     "respiratory therapist",

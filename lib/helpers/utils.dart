@@ -123,7 +123,7 @@ abstract class AppUtils {
               alignment: Alignment.center,
               child: Material(
                 type: MaterialType.card,
-                color: Theme.of(Get.context!).scaffoldBackgroundColor,
+                color: Theme.of(Get.context!).dialogBackgroundColor,
                 borderRadius: BorderRadius.all(
                   Radius.circular(Dimens.eight),
                 ),
@@ -134,6 +134,7 @@ abstract class AppUtils {
         ),
       ),
       barrierDismissible: barrierDismissible,
+      barrierColor: ColorValues.blackColor.withOpacity(0.5),
     );
   }
 
@@ -206,6 +207,8 @@ abstract class AppUtils {
       Padding(
         padding: Dimens.edgeInsets8_0,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: children,
         ),
@@ -251,7 +254,7 @@ abstract class AppUtils {
         snackStyle: SnackStyle.FLOATING,
         messageText: Text(
           message.toCapitalized(),
-          style: AppStyles.style16Normal.copyWith(
+          style: AppStyles.style14Normal.copyWith(
             color: renderTextColor(type),
           ),
         ),

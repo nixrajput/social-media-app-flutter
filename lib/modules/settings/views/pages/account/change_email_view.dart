@@ -29,7 +29,7 @@ class ChangeEmailView extends StatelessWidget {
                   title: StringValues.changeEmail,
                   padding: Dimens.edgeInsets8_16,
                 ),
-                Dimens.boxHeight24,
+                Dimens.boxHeight16,
                 _buildBody(),
               ],
             ),

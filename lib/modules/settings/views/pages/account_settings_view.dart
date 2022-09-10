@@ -143,6 +143,7 @@ class AccountSettingsView extends StatelessWidget {
                   StringValues.deactivateAccount,
                   style: AppStyles.style14Bold,
                 ),
+                onTap: RouteManagement.goToDeactivateAccountSettingsView,
               ),
               Dimens.boxHeight16,
             ],

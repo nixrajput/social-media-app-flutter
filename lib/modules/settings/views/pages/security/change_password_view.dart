@@ -29,7 +29,7 @@ class ChangePasswordView extends StatelessWidget {
                   title: StringValues.changePassword,
                   padding: Dimens.edgeInsets8_16,
                 ),
-                Dimens.boxHeight24,
+                Dimens.boxHeight16,
                 _buildBody(),
               ],
             ),

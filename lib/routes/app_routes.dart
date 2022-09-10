@@ -38,6 +38,7 @@ abstract class AppRoutes {
   static const sendVerifyEmailOtp = _Routes.sendVerifyEmailOtp;
   static const verifyEmail = _Routes.verifyEmail;
   static const verifyPassword = _Routes.verifyPassword;
+  static const reactivateAccount = _Routes.reactivateAccount;
 
   static const editProfile = _Routes.editProfile;
   static const editName = _Routes.editName;
@@ -49,8 +50,6 @@ abstract class AppRoutes {
   static const editProfession = _Routes.editProfession;
   static const editLocation = _Routes.editLocation;
   static const editWebsite = _Routes.editWebsite;
-
-  static const reactivateAccount = _Routes.reactivateAccount;
 
   static const following = _Routes.following;
   static const followers = _Routes.followers;
@@ -105,6 +104,7 @@ abstract class _Routes {
   static const sendVerifyEmailOtp = '/send_email_verification_otp';
   static const verifyEmail = '/verify_email';
   static const verifyPassword = '/verify_password';
+  static const reactivateAccount = '/reactivate_account';
 
   static const editProfile = '/edit_profile';
   static const editName = '/edit_name';
@@ -116,8 +116,6 @@ abstract class _Routes {
   static const editProfession = '/edit_profession';
   static const editLocation = '/edit_location';
   static const editWebsite = '/edit_website';
-
-  static const reactivateAccount = '/reactivate_account';
 
   static const following = '/following';
   static const followers = '/followers';

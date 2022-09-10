@@ -29,7 +29,7 @@ class ChangePhoneView extends StatelessWidget {
                   title: StringValues.changePhone,
                   padding: Dimens.edgeInsets8_16,
                 ),
-                Dimens.boxHeight24,
+                Dimens.boxHeight16,
                 _buildBody(),
               ],
             ),

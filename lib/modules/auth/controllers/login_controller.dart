@@ -27,10 +27,12 @@ class LoginController extends GetxController {
 
   final FocusScopeNode focusNode = FocusScopeNode();
   final _showPassword = true.obs;
-
+  final _accountStatus = ''.obs;
   final _isLoading = false.obs;
 
   bool get isLoading => _isLoading.value;
+
+  String get accountStatus => _accountStatus.value;
 
   bool get showPassword => _showPassword.value;
 
@@ -75,8 +77,6 @@ class LoginController extends GetxController {
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      AppUtils.printLog(decodedData);
-
       if (response.statusCode == 200) {
         _auth.setLoginData = AuthResponse.fromJson(decodedData);
 
@@ -112,9 +112,14 @@ class LoginController extends GetxController {
           return;
         });
       } else {
-        AppUtils.closeDialog();
+        AppUtils.printLog(decodedData);
+        _accountStatus.value = decodedData['accountStatus'];
         _isLoading.value = false;
         update();
+        AppUtils.closeDialog();
+        if (_accountStatus.value == "deactivated") {
+          RouteManagement.goToReactivateAccountView();
+        }
         AppUtils.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,

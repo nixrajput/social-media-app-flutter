@@ -23,8 +23,8 @@ abstract class AppUrls {
   static const String deleteCommentEndpoint = '/delete-comment';
 
   static const String profileDetailsEndpoint = '/me';
-  static const String uploadProfilePicEndpoint = '/upload-avatar';
-  static const String deleteProfilePicEndpoint = '/delete-avatar';
+  static const String uploadProfilePicEndpoint = '/upload-profile-picture';
+  static const String deleteProfilePicEndpoint = '/remove-profile-picture';
   static const String changePasswordEndpoint = '/change-password';
   static const String updateProfileEndpoint = '/update-profile';
   static const String checkUsernameEndpoint = '/check-username';
@@ -34,6 +34,8 @@ abstract class AppUrls {
   static const String addChangePhoneEndpoint = '/add-change-phone';
   static const String changeEmailEndpoint = '/change-email';
   static const String verifyPasswordEndpoint = '/verify-password';
+  static const String deactivateAccountEndpoint = '/deactivate-account';
+  static const String reactivateAccountEndpoint = '/reactivate-account';
 
   static const String saveLoginInfoEndpoint = '/save-device-info';
   static const String getLoginInfoEndpoint = '/get-device-info';

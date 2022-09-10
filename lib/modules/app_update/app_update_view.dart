@@ -69,17 +69,6 @@ class AppUpdateView extends StatelessWidget {
                       data: logic.changelog,
                     ),
                   ),
-                  Dimens.boxHeight16,
-                  RichText(
-                    text: TextSpan(
-                      text:
-                          'A newer version of the app is available. To use this app, download the latest version.',
-                      style: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
-                      ),
-                    ),
-                  ),
                   Dimens.boxHeight20,
                   NxOutlinedButton(
                     label: 'Update Now'.toTitleCase(),
@@ -88,7 +77,7 @@ class AppUpdateView extends StatelessWidget {
                         Theme.of(Get.context!).textTheme.bodyText1!.color,
                     padding: Dimens.edgeInsets0_8,
                     width: Dimens.screenWidth,
-                    height: Dimens.thirtySix,
+                    height: Dimens.fourty,
                     labelStyle: AppStyles.style14Normal.copyWith(
                       color: Theme.of(Get.context!).scaffoldBackgroundColor,
                     ),

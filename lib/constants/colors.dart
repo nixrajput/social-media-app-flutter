@@ -35,7 +35,7 @@ abstract class ColorValues {
   static const Color darkDividerColor = Color(0xff707070);
   static const Color lightDividerColor = Color(0xffc2c2c2);
 
-  static const Color lightBodyTextColor = Color(0xFF323232);
+  static const Color lightBodyTextColor = Color(0xFF282828);
   static const Color lightSubtitleTextColor = Color(0xFF737373);
   static const Color darkBodyTextColor = Color(0xFFDCDCDC);
   static const Color darkSubtitleTextColor = Color(0xFFA0A0A0);

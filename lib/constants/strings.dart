@@ -13,6 +13,7 @@ abstract class StringValues {
   static const forgotPassword = 'Forgot Password';
   static const resetPassword = 'Reset Password';
   static const verifyAccount = 'Verify Account';
+  static const reactivateAccount = 'Reactivate Account';
   static const name = 'Name';
   static const next = 'Next';
   static const firstName = 'First Name';
@@ -141,6 +142,8 @@ abstract class StringValues {
   static const usernameNotAvailable = 'Username not available.';
   static const userIdNotFound = 'User Id not found.';
   static const privateAccountWarning = 'This Account is private';
+  static const deactivatedAccountWarning = 'This Account is deactivated';
+  static const noImageVideoSelectedWarning = 'No image or video selected';
   static const followAccountText =
       'Follow this account to see their photos and videos.';
   static const notFollowingWarning = 'You are not following the user.';

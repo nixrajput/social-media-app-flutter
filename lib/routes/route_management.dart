@@ -36,6 +36,10 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.verifyAccount);
   }
 
+  static void goToReactivateAccountView() {
+    Get.toNamed(AppRoutes.reactivateAccount);
+  }
+
   static void goToHomeView() {
     Get.offAllNamed(AppRoutes.home);
   }
@@ -161,6 +165,10 @@ abstract class RouteManagement {
 
   static void goToChangePhoneSettingsView() {
     Get.toNamed(AppRoutes.changePhoneSettings);
+  }
+
+  static void goToDeactivateAccountSettingsView() {
+    Get.toNamed(AppRoutes.deactivateAccountSettings);
   }
 
   /// --------------------------------------------------------------------------

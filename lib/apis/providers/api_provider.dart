@@ -126,30 +126,25 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.StreamedResponse> uploadProfilePicture(
+  Future<http.Response> uploadProfilePicture(
     String token,
-    http.MultipartFile multiPartFile,
+    Map<String, dynamic> body,
   ) async {
-    final request = http.MultipartRequest(
-      "POST",
+    final response = await _client.post(
       Uri.parse(baseUrl! + AppUrls.uploadProfilePicEndpoint),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
     );
-
-    request.headers.addAll({
-      "content-type": "application/json",
-      "authorization": "Bearer $token",
-    });
-
-    request.files.add(multiPartFile);
-
-    final response = await request.send();
 
     return response;
   }
 
   Future<http.Response> deleteProfilePicture(String token) async {
     final response = await _client.delete(
-      Uri.parse(baseUrl! + AppUrls.deleteProfilePicEndpoint),
+      Uri.parse('${baseUrl!}${AppUrls.deleteProfilePicEndpoint}'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -162,7 +157,7 @@ class ApiProvider {
   Future<http.Response> updateProfile(
       String token, Map<String, dynamic> body) async {
     final response = await _client.put(
-      Uri.parse(baseUrl! + AppUrls.updateProfileEndpoint),
+      Uri.parse('${baseUrl!}${AppUrls.updateProfileEndpoint}'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -176,7 +171,7 @@ class ApiProvider {
   Future<http.Response> changePassword(
       String token, Map<String, dynamic> body) async {
     final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.changePasswordEndpoint),
+      Uri.parse('${baseUrl!}${AppUrls.changePasswordEndpoint}'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -192,7 +187,7 @@ class ApiProvider {
     Map<String, dynamic> body,
   ) async {
     final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.changeEmailEndpoint),
+      Uri.parse('${baseUrl!}${AppUrls.changeEmailEndpoint}'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -208,7 +203,7 @@ class ApiProvider {
     Map<String, dynamic> body,
   ) async {
     final response = await _client.put(
-      Uri.parse(baseUrl! + AppUrls.changeEmailEndpoint),
+      Uri.parse('${baseUrl!}${AppUrls.changeEmailEndpoint}'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -224,7 +219,7 @@ class ApiProvider {
     Map<String, dynamic> body,
   ) async {
     final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.addChangePhoneEndpoint),
+      Uri.parse('${baseUrl!}${AppUrls.addChangePhoneEndpoint}'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -240,7 +235,7 @@ class ApiProvider {
     Map<String, dynamic> body,
   ) async {
     final response = await _client.put(
-      Uri.parse(baseUrl! + AppUrls.addChangePhoneEndpoint),
+      Uri.parse('${baseUrl!}${AppUrls.addChangePhoneEndpoint}'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -253,12 +248,53 @@ class ApiProvider {
 
   Future<http.Response> verifyPassword(String token, String password) async {
     final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.verifyPasswordEndpoint),
+      Uri.parse('${baseUrl!}${AppUrls.verifyPasswordEndpoint}'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
       },
       body: jsonEncode({"password": password}),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> deactivateAccount(
+    String token,
+    Map<String, dynamic> body,
+  ) async {
+    final response = await _client.post(
+      Uri.parse('${baseUrl!}${AppUrls.deactivateAccountEndpoint}'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> sendReactivateAccountOtp(
+      Map<String, dynamic> body) async {
+    final response = await _client.post(
+      Uri.parse('${baseUrl!}${AppUrls.reactivateAccountEndpoint}'),
+      headers: {
+        "content-type": "application/json",
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> reactivateAccount(Map<String, dynamic> body) async {
+    final response = await _client.put(
+      Uri.parse('${baseUrl!}${AppUrls.reactivateAccountEndpoint}'),
+      headers: {
+        "content-type": "application/json",
+      },
+      body: jsonEncode(body),
     );
 
     return response;

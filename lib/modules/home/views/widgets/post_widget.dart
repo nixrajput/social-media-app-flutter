@@ -401,17 +401,30 @@ class PostWidget extends StatelessWidget {
 
   Future<void> _showDeletePostOptions() async {
     AppUtils.showSimpleDialog(
-      Padding(
-        padding: Dimens.edgeInsets16,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Dimens.boxHeight8,
+          Padding(
+            padding: Dimens.edgeInsets0_16,
+            child: Text(
+              'Delete',
+              style: AppStyles.style18Bold,
+            ),
+          ),
+          Dimens.dividerWithHeight,
+          Padding(
+            padding: Dimens.edgeInsets0_16,
+            child: Text(
               StringValues.deleteConfirmationText,
               style: AppStyles.style14Normal,
             ),
-            Dimens.boxHeight24,
-            Row(
+          ),
+          Dimens.boxHeight8,
+          Padding(
+            padding: Dimens.edgeInsets0_16,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 NxTextButton(
@@ -436,8 +449,9 @@ class PostWidget extends StatelessWidget {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          Dimens.boxHeight8,
+        ],
       ),
     );
   }

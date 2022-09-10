@@ -350,49 +350,61 @@ class ProfileTabView extends StatelessWidget {
   void _showProfilePictureDialog(ProfileController logic) {
     AppUtils.showSimpleDialog(
       GetBuilder<EditProfilePictureController>(
-        builder: (con) => Padding(
-          padding: Dimens.edgeInsets16,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Row(
+        builder: (con) => Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: Dimens.edgeInsets16.copyWith(
+                bottom: Dimens.zero,
+              ),
+              child: Row(
                 children: [
                   Text(
-                    'Profile picture',
-                    style: AppStyles.style20Bold,
+                    'Profile Picture',
+                    style: AppStyles.style18Bold,
                   ),
                   const Spacer(),
                   NxIconButton(
                     icon: Icons.close,
                     iconSize: Dimens.thirtyTwo,
+                    iconColor:
+                        Theme.of(Get.context!).textTheme.bodyText1!.color,
                     onTap: AppUtils.closeDialog,
                   ),
                 ],
               ),
-              Dimens.boxHeight24,
-              AvatarWidget(
-                avatar: logic.profileDetails.user?.avatar,
-                size: Dimens.screenWidth * 0.4,
-              ),
-              Dimens.boxHeight40,
-              Row(
+            ),
+            Dimens.dividerWithHeight,
+            Dimens.boxHeight8,
+            AvatarWidget(
+              avatar: logic.profileDetails.user?.avatar,
+              size: Dimens.screenWidth * 0.4,
+            ),
+            Dimens.boxHeight16,
+            Dimens.dividerWithHeight,
+            Dimens.boxHeight16,
+            Padding(
+              padding: Dimens.edgeInsets0_16,
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: NxOutlinedButton(
-                      width: Dimens.hundred,
-                      height: Dimens.thirtySix,
-                      label: 'Change',
-                      borderColor:
-                          Theme.of(Get.context!).textTheme.bodyText1!.color,
-                      labelStyle: AppStyles.style14Normal.copyWith(
-                        color:
+                        width: Dimens.hundred,
+                        height: Dimens.thirtySix,
+                        label: 'Change',
+                        borderColor:
                             Theme.of(Get.context!).textTheme.bodyText1!.color,
-                      ),
-                      onTap: con.chooseImage,
-                    ),
+                        labelStyle: AppStyles.style14Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
+                        onTap: () {
+                          AppUtils.closeDialog();
+                          con.chooseImage();
+                        }),
                   ),
                   Dimens.boxWidth16,
                   Expanded(
@@ -406,14 +418,17 @@ class ProfileTabView extends StatelessWidget {
                         color:
                             Theme.of(Get.context!).textTheme.bodyText1!.color,
                       ),
-                      onTap: con.removeProfilePicture,
+                      onTap: () {
+                        AppUtils.closeDialog();
+                        con.removeProfilePicture();
+                      },
                     ),
                   ),
                 ],
               ),
-              Dimens.boxHeight24,
-            ],
-          ),
+            ),
+            Dimens.boxHeight24,
+          ],
         ),
       ),
     );

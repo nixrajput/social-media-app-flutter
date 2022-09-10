@@ -16,6 +16,7 @@ import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/shimmer_loading.dart';
+import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -95,6 +96,22 @@ class UserProfileView extends StatelessWidget {
   }
 
   Widget _buildProfileBody(UserDetailsController logic) {
+    if (logic.userDetails.user!.accountStatus == "deactivated") {
+      return Center(
+        child: Padding(
+          padding: Dimens.edgeInsets16.copyWith(
+            top: Dimens.sixtyFour,
+          ),
+          child: Text(
+            StringValues.deactivatedAccountWarning,
+            style: AppStyles.style32Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -166,6 +183,32 @@ class UserProfileView extends StatelessWidget {
             style: AppStyles.style14Normal,
           ),
         Dimens.boxHeight8,
+        if (logic.userDetails.user!.website != null)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.link,
+                size: Dimens.sixTeen,
+                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              ),
+              Dimens.boxWidth8,
+              InkWell(
+                onTap: () => AppUtils.openUrl(
+                    Uri.parse(logic.userDetails.user!.website!)),
+                child: Text(
+                  logic.userDetails.user!.website!.contains('https://') ||
+                          logic.userDetails.user!.website!.contains('http://')
+                      ? Uri.parse(logic.userDetails.user!.website!).host
+                      : logic.userDetails.user!.website!,
+                  style: AppStyles.style13Bold.copyWith(
+                    color: ColorValues.primaryColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        Dimens.boxHeight8,
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -177,7 +220,7 @@ class UserProfileView extends StatelessWidget {
             Dimens.boxWidth8,
             Expanded(
               child: Text(
-                'Joined - ${DateFormat.yMMMd().format(user.createdAt)}',
+                'Joined - ${DateFormat.yMMMd().format(logic.userDetails.user!.createdAt)}',
                 style: AppStyles.style12Bold.copyWith(
                   color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                 ),
