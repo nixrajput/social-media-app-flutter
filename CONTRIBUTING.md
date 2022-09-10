@@ -160,7 +160,32 @@ https://www.contributor-covenant.org/translations.
 
 ```js
 .
+├── .github
+│   ├── FUNDING.yml
+|
+├── android
+|
+├── assets
+│   ├── fonts
+│   ├── images
+|
+├── ios
+|
 ├── lib
+│   ├── apis
+│   ├── constants
+│   ├── extensions
+│   ├── global_widgets
+│   ├── helpers
+│   ├── modules
+│   ├── routes
+│   ├── translations
+│   
+├── main.dart
+|
+├── screenshots
+|
+├── web
 |
 ├── .gitignore
 |
@@ -170,11 +195,17 @@ https://www.contributor-covenant.org/translations.
 |
 ├── LICENSE.md
 |
-├── pubspec.yaml
+├── README.md
+|
+├── analysis_options.yaml
+|
+├── flutter_launcher_icons.yaml
+|
+├── flutter_native_splash.yaml
 |
 ├── package-lock.yaml
 |
-└── README.md
+└── pubspec.yaml
 ```
 
 ## STEP-2 : `Contributing`

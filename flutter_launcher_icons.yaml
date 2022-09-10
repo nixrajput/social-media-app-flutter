@@ -1,6 +1,7 @@
 flutter_icons:
+  #  flutter pub run flutter_launcher_icons:main
+
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/logo_trans.png"
-
-#  flutter pub run flutter_launcher_icons:main
+  image_path: "assets/images/icon_trans.png"
+  min_sdk_android: 21

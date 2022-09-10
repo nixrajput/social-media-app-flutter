@@ -303,7 +303,7 @@ abstract class AppUtils {
 
   static IconData renderIcon(String type) {
     if (type == StringValues.error) {
-      return CupertinoIcons.clear_circled_solid;
+      return CupertinoIcons.info_circle_fill;
     }
     if (type == StringValues.success) {
       return CupertinoIcons.check_mark_circled_solid;
