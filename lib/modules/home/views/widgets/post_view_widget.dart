@@ -52,7 +52,9 @@ class PostViewWidget extends StatelessWidget {
                   if (media.mediaType == "video") {
                     return NxVideoPlayerWidget(
                       url: media.url!,
+                      thumbnailUrl: media.thumbnail?.url,
                       showControls: true,
+                      startVideoWithAudio: true,
                     );
                   }
                   return NxNetworkImage(

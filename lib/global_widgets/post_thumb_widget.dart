@@ -40,36 +40,10 @@ class PostThumbnailWidget extends StatelessWidget {
     if (mediaFile.mediaType == "video") {
       return Stack(
         children: [
-          // FutureBuilder<File>(
-          //   future: AppUtils.getVideoThumb(mediaFile.url!),
-          //   builder: (ctx, data) {
-          //     if (data.connectionState == ConnectionState.waiting) {
-          //       return Container(
-          //         width: Dimens.screenWidth,
-          //         height: Dimens.screenWidth,
-          //         constraints: BoxConstraints(
-          //           maxWidth: Dimens.screenWidth,
-          //           maxHeight: Dimens.screenHeight,
-          //         ),
-          //         color: ColorValues.grayColor.withOpacity(0.5),
-          //       );
-          //     }
-          //     if (!data.hasData) {
-          //       return Container(
-          //         color: ColorValues.grayColor.withOpacity(0.5),
-          //       );
-          //     }
-          //     return Image.file(
-          //       data.data!,
-          //       fit: BoxFit.cover,
-          //       width: Dimens.screenWidth,
-          //       height: Dimens.screenWidth,
-          //     );
-          //   },
-          // ),
-          Container(
-            color: ColorValues.blackColor,
-          ),
+          if (mediaFile.thumbnail != null)
+            NxNetworkImage(imageUrl: mediaFile.thumbnail!.url!)
+          else
+            Container(color: ColorValues.blackColor),
           Positioned(
             bottom: Dimens.four,
             right: Dimens.four,

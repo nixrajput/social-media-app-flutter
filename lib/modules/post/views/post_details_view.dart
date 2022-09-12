@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
@@ -7,7 +8,10 @@ import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
 
 class PostDetailsView extends StatelessWidget {
-  const PostDetailsView({Key? key}) : super(key: key);
+  const PostDetailsView({Key? key, this.post, this.postId}) : super(key: key);
+
+  final String? postId;
+  final Post? post;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class PostDetailsView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GetBuilder<PostController>(
-              builder: (postLogic) => PostWidget(post: Get.arguments[1]),
+              builder: (postLogic) => PostWidget(post: post!),
             ),
             Dimens.boxHeight16,
           ],

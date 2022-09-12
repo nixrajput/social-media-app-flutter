@@ -14,6 +14,7 @@ class CustomControlsWidget extends StatefulWidget {
   final bool showControls;
   final bool? isSmallPlayer;
   final VoidCallback? onTap;
+  final bool? startVideoWithAudio;
 
   const CustomControlsWidget({
     Key? key,
@@ -22,6 +23,7 @@ class CustomControlsWidget extends StatefulWidget {
     required this.showControls,
     this.isSmallPlayer = false,
     this.onTap,
+    this.startVideoWithAudio,
   }) : super(key: key);
 
   @override
@@ -29,13 +31,12 @@ class CustomControlsWidget extends StatefulWidget {
 }
 
 class CustomControlsWidgetState extends State<CustomControlsWidget> {
-  bool isMuted = false;
+  bool isMuted = true;
   Timer? progressTimer;
   int progress = 0;
   int progressMinutes = 0;
   int progressSeconds = 0;
   int totalDuration = 0;
-  bool controllerInitialized = false;
   bool showControls = true;
 
   calculateDuration() {
@@ -88,38 +89,51 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
 
   @override
   void initState() {
-    super.initState();
     showControls = widget.showControls;
-    widget.controller?.addEventsListener((evt) {
-      AppUtils.printLog('event: ${evt.betterPlayerEventType}');
-      if (evt.betterPlayerEventType == BetterPlayerEventType.initialized) {
+    widget.controller!
+        .setVolume(widget.startVideoWithAudio == true ? 0.5 : 0.0);
+    widget.controller!.addEventsListener(onPlayerEvent);
+    super.initState();
+  }
+
+  void onPlayerEvent(BetterPlayerEvent evt) {
+    AppUtils.printLog('Video Player Event: ${evt.betterPlayerEventType}');
+    if (evt.betterPlayerEventType == BetterPlayerEventType.initialized) {
+      if (widget.controller!.videoPlayerController!.value.volume > 0) {
         setState(() {
-          controllerInitialized = true;
+          isMuted = false;
         });
-        calculateDuration();
       }
-      if (evt.betterPlayerEventType == BetterPlayerEventType.play) {
+      calculateDuration();
+    }
+    if (evt.betterPlayerEventType == BetterPlayerEventType.play) {
+      if (widget.controller!.isPlaying() == true) {
         playProgressTimer();
       }
+    }
 
-      if (evt.betterPlayerEventType == BetterPlayerEventType.pause) {
+    if (evt.betterPlayerEventType == BetterPlayerEventType.pause) {
+      if (widget.controller!.isPlaying() == false) {
         pauseProgressTimer();
       }
+    }
 
-      if (evt.betterPlayerEventType == BetterPlayerEventType.finished) {
-        resetProgressTimer();
-      }
+    if (evt.betterPlayerEventType == BetterPlayerEventType.finished) {
+      resetProgressTimer();
+      widget.controller!.seekTo(Duration.zero).then((_) {
+        widget.controller!.pause();
+      });
+    }
 
-      if (evt.betterPlayerEventType == BetterPlayerEventType.progress) {
-        if (progressSeconds > 9 &&
-            progressSeconds.remainder(10) == 0 &&
-            showControls == true) {
-          setState(() {
-            showControls = false;
-          });
-        }
+    if (evt.betterPlayerEventType == BetterPlayerEventType.progress) {
+      if (progressSeconds > 9 &&
+          progressSeconds.remainder(10) == 0 &&
+          showControls == true) {
+        setState(() {
+          showControls = false;
+        });
       }
-    });
+    }
   }
 
   @override
@@ -130,7 +144,7 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (controllerInitialized == false) {
+    if (widget.controller!.isVideoInitialized() == false) {
       return const Positioned.fill(
         child: Center(
           child: NxCircularProgressIndicator(
@@ -171,8 +185,9 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
                 left: 0.0,
                 right: 0.0,
                 bottom: 0.0,
-                child: Padding(
+                child: Container(
                   padding: Dimens.edgeInsets4_8,
+                  color: ColorValues.blackColor.withOpacity(0.3),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -210,25 +225,28 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
                                     : Dimens.twentyFour,
                               ),
                             ),
-                            if (widget.isSmallPlayer! == false)
-                              Dimens.boxWidth8,
-                            if (widget.isSmallPlayer! == false)
-                              InkWell(
-                                child: Icon(
-                                  widget.controller!.isFullScreen
-                                      ? Icons.fullscreen_exit
-                                      : Icons.fullscreen,
-                                  color: Colors.white,
-                                  size: Dimens.twentyFour,
-                                ),
-                                onTap: () => setState(() {
+                            Dimens.boxWidth8,
+                            InkWell(
+                              child: Icon(
+                                widget.controller!.isFullScreen
+                                    ? Icons.fullscreen_exit
+                                    : Icons.fullscreen,
+                                color: Colors.white,
+                                size: Dimens.twentyFour,
+                              ),
+                              onTap: () => setState(() {
+                                if (widget.isSmallPlayer! == true) {
+                                  widget.onTap!();
+                                  return;
+                                } else {
                                   if (widget.controller!.isFullScreen) {
                                     widget.controller!.exitFullScreen();
                                   } else {
                                     widget.controller!.enterFullScreen();
                                   }
-                                }),
-                              ),
+                                }
+                              }),
+                            ),
                           ],
                         ),
                     ],
@@ -242,21 +260,27 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
                     customBorder: const CircleBorder(),
                     onTap: () {
                       setState(() {
-                        if (widget.controller!.isPlaying()!) {
+                        if (widget.controller!.isPlaying() == true) {
                           widget.controller!.pause();
                         } else {
                           widget.controller!.play();
                         }
                       });
                     },
-                    child: Icon(
-                      widget.controller!.isPlaying()!
-                          ? Icons.pause
-                          : Icons.play_arrow_rounded,
-                      color: ColorValues.whiteColor,
-                      size: widget.isSmallPlayer!
-                          ? Dimens.fourtyEight
-                          : Dimens.sixty,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: ColorValues.blackColor.withOpacity(0.3),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        widget.controller!.isPlaying()!
+                            ? Icons.pause
+                            : Icons.play_arrow_rounded,
+                        color: ColorValues.whiteColor,
+                        size: widget.isSmallPlayer!
+                            ? Dimens.fourtyEight
+                            : Dimens.sixty,
+                      ),
                     ),
                   ),
                 ),

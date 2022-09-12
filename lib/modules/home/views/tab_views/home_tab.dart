@@ -6,6 +6,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/elevated_card.dart';
+import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/shimmer_loading.dart';
@@ -97,6 +98,38 @@ class HomeTabView extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             children: [
+              if (logic.isImportantNotification &&
+                  logic.importantNotification.isNotEmpty)
+                Container(
+                  width: Dimens.screenWidth,
+                  padding: Dimens.edgeInsets8,
+                  decoration: const BoxDecoration(
+                    color: ColorValues.primaryColor,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            text: logic.importantNotification,
+                            style: AppStyles.style14Normal.copyWith(
+                              color: ColorValues.whiteColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Dimens.boxWidth2,
+                      NxIconButton(
+                        icon: Icons.clear_outlined,
+                        onTap: logic.hideImportantNotification,
+                        iconColor: ColorValues.whiteColor,
+                      ),
+                    ],
+                  ),
+                ),
               ListView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

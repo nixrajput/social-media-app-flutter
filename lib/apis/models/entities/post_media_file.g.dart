@@ -12,6 +12,9 @@ PostMediaFile _$PostMediaFileFromJson(Map<String, dynamic> json) =>
       publicId: json['public_id'] as String?,
       url: json['url'] as String?,
       mediaType: json['mediaType'] as String?,
+      thumbnail: json['thumbnail'] == null
+          ? null
+          : MediaFile.fromJson(json['thumbnail'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PostMediaFileToJson(PostMediaFile instance) =>
@@ -20,4 +23,5 @@ Map<String, dynamic> _$PostMediaFileToJson(PostMediaFile instance) =>
       'public_id': instance.publicId,
       'url': instance.url,
       'mediaType': instance.mediaType,
+      'thumbnail': instance.thumbnail,
     };

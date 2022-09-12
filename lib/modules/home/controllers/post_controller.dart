@@ -11,17 +11,21 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 
 class PostController extends GetxController {
   static PostController get find => Get.find();
 
   final _auth = AuthService.find;
+  final _profile = ProfileController.find;
   final _apiProvider = ApiProvider(http.Client());
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
   final _postData = const PostResponse().obs;
+  final _isImportantNotification = true.obs;
+  final _importantNotification = ''.obs;
 
   final List<Post> _postList = [];
 
@@ -29,18 +33,38 @@ class PostController extends GetxController {
 
   bool get isMoreLoading => _isMoreLoading.value;
 
+  bool get isImportantNotification => _isImportantNotification.value;
+
+  String get importantNotification => _importantNotification.value;
+
   PostResponse? get postData => _postData.value;
 
   List<Post> get postList => _postList;
 
   set setPostData(PostResponse value) => _postData.value = value;
 
+  void hideImportantNotification() {
+    _isImportantNotification.value = false;
+    _importantNotification.value = '';
+    update();
+  }
+
   @override
   void onInit() {
     super.onInit();
-    _fetchPosts().then((_) async {
-      await LoginDeviceInfoController.find.getLoginDeviceInfo();
-    });
+    _getData();
+  }
+
+  _getData() async {
+    _importantNotification.value =
+        'Hello ${_profile.profileDetails.user!.fname}, thank you for being a '
+        'valuable member of this platform. We have an important message for '
+        'all users. \nAfter releasing the production version, '
+        'we may delete some of the data in the database for better and '
+        'faster performance. Data will be deleted only if it is not '
+        'required for the project or it may cause any issues or conflicts.';
+    await _fetchPosts();
+    await LoginDeviceInfoController.find.getLoginDeviceInfo();
   }
 
   Future<void> _fetchPosts({int? page}) async {

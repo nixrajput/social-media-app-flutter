@@ -1,10 +1,12 @@
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:social_media_app/global_widgets/cached_network_image.dart';
 import 'package:social_media_app/global_widgets/custom_video_controls.dart';
 
 class NxVideoPlayerWidget extends StatefulWidget {
-  final String? url;
+  final String url;
+  final String? thumbnailUrl;
   final BetterPlayerConfiguration? configuration;
   final bool showControls;
   final bool? isSmallPlayer;
@@ -13,12 +15,13 @@ class NxVideoPlayerWidget extends StatefulWidget {
 
   const NxVideoPlayerWidget({
     Key? key,
-    this.url,
+    required this.url,
     this.configuration,
     required this.showControls,
     this.isSmallPlayer = false,
     this.onTap,
-    this.startVideoWithAudio = false,
+    this.startVideoWithAudio,
+    this.thumbnailUrl,
   }) : super(key: key);
 
   @override
@@ -27,25 +30,22 @@ class NxVideoPlayerWidget extends StatefulWidget {
 
 class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
   late BetterPlayerController _playerController;
-  bool showControls = true;
-  final GlobalKey _betterPlayerKey = GlobalKey();
 
   @override
   initState() {
-    super.initState();
-    showControls = widget.showControls;
     _init();
-    _playerController.setVolume(widget.startVideoWithAudio == true ? 1.0 : 0.0);
-    _playerController.setBetterPlayerGlobalKey(_betterPlayerKey);
+    super.initState();
   }
 
-  _init() async {
+  _init() {
     var betterPlayerDataSource = BetterPlayerDataSource(
-      widget.url!.contains("https")
-          ? BetterPlayerDataSourceType.network
-          : BetterPlayerDataSourceType.file,
-      widget.url!,
-    );
+        widget.url.contains("https")
+            ? BetterPlayerDataSourceType.network
+            : BetterPlayerDataSourceType.file,
+        widget.url,
+        cacheConfiguration: const BetterPlayerCacheConfiguration(
+          useCache: true,
+        ));
 
     _playerController = BetterPlayerController(
       widget.configuration ??
@@ -55,7 +55,11 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
             fit: BoxFit.cover,
             aspectRatio: 1 / 1,
             autoDetectFullscreenAspectRatio: true,
-            showPlaceholderUntilPlay: false,
+            showPlaceholderUntilPlay: true,
+            placeholderOnTop: true,
+            placeholder: widget.thumbnailUrl == null
+                ? const SizedBox()
+                : NxNetworkImage(imageUrl: widget.thumbnailUrl!),
             expandToFill: true,
             autoDetectFullscreenDeviceOrientation: true,
             deviceOrientationsOnFullScreen: [
@@ -71,9 +75,10 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
                       CustomControlsWidget(
                 controller: controller,
                 onControlsVisibilityChanged: onControlsVisibilityChanged,
-                showControls: showControls,
+                showControls: widget.showControls,
                 isSmallPlayer: widget.isSmallPlayer,
                 onTap: widget.onTap,
+                startVideoWithAudio: widget.startVideoWithAudio,
               ),
             ),
           ),
@@ -83,9 +88,6 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BetterPlayer(
-      controller: _playerController,
-      key: _betterPlayerKey,
-    );
+    return BetterPlayer(controller: _playerController);
   }
 }

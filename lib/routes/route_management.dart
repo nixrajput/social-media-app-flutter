@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/following_list_controller.dart';
+import 'package:social_media_app/modules/post/views/post_details_view.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
@@ -120,7 +121,7 @@ abstract class RouteManagement {
   }
 
   static void goToPostDetailsView(String postId, Post post) {
-    Get.toNamed(AppRoutes.postDetails, arguments: [postId, post]);
+    Get.to(() => PostDetailsView(postId: postId, post: post));
   }
 
   /// --------------------------------------------------------------------------

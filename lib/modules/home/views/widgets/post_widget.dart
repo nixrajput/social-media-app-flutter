@@ -152,8 +152,10 @@ class PostWidget extends StatelessWidget {
                       tag: post.id!,
                       child: NxVideoPlayerWidget(
                         url: media.url!,
+                        thumbnailUrl: media.thumbnail?.url,
                         isSmallPlayer: true,
                         showControls: true,
+                        startVideoWithAudio: true,
                         onTap: () => Get.to(() => PostViewWidget(post: post)),
                       ),
                     );

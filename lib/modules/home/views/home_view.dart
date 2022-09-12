@@ -17,6 +17,7 @@ class HomeView extends StatelessWidget {
           AppUtils.showSnackBar(
             'Press the back button again to exit the app',
             '',
+            duration: 2,
           );
           lastExitTime = DateTime.now();
 

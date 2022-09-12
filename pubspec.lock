@@ -168,7 +168,7 @@ packages:
       name: cloudinary
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.3"
   code_builder:
     dependency: transitive
     description:

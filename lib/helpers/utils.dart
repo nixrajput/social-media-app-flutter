@@ -47,7 +47,8 @@ abstract class AppUtils {
 
   /// Show Loading Dialog
 
-  static void showLoadingDialog({double? value, bool? barrierDismissible}) {
+  static void showLoadingDialog(
+      {double? value, bool? barrierDismissible, String? message}) {
     Get.dialog(
       WillPopScope(
         onWillPop: () async => false,
@@ -75,7 +76,7 @@ abstract class AppUtils {
                   ),
                   Dimens.boxHeight12,
                   Text(
-                    'Please wait...',
+                    message ?? 'Please wait...',
                     style: AppStyles.style16Normal.copyWith(
                       color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                     ),
@@ -421,23 +422,24 @@ abstract class AppUtils {
     final imagePicker = ImagePicker();
     final imageCropper = ImageCropper();
     final pickedImage = await imagePicker.pickImage(
-      maxWidth: 1920.0,
-      maxHeight: 1920.0,
+      maxWidth: 1080.0,
+      maxHeight: 1080.0,
       source: imageSource ?? ImageSource.gallery,
     );
 
     if (pickedImage != null) {
       var croppedFile = await imageCropper.cropImage(
-        maxWidth: 1920,
-        maxHeight: 1920,
+        maxWidth: 1080,
+        maxHeight: 1080,
         sourcePath: pickedImage.path,
+        compressFormat: ImageCompressFormat.png,
         aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
         cropStyle: CropStyle.circle,
         uiSettings: [
           AndroidUiSettings(
             toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
             toolbarTitle: StringValues.cropImage,
-            toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+            toolbarWidgetColor: Theme.of(Get.context!).primaryColor,
             backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
           ),
           IOSUiSettings(
@@ -474,7 +476,7 @@ abstract class AppUtils {
             AndroidUiSettings(
               toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
               toolbarTitle: StringValues.cropImage,
-              toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+              toolbarWidgetColor: Theme.of(Get.context!).primaryColor,
               backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
             ),
             IOSUiSettings(
@@ -498,9 +500,9 @@ abstract class AppUtils {
     var resultList = <File>[];
     final pickedFiles = await filePicker.pickFiles(
       allowMultiple: true,
+      withReadStream: true,
       type: FileType.custom,
       allowedExtensions: ['png', 'jpg', 'jpeg', 'mp4', 'mkv'],
-      allowCompression: true,
     );
 
     if (pickedFiles != null) {
@@ -514,6 +516,7 @@ abstract class AppUtils {
             maxWidth: 1920,
             maxHeight: 1920,
             sourcePath: pickedImage.path!,
+            compressFormat: ImageCompressFormat.png,
             aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
             uiSettings: [
               AndroidUiSettings(
