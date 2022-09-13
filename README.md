@@ -25,23 +25,19 @@ We are also open to bug reports. If you would like to report a bug, please feel 
 
 Created with [previewed.app](https://previewed.app).
 
-### Welcome
+### Row `1`
 
 <img src='screenshots/image1.png' height='720' alt='Welcome Screen' title='Welcome Screen'>
 
-### Login
-
 <img src='screenshots/image2.png' height='720' alt='Login Screen' title='Login Screen'>
 
-### About
+### Row `2`
 
 <img src='screenshots/image3.png' height='720' alt='About Screen' title='About Screen'>
 
-### Home
-
 <img src='screenshots/image4.png' height='720' alt='Home Screen' title='Home Screen'>
 
-### Profile
+### Row `3`
 
 <img src='screenshots/image5.png' height='720' alt='Profile Screen' title='Profile Screen'>
 
