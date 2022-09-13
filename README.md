@@ -27,19 +27,19 @@ Created with [previewed.app](https://previewed.app).
 
 ### Row `1`
 
-<img src='screenshots/image1.png' height='720' alt='Welcome Screen' title='Welcome Screen'>
+<img src='screenshots/image1.png' height='720' align='left' alt='Welcome Screen' title='Welcome Screen'>
 
 <img src='screenshots/image2.png' height='720' alt='Login Screen' title='Login Screen'>
 
 ### Row `2`
 
-<img src='screenshots/image3.png' height='720' alt='About Screen' title='About Screen'>
+<img src='screenshots/image3.png' height='720' align='left' alt='About Screen' title='About Screen'>
 
 <img src='screenshots/image4.png' height='720' alt='Home Screen' title='Home Screen'>
 
 ### Row `3`
 
-<img src='screenshots/image5.png' height='720' alt='Profile Screen' title='Profile Screen'>
+<img src='screenshots/image5.png' height='720'  alt='Profile Screen' title='Profile Screen'>
 
 ## Download
 
