@@ -39,6 +39,7 @@ dependencies:
   url_launcher: ^6.1.5
   flutter_linkify: ^5.0.2
   share: ^2.0.4
+  flutter_email_sender: ^5.1.0
 
   flutter_local_notifications: ^9.9.1
   better_player: ^0.0.83

@@ -29,6 +29,8 @@ abstract class AppRoutes {
   static const applyForSelfVerifySettings = _Routes.applyForSelfVerifySettings;
   static const applyForBlueTickSettings = _Routes.applyForBlueTickSettings;
   static const deactivateAccountSettings = _Routes.deactivateAccountSettings;
+  static const reportIssueSettings = _Routes.reportIssueSettings;
+  static const sendSuggestionsSettings = _Routes.sendSuggestionsSettings;
 
   static const forgotPassword = _Routes.forgotPassword;
   static const resetPassword = _Routes.resetPassword;
@@ -95,6 +97,8 @@ abstract class _Routes {
   static const applyForSelfVerifySettings = '/apply_for_self_verify_settings';
   static const applyForBlueTickSettings = '/apply_for_blue_tick_settings';
   static const deactivateAccountSettings = '/deactivate_account_settings';
+  static const reportIssueSettings = '/report_issue';
+  static const sendSuggestionsSettings = '/send_suggestions';
 
   static const forgotPassword = '/forgot_password';
   static const resetPassword = '/reset_password';

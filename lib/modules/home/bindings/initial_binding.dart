@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:social_media_app/modules/home/controllers/banner_controller.dart';
 import 'package:social_media_app/modules/home/controllers/home_controller.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
@@ -11,6 +12,7 @@ class InitialBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(HomeController.new);
+    Get.lazyPut(BannerController.new, fenix: true);
     Get.lazyPut(PostController.new, fenix: true);
     Get.lazyPut(CreatePostController.new);
     Get.lazyPut(TrendingTabController.new);

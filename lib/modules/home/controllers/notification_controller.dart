@@ -51,6 +51,19 @@ class NotificationController extends GetxController {
   set setFollowRequestData(NotificationResponse value) =>
       _followRequestData.value = value;
 
+  @override
+  void onInit() {
+    super.onInit();
+    _getData();
+  }
+
+  void _getData() async {
+    await _fetchFollowRequests();
+    await Future.delayed(const Duration(seconds: 3), () async {
+      await _fetchNotifications();
+    });
+  }
+
   Future<void> _fetchNotifications() async {
     AppUtils.printLog("Fetching Notifications Request");
     _isLoadingNotification.value = true;
@@ -87,7 +100,6 @@ class NotificationController extends GetxController {
       _isLoadingNotification.value = false;
       update();
       AppUtils.printLog("Fetching Notifications Error");
-      AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
@@ -144,7 +156,6 @@ class NotificationController extends GetxController {
       update();
       AppUtils.printLog("Fetching More Notifications Error");
       AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isMoreLoadingNotification.value = false;
@@ -200,7 +211,6 @@ class NotificationController extends GetxController {
       update();
       AppUtils.printLog("Fetching FollowRequest Error");
       AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoadingFollowRequest.value = false;
@@ -255,7 +265,6 @@ class NotificationController extends GetxController {
       _isMoreLoadingFollowRequest.value = false;
       update();
       AppUtils.printLog("Fetching More FollowRequest Error");
-      AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
@@ -361,7 +370,6 @@ class NotificationController extends GetxController {
     } on TimeoutException {
       AppUtils.printLog("Accept FollowRequest Error");
       AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       AppUtils.printLog("Accept FollowRequest Error");
@@ -412,7 +420,6 @@ class NotificationController extends GetxController {
     } on TimeoutException {
       AppUtils.printLog("Accept FollowRequest Error");
       AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
       AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       AppUtils.printLog("Accept FollowRequest Error");
@@ -450,11 +457,4 @@ class NotificationController extends GetxController {
 
   Future<void> removeFollowRequest(String notificationId) async =>
       await _removeFollowRequest(notificationId);
-
-  @override
-  void onInit() {
-    _fetchNotifications();
-    _fetchFollowRequests();
-    super.onInit();
-  }
 }

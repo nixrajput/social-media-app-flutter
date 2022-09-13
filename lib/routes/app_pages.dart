@@ -48,12 +48,14 @@ import 'package:social_media_app/modules/settings/bindings/change_phone_binding.
 import 'package:social_media_app/modules/settings/bindings/deactivate_account_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/login_device_info_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
+import 'package:social_media_app/modules/settings/bindings/report_issue_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
 import 'package:social_media_app/modules/settings/views/pages/about_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/change_email_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/change_phone_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/deactivate_account_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/help/report_issue_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/help_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy/account_privacy_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy_settings_view.dart';
@@ -334,6 +336,18 @@ abstract class AppPages {
       name: _Routes.themeSettings,
       page: ThemeSettingsView.new,
       transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    /// ------------------------------------------------------------------------
+
+    /// HELP SETTINGS -------------------------------------------------------
+
+    GetPage(
+      name: _Routes.reportIssueSettings,
+      page: ReportIssueView.new,
+      transitionDuration: transitionDuration,
+      binding: ReportIssueBinding(),
       transition: defaultTransition,
     ),
 

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -12,6 +13,7 @@ import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/shimmer_loading.dart';
 import 'package:social_media_app/global_widgets/sliver_app_bar.dart';
 import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/home/controllers/banner_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
 import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
@@ -54,6 +56,7 @@ class HomeTabView extends StatelessWidget {
   }
 
   _buildBody() {
+    var currentItem = 0;
     return GetBuilder<PostController>(
       builder: (logic) {
         if (logic.isLoading) {
@@ -98,38 +101,100 @@ class HomeTabView extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              if (logic.isImportantNotification &&
-                  logic.importantNotification.isNotEmpty)
-                Container(
-                  width: Dimens.screenWidth,
-                  padding: Dimens.edgeInsets8,
-                  decoration: const BoxDecoration(
-                    color: ColorValues.primaryColor,
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: logic.importantNotification,
-                            style: AppStyles.style14Normal.copyWith(
-                              color: ColorValues.whiteColor,
+              GetBuilder<BannerController>(
+                builder: (logic) {
+                  if (logic.bannerList.isNotEmpty) {
+                    return StatefulBuilder(
+                      builder: (context, setInnerState) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            FlutterCarousel(
+                              items: logic.bannerList
+                                  .map((media) => Container(
+                                        width: Dimens.screenWidth,
+                                        padding: Dimens.edgeInsets8,
+                                        decoration: const BoxDecoration(
+                                          color: ColorValues.primaryColor,
+                                        ),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  text: media,
+                                                  style: AppStyles.style13Normal
+                                                      .copyWith(
+                                                    color:
+                                                        ColorValues.whiteColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Dimens.boxWidth2,
+                                            NxIconButton(
+                                              icon: Icons.clear_outlined,
+                                              onTap: () => logic
+                                                  .deleteBanner(currentItem),
+                                              iconColor: ColorValues.whiteColor,
+                                            ),
+                                          ],
+                                        ),
+                                      ))
+                                  .toList(),
+                              options: CarouselOptions(
+                                  height: Dimens.eighty,
+                                  viewportFraction: 1.0,
+                                  showIndicator: false,
+                                  onPageChanged: (int index, reason) {
+                                    setInnerState(() {
+                                      currentItem = index;
+                                    });
+                                  }),
                             ),
-                          ),
-                        ),
-                      ),
-                      Dimens.boxWidth2,
-                      NxIconButton(
-                        icon: Icons.clear_outlined,
-                        onTap: logic.hideImportantNotification,
-                        iconColor: ColorValues.whiteColor,
-                      ),
-                    ],
-                  ),
-                ),
+                            if (logic.bannerList.length > 1) Dimens.boxHeight4,
+                            if (logic.bannerList.length > 1)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: logic.bannerList.asMap().entries.map(
+                                  (entry) {
+                                    return Container(
+                                      width: Dimens.eight,
+                                      height: Dimens.eight,
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: Dimens.two,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: (Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? ColorValues.whiteColor
+                                                : ColorValues.blackColor)
+                                            .withOpacity(
+                                                currentItem == entry.key
+                                                    ? 0.9
+                                                    : 0.4),
+                                      ),
+                                    );
+                                  },
+                                ).toList(),
+                              ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
               ListView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

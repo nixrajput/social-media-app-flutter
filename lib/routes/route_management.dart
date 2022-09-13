@@ -174,6 +174,14 @@ abstract class RouteManagement {
 
   /// --------------------------------------------------------------------------
 
+  /// Help Settings Pages ------------------------------------------------------
+
+  static void goToReportIssueSettingsView() {
+    Get.toNamed(AppRoutes.reportIssueSettings);
+  }
+
+  /// --------------------------------------------------------------------------
+
   /// Security Settings Pages --------------------------------------------------
 
   static void goToLoginActivityView() {

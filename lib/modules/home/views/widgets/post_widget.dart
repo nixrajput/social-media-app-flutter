@@ -138,80 +138,83 @@ class PostWidget extends StatelessWidget {
 
   Widget _buildPostBody() {
     var currentItem = 0;
-    return StatefulBuilder(builder: (context, setInnerState) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          GestureDetector(
-            onDoubleTap: () => PostController.find.toggleLikePost(post),
-            child: FlutterCarousel(
-              items: post.mediaFiles!.map(
-                (media) {
-                  if (media.mediaType == "video") {
-                    return Hero(
-                      tag: post.id!,
-                      child: NxVideoPlayerWidget(
-                        url: media.url!,
-                        thumbnailUrl: media.thumbnail?.url,
-                        isSmallPlayer: true,
-                        showControls: true,
-                        startVideoWithAudio: true,
-                        onTap: () => Get.to(() => PostViewWidget(post: post)),
+    return StatefulBuilder(
+      builder: (context, setInnerState) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
+              onDoubleTap: () => PostController.find.toggleLikePost(post),
+              child: FlutterCarousel(
+                items: post.mediaFiles!.map(
+                  (media) {
+                    if (media.mediaType == "video") {
+                      return Hero(
+                        tag: post.id!,
+                        child: NxVideoPlayerWidget(
+                          url: media.url!,
+                          thumbnailUrl: media.thumbnail?.url,
+                          isSmallPlayer: true,
+                          showControls: true,
+                          startVideoWithAudio: true,
+                          onTap: () => Get.to(() => PostViewWidget(post: post)),
+                        ),
+                      );
+                    }
+                    return GestureDetector(
+                      onTap: () => Get.to(() => PostViewWidget(post: post)),
+                      child: Hero(
+                        tag: post.id!,
+                        child: NxNetworkImage(
+                          imageUrl: media.url!,
+                          imageFit: BoxFit.cover,
+                          width: Dimens.screenWidth,
+                        ),
                       ),
                     );
-                  }
-                  return GestureDetector(
-                    onTap: () => Get.to(() => PostViewWidget(post: post)),
-                    child: Hero(
-                      tag: post.id!,
-                      child: NxNetworkImage(
-                        imageUrl: media.url!,
-                        imageFit: BoxFit.cover,
-                        width: Dimens.screenWidth,
+                  },
+                ).toList(),
+                options: CarouselOptions(
+                    height: Dimens.screenWidth * 0.75,
+                    aspectRatio: 1 / 1,
+                    viewportFraction: 1.0,
+                    showIndicator: false,
+                    onPageChanged:
+                        (int index, CarouselPageChangedReason reason) {
+                      setInnerState(() {
+                        currentItem = index;
+                      });
+                    }),
+              ),
+            ),
+            if (post.mediaFiles!.length > 1) Dimens.boxHeight8,
+            if (post.mediaFiles!.length > 1)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: post.mediaFiles!.asMap().entries.map(
+                  (entry) {
+                    return Container(
+                      width: Dimens.eight,
+                      height: Dimens.eight,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: Dimens.two,
                       ),
-                    ),
-                  );
-                },
-              ).toList(),
-              options: CarouselOptions(
-                  height: Dimens.screenWidth * 0.75,
-                  aspectRatio: 1 / 1,
-                  viewportFraction: 1.0,
-                  showIndicator: false,
-                  onPageChanged: (int index, CarouselPageChangedReason reason) {
-                    setInnerState(() {
-                      currentItem = index;
-                    });
-                  }),
-            ),
-          ),
-          if (post.mediaFiles!.length > 1) Dimens.boxHeight8,
-          if (post.mediaFiles!.length > 1)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: post.mediaFiles!.asMap().entries.map(
-                (entry) {
-                  return Container(
-                    width: Dimens.eight,
-                    height: Dimens.eight,
-                    margin: EdgeInsets.symmetric(
-                      horizontal: Dimens.two,
-                    ),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: (Theme.of(context).brightness == Brightness.dark
-                              ? ColorValues.whiteColor
-                              : ColorValues.blackColor)
-                          .withOpacity(currentItem == entry.key ? 0.9 : 0.4),
-                    ),
-                  );
-                },
-              ).toList(),
-            ),
-        ],
-      );
-    });
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: (Theme.of(context).brightness == Brightness.dark
+                                ? ColorValues.whiteColor
+                                : ColorValues.blackColor)
+                            .withOpacity(currentItem == entry.key ? 0.9 : 0.4),
+                      ),
+                    );
+                  },
+                ).toList(),
+              ),
+          ],
+        );
+      },
+    );
   }
 
   Widget _buildPostFooter() => Padding(

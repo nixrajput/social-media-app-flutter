@@ -144,6 +144,7 @@ abstract class StringValues {
   static const privateAccountWarning = 'This Account is private';
   static const deactivatedAccountWarning = 'This Account is deactivated';
   static const noImageVideoSelectedWarning = 'No image or video selected';
+  static const enterMessage = 'Enter your message';
   static const followAccountText =
       'Follow this account to see their photos and videos.';
   static const notFollowingWarning = 'You are not following the user.';

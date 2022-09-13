@@ -12,38 +12,42 @@ Right now, the app is only available for Android devices.
 We are open to contributions. If you would like to contribute, please read the
 [contribution guidelines](CONTRIBUTING.md).
 
-## Demo
+We are also looking for UI/UX designers. If you would like to contribute as a UI/UX designer,
+please read the [contribution guidelines](CONTRIBUTING.md) and then contact the project [owner][github].
+
+We are also open to design suggestions. If you would like to suggest a design, feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues).
+
+We are also open to feature requests. If you would like to request a feature, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to implement the feature as soon as possible.
+
+We are also open to bug reports. If you would like to report a bug, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to fix the bug as soon as possible.
+
+## Screenshots
 
 Created with [previewed.app](https://previewed.app).
 
 ### Welcome
 
-![Welcome Screen](screenshots/image1.png)
+<img src='screenshots/image1.png' alt='Welcome Screen' title='Welcome Screen'>
 
 ### Login
 
-![Login Screen](screenshots/image2.png)
+<img src='screenshots/image2.png' alt='Login Screen' title='Login Screen'>
 
 ### About
 
-![About Screen](screenshots/image3.png)
+<img src='screenshots/image3.png' alt='About Screen' title='About Screen'>
 
 ### Home
 
-![Home Screen](screenshots/image4.png)
+<img src='screenshots/image4.png' alt='Home Screen' title='Home Screen'>
 
 ### Profile
 
-![Profile Screen](screenshots/image5.png)
+<img src='screenshots/image5.png' alt='Profile Screen' title='Profile Screen'>
 
 ## Download
 
 You can download the app from the [releases page][releases].
-
-## Getting Started
-
-For help getting started with Flutter, view online
-[documentation](https://flutter.dev/).
 
 ## Contributing
 
@@ -72,7 +76,7 @@ conduct, and the process for submitting pull requests to us.
 * [ ] Post Muting
 * [x] Profile Creation
 * [x] Profile Editing
-* [ ] Profile Deactivation
+* [x] Profile Deactivation
 * [x] User Following
 * [x] User Unfollowing
 * [ ] User Blocking

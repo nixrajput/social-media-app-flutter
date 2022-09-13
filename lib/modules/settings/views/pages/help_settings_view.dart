@@ -5,6 +5,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
 class HelpSettingsView extends StatelessWidget {
   const HelpSettingsView({Key? key}) : super(key: key);
@@ -60,6 +61,7 @@ class HelpSettingsView extends StatelessWidget {
                   StringValues.reportIssue,
                   style: AppStyles.style14Bold,
                 ),
+                onTap: RouteManagement.goToReportIssueSettingsView,
               ),
 
               Dimens.divider,
