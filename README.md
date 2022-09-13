@@ -27,23 +27,23 @@ Created with [previewed.app](https://previewed.app).
 
 ### Welcome
 
-<img src='screenshots/image1.png' height='400' alt='Welcome Screen' title='Welcome Screen'>
+<img src='screenshots/image1.png' height='720' alt='Welcome Screen' title='Welcome Screen'>
 
 ### Login
 
-<img src='screenshots/image2.png' height='400' alt='Login Screen' title='Login Screen'>
+<img src='screenshots/image2.png' height='720' alt='Login Screen' title='Login Screen'>
 
 ### About
 
-<img src='screenshots/image3.png' height='400' alt='About Screen' title='About Screen'>
+<img src='screenshots/image3.png' height='720' alt='About Screen' title='About Screen'>
 
 ### Home
 
-<img src='screenshots/image4.png' height='400' alt='Home Screen' title='Home Screen'>
+<img src='screenshots/image4.png' height='720' alt='Home Screen' title='Home Screen'>
 
 ### Profile
 
-<img src='screenshots/image5.png' height='400' alt='Profile Screen' title='Profile Screen'>
+<img src='screenshots/image5.png' height='720' alt='Profile Screen' title='Profile Screen'>
 
 ## Download
 
