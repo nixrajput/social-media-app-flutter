@@ -80,6 +80,7 @@ class HelpSettingsView extends StatelessWidget {
                   StringValues.sendUsSuggestions,
                   style: AppStyles.style14Bold,
                 ),
+                onTap: RouteManagement.goToSendSuggestionsSettingsView,
               ),
 
               Dimens.divider,

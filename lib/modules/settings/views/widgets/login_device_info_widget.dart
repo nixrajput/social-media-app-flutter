@@ -8,9 +8,9 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class LoginDeviceInfoWidget extends StatelessWidget {
   const LoginDeviceInfoWidget({
@@ -94,7 +94,7 @@ class LoginDeviceInfoWidget extends StatelessWidget {
   }
 
   Future<void> _showDeleteDialog(String deviceId) async {
-    AppUtils.showSimpleDialog(
+    AppUtility.showSimpleDialog(
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -126,7 +126,7 @@ class LoginDeviceInfoWidget extends StatelessWidget {
                   labelStyle: AppStyles.style16Bold.copyWith(
                     color: ColorValues.errorColor,
                   ),
-                  onTap: AppUtils.closeDialog,
+                  onTap: AppUtility.closeDialog,
                   padding: Dimens.edgeInsets8,
                 ),
                 Dimens.boxWidth16,
@@ -136,14 +136,15 @@ class LoginDeviceInfoWidget extends StatelessWidget {
                     color: ColorValues.successColor,
                   ),
                   onTap: () async {
-                    AppUtils.closeDialog();
+                    AppUtility.closeDialog();
                     if (deviceId == AuthService.find.deviceId) {
                       await AuthService.find.logout();
                       RouteManagement.goToWelcomeView();
                       return;
+                    } else {
+                      await LoginDeviceInfoController.find
+                          .deleteLoginDeviceInfo(deviceId);
                     }
-                    await LoginDeviceInfoController.find
-                        .deleteLoginDeviceInfo(deviceId);
                   },
                   padding: Dimens.edgeInsets8,
                 ),

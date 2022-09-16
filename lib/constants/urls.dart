@@ -1,10 +1,11 @@
 abstract class AppUrls {
-  // Base URL
+  /// Base URLs
   static const String locationUrl = 'http://ip-api.com/json';
   static const String baseUrl = 'https://social-api.nixlab.co.in/api/v1';
   static const String githubApiUrl = 'https://api.github.com';
 
-//  Endpoints
+  ///  Endpoints
+  static const String serverHealthEndpoint = '/health';
   static const String loginEndpoint = '/login';
   static const String registerEndpoint = '/register';
   static const String forgotPasswordEndpoint = '/forgot-password';
@@ -16,6 +17,9 @@ abstract class AppUrls {
   static const String createPostEndpoint = '/create-post';
   static const String likePostEndpoint = '/like-post';
   static const String getPostLikedUsersEndpoint = '/get-post-liked-users';
+  static const String searchTagEndpoint = '/search-tag';
+  static const String getPostsByTagEndpoint = '/get-posts-by-tag';
+  static const String getTrendingPostsEndpoint = '/get-trending-posts';
 
   static const String addCommentEndpoint = '/add-comment';
   static const String getCommentsEndpoint = '/get-comments';

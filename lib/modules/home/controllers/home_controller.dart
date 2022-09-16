@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/global_widgets/circular_network_image.dart';
 import 'package:social_media_app/global_widgets/keep_alive_page.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/home/views/tab_views/home_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/notification_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/profile_tab.dart';
@@ -58,8 +60,18 @@ class HomeController extends GetxController {
       ),
       label: StringValues.notifications,
     ),
-    const BottomNavigationBarItem(
-      icon: Icon(CupertinoIcons.person),
+    BottomNavigationBarItem(
+      icon: GetBuilder<ProfileController>(
+        builder: (logic) {
+          if (logic.profileDetails.user == null) {
+            return const Icon(CupertinoIcons.person);
+          }
+          return NxCircleNetworkImage(
+            imageUrl: logic.profileDetails.user!.avatar!.url!,
+            radius: Dimens.twelve,
+          );
+        },
+      ),
       label: StringValues.profile,
     ),
   ];
@@ -73,7 +85,7 @@ class HomeController extends GetxController {
     currentPageIndex = index;
     pageController.animateToPage(
       index,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeOutCirc,
     );
     update();

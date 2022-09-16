@@ -7,8 +7,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class PasswordController extends GetxController {
   static PasswordController get find => Get.find();
@@ -42,7 +42,7 @@ class PasswordController extends GetxController {
 
   Future<void> _sendForgotPasswordOTP(String email) async {
     if (email.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterEmail,
         StringValues.warning,
       );
@@ -53,8 +53,8 @@ class PasswordController extends GetxController {
       'email': email,
     };
 
-    AppUtils.printLog("Send Password Reset OTP Request...");
-    AppUtils.showLoadingDialog();
+    AppUtility.printLog("Send Password Reset OTP Request...");
+    AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
 
@@ -65,49 +65,50 @@ class PasswordController extends GetxController {
 
       if (response.statusCode == 200) {
         _clearResetPasswordTextControllers();
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.showSnackBar(
+        AppUtility.showSnackBar(
           StringValues.otpSendSuccessful,
           StringValues.success,
         );
         RouteManagement.goToResetPasswordView();
       } else {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.showSnackBar(
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } on SocketException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
@@ -117,7 +118,7 @@ class PasswordController extends GetxController {
     String confPassword,
   ) async {
     if (otp.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterOtp,
         StringValues.warning,
       );
@@ -125,14 +126,14 @@ class PasswordController extends GetxController {
     }
 
     if (newPassword.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterPassword,
         StringValues.warning,
       );
       return;
     }
     if (confPassword.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterConfirmPassword,
         StringValues.warning,
       );
@@ -145,8 +146,8 @@ class PasswordController extends GetxController {
       'confirmPassword': confPassword,
     };
 
-    AppUtils.printLog("Password Reset Request...");
-    AppUtils.showLoadingDialog();
+    AppUtility.printLog("Password Reset Request...");
+    AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
 
@@ -157,59 +158,60 @@ class PasswordController extends GetxController {
 
       if (response.statusCode == 200) {
         _clearResetPasswordTextControllers();
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.showSnackBar(
+        AppUtility.showSnackBar(
           StringValues.passwordChangeSuccessful,
           StringValues.success,
         );
         RouteManagement.goToLoginView();
       } else {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.showSnackBar(
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } on SocketException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> sendResetPasswordOTP() async {
-    AppUtils.closeFocus();
+    AppUtility.closeFocus();
     await _sendForgotPasswordOTP(emailTextController.text.trim());
   }
 
   Future<void> resetPassword() async {
-    AppUtils.closeFocus();
+    AppUtility.closeFocus();
     await _resetPassword(
       otpTextController.text.trim(),
       passwordTextController.text.trim(),

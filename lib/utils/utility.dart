@@ -20,7 +20,7 @@ import 'package:social_media_app/global_widgets/circular_progress_indicator.dart
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_compress/video_compress.dart';
 
-abstract class AppUtils {
+abstract class AppUtility {
   /// Close any open snack bar.
 
   static void closeSnackBar() {
@@ -106,6 +106,7 @@ abstract class AppUtils {
 
   static void showSimpleDialog(Widget child,
       {bool barrierDismissible = false}) {
+    closeDialog();
     Get.dialog(
       MediaQuery.removeViewInsets(
         context: Get.context!,
@@ -135,7 +136,7 @@ abstract class AppUtils {
         ),
       ),
       barrierDismissible: barrierDismissible,
-      barrierColor: ColorValues.blackColor.withOpacity(0.5),
+      barrierColor: ColorValues.blackColor.withOpacity(0.75),
     );
   }
 
@@ -220,8 +221,7 @@ abstract class AppUtils {
           topRight: Radius.circular(borderRadius ?? Dimens.zero),
         ),
       ),
-      barrierColor:
-          Theme.of(Get.context!).textTheme.bodyText1!.color!.withAlpha(90),
+      barrierColor: ColorValues.blackColor.withOpacity(0.75),
       backgroundColor: Theme.of(Get.context!).bottomSheetTheme.backgroundColor,
     );
   }
@@ -262,10 +262,13 @@ abstract class AppUtils {
         icon: Icon(
           renderIcon(type),
           color: renderIconColor(type),
+          size: Dimens.twenty,
         ),
         shouldIconPulse: false,
         backgroundColor: Theme.of(Get.context!).snackBarTheme.backgroundColor!,
-        duration: Duration(seconds: duration ?? 3),
+        barBlur: Dimens.twentyFour,
+        dismissDirection: DismissDirection.horizontal,
+        duration: Duration(seconds: duration ?? 4),
       ),
     );
   }
@@ -273,45 +276,40 @@ abstract class AppUtils {
   /// Render Text Color
 
   static Color renderTextColor(String type) {
-    if (type == StringValues.error) {
-      return ColorValues.errorColor;
-    }
-    if (type == StringValues.success) {
-      return ColorValues.successColor;
-    }
-    if (type == StringValues.warning) {
-      return ColorValues.warningColor;
-    }
-    return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    // if (type == StringValues.error) {
+    //   return ColorValues.errorColor;
+    // }
+    // if (type == StringValues.success) {
+    //   return ColorValues.successColor;
+    // }
+    // if (type == StringValues.warning) {
+    //   return ColorValues.warningColor;
+    // }
+    return Theme.of(Get.context!).snackBarTheme.contentTextStyle!.color!;
   }
 
   /// Render Icon Color
 
   static Color renderIconColor(String type) {
-    if (type == StringValues.error) {
-      return ColorValues.errorColor;
-    }
-    if (type == StringValues.success) {
-      return ColorValues.successColor;
-    }
-    if (type == StringValues.warning) {
-      return ColorValues.warningColor;
-    }
-    return Theme.of(Get.context!).iconTheme.color!;
+    // if (type == StringValues.error) {
+    //   return ColorValues.errorColor;
+    // }
+    // if (type == StringValues.success) {
+    //   return ColorValues.successColor;
+    // }
+    // if (type == StringValues.warning) {
+    //   return ColorValues.warningColor;
+    // }
+    return Theme.of(Get.context!).snackBarTheme.contentTextStyle!.color!;
   }
 
   /// Render Icon
 
   static IconData renderIcon(String type) {
-    if (type == StringValues.error) {
-      return CupertinoIcons.info_circle_fill;
-    }
     if (type == StringValues.success) {
       return CupertinoIcons.check_mark_circled_solid;
     }
-    if (type == StringValues.warning) {
-      return CupertinoIcons.info_circle_fill;
-    }
+
     return CupertinoIcons.info_circle_fill;
   }
 

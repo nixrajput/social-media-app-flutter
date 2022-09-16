@@ -8,8 +8,8 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class AboutSettingsView extends StatelessWidget {
   const AboutSettingsView({Key? key}) : super(key: key);
@@ -49,7 +49,7 @@ class AboutSettingsView extends StatelessWidget {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AppUtils.buildAppLogo(fontSize: Dimens.fourty),
+                AppUtility.buildAppLogo(fontSize: Dimens.fourty),
                 RichText(
                   text: TextSpan(
                     text:
@@ -74,8 +74,8 @@ class AboutSettingsView extends StatelessWidget {
                   labelStyle: AppStyles.style14Normal.copyWith(
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   ),
-                  onTap: () =>
-                      AppUtils.openUrl(Uri.parse(StringValues.appDownloadUrl)),
+                  onTap: () => AppUtility.openUrl(
+                      Uri.parse(StringValues.appDownloadUrl)),
                 ),
                 Dimens.boxHeight16,
                 NxOutlinedButton(
@@ -89,7 +89,7 @@ class AboutSettingsView extends StatelessWidget {
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   ),
                   onTap: () =>
-                      AppUtils.openUrl(Uri.parse(StringValues.appGithubUrl)),
+                      AppUtility.openUrl(Uri.parse(StringValues.appGithubUrl)),
                 ),
                 Dimens.boxHeight16,
                 NxOutlinedButton(
@@ -103,7 +103,7 @@ class AboutSettingsView extends StatelessWidget {
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   ),
                   onTap: () =>
-                      AppUtils.openUrl(Uri.parse(StringValues.websiteUrl)),
+                      AppUtility.openUrl(Uri.parse(StringValues.websiteUrl)),
                 ),
               ],
             ),
@@ -122,7 +122,7 @@ class AboutSettingsView extends StatelessWidget {
                 Dimens.boxHeight4,
                 InkWell(
                   onTap: () =>
-                      AppUtils.openUrl(Uri.parse(StringValues.portfolioUrl)),
+                      AppUtility.openUrl(Uri.parse(StringValues.portfolioUrl)),
                   child: Text(
                     'Nikhil Rajput',
                     style: AppStyles.style16Bold.copyWith(

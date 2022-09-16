@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/following_list_controller.dart';
-import 'package:social_media_app/modules/post/views/post_details_view.dart';
+import 'package:social_media_app/modules/post/controllers/post_details_controller.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
@@ -11,6 +11,10 @@ abstract class RouteManagement {
   /// Welcome ------------------------------------------------------------------
   static void goToWelcomeView() {
     Get.offAllNamed(AppRoutes.welcome);
+  }
+
+  static void goToServerMaintenanceView() {
+    Get.offAllNamed(AppRoutes.maintenance);
   }
 
   static void goToLoginView() {
@@ -43,6 +47,10 @@ abstract class RouteManagement {
 
   static void goToHomeView() {
     Get.offAllNamed(AppRoutes.home);
+  }
+
+  static void goToFollowRequestsView() {
+    Get.toNamed(AppRoutes.followRequests);
   }
 
   /// --------------------------------------------------------------------------
@@ -117,11 +125,17 @@ abstract class RouteManagement {
 
   static void goToUserProfileView(String userId) {
     Get.delete<UserDetailsController>();
-    Get.toNamed("${AppRoutes.userProfile}/$userId", arguments: userId);
+    Get.toNamed(AppRoutes.userProfile, arguments: [userId, 'uid']);
   }
 
-  static void goToPostDetailsView(String postId, Post post) {
-    Get.to(() => PostDetailsView(postId: postId, post: post));
+  static void goToUserProfileViewByUsername(String username) {
+    Get.delete<UserDetailsController>();
+    Get.toNamed(AppRoutes.userProfile, arguments: [username, 'uname']);
+  }
+
+  static void goToPostDetailsView(String postId, Post? post) {
+    Get.delete<PostDetailsController>();
+    Get.toNamed(AppRoutes.postDetails, arguments: [postId, post]);
   }
 
   /// --------------------------------------------------------------------------
@@ -178,6 +192,10 @@ abstract class RouteManagement {
 
   static void goToReportIssueSettingsView() {
     Get.toNamed(AppRoutes.reportIssueSettings);
+  }
+
+  static void goToSendSuggestionsSettingsView() {
+    Get.toNamed(AppRoutes.sendSuggestionsSettings);
   }
 
   /// --------------------------------------------------------------------------

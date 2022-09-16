@@ -11,14 +11,15 @@ import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/count_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_shape_painter.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/shimmer_loading.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class UserProfileView extends StatelessWidget {
   const UserProfileView({Key? key}) : super(key: key);
@@ -31,8 +32,9 @@ class UserProfileView extends StatelessWidget {
           width: Dimens.screenWidth,
           height: Dimens.screenHeight,
           child: GetBuilder<UserDetailsController>(builder: (logic) {
-            return RefreshIndicator(
-              onRefresh: logic.fetchUserDetails,
+            return NxRefreshIndicator(
+              onRefresh: logic.fetchUserDetailsById,
+              showProgress: false,
               child: _buildWidget(logic),
             );
           }),
@@ -135,7 +137,7 @@ class UserProfileView extends StatelessWidget {
   }
 
   Widget _buildUserDetails(UserDetailsController logic) {
-    final user = logic.userDetails.user;
+    final user = logic.userDetails.user!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -143,10 +145,7 @@ class UserProfileView extends StatelessWidget {
       children: [
         Column(
           children: [
-            Hero(
-              tag: user!.id,
-              child: AvatarWidget(avatar: user.avatar),
-            ),
+            AvatarWidget(avatar: user.avatar),
             Dimens.boxHeight16,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -194,7 +193,7 @@ class UserProfileView extends StatelessWidget {
               ),
               Dimens.boxWidth8,
               InkWell(
-                onTap: () => AppUtils.openUrl(
+                onTap: () => AppUtility.openUrl(
                     Uri.parse(logic.userDetails.user!.website!)),
                 child: Text(
                   logic.userDetails.user!.website!.contains('https://') ||
@@ -344,7 +343,7 @@ class UserProfileView extends StatelessWidget {
               valueStyle: AppStyles.style24Bold,
               value: user.followersCount.toString().toCountingFormat(),
               onTap: () {
-                if (logic.userDetails.user!.accountPrivacy == "private" &&
+                if (logic.userDetails.user!.isPrivate &&
                     (logic.userDetails.user!.followingStatus != "following" &&
                         logic.userDetails.user!.followingStatus != "self")) {
                   return;
@@ -360,7 +359,7 @@ class UserProfileView extends StatelessWidget {
               valueStyle: AppStyles.style24Bold,
               value: user.followingCount.toString().toCountingFormat(),
               onTap: () {
-                if (logic.userDetails.user!.accountPrivacy == "private" &&
+                if (logic.userDetails.user!.isPrivate &&
                     (logic.userDetails.user!.followingStatus != "following" &&
                         logic.userDetails.user!.followingStatus != "self")) {
                   return;
@@ -378,7 +377,7 @@ class UserProfileView extends StatelessWidget {
   Widget _buildPosts(UserDetailsController logic) {
     final user = logic.userDetails.user!;
 
-    if (user.accountPrivacy == "private" &&
+    if (user.isPrivate &&
         (user.followingStatus != "following" &&
             user.followingStatus != "self")) {
       return Center(
@@ -482,7 +481,7 @@ class UserProfileView extends StatelessWidget {
             width: Dimens.hundred,
             height: Dimens.thirtySix,
             label: StringValues.refresh,
-            onTap: logic.fetchUserDetails,
+            onTap: logic.fetchUserDetailsById,
           )
         ],
       ),

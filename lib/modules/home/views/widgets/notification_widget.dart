@@ -4,10 +4,8 @@ import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/notification.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
-import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
-import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -27,8 +25,13 @@ class NotificationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (notification.type == "like" || notification.type == "comment") {
+        if (notification.type == "postLike" ||
+            notification.type == "postComment" ||
+            notification.type == "postMention") {
           NotificationController.find.goToPost(notification.refId!);
+          return;
+        } else if (notification.type == 'followRequest') {
+          RouteManagement.goToFollowRequestsView();
           return;
         }
       },
@@ -61,9 +64,9 @@ class NotificationWidget extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () =>
-                      RouteManagement.goToUserProfileView(notification.user.id),
+                      RouteManagement.goToUserProfileView(notification.from.id),
                   child: AvatarWidget(
-                    avatar: notification.user.avatar,
+                    avatar: notification.from.avatar,
                     size: Dimens.twentyFour,
                   ),
                 ),
@@ -80,7 +83,7 @@ class NotificationWidget extends StatelessWidget {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                              text: notification.user.uname,
+                              text: notification.from.uname,
                               style: AppStyles.style14Bold.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
@@ -114,8 +117,7 @@ class NotificationWidget extends StatelessWidget {
                   ),
                 ),
                 Dimens.boxWidth16,
-                if (notification.type != "followRequest" &&
-                    !notification.isRead)
+                if (!notification.isRead)
                   InkWell(
                     onTap: () => NotificationController.find
                         .markNotificationRead(notification.id),
@@ -126,58 +128,6 @@ class NotificationWidget extends StatelessWidget {
                       ),
                     ),
                   )
-                // else if (notification.type == 'followRequestAccepted')
-                //   NxOutlinedButton(
-                //     label: StringValues.remove,
-                //     bgColor: ColorValues.errorColor,
-                //     borderColor: Colors.transparent,
-                //     borderStyle: BorderStyle.none,
-                //     onTap: () => NotificationController.find
-                //         .removeFollowRequest(notification.id),
-                //     padding: Dimens.edgeInsets0_8,
-                //     borderWidth: Dimens.one,
-                //     height: Dimens.thirty,
-                //     borderRadius: Dimens.eight,
-                //     labelStyle: AppStyles.style13Normal.copyWith(
-                //       color: ColorValues.whiteColor,
-                //     ),
-                //   )
-                else if (notification.type == "followRequest")
-                  Row(
-                    children: [
-                      NxOutlinedButton(
-                        label: StringValues.accept,
-                        bgColor: ColorValues.successColor,
-                        borderColor: Colors.transparent,
-                        borderStyle: BorderStyle.none,
-                        onTap: () => NotificationController.find
-                            .acceptFollowRequest(notification.id),
-                        padding: Dimens.edgeInsets0_8,
-                        borderWidth: Dimens.one,
-                        height: Dimens.thirty,
-                        borderRadius: Dimens.eight,
-                        labelStyle: AppStyles.style13Normal.copyWith(
-                          color: ColorValues.whiteColor,
-                        ),
-                      ),
-                      Dimens.boxWidth8,
-                      NxOutlinedButton(
-                        label: StringValues.remove,
-                        bgColor: ColorValues.errorColor,
-                        borderColor: Colors.transparent,
-                        borderStyle: BorderStyle.none,
-                        onTap: () => NotificationController.find
-                            .removeFollowRequest(notification.id),
-                        padding: Dimens.edgeInsets0_8,
-                        borderWidth: Dimens.one,
-                        height: Dimens.thirty,
-                        borderRadius: Dimens.eight,
-                        labelStyle: AppStyles.style13Normal.copyWith(
-                          color: ColorValues.whiteColor,
-                        ),
-                      ),
-                    ],
-                  ),
               ],
             ),
           ),

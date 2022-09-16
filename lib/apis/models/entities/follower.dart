@@ -10,6 +10,7 @@ class Follower extends Equatable {
     required this.id,
     required this.user,
     required this.createdAt,
+    required this.updatedAt,
   });
 
   factory Follower.fromJson(Map<String, dynamic> json) =>
@@ -26,10 +27,14 @@ class Follower extends Equatable {
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
 
+  @JsonKey(name: 'updatedAt')
+  final DateTime updatedAt;
+
   @override
   List<Object?> get props => <Object?>[
         id,
         user,
         createdAt,
+        updatedAt,
       ];
 }

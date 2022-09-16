@@ -12,12 +12,15 @@ import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
 import 'package:social_media_app/modules/auth/views/send_account_verification_otp_view.dart';
 import 'package:social_media_app/modules/auth/views/verify_account_view.dart';
+import 'package:social_media_app/modules/follow_request/follow_request_binding.dart';
+import 'package:social_media_app/modules/follow_request/follow_request_view.dart';
 import 'package:social_media_app/modules/follower/bindings/followers_list_binding.dart';
 import 'package:social_media_app/modules/follower/bindings/following_list_binding.dart';
 import 'package:social_media_app/modules/follower/views/followers_list_view.dart';
 import 'package:social_media_app/modules/follower/views/following_list_view.dart';
 import 'package:social_media_app/modules/home/bindings/initial_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
+import 'package:social_media_app/modules/maintenance/server_maintenance_view.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
 import 'package:social_media_app/modules/post/bindings/post_details_binding.dart';
 import 'package:social_media_app/modules/post/bindings/post_liked_users_binding.dart';
@@ -49,6 +52,7 @@ import 'package:social_media_app/modules/settings/bindings/deactivate_account_bi
 import 'package:social_media_app/modules/settings/bindings/login_device_info_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/report_issue_binding.dart';
+import 'package:social_media_app/modules/settings/bindings/send_suggestions_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
 import 'package:social_media_app/modules/settings/views/pages/about_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/change_email_view.dart';
@@ -56,6 +60,7 @@ import 'package:social_media_app/modules/settings/views/pages/account/change_pho
 import 'package:social_media_app/modules/settings/views/pages/account/deactivate_account_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/help/report_issue_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/help/send_suggestions_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/help_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy/account_privacy_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy_settings_view.dart';
@@ -78,11 +83,18 @@ abstract class AppPages {
 
   static final pages = [
     GetPage(
+      name: _Routes.maintenance,
+      page: ServerMaintenanceView.new,
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+    GetPage(
       name: _Routes.welcome,
       page: WelcomeView.new,
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
+
     GetPage(
       name: _Routes.login,
       page: LoginView.new,
@@ -276,9 +288,17 @@ abstract class AppPages {
     ),
 
     GetPage(
-      name: "${_Routes.userProfile}/:userId",
+      name: _Routes.userProfile,
       page: UserProfileView.new,
       binding: UserProfileBinding(),
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.followRequests,
+      page: FollowRequestView.new,
+      binding: FollowRequestBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
@@ -348,6 +368,14 @@ abstract class AppPages {
       page: ReportIssueView.new,
       transitionDuration: transitionDuration,
       binding: ReportIssueBinding(),
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.sendSuggestionsSettings,
+      page: SendSuggestionsView.new,
+      transitionDuration: transitionDuration,
+      binding: SendSuggestionsBinding(),
       transition: defaultTransition,
     ),
 

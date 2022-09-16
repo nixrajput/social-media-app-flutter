@@ -24,11 +24,13 @@ UserDetails _$UserDetailsFromJson(Map<String, dynamic> json) => UserDetails(
       followingCount: json['followingCount'] as int,
       followingStatus: json['followingStatus'] as String,
       postsCount: json['postsCount'] as int,
-      role: json['role'] as String,
-      accountPrivacy: json['accountPrivacy'] as String,
       accountStatus: json['accountStatus'] as String,
+      isPrivate: json['isPrivate'] as bool,
+      isValid: json['isValid'] as bool,
       isVerified: json['isVerified'] as bool,
+      role: json['role'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
@@ -48,9 +50,11 @@ Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
       'followersCount': instance.followersCount,
       'followingCount': instance.followingCount,
       'followingStatus': instance.followingStatus,
-      'role': instance.role,
-      'accountPrivacy': instance.accountPrivacy,
       'accountStatus': instance.accountStatus,
+      'isPrivate': instance.isPrivate,
+      'isValid': instance.isValid,
       'isVerified': instance.isVerified,
+      'role': instance.role,
       'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
     };

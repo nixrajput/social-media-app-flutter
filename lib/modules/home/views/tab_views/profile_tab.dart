@@ -11,16 +11,17 @@ import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/count_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_shape_painter.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/shimmer_loading.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class ProfileTabView extends StatelessWidget {
   const ProfileTabView({Key? key}) : super(key: key);
@@ -32,8 +33,9 @@ class ProfileTabView extends StatelessWidget {
         width: Dimens.screenWidth,
         height: Dimens.screenHeight,
         child: GetBuilder<ProfileController>(builder: (logic) {
-          return RefreshIndicator(
+          return NxRefreshIndicator(
             onRefresh: logic.fetchProfileDetails,
+            showProgress: false,
             child: _buildWidget(logic),
           );
         }),
@@ -182,7 +184,7 @@ class ProfileTabView extends StatelessWidget {
                 ),
                 Dimens.boxWidth8,
                 InkWell(
-                  onTap: () => AppUtils.openUrl(
+                  onTap: () => AppUtility.openUrl(
                       Uri.parse(logic.profileDetails.user!.website!)),
                   child: Text(
                     logic.profileDetails.user!.website!.contains('https://') ||
@@ -348,7 +350,7 @@ class ProfileTabView extends StatelessWidget {
   }
 
   void _showProfilePictureDialog(ProfileController logic) {
-    AppUtils.showSimpleDialog(
+    AppUtility.showSimpleDialog(
       GetBuilder<EditProfilePictureController>(
         builder: (con) => Column(
           mainAxisSize: MainAxisSize.min,
@@ -371,7 +373,7 @@ class ProfileTabView extends StatelessWidget {
                     iconSize: Dimens.thirtyTwo,
                     iconColor:
                         Theme.of(Get.context!).textTheme.bodyText1!.color,
-                    onTap: AppUtils.closeDialog,
+                    onTap: AppUtility.closeDialog,
                   ),
                 ],
               ),
@@ -402,7 +404,7 @@ class ProfileTabView extends StatelessWidget {
                               Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
                         onTap: () {
-                          AppUtils.closeDialog();
+                          AppUtility.closeDialog();
                           con.chooseImage();
                         }),
                   ),
@@ -419,7 +421,7 @@ class ProfileTabView extends StatelessWidget {
                             Theme.of(Get.context!).textTheme.bodyText1!.color,
                       ),
                       onTap: () {
-                        AppUtils.closeDialog();
+                        AppUtility.closeDialog();
                         con.removeProfilePicture();
                       },
                     ),

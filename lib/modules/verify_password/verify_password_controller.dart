@@ -8,8 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class VerifyPasswordController extends GetxController {
   static VerifyPasswordController get find => Get.find();
@@ -37,7 +37,7 @@ class VerifyPasswordController extends GetxController {
 
   Future<void> _verifyPassword(String password) async {
     if (password.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterPassword,
         StringValues.warning,
       );
@@ -46,8 +46,8 @@ class VerifyPasswordController extends GetxController {
 
     var cb = Get.arguments;
 
-    AppUtils.printLog("Verify Password Request");
-    AppUtils.showLoadingDialog();
+    AppUtility.printLog("Verify Password Request");
+    AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
 
@@ -57,57 +57,58 @@ class VerifyPasswordController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Verify Password Success");
+        AppUtility.printLog("Verify Password Success");
         RouteManagement.goToBack();
         cb();
       } else {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Verify Password Error");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("Verify Password Error");
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } on SocketException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Verify Password Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Verify Password Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Verify Password Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Verify Password Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Verify Password Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Verify Password Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Verify Password Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Verify Password Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> verifyPassword() async {
-    AppUtils.closeFocus();
+    AppUtility.closeFocus();
     await _verifyPassword(passwordTextController.text.trim());
   }
 }

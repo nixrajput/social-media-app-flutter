@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/modules/home/views/trending_tabs/feed_tab.dart';
+import 'package:social_media_app/global_widgets/keep_alive_page.dart';
 import 'package:social_media_app/modules/home/views/trending_tabs/people_tab.dart';
-import 'package:social_media_app/modules/home/views/trending_tabs/trending_tab.dart';
+import 'package:social_media_app/modules/home/views/trending_tabs/trending_posts_tab.dart';
 
 class TrendingTabController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -34,14 +34,12 @@ class TrendingTabController extends GetxController
   }
 
   final tabViews = const [
-    TrendTab(),
-    FeedTab(),
-    PeopleTab(),
+    KeepAlivePage(child: TrendingPostsTab()),
+    KeepAlivePage(child: PeopleTab()),
   ];
 
   List<Widget> tabs = [
     Tab(child: Text(StringValues.trending, style: AppStyles.style14Bold)),
-    Tab(child: Text(StringValues.feed, style: AppStyles.style14Bold)),
     Tab(child: Text(StringValues.people, style: AppStyles.style14Bold)),
   ];
 }

@@ -13,6 +13,7 @@ class Comment {
     required this.likesCount,
     required this.commentStatus,
     required this.createdAt,
+    required this.updatedAt,
   });
 
   factory Comment.fromJson(Map<String, dynamic> json) =>
@@ -26,11 +27,11 @@ class Comment {
   @JsonKey(name: 'comment')
   final String comment;
 
-  @JsonKey(name: 'user')
-  final User user;
-
   @JsonKey(name: 'post')
   final String post;
+
+  @JsonKey(name: 'user')
+  final User user;
 
   @JsonKey(name: 'likesCount')
   int likesCount;
@@ -40,4 +41,7 @@ class Comment {
 
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
+
+  @JsonKey(name: 'updatedAt')
+  final DateTime updatedAt;
 }

@@ -10,8 +10,8 @@ import 'package:social_media_app/global_widgets/file_image.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class CreatePostView extends StatelessWidget {
   const CreatePostView({Key? key}) : super(key: key);
@@ -69,7 +69,7 @@ class CreatePostView extends StatelessWidget {
                                   ClipRRect(
                                     borderRadius:
                                         BorderRadius.circular(Dimens.eight),
-                                    child: AppUtils.isVideoFile(logic
+                                    child: AppUtility.isVideoFile(logic
                                             .pickedFileList![itemIndex].path)
                                         ? NxVideoPlayerWidget(
                                             url: logic
@@ -102,21 +102,6 @@ class CreatePostView extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  // Positioned(
-                                  //   bottom: Dimens.zero,
-                                  //   right: Dimens.zero,
-                                  //   child: Container(
-                                  //     color: ColorValues.blackColor
-                                  //         .withOpacity(0.5),
-                                  //     padding: Dimens.edgeInsets4,
-                                  //     child: Text(
-                                  //       '${logic.pickedFileList![itemIndex].sizeToMb()} MB',
-                                  //       style: AppStyles.style12Bold.copyWith(
-                                  //         color: ColorValues.whiteColor,
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
                                 ],
                               );
                             },

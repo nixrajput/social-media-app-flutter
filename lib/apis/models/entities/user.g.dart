@@ -16,11 +16,12 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       avatar: json['avatar'] == null
           ? null
           : MediaFile.fromJson(json['avatar'] as Map<String, dynamic>),
-      accountPrivacy: json['accountPrivacy'] as String,
+      isPrivate: json['isPrivate'] as bool,
       followingStatus: json['followingStatus'] as String,
       accountStatus: json['accountStatus'] as String,
       isVerified: json['isVerified'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -29,11 +30,12 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'lname': instance.lname,
       'email': instance.email,
       'uname': instance.uname,
-      'profession': instance.profession,
       'avatar': instance.avatar,
-      'accountPrivacy': instance.accountPrivacy,
       'followingStatus': instance.followingStatus,
       'accountStatus': instance.accountStatus,
+      'profession': instance.profession,
+      'isPrivate': instance.isPrivate,
       'isVerified': instance.isVerified,
       'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
     };

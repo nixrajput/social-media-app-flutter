@@ -149,16 +149,23 @@ https://www.contributor-covenant.org/translations.
 
 ## STEP-0 : Key Points to remember
 
-- Look at the [previous](https://github.com/nixrajput/social-media-app-flutter) work and get some idea from them.
-- Always maintain project folder architecture.
-- Don't delete/remove any existing file or folder.
-- Please don't add any License under your work. This repo already under `GPL-3.0 License`.
+- *Make a new branch for each pull request.*
+- *The pull request and commit should have a useful title.*
+- *The pull request should have a useful description.*
+- *Look at the project structure and follow the same.*
+- *Files should be in the proper folder.*
+- *Check your spelling and grammar.*
+- *Make sure your text editor is set to remove trailing whitespace.*
+- *New categories, or improvements to the existing categorization are welcome.*
+- *Don't add a link to your personal blog or company's website.*
+- *Don't remove/delete any existing file or folder.*
+- *Don't add any License under your work. This repo already under `GPL-3.0 License`.*
 
-## STEP-1 : **Flow**
+## STEP-1 : Project Structure
 
-### `Tree of Index`
+### `Folder Structure`
 
-```js
+```bash
 .
 ├── .github
 │   ├── FUNDING.yml
@@ -212,41 +219,40 @@ https://www.contributor-covenant.org/translations.
 
 We'd love your contributions! Kindly follow the steps below to get started:
 
-0. Star <a href="https://github.com/nixrajput/social-media-app-flutter" title="this">this</a> repository.
+- Star [this](https://github.com/nixrajput/social-media-app-flutter) repository.
 
-1. Fork <a href="https://github.com/nixrajput/social-media-app-flutter" title="this">this</a> repository.
+- Fork [this](https://github.com/nixrajput/social-media-app-flutter) repository.
 
-2. Clone the forked repository.
+- Clone the forked repository.
 
 ```css
 git clone https://github.com/<your-github-username>/social-media-app-flutter
 ```
 
-3. Create a new branch.
+- Create a new branch.
 
 ```css
 git checkout -b <your_branch_name>
 ```
 
-4. Make changes.
+- Make changes.
 
-5. Stage your changes and commit
+- Stage your changes and commit
 
 ```css
 git add -A
-
 git commit -m "<your_commit_message>"
 ```
 
-6. Push your local commits to the remote repo.
+- Push your local commits to the remote repo.
 
 ```css
 git push -u origin <your_branch_name>
 ```
 
-7. Create a <a href="https://github.com/nixrajput/social-media-app-flutter/pulls" title="Pull Request">Pull-Request</a>.
+- Create a [Pull-Request](https://github.com/nixrajput/social-media-app-flutter/pulls).
 
-8. Congratulations! 🎉 Sit and relax, you've made your contribution to <a href="https://github.com/nixrajput/social-media-app-flutter" title="Rippl! - A Social Media App">Rippl! - A Social Media App</a>. ✌️ ❤️ 💥
+- Congratulations! 🎉 Sit and relax, you've made your contribution to [Rippl! - A Social Media App](https://github.com/nixrajput/social-media-app-flutter). ✌️ ❤️ 💥
 
 ## **Note**
 

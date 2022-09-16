@@ -12,8 +12,8 @@ import 'package:social_media_app/apis/models/entities/location_info.dart';
 import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class AuthService extends GetxService {
   static AuthService get find => Get.find();
@@ -43,7 +43,7 @@ class AuthService extends GetxService {
 
   Future<String> getToken() async {
     var token = '';
-    final decodedData = await AppUtils.readLoginDataFromLocalStorage();
+    final decodedData = await AppUtility.readLoginDataFromLocalStorage();
     if (decodedData != null) {
       _expiresAt = decodedData[StringValues.expiresAt];
       setToken = decodedData[StringValues.token];
@@ -53,50 +53,60 @@ class AuthService extends GetxService {
     return token;
   }
 
+  Future<String> _checkServerHealth() async {
+    AppUtility.printLog('Check Server Health Request');
+    var serverHealth = 'offline';
+    try {
+      final response = await _apiProvider.checkServerHealth();
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+      AppUtility.printLog(decodedData);
+      if (response.statusCode == 200) {
+        AppUtility.printLog('Check Server Health Success');
+        serverHealth = decodedData['server'];
+      } else {
+        AppUtility.printLog('Check Server Health Error');
+        serverHealth = decodedData['server'];
+      }
+    } catch (exc) {
+      AppUtility.printLog('Check Server Health Error');
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+    }
+
+    return serverHealth;
+  }
+
   Future<bool> _validateToken(String token) async {
-    var isValid = true;
+    var isValid = false;
     try {
       final response = await _apiProvider.validateToken(token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      AppUtils.printLog(decodedData);
-
+      AppUtility.printLog(decodedData);
       if (response.statusCode == 200) {
-        AppUtils.printLog(decodedData[StringValues.message]);
+        isValid = true;
+        AppUtility.printLog(decodedData[StringValues.message]);
       } else {
-        isValid = false;
-        AppUtils.printLog(decodedData[StringValues.message]);
-        await AppUtils.clearLoginDataFromLocalStorage();
+        AppUtility.printLog(decodedData[StringValues.message]);
       }
-    } on SocketException {
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
     }
 
     return isValid;
   }
 
   Future<void> _logout(bool showLoading) async {
-    AppUtils.printLog("Logout Request");
-    if (showLoading) AppUtils.showLoadingDialog();
+    AppUtility.printLog("Logout Request");
+    if (showLoading) AppUtility.showLoadingDialog();
     await LoginDeviceInfoController.find.deleteLoginDeviceInfo(_deviceId);
     setToken = '';
     setExpiresAt = 0;
-    await AppUtils.clearLoginDataFromLocalStorage();
-    if (showLoading) AppUtils.closeDialog();
-    AppUtils.printLog("Logout Success");
+    await AppUtility.clearLoginDataFromLocalStorage();
+    if (showLoading) AppUtility.closeDialog();
+    AppUtility.printLog("Logout Success");
   }
 
   Future<void> getDeviceId() async {
@@ -117,7 +127,7 @@ class AuthService extends GetxService {
 
     _deviceId = devData.read('deviceId');
 
-    AppUtils.printLog("deviceId: $_deviceId");
+    AppUtility.printLog("deviceId: $_deviceId");
   }
 
   Future<dynamic> getDeviceInfo() async {
@@ -156,22 +166,23 @@ class AuthService extends GetxService {
       if (response.statusCode == 200) {
         locationInfo = LocationInfo.fromJson(decodedData);
       } else {
-        AppUtils.printLog(decodedData[StringValues.message]);
+        AppUtility.printLog(decodedData[StringValues.message]);
       }
     } on SocketException {
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
 
     return locationInfo;
@@ -189,7 +200,7 @@ class AuthService extends GetxService {
       'lastActive': DateTime.now().toIso8601String(),
     };
 
-    AppUtils.printLog("Save LoginInfo Request");
+    AppUtility.printLog("Save LoginInfo Request");
 
     try {
       final response = await _apiProvider.saveDeviceInfo(_token, body);
@@ -197,30 +208,31 @@ class AuthService extends GetxService {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        AppUtils.printLog(decodedData[StringValues.message]);
-        AppUtils.printLog("Save LoginInfo Success");
+        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.printLog("Save LoginInfo Success");
       } else {
-        AppUtils.printLog(decodedData[StringValues.message]);
-        AppUtils.printLog("Save LoginInfo Error");
+        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.printLog("Save LoginInfo Error");
       }
     } on SocketException {
-      AppUtils.printLog("Save LoginInfo Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Save LoginInfo Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.printLog("Save LoginInfo Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Save LoginInfo Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtils.printLog("Save LoginInfo Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Save LoginInfo Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.printLog("Save LoginInfo Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Save LoginInfo Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
@@ -231,7 +243,7 @@ class AuthService extends GetxService {
       if (_expiresAt < currentTimestamp) {
         setToken = '';
         setExpiresAt = 0;
-        await AppUtils.clearLoginDataFromLocalStorage();
+        await AppUtility.clearLoginDataFromLocalStorage();
       }
     }
   }
@@ -241,9 +253,9 @@ class AuthService extends GetxService {
         .onConnectivityChanged
         .listen((ConnectivityResult result) async {
       if (result != ConnectivityResult.none) {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
       } else {
-        AppUtils.showNoInternetDialog();
+        AppUtility.showNoInternetDialog();
       }
     });
   }
@@ -252,6 +264,8 @@ class AuthService extends GetxService {
       await _logout(showLoading);
 
   Future<bool> validateToken(String token) async => await _validateToken(token);
+
+  Future<String> checkServerHealth() async => await _checkServerHealth();
 
   @override
   void onInit() {

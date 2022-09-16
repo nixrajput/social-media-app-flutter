@@ -8,8 +8,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:r_upgrade/r_upgrade.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 enum UpgradeMethod {
   all,
@@ -53,24 +53,24 @@ class AppUpdateController extends GetxController {
   set changelog(value) => _changelog.value = value;
 
   Future<void> _getPackageInfo() async {
-    AppUtils.printLog("Getting package info...");
+    AppUtility.printLog("Getting package info...");
     var packageInfo = await PackageInfo.fromPlatform();
     version = packageInfo.version;
     buildNumber = packageInfo.buildNumber;
-    AppUtils.printLog('version: $version');
-    AppUtils.printLog('buildNumber: $buildNumber');
+    AppUtility.printLog('version: $version');
+    AppUtility.printLog('buildNumber: $buildNumber');
   }
 
   Future<void> _checkAppUpdate(bool showLoading, bool showAlert) async {
     await _getPackageInfo();
 
-    AppUtils.printLog("Check App Update Request");
+    AppUtility.printLog("Check App Update Request");
 
     _isLoading.value = true;
     update();
 
     if (showLoading) {
-      AppUtils.showLoadingDialog();
+      AppUtility.showLoadingDialog();
     }
 
     try {
@@ -127,7 +127,7 @@ class AppUpdateController extends GetxController {
           }
 
           if (_hasUpdate.value == true) {
-            AppUtils.printLog("Update found");
+            AppUtility.printLog("Update found");
             List<dynamic> assets = decodedData['assets'];
             var apk = assets.singleWhere(
               (element) => element['name'] == 'app-release.apk',
@@ -138,86 +138,87 @@ class AppUpdateController extends GetxController {
               _isLoading.value = false;
               update();
               if (showLoading) {
-                AppUtils.closeDialog();
+                AppUtility.closeDialog();
               }
               RouteManagement.goToAppUpdateView();
             }
           } else {
             if (showLoading) {
-              AppUtils.closeDialog();
+              AppUtility.closeDialog();
             }
             _isLoading.value = false;
             update();
             if (showAlert) {
-              AppUtils.showSnackBar('You have the latest version.', '');
+              AppUtility.showSnackBar('You have the latest version.', '');
             }
-            AppUtils.printLog("No update found");
+            AppUtility.printLog("No update found");
           }
         } else {
           _isLoading.value = false;
           update();
           if (showLoading) {
-            AppUtils.closeDialog();
+            AppUtility.closeDialog();
           }
           _hasUpdate.value = false;
           _apkDownloadLink.value = '';
-          AppUtils.printLog("Bad format of release version");
+          AppUtility.printLog("Bad format of release version");
         }
-        AppUtils.printLog("Check App Update Success");
+        AppUtility.printLog("Check App Update Success");
       } else {
         if (showLoading) {
-          AppUtils.closeDialog();
+          AppUtility.closeDialog();
         }
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Check App Update Error");
-        AppUtils.printLog(decodedData);
+        AppUtility.printLog("Check App Update Error");
+        AppUtility.printLog(decodedData);
       }
     } on SocketException {
       if (showLoading) {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
       }
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Check App Update Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Check App Update Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       if (showLoading) {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
       }
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Check App Update Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Check App Update Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       if (showLoading) {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
       }
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Check App Update Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Check App Update Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       if (showLoading) {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
       }
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Check App Update Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Check App Update Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> _downloadAppUpdate() async {
     if (_apkDownloadLink.value.isEmpty || _apkDownloadLink.value == '') {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         'App download link is invalid.',
         StringValues.warning,
       );
@@ -243,7 +244,7 @@ class AppUpdateController extends GetxController {
     } else if (status == DownloadStatus.STATUS_FAILED) {
       _isLoading.value = false;
       update();
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         'App download error.',
         StringValues.error,
       );

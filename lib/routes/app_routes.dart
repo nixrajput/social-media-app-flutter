@@ -2,6 +2,7 @@ part of 'app_pages.dart';
 
 abstract class AppRoutes {
   static const splash = _Routes.splash;
+  static const maintenance = _Routes.maintenance;
   static const welcome = _Routes.welcome;
   static const error = _Routes.error;
   static const home = _Routes.home;
@@ -55,6 +56,7 @@ abstract class AppRoutes {
 
   static const following = _Routes.following;
   static const followers = _Routes.followers;
+  static const followRequests = _Routes.followRequests;
 
   static const createPost = _Routes.createPost;
   static const addCaption = _Routes.addCaption;
@@ -70,6 +72,7 @@ abstract class AppRoutes {
 
 abstract class _Routes {
   static const splash = '/';
+  static const maintenance = '/maintenance';
   static const welcome = '/welcome';
   static const error = '/error';
   static const home = '/home';
@@ -123,6 +126,7 @@ abstract class _Routes {
 
   static const following = '/following';
   static const followers = '/followers';
+  static const followRequests = '/follow_requests';
 
   static const createPost = '/create_post';
   static const addCaption = '/add-caption';

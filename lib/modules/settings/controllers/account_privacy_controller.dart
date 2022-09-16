@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class AccountPrivacyController extends GetxController {
   static AccountPrivacyController get find => Get.find();
@@ -22,17 +22,16 @@ class AccountPrivacyController extends GetxController {
 
   bool get isLoading => _isLoading.value;
 
-  Future<void> _changeAccountPrivacy(String accountPrivacy) async {
-    if (accountPrivacy.isEmpty) {
+  Future<void> _changeAccountPrivacy(bool? accountPrivacy) async {
+    if (accountPrivacy == null) {
       return;
     }
+    AppUtility.printLog(accountPrivacy);
 
-    final body = {
-      'accountPrivacy': accountPrivacy,
-    };
+    final body = {'isPrivate': "$accountPrivacy"};
 
-    AppUtils.printLog("Update AccountPrivacy Request");
-    AppUtils.showLoadingDialog();
+    AppUtility.printLog("Update AccountPrivacy Request");
+    AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
 
@@ -41,63 +40,64 @@ class AccountPrivacyController extends GetxController {
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      AppUtils.printLog(response.statusCode);
+      AppUtility.printLog(response.statusCode);
 
       if (response.statusCode == 200) {
         await _profile.fetchProfileDetails(fetchPost: false);
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Update AccountPrivacy Success");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("Update AccountPrivacy Success");
+        AppUtility.showSnackBar(
           StringValues.updateProfileSuccessful,
           StringValues.success,
         );
       } else {
-        AppUtils.printLog("Update AccountPrivacy Error");
-        AppUtils.closeDialog();
+        AppUtility.printLog("Update AccountPrivacy Error");
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.showSnackBar(
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } on SocketException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Update AccountPrivacy Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Update AccountPrivacy Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Update AccountPrivacy Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Update AccountPrivacy Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Update AccountPrivacy Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Update AccountPrivacy Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Update AccountPrivacy Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Update AccountPrivacy Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
-  Future<void> changeAccountPrivacy(String accountPrivacy) async {
-    AppUtils.closeFocus();
-    await _changeAccountPrivacy(accountPrivacy.trim());
+  Future<void> changeAccountPrivacy(bool? accountPrivacy) async {
+    AppUtility.closeFocus();
+    await _changeAccountPrivacy(accountPrivacy);
   }
 }

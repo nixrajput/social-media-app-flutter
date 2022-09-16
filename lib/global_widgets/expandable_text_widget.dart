@@ -1,9 +1,13 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/helpers/hashtag_linker.dart';
+import 'package:social_media_app/helpers/mention_linker.dart';
+import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NxExpandableText extends StatefulWidget {
   const NxExpandableText({
@@ -24,111 +28,75 @@ class NxExpandableTextState extends State<NxExpandableText> {
 
   @override
   Widget build(BuildContext context) {
-    canExpand = widget.text.length >= 200;
+    canExpand = widget.text.length >= 100;
     text = canExpand
-        ? (isExpand ? widget.text : widget.text.substring(0, 200))
-        : (widget.text);
+        ? isExpand
+            ? widget.text
+            : '${widget.text.substring(0, 100)}...'
+        : widget.text;
 
     return AnimatedSize(
-      duration: const Duration(milliseconds: 400),
-      child: canExpand
-          ? buildTextWithLinks(text!.trim())
-          : RichText(
-              text: TextSpan(
-                text: text,
-                style: AppStyles.style14Normal.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
-                  height: 1.25,
-                ),
-              ),
-            ),
+      duration: const Duration(milliseconds: 300),
+      child: _buildExpandableText(text!.trim()),
     );
   }
 
-  Text buildTextWithLinks(String textToLink, {String? text}) => Text.rich(
-        TextSpan(
-          children: [
-            ...linkify(textToLink),
-            TextSpan(
-              text: isExpand ? ' ...show less' : ' ...show more',
-              style: AppStyles.style14Bold.copyWith(
-                color: ColorValues.primaryColor,
-              ),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  setState(() {
-                    isExpand = !isExpand;
-                  });
-                },
-            ),
+  Widget _buildExpandableText(String text) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Linkify(
+          text: text,
+          linkifiers: const [
+            UrlLinkifier(),
+            EmailLinkifier(),
+            HashTagLinker(),
+            MentionLinker(),
           ],
           style: AppStyles.style14Normal.copyWith(
             color: Theme.of(context).textTheme.bodyText1!.color,
+            decoration: TextDecoration.none,
             height: 1.25,
           ),
-        ),
-      );
-}
-
-const String urlPattern =
-    r"(https?|http)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?";
-const String emailPattern = r'\S+@\S+';
-const String phonePattern = r'[\d-]{9,}';
-final RegExp linkRegExp = RegExp(
-    '($urlPattern)|($emailPattern)|($phonePattern)',
-    caseSensitive: false);
-
-WidgetSpan buildLinkComponent(String text, String linkToOpen) => WidgetSpan(
-      child: InkWell(
-        child: Text(
-          text,
-          style: AppStyles.style14Normal.copyWith(
+          linkStyle: AppStyles.style14Normal.copyWith(
             color: ColorValues.primaryColor,
-            decoration: TextDecoration.underline,
+            decoration: TextDecoration.none,
+            height: 1.25,
           ),
+          onOpen: (link) async {
+            FocusManager.instance.primaryFocus!.unfocus();
+            if (await canLaunchUrl(Uri.parse(link.url))) {
+              await AppUtility.openUrl(Uri.parse(link.url));
+            } else if (link.url.contains("#")) {
+              AppUtility.printLog(link.text);
+            } else if (link.url.contains("@")) {
+              RouteManagement.goToUserProfileViewByUsername(
+                  link.url.replaceAll('@', ''));
+            } else {
+              AppUtility.printLog(link);
+              throw Exception('Could not open $link');
+            }
+          },
         ),
-        onTap: () => AppUtils.openUrl(Uri.parse(linkToOpen)),
-      ),
-    );
-
-List<InlineSpan> linkify(String text) {
-  final list = <InlineSpan>[];
-  final match = linkRegExp.firstMatch(text);
-  if (match == null) {
-    list.add(
-      TextSpan(
-        text: text,
-        style: AppStyles.style14Normal.copyWith(
-          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-        ),
-      ),
-    );
-    return list;
-  }
-
-  if (match.start > 0) {
-    list.add(
-      TextSpan(
-        text: text.substring(0, match.start),
-        style: AppStyles.style14Normal.copyWith(
-          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-        ),
-      ),
+        if (canExpand) Dimens.boxHeight4,
+        if (canExpand)
+          InkWell(
+            onTap: () {
+              setState(() {
+                isExpand = !isExpand;
+              });
+            },
+            child: Text(
+              isExpand ? 'show less' : 'show more',
+              style: AppStyles.style14Bold.copyWith(
+                color: ColorValues.primaryColor,
+              ),
+              textAlign: TextAlign.start,
+            ),
+          ),
+      ],
     );
   }
-
-  final linkText = match.group(0);
-  if (linkText!.contains(RegExp(urlPattern, caseSensitive: false))) {
-    list.add(buildLinkComponent(linkText, linkText));
-  } else if (linkText.contains(RegExp(emailPattern, caseSensitive: false))) {
-    list.add(buildLinkComponent(linkText, 'mailto:$linkText'));
-  } else if (linkText.contains(RegExp(phonePattern, caseSensitive: false))) {
-    list.add(buildLinkComponent(linkText, 'tel:$linkText'));
-  } else {
-    throw Exception('Unexpected match: $linkText');
-  }
-
-  list.addAll(linkify(text.substring(match.start + linkText.length)));
-
-  return list;
 }

@@ -7,8 +7,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class RegisterController extends GetxController {
   static RegisterController get find => Get.find();
@@ -62,42 +62,42 @@ class RegisterController extends GetxController {
     String confPassword,
   ) async {
     if (fName.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterFirstName,
         StringValues.warning,
       );
       return;
     }
     if (lName.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterLastName,
         StringValues.warning,
       );
       return;
     }
     if (email.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterEmail,
         StringValues.warning,
       );
       return;
     }
     if (uname.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterUsername,
         StringValues.warning,
       );
       return;
     }
     if (password.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterPassword,
         StringValues.warning,
       );
       return;
     }
     if (confPassword.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterConfirmPassword,
         StringValues.warning,
       );
@@ -113,8 +113,8 @@ class RegisterController extends GetxController {
       'confirmPassword': confPassword,
     };
 
-    AppUtils.printLog("User Registration Request");
-    AppUtils.showLoadingDialog();
+    AppUtility.printLog("User Registration Request");
+    AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
 
@@ -125,61 +125,62 @@ class RegisterController extends GetxController {
 
       if (response.statusCode == 201) {
         _clearRegisterTextControllers();
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.printLog("User Registration Success");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("User Registration Success");
+        AppUtility.showSnackBar(
           StringValues.registrationSuccessful,
           StringValues.success,
         );
         RouteManagement.goToBack();
         RouteManagement.goToSendVerifyAccountOtpView();
       } else {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.printLog("User Registration Error");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("User Registration Error");
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } on SocketException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("User Registration Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("User Registration Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("User Registration Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("User Registration Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("User Registration Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("User Registration Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("User Registration Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("User Registration Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> register() async {
-    AppUtils.closeFocus();
+    AppUtility.closeFocus();
     await _register(
       fNameTextController.text.trim(),
       lNameTextController.text.trim(),

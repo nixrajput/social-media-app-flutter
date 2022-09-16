@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
+import 'package:social_media_app/modules/post/controllers/post_details_controller.dart';
 
 class PostDetailsView extends StatelessWidget {
-  const PostDetailsView({Key? key, this.post, this.postId}) : super(key: key);
-
-  final String? postId;
-  final Post? post;
+  const PostDetailsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,19 +32,42 @@ class PostDetailsView extends StatelessWidget {
 
   _buildBody() {
     return Expanded(
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GetBuilder<PostController>(
-              builder: (postLogic) => PostWidget(post: post!),
+      child: GetBuilder<PostDetailsController>(builder: (logic) {
+        if (logic.isLoading) {
+          return const Center(child: NxCircularProgressIndicator());
+        }
+
+        if (logic.postDetailsData == null ||
+            logic.postDetailsData?.post == null) {
+          return Center(
+            child: Padding(
+              padding: Dimens.edgeInsets0_16,
+              child: Text(
+                StringValues.postDetailsNotFound,
+                style: AppStyles.style32Bold.copyWith(
+                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-            Dimens.boxHeight16,
-          ],
-        ),
-      ),
+          );
+        }
+
+        return SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PostWidget(
+                post: logic.postDetailsData!.post!,
+                controller: logic,
+              ),
+              Dimens.boxHeight16,
+            ],
+          ),
+        );
+      }),
     );
   }
 }

@@ -14,7 +14,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class CommentController extends GetxController {
   static CommentController get find => Get.find();
@@ -31,7 +31,7 @@ class CommentController extends GetxController {
 
   bool get isMoreLoading => _isMoreLoading.value;
 
-  CommentsResponse get commentsData => _commentsData.value;
+  CommentsResponse? get commentsData => _commentsData.value;
 
   List<Comment> get commentList => _commentList;
 
@@ -40,7 +40,7 @@ class CommentController extends GetxController {
   }
 
   Future<void> _fetchComments() async {
-    AppUtils.printLog("Fetch Comment Request");
+    AppUtility.printLog("Fetch Comment Request");
 
     var postId = Get.arguments;
 
@@ -60,12 +60,12 @@ class CommentController extends GetxController {
         _commentList.addAll(_commentsData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Fetch Comment Success");
+        AppUtility.printLog("Fetch Comment Success");
       } else {
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Fetch Comment Error");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("Fetch Comment Error");
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
@@ -73,35 +73,36 @@ class CommentController extends GetxController {
     } on SocketException {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Fetch Comment Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Fetch Comment Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Fetch Comment Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Fetch Comment Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Fetch Comment Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Fetch Comment Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Fetch Comment Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Fetch Comment Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtils.printLog("Fetch More Comment Request");
+    AppUtility.printLog("Fetch More Comment Request");
 
     var postId = Get.arguments;
 
@@ -124,12 +125,12 @@ class CommentController extends GetxController {
         _commentList.addAll(_commentsData.value.results!);
         _isMoreLoading.value = false;
         update();
-        AppUtils.printLog("Fetch More Comment Success");
+        AppUtility.printLog("Fetch More Comment Success");
       } else {
         _isMoreLoading.value = false;
         update();
-        AppUtils.printLog("Fetch More Comment Error");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("Fetch More Comment Error");
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
@@ -137,35 +138,36 @@ class CommentController extends GetxController {
     } on SocketException {
       _isMoreLoading.value = false;
       update();
-      AppUtils.printLog("Fetch More Comment Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Fetch More Comment Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isMoreLoading.value = false;
       update();
-      AppUtils.printLog("Fetch More Comment Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Fetch More Comment Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isMoreLoading.value = false;
       update();
-      AppUtils.printLog("Fetch More Comment Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Fetch More Comment Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtils.printLog("Fetch More Comment Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Fetch More Comment Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> _deleteComment(String commentId) async {
-    AppUtils.printLog("Delete Comment Request");
+    AppUtility.printLog("Delete Comment Request");
 
     if (commentId.isEmpty) return;
 
@@ -176,37 +178,38 @@ class CommentController extends GetxController {
 
       if (response.statusCode == 200) {
         await _fetchComments();
-        AppUtils.printLog("Delete Comment Success");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("Delete Comment Success");
+        AppUtility.showSnackBar(
           StringValues.commentDeleteSuccess,
           StringValues.success,
         );
       } else {
-        AppUtils.printLog("Delete Comment Error");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("Delete Comment Error");
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } on SocketException {
-      AppUtils.printLog("Delete Comment Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Delete Comment Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.printLog("Delete Comment Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Delete Comment Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtils.printLog("Delete Comment Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Delete Comment Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.printLog("Delete Comment Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Delete Comment Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
@@ -216,18 +219,31 @@ class CommentController extends GetxController {
       await _loadMore(page: _commentsData.value.currentPage! + 1);
 
   Future<void> showDeleteCommentOptions(String commentId) async {
-    AppUtils.showSimpleDialog(
-      Padding(
-        padding: Dimens.edgeInsets16,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
+    AppUtility.showSimpleDialog(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Dimens.boxHeight8,
+          Padding(
+            padding: Dimens.edgeInsets0_16,
+            child: Text(
+              'Delete',
+              style: AppStyles.style18Bold,
+            ),
+          ),
+          Dimens.dividerWithHeight,
+          Padding(
+            padding: Dimens.edgeInsets0_16,
+            child: Text(
               StringValues.deleteConfirmationText,
               style: AppStyles.style14Normal,
             ),
-            Dimens.boxHeight24,
-            Row(
+          ),
+          Dimens.boxHeight8,
+          Padding(
+            padding: Dimens.edgeInsets0_16,
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 NxTextButton(
@@ -235,7 +251,7 @@ class CommentController extends GetxController {
                   labelStyle: AppStyles.style16Bold.copyWith(
                     color: ColorValues.errorColor,
                   ),
-                  onTap: AppUtils.closeDialog,
+                  onTap: AppUtility.closeDialog,
                   padding: Dimens.edgeInsets8,
                 ),
                 Dimens.boxWidth16,
@@ -245,15 +261,16 @@ class CommentController extends GetxController {
                     color: ColorValues.successColor,
                   ),
                   onTap: () async {
-                    AppUtils.closeDialog();
+                    AppUtility.closeDialog();
                     await _deleteComment(commentId);
                   },
                   padding: Dimens.edgeInsets8,
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          Dimens.boxHeight8,
+        ],
       ),
     );
   }

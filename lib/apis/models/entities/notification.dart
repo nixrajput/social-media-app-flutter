@@ -7,13 +7,14 @@ part 'notification.g.dart';
 class ApiNotification {
   ApiNotification({
     required this.id,
-    required this.owner,
-    required this.user,
+    required this.to,
+    required this.from,
     required this.body,
     this.refId,
     required this.type,
     required this.isRead,
     required this.createdAt,
+    required this.updatedAt,
   });
 
   factory ApiNotification.fromJson(Map<String, dynamic> json) =>
@@ -24,11 +25,11 @@ class ApiNotification {
   @JsonKey(name: '_id')
   String id;
 
-  @JsonKey(name: 'owner')
-  User owner;
+  @JsonKey(name: 'to')
+  User to;
 
-  @JsonKey(name: 'user')
-  User user;
+  @JsonKey(name: 'from')
+  User from;
 
   @JsonKey(name: 'body')
   String body;
@@ -44,4 +45,7 @@ class ApiNotification {
 
   @JsonKey(name: 'createdAt')
   DateTime createdAt;
+
+  @JsonKey(name: 'updatedAt')
+  DateTime updatedAt;
 }

@@ -8,10 +8,10 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/helpers/validators.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class EditWebsiteController extends GetxController {
   static EditWebsiteController get find => Get.find();
@@ -54,7 +54,7 @@ class EditWebsiteController extends GetxController {
 
   Future<void> _updateWebsite(String website) async {
     if (website.isEmpty) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterWebsiteUrl,
         StringValues.warning,
       );
@@ -63,8 +63,8 @@ class EditWebsiteController extends GetxController {
 
     final body = {'website': website};
 
-    AppUtils.printLog("Update Website Request");
-    AppUtils.showLoadingDialog();
+    AppUtility.printLog("Update Website Request");
+    AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
 
@@ -75,60 +75,61 @@ class EditWebsiteController extends GetxController {
 
       if (response.statusCode == 200) {
         await _profile.fetchProfileDetails(fetchPost: false);
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Update Website Success");
+        AppUtility.printLog("Update Website Success");
         RouteManagement.goToBack();
-        AppUtils.showSnackBar(
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
         );
       } else {
-        AppUtils.closeDialog();
+        AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Update Website Error");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("Update Website Error");
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } on SocketException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Update Website Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Update Website Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Update Website Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Update Website Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Update Website Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Update Website Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtils.closeDialog();
+      AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Update Website Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Update Website Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> updateWebsite() async {
-    AppUtils.closeFocus();
+    AppUtility.closeFocus();
     if (_website.value.isEmpty) {
       return;
     }
@@ -136,7 +137,7 @@ class EditWebsiteController extends GetxController {
       return;
     }
     if (!Validators.isValidUrl(_website.value)) {
-      AppUtils.showSnackBar(
+      AppUtility.showSnackBar(
         StringValues.enterValidUrl,
         StringValues.warning,
       );

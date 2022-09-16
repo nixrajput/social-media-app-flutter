@@ -52,13 +52,12 @@ class AccountPrivacyView extends StatelessWidget {
                     topLeft: Radius.circular(Dimens.eight),
                     topRight: Radius.circular(Dimens.eight),
                   ),
-                  onTap: () => logic.changeAccountPrivacy(StringValues.public),
-                  onChanged: (v) =>
-                      logic.changeAccountPrivacy(StringValues.public),
+                  onTap: () => logic.changeAccountPrivacy(false),
+                  onChanged: (v) => logic.changeAccountPrivacy(false),
                   title: StringValues.public.toTitleCase(),
-                  value: StringValues.public,
-                  groupValue: ProfileController
-                      .find.profileDetails.user!.accountPrivacy,
+                  value: false,
+                  groupValue:
+                      ProfileController.find.profileDetails.user!.isPrivate,
                 ),
 
                 Dimens.divider,
@@ -72,13 +71,12 @@ class AccountPrivacyView extends StatelessWidget {
                     bottomLeft: Radius.circular(Dimens.eight),
                     bottomRight: Radius.circular(Dimens.eight),
                   ),
-                  onTap: () => logic.changeAccountPrivacy(StringValues.private),
-                  onChanged: (v) =>
-                      logic.changeAccountPrivacy(StringValues.private),
+                  onTap: () => logic.changeAccountPrivacy(true),
+                  onChanged: (v) => logic.changeAccountPrivacy(true),
                   title: StringValues.private.toTitleCase(),
-                  value: StringValues.private,
-                  groupValue: ProfileController
-                      .find.profileDetails.user!.accountPrivacy,
+                  value: true,
+                  groupValue:
+                      ProfileController.find.profileDetails.user!.isPrivate,
                 ),
               ],
             ),

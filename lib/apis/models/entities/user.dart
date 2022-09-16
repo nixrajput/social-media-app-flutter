@@ -13,11 +13,12 @@ class User {
     required this.uname,
     this.profession,
     this.avatar,
-    required this.accountPrivacy,
+    required this.isPrivate,
     required this.followingStatus,
     required this.accountStatus,
     required this.isVerified,
     required this.createdAt,
+    required this.updatedAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -39,14 +40,8 @@ class User {
   @JsonKey(name: 'uname')
   final String uname;
 
-  @JsonKey(name: 'profession')
-  final String? profession;
-
   @JsonKey(name: 'avatar')
   final MediaFile? avatar;
-
-  @JsonKey(name: 'accountPrivacy')
-  String accountPrivacy;
 
   @JsonKey(name: 'followingStatus')
   String followingStatus;
@@ -54,9 +49,18 @@ class User {
   @JsonKey(name: 'accountStatus')
   final String accountStatus;
 
+  @JsonKey(name: 'profession')
+  final String? profession;
+
+  @JsonKey(name: 'isPrivate')
+  bool isPrivate;
+
   @JsonKey(name: 'isVerified')
   bool isVerified;
 
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
+
+  @JsonKey(name: 'updatedAt')
+  final DateTime updatedAt;
 }

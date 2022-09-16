@@ -13,6 +13,17 @@ class ApiProvider {
 
   String? baseUrl;
 
+  /// Server -------------------------------------------------------------------
+
+  Future<http.Response> checkServerHealth() async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.serverHealthEndpoint}'),
+      headers: {"content-type": "application/json"},
+    );
+
+    return response;
+  }
+
   /// Auth ---------------------------------------------------------------------
 
   Future<http.Response> login(Map<String, dynamic> body) async {
@@ -329,6 +340,34 @@ class ApiProvider {
     return response;
   }
 
+  Future<http.Response> getPostsByTag(String token,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.getPostsByTagEndpoint}?page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getTrendingPosts(String token,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.getTrendingPostsEndpoint}?page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
   Future<http.Response> likeUnlikePost(String token, String postId) async {
     final response = await _client.get(
       Uri.parse('${baseUrl!}${AppUrls.likePostEndpoint}?id=$postId'),
@@ -420,10 +459,10 @@ class ApiProvider {
   }
 
   Future<http.Response> acceptFollowRequest(
-      String token, String notificationId) async {
+      String token, String followRequestId) async {
     final response = await _client.get(
       Uri.parse(
-          '${baseUrl! + AppUrls.acceptFollowRequestEndpoint}?id=$notificationId'),
+          '${baseUrl! + AppUrls.acceptFollowRequestEndpoint}?id=$followRequestId'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -434,10 +473,10 @@ class ApiProvider {
   }
 
   Future<http.Response> removeFollowRequest(
-      String token, String notificationId) async {
+      String token, String followRequestId) async {
     final response = await _client.delete(
       Uri.parse(
-          '${baseUrl! + AppUrls.removeFollowRequestEndpoint}?id=$notificationId'),
+          '${baseUrl! + AppUrls.removeFollowRequestEndpoint}?id=$followRequestId'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -447,9 +486,22 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getUserDetails(String token, String userId) async {
+  Future<http.Response> getUserDetailsById(String token, String userId) async {
     final response = await _client.get(
       Uri.parse('${baseUrl! + AppUrls.userDetailsEndpoint}?id=$userId'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getUserDetailsByUsername(
+      String token, String username) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl! + AppUrls.userDetailsEndpoint}?username=$username'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -538,6 +590,40 @@ class ApiProvider {
 
     return response;
   }
+
+  /// --------------------------------------------------------------------------
+
+  /// Search -------------------------------------------------------------------
+
+  Future<http.Response> searchTag(String token, String text,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.searchTagEndpoint}?q=$text&page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> searchUser(String token, String text,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.searchUserEndpoint}?q=$text&page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  /// --------------------------------------------------------------------------
 
   /// Comment ------------------------------------------------------------------
 

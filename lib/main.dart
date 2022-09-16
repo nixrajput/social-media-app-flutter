@@ -9,12 +9,12 @@ import 'package:social_media_app/apis/services/theme_controller.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 import 'package:social_media_app/translations/app_translations.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 void main() async {
   try {
@@ -26,11 +26,12 @@ void main() async {
       showAlert: false,
     );
   } catch (err) {
-    AppUtils.printLog(err);
+    AppUtility.printLog(err);
   }
 }
 
 bool isLogin = false;
+String serverHealth = "offline";
 
 Future<void> initServices() async {
   await GetStorage.init();
@@ -41,21 +42,33 @@ Future<void> initServices() async {
     ..put(LoginDeviceInfoController(), permanent: true)
     ..put(AppUpdateController(), permanent: true);
 
-  await Get.find<AuthService>().getToken().then((value) async {
-    Get.find<AuthService>().autoLogout();
-    if (value.isNotEmpty) {
-      var tokenValid = await Get.find<AuthService>().validateToken(value);
+  serverHealth = await Get.find<AuthService>().checkServerHealth();
+  AppUtility.printLog("ServerHealth: $serverHealth");
 
+  /// If [serverHealth] is `offline` or `maintenance`,
+  /// then return
+  if (serverHealth.toLowerCase() == "offline" ||
+      serverHealth.toLowerCase() == "maintenance") {
+    return;
+  }
+  await Get.find<AuthService>().getToken().then((token) async {
+    Get.find<AuthService>().autoLogout();
+    if (token.isNotEmpty) {
+      var tokenValid = await Get.find<AuthService>().validateToken(token);
       if (tokenValid) {
         var hasData = await Get.find<ProfileController>().loadProfileDetails();
         if (hasData) {
           isLogin = true;
+        } else {
+          await AppUtility.clearLoginDataFromLocalStorage();
         }
+      } else {
+        await AppUtility.clearLoginDataFromLocalStorage();
       }
     }
     isLogin
-        ? AppUtils.printLog("User is logged in.")
-        : AppUtils.printLog("User is not logged in.");
+        ? AppUtility.printLog("User is logged in")
+        : AppUtility.printLog("User is not logged in");
   });
 }
 
@@ -75,7 +88,6 @@ class MyApp extends StatelessWidget {
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
       );
-      //AppThemeController.find.setThemeMode(AppThemeModes.light);
     } else {
       SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(
@@ -86,7 +98,6 @@ class MyApp extends StatelessWidget {
           systemNavigationBarIconBrightness: Brightness.light,
         ),
       );
-      //AppThemeController.find.setThemeMode(AppThemeModes.dark);
     }
 
     return GetBuilder<AppThemeController>(
@@ -99,7 +110,11 @@ class MyApp extends StatelessWidget {
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
           getPages: AppPages.pages,
-          initialRoute: isLogin ? AppRoutes.home : AppRoutes.welcome,
+          initialRoute: serverHealth.toLowerCase() == "maintenance"
+              ? AppRoutes.maintenance
+              : isLogin
+                  ? AppRoutes.home
+                  : AppRoutes.welcome,
           translations: AppTranslation(),
           locale: Get.deviceLocale,
           fallbackLocale: const Locale('en', 'US'),
@@ -108,7 +123,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  _handleAppTheme(AppThemeModes mode) {
+  ThemeMode _handleAppTheme(AppThemeModes mode) {
     if (mode == AppThemeModes.dark) {
       return ThemeMode.dark;
     }

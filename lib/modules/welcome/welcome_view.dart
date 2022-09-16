@@ -7,9 +7,9 @@ import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/welcome/widgets/welcome_shape_painter.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class WelcomeView extends StatelessWidget {
   const WelcomeView({Key? key}) : super(key: key);
@@ -41,7 +41,7 @@ class WelcomeView extends StatelessWidget {
                     ),
                     Dimens.boxHeight8,
                     Center(
-                      child: AppUtils.buildAppLogo(fontSize: Dimens.fourty),
+                      child: AppUtility.buildAppLogo(fontSize: Dimens.fourty),
                     ),
                     Dimens.boxHeight24,
                     ConstrainedBox(

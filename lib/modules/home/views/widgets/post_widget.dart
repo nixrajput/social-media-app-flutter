@@ -17,23 +17,26 @@ import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
 import 'package:social_media_app/helpers/get_time_ago_msg.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_view_widget.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class PostWidget extends StatelessWidget {
   const PostWidget({
     Key? key,
     required this.post,
+    required this.controller,
   }) : super(key: key);
 
   final Post post;
+  final dynamic controller;
 
   @override
   Widget build(BuildContext context) {
     return NxElevatedCard(
+      margin: Dimens.edgeInsets8_0,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -144,32 +147,26 @@ class PostWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             GestureDetector(
-              onDoubleTap: () => PostController.find.toggleLikePost(post),
+              onDoubleTap: () => controller.toggleLikePost(post),
               child: FlutterCarousel(
                 items: post.mediaFiles!.map(
                   (media) {
                     if (media.mediaType == "video") {
-                      return Hero(
-                        tag: post.id!,
-                        child: NxVideoPlayerWidget(
-                          url: media.url!,
-                          thumbnailUrl: media.thumbnail?.url,
-                          isSmallPlayer: true,
-                          showControls: true,
-                          startVideoWithAudio: true,
-                          onTap: () => Get.to(() => PostViewWidget(post: post)),
-                        ),
+                      return NxVideoPlayerWidget(
+                        url: media.url!,
+                        thumbnailUrl: media.thumbnail?.url,
+                        isSmallPlayer: true,
+                        showControls: true,
+                        startVideoWithAudio: true,
+                        onTap: () => Get.to(() => PostViewWidget(post: post)),
                       );
                     }
                     return GestureDetector(
                       onTap: () => Get.to(() => PostViewWidget(post: post)),
-                      child: Hero(
-                        tag: post.id!,
-                        child: NxNetworkImage(
-                          imageUrl: media.url!,
-                          imageFit: BoxFit.cover,
-                          width: Dimens.screenWidth,
-                        ),
+                      child: NxNetworkImage(
+                        imageUrl: media.url!,
+                        imageFit: BoxFit.cover,
+                        width: Dimens.screenWidth,
                       ),
                     );
                   },
@@ -317,7 +314,7 @@ class PostWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                  onTap: () => PostController.find.toggleLikePost(post),
+                  onTap: () => controller.toggleLikePost(post),
                   child: CircleAvatar(
                     backgroundColor:
                         Theme.of(Get.context!).scaffoldBackgroundColor,
@@ -371,12 +368,12 @@ class PostWidget extends StatelessWidget {
     );
   }
 
-  _showHeaderOptionBottomSheet() => AppUtils.showBottomSheet(
+  _showHeaderOptionBottomSheet() => AppUtility.showBottomSheet(
         [
           if (post.owner.id == ProfileController.find.profileDetails.user!.id)
             ListTile(
               onTap: () {
-                AppUtils.closeBottomSheet();
+                AppUtility.closeBottomSheet();
                 _showDeletePostOptions();
               },
               leading: const Icon(CupertinoIcons.delete),
@@ -386,7 +383,7 @@ class PostWidget extends StatelessWidget {
               ),
             ),
           ListTile(
-            onTap: AppUtils.closeBottomSheet,
+            onTap: AppUtility.closeBottomSheet,
             leading: const Icon(CupertinoIcons.share),
             title: Text(
               StringValues.share,
@@ -394,7 +391,7 @@ class PostWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: AppUtils.closeBottomSheet,
+            onTap: AppUtility.closeBottomSheet,
             leading: const Icon(CupertinoIcons.reply),
             title: Text(
               StringValues.report,
@@ -405,7 +402,7 @@ class PostWidget extends StatelessWidget {
       );
 
   Future<void> _showDeletePostOptions() async {
-    AppUtils.showSimpleDialog(
+    AppUtility.showSimpleDialog(
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -437,7 +434,7 @@ class PostWidget extends StatelessWidget {
                   labelStyle: AppStyles.style16Bold.copyWith(
                     color: ColorValues.errorColor,
                   ),
-                  onTap: AppUtils.closeDialog,
+                  onTap: AppUtility.closeDialog,
                   padding: Dimens.edgeInsets8,
                 ),
                 Dimens.boxWidth16,
@@ -447,7 +444,7 @@ class PostWidget extends StatelessWidget {
                     color: ColorValues.successColor,
                   ),
                   onTap: () async {
-                    AppUtils.closeDialog();
+                    AppUtility.closeDialog();
                     await Get.find<PostController>().deletePost(post.id!);
                   },
                   padding: Dimens.edgeInsets8,

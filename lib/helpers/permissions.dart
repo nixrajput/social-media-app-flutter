@@ -1,5 +1,5 @@
 import 'package:permission_handler/permission_handler.dart';
-import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 abstract class AppPermissions {
   static Future<bool> checkStoragePermission() async {
@@ -11,7 +11,7 @@ abstract class AppPermissions {
       return false;
     }
     if (status.isRestricted) {
-      AppUtils.showError("Storage Permission Error");
+      AppUtility.showError("Storage Permission Error");
       return false;
     }
     if (status.isPermanentlyDenied) {
@@ -31,7 +31,7 @@ abstract class AppPermissions {
       return false;
     }
     if (status.isRestricted) {
-      AppUtils.showError('Camera Permission Error');
+      AppUtility.showError('Camera Permission Error');
       return false;
     }
     if (status.isPermanentlyDenied) {
@@ -50,7 +50,7 @@ abstract class AppPermissions {
       return false;
     }
     if (status.isRestricted) {
-      AppUtils.showError('Location Permission Error');
+      AppUtility.showError('Location Permission Error');
       return false;
     }
     if (status.isPermanentlyDenied) {

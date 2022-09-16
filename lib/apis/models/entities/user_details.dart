@@ -21,11 +21,13 @@ class UserDetails {
     required this.followingCount,
     required this.followingStatus,
     required this.postsCount,
-    required this.role,
-    required this.accountPrivacy,
     required this.accountStatus,
+    required this.isPrivate,
+    required this.isValid,
     required this.isVerified,
+    required this.role,
     required this.createdAt,
+    required this.updatedAt,
   });
 
   factory UserDetails.fromJson(Map<String, dynamic> json) =>
@@ -78,18 +80,24 @@ class UserDetails {
   @JsonKey(name: 'followingStatus')
   String followingStatus;
 
-  @JsonKey(name: 'role')
-  final String role;
-
-  @JsonKey(name: 'accountPrivacy')
-  final String accountPrivacy;
-
   @JsonKey(name: 'accountStatus')
   final String accountStatus;
+
+  @JsonKey(name: 'isPrivate')
+  bool isPrivate;
+
+  @JsonKey(name: 'isValid')
+  final bool isValid;
 
   @JsonKey(name: 'isVerified')
   final bool isVerified;
 
+  @JsonKey(name: 'role')
+  final String role;
+
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;
+
+  @JsonKey(name: 'updatedAt')
+  final DateTime updatedAt;
 }

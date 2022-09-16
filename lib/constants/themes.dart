@@ -22,9 +22,9 @@ abstract class AppThemes {
     ),
     dividerColor: ColorValues.lightDividerColor,
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: ColorValues.lightDialogColor,
+      backgroundColor: ColorValues.darkDialogColor,
       contentTextStyle: AppStyles.style14Normal.copyWith(
-        color: ColorValues.darkBgColor,
+        color: ColorValues.darkBodyTextColor,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -75,9 +75,9 @@ abstract class AppThemes {
     ),
     dividerColor: ColorValues.darkDividerColor,
     snackBarTheme: const SnackBarThemeData(
-      backgroundColor: ColorValues.darkDialogColor,
+      backgroundColor: ColorValues.lightDialogColor,
       contentTextStyle: TextStyle(
-        color: ColorValues.whiteColor,
+        color: ColorValues.lightBodyTextColor,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(

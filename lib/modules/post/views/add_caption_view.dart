@@ -72,6 +72,7 @@ class AddCaptionView extends StatelessWidget {
                               Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
                         controller: logic.captionTextController,
+                        onChanged: logic.onChangeCaption,
                         onEditingComplete: logic.focusNode.unfocus,
                       ),
                     ),

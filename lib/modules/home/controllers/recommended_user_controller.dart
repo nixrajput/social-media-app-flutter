@@ -9,7 +9,7 @@ import 'package:social_media_app/apis/models/responses/user_list_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class RecommendedUsersController extends GetxController {
   static RecommendedUsersController get find => Get.find();
@@ -37,7 +37,7 @@ class RecommendedUsersController extends GetxController {
       _recommendedUsersData.value = value;
 
   Future<void> _getUsers() async {
-    AppUtils.printLog("Get Recommended Users Request");
+    AppUtility.printLog("Get Recommended Users Request");
     _isLoading.value = true;
     update();
 
@@ -52,12 +52,12 @@ class RecommendedUsersController extends GetxController {
         _recommendedUsersList.addAll(_recommendedUsersData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Get Recommended Users Success");
+        AppUtility.printLog("Get Recommended Users Success");
       } else {
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Get Recommended Users Error");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("Get Recommended Users Error");
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
@@ -65,34 +65,35 @@ class RecommendedUsersController extends GetxController {
     } on SocketException {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Get Recommended Users Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Get Recommended Users Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Get Recommended Users Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Get Recommended Users Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Get Recommended Users Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Get Recommended Users Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Get Recommended Users Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Get Recommended Users Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtils.printLog("Fetching More Recommended Users Request");
+    AppUtility.printLog("Fetching More Recommended Users Request");
     _isMoreLoading.value = true;
     update();
 
@@ -106,12 +107,12 @@ class RecommendedUsersController extends GetxController {
         _recommendedUsersList.addAll(_recommendedUsersData.value.results!);
         _isMoreLoading.value = false;
         update();
-        AppUtils.printLog("Fetching More Recommended Users Success");
+        AppUtility.printLog("Fetching More Recommended Users Success");
       } else {
         _isMoreLoading.value = false;
         update();
-        AppUtils.printLog("Fetching More Recommended Users Error");
-        AppUtils.showSnackBar(
+        AppUtility.printLog("Fetching More Recommended Users Error");
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
@@ -119,29 +120,30 @@ class RecommendedUsersController extends GetxController {
     } on SocketException {
       _isMoreLoading.value = false;
       update();
-      AppUtils.printLog("Fetching More Recommended Users Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Fetching More Recommended Users Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isMoreLoading.value = false;
       update();
-      AppUtils.printLog("Fetching More Recommended Users Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Fetching More Recommended Users Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isMoreLoading.value = false;
       update();
-      AppUtils.printLog("Fetching More Recommended Users Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Fetching More Recommended Users Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtils.printLog("Fetching More Recommended Users Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Fetching More Recommended Users Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 

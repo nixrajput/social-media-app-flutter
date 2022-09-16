@@ -77,12 +77,9 @@ class UserWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Hero(
-                      tag: user.id,
-                      child: AvatarWidget(
-                        avatar: user.avatar,
-                        size: avatarSize ?? Dimens.twenty,
-                      ),
+                    AvatarWidget(
+                      avatar: user.avatar,
+                      size: avatarSize ?? Dimens.twenty,
                     ),
                     Dimens.boxWidth12,
                     Column(

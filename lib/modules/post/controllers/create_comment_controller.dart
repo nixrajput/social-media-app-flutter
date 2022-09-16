@@ -8,8 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class CreateCommentController extends GetxController {
   static CreateCommentController get find => Get.find();
@@ -27,7 +27,7 @@ class CreateCommentController extends GetxController {
   bool get isLoading => _isLoading.value;
 
   Future<void> _createNewComment(String comment, String postId) async {
-    AppUtils.printLog("Add Comment Request...");
+    AppUtility.printLog("Add Comment Request...");
 
     _isLoading.value = true;
     update();
@@ -43,14 +43,14 @@ class CreateCommentController extends GetxController {
         await _commentController.fetchComments();
         _isLoading.value = false;
         update();
-        AppUtils.showSnackBar(
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
         );
       } else {
         _isLoading.value = false;
         update();
-        AppUtils.showSnackBar(
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
@@ -58,31 +58,32 @@ class CreateCommentController extends GetxController {
     } on SocketException {
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> createNewComment() async {
-    AppUtils.closeFocus();
+    AppUtility.closeFocus();
     if (commentTextController.text.isEmpty) return;
 
     var postId = Get.arguments;

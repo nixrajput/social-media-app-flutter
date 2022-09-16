@@ -10,8 +10,8 @@ import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profession_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class EditProfessionView extends StatelessWidget {
   const EditProfessionView({Key? key}) : super(key: key);
@@ -123,7 +123,7 @@ class EditProfessionView extends StatelessWidget {
   _showProfessionBottomsheet() {
     var lastIndex = 20;
     var occupationList = StaticData.occupationList.sublist(1, lastIndex);
-    AppUtils.showBottomSheet(
+    AppUtility.showBottomSheet(
       [
         Padding(
           padding: Dimens.edgeInsets8_16,

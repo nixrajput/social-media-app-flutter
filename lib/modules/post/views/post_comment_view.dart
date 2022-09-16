@@ -7,6 +7,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
+import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/create_comment_controller.dart';
@@ -85,62 +86,83 @@ class PostCommentView extends StatelessWidget {
 
   _buildBody() {
     return Expanded(
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: Dimens.edgeInsets0_16,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GetBuilder<CommentController>(
-                builder: (commentsLogic) {
-                  if (commentsLogic.isLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (commentsLogic.commentList.isEmpty) {
-                    return const SizedBox();
-                  }
-                  return Column(
+      child: Padding(
+        padding: Dimens.edgeInsets0_16,
+        child: GetBuilder<CommentController>(
+          builder: (commentsLogic) {
+            if (commentsLogic.isLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (commentsLogic.commentsData == null ||
+                commentsLogic.commentList.isEmpty) {
+              return Padding(
+                padding: Dimens.edgeInsets0_16,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Dimens.boxHeight8,
+                    Text(
+                      StringValues.noComments,
+                      style: AppStyles.style32Bold.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Dimens.boxHeight16,
+                    NxOutlinedButton(
+                      width: Dimens.hundred,
+                      height: Dimens.thirtySix,
+                      label: StringValues.refresh,
+                      onTap: () => commentsLogic.fetchComments(),
+                    ),
+                    Dimens.boxHeight64,
+                  ],
+                ),
+              );
+            }
+
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: commentsLogic.commentList
-                            .map((e) => InkWell(
-                                  child: CommentWidget(comment: e),
-                                  onLongPress: () => commentsLogic
-                                      .showDeleteCommentOptions(e.id),
-                                ))
-                            .toList(),
+                    children: commentsLogic.commentList
+                        .map((e) => InkWell(
+                              child: CommentWidget(comment: e),
+                              onLongPress: () =>
+                                  commentsLogic.showDeleteCommentOptions(e.id),
+                            ))
+                        .toList(),
+                  ),
+                  if (commentsLogic.isMoreLoading) Dimens.boxHeight8,
+                  if (commentsLogic.isMoreLoading)
+                    const Center(child: CircularProgressIndicator()),
+                  if (!commentsLogic.isMoreLoading &&
+                      commentsLogic.commentsData!.hasNextPage!)
+                    NxTextButton(
+                      label: 'View more comments',
+                      onTap: commentsLogic.loadMore,
+                      labelStyle: AppStyles.style14Bold.copyWith(
+                        color: ColorValues.primaryLightColor,
                       ),
-                      if (commentsLogic.isMoreLoading) Dimens.boxHeight8,
-                      if (commentsLogic.isMoreLoading)
-                        const Center(child: CircularProgressIndicator()),
-                      if (!commentsLogic.isMoreLoading &&
-                          commentsLogic.commentsData.hasNextPage!)
-                        NxTextButton(
-                          label: 'View more comments',
-                          onTap: commentsLogic.loadMore,
-                          labelStyle: AppStyles.style14Bold.copyWith(
-                            color: ColorValues.primaryLightColor,
-                          ),
-                          padding: Dimens.edgeInsets8_0,
-                        ),
-                      Dimens.boxHeight16,
-                    ],
-                  );
-                },
+                      padding: Dimens.edgeInsets8_0,
+                    ),
+                  Dimens.boxHeight64,
+                ],
               ),
-              Dimens.boxHeight64,
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

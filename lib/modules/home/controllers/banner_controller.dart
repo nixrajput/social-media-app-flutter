@@ -7,8 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class BannerController extends GetxController {
   static BannerController get find => Get.find();
@@ -32,21 +32,21 @@ class BannerController extends GetxController {
   }
 
   _getData() async {
-    _bannerList.add(
-      'Hello ${_profile.profileDetails.user!.fname}, thank you for being a '
-      'valuable member of this platform. We have an important message for '
-      'all users.',
-    );
-    _bannerList.add(
-      'After releasing the production version, '
-      'we may delete some of the data in the database for better and '
-      'faster performance. Data will be deleted only if it is not '
-      'required for the project or it may cause any issues or conflicts.',
-    );
+    // _bannerList.add(
+    //   'Hello ${_profile.profileDetails.user!.fname}, thank you for being a '
+    //   'valuable member of this platform. We have an important message for '
+    //   'all users.',
+    // );
+    // _bannerList.add(
+    //   'After releasing the production version, '
+    //   'we may delete some of the data in the database for better and '
+    //   'faster performance. Data will be deleted only if it is not '
+    //   'required for the project or it may cause any issues or conflicts.',
+    // );
   }
 
   Future<void> _fetchBanners({int? page}) async {
-    AppUtils.printLog("Fetching Banners Request");
+    AppUtility.printLog("Fetching Banners Request");
     _isLoading.value = true;
     update();
 
@@ -60,43 +60,44 @@ class BannerController extends GetxController {
         // _postList.addAll(_postData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtils.printLog("Fetching Banners Success");
+        AppUtility.printLog("Fetching Banners Success");
       } else {
         _isLoading.value = false;
         update();
-        AppUtils.showSnackBar(
+        AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtils.printLog("Fetching Banners Error");
+        AppUtility.printLog("Fetching Banners Error");
       }
     } on SocketException {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Fetching Banners Error");
-      AppUtils.printLog(StringValues.internetConnError);
-      AppUtils.showSnackBar(StringValues.internetConnError, StringValues.error);
+      AppUtility.printLog("Fetching Banners Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Fetching Banners Error");
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.printLog(StringValues.connTimedOut);
-      AppUtils.showSnackBar(StringValues.connTimedOut, StringValues.error);
+      AppUtility.printLog("Fetching Banners Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Fetching Banners Error");
-      AppUtils.printLog(StringValues.formatExcError);
-      AppUtils.printLog(e);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Fetching Banners Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtils.printLog("Fetching Banners Error");
-      AppUtils.printLog(StringValues.errorOccurred);
-      AppUtils.printLog(exc);
-      AppUtils.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Fetching Banners Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 

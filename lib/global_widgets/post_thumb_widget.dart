@@ -9,10 +9,10 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class PostThumbnailWidget extends StatelessWidget {
   const PostThumbnailWidget({
@@ -31,7 +31,10 @@ class PostThumbnailWidget extends StatelessWidget {
       onLongPress: () => _showHeaderOptionBottomSheet(post),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Dimens.eight),
-        child: _buildBody(),
+        child: Container(
+          color: ColorValues.blackColor,
+          child: _buildBody(),
+        ),
       ),
     );
   }
@@ -62,12 +65,12 @@ class PostThumbnailWidget extends StatelessWidget {
     );
   }
 
-  void _showHeaderOptionBottomSheet(Post post) => AppUtils.showBottomSheet(
+  void _showHeaderOptionBottomSheet(Post post) => AppUtility.showBottomSheet(
         [
           if (post.owner.id == ProfileController.find.profileDetails.user!.id)
             ListTile(
               onTap: () async {
-                AppUtils.closeBottomSheet();
+                AppUtility.closeBottomSheet();
                 await _showDeletePostOptions(post.id!);
               },
               leading: const Icon(CupertinoIcons.delete),
@@ -77,7 +80,7 @@ class PostThumbnailWidget extends StatelessWidget {
               ),
             ),
           ListTile(
-            onTap: AppUtils.closeBottomSheet,
+            onTap: AppUtility.closeBottomSheet,
             leading: const Icon(CupertinoIcons.share),
             title: Text(
               StringValues.share,
@@ -85,7 +88,7 @@ class PostThumbnailWidget extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: AppUtils.closeBottomSheet,
+            onTap: AppUtility.closeBottomSheet,
             leading: const Icon(CupertinoIcons.reply),
             title: Text(
               StringValues.report,
@@ -96,7 +99,7 @@ class PostThumbnailWidget extends StatelessWidget {
       );
 
   Future<void> _showDeletePostOptions(String id) async {
-    AppUtils.showSimpleDialog(
+    AppUtility.showSimpleDialog(
       Padding(
         padding: Dimens.edgeInsets16,
         child: Column(
@@ -115,7 +118,7 @@ class PostThumbnailWidget extends StatelessWidget {
                   labelStyle: AppStyles.style16Bold.copyWith(
                     color: ColorValues.errorColor,
                   ),
-                  onTap: AppUtils.closeDialog,
+                  onTap: AppUtility.closeDialog,
                   padding: Dimens.edgeInsets8,
                 ),
                 Dimens.boxWidth16,
@@ -125,7 +128,7 @@ class PostThumbnailWidget extends StatelessWidget {
                     color: ColorValues.successColor,
                   ),
                   onTap: () async {
-                    AppUtils.closeDialog();
+                    AppUtility.closeDialog();
                     await Get.find<PostController>().deletePost(id);
                   },
                   padding: Dimens.edgeInsets8,

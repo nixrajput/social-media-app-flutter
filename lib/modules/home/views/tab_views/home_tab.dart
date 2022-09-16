@@ -6,17 +6,20 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/shimmer_loading.dart';
 import 'package:social_media_app/global_widgets/sliver_app_bar.dart';
-import 'package:social_media_app/helpers/utils.dart';
+import 'package:social_media_app/modules/follow_request/follow_request_controller.dart';
 import 'package:social_media_app/modules/home/controllers/banner_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
 import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
+import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class HomeTabView extends StatelessWidget {
   const HomeTabView({Key? key}) : super(key: key);
@@ -27,24 +30,57 @@ class HomeTabView extends StatelessWidget {
       child: SizedBox(
         width: Dimens.screenWidth,
         height: Dimens.screenHeight,
-        child: RefreshIndicator(
+        child: NxRefreshIndicator(
           onRefresh: () => PostController.find.fetchPosts(),
+          showProgress: false,
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
               NxSliverAppBar(
                 bgColor: Theme.of(context).scaffoldBackgroundColor,
-                height: Dimens.fourtyEight,
-                leading: AppUtils.buildAppLogo(),
-                actions: GetBuilder<CreatePostController>(
-                  builder: (con) => InkWell(
-                    onTap: con.selectPostImages,
-                    child: Icon(
-                      CupertinoIcons.add_circled,
-                      size: Dimens.twentyEight,
-                      color: Theme.of(context).textTheme.bodyText1!.color,
+                leading: AppUtility.buildAppLogo(),
+                actions: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Stack(
+                      children: [
+                        InkWell(
+                          onTap: RouteManagement.goToFollowRequestsView,
+                          child: Icon(
+                            Icons.person_add_alt_rounded,
+                            size: Dimens.twentyEight,
+                            color: Theme.of(context).textTheme.bodyText1!.color,
+                          ),
+                        ),
+                        if (FollowRequestController
+                            .find.followRequestList.isNotEmpty)
+                          Positioned(
+                            right: Dimens.zero,
+                            top: Dimens.two,
+                            child: Container(
+                              width: Dimens.eight,
+                              height: Dimens.eight,
+                              decoration: const BoxDecoration(
+                                color: ColorValues.errorColor,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
-                  ),
+                    Dimens.boxWidth12,
+                    GetBuilder<CreatePostController>(
+                      builder: (con) => InkWell(
+                        onTap: con.selectPostImages,
+                        child: Icon(
+                          Icons.add_circle,
+                          size: Dimens.twentyEight,
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               _buildBody(),
@@ -97,127 +133,140 @@ class HomeTabView extends StatelessWidget {
         }
 
         return SliverToBoxAdapter(
-          child: ListView(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              GetBuilder<BannerController>(
-                builder: (logic) {
-                  if (logic.bannerList.isNotEmpty) {
-                    return StatefulBuilder(
-                      builder: (context, setInnerState) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            FlutterCarousel(
-                              items: logic.bannerList
-                                  .map((media) => Container(
-                                        width: Dimens.screenWidth,
-                                        padding: Dimens.edgeInsets8,
-                                        decoration: const BoxDecoration(
-                                          color: ColorValues.primaryColor,
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  text: media,
-                                                  style: AppStyles.style13Normal
-                                                      .copyWith(
-                                                    color:
-                                                        ColorValues.whiteColor,
+          child: Padding(
+            padding: Dimens.edgeInsets0_16,
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                GetBuilder<BannerController>(
+                  builder: (logic) {
+                    if (logic.bannerList.isNotEmpty) {
+                      return StatefulBuilder(
+                        builder: (context, setInnerState) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              FlutterCarousel(
+                                items: logic.bannerList
+                                    .map((media) => Container(
+                                          width: Dimens.screenWidth,
+                                          padding: Dimens.edgeInsets8,
+                                          decoration: const BoxDecoration(
+                                            color: ColorValues.primaryColor,
+                                          ),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: RichText(
+                                                  text: TextSpan(
+                                                    text: media,
+                                                    style: AppStyles
+                                                        .style13Normal
+                                                        .copyWith(
+                                                      color: ColorValues
+                                                          .whiteColor,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            Dimens.boxWidth2,
-                                            NxIconButton(
-                                              icon: Icons.clear_outlined,
-                                              onTap: () => logic
-                                                  .deleteBanner(currentItem),
-                                              iconColor: ColorValues.whiteColor,
-                                            ),
-                                          ],
-                                        ),
-                                      ))
-                                  .toList(),
-                              options: CarouselOptions(
-                                  height: Dimens.eighty,
-                                  viewportFraction: 1.0,
-                                  showIndicator: false,
-                                  onPageChanged: (int index, reason) {
-                                    setInnerState(() {
-                                      currentItem = index;
-                                    });
-                                  }),
-                            ),
-                            if (logic.bannerList.length > 1) Dimens.boxHeight4,
-                            if (logic.bannerList.length > 1)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: logic.bannerList.asMap().entries.map(
-                                  (entry) {
-                                    return Container(
-                                      width: Dimens.eight,
-                                      height: Dimens.eight,
-                                      margin: EdgeInsets.symmetric(
-                                        horizontal: Dimens.two,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: (Theme.of(context).brightness ==
-                                                    Brightness.dark
-                                                ? ColorValues.whiteColor
-                                                : ColorValues.blackColor)
-                                            .withOpacity(
-                                                currentItem == entry.key
-                                                    ? 0.9
-                                                    : 0.4),
-                                      ),
-                                    );
-                                  },
-                                ).toList(),
+                                              Dimens.boxWidth2,
+                                              NxIconButton(
+                                                icon: Icons.clear_outlined,
+                                                onTap: () => logic
+                                                    .deleteBanner(currentItem),
+                                                iconColor:
+                                                    ColorValues.whiteColor,
+                                              ),
+                                            ],
+                                          ),
+                                        ))
+                                    .toList(),
+                                options: CarouselOptions(
+                                    height: Dimens.eighty,
+                                    viewportFraction: 1.0,
+                                    showIndicator: false,
+                                    onPageChanged: (int index, reason) {
+                                      setInnerState(() {
+                                        currentItem = index;
+                                      });
+                                    }),
                               ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
-              ListView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: logic.postList
-                    .map((post) => PostWidget(post: post))
-                    .toList(),
-              ),
-              if (logic.isMoreLoading) Dimens.boxHeight8,
-              if (logic.isMoreLoading)
-                const Center(child: CircularProgressIndicator()),
-              if (!logic.isMoreLoading && logic.postData!.hasNextPage!)
-                Center(
-                  child: NxTextButton(
-                    label: 'Load more posts',
-                    onTap: logic.loadMore,
-                    labelStyle: AppStyles.style14Bold.copyWith(
-                      color: ColorValues.primaryLightColor,
-                    ),
-                    padding: Dimens.edgeInsets8_0,
-                  ),
+                              if (logic.bannerList.length > 1)
+                                Dimens.boxHeight4,
+                              if (logic.bannerList.length > 1)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children:
+                                      logic.bannerList.asMap().entries.map(
+                                    (entry) {
+                                      return Container(
+                                        width: Dimens.eight,
+                                        height: Dimens.eight,
+                                        margin: EdgeInsets.symmetric(
+                                          horizontal: Dimens.two,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color:
+                                              (Theme.of(context).brightness ==
+                                                          Brightness.dark
+                                                      ? ColorValues.whiteColor
+                                                      : ColorValues.blackColor)
+                                                  .withOpacity(
+                                                      currentItem == entry.key
+                                                          ? 0.9
+                                                          : 0.4),
+                                        ),
+                                      );
+                                    },
+                                  ).toList(),
+                                ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                    return const SizedBox();
+                  },
                 ),
-              Dimens.boxHeight16,
-            ],
+                ListView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: logic.postList
+                      .map(
+                        (post) => PostWidget(
+                          post: post,
+                          controller: logic,
+                        ),
+                      )
+                      .toList(),
+                ),
+                if (logic.isMoreLoading) Dimens.boxHeight8,
+                if (logic.isMoreLoading)
+                  const Center(child: CircularProgressIndicator()),
+                if (!logic.isMoreLoading && logic.postData!.hasNextPage!)
+                  Center(
+                    child: NxTextButton(
+                      label: 'Load more posts',
+                      onTap: logic.loadMore,
+                      labelStyle: AppStyles.style14Bold.copyWith(
+                        color: ColorValues.primaryLightColor,
+                      ),
+                      padding: Dimens.edgeInsets8_0,
+                    ),
+                  ),
+                Dimens.boxHeight16,
+              ],
+            ),
           ),
         );
       },
@@ -226,7 +275,7 @@ class HomeTabView extends StatelessWidget {
 
   _buildPostLoadingWidget() {
     return NxElevatedCard(
-      bgColor: ColorValues.grayColor.withOpacity(0.1),
+      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
       padding: Dimens.edgeInsets8,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,9 +284,10 @@ class HomeTabView extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: Dimens.twenty,
-                backgroundColor: ColorValues.grayColor.withOpacity(0.25),
+              ShimmerLoading(
+                width: Dimens.fourty,
+                height: Dimens.fourty,
+                circular: true,
               ),
               Dimens.boxWidth8,
               Column(

@@ -8,8 +8,8 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
-import 'package:social_media_app/helpers/utils.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class AppUpdateView extends StatelessWidget {
   const AppUpdateView({super.key});
@@ -44,7 +44,7 @@ class AppUpdateView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppUtils.buildAppLogo(fontSize: Dimens.thirtyTwo),
+                  AppUtility.buildAppLogo(fontSize: Dimens.thirtyTwo),
                   Dimens.boxHeight16,
                   RichText(
                     text: TextSpan(

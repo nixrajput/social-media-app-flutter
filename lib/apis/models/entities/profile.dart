@@ -26,12 +26,13 @@ class Profile {
     required this.followersCount,
     required this.followingCount,
     required this.role,
-    required this.accountPrivacy,
+    required this.isPrivate,
     required this.accountStatus,
     required this.verificationStatus,
     required this.isValid,
     required this.isVerified,
     required this.createdAt,
+    required this.updatedAt,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) =>
@@ -87,26 +88,20 @@ class Profile {
   @JsonKey(name: 'website')
   String? website;
 
-  @JsonKey(name: 'followersCount')
-  int followersCount;
-
   @JsonKey(name: 'postsCount')
   int postsCount;
+
+  @JsonKey(name: 'followersCount')
+  int followersCount;
 
   @JsonKey(name: 'followingCount')
   int followingCount;
 
-  @JsonKey(name: 'role')
-  String role;
-
-  @JsonKey(name: 'accountPrivacy')
-  String accountPrivacy;
-
   @JsonKey(name: 'accountStatus')
   String accountStatus;
 
-  @JsonKey(name: 'verificationStatus')
-  String verificationStatus;
+  @JsonKey(name: 'isPrivate')
+  bool isPrivate;
 
   @JsonKey(name: 'isValid')
   bool isValid;
@@ -114,6 +109,15 @@ class Profile {
   @JsonKey(name: 'isVerified')
   bool isVerified;
 
+  @JsonKey(name: 'verificationStatus')
+  String verificationStatus;
+
+  @JsonKey(name: 'role')
+  String role;
+
   @JsonKey(name: 'createdAt')
   DateTime createdAt;
+
+  @JsonKey(name: 'updatedAt')
+  final DateTime updatedAt;
 }

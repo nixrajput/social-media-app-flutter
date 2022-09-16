@@ -5,7 +5,9 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/file_image.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/settings/controllers/report_issue_controller.dart';
 
 class ReportIssueView extends StatelessWidget {
@@ -58,7 +60,7 @@ class ReportIssueView extends StatelessWidget {
                       hintStyle: AppStyles.style14Normal.copyWith(
                         color: ColorValues.grayColor,
                       ),
-                      hintText: StringValues.enterMessage,
+                      hintText: StringValues.writeAboutIssue,
                     ),
                     keyboardType: TextInputType.multiline,
                     maxLines: 4,
@@ -68,9 +70,68 @@ class ReportIssueView extends StatelessWidget {
                     controller: logic.messageTextController,
                   ),
                 ),
+                if (logic.pickedFileList!.isNotEmpty)
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Dimens.boxHeight16,
+                      Wrap(
+                        children: logic.pickedFileList!
+                            .map(
+                              (e) => Stack(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        Dimens.edgeInsetsOnlyBottom2.copyWith(
+                                      bottom: Dimens.zero,
+                                      right: Dimens.eight,
+                                    ),
+                                    child: NxFileImage(
+                                      file: e,
+                                      scale: 1.0,
+                                      width: Dimens.sixtyFour,
+                                      height: Dimens.sixtyFour,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: Dimens.zero,
+                                    right: Dimens.zero,
+                                    child: GestureDetector(
+                                      onTap: () => logic.removeImage(e),
+                                      child: CircleAvatar(
+                                        radius: Dimens.twelve,
+                                        backgroundColor: ColorValues.errorColor,
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: ColorValues.whiteColor,
+                                          size: Dimens.fourteen,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ],
+                  ),
+                if (logic.pickedFileList!.length < 10)
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Dimens.boxHeight16,
+                      NxTextButton(
+                        label: 'Add screenshots',
+                        onTap: logic.selectMultipleFiles,
+                      ),
+                    ],
+                  ),
                 Dimens.boxHeight40,
                 NxFilledButton(
-                  onTap: logic.sendChangeEmailOtp,
+                  onTap: logic.sendIssueReportOtp,
                   label: StringValues.next.toUpperCase(),
                 ),
                 Dimens.boxHeight16,
