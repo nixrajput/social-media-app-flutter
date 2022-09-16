@@ -63,7 +63,9 @@ class HomeController extends GetxController {
     BottomNavigationBarItem(
       icon: GetBuilder<ProfileController>(
         builder: (logic) {
-          if (logic.profileDetails.user == null) {
+          if (logic.profileDetails.user == null ||
+              logic.profileDetails.user!.avatar == null ||
+              logic.profileDetails.user!.avatar!.url == null) {
             return const Icon(CupertinoIcons.person);
           }
           return NxCircleNetworkImage(

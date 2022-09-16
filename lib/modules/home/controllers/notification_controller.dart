@@ -50,7 +50,6 @@ class NotificationController extends GetxController {
     await Future.delayed(const Duration(seconds: 1), () async {
       await _fetchNotifications();
       await FollowRequestController.find.fetchFollowRequests();
-      FollowRequestController.find.update();
     });
   }
 

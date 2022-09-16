@@ -43,31 +43,33 @@ class HomeTabView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Stack(
-                      children: [
-                        InkWell(
-                          onTap: RouteManagement.goToFollowRequestsView,
-                          child: Icon(
-                            Icons.person_add_alt_rounded,
-                            size: Dimens.twentyEight,
-                            color: Theme.of(context).textTheme.bodyText1!.color,
-                          ),
-                        ),
-                        if (FollowRequestController
-                            .find.followRequestList.isNotEmpty)
-                          Positioned(
-                            right: Dimens.zero,
-                            top: Dimens.two,
-                            child: Container(
-                              width: Dimens.eight,
-                              height: Dimens.eight,
-                              decoration: const BoxDecoration(
-                                color: ColorValues.errorColor,
-                                shape: BoxShape.circle,
-                              ),
+                    GetBuilder<FollowRequestController>(
+                      builder: (logic) => Stack(
+                        children: [
+                          InkWell(
+                            onTap: RouteManagement.goToFollowRequestsView,
+                            child: Icon(
+                              Icons.person_add_alt_rounded,
+                              size: Dimens.twentyEight,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color,
                             ),
                           ),
-                      ],
+                          if (logic.followRequestList.isNotEmpty)
+                            Positioned(
+                              right: Dimens.zero,
+                              top: Dimens.two,
+                              child: Container(
+                                width: Dimens.eight,
+                                height: Dimens.eight,
+                                decoration: const BoxDecoration(
+                                  color: ColorValues.errorColor,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                     Dimens.boxWidth12,
                     GetBuilder<CreatePostController>(
