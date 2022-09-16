@@ -23,6 +23,8 @@ class CommentWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AvatarWidget(
                 avatar: comment.user.avatar,
@@ -43,9 +45,18 @@ class CommentWidget extends StatelessWidget {
                           style: AppStyles.style15Bold,
                         ),
                         Dimens.boxWidth4,
+                        Container(
+                          width: Dimens.four,
+                          height: Dimens.four,
+                          decoration: BoxDecoration(
+                            color: Theme.of(Get.context!).dividerColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        Dimens.boxWidth4,
                         Text(
                           GetTimeAgo.parse(comment.createdAt),
-                          style: AppStyles.style13Normal.copyWith(
+                          style: AppStyles.style12Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
                                 .subtitle1!
@@ -54,7 +65,6 @@ class CommentWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Dimens.boxHeight4,
                     NxExpandableText(
                       text: comment.comment,
                     ),

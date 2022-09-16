@@ -38,9 +38,9 @@ Future<void> initServices() async {
   Get
     ..put(AppThemeController(), permanent: true)
     ..put(AuthService(), permanent: true)
+    ..put(AppUpdateController(), permanent: true)
     ..put(ProfileController(), permanent: true)
-    ..put(LoginDeviceInfoController(), permanent: true)
-    ..put(AppUpdateController(), permanent: true);
+    ..put(LoginDeviceInfoController(), permanent: true);
 
   serverHealth = await Get.find<AuthService>().checkServerHealth();
   AppUtility.printLog("ServerHealth: $serverHealth");

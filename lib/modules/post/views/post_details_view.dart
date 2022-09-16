@@ -21,7 +21,10 @@ class PostDetailsView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const NxAppBar(title: StringValues.post),
+              NxAppBar(
+                title: StringValues.post,
+                padding: Dimens.edgeInsets8_16,
+              ),
               _buildBody(),
             ],
           ),
@@ -55,6 +58,7 @@ class PostDetailsView extends StatelessWidget {
 
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
+          padding: Dimens.edgeInsets0_16,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,

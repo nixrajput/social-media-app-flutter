@@ -93,13 +93,14 @@ abstract class AppUtility {
 
   /// Text Logo
 
-  static buildAppLogo({double? fontSize}) => Text(
+  static buildAppLogo({double? fontSize, bool? isCentered = false}) => Text(
         StringValues.appName.toUpperCase(),
         style: AppStyles.style24Bold.copyWith(
           fontFamily: "Muge",
           fontSize: fontSize,
           letterSpacing: Dimens.four,
         ),
+        textAlign: isCentered == true ? TextAlign.center : TextAlign.start,
       );
 
   /// Show Simple Dialog

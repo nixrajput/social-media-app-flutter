@@ -101,13 +101,13 @@ class LoginView extends StatelessWidget {
                             ),
                           ),
                           hintText: StringValues.password,
-                          hintStyle: const TextStyle(
+                          hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
                           ),
                         ),
                         keyboardType: TextInputType.visiblePassword,
                         maxLines: 1,
-                        style: AppStyles.style16Normal.copyWith(
+                        style: AppStyles.style14Normal.copyWith(
                           color:
                               Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),

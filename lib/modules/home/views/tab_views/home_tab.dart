@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
@@ -55,7 +54,8 @@ class HomeTabView extends StatelessWidget {
                                   Theme.of(context).textTheme.bodyText1!.color,
                             ),
                           ),
-                          if (logic.followRequestList.isNotEmpty)
+                          if (logic.followRequestData != null &&
+                              logic.followRequestList.isNotEmpty)
                             Positioned(
                               right: Dimens.zero,
                               top: Dimens.two,

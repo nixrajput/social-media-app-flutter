@@ -24,51 +24,59 @@ class WelcomeView extends StatelessWidget {
               size: Size(Dimens.screenWidth, Dimens.screenHeight),
               painter: WelcomeShapePainter(),
             ),
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Padding(
-                padding: Dimens.edgeInsets0_16,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Dimens.boxHeight48,
-                    Text(
-                      "${StringValues.welcome} ${StringValues.to}"
-                          .toTitleCase(),
-                      textAlign: TextAlign.center,
-                      style: AppStyles.style20Normal,
-                    ),
-                    Dimens.boxHeight8,
-                    Center(
-                      child: AppUtility.buildAppLogo(fontSize: Dimens.fourty),
-                    ),
-                    Dimens.boxHeight24,
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: Dimens.screenWidth,
-                        maxHeight: Dimens.screenHeight,
+            Padding(
+              padding: Dimens.edgeInsets0_16,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Dimens.boxHeight48,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        "${StringValues.welcome} ${StringValues.to}"
+                            .toTitleCase(),
+                        textAlign: TextAlign.center,
+                        style: AppStyles.style20Normal,
                       ),
-                      child: NxAssetImage(
-                        imgAsset: AssetValues.welcome,
-                        height: Dimens.screenWidth,
-                        fit: BoxFit.contain,
+                      Dimens.boxHeight8,
+                      AppUtility.buildAppLogo(
+                        fontSize: Dimens.fourty,
+                        isCentered: true,
                       ),
+                    ],
+                  ),
+                  const Spacer(),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: Dimens.screenWidth,
+                      maxHeight: Dimens.screenHeight,
                     ),
-                    Dimens.boxHeight24,
-                    NxFilledButton(
-                      label: StringValues.login.toUpperCase(),
-                      onTap: RouteManagement.goToLoginView,
+                    child: NxAssetImage(
+                      imgAsset: AssetValues.welcome,
+                      height: Dimens.screenWidth,
+                      fit: BoxFit.contain,
                     ),
-                    Dimens.boxHeight16,
-                    NxOutlinedButton(
-                      label: StringValues.register.toUpperCase(),
-                      onTap: RouteManagement.goToRegisterView,
-                      height: Dimens.fiftySix,
-                    ),
-                    Dimens.boxHeight48,
-                  ],
-                ),
+                  ),
+                  const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      NxFilledButton(
+                        label: StringValues.login.toUpperCase(),
+                        onTap: RouteManagement.goToLoginView,
+                      ),
+                      Dimens.boxHeight16,
+                      NxOutlinedButton(
+                        label: StringValues.register.toUpperCase(),
+                        onTap: RouteManagement.goToRegisterView,
+                        height: Dimens.fiftySix,
+                      ),
+                    ],
+                  ),
+                  Dimens.boxHeight48,
+                ],
               ),
             )
           ],
