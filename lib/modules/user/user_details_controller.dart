@@ -39,7 +39,7 @@ class UserDetailsController extends GetxController {
 
   List<Post> get postList => _postList;
 
-  UserDetailsResponse get userDetails => _userDetails.value;
+  UserDetailsResponse? get userDetails => _userDetails.value;
 
   /// Setters
   set setPostData(PostResponse value) => _postData.value = value;
@@ -78,7 +78,7 @@ class UserDetailsController extends GetxController {
           if (_userDetails.value.user!.isPrivate) {
             if (_userDetails.value.user!.followingStatus == "following" ||
                 _userDetails.value.user!.id ==
-                    ProfileController.find.profileDetails.user!.id) {
+                    profile.profileDetails!.user!.id) {
               await _fetchUserPosts();
             }
           } else {
@@ -102,7 +102,6 @@ class UserDetailsController extends GetxController {
     } on TimeoutException {
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
@@ -152,7 +151,7 @@ class UserDetailsController extends GetxController {
           if (_userDetails.value.user!.isPrivate) {
             if (_userDetails.value.user!.followingStatus == "following" ||
                 _userDetails.value.user!.id ==
-                    ProfileController.find.profileDetails.user!.id) {
+                    profile.profileDetails!.user!.id) {
               await _fetchUserPosts();
             }
           } else {
@@ -320,6 +319,11 @@ class UserDetailsController extends GetxController {
         return;
       }
       if (user.followingStatus == "requested") {
+        user.followingStatus = "notFollowing";
+        update();
+        return;
+      }
+      if (user.followingStatus == "following") {
         user.followingStatus = "notFollowing";
         update();
         return;

@@ -45,8 +45,8 @@ class EditUsernameController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_profile.profileDetails.user != null) {
-      var user = _profile.profileDetails.user!;
+    if (_profile.profileDetails!.user != null) {
+      var user = _profile.profileDetails!.user!;
       setUsername = user.uname;
     }
   }
@@ -62,7 +62,7 @@ class EditUsernameController extends GetxController {
       return;
     }
 
-    if (uname == _profile.profileDetails.user!.uname) {
+    if (uname == _profile.profileDetails!.user!.uname) {
       _isUnameAvailable.value = StringValues.none;
       update();
       return;
@@ -187,7 +187,7 @@ class EditUsernameController extends GetxController {
     if (_username.value.isEmpty) {
       return;
     }
-    if (_username.value == _profile.profileDetails.user!.uname.trim()) {
+    if (_username.value == _profile.profileDetails!.user!.uname.trim()) {
       return;
     }
     if (_isUnameAvailable.value == StringValues.error) {

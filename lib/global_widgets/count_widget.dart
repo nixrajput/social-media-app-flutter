@@ -44,11 +44,11 @@ class NxCountWidget extends StatelessWidget {
               value,
               style: valueStyle ?? AppStyles.style16Bold,
             ),
-            Dimens.boxHeight8,
+            Dimens.boxHeight4,
             Text(
               title,
               style: titleStyle ??
-                  AppStyles.style14Normal.copyWith(
+                  AppStyles.style13Normal.copyWith(
                     color: ColorValues.grayColor,
                   ),
             ),

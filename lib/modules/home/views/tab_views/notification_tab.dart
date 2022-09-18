@@ -7,7 +7,6 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/notification_widget.dart';
@@ -34,7 +33,7 @@ class NotificationTabView extends StatelessWidget {
                 padding: Dimens.edgeInsets8_16,
                 showBackBtn: false,
               ),
-              Dimens.boxHeight16,
+              Dimens.boxHeight8,
               _buildNotificationBody(),
             ],
           ),
@@ -69,12 +68,6 @@ class NotificationTabView extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Dimens.boxHeight16,
-                NxOutlinedButton(
-                  width: Dimens.hundred,
-                  height: Dimens.thirtySix,
-                  label: StringValues.refresh,
-                  onTap: () => logic.getNotifications(),
-                ),
               ],
             ),
           ),
@@ -83,7 +76,9 @@ class NotificationTabView extends StatelessWidget {
 
       return Expanded(
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           child: Padding(
             padding: Dimens.edgeInsets0_16,
             child: Column(

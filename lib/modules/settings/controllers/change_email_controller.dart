@@ -41,7 +41,7 @@ class ChangeEmailController extends GetxController {
       return;
     }
 
-    if (profile.profileDetails.user!.email == email) {
+    if (profile.profileDetails!.user!.email == email) {
       AppUtility.showSnackBar(
         StringValues.enterDifferentEmail,
         StringValues.warning,

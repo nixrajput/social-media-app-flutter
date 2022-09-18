@@ -153,7 +153,10 @@ class CreatePostView extends StatelessWidget {
                                 NxIconButton(
                                   icon: Icons.add_circle_outlined,
                                   onTap: logic.selectPostImages,
-                                  iconColor: ColorValues.primaryColor,
+                                  iconColor: Theme.of(Get.context!)
+                                      .textTheme
+                                      .bodyText1!
+                                      .color,
                                   iconSize: Dimens.fourtyEight,
                                 ),
                               ],
@@ -181,7 +184,7 @@ class CreatePostView extends StatelessWidget {
                       ),
                       Dimens.boxHeight40,
                       NxFilledButton(
-                        onTap: CreatePostController.find.selectPostImages,
+                        onTap: _showCreatePostOptions,
                         label: StringValues.select.toUpperCase(),
                       ),
                     ],
@@ -195,4 +198,53 @@ class CreatePostView extends StatelessWidget {
       ),
     );
   }
+
+  _showCreatePostOptions() => AppUtility.showBottomSheet(
+        [
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.captureImage();
+            },
+            leading: const Icon(Icons.camera),
+            title: Text(
+              StringValues.captureImage,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.recordVideo();
+            },
+            leading: const Icon(Icons.videocam),
+            title: Text(
+              StringValues.recordVideo,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.selectPostImages();
+            },
+            leading: const Icon(Icons.photo_album),
+            title: Text(
+              StringValues.chooseImages,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.selectPosVideos();
+            },
+            leading: const Icon(Icons.video_collection),
+            title: Text(
+              StringValues.chooseVideos,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+        ],
+      );
 }

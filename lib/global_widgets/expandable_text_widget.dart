@@ -13,9 +13,13 @@ class NxExpandableText extends StatefulWidget {
   const NxExpandableText({
     super.key,
     required this.text,
+    this.textStyle,
+    this.linkStyle,
   });
 
   final String text;
+  final TextStyle? textStyle;
+  final TextStyle? linkStyle;
 
   @override
   NxExpandableTextState createState() => NxExpandableTextState();
@@ -55,16 +59,18 @@ class NxExpandableTextState extends State<NxExpandableText> {
             HashTagLinker(),
             MentionLinker(),
           ],
-          style: AppStyles.style14Normal.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
-            decoration: TextDecoration.none,
-            height: 1.25,
-          ),
-          linkStyle: AppStyles.style14Normal.copyWith(
-            color: ColorValues.primaryColor,
-            decoration: TextDecoration.none,
-            height: 1.25,
-          ),
+          style: widget.textStyle ??
+              AppStyles.style13Normal.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+                decoration: TextDecoration.none,
+                height: 1.25,
+              ),
+          linkStyle: widget.linkStyle ??
+              AppStyles.style13Normal.copyWith(
+                color: ColorValues.primaryColor,
+                decoration: TextDecoration.none,
+                height: 1.25,
+              ),
           onOpen: (link) async {
             FocusManager.instance.primaryFocus!.unfocus();
             if (await canLaunchUrl(Uri.parse(link.url))) {

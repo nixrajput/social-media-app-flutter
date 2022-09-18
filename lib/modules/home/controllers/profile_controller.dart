@@ -23,7 +23,7 @@ class ProfileController extends GetxController {
   var _isLoading = false;
   final _isPostLoading = false.obs;
   final _isMorePostLoading = false.obs;
-  ProfileResponse _profileDetails = const ProfileResponse();
+  final _profileDetails = const ProfileResponse().obs;
   final _postData = const PostResponse().obs;
   final List<Post> _postList = [];
 
@@ -38,12 +38,13 @@ class ProfileController extends GetxController {
 
   List<Post> get postList => _postList;
 
-  ProfileResponse get profileDetails => _profileDetails;
+  ProfileResponse? get profileDetails => _profileDetails.value;
 
   /// Setters
   set setPostData(PostResponse value) => _postData.value = value;
 
-  set setProfileDetailsData(ProfileResponse value) => _profileDetails = value;
+  set setProfileDetailsData(ProfileResponse value) =>
+      _profileDetails.value = value;
 
   Future<bool> _loadProfileDetails() async {
     AppUtility.printLog("Loading Profile Details From Local Storage Request");
@@ -273,7 +274,7 @@ class ProfileController extends GetxController {
     try {
       final response = await _apiProvider.getUserPosts(
         _auth.token,
-        _profileDetails.user!.id,
+        _profileDetails.value.user!.id,
         page: page,
         limit: 12,
       );
@@ -336,7 +337,7 @@ class ProfileController extends GetxController {
     try {
       final response = await _apiProvider.getUserPosts(
         _auth.token,
-        _profileDetails.user!.id,
+        _profileDetails.value.user!.id,
         page: page,
         limit: 12,
       );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/modules/home/controllers/home_controller.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -10,10 +11,11 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (controller) => BottomNavigationBar(
-        items: controller.bottomNavItems!,
+        items: controller.buildBottomNavItems(),
         currentIndex: controller.currentPageIndex,
         onTap: (index) => controller.bottomNavTapped(index),
-        elevation: 0.0,
+        elevation: Dimens.zero,
+        iconSize: Dimens.twentyFour,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.transparent,
         showSelectedLabels: false,

@@ -55,7 +55,7 @@ class LoginDeviceInfoWidget extends StatelessWidget {
               text: TextSpan(
                 text:
                     "${item.locationInfo!.city!}, ${item.locationInfo!.regionName!}, ${item.locationInfo!.country!}",
-                style: AppStyles.style16Bold.copyWith(
+                style: AppStyles.style14Bold.copyWith(
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
               ),
@@ -65,7 +65,7 @@ class LoginDeviceInfoWidget extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: item.deviceInfo!['model'],
-                    style: AppStyles.style14Normal.copyWith(
+                    style: AppStyles.style13Normal.copyWith(
                       color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                     ),
                   ),

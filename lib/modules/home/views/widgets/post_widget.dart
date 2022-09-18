@@ -17,7 +17,6 @@ import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
 import 'package:social_media_app/helpers/get_time_ago_msg.dart';
-import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_view_widget.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -59,39 +58,53 @@ class PostWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () => RouteManagement.goToUserProfileView(
-                        post.owner.id,
+                Expanded(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () => RouteManagement.goToUserProfileView(
+                          post.owner.id,
+                        ),
+                        child: AvatarWidget(
+                          avatar: post.owner.avatar,
+                          size: Dimens.twenty,
+                        ),
                       ),
-                      child: AvatarWidget(
-                        avatar: post.owner.avatar,
-                        size: Dimens.twenty,
+                      Dimens.boxWidth8,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildFullName(),
+                            _buildUsername(),
+                          ],
+                        ),
                       ),
-                    ),
-                    Dimens.boxWidth8,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildFullName(),
-                        _buildUsername(),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                NxIconButton(
-                  icon: CupertinoIcons.ellipsis_vertical,
-                  iconSize: Dimens.twenty,
-                  iconColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  onTap: _showHeaderOptionBottomSheet,
+                Expanded(
+                  flex: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Dimens.boxWidth16,
+                      NxIconButton(
+                        icon: CupertinoIcons.ellipsis_vertical,
+                        iconSize: Dimens.twenty,
+                        iconColor:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        onTap: _showHeaderOptionBottomSheet,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -107,14 +120,17 @@ class PostWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            RichText(
-              text: TextSpan(
-                text: '${post.owner.fname} ${post.owner.lname}',
-                style: AppStyles.style14Bold.copyWith(
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+            Flexible(
+              child: RichText(
+                text: TextSpan(
+                  text: '${post.owner.fname} ${post.owner.lname}',
+                  style: AppStyles.style13Bold.copyWith(
+                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  ),
                 ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
-              maxLines: 1,
             ),
             if (post.owner.isVerified) Dimens.boxWidth4,
             if (post.owner.isVerified)
@@ -129,14 +145,15 @@ class PostWidget extends StatelessWidget {
         ),
       );
 
-  Widget _buildUsername() => GestureDetector(
-        onTap: () => RouteManagement.goToUserProfileView(post.owner.id),
-        child: Text(
-          "@${post.owner.uname}",
-          style: TextStyle(
+  Widget _buildUsername() => RichText(
+        text: TextSpan(
+          text: post.owner.uname,
+          style: AppStyles.style13Normal.copyWith(
             color: Theme.of(Get.context!).textTheme.subtitle1!.color,
           ),
         ),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
       );
 
   Widget _buildPostBody() {
@@ -147,7 +164,7 @@ class PostWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             GestureDetector(
-              onDoubleTap: () => controller.toggleLikePost(post),
+              onDoubleTap: () => controller?.toggleLikePost(post),
               child: FlutterCarousel(
                 items: post.mediaFiles!.map(
                   (media) {
@@ -224,9 +241,7 @@ class PostWidget extends StatelessWidget {
             if (post.caption != null && post.caption!.isNotEmpty)
               Dimens.boxHeight4,
             if (post.caption != null && post.caption!.isNotEmpty)
-              NxExpandableText(
-                text: post.caption!,
-              ),
+              NxExpandableText(text: post.caption!),
             Dimens.dividerWithHeight,
             Padding(
               padding: Dimens.edgeInsets0_4,
@@ -248,7 +263,7 @@ class PostWidget extends StatelessWidget {
                               children: [
                                 TextSpan(
                                   text: '${post.likesCount}'.toCountingFormat(),
-                                  style: AppStyles.style14Bold.copyWith(
+                                  style: AppStyles.style13Bold.copyWith(
                                     color: Theme.of(Get.context!)
                                         .textTheme
                                         .bodyText1!
@@ -257,7 +272,7 @@ class PostWidget extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: '  Likes',
-                                  style: AppStyles.style14Bold.copyWith(
+                                  style: AppStyles.style13Normal.copyWith(
                                     color: Theme.of(Get.context!)
                                         .textTheme
                                         .subtitle1!
@@ -281,7 +296,7 @@ class PostWidget extends StatelessWidget {
                                 TextSpan(
                                   text: '${post.commentsCount}'
                                       .toCountingFormat(),
-                                  style: AppStyles.style14Bold.copyWith(
+                                  style: AppStyles.style13Bold.copyWith(
                                     color: Theme.of(Get.context!)
                                         .textTheme
                                         .bodyText1!
@@ -290,7 +305,7 @@ class PostWidget extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: '  Comments',
-                                  style: AppStyles.style14Bold.copyWith(
+                                  style: AppStyles.style13Normal.copyWith(
                                     color: Theme.of(Get.context!)
                                         .textTheme
                                         .subtitle1!
@@ -314,7 +329,7 @@ class PostWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                  onTap: () => controller.toggleLikePost(post),
+                  onTap: () => controller?.toggleLikePost(post),
                   child: CircleAvatar(
                     backgroundColor:
                         Theme.of(Get.context!).scaffoldBackgroundColor,
@@ -362,7 +377,7 @@ class PostWidget extends StatelessWidget {
         post.createdAt,
         pattern: 'dd MMM yyyy hh:mm a',
       ),
-      style: AppStyles.style12Normal.copyWith(
+      style: AppStyles.style13Normal.copyWith(
         color: Theme.of(Get.context!).textTheme.subtitle1!.color,
       ),
     );
@@ -370,7 +385,7 @@ class PostWidget extends StatelessWidget {
 
   _showHeaderOptionBottomSheet() => AppUtility.showBottomSheet(
         [
-          if (post.owner.id == ProfileController.find.profileDetails.user!.id)
+          if (post.owner.id == ProfileController.find.profileDetails!.user!.id)
             ListTile(
               onTap: () {
                 AppUtility.closeBottomSheet();
@@ -445,7 +460,7 @@ class PostWidget extends StatelessWidget {
                   ),
                   onTap: () async {
                     AppUtility.closeDialog();
-                    await Get.find<PostController>().deletePost(post.id!);
+                    controller?.deletePost(post.id!);
                   },
                   padding: Dimens.edgeInsets8,
                 ),

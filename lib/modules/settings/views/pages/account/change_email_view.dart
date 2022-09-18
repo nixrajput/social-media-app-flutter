@@ -58,7 +58,7 @@ class ChangeEmailView extends StatelessWidget {
                               text: 'Your current email is ',
                             ),
                             TextSpan(
-                              text: logic.profile.profileDetails.user!.email,
+                              text: logic.profile.profileDetails!.user!.email,
                               style: AppStyles.style14Bold,
                             ),
                             const TextSpan(

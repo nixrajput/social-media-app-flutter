@@ -77,6 +77,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     if (SchedulerBinding.instance.window.platformBrightness ==
         Brightness.light) {
       SystemChrome.setSystemUIOverlayStyle(

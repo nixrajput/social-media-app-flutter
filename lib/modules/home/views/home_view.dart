@@ -39,7 +39,7 @@ class HomeView extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           controller: controller.pageController,
           onPageChanged: (index) => controller.changePage(index),
-          children: controller.pages,
+          children: controller.buildPages(),
         ),
       );
 }

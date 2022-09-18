@@ -118,6 +118,16 @@ abstract class Dimens {
     horizontal: sixTeen,
   );
 
+  static EdgeInsets edgeInsets6_12 = EdgeInsets.symmetric(
+    vertical: six,
+    horizontal: twelve,
+  );
+
+  static EdgeInsets edgeInsets12_6 = EdgeInsets.symmetric(
+    vertical: twelve,
+    horizontal: six,
+  );
+
   static EdgeInsets edgeInsets8_32 = EdgeInsets.symmetric(
     vertical: eight,
     horizontal: thirtyTwo,
@@ -155,6 +165,8 @@ abstract class Dimens {
   static EdgeInsets edgeInsets8 = EdgeInsets.all(eight);
 
   static EdgeInsets edgeInsets10 = EdgeInsets.all(ten);
+
+  static EdgeInsets edgeInsets12 = EdgeInsets.all(twelve);
 
   static EdgeInsets edgeInsets16 = EdgeInsets.all(sixTeen);
 
@@ -229,6 +241,8 @@ abstract class Dimens {
   static SizedBox boxWidth80 = SizedBox(width: eighty);
 
   static SizedBox boxHeight80 = SizedBox(height: eighty);
+
+  static SizedBox shrinkBox = const SizedBox.shrink();
 
   static Divider divider = const Divider(height: 0.0, thickness: 0.4);
 

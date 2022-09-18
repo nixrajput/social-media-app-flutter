@@ -57,7 +57,7 @@ class AccountPrivacyView extends StatelessWidget {
                   title: StringValues.public.toTitleCase(),
                   value: false,
                   groupValue:
-                      ProfileController.find.profileDetails.user!.isPrivate,
+                      ProfileController.find.profileDetails!.user!.isPrivate,
                 ),
 
                 Dimens.divider,
@@ -76,7 +76,7 @@ class AccountPrivacyView extends StatelessWidget {
                   title: StringValues.private.toTitleCase(),
                   value: true,
                   groupValue:
-                      ProfileController.find.profileDetails.user!.isPrivate,
+                      ProfileController.find.profileDetails!.user!.isPrivate,
                 ),
               ],
             ),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/user.dart';
@@ -22,6 +23,8 @@ class RecommendedUsersController extends GetxController {
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
   final List<User> _recommendedUsersList = [];
+
+  final searchTextController = TextEditingController();
 
   /// Getters
   bool get isLoading => _isLoading.value;
@@ -147,9 +150,71 @@ class RecommendedUsersController extends GetxController {
     }
   }
 
-  Future<void> getUsers() async {
-    await _getUsers();
+  Future<void> _searchUsers(String searchText) async {
+    if (searchText.isEmpty) {
+      await _getUsers();
+      return;
+    }
+
+    AppUtility.printLog("Search Users Request");
+    _isLoading.value = true;
+    update();
+
+    try {
+      final response = await _apiProvider.searchUser(_auth.token, searchText);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        setRecommendedUsersData = UserListResponse.fromJson(decodedData);
+        _recommendedUsersList.clear();
+        _recommendedUsersList.addAll(_recommendedUsersData.value.results!);
+        _isLoading.value = false;
+        update();
+        AppUtility.printLog("Search Users Success");
+      } else {
+        _isLoading.value = false;
+        update();
+        AppUtility.printLog("Search Users Error");
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } on SocketException {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Search Users Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Search Users Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Search Users Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Search Users Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
   }
+
+  Future<void> getUsers() async => await _getUsers();
+
+  Future<void> searchUsers(String searchText) async =>
+      await _searchUsers(searchText);
 
   Future<void> loadMore() async =>
       await _loadMore(page: _recommendedUsersData.value.currentPage! + 1);

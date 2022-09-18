@@ -39,7 +39,9 @@ class SettingsView extends StatelessWidget {
 
   Widget _buildSettingsBody() => Expanded(
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           child: Padding(
             padding: Dimens.edgeInsets0_16,
             child: Column(

@@ -9,21 +9,20 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:social_media_app/apis/models/entities/hashtag.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/responses/hashtag_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
-import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/file_extensions.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
-import 'package:video_compress/video_compress.dart';
+import 'package:video_compress_ds/video_compress_ds.dart';
 
 class CreatePostController extends GetxController {
   static CreatePostController get find => Get.find();
@@ -70,11 +69,11 @@ class CreatePostController extends GetxController {
   var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
       defaultValue: AppSecrets.uploadPreset);
 
-  @override
-  onInit() {
-    //_hashtagWorker = ever(_caption, _checkHashtag);
-    super.onInit();
-  }
+  // @override
+  // onInit() {
+  //   //_hashtagWorker = ever(_caption, _checkHashtag);
+  //   super.onInit();
+  // }
 
   @override
   onClose() {
@@ -82,98 +81,98 @@ class CreatePostController extends GetxController {
     super.onClose();
   }
 
-  void _checkHashtag(String text) async {
-    // final hashRegExp = RegExp(r'\#(\w+)');
-    // var start = 0;
-    // var totalHashtag = 0;
-    // var currentHashtag = '';
-    //
-    // Iterable<Match> matches = hashRegExp.allMatches(text);
-    //
-    // totalHashtag = matches.length;
-    //
-    // var cursorPos = captionTextController.selection.base.offset;
-    //
-    // currentHashtag = text.substring(start, cursorPos);
-    //
-    // AppUtility.printLog(totalHashtag);
-    // AppUtility.printLog(currentHashtag);
-  }
+  // void _checkHashtag(String text) async {
+  //   // final hashRegExp = RegExp(r'\#(\w+)');
+  //   // var start = 0;
+  //   // var totalHashtag = 0;
+  //   // var currentHashtag = '';
+  //   //
+  //   // Iterable<Match> matches = hashRegExp.allMatches(text);
+  //   //
+  //   // totalHashtag = matches.length;
+  //   //
+  //   // var cursorPos = captionTextController.selection.base.offset;
+  //   //
+  //   // currentHashtag = text.substring(start, cursorPos);
+  //   //
+  //   // AppUtility.printLog(totalHashtag);
+  //   // AppUtility.printLog(currentHashtag);
+  // }
 
-  Future<void> _searchAndGetTags(String tag) async {
-    AppUtility.printLog("Search and Get Tags Request");
-
-    try {
-      final response = await _apiProvider.searchTag(_auth.token, tag);
-
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog(decodedData);
-        setHashtagData = HashTagResponse.fromJson(decodedData);
-        _hashtagList.clear();
-        _hashtagList.addAll(_hashtagData.value.results!);
-        update();
-        if (_hashtagList.isNotEmpty) {
-          await _showHashtagsDialog();
-        } else {
-          AppUtility.closeDialog();
-        }
-        AppUtility.printLog("Search and Get Tags Success");
-      } else {
-        AppUtility.printLog(decodedData);
-        update();
-        AppUtility.printLog("Search and Get Tags Error");
-      }
-    } on SocketException {
-      AppUtility.printLog("Search and Get Tags Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog("Search and Get Tags Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.printLog("Search and Get Tags Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    } catch (exc) {
-      AppUtility.printLog("Search and Get Tags Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    }
-  }
+  // Future<void> _searchAndGetTags(String tag) async {
+  //   AppUtility.printLog("Search and Get Tags Request");
+  //
+  //   try {
+  //     final response = await _apiProvider.searchTag(_auth.token, tag);
+  //
+  //     final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+  //
+  //     if (response.statusCode == 200) {
+  //       AppUtility.printLog(decodedData);
+  //       setHashtagData = HashTagResponse.fromJson(decodedData);
+  //       _hashtagList.clear();
+  //       _hashtagList.addAll(_hashtagData.value.results!);
+  //       update();
+  //       if (_hashtagList.isNotEmpty) {
+  //         await _showHashtagsDialog();
+  //       } else {
+  //         AppUtility.closeDialog();
+  //       }
+  //       AppUtility.printLog("Search and Get Tags Success");
+  //     } else {
+  //       AppUtility.printLog(decodedData);
+  //       update();
+  //       AppUtility.printLog("Search and Get Tags Error");
+  //     }
+  //   } on SocketException {
+  //     AppUtility.printLog("Search and Get Tags Error");
+  //     AppUtility.printLog(StringValues.internetConnError);
+  //     AppUtility.showSnackBar(
+  //         StringValues.internetConnError, StringValues.error);
+  //   } on TimeoutException {
+  //     AppUtility.printLog("Search and Get Tags Error");
+  //     AppUtility.printLog(StringValues.connTimedOut);
+  //     AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+  //   } on FormatException catch (e) {
+  //     AppUtility.printLog("Search and Get Tags Error");
+  //     AppUtility.printLog(StringValues.formatExcError);
+  //     AppUtility.printLog(e);
+  //     AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+  //   } catch (exc) {
+  //     AppUtility.printLog("Search and Get Tags Error");
+  //     AppUtility.printLog(StringValues.errorOccurred);
+  //     AppUtility.printLog(exc);
+  //     AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+  //   }
+  // }
 
   Future<void> _createNewPost() async {
     final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
     var mediaFiles = <Object>[];
 
-    for (var file in _pickedFileList) {
-      var filePath = file.path;
-      var sizeInKb = file.sizeToKb();
-      if (AppUtility.isVideoFile(filePath)) {
-        if (sizeInKb > 30 * 1024) {
-          AppUtility.showSnackBar(
-            'Video file size must be lower than 30 MB',
-            StringValues.warning,
-          );
-          return;
-        }
-      } else {
-        if (sizeInKb > 2048) {
-          AppUtility.showSnackBar(
-            'Image file size must be lower than 2 MB',
-            StringValues.warning,
-          );
-          return;
-        }
-      }
-    }
+    // for (var file in _pickedFileList) {
+    //   var filePath = file.path;
+    //   var sizeInKb = file.sizeToKb();
+    //   if (AppUtility.isVideoFile(filePath)) {
+    //     if (sizeInKb > 30 * 1024) {
+    //       AppUtility.showSnackBar(
+    //         'Video file size must be lower than 30 MB',
+    //         StringValues.warning,
+    //       );
+    //       return;
+    //     }
+    //   } else {
+    //     if (sizeInKb > 2048) {
+    //       AppUtility.showSnackBar(
+    //         'Image file size must be lower than 2 MB',
+    //         StringValues.warning,
+    //       );
+    //       return;
+    //     }
+    //   }
+    // }
 
-    AppUtility.showLoadingDialog();
+    AppUtility.showLoadingDialog(message: "Uploading...");
     _isLoading.value = true;
     update();
 
@@ -256,6 +255,9 @@ class CreatePostController extends GetxController {
       }
     }
 
+    AppUtility.closeDialog();
+    AppUtility.showLoadingDialog(message: "Posting...");
+
     try {
       final body = {
         "caption": _caption.value,
@@ -319,11 +321,226 @@ class CreatePostController extends GetxController {
     }
   }
 
-  Future<void> selectMultipleFiles() async {
+  Future<void> _captureImage() async {
+    final imagePicker = ImagePicker();
+    final imageCropper = ImageCropper();
+    const maxImageBytes = 1048576;
+
+    /// Capture Image ----------------------------------------------------------
+    final pickedImage = await imagePicker.pickImage(
+      maxWidth: 1080.0,
+      maxHeight: 1080.0,
+      imageQuality: 100,
+      source: ImageSource.camera,
+    );
+
+    if (pickedImage != null) {
+      var croppedFile = await imageCropper.cropImage(
+        maxWidth: 1080,
+        maxHeight: 1080,
+        sourcePath: pickedImage.path,
+        compressFormat: ImageCompressFormat.jpg,
+        aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+            toolbarTitle: StringValues.cropImage,
+            toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+            backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+          ),
+          IOSUiSettings(
+            title: StringValues.cropImage,
+            minimumAspectRatio: 1.0,
+          ),
+        ],
+        compressQuality: 100,
+      );
+
+      var croppedImage = File(croppedFile!.path);
+      File? resultFile = croppedImage;
+      var size = croppedImage.lengthSync();
+      AppUtility.printLog('Original file size: ${resultFile.sizeToKb()} KB');
+
+      if (size > (5 * maxImageBytes)) {
+        AppUtility.showSnackBar(
+          'Image size must be less than 5mb',
+          '',
+        );
+      } else if (size < (maxImageBytes / 2)) {
+        AppUtility.printLog('Result $resultFile');
+        AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+        _pickedFileList.add(resultFile);
+        update();
+      } else {
+        var tempDir = await getTemporaryDirectory();
+
+        /// --------- Compressing Image ------------------------------------
+
+        AppUtility.showLoadingDialog(message: 'Compressing...');
+        var timestamp = DateTime.now().millisecondsSinceEpoch;
+        AppUtility.printLog('Compressing...');
+        resultFile = await FlutterImageCompress.compressAndGetFile(
+          resultFile.path,
+          '${tempDir.absolute.path}/temp$timestamp.jpg',
+          quality: 60,
+          format: CompressFormat.jpeg,
+        );
+        size = resultFile!.lengthSync();
+        AppUtility.closeDialog();
+
+        /// ----------------------------------------------------------------
+        AppUtility.printLog('Result $resultFile');
+        AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+        _pickedFileList.add(resultFile);
+        update();
+      }
+    }
+  }
+
+  Future<void> _selectMultipleImages() async {
     final filePicker = FilePicker.platform;
     final imageCropper = ImageCropper();
     var fileList = <PlatformFile>[];
     const maxImageBytes = 1048576;
+
+    /// Pick Files
+    final pickedFiles = await filePicker.pickFiles(
+      allowMultiple: true,
+      withReadStream: true,
+      allowCompression: false,
+      type: FileType.custom,
+      allowedExtensions: ['png', 'jpg', 'jpeg'],
+    );
+
+    if (pickedFiles != null) {
+      fileList = pickedFiles.files;
+      for (var file in fileList) {
+        var croppedFile = await imageCropper.cropImage(
+          maxWidth: 1080,
+          maxHeight: 1080,
+          sourcePath: file.path!,
+          compressFormat: ImageCompressFormat.jpg,
+          aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+              toolbarTitle: StringValues.cropImage,
+              toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+              backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+            ),
+            IOSUiSettings(
+              title: StringValues.cropImage,
+              minimumAspectRatio: 1.0,
+            ),
+          ],
+          compressQuality: 100,
+        );
+
+        var croppedImage = File(croppedFile!.path);
+        File? resultFile = croppedImage;
+        var size = croppedImage.lengthSync();
+        AppUtility.printLog('Original file size: ${resultFile.sizeToKb()} KB');
+
+        if (size > (5 * maxImageBytes)) {
+          AppUtility.showSnackBar(
+            'Image size must be less than 5mb',
+            '',
+          );
+        } else if (size < (maxImageBytes / 2)) {
+          AppUtility.printLog('Result $resultFile');
+          AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+          _pickedFileList.add(resultFile);
+          update();
+        } else {
+          var tempDir = await getTemporaryDirectory();
+
+          /// --------- Compressing Image ------------------------------------
+
+          AppUtility.showLoadingDialog(message: 'Compressing...');
+          var timestamp = DateTime.now().millisecondsSinceEpoch;
+          AppUtility.printLog('Compressing...');
+          resultFile = await FlutterImageCompress.compressAndGetFile(
+            resultFile.path,
+            '${tempDir.absolute.path}/temp$timestamp.jpg',
+            quality: 60,
+            format: CompressFormat.jpeg,
+          );
+          size = resultFile!.lengthSync();
+          AppUtility.closeDialog();
+
+          /// ----------------------------------------------------------------
+          AppUtility.printLog('Result $resultFile');
+          AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+          _pickedFileList.add(resultFile);
+          update();
+        }
+      }
+    }
+  }
+
+  Future<void> _recordVideo() async {
+    final imagePicker = ImagePicker();
+    const maxVideoBytes = 10485760;
+
+    /// Capture Image ----------------------------------------------------------
+    final pickedVideo = await imagePicker.pickVideo(
+      source: ImageSource.camera,
+      maxDuration: const Duration(seconds: 30),
+    );
+
+    if (pickedVideo != null) {
+      /// If File is Video ---------------------------------------------------
+      /// --------------------------------------------------------------------
+
+      var videoFile = File(pickedVideo.path);
+      var videoSize = videoFile.lengthSync();
+      AppUtility.printLog('Original video size: ${videoFile.sizeToMb()} MB');
+
+      if (videoSize > (10 * maxVideoBytes)) {
+        AppUtility.showSnackBar(
+          'Video size must be less than 100mb',
+          '',
+        );
+      } else if (videoSize < maxVideoBytes) {
+        AppUtility.printLog('Result $videoFile');
+        AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+
+        _pickedFileList.add(videoFile);
+        update();
+      } else {
+        /// ----------- Compress Video ---------------------------------------
+
+        AppUtility.showLoadingDialog(message: 'Compressing...');
+        var info = await VideoCompress.compressVideo(
+          videoFile.path,
+          quality: VideoQuality.DefaultQuality,
+        );
+        AppUtility.closeDialog();
+        AppUtility.printLog('Result ${info!.toJson()}');
+        videoFile = info.file!;
+        videoSize = info.filesize!;
+
+        /// ------------------------------------------------------------------
+
+        AppUtility.printLog('Result $videoFile');
+        AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+
+        if (videoSize > (2 * maxVideoBytes)) {
+          AppUtility.showSnackBar(
+            'Video size is too large',
+            '',
+          );
+        } else {
+          _pickedFileList.add(videoFile);
+          update();
+        }
+      }
+    }
+  }
+
+  Future<void> _selectMultipleVideos() async {
+    final filePicker = FilePicker.platform;
+    var fileList = <PlatformFile>[];
     const maxVideoBytes = 10485760;
 
     /// Pick Files
@@ -332,121 +549,54 @@ class CreatePostController extends GetxController {
       withReadStream: true,
       allowCompression: false,
       type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'mp4', 'mkv'],
+      allowedExtensions: ['mp4', 'mkv'],
     );
 
     if (pickedFiles != null) {
       fileList = pickedFiles.files;
       for (var file in fileList) {
-        var fileExt = file.extension;
-        if (['png', 'jpg', 'jpeg'].contains(fileExt)) {
-          var croppedFile = await imageCropper.cropImage(
-            maxWidth: 1920,
-            maxHeight: 1920,
-            sourcePath: file.path!,
-            compressFormat: ImageCompressFormat.jpg,
-            aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-            uiSettings: [
-              AndroidUiSettings(
-                toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-                toolbarTitle: StringValues.cropImage,
-                toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
-                backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-              ),
-              IOSUiSettings(
-                title: StringValues.cropImage,
-                minimumAspectRatio: 1.0,
-              ),
-            ],
-            compressQuality: 100,
-          );
-
-          var croppedImage = File(croppedFile!.path);
-          File? resultFile = croppedImage;
-          var size = croppedImage.lengthSync();
-          AppUtility.printLog(
-              'Original file size: ${resultFile.sizeToKb()} KB');
-
-          if (size > (5 * maxImageBytes)) {
-            AppUtility.showSnackBar(
-              'Image size must be less than 5mb',
-              '',
-            );
-          } else if (size < (maxImageBytes / 2)) {
-            AppUtility.printLog('Result $resultFile');
-            AppUtility.printLog(
-                'Result file size: ${resultFile.sizeToKb()} KB');
-            _pickedFileList.add(resultFile);
-            update();
-          } else {
-            var tempDir = await getTemporaryDirectory();
-
-            /// --------- Compressing Image ------------------------------------
-
-            AppUtility.showLoadingDialog(message: 'Compressing...');
-            var timestamp = DateTime.now().millisecondsSinceEpoch;
-            AppUtility.printLog('Compressing...');
-            resultFile = await FlutterImageCompress.compressAndGetFile(
-              resultFile.path,
-              '${tempDir.absolute.path}/temp$timestamp.jpg',
-              quality: 60,
-              format: CompressFormat.jpeg,
-            );
-            size = resultFile!.lengthSync();
-            AppUtility.closeDialog();
-
-            /// ----------------------------------------------------------------
-            AppUtility.printLog('Result $resultFile');
-            AppUtility.printLog(
-                'Result file size: ${resultFile.sizeToKb()} KB');
-            _pickedFileList.add(resultFile);
-            update();
-          }
-        }
-
         /// If File is Video ---------------------------------------------------
         /// --------------------------------------------------------------------
-        else {
-          var videoFile = File(file.path!);
-          var videoSize = file.size;
-          AppUtility.printLog(
-              'Original video size: ${videoFile.sizeToMb()} MB');
+
+        var videoFile = File(file.path!);
+        var videoSize = file.size;
+        AppUtility.printLog('Original video size: ${videoFile.sizeToMb()} MB');
+
+        if (videoSize > (10 * maxVideoBytes)) {
+          AppUtility.showSnackBar(
+            'Video size must be less than 100mb',
+            '',
+          );
+        } else if (videoSize < maxVideoBytes) {
+          AppUtility.printLog('Result $videoFile');
+          AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+
+          _pickedFileList.add(videoFile);
+          update();
+        } else {
+          /// ----------- Compress Video ---------------------------------------
+
+          AppUtility.showLoadingDialog(message: 'Compressing...');
+          var info = await VideoCompress.compressVideo(
+            videoFile.path,
+            quality: VideoQuality.DefaultQuality,
+          );
+          AppUtility.closeDialog();
+          AppUtility.printLog('Result ${info!.toJson()}');
+          videoFile = info.file!;
+          videoSize = info.filesize!;
+
+          /// ------------------------------------------------------------------
+
+          AppUtility.printLog('Result $videoFile');
+          AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
 
           if (videoSize > (2 * maxVideoBytes)) {
             AppUtility.showSnackBar(
-              'Video size must be less than 20mb',
+              'Video size is too large',
               '',
             );
-          } else if (videoSize < maxVideoBytes) {
-            AppUtility.printLog('Result $videoFile');
-            AppUtility.printLog(
-                'Result video size: ${videoFile.sizeToMb()} MB');
-
-            _pickedFileList.add(videoFile);
-            update();
           } else {
-            /// ----------- Compress Video ---------------------------------------
-            //
-            // AppUtils.showLoadingDialog(message: 'Compressing...');
-            // var info = await VideoCompress.compressVideo(
-            //   videoFile.path,
-            //   deleteOrigin: false,
-            //   includeAudio: true,
-            //   frameRate: 60,
-            //   quality: VideoQuality.DefaultQuality,
-            // );
-            // AppUtils.closeDialog();
-            // AppUtils.printLog('Result $info');
-            // AppUtils.printLog('Result ${info!.toJson()}');
-            // videoFile = info.file!;
-            // videoSize = info.filesize!;
-
-            /// ------------------------------------------------------------------
-
-            AppUtility.printLog('Result $videoFile');
-            AppUtility.printLog(
-                'Result video size: ${videoFile.sizeToMb()} MB');
-
             _pickedFileList.add(videoFile);
             update();
           }
@@ -455,8 +605,23 @@ class CreatePostController extends GetxController {
     }
   }
 
+  Future<void> captureImage() async {
+    await _captureImage();
+    RouteManagement.goToCreatePostView();
+  }
+
+  Future<void> recordVideo() async {
+    await _recordVideo();
+    RouteManagement.goToCreatePostView();
+  }
+
   Future<void> selectPostImages() async {
-    await selectMultipleFiles();
+    await _selectMultipleImages();
+    RouteManagement.goToCreatePostView();
+  }
+
+  Future<void> selectPosVideos() async {
+    await _selectMultipleVideos();
     RouteManagement.goToCreatePostView();
   }
 
@@ -487,33 +652,33 @@ class CreatePostController extends GetxController {
     }
   }
 
-  Future<void> _showHashtagsDialog() async {
-    AppUtility.showSimpleDialog(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Dimens.boxHeight8,
-          SingleChildScrollView(
-            child: Padding(
-              padding: Dimens.edgeInsets0_16,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: _hashtagList
-                    .map(
-                      (e) => Text(
-                        '#${e.name}',
-                        style: AppStyles.style18Bold,
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-          ),
-          Dimens.boxHeight8,
-        ],
-      ),
-      barrierDismissible: true,
-    );
-  }
+// Future<void> _showHashtagsDialog() async {
+//   AppUtility.showSimpleDialog(
+//     Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       mainAxisSize: MainAxisSize.min,
+//       children: [
+//         Dimens.boxHeight8,
+//         SingleChildScrollView(
+//           child: Padding(
+//             padding: Dimens.edgeInsets0_16,
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: _hashtagList
+//                   .map(
+//                     (e) => Text(
+//                       '#${e.name}',
+//                       style: AppStyles.style18Bold,
+//                     ),
+//                   )
+//                   .toList(),
+//             ),
+//           ),
+//         ),
+//         Dimens.boxHeight8,
+//       ],
+//     ),
+//     barrierDismissible: true,
+//   );
+// }
 }

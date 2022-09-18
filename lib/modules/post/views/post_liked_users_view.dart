@@ -4,7 +4,9 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
 import 'package:social_media_app/modules/post/controllers/post_liked_users_controller.dart';
@@ -16,17 +18,21 @@ class PostLikedUsersView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            NxAppBar(
-              title: StringValues.likes,
-              padding: Dimens.edgeInsets8_16,
-            ),
-            Dimens.boxHeight16,
-            _buildBody(),
-          ],
+        child: NxRefreshIndicator(
+          onRefresh: PostLikedUsersController.find.fetchPostLikedUsers,
+          showProgress: false,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              NxAppBar(
+                title: StringValues.likes,
+                padding: Dimens.edgeInsets8_16,
+              ),
+              Dimens.boxHeight16,
+              _buildBody(),
+            ],
+          ),
         ),
       ),
     );
@@ -35,7 +41,9 @@ class PostLikedUsersView extends StatelessWidget {
   _buildBody() {
     return Expanded(
       child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         child: Padding(
           padding: Dimens.edgeInsets0_16,
           child: Column(
@@ -46,7 +54,7 @@ class PostLikedUsersView extends StatelessWidget {
                 builder: (logic) {
                   if (logic.isLoading) {
                     return const Center(
-                      child: CircularProgressIndicator(),
+                      child: NxCircularProgressIndicator(),
                     );
                   }
                   if (logic.postLikedUsersList.isEmpty) {
@@ -73,7 +81,7 @@ class PostLikedUsersView extends StatelessWidget {
                       ),
                       if (logic.isMoreLoading) Dimens.boxHeight8,
                       if (logic.isMoreLoading)
-                        const Center(child: CircularProgressIndicator()),
+                        const Center(child: NxCircularProgressIndicator()),
                       if (!logic.isMoreLoading &&
                           logic.postLikedUsersData.hasNextPage!)
                         NxTextButton(

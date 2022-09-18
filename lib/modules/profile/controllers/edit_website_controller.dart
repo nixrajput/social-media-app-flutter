@@ -46,8 +46,8 @@ class EditWebsiteController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_profile.profileDetails.user != null) {
-      var user = _profile.profileDetails.user!;
+    if (_profile.profileDetails!.user != null) {
+      var user = _profile.profileDetails!.user!;
       setWebsite = user.website ?? '';
     }
   }
@@ -133,7 +133,7 @@ class EditWebsiteController extends GetxController {
     if (_website.value.isEmpty) {
       return;
     }
-    if (_website.value == _profile.profileDetails.user!.website?.trim()) {
+    if (_website.value == _profile.profileDetails!.user!.website?.trim()) {
       return;
     }
     if (!Validators.isValidUrl(_website.value)) {

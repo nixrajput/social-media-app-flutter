@@ -5,12 +5,10 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
-import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/global_widgets/shimmer_loading.dart';
 import 'package:social_media_app/global_widgets/sliver_app_bar.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_controller.dart';
 import 'package:social_media_app/modules/home/controllers/banner_controller.dart';
@@ -32,60 +30,96 @@ class HomeTabView extends StatelessWidget {
         child: NxRefreshIndicator(
           onRefresh: () => PostController.find.fetchPosts(),
           showProgress: false,
-          child: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            slivers: [
-              NxSliverAppBar(
-                bgColor: Theme.of(context).scaffoldBackgroundColor,
-                leading: AppUtility.buildAppLogo(),
-                actions: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GetBuilder<FollowRequestController>(
-                      builder: (logic) => Stack(
-                        children: [
-                          InkWell(
-                            onTap: RouteManagement.goToFollowRequestsView,
-                            child: Icon(
-                              Icons.person_add_alt_rounded,
-                              size: Dimens.twentyEight,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
-                            ),
-                          ),
-                          if (logic.followRequestData != null &&
-                              logic.followRequestList.isNotEmpty)
-                            Positioned(
-                              right: Dimens.zero,
-                              top: Dimens.two,
-                              child: Container(
-                                width: Dimens.eight,
-                                height: Dimens.eight,
-                                decoration: const BoxDecoration(
-                                  color: ColorValues.errorColor,
-                                  shape: BoxShape.circle,
+          child: Stack(
+            children: [
+              CustomScrollView(
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
+                slivers: [
+                  NxSliverAppBar(
+                    bgColor: Theme.of(context).scaffoldBackgroundColor,
+                    leading: AppUtility.buildAppLogo(),
+                    actions: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        GetBuilder<FollowRequestController>(
+                          builder: (logic) => Stack(
+                            children: [
+                              InkWell(
+                                onTap: RouteManagement.goToFollowRequestsView,
+                                child: Icon(
+                                  Icons.person_add_alt_rounded,
+                                  size: Dimens.twentyFour,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .color,
                                 ),
                               ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    Dimens.boxWidth12,
-                    GetBuilder<CreatePostController>(
-                      builder: (con) => InkWell(
-                        onTap: con.selectPostImages,
-                        child: Icon(
-                          Icons.add_circle,
-                          size: Dimens.twentyEight,
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                              if (logic.followRequestData != null &&
+                                  logic.followRequestList.isNotEmpty)
+                                Positioned(
+                                  right: Dimens.zero,
+                                  top: Dimens.two,
+                                  child: Container(
+                                    width: Dimens.six,
+                                    height: Dimens.six,
+                                    decoration: const BoxDecoration(
+                                      color: ColorValues.errorColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
+                        // Dimens.boxWidth12,
+                        // InkWell(
+                        //   child: Icon(
+                        //     Icons.rocket_launch,
+                        //     size: Dimens.twentyFour,
+                        //     color: Theme.of(context).textTheme.bodyText1!.color,
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ),
+                  _buildBody(),
+                ],
+              ),
+              Positioned(
+                bottom: Dimens.sixTeen,
+                right: Dimens.sixTeen,
+                child: InkWell(
+                  onTap: _showCreatePostOptions,
+                  child: Container(
+                    padding: Dimens.edgeInsets12,
+                    constraints: BoxConstraints(
+                      minWidth: Dimens.fourty,
+                      minHeight: Dimens.fourty,
+                    ),
+                    decoration: BoxDecoration(
+                        color: ColorValues.primaryColor,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(Dimens.zero, Dimens.eight),
+                            blurRadius: Dimens.eight,
+                            color: ColorValues.blackColor.withOpacity(0.1),
+                          )
+                        ]),
+                    child: Center(
+                      child: Icon(
+                        Icons.add_outlined,
+                        size: Dimens.thirtyTwo,
+                        color: ColorValues.whiteColor,
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
-              _buildBody(),
             ],
           ),
         ),
@@ -93,23 +127,64 @@ class HomeTabView extends StatelessWidget {
     );
   }
 
-  _buildBody() {
-    var currentItem = 0;
+  _showCreatePostOptions() => AppUtility.showBottomSheet(
+        [
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.captureImage();
+            },
+            leading: const Icon(Icons.camera),
+            title: Text(
+              StringValues.captureImage,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.recordVideo();
+            },
+            leading: const Icon(Icons.videocam),
+            title: Text(
+              StringValues.recordVideo,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.selectPostImages();
+            },
+            leading: const Icon(Icons.photo_album),
+            title: Text(
+              StringValues.chooseImages,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.selectPosVideos();
+            },
+            leading: const Icon(Icons.video_collection),
+            title: Text(
+              StringValues.chooseVideos,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+        ],
+      );
+
+  Widget _buildBody() {
     return GetBuilder<PostController>(
       builder: (logic) {
-        if (logic.isLoading) {
-          return SliverFillRemaining(
-            child: ListView(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                _buildPostLoadingWidget(),
-                _buildPostLoadingWidget(),
-              ],
-            ),
+        if (logic.isLoading && logic.postData == null ||
+            logic.postList.isEmpty) {
+          return const SliverFillRemaining(
+            child: Center(child: NxCircularProgressIndicator()),
           );
-        }
-        if (logic.postData == null || logic.postList.isEmpty) {
+        } else if (logic.postData == null || logic.postList.isEmpty) {
           return SliverFillRemaining(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -123,12 +198,6 @@ class HomeTabView extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 Dimens.boxHeight16,
-                NxOutlinedButton(
-                  width: Dimens.hundred,
-                  height: Dimens.thirtySix,
-                  label: StringValues.refresh,
-                  onTap: () => logic.fetchPosts(),
-                )
               ],
             ),
           );
@@ -141,105 +210,16 @@ class HomeTabView extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                GetBuilder<BannerController>(
-                  builder: (logic) {
-                    if (logic.bannerList.isNotEmpty) {
-                      return StatefulBuilder(
-                        builder: (context, setInnerState) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              FlutterCarousel(
-                                items: logic.bannerList
-                                    .map((media) => Container(
-                                          width: Dimens.screenWidth,
-                                          padding: Dimens.edgeInsets8,
-                                          decoration: const BoxDecoration(
-                                            color: ColorValues.primaryColor,
-                                          ),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    text: media,
-                                                    style: AppStyles
-                                                        .style13Normal
-                                                        .copyWith(
-                                                      color: ColorValues
-                                                          .whiteColor,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              Dimens.boxWidth2,
-                                              NxIconButton(
-                                                icon: Icons.clear_outlined,
-                                                onTap: () => logic
-                                                    .deleteBanner(currentItem),
-                                                iconColor:
-                                                    ColorValues.whiteColor,
-                                              ),
-                                            ],
-                                          ),
-                                        ))
-                                    .toList(),
-                                options: CarouselOptions(
-                                    height: Dimens.eighty,
-                                    viewportFraction: 1.0,
-                                    showIndicator: false,
-                                    onPageChanged: (int index, reason) {
-                                      setInnerState(() {
-                                        currentItem = index;
-                                      });
-                                    }),
-                              ),
-                              if (logic.bannerList.length > 1)
-                                Dimens.boxHeight4,
-                              if (logic.bannerList.length > 1)
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children:
-                                      logic.bannerList.asMap().entries.map(
-                                    (entry) {
-                                      return Container(
-                                        width: Dimens.eight,
-                                        height: Dimens.eight,
-                                        margin: EdgeInsets.symmetric(
-                                          horizontal: Dimens.two,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color:
-                                              (Theme.of(context).brightness ==
-                                                          Brightness.dark
-                                                      ? ColorValues.whiteColor
-                                                      : ColorValues.blackColor)
-                                                  .withOpacity(
-                                                      currentItem == entry.key
-                                                          ? 0.9
-                                                          : 0.4),
-                                        ),
-                                      );
-                                    },
-                                  ).toList(),
-                                ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                    return const SizedBox();
-                  },
-                ),
+                if (logic.isLoading &&
+                    (logic.postData != null || logic.postList.isNotEmpty))
+                  Column(
+                    children: [
+                      Dimens.boxHeight8,
+                      const NxCircularProgressIndicator(),
+                      Dimens.boxHeight8,
+                    ],
+                  ),
+                _buildBanner(),
                 ListView(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -254,7 +234,7 @@ class HomeTabView extends StatelessWidget {
                 ),
                 if (logic.isMoreLoading) Dimens.boxHeight8,
                 if (logic.isMoreLoading)
-                  const Center(child: CircularProgressIndicator()),
+                  const Center(child: NxCircularProgressIndicator()),
                 if (!logic.isMoreLoading && logic.postData!.hasNextPage!)
                   Center(
                     child: NxTextButton(
@@ -275,68 +255,96 @@ class HomeTabView extends StatelessWidget {
     );
   }
 
-  _buildPostLoadingWidget() {
-    return NxElevatedCard(
-      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-      padding: Dimens.edgeInsets8,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              ShimmerLoading(
-                width: Dimens.fourty,
-                height: Dimens.fourty,
-                circular: true,
-              ),
-              Dimens.boxWidth8,
-              Column(
+  Widget _buildBanner() {
+    var currentItem = 0;
+    return GetBuilder<BannerController>(
+      builder: (bannerLogic) {
+        if (bannerLogic.bannerList.isNotEmpty) {
+          return StatefulBuilder(
+            builder: (context, setInnerState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ShimmerLoading(
-                    width: Dimens.hundred,
-                    height: Dimens.fourteen,
+                  FlutterCarousel(
+                    items: bannerLogic.bannerList
+                        .map((media) => Container(
+                              width: Dimens.screenWidth,
+                              padding: Dimens.edgeInsets8,
+                              decoration: const BoxDecoration(
+                                color: ColorValues.primaryColor,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: RichText(
+                                      text: TextSpan(
+                                        text: media,
+                                        style: AppStyles.style13Normal.copyWith(
+                                          color: ColorValues.whiteColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Dimens.boxWidth2,
+                                  NxIconButton(
+                                    icon: Icons.clear_outlined,
+                                    onTap: () =>
+                                        bannerLogic.deleteBanner(currentItem),
+                                    iconColor: ColorValues.whiteColor,
+                                  ),
+                                ],
+                              ),
+                            ))
+                        .toList(),
+                    options: CarouselOptions(
+                        height: Dimens.eighty,
+                        viewportFraction: 1.0,
+                        showIndicator: false,
+                        onPageChanged: (int index, reason) {
+                          setInnerState(() {
+                            currentItem = index;
+                          });
+                        }),
                   ),
-                  Dimens.boxHeight4,
-                  ShimmerLoading(
-                    width: Dimens.hundred,
-                    height: Dimens.ten,
-                  ),
+                  if (bannerLogic.bannerList.length > 1) Dimens.boxHeight4,
+                  if (bannerLogic.bannerList.length > 1)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: bannerLogic.bannerList.asMap().entries.map(
+                        (entry) {
+                          return Container(
+                            width: Dimens.eight,
+                            height: Dimens.eight,
+                            margin: EdgeInsets.symmetric(
+                              horizontal: Dimens.two,
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: (Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? ColorValues.whiteColor
+                                      : ColorValues.blackColor)
+                                  .withOpacity(
+                                      currentItem == entry.key ? 0.9 : 0.4),
+                            ),
+                          );
+                        },
+                      ).toList(),
+                    ),
                 ],
-              ),
-            ],
-          ),
-          Dimens.boxHeight8,
-          ShimmerLoading(
-            height: Dimens.screenWidth * 0.8,
-          ),
-          Dimens.boxHeight8,
-          Row(
-            children: [
-              ShimmerLoading(
-                width: Dimens.eighty,
-                height: Dimens.twenty,
-              ),
-              Dimens.boxWidth8,
-              ShimmerLoading(
-                width: Dimens.eighty,
-                height: Dimens.twenty,
-              ),
-            ],
-          ),
-          Dimens.boxHeight8,
-          ShimmerLoading(
-            width: Dimens.screenWidth * 0.75,
-            height: Dimens.sixTeen,
-          ),
-          Dimens.boxHeight8,
-          ShimmerLoading(
-            width: Dimens.screenWidth * 0.75,
-            height: Dimens.sixTeen,
-          ),
-        ],
-      ),
+              );
+            },
+          );
+        }
+        return const SizedBox();
+      },
     );
   }
 }

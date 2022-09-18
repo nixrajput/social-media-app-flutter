@@ -54,7 +54,7 @@ class NxAppBar extends StatelessWidget {
               Text(
                 title!,
                 style: titleStyle ??
-                    AppStyles.style20Bold.copyWith(
+                    AppStyles.style18Bold.copyWith(
                       color: Theme.of(context).textTheme.bodyText1!.color,
                       height: 1.0,
                     ),

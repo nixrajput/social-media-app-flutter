@@ -23,6 +23,7 @@ class UserWidget extends StatelessWidget {
     this.padding,
     required this.totalLength,
     required this.index,
+    this.extraActions,
   }) : super(key: key);
 
   final User user;
@@ -34,6 +35,7 @@ class UserWidget extends StatelessWidget {
   final EdgeInsets? padding;
   final Color? bgColor;
   final BorderRadius? borderRadius;
+  final Widget? extraActions;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,6 @@ class UserWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: Dimens.screenWidth,
             margin: EdgeInsets.only(bottom: bottomMargin ?? Dimens.zero),
             padding: padding ?? Dimens.edgeInsets8,
             constraints: BoxConstraints(
@@ -71,28 +72,33 @@ class UserWidget extends StatelessWidget {
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    AvatarWidget(
-                      avatar: user.avatar,
-                      size: avatarSize ?? Dimens.twenty,
-                    ),
-                    Dimens.boxWidth12,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildUserUsername(),
-                        _buildUserFullName(),
-                      ],
-                    ),
-                  ],
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AvatarWidget(
+                        avatar: user.avatar,
+                        size: avatarSize ?? Dimens.twentyFour,
+                      ),
+                      Dimens.boxWidth8,
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildUserUsername(),
+                            _buildUserFullName(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                if (user.id != profile.profileDetails.user!.id)
+                if (user.id != profile.profileDetails!.user!.id)
                   _buildFollowAction(),
               ],
             ),
@@ -103,69 +109,76 @@ class UserWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildUserUsername() => SizedBox(
-        width: Dimens.screenWidth * 0.45,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Flexible(
-              child: RichText(
-                text: TextSpan(
-                  text: user.uname.toLowerCase(),
-                  style: AppStyles.style15Bold.copyWith(
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  ),
+  Widget _buildUserUsername() => Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: RichText(
+              text: TextSpan(
+                text: user.uname,
+                style: AppStyles.style13Bold.copyWith(
+                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
-                maxLines: 1,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+          if (user.isVerified) Dimens.boxWidth4,
+          if (user.isVerified)
+            Icon(
+              CupertinoIcons.checkmark_seal_fill,
+              color: Theme.of(Get.context!).brightness == Brightness.dark
+                  ? Theme.of(Get.context!).textTheme.bodyText1?.color
+                  : ColorValues.primaryColor,
+              size: Dimens.fourteen,
+            )
+        ],
+      );
+
+  Widget _buildUserFullName() => RichText(
+        text: TextSpan(
+          text: '${user.fname} ${user.lname}',
+          style: AppStyles.style13Normal.copyWith(
+            color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+          ),
+        ),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      );
+
+  Widget _buildFollowAction() => Expanded(
+        flex: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Dimens.boxWidth16,
+            GetBuilder<ProfileController>(
+              builder: (logic) => NxOutlinedButton(
+                label: getFollowStatus(user.followingStatus),
+                bgColor: getButtonColor(user.followingStatus),
+                borderColor: ColorValues.primaryColor,
+                borderStyle: getBorderStyle(user.followingStatus),
+                onTap: () {
+                  if (user.followingStatus == "requested") {
+                    logic.cancelFollowRequest(user);
+                    return;
+                  }
+                  logic.followUnfollowUser(user);
+                },
+                padding: Dimens.edgeInsets6_12,
+                borderWidth: Dimens.one,
+                borderRadius: Dimens.eight,
+                labelStyle: AppStyles.style13Normal.copyWith(
+                  color: getLabelColor(user.followingStatus),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-            if (user.isVerified) Dimens.boxWidth4,
-            if (user.isVerified)
-              Icon(
-                CupertinoIcons.checkmark_seal_fill,
-                color: Theme.of(Get.context!).brightness == Brightness.dark
-                    ? Theme.of(Get.context!).textTheme.bodyText1?.color
-                    : ColorValues.primaryColor,
-                size: Dimens.fourteen,
-              )
+            if (extraActions != null) extraActions!
           ],
-        ),
-      );
-
-  Widget _buildUserFullName() => SizedBox(
-        width: Dimens.screenWidth * 0.45,
-        child: RichText(
-          text: TextSpan(
-            text: '${user.fname} ${user.lname}',
-            style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-            ),
-          ),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),
-      );
-
-  Widget _buildFollowAction() => GetBuilder<ProfileController>(
-        builder: (logic) => NxOutlinedButton(
-          label: getFollowStatus(user.followingStatus),
-          bgColor: getButtonColor(user.followingStatus),
-          borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
-          borderStyle: getBorderStyle(user.followingStatus),
-          onTap: () {
-            if (user.followingStatus == "requested") {
-              logic.cancelFollowRequest(user);
-              return;
-            }
-            logic.followUnfollowUser(user);
-          },
-          padding: Dimens.edgeInsets0_8,
-          borderWidth: Dimens.one,
-          height: Dimens.thirtyTwo,
-          borderRadius: Dimens.eight,
-          labelStyle: AppStyles.style13Normal.copyWith(
-            color: getLabelColor(user.followingStatus),
-          ),
         ),
       );
 
@@ -182,11 +195,7 @@ class UserWidget extends StatelessWidget {
   }
 
   Color getButtonColor(String status) {
-    if (status == "following") {
-      return Colors.transparent;
-    }
-
-    if (status == "requested") {
+    if (status == "following" || status == "requested") {
       return Colors.transparent;
     }
 
@@ -194,11 +203,7 @@ class UserWidget extends StatelessWidget {
   }
 
   BorderStyle getBorderStyle(String status) {
-    if (status == "following") {
-      return BorderStyle.solid;
-    }
-
-    if (status == "requested") {
+    if (status == "following" || status == "requested") {
       return BorderStyle.solid;
     }
 
@@ -206,12 +211,8 @@ class UserWidget extends StatelessWidget {
   }
 
   Color getLabelColor(String status) {
-    if (status == "following") {
-      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
-    }
-
-    if (status == "requested") {
-      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    if (status == "following" || status == "requested") {
+      return ColorValues.primaryColor;
     }
 
     return ColorValues.whiteColor;

@@ -13,10 +13,10 @@ import 'package:social_media_app/global_widgets/count_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_shape_painter.dart';
+import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/global_widgets/shimmer_loading.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -45,7 +45,9 @@ class UserProfileView extends StatelessWidget {
 
   Widget _buildWidget(UserDetailsController logic) {
     return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(
+        parent: AlwaysScrollableScrollPhysics(),
+      ),
       child: Stack(
         children: [
           CustomPaint(
@@ -57,11 +59,7 @@ class UserProfileView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildProfileHeader(logic),
-              logic.isLoading
-                  ? _buildLoadingWidget()
-                  : logic.userDetails.user == null
-                      ? _buildErrorBody(logic)
-                      : _buildProfileBody(logic),
+              _buildProfileBody(logic),
             ],
           ),
         ],
@@ -70,7 +68,7 @@ class UserProfileView extends StatelessWidget {
   }
 
   Widget _buildProfileHeader(UserDetailsController logic) {
-    final user = logic.userDetails.user;
+    final user = logic.userDetails!.user;
     return NxAppBar(
       padding: Dimens.edgeInsets8_16,
       leading: Expanded(
@@ -78,9 +76,7 @@ class UserProfileView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              logic.userDetails.user != null
-                  ? user!.uname
-                  : StringValues.profile,
+              user != null ? user.uname : StringValues.profile,
               style: AppStyles.style20Bold,
             ),
             const Spacer(),
@@ -98,46 +94,76 @@ class UserProfileView extends StatelessWidget {
   }
 
   Widget _buildProfileBody(UserDetailsController logic) {
-    if (logic.userDetails.user!.accountStatus == "deactivated") {
-      return Center(
-        child: Padding(
-          padding: Dimens.edgeInsets16.copyWith(
-            top: Dimens.sixtyFour,
-          ),
-          child: Text(
-            StringValues.deactivatedAccountWarning,
-            style: AppStyles.style32Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+    if (logic.isLoading) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Dimens.boxHeight8,
+          const NxCircularProgressIndicator(),
+          Dimens.boxHeight8,
+        ],
+      );
+    } else if (logic.userDetails == null || logic.userDetails!.user == null) {
+      return SizedBox(
+        width: Dimens.screenWidth,
+        height: Dimens.screenHeight,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              StringValues.userNotFoundError,
+              style: AppStyles.style32Bold.copyWith(
+                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
+            Dimens.boxHeight16,
+          ],
         ),
       );
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Dimens.boxHeight16,
-        Padding(
-          padding: Dimens.edgeInsets0_16,
-          child: _buildUserDetails(logic),
-        ),
-        Dimens.boxHeight24,
-        Padding(
-          padding: Dimens.edgeInsets0_16,
-          child: _buildCountDetails(logic),
-        ),
-        Dimens.boxHeight8,
-        Dimens.dividerWithHeight,
-        Dimens.boxHeight8,
-        _buildPosts(logic),
-        Dimens.boxHeight16,
-      ],
-    );
+    return (logic.userDetails!.user!.accountStatus == "deactivated")
+        ? Center(
+            child: Padding(
+              padding: Dimens.edgeInsets16.copyWith(
+                top: Dimens.sixtyFour,
+              ),
+              child: Text(
+                StringValues.deactivatedAccountWarning,
+                style: AppStyles.style32Bold.copyWith(
+                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Dimens.boxHeight16,
+              Padding(
+                padding: Dimens.edgeInsets0_16,
+                child: _buildUserDetails(logic),
+              ),
+              Dimens.boxHeight24,
+              Padding(
+                padding: Dimens.edgeInsets0_16,
+                child: _buildCountDetails(logic),
+              ),
+              Dimens.boxHeight8,
+              Dimens.dividerWithHeight,
+              Dimens.boxHeight8,
+              _buildPosts(logic),
+              Dimens.boxHeight16,
+            ],
+          );
   }
 
   Widget _buildUserDetails(UserDetailsController logic) {
-    final user = logic.userDetails.user!;
+    final user = logic.userDetails!.user!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -165,7 +191,7 @@ class UserProfileView extends StatelessWidget {
                   )
               ],
             ),
-            Dimens.boxHeight4,
+            Dimens.boxHeight2,
             Text(
               "@${user.uname}",
               style: AppStyles.style14Normal.copyWith(
@@ -176,13 +202,9 @@ class UserProfileView extends StatelessWidget {
         ),
         Dimens.boxHeight8,
         if (user.about != null) Dimens.boxHeight8,
-        if (user.about != null)
-          Text(
-            user.about!,
-            style: AppStyles.style14Normal,
-          ),
+        if (user.about != null) NxExpandableText(text: user.about!),
         Dimens.boxHeight8,
-        if (logic.userDetails.user!.website != null)
+        if (logic.userDetails!.user!.website != null)
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -193,14 +215,13 @@ class UserProfileView extends StatelessWidget {
               ),
               Dimens.boxWidth8,
               InkWell(
-                onTap: () => AppUtility.openUrl(
-                    Uri.parse(logic.userDetails.user!.website!)),
+                onTap: () => AppUtility.openUrl(Uri.parse(user.website!)),
                 child: Text(
-                  logic.userDetails.user!.website!.contains('https://') ||
-                          logic.userDetails.user!.website!.contains('http://')
-                      ? Uri.parse(logic.userDetails.user!.website!).host
-                      : logic.userDetails.user!.website!,
-                  style: AppStyles.style13Bold.copyWith(
+                  user.website!.contains('https://') ||
+                          user.website!.contains('http://')
+                      ? Uri.parse(user.website!).host
+                      : user.website!,
+                  style: AppStyles.style13Normal.copyWith(
                     color: ColorValues.primaryColor,
                   ),
                 ),
@@ -219,7 +240,7 @@ class UserProfileView extends StatelessWidget {
             Dimens.boxWidth8,
             Expanded(
               child: Text(
-                'Joined - ${DateFormat.yMMMd().format(logic.userDetails.user!.createdAt)}',
+                'Joined - ${DateFormat.yMMMd().format(user.createdAt)}',
                 style: AppStyles.style12Bold.copyWith(
                   color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                 ),
@@ -246,11 +267,7 @@ class UserProfileView extends StatelessWidget {
   }
 
   Color getButtonColor(String status) {
-    if (status == "following") {
-      return Colors.transparent;
-    }
-
-    if (status == "requested") {
+    if (status == "following" || status == "requested") {
       return Colors.transparent;
     }
 
@@ -258,11 +275,7 @@ class UserProfileView extends StatelessWidget {
   }
 
   BorderStyle getBorderStyle(String status) {
-    if (status == "following") {
-      return BorderStyle.solid;
-    }
-
-    if (status == "requested") {
+    if (status == "following" || status == "requested") {
       return BorderStyle.solid;
     }
 
@@ -270,26 +283,23 @@ class UserProfileView extends StatelessWidget {
   }
 
   Color getLabelColor(String status) {
-    if (status == "following") {
-      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
-    }
-
-    if (status == "requested") {
-      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    if (status == "following" || status == "requested") {
+      return ColorValues.primaryColor;
     }
 
     return ColorValues.whiteColor;
   }
 
   Widget _buildActionBtn(UserDetailsController logic) {
-    if (logic.userDetails.user!.followingStatus == "self") {
+    final user = logic.userDetails!.user!;
+    if (user.followingStatus == "self") {
       return NxOutlinedButton(
         label: StringValues.editProfile.toTitleCase(),
         width: Dimens.screenWidth,
         height: Dimens.thirtySix,
         padding: Dimens.edgeInsets0_8,
         borderRadius: Dimens.eight,
-        borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+        borderColor: ColorValues.primaryColor,
         labelStyle: AppStyles.style14Normal.copyWith(
           color: Theme.of(Get.context!).textTheme.bodyText1!.color,
         ),
@@ -298,28 +308,28 @@ class UserProfileView extends StatelessWidget {
     }
 
     return NxOutlinedButton(
-      label: getFollowStatus(logic.userDetails.user!.followingStatus),
-      bgColor: getButtonColor(logic.userDetails.user!.followingStatus),
-      borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
-      borderStyle: getBorderStyle(logic.userDetails.user!.followingStatus),
+      label: getFollowStatus(user.followingStatus),
+      bgColor: getButtonColor(user.followingStatus),
+      borderColor: ColorValues.primaryColor,
+      borderStyle: getBorderStyle(user.followingStatus),
       onTap: () {
-        if (logic.userDetails.user!.followingStatus == "requested") {
-          logic.cancelFollowRequest(logic.userDetails.user!);
+        if (user.followingStatus == "requested") {
+          logic.cancelFollowRequest(user);
           return;
         }
-        logic.followUnfollowUser(logic.userDetails.user!);
+        logic.followUnfollowUser(user);
       },
       padding: Dimens.edgeInsets0_8,
       width: Dimens.screenWidth,
       height: Dimens.thirtySix,
       labelStyle: AppStyles.style14Normal.copyWith(
-        color: getLabelColor(logic.userDetails.user!.followingStatus),
+        color: getLabelColor(user.followingStatus),
       ),
     );
   }
 
   Container _buildCountDetails(UserDetailsController logic) {
-    final user = logic.userDetails.user;
+    final user = logic.userDetails!.user!;
     return Container(
       width: Dimens.screenWidth,
       padding: Dimens.edgeInsets8_0,
@@ -334,7 +344,7 @@ class UserProfileView extends StatelessWidget {
             child: NxCountWidget(
               title: StringValues.posts,
               valueStyle: AppStyles.style24Bold,
-              value: user!.postsCount.toString().toCountingFormat(),
+              value: user.postsCount.toString().toCountingFormat(),
             ),
           ),
           Expanded(
@@ -343,13 +353,12 @@ class UserProfileView extends StatelessWidget {
               valueStyle: AppStyles.style24Bold,
               value: user.followersCount.toString().toCountingFormat(),
               onTap: () {
-                if (logic.userDetails.user!.isPrivate &&
-                    (logic.userDetails.user!.followingStatus != "following" &&
-                        logic.userDetails.user!.followingStatus != "self")) {
+                if (user.isPrivate &&
+                    (user.followingStatus != "following" &&
+                        user.followingStatus != "self")) {
                   return;
                 }
-                RouteManagement.goToFollowersListView(
-                    logic.userDetails.user!.id);
+                RouteManagement.goToFollowersListView(user.id);
               },
             ),
           ),
@@ -359,13 +368,12 @@ class UserProfileView extends StatelessWidget {
               valueStyle: AppStyles.style24Bold,
               value: user.followingCount.toString().toCountingFormat(),
               onTap: () {
-                if (logic.userDetails.user!.isPrivate &&
-                    (logic.userDetails.user!.followingStatus != "following" &&
-                        logic.userDetails.user!.followingStatus != "self")) {
+                if (user.isPrivate &&
+                    (user.followingStatus != "following" &&
+                        user.followingStatus != "self")) {
                   return;
                 }
-                RouteManagement.goToFollowingListView(
-                    logic.userDetails.user!.id);
+                RouteManagement.goToFollowingListView(user.id);
               },
             ),
           ),
@@ -375,7 +383,7 @@ class UserProfileView extends StatelessWidget {
   }
 
   Widget _buildPosts(UserDetailsController logic) {
-    final user = logic.userDetails.user!;
+    final user = logic.userDetails!.user!;
 
     if (user.isPrivate &&
         (user.followingStatus != "following" &&
@@ -457,79 +465,6 @@ class UserProfileView extends StatelessWidget {
               ],
             ),
         ],
-      ),
-    );
-  }
-
-  _buildErrorBody(UserDetailsController logic) {
-    return SizedBox(
-      width: Dimens.screenWidth,
-      height: Dimens.screenHeight,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            StringValues.userNotFoundError,
-            style: AppStyles.style32Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          Dimens.boxHeight16,
-          NxOutlinedButton(
-            width: Dimens.hundred,
-            height: Dimens.thirtySix,
-            label: StringValues.refresh,
-            onTap: logic.fetchUserDetailsById,
-          )
-        ],
-      ),
-    );
-  }
-
-  _buildLoadingWidget() {
-    return Padding(
-      padding: Dimens.edgeInsets0_16,
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircleAvatar(
-              radius: Dimens.eighty,
-              backgroundColor: ColorValues.grayColor.withOpacity(0.25),
-            ),
-            Dimens.boxHeight16,
-            ShimmerLoading(
-              width: Dimens.hundred * 1.2,
-              height: Dimens.twentyFour,
-            ),
-            Dimens.boxHeight4,
-            ShimmerLoading(
-              width: Dimens.hundred * 1.2,
-              height: Dimens.sixTeen,
-            ),
-            Dimens.boxHeight16,
-            ShimmerLoading(
-              width: Dimens.hundred,
-              height: Dimens.fourty,
-            ),
-            Dimens.boxHeight16,
-            ShimmerLoading(
-              width: Dimens.screenWidth * 0.75,
-              height: Dimens.sixTeen,
-            ),
-            Dimens.boxHeight16,
-            ShimmerLoading(
-              width: Dimens.screenWidth * 0.75,
-              height: Dimens.sixTeen,
-            ),
-            Dimens.boxHeight32,
-          ],
-        ),
       ),
     );
   }

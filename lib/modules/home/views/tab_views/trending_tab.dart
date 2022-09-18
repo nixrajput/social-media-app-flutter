@@ -25,12 +25,12 @@ class TrendingTabView extends StatelessWidget {
                   TabBar(
                     controller: tab.controller,
                     tabs: tab.tabs,
-                    indicatorWeight: Dimens.four,
+                    indicatorWeight: Dimens.two,
                     indicatorSize: TabBarIndicatorSize.tab,
                     unselectedLabelColor:
                         Theme.of(context).textTheme.subtitle1!.color,
                     labelColor: ColorValues.primaryColor,
-                    labelStyle: AppStyles.style16Bold.copyWith(
+                    labelStyle: AppStyles.style14Bold.copyWith(
                       color: ColorValues.primaryColor,
                     ),
                     unselectedLabelStyle: AppStyles.style16Bold.copyWith(

@@ -28,25 +28,27 @@ dependencies:
   connectivity: ^3.0.6
   http: ^0.13.5
   intl: ^0.17.0
+  web_socket_channel: ^2.2.0
   get_time_ago: ^1.1.6
   cloudinary: ^1.0.3
   r_upgrade: ^0.3.8+2
 
   flutter_animate: ^1.0.0
-  video_compress: ^3.1.1
+  # video_compress: ^3.1.1
   flutter_image_compress: ^1.1.2
+  video_compress_ds: ^3.1.6
 
   url_launcher: ^6.1.5
   flutter_linkify: ^5.0.2
   share_plus: ^4.1.0
   flutter_email_sender: ^5.1.0
 
-  flutter_local_notifications: ^9.9.1
+  flutter_local_notifications: ^11.0.0
   better_player: ^0.0.83
   path: ^1.8.2
-  file_picker: ^5.0.1
+  file_picker: ^5.1.0
   path_provider: ^2.0.11
-  flutter_markdown: ^0.6.11
+  flutter_markdown: ^0.6.12
 
   flutter_screenutil: ^5.5.4
   permission_handler: ^10.0.0

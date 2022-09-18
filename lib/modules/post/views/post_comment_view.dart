@@ -6,8 +6,8 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
-import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/create_comment_controller.dart';
@@ -22,62 +22,66 @@ class PostCommentView extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
       child: Scaffold(
         body: SafeArea(
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  NxAppBar(
-                    title: StringValues.comments,
-                    padding: Dimens.edgeInsets8_16,
-                  ),
-                  Dimens.boxHeight16,
-                  _buildBody(),
-                ],
-              ),
-              Positioned(
-                bottom: Dimens.zero,
-                left: Dimens.zero,
-                right: Dimens.zero,
-                child: GetBuilder<CreateCommentController>(
-                  builder: (con) => Container(
-                    color: Theme.of(Get.context!).dialogTheme.backgroundColor,
-                    width: Dimens.screenWidth.w,
-                    height: 48.h,
-                    child: Row(
-                      children: [
-                        Dimens.boxWidth4,
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 4.r),
-                            child: TextFormField(
-                              controller: con.commentTextController,
-                              decoration: const InputDecoration(
-                                hintText: StringValues.addComment,
-                                border: InputBorder.none,
+          child: NxRefreshIndicator(
+            onRefresh: CommentController.find.fetchComments,
+            showProgress: false,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    NxAppBar(
+                      title: StringValues.comments,
+                      padding: Dimens.edgeInsets8_16,
+                    ),
+                    Dimens.boxHeight8,
+                    _buildBody(),
+                  ],
+                ),
+                Positioned(
+                  bottom: Dimens.zero,
+                  left: Dimens.zero,
+                  right: Dimens.zero,
+                  child: GetBuilder<CreateCommentController>(
+                    builder: (con) => Container(
+                      color: Theme.of(Get.context!).dialogTheme.backgroundColor,
+                      width: Dimens.screenWidth.w,
+                      height: 48.h,
+                      child: Row(
+                        children: [
+                          Dimens.boxWidth4,
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 4.r),
+                              child: TextFormField(
+                                controller: con.commentTextController,
+                                decoration: const InputDecoration(
+                                  hintText: StringValues.addComment,
+                                  border: InputBorder.none,
+                                ),
+                                minLines: 1,
+                                maxLines: 1,
                               ),
-                              minLines: 1,
-                              maxLines: 1,
                             ),
                           ),
-                        ),
-                        Dimens.boxWidth4,
-                        NxIconButton(
-                          icon: Icons.send,
-                          iconColor: ColorValues.whiteColor,
-                          height: 48.h,
-                          width: 48.w,
-                          bgColor: ColorValues.primaryColor,
-                          onTap: con.createNewComment,
-                        )
-                      ],
+                          Dimens.boxWidth4,
+                          NxIconButton(
+                            icon: Icons.send,
+                            iconColor: ColorValues.whiteColor,
+                            height: 48.h,
+                            width: 48.w,
+                            bgColor: ColorValues.primaryColor,
+                            onTap: con.createNewComment,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -114,12 +118,6 @@ class PostCommentView extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     Dimens.boxHeight16,
-                    NxOutlinedButton(
-                      width: Dimens.hundred,
-                      height: Dimens.thirtySix,
-                      label: StringValues.refresh,
-                      onTap: () => commentsLogic.fetchComments(),
-                    ),
                     Dimens.boxHeight64,
                   ],
                 ),
@@ -127,7 +125,9 @@ class PostCommentView extends StatelessWidget {
             }
 
             return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -20,21 +20,25 @@ class FollowRequestView extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
       child: Scaffold(
-        body: NxRefreshIndicator(
-          onRefresh: FollowRequestController.find.fetchFollowRequests,
-          showProgress: false,
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NxAppBar(
-                  title: StringValues.followRequests,
-                  padding: Dimens.edgeInsets8_16,
-                ),
-                Dimens.boxHeight16,
-                _buildBody(),
-              ],
+        body: SafeArea(
+          child: NxRefreshIndicator(
+            onRefresh: FollowRequestController.find.fetchFollowRequests,
+            showProgress: false,
+            child: SizedBox(
+              width: Dimens.screenWidth,
+              height: Dimens.screenHeight,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  NxAppBar(
+                    title: StringValues.followRequests,
+                    padding: Dimens.edgeInsets8_16,
+                  ),
+                  Dimens.boxHeight8,
+                  _buildBody(),
+                ],
+              ),
             ),
           ),
         ),
@@ -79,7 +83,9 @@ class FollowRequestView extends StatelessWidget {
           }
 
           return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             padding: Dimens.edgeInsets0_16,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

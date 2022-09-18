@@ -45,9 +45,9 @@ class EditProfessionController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_profile.profileDetails.user != null &&
-        _profile.profileDetails.user!.profession != null) {
-      var user = _profile.profileDetails.user!;
+    if (_profile.profileDetails!.user != null &&
+        _profile.profileDetails!.user!.profession != null) {
+      var user = _profile.profileDetails!.user!;
       if (StaticData.occupationList.contains(user.profession!.toLowerCase())) {
         onProfessionChanged(user.profession);
       } else {
@@ -135,7 +135,7 @@ class EditProfessionController extends GetxController {
 
   Future<void> updateProfession() async {
     AppUtility.closeFocus();
-    if (_profession.value == _profile.profileDetails.user!.profession) {
+    if (_profession.value == _profile.profileDetails!.user!.profession) {
       return;
     }
     await _updateProfession(_profession.value.trim());

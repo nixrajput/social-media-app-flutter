@@ -71,7 +71,7 @@ class ChangePhoneController extends GetxController {
       return;
     }
 
-    if (profile.profileDetails.user!.phone == phone) {
+    if (profile.profileDetails!.user!.phone == phone) {
       AppUtility.showSnackBar(
         StringValues.enterDifferentPhoneNo,
         StringValues.warning,

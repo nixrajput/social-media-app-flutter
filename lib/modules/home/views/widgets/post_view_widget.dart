@@ -27,9 +27,15 @@ class PostViewWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               NxAppBar(
-                padding: Dimens.edgeInsets8_16,
+                padding: Dimens.edgeInsets8_16.copyWith(
+                  bottom: Dimens.zero,
+                ),
               ),
-              Expanded(child: Center(child: _buildBody())),
+              Expanded(
+                child: Center(
+                  child: _buildBody(),
+                ),
+              ),
             ],
           ),
         ),

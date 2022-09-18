@@ -623,6 +623,50 @@ class ApiProvider {
     return response;
   }
 
+  Future<http.Response> searchPosts(String token, String text,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.searchPostsEndpoint}?q=$text&page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> searchFollowers(
+      String token, String userId, String text,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.searchFollowersEndpoint}?id=$userId&q=$text&page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> searchFollowings(
+      String token, String userId, String text,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.searchFollowingEndpoint}?id=$userId&q=$text&page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
   /// --------------------------------------------------------------------------
 
   /// Comment ------------------------------------------------------------------
@@ -699,6 +743,18 @@ class ApiProvider {
   Future<http.Response> markNotificationRead(String token, String id) async {
     final response = await _client.get(
       Uri.parse('${baseUrl!}${AppUrls.markNotificationsReadEndpoint}?id=$id'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> deleteNotification(String token, String id) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.deleteNotificationsEndpoint}?id=$id'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",

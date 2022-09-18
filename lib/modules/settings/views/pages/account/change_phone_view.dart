@@ -51,7 +51,7 @@ class ChangePhoneView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      if (logic.profile.profileDetails.user!.phone != null)
+                      if (logic.profile.profileDetails!.user!.phone != null)
                         RichText(
                           text: TextSpan(
                             children: [
@@ -59,7 +59,7 @@ class ChangePhoneView extends StatelessWidget {
                                 text: 'Your current phone number is ',
                               ),
                               TextSpan(
-                                text: logic.profile.profileDetails.user!.phone,
+                                text: logic.profile.profileDetails!.user!.phone,
                                 style: AppStyles.style14Bold,
                               ),
                               const TextSpan(

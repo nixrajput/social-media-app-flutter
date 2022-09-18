@@ -198,7 +198,6 @@ class NotificationController extends GetxController {
     } on TimeoutException {
       AppUtility.printLog("Mark Notification Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       AppUtility.printLog("Mark Notification Error");
@@ -226,10 +225,60 @@ class NotificationController extends GetxController {
     }
   }
 
+  Future<void> _deleteNotification(String id) async {
+    AppUtility.printLog("Delete Notification Request");
+
+    var isPresent = _notificationList.any((element) => element.id == id);
+
+    if (isPresent == true) {
+      _notificationList.removeWhere((element) => element.id == id);
+      update();
+    }
+
+    try {
+      final response = await _apiProvider.deleteNotification(_auth.token, id);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        AppUtility.printLog(decodedData);
+        AppUtility.printLog("Delete Notification Success");
+      } else {
+        AppUtility.printLog("Delete Notification Error");
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } on SocketException {
+      AppUtility.printLog("Delete Notification Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtility.printLog("Delete Notification Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtility.printLog("Delete Notification Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtility.printLog("Delete Notification Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+  }
+
   Future<void> getNotifications() async => await _fetchNotifications();
 
   Future<void> markNotificationRead(String id) async =>
       await _markNotificationRead(id);
+
+  Future<void> deleteNotification(String id) async =>
+      await _deleteNotification(id);
 
   Future<void> loadMore() async =>
       await _loadMore(page: _notificationData.value.currentPage! + 1);

@@ -38,8 +38,8 @@ class EditGenderController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_profile.profileDetails.user != null) {
-      var user = _profile.profileDetails.user!;
+    if (_profile.profileDetails!.user != null) {
+      var user = _profile.profileDetails!.user!;
       setGender = user.gender ?? '';
     }
   }
@@ -94,7 +94,6 @@ class EditGenderController extends GetxController {
       _isLoading.value = false;
       update();
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       AppUtility.closeDialog();
@@ -118,7 +117,7 @@ class EditGenderController extends GetxController {
     if (_gender.value.isEmpty) {
       return;
     }
-    if (_gender.value == _profile.profileDetails.user!.gender) {
+    if (_gender.value == _profile.profileDetails!.user!.gender) {
       return;
     }
     await _updateGender(_gender.value.trim());

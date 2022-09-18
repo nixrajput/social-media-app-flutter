@@ -70,7 +70,6 @@ class LoginDeviceInfoController extends GetxController {
       update();
       AppUtility.printLog("Get LoginDeviceInfo Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading.value = false;
@@ -110,13 +109,13 @@ class LoginDeviceInfoController extends GetxController {
       final apiResponse = CommonResponse.fromJson(decodedData);
 
       if (response.statusCode == 200) {
+        AppUtility.printLog("Delete LoginDeviceInfo Success");
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.success,
+          duration: 1,
         );
-        AppUtility.printLog("Delete LoginDeviceInfo Success");
       } else {
-        //_postList.insert(postIndex, post);
         update();
         AppUtility.printLog("Delete LoginDeviceInfo Error");
         AppUtility.showSnackBar(
@@ -125,7 +124,6 @@ class LoginDeviceInfoController extends GetxController {
         );
       }
     } on SocketException {
-      //_postList.insert(postIndex, post);
       update();
       AppUtility.printLog("Delete LoginDeviceInfo Error");
       AppUtility.printLog(StringValues.internetConnError);
@@ -135,7 +133,6 @@ class LoginDeviceInfoController extends GetxController {
       //_postList.insert(postIndex, post);
       update();
       AppUtility.printLog("Delete LoginDeviceInfo Error");
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {

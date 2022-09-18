@@ -11,12 +11,16 @@ class NxCircleNetworkImage extends StatelessWidget {
     this.radius,
     this.fit,
     this.bgColor,
+    this.borderColor,
+    this.borderWidth,
   }) : super(key: key);
 
   final String imageUrl;
   final double? radius;
   final BoxFit? fit;
   final Color? bgColor;
+  final Color? borderColor;
+  final double? borderWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,8 @@ class NxCircleNetworkImage extends StatelessWidget {
           radius != null ? radius! * 2 : Dimens.fourtyEight * 2,
         ),
         border: Border.all(
-          color: Theme.of(context).dividerColor,
+          color: borderColor ?? Theme.of(context).dividerColor,
+          width: borderWidth ?? Dimens.one,
         ),
       ),
       child: ClipRRect(

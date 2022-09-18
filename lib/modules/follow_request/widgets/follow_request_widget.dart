@@ -47,7 +47,6 @@ class FollowRequestWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: Dimens.screenWidth,
             margin: EdgeInsets.only(bottom: bottomMargin ?? Dimens.zero),
             padding: padding ?? Dimens.edgeInsets8,
             constraints: BoxConstraints(
@@ -72,31 +71,36 @@ class FollowRequestWidget extends StatelessWidget {
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Hero(
-                      tag: followRequest.from.id,
-                      child: AvatarWidget(
-                        avatar: followRequest.from.avatar,
-                        size: avatarSize ?? Dimens.twenty,
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Hero(
+                        tag: followRequest.from.id,
+                        child: AvatarWidget(
+                          avatar: followRequest.from.avatar,
+                          size: avatarSize ?? Dimens.twentyFour,
+                        ),
                       ),
-                    ),
-                    Dimens.boxWidth12,
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildUserUsername(),
-                        _buildUserFullName(),
-                      ],
-                    ),
-                  ],
+                      Dimens.boxWidth8,
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildUserUsername(),
+                            _buildUserFullName(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                if (followRequest.from.id != profile.profileDetails.user!.id)
+                if (followRequest.from.id != profile.profileDetails!.user!.id)
                   _buildFollowAction(),
               ],
             ),
@@ -107,73 +111,74 @@ class FollowRequestWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildUserUsername() => SizedBox(
-        width: Dimens.screenWidth * 0.45,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Flexible(
-              child: RichText(
-                text: TextSpan(
-                  text: followRequest.from.uname.toLowerCase(),
-                  style: AppStyles.style15Bold.copyWith(
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  ),
-                ),
-                maxLines: 1,
-              ),
-            ),
-            if (followRequest.from.isVerified) Dimens.boxWidth4,
-            if (followRequest.from.isVerified)
-              Icon(
-                CupertinoIcons.checkmark_seal_fill,
-                color: Theme.of(Get.context!).brightness == Brightness.dark
-                    ? Theme.of(Get.context!).textTheme.bodyText1?.color
-                    : ColorValues.primaryColor,
-                size: Dimens.fourteen,
-              )
-          ],
-        ),
-      );
-
-  Widget _buildUserFullName() => SizedBox(
-        width: Dimens.screenWidth * 0.45,
-        child: RichText(
-          text: TextSpan(
-            text: '${followRequest.from.fname} ${followRequest.from.lname}',
-            style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-            ),
-          ),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        ),
-      );
-
-  Widget _buildFollowAction() => Row(
+  Widget _buildUserUsername() => Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          NxIconButton(
-            bgColor: ColorValues.successColor,
-            borderRadius: Dimens.eight,
-            padding: Dimens.edgeInsets4,
-            width: Dimens.fourty,
-            icon: Icons.check_outlined,
-            iconColor: ColorValues.whiteColor,
-            onTap: () => FollowRequestController.find
-                .acceptFollowRequest(followRequest.id),
+          Flexible(
+            child: RichText(
+              text: TextSpan(
+                text: followRequest.from.uname,
+                style: AppStyles.style13Bold.copyWith(
+                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                ),
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
-          Dimens.boxWidth8,
-          NxIconButton(
-            bgColor: ColorValues.errorColor,
-            borderRadius: Dimens.eight,
-            padding: Dimens.edgeInsets4,
-            width: Dimens.fourty,
-            icon: Icons.close,
-            iconColor: ColorValues.whiteColor,
-            onTap: () => FollowRequestController.find
-                .removeFollowRequest(followRequest.id),
-          ),
+          if (followRequest.from.isVerified) Dimens.boxWidth4,
+          if (followRequest.from.isVerified)
+            Icon(
+              CupertinoIcons.checkmark_seal_fill,
+              color: Theme.of(Get.context!).brightness == Brightness.dark
+                  ? Theme.of(Get.context!).textTheme.bodyText1?.color
+                  : ColorValues.primaryColor,
+              size: Dimens.fourteen,
+            )
         ],
+      );
+
+  Widget _buildUserFullName() => RichText(
+        text: TextSpan(
+          text: '${followRequest.from.fname} ${followRequest.from.lname}',
+          style: AppStyles.style13Normal.copyWith(
+            color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+          ),
+        ),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      );
+
+  Widget _buildFollowAction() => Expanded(
+        flex: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Dimens.boxWidth16,
+            NxIconButton(
+              bgColor: ColorValues.successColor,
+              borderRadius: Dimens.four,
+              padding: Dimens.edgeInsets4,
+              width: Dimens.fourtyEight,
+              icon: Icons.check_outlined,
+              iconColor: ColorValues.whiteColor,
+              onTap: () => FollowRequestController.find
+                  .acceptFollowRequest(followRequest.id),
+            ),
+            Dimens.boxWidth8,
+            NxIconButton(
+              bgColor: ColorValues.errorColor,
+              borderRadius: Dimens.four,
+              padding: Dimens.edgeInsets4,
+              width: Dimens.fourtyEight,
+              icon: Icons.close,
+              iconColor: ColorValues.whiteColor,
+              onTap: () => FollowRequestController.find
+                  .removeFollowRequest(followRequest.id),
+            ),
+          ],
+        ),
       );
 }

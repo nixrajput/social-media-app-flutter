@@ -21,6 +21,24 @@ We are also open to feature requests. If you would like to request a feature, pl
 
 We are also open to bug reports. If you would like to report a bug, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to fix the bug as soon as possible.
 
+## Setup
+
+- Create `secrets.dart` file in constants folder.
+- Add the following code to the file.
+```dart
+abstract class AppSecrets {
+  static const uploadPreset = 'XXX-XXX-XXX-XXX';
+  static const cloudinaryCloudName = 'XXX-XXX-XXX-XXX';
+  static const githubToken = 'XXX-XXX-XXX-XXX';
+}
+```
+- Replace XXX-XXX-XXX-XXX with your values in the file.
+- Now run the following commands:
+```dart
+flutter clean
+flutter pub get packages
+```
+
 ## Screenshots
 
 Created with [previewed.app](https://previewed.app).

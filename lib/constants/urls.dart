@@ -3,6 +3,7 @@ abstract class AppUrls {
   static const String locationUrl = 'http://ip-api.com/json';
   static const String baseUrl = 'https://social-api.nixlab.co.in/api/v1';
   static const String githubApiUrl = 'https://api.github.com';
+  static const String baseWSUrl = 'wss://social-api.nixlab.co.in/api/v1/ws';
 
   ///  Endpoints
   static const String serverHealthEndpoint = '/health';
@@ -14,6 +15,7 @@ abstract class AppUrls {
 
   static const String getPostsEndpoint = '/get-posts';
   static const String postEndpoint = '/post';
+  static const String searchPostsEndpoint = '/search-posts';
   static const String createPostEndpoint = '/create-post';
   static const String likePostEndpoint = '/like-post';
   static const String getPostLikedUsersEndpoint = '/get-post-liked-users';
@@ -55,9 +57,13 @@ abstract class AppUrls {
   static const String userDetailsEndpoint = '/user-details';
   static const String getFollowersEndpoint = '/get-followers';
   static const String getFollowingEndpoint = '/get-followings';
+  static const String searchFollowersEndpoint = '/search-followers';
+  static const String searchFollowingEndpoint = '/search-followings';
   static const String getUserPostsEndpoint = '/get-user-posts';
+
   static const String getNotificationsEndpoint = '/get-notifications';
   static const String markNotificationsReadEndpoint = '/mark-read-notification';
+  static const String deleteNotificationsEndpoint = '/delete-notification';
 
   static const String checkAppUpdateEndpoint =
       '/repos/nixrajput/social-media-app-flutter/releases/latest';

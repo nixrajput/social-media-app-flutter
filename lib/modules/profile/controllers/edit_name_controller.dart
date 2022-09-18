@@ -36,8 +36,8 @@ class EditNameController extends GetxController {
   }
 
   void initializeFields() async {
-    if (_profile.profileDetails.user != null) {
-      var user = _profile.profileDetails.user!;
+    if (_profile.profileDetails!.user != null) {
+      var user = _profile.profileDetails!.user!;
       fNameTextController.text = user.fname;
       lNameTextController.text = user.lname;
     }
@@ -130,9 +130,9 @@ class EditNameController extends GetxController {
   Future<void> updateName() async {
     AppUtility.closeFocus();
     if (fNameTextController.text.trim() ==
-            _profile.profileDetails.user!.fname &&
+            _profile.profileDetails!.user!.fname &&
         lNameTextController.text.trim() ==
-            _profile.profileDetails.user!.lname) {
+            _profile.profileDetails!.user!.lname) {
       return;
     }
     await _updateName(

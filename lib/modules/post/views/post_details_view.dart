@@ -5,6 +5,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
 import 'package:social_media_app/modules/post/controllers/post_details_controller.dart';
 
@@ -17,16 +18,20 @@ class PostDetailsView extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
       child: Scaffold(
         body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              NxAppBar(
-                title: StringValues.post,
-                padding: Dimens.edgeInsets8_16,
-              ),
-              _buildBody(),
-            ],
+          child: NxRefreshIndicator(
+            onRefresh: PostDetailsController.find.fetchPostDetails,
+            showProgress: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                NxAppBar(
+                  title: StringValues.post,
+                  padding: Dimens.edgeInsets8_16,
+                ),
+                _buildBody(),
+              ],
+            ),
           ),
         ),
       ),
@@ -57,7 +62,9 @@ class PostDetailsView extends StatelessWidget {
         }
 
         return SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           padding: Dimens.edgeInsets0_16,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 import 'package:social_media_app/modules/settings/views/widgets/login_device_info_widget.dart';
 
@@ -16,17 +18,21 @@ class LoginActivityView extends StatelessWidget {
         child: SizedBox(
           width: Dimens.screenWidth,
           height: Dimens.screenHeight,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              NxAppBar(
-                title: StringValues.loginActivity,
-                padding: Dimens.edgeInsets8_16,
-              ),
-              Dimens.boxHeight16,
-              _buildBody(),
-            ],
+          child: NxRefreshIndicator(
+            onRefresh: LoginDeviceInfoController.find.getLoginDeviceInfo,
+            showProgress: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                NxAppBar(
+                  title: StringValues.loginActivity,
+                  padding: Dimens.edgeInsets8_16,
+                ),
+                Dimens.boxHeight8,
+                _buildBody(),
+              ],
+            ),
           ),
         ),
       ),
@@ -40,11 +46,13 @@ class LoginActivityView extends StatelessWidget {
         child: GetBuilder<LoginDeviceInfoController>(
           builder: (logic) {
             if (logic.isLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: NxCircularProgressIndicator());
             }
 
             return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,

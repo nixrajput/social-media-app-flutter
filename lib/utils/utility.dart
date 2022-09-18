@@ -18,7 +18,7 @@ import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:video_compress/video_compress.dart';
+import 'package:video_compress_ds/video_compress_ds.dart';
 
 abstract class AppUtility {
   /// Close any open snack bar.

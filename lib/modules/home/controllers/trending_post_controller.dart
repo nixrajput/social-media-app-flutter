@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/post.dart';
@@ -21,6 +22,8 @@ class TrendingPostController extends GetxController {
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
   final _postData = const PostResponse().obs;
+
+  final searchTextController = TextEditingController();
 
   final List<Post> _postList = [];
 
@@ -136,7 +139,6 @@ class TrendingPostController extends GetxController {
       _isMoreLoading.value = false;
       update();
       AppUtility.printLog("Fetching More Trending Posts Error");
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
@@ -272,7 +274,71 @@ class TrendingPostController extends GetxController {
     }
   }
 
+  Future<void> _searchPosts(String searchText) async {
+    if (searchText.isEmpty) {
+      await _fetchTrendingPosts();
+      return;
+    }
+
+    AppUtility.printLog("Search Users Request");
+    _isLoading.value = true;
+    update();
+
+    try {
+      final response = await _apiProvider.searchPosts(_auth.token, searchText);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        setPostData = PostResponse.fromJson(decodedData);
+        _postList.clear();
+        _postList.addAll(_postData.value.results!);
+        _isLoading.value = false;
+        update();
+        AppUtility.printLog("Search Posts Success");
+      } else {
+        _isLoading.value = false;
+        update();
+        AppUtility.printLog("Search Posts Error");
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } on SocketException {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Search Posts Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Search Posts Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Search Posts Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Search Posts Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+  }
+
   Future<void> fetchPosts() async => await _fetchTrendingPosts();
+
+  Future<void> searchPosts(String searchText) async =>
+      await _searchPosts(searchText);
 
   Future<void> loadMore() async =>
       await _loadMore(page: _postData.value.currentPage! + 1);

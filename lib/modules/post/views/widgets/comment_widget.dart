@@ -28,7 +28,7 @@ class CommentWidget extends StatelessWidget {
             children: [
               AvatarWidget(
                 avatar: comment.user.avatar,
-                size: Dimens.twenty,
+                size: Dimens.twentyFour,
               ),
               Dimens.boxWidth8,
               Expanded(
@@ -42,7 +42,7 @@ class CommentWidget extends StatelessWidget {
                       children: [
                         Text(
                           comment.user.uname,
-                          style: AppStyles.style15Bold,
+                          style: AppStyles.style13Bold,
                         ),
                         Dimens.boxWidth4,
                         Container(
@@ -65,9 +65,7 @@ class CommentWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                    NxExpandableText(
-                      text: comment.comment,
-                    ),
+                    NxExpandableText(text: comment.comment),
                   ],
                 ),
               ),

@@ -45,7 +45,7 @@ class DeactivateAccountController extends GetxController {
     }
 
     final body = {
-      'email': profile.profileDetails.user!.email,
+      'email': profile.profileDetails!.user!.email,
       "password": passwordTextController.text.trim(),
     };
 

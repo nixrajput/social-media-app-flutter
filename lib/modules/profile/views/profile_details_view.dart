@@ -9,6 +9,7 @@ import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
+import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -25,17 +26,22 @@ class ProfileDetailsView extends StatelessWidget {
           child: SizedBox(
             width: Dimens.screenWidth,
             height: Dimens.screenHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                NxAppBar(
-                  title: StringValues.editProfile,
-                  padding: Dimens.edgeInsets8_16,
-                ),
-                Dimens.boxHeight16,
-                _buildEditProfileBody(),
-              ],
+            child: NxRefreshIndicator(
+              onRefresh: () =>
+                  ProfileController.find.fetchProfileDetails(fetchPost: false),
+              showProgress: false,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  NxAppBar(
+                    title: StringValues.editProfile,
+                    padding: Dimens.edgeInsets8_16,
+                  ),
+                  Dimens.boxHeight16,
+                  _buildEditProfileBody(),
+                ],
+              ),
             ),
           ),
         ),
@@ -47,7 +53,9 @@ class ProfileDetailsView extends StatelessWidget {
         builder: (logic) {
           return Expanded(
             child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               child: Padding(
                 padding: Dimens.edgeInsets0_16,
                 child: Column(
@@ -59,9 +67,9 @@ class ProfileDetailsView extends StatelessWidget {
                         builder: (con) => GestureDetector(
                           onTap: con.chooseImage,
                           child: Hero(
-                            tag: logic.profileDetails.user!.id,
+                            tag: logic.profileDetails!.user!.id,
                             child: AvatarWidget(
-                              avatar: logic.profileDetails.user!.avatar,
+                              avatar: logic.profileDetails!.user!.avatar,
                               size: Dimens.hundred,
                             ),
                           ),
@@ -89,7 +97,7 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        '${logic.profileDetails.user!.fname} ${logic.profileDetails.user!.lname}',
+                        '${logic.profileDetails!.user!.fname} ${logic.profileDetails!.user!.lname}',
                         style: AppStyles.style16Normal,
                       ),
                       onTap: RouteManagement.goToEditNameView,
@@ -111,7 +119,7 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileDetails.user!.uname,
+                        logic.profileDetails!.user!.uname,
                         style: AppStyles.style16Normal,
                       ),
                       onTap: RouteManagement.goToEditUsernameView,
@@ -133,10 +141,10 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileDetails.user!.about ??
+                        logic.profileDetails!.user!.about ??
                             StringValues.writeSomethingAboutYou,
                         style: AppStyles.style16Normal.copyWith(
-                          color: logic.profileDetails.user!.about == null
+                          color: logic.profileDetails!.user!.about == null
                               ? Theme.of(Get.context!)
                                   .textTheme
                                   .subtitle1
@@ -167,17 +175,17 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        (logic.profileDetails.user!.profession == null ||
+                        (logic.profileDetails!.user!.profession == null ||
                                 !StaticData.occupationList.contains(logic
-                                    .profileDetails.user!.profession!
+                                    .profileDetails!.user!.profession!
                                     .toLowerCase()))
                             ? 'Add your profession'
-                            : logic.profileDetails.user!.profession!
+                            : logic.profileDetails!.user!.profession!
                                 .toTitleCase(),
                         style: AppStyles.style16Normal.copyWith(
                           color:
-                              (logic.profileDetails.user!.profession == null ||
-                                      logic.profileDetails.user!.profession ==
+                              (logic.profileDetails!.user!.profession == null ||
+                                      logic.profileDetails!.user!.profession ==
                                           'user')
                                   ? Theme.of(Get.context!)
                                       .textTheme
@@ -208,10 +216,10 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileDetails.user!.dob ??
+                        logic.profileDetails!.user!.dob ??
                             StringValues.dobFormat,
                         style: AppStyles.style16Normal.copyWith(
-                          color: logic.profileDetails.user!.dob == null
+                          color: logic.profileDetails!.user!.dob == null
                               ? Theme.of(Get.context!)
                                   .textTheme
                                   .subtitle1
@@ -241,10 +249,10 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileDetails.user!.gender ??
+                        logic.profileDetails!.user!.gender ??
                             StringValues.select,
                         style: AppStyles.style16Normal.copyWith(
-                          color: logic.profileDetails.user!.gender == null
+                          color: logic.profileDetails!.user!.gender == null
                               ? Theme.of(Get.context!)
                                   .textTheme
                                   .subtitle1
@@ -278,9 +286,9 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileDetails.user!.website ?? 'Add website',
+                        logic.profileDetails!.user!.website ?? 'Add website',
                         style: AppStyles.style16Normal.copyWith(
-                          color: logic.profileDetails.user!.website == null
+                          color: logic.profileDetails!.user!.website == null
                               ? Theme.of(Get.context!)
                                   .textTheme
                                   .subtitle1

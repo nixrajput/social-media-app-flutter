@@ -4,10 +4,13 @@ import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/notification.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class NotificationWidget extends StatelessWidget {
   const NotificationWidget(
@@ -35,6 +38,7 @@ class NotificationWidget extends StatelessWidget {
           return;
         }
       },
+      onLongPress: _showDeletePostOptions,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +88,7 @@ class NotificationWidget extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: notification.from.uname,
-                              style: AppStyles.style14Bold.copyWith(
+                              style: AppStyles.style13Bold.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
                                     .bodyText1!
@@ -94,7 +98,7 @@ class NotificationWidget extends StatelessWidget {
                             ),
                             TextSpan(
                               text: " ${notification.body}",
-                              style: AppStyles.style14Normal.copyWith(
+                              style: AppStyles.style13Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
                                     .bodyText1!
@@ -123,7 +127,7 @@ class NotificationWidget extends StatelessWidget {
                         .markNotificationRead(notification.id),
                     child: Text(
                       'Mark Read',
-                      style: AppStyles.style12Bold.copyWith(
+                      style: AppStyles.style13Bold.copyWith(
                         color: ColorValues.primaryColor,
                       ),
                     ),
@@ -132,6 +136,64 @@ class NotificationWidget extends StatelessWidget {
             ),
           ),
           if (index != totalLength - 1) Dimens.divider,
+        ],
+      ),
+    );
+  }
+
+  Future<void> _showDeletePostOptions() async {
+    AppUtility.showSimpleDialog(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Dimens.boxHeight8,
+          Padding(
+            padding: Dimens.edgeInsets0_16,
+            child: Text(
+              'Delete',
+              style: AppStyles.style18Bold,
+            ),
+          ),
+          Dimens.dividerWithHeight,
+          Padding(
+            padding: Dimens.edgeInsets0_16,
+            child: Text(
+              StringValues.deleteConfirmationText,
+              style: AppStyles.style14Normal,
+            ),
+          ),
+          Dimens.boxHeight8,
+          Padding(
+            padding: Dimens.edgeInsets0_16,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                NxTextButton(
+                  label: StringValues.no,
+                  labelStyle: AppStyles.style16Bold.copyWith(
+                    color: ColorValues.errorColor,
+                  ),
+                  onTap: AppUtility.closeDialog,
+                  padding: Dimens.edgeInsets8,
+                ),
+                Dimens.boxWidth16,
+                NxTextButton(
+                  label: StringValues.yes,
+                  labelStyle: AppStyles.style16Bold.copyWith(
+                    color: ColorValues.successColor,
+                  ),
+                  onTap: () async {
+                    AppUtility.closeDialog();
+                    await NotificationController.find
+                        .deleteNotification(notification.id);
+                  },
+                  padding: Dimens.edgeInsets8,
+                ),
+              ],
+            ),
+          ),
+          Dimens.boxHeight8,
         ],
       ),
     );
