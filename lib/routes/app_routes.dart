@@ -6,6 +6,8 @@ abstract class AppRoutes {
   static const welcome = _Routes.welcome;
   static const error = _Routes.error;
   static const home = _Routes.home;
+  static const chats = _Routes.chats;
+  static const chatDetails = _Routes.chatDetails;
 
   static const login = _Routes.login;
   static const register = _Routes.register;
@@ -76,6 +78,8 @@ abstract class _Routes {
   static const welcome = '/welcome';
   static const error = '/error';
   static const home = '/home';
+  static const chats = '/chats';
+  static const chatDetails = '/chatDetails';
 
   static const login = '/login';
   static const register = '/register';

@@ -82,7 +82,7 @@ class EditProfessionView extends StatelessWidget {
                     //   ),
                     // ),
                     InkWell(
-                      onTap: _showProfessionBottomsheet,
+                      onTap: _showProfessionBottomSheet,
                       child: Container(
                         height: Dimens.fiftySix,
                         constraints:
@@ -120,7 +120,7 @@ class EditProfessionView extends StatelessWidget {
         ),
       );
 
-  _showProfessionBottomsheet() {
+  _showProfessionBottomSheet() {
     var lastIndex = 20;
     var occupationList = StaticData.occupationList.sublist(1, lastIndex);
     AppUtility.showBottomSheet(

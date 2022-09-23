@@ -13,6 +13,9 @@ class NxListTile extends StatelessWidget {
     this.onLongPressed,
     this.trailing,
     this.borderRadius,
+    this.leadingFlex,
+    this.titleFlex,
+    this.trailingFlex,
   }) : super(key: key);
 
   final Widget? leading;
@@ -24,6 +27,9 @@ class NxListTile extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onLongPressed;
   final BorderRadius? borderRadius;
+  final int? leadingFlex;
+  final int? titleFlex;
+  final int? trailingFlex;
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +54,11 @@ class NxListTile extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if (leading != null) leading!,
+                  if (leading != null)
+                    Expanded(flex: leadingFlex ?? 0, child: leading!),
                   if (title != null || subtitle != null) Dimens.boxWidth16,
                   Expanded(
+                    flex: titleFlex ?? 1,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +74,11 @@ class NxListTile extends StatelessWidget {
               ),
             ),
             if (trailing != null) const Spacer(),
-            if (trailing != null) trailing!,
+            if (trailing != null)
+              Expanded(
+                flex: trailingFlex ?? 0,
+                child: trailing!,
+              ),
           ],
         ),
       ),

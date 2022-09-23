@@ -180,8 +180,9 @@ class CommentController extends GetxController {
         await _fetchComments();
         AppUtility.printLog("Delete Comment Success");
         AppUtility.showSnackBar(
-          StringValues.commentDeleteSuccess,
+          decodedData[StringValues.message],
           StringValues.success,
+          duration: 2,
         );
       } else {
         AppUtility.printLog("Delete Comment Error");
@@ -197,7 +198,6 @@ class CommentController extends GetxController {
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       AppUtility.printLog("Delete Comment Error");
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
@@ -260,9 +260,9 @@ class CommentController extends GetxController {
                   labelStyle: AppStyles.style16Bold.copyWith(
                     color: ColorValues.successColor,
                   ),
-                  onTap: () async {
+                  onTap: () {
                     AppUtility.closeDialog();
-                    await _deleteComment(commentId);
+                    _deleteComment(commentId);
                   },
                   padding: Dimens.edgeInsets8,
                 ),

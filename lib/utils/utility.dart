@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
 
@@ -107,6 +109,7 @@ abstract class AppUtility {
 
   static void showSimpleDialog(Widget child,
       {bool barrierDismissible = false}) {
+    closeSnackBar();
     closeDialog();
     Get.dialog(
       MediaQuery.removeViewInsets(
@@ -228,7 +231,6 @@ abstract class AppUtility {
   }
 
   /// Show Overlay
-
   static void showOverlay(Function func) {
     Get.showOverlay(
       loadingWidget: const CupertinoActivityIndicator(),
@@ -249,11 +251,13 @@ abstract class AppUtility {
         margin: EdgeInsets.only(
           left: Dimens.sixTeen,
           right: Dimens.sixTeen,
-          bottom: Dimens.sixTeen,
+          top: Dimens.eight,
         ),
         borderRadius: Dimens.eight,
         padding: Dimens.edgeInsets16,
         snackStyle: SnackStyle.FLOATING,
+        snackPosition: SnackPosition.TOP,
+        borderWidth: Dimens.zero,
         messageText: Text(
           message.toCapitalized(),
           style: AppStyles.style14Normal.copyWith(
@@ -265,47 +269,36 @@ abstract class AppUtility {
           color: renderIconColor(type),
           size: Dimens.twenty,
         ),
+        mainButton: Padding(
+          padding: Dimens.edgeInsets0_8,
+          child: const NxTextButton(
+            label: 'OK',
+            onTap: closeSnackBar,
+          ),
+        ),
         shouldIconPulse: false,
-        backgroundColor: Theme.of(Get.context!).snackBarTheme.backgroundColor!,
+        backgroundColor: Theme.of(Get.context!)
+            .snackBarTheme
+            .backgroundColor!
+            .withOpacity(0.25),
         barBlur: Dimens.twentyFour,
         dismissDirection: DismissDirection.horizontal,
-        duration: Duration(seconds: duration ?? 4),
+        duration: Duration(seconds: duration ?? 3),
       ),
     );
   }
 
   /// Render Text Color
-
   static Color renderTextColor(String type) {
-    // if (type == StringValues.error) {
-    //   return ColorValues.errorColor;
-    // }
-    // if (type == StringValues.success) {
-    //   return ColorValues.successColor;
-    // }
-    // if (type == StringValues.warning) {
-    //   return ColorValues.warningColor;
-    // }
-    return Theme.of(Get.context!).snackBarTheme.contentTextStyle!.color!;
+    return Theme.of(Get.context!).textTheme.bodyText1!.color!;
   }
 
   /// Render Icon Color
-
   static Color renderIconColor(String type) {
-    // if (type == StringValues.error) {
-    //   return ColorValues.errorColor;
-    // }
-    // if (type == StringValues.success) {
-    //   return ColorValues.successColor;
-    // }
-    // if (type == StringValues.warning) {
-    //   return ColorValues.warningColor;
-    // }
-    return Theme.of(Get.context!).snackBarTheme.contentTextStyle!.color!;
+    return Theme.of(Get.context!).textTheme.bodyText1!.color!;
   }
 
   /// Render Icon
-
   static IconData renderIcon(String type) {
     if (type == StringValues.success) {
       return CupertinoIcons.check_mark_circled_solid;
@@ -567,5 +560,19 @@ abstract class AppUtility {
     )) {
       showSnackBar("Couldn't launch url", StringValues.error);
     }
+  }
+
+  /// Random String
+  static String generateUid(int length) {
+    const chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890@!%&_';
+    var rnd = Random();
+
+    return String.fromCharCodes(
+      Iterable.generate(
+        16,
+        (_) => chars.codeUnitAt(rnd.nextInt(chars.length)),
+      ),
+    );
   }
 }

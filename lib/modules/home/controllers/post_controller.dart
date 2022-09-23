@@ -58,12 +58,12 @@ class PostController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
+        AppUtility.printLog("Fetching Posts Success");
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Fetching Posts Success");
       } else {
         _isLoading.value = false;
         update();
@@ -139,7 +139,6 @@ class PostController extends GetxController {
       update();
       AppUtility.printLog("Fetching More Posts Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isMoreLoading.value = false;
@@ -203,7 +202,6 @@ class PostController extends GetxController {
       update();
       AppUtility.printLog("Post Delete Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       //_postList.insert(postIndex, post);
@@ -263,7 +261,6 @@ class PostController extends GetxController {
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _toggleLike(post);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {

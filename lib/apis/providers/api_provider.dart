@@ -6,7 +6,7 @@ import 'package:social_media_app/constants/urls.dart';
 
 class ApiProvider {
   ApiProvider(this._client, {this.baseUrl}) {
-    baseUrl ??= AppUrls.baseUrl;
+    baseUrl ??= AppSecrets.awsServerUrl;
   }
 
   final http.Client _client;

@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/data.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/settings/controllers/change_phone_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class ChangePhoneView extends StatelessWidget {
   const ChangePhoneView({Key? key}) : super(key: key);
@@ -94,10 +99,10 @@ class ChangePhoneView extends StatelessWidget {
                       Row(
                         children: [
                           InkWell(
-                            onTap: logic.showCountryCodePicker,
+                            onTap: _showCountryCodeBottomSheet,
                             child: Container(
                               height: Dimens.fiftySix,
-                              padding: Dimens.edgeInsets0_8,
+                              padding: Dimens.edgeInsets0_16,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Theme.of(Get.context!).dividerColor,
@@ -105,21 +110,11 @@ class ChangePhoneView extends StatelessWidget {
                                 borderRadius:
                                     BorderRadius.circular(Dimens.eight),
                               ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    width: Dimens.twentyFour,
-                                    height: Dimens.twentyFour,
-                                    child: logic.code.flagImage,
-                                  ),
-                                  Dimens.boxWidth8,
-                                  Text(
-                                    logic.code.dialCode,
-                                    style: AppStyles.style16Bold,
-                                  ),
-                                ],
+                              child: Center(
+                                child: Text(
+                                  logic.code.dialCode,
+                                  style: AppStyles.style14Bold,
+                                ),
                               ),
                             ),
                           ),
@@ -214,4 +209,134 @@ class ChangePhoneView extends StatelessWidget {
           );
         },
       );
+
+  _showCountryCodeBottomSheet() {
+    var lastIndex = 20;
+    var countryCodes = StaticData.countryCodes.sublist(0, lastIndex);
+    AppUtility.showBottomSheet(
+      [
+        Padding(
+          padding: Dimens.edgeInsets8_16,
+          child: Text(
+            StringValues.select,
+            style: AppStyles.style18Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+            ),
+          ),
+        ),
+        Dimens.boxHeight8,
+        Expanded(
+          child: StatefulBuilder(
+            builder: (ctx, setInnerState) => Column(
+              children: [
+                Container(
+                  height: Dimens.fiftySix,
+                  margin: Dimens.edgeInsets0_16,
+                  constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      hintText: StringValues.search,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(Dimens.eight),
+                      ),
+                      hintStyle: AppStyles.style14Normal.copyWith(
+                        color: ColorValues.grayColor,
+                      ),
+                    ),
+                    maxLines: 1,
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.words,
+                    style: AppStyles.style14Normal.copyWith(
+                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    ),
+                    onChanged: (value) {
+                      if (value.isEmpty) {
+                        lastIndex = 20;
+                        countryCodes =
+                            StaticData.countryCodes.sublist(1, lastIndex);
+                      } else {
+                        countryCodes = StaticData.countryCodes
+                            .where((element) => element.name
+                                .toLowerCase()
+                                .contains(value.toLowerCase()))
+                            .toList();
+                      }
+                      setInnerState(() {});
+                    },
+                  ),
+                ),
+                Dimens.boxHeight8,
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
+                    child: Padding(
+                      padding: Dimens.edgeInsets0_16,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: countryCodes
+                                .map(
+                                  (e) => NxListTile(
+                                    leading: Text(
+                                      e.name.toTitleCase(),
+                                      style: AppStyles.style14Normal.copyWith(
+                                        color: Theme.of(Get.context!)
+                                            .textTheme
+                                            .bodyText1!
+                                            .color,
+                                      ),
+                                    ),
+                                    leadingFlex: 1,
+                                    trailing: Text(
+                                      e.dialCode.toTitleCase(),
+                                      style: AppStyles.style14Normal.copyWith(
+                                        color: Theme.of(Get.context!)
+                                            .textTheme
+                                            .bodyText1!
+                                            .color,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      Get.back();
+                                      Get.find<ChangePhoneController>()
+                                          .onChangeCountryCode(e);
+                                    },
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          Center(
+                            child: Padding(
+                              padding: Dimens.edgeInsets8_16,
+                              child: NxTextButton(
+                                label: 'Load more',
+                                onTap: () {
+                                  lastIndex += 20;
+                                  countryCodes = StaticData.countryCodes
+                                      .sublist(1, lastIndex);
+                                  setInnerState(() {});
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
 }

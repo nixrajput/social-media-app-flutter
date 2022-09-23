@@ -67,7 +67,7 @@ class CreatePostController extends GetxController {
   var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME',
       defaultValue: AppSecrets.cloudinaryCloudName);
   var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
-      defaultValue: AppSecrets.uploadPreset);
+      defaultValue: AppSecrets.cloudinaryUploadPreset);
 
   // @override
   // onInit() {

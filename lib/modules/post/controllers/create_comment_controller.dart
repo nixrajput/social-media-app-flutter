@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/models/entities/comment.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -23,12 +24,21 @@ class CreateCommentController extends GetxController {
   final FocusScopeNode focusNode = FocusScopeNode();
 
   final _isLoading = false.obs;
+  final _comment = ''.obs;
+
+  String get comment => _comment.value;
+
+  void onChangedText(value) {
+    _comment.value = value;
+    update();
+  }
 
   bool get isLoading => _isLoading.value;
 
   Future<void> _createNewComment(String comment, String postId) async {
-    AppUtility.printLog("Add Comment Request...");
-
+    AppUtility.printLog("Add Comment Request");
+    commentTextController.clear();
+    _comment.value = '';
     _isLoading.value = true;
     update();
 
@@ -39,15 +49,19 @@ class CreateCommentController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        commentTextController.clear();
-        await _commentController.fetchComments();
+        AppUtility.printLog("Add Comment Success");
+        _commentController.commentList
+            .insert(0, Comment.fromJson(decodedData['comment']));
+        _commentController.update();
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
+          duration: 2,
         );
       } else {
+        AppUtility.printLog("Add Comment Error");
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
@@ -56,24 +70,27 @@ class CreateCommentController extends GetxController {
         );
       }
     } on SocketException {
+      AppUtility.printLog("Add Comment Error");
       _isLoading.value = false;
       update();
       AppUtility.printLog(StringValues.internetConnError);
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
+      AppUtility.printLog("Add Comment Error");
       _isLoading.value = false;
       update();
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
+      AppUtility.printLog("Add Comment Error");
       _isLoading.value = false;
       update();
       AppUtility.printLog(StringValues.formatExcError);
       AppUtility.printLog(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
+      AppUtility.printLog("Add Comment Error");
       _isLoading.value = false;
       update();
       AppUtility.printLog(StringValues.errorOccurred);

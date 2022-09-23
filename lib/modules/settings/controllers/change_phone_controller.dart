@@ -2,13 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/models/entities/country_code.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
-import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -234,20 +233,6 @@ class ChangePhoneController extends GetxController {
       AppUtility.printLog(StringValues.errorOccurred);
       AppUtility.printLog(exc);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    }
-  }
-
-  void showCountryCodePicker() async {
-    const countryPicker = FlCountryCodePicker();
-    final code = await countryPicker.showPicker(
-      context: Get.context!,
-      fullScreen: false,
-      pickerMinHeight: Dimens.screenHeight * 0.5,
-      pickerMaxHeight: Dimens.screenHeight * 0.75,
-      initialSelectedLocale: 'IN',
-    );
-    if (code != null) {
-      onChangeCountryCode(code);
     }
   }
 

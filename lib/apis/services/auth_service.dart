@@ -12,11 +12,8 @@ import 'package:social_media_app/apis/models/entities/location_info.dart';
 import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 import 'package:social_media_app/utils/utility.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/status.dart' as status;
 
 class AuthService extends GetxService {
   static AuthService get find => Get.find();
@@ -78,22 +75,6 @@ class AuthService extends GetxService {
     }
 
     return serverHealth;
-  }
-
-  void connectToWebSocket() async {
-    var channel = IOWebSocketChannel.connect(
-      Uri.parse('${AppUrls.baseWSUrl}?token=$_token'),
-      // headers: {
-      //   'Connection': 'upgrade',
-      //   'Upgrade': 'websocket',
-      // },
-    );
-
-    channel.stream.listen((message) {
-      AppUtility.printLog(message);
-      channel.sink.add('get-messages');
-      channel.sink.close(status.goingAway);
-    });
   }
 
   Future<bool> _validateToken(String token) async {

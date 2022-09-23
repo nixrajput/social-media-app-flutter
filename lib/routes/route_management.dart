@@ -53,6 +53,10 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.followRequests);
   }
 
+  static void goToChatsView() {
+    Get.toNamed(AppRoutes.chats);
+  }
+
   /// --------------------------------------------------------------------------
 
   /// Edit Profile -------------------------------------------------------------

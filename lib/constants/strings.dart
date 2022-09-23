@@ -107,6 +107,7 @@ abstract class StringValues {
   static const dob = 'DOB';
   static const birthDate = 'Date of Birth';
   static const gender = 'Gender';
+  static const phone = 'Phone';
   static const phoneNo = 'Phone Number';
   static const countryCode = 'Country Code';
   static const cropImage = 'Crop Image';
@@ -117,6 +118,8 @@ abstract class StringValues {
   static const publish = 'Publish';
   static const trending = 'Trending';
   static const refresh = 'Refresh';
+  static const chats = 'Chats';
+  static const noConversation = 'No conversation yet';
   static const followUserLine =
       'Do follow some users to see their latest posts';
   static const loginActivity = 'Login Activity';

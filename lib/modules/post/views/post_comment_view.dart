@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -47,34 +46,44 @@ class PostCommentView extends StatelessWidget {
                   child: GetBuilder<CreateCommentController>(
                     builder: (con) => Container(
                       color: Theme.of(Get.context!).dialogTheme.backgroundColor,
-                      width: Dimens.screenWidth.w,
-                      height: 48.h,
+                      width: Dimens.screenWidth,
+                      height: Dimens.fourtyEight,
+                      padding: Dimens.edgeInsets0_8,
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Dimens.boxWidth4,
+                          NxIconButton(
+                            icon: Icons.emoji_emotions_outlined,
+                            iconSize: Dimens.twentyFour,
+                            onTap: () {},
+                          ),
+                          Dimens.boxWidth8,
                           Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 4.r),
-                              child: TextFormField(
-                                controller: con.commentTextController,
-                                decoration: const InputDecoration(
-                                  hintText: StringValues.addComment,
-                                  border: InputBorder.none,
-                                ),
-                                minLines: 1,
-                                maxLines: 1,
+                            child: TextFormField(
+                              controller: con.commentTextController,
+                              onChanged: (value) => con.onChangedText(value),
+                              decoration: const InputDecoration(
+                                hintText: StringValues.addComment,
+                                border: InputBorder.none,
+                              ),
+                              minLines: 1,
+                              maxLines: 1,
+                              style: AppStyles.style14Normal.copyWith(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color,
                               ),
                             ),
                           ),
                           Dimens.boxWidth4,
-                          NxIconButton(
-                            icon: Icons.send,
-                            iconColor: ColorValues.whiteColor,
-                            height: 48.h,
-                            width: 48.w,
-                            bgColor: ColorValues.primaryColor,
-                            onTap: con.createNewComment,
-                          )
+                          if (con.comment.isNotEmpty)
+                            NxIconButton(
+                              icon: Icons.send,
+                              iconColor: ColorValues.primaryColor,
+                              iconSize: Dimens.twentyFour,
+                              onTap: con.createNewComment,
+                            )
                         ],
                       ),
                     ),

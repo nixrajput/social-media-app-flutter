@@ -3,7 +3,6 @@ abstract class AppUrls {
   static const String locationUrl = 'http://ip-api.com/json';
   static const String baseUrl = 'https://social-api.nixlab.co.in/api/v1';
   static const String githubApiUrl = 'https://api.github.com';
-  static const String baseWSUrl = 'wss://social-api.nixlab.co.in/api/v1/ws';
 
   ///  Endpoints
   static const String serverHealthEndpoint = '/health';

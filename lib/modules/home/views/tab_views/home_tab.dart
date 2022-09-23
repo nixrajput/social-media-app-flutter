@@ -75,14 +75,15 @@ class HomeTabView extends StatelessWidget {
                             ],
                           ),
                         ),
-                        // Dimens.boxWidth12,
-                        // InkWell(
-                        //   child: Icon(
-                        //     Icons.rocket_launch,
-                        //     size: Dimens.twentyFour,
-                        //     color: Theme.of(context).textTheme.bodyText1!.color,
-                        //   ),
-                        // ),
+                        Dimens.boxWidth12,
+                        InkWell(
+                          onTap: RouteManagement.goToChatsView,
+                          child: Icon(
+                            Icons.send,
+                            size: Dimens.twentyFour,
+                            color: Theme.of(context).textTheme.bodyText1!.color,
+                          ),
+                        ),
                       ],
                     ),
                   ),

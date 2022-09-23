@@ -268,6 +268,65 @@ class ProfileDetailsView extends StatelessWidget {
 
                     Dimens.divider,
 
+                    /// Email
+
+                    NxListTile(
+                      padding: Dimens.edgeInsets12_8,
+                      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                      leading: const Icon(Icons.email_outlined),
+                      title: Text(
+                        StringValues.email,
+                        style: AppStyles.style12Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                        ),
+                      ),
+                      subtitle: Text(
+                        logic.profileDetails!.user!.email,
+                        style: AppStyles.style16Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
+                      ),
+                      onTap: () => RouteManagement.goToVerifyPasswordView(
+                        RouteManagement.goToChangeEmailSettingsView,
+                      ),
+                    ),
+
+                    Dimens.divider,
+
+                    /// Phone
+
+                    if (logic.profileDetails!.user!.phone != null)
+                      NxListTile(
+                        padding: Dimens.edgeInsets12_8,
+                        bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                        leading: const Icon(Icons.phone_android),
+                        title: Text(
+                          StringValues.phone,
+                          style: AppStyles.style12Normal.copyWith(
+                            color: Theme.of(Get.context!)
+                                .textTheme
+                                .subtitle1!
+                                .color,
+                          ),
+                        ),
+                        subtitle: Text(
+                          '${logic.profileDetails!.user!.countryCode!} ${logic.profileDetails!.user!.phone!}',
+                          style: AppStyles.style16Normal.copyWith(
+                            color: Theme.of(Get.context!)
+                                .textTheme
+                                .bodyText1!
+                                .color,
+                          ),
+                        ),
+                        onTap: () => RouteManagement.goToVerifyPasswordView(
+                          RouteManagement.goToChangePhoneSettingsView,
+                        ),
+                      ),
+
+                    Dimens.divider,
+
                     /// Website
 
                     NxListTile(
