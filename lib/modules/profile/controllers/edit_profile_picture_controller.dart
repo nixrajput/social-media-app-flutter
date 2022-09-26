@@ -3,8 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloudinary/cloudinary.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/secrets.dart';
@@ -34,13 +39,92 @@ class EditProfilePictureController extends GetxController {
   var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
       defaultValue: AppSecrets.cloudinaryUploadPreset);
 
-  Future<void> chooseImage() async {
-    _pickedImage.value = await AppUtility.selectSingleImage();
+  Future<void> selectSingleImage({ImageSource? imageSource}) async {
+    final imagePicker = ImagePicker();
+    final imageCropper = ImageCropper();
+    const maxImageBytes = 1048576;
 
-    if (_pickedImage.value != null) {
-      AppUtility.printLog(_pickedImage.value!.path);
-      await _uploadProfilePicture();
+    final pickedImage = await imagePicker.pickImage(
+      maxWidth: 1080.0,
+      maxHeight: 1080.0,
+      source: imageSource ?? ImageSource.gallery,
+    );
+
+    if (pickedImage != null) {
+      var croppedFile = await imageCropper.cropImage(
+        maxWidth: 400,
+        maxHeight: 400,
+        sourcePath: pickedImage.path,
+        compressFormat: ImageCompressFormat.jpg,
+        aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+        cropStyle: CropStyle.circle,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+            toolbarTitle: StringValues.cropImage,
+            toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+            backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+          ),
+          IOSUiSettings(
+            title: StringValues.cropImage,
+            minimumAspectRatio: 1.0,
+          ),
+        ],
+        compressQuality: 100,
+      );
+
+      var croppedImage = File(croppedFile!.path);
+      File? resultFile = croppedImage;
+      var size = croppedImage.lengthSync();
+      AppUtility.printLog('Original file size: ${resultFile.sizeToKb()} KB');
+
+      if (size > (5 * maxImageBytes)) {
+        AppUtility.showSnackBar(
+          'Image size must be less than 5mb',
+          '',
+        );
+      } else if (size < (maxImageBytes / 2)) {
+        AppUtility.printLog('Result $resultFile');
+        AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+        _pickedImage.value = croppedImage;
+        update();
+      } else {
+        var tempDir = await getTemporaryDirectory();
+
+        /// --------- Compressing Image ------------------------------------
+
+        AppUtility.showLoadingDialog(message: 'Compressing...');
+        var timestamp = DateTime.now().millisecondsSinceEpoch;
+        AppUtility.printLog('Compressing...');
+        resultFile = await FlutterImageCompress.compressAndGetFile(
+          resultFile.path,
+          '${tempDir.absolute.path}/temp$timestamp.jpg',
+          quality: 60,
+          format: CompressFormat.jpeg,
+        );
+        size = resultFile!.lengthSync();
+        AppUtility.closeDialog();
+
+        /// ----------------------------------------------------------------
+        AppUtility.printLog('Result $resultFile');
+        AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+        _pickedImage.value = croppedImage;
+        update();
+      }
     }
+  }
+
+  Future<void> chooseImage() async {
+    await selectSingleImage();
+
+    if (_pickedImage.value == null) {
+      AppUtility.showSnackBar(
+        'Select a profile picture',
+        StringValues.warning,
+      );
+      return;
+    }
+    await _uploadProfilePicture();
   }
 
   Future<void> _uploadProfilePicture() async {
@@ -48,14 +132,6 @@ class EditProfilePictureController extends GetxController {
     AppUtility.printLog("Update Profile Picture Request");
 
     var filePath = _pickedImage.value!.path;
-    var sizeInKb = _pickedImage.value!.sizeToKb();
-    if (sizeInKb > 2048) {
-      AppUtility.showSnackBar(
-        'Image file size must be lower than 2 MB',
-        StringValues.warning,
-      );
-      return;
-    }
 
     AppUtility.showLoadingDialog();
     _isLoading.value = true;

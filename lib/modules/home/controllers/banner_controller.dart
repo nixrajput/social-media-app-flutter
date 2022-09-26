@@ -14,7 +14,7 @@ class BannerController extends GetxController {
   static BannerController get find => Get.find();
 
   final _auth = AuthService.find;
-  final _profile = ProfileController.find;
+  final profile = ProfileController.find;
   final _apiProvider = ApiProvider(http.Client());
 
   final _isLoading = false.obs;

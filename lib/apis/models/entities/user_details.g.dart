@@ -29,6 +29,9 @@ UserDetails _$UserDetailsFromJson(Map<String, dynamic> json) => UserDetails(
       isValid: json['isValid'] as bool,
       isVerified: json['isVerified'] as bool,
       role: json['role'] as String,
+      publicKeys: json['publicKeys'] == null
+          ? null
+          : ServerKey.fromJson(json['publicKeys'] as Map<String, dynamic>),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -55,6 +58,7 @@ Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
       'isValid': instance.isValid,
       'isVerified': instance.isVerified,
       'role': instance.role,
+      'publicKeys': instance.publicKeys,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };

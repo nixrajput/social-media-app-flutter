@@ -18,68 +18,78 @@ class WelcomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            CustomPaint(
-              size: Size(Dimens.screenWidth, Dimens.screenHeight),
-              painter: WelcomeShapePainter(),
-            ),
-            Padding(
-              padding: Dimens.edgeInsets0_16,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Dimens.boxHeight48,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        "${StringValues.welcome} ${StringValues.to}"
-                            .toTitleCase(),
-                        textAlign: TextAlign.center,
-                        style: AppStyles.style20Normal,
-                      ),
-                      Dimens.boxHeight8,
-                      AppUtility.buildAppLogo(
-                        fontSize: Dimens.fourty,
-                        isCentered: true,
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: Dimens.screenWidth,
-                      maxHeight: Dimens.screenHeight,
-                    ),
-                    child: NxAssetImage(
-                      imgAsset: AssetValues.welcome,
-                      height: Dimens.screenWidth,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      NxFilledButton(
-                        label: StringValues.login.toUpperCase(),
-                        onTap: RouteManagement.goToLoginView,
-                      ),
-                      Dimens.boxHeight16,
-                      NxOutlinedButton(
-                        label: StringValues.register.toUpperCase(),
-                        onTap: RouteManagement.goToRegisterView,
-                        height: Dimens.fiftySix,
-                      ),
-                    ],
-                  ),
-                  Dimens.boxHeight48,
-                ],
+        child: SizedBox(
+          width: Dimens.screenWidth,
+          height: Dimens.screenHeight,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              CustomPaint(
+                size: Size(Dimens.screenWidth, Dimens.screenHeight),
+                painter: WelcomeShapePainter(),
               ),
-            )
-          ],
+              Positioned.fill(
+                child: Padding(
+                  padding: Dimens.edgeInsets0_16,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Dimens.boxHeight48,
+                      Expanded(
+                        flex: 0,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "${StringValues.welcome} ${StringValues.to}"
+                                  .toTitleCase(),
+                              textAlign: TextAlign.center,
+                              style: AppStyles.style20Normal,
+                            ),
+                            Dimens.boxHeight8,
+                            AppUtility.buildAppLogo(
+                              fontSize: Dimens.fourty,
+                              isCentered: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Dimens.boxHeight48,
+                      const Expanded(
+                        child: NxAssetImage(
+                          imgAsset: AssetValues.welcome,
+                          fit: BoxFit.contain,
+                          scale: 1.0,
+                        ),
+                      ),
+                      Dimens.boxHeight48,
+                      Expanded(
+                        flex: 0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            NxFilledButton(
+                              label: StringValues.login.toUpperCase(),
+                              onTap: RouteManagement.goToLoginView,
+                            ),
+                            Dimens.boxHeight16,
+                            NxOutlinedButton(
+                              label: StringValues.register.toUpperCase(),
+                              onTap: RouteManagement.goToRegisterView,
+                              height: Dimens.fiftySix,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Dimens.boxHeight48,
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

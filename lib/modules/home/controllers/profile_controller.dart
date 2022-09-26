@@ -24,7 +24,7 @@ class ProfileController extends GetxController {
   final _isPostLoading = false.obs;
   final _isMorePostLoading = false.obs;
   final _profileDetails = const ProfileResponse().obs;
-  final _postData = const PostResponse().obs;
+  final _postData = PostResponse().obs;
   final List<Post> _postList = [];
 
   /// Getters

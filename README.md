@@ -4,27 +4,30 @@ Rippl! is a social media app that allows users to share their photos and videos
 with other users. Users can also follow other users and like and comment on
 their posts.
 
-The app is developed using Flutter and GetX state management. The app is
+[<img src='screenshots/download.png' height='50' alt='Download' title='Download'>][releases]
+
+- The app is developed using Flutter and GetX state management. The app is
 currently in development and is not yet ready for production.
 
-Right now, the app is only available for Android devices.
+- Right now, the app is only available for Android devices.
 
-We are open to contributions. If you would like to contribute, please read the
+- We are open to contributions. If you would like to contribute, please read the
 [contribution guidelines](CONTRIBUTING.md).
 
-We are also looking for UI/UX designers. If you would like to contribute as a UI/UX designer,
+- We are also looking for UI/UX designers. If you would like to contribute as a UI/UX designer,
 please read the [contribution guidelines](CONTRIBUTING.md) and then contact the project [owner][github].
 
-We are also open to design suggestions. If you would like to suggest a design, feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues).
+- We are also open to design suggestions. If you would like to suggest a design, feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues).
 
-We are also open to feature requests. If you would like to request a feature, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to implement the feature as soon as possible.
+- We are also open to feature requests. If you would like to request a feature, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to implement the feature as soon as possible.
 
-We are also open to bug reports. If you would like to report a bug, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to fix the bug as soon as possible.
+- We are also open to bug reports. If you would like to report a bug, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to fix the bug as soon as possible.
 
 ## Setup
 
 - Create `secrets.dart` file in constants folder.
 - Add the following code to the file.
+
 ```dart
 abstract class AppSecrets {
   static const uploadPreset = 'XXX-XXX-XXX-XXX';
@@ -32,8 +35,10 @@ abstract class AppSecrets {
   static const githubToken = 'XXX-XXX-XXX-XXX';
 }
 ```
+
 - Replace XXX-XXX-XXX-XXX with your values in the file.
 - Now run the following commands:
+
 ```dart
 flutter clean
 flutter pub get packages
@@ -70,42 +75,49 @@ conduct, and the process for submitting pull requests to us.
 
 ## Authors
 
-* **[Nikhil Rajput][portfolio]** - *Owner & Lead Developer*
+- **[Nikhil Rajput][portfolio]** - *Owner & Lead Developer*
 
 ## Features
 
-* [x] User Authentication
-* [x] Post Feed
-* [x] Post Creation
-* [x] Post Editing
-* [x] Post Deletion
-* [x] Post Liking
-* [x] Post Commenting
-* [ ] Post Sharing
-* [ ] Post Searching
-* [ ] Post Filtering
-* [ ] Post Sorting
-* [ ] Post Reporting
-* [ ] Post Blocking
-* [ ] Post Muting
-* [x] Profile Creation
-* [x] Profile Editing
-* [x] Profile Deactivation
-* [x] User Following
-* [x] User Unfollowing
-* [ ] User Blocking
-* [ ] User Muting
-* [ ] User Searching
-* [ ] User Filtering
-* [ ] Trending Posts
-* [ ] Hash Tagging
-* [ ] Post Tagging
-* [ ] User Tagging
-* [x] Recommendations
-* [ ] Search Suggestions
-* [x] Settings
-* [ ] Support
-* [x] Dynamic Theme
+- [x] User Authentication
+- [x] Post Feed
+- [x] Post Creation
+- [x] Post Editing
+- [x] Post Deletion
+- [x] Post Liking
+- [x] Post Commenting
+- [ ] Post Sharing
+- [x] Post Searching
+- [ ] Post Filtering
+- [ ] Post Sorting
+- [ ] Post Reporting
+- [ ] Post Blocking
+- [ ] Post Muting
+- [x] Profile Creation
+- [x] Profile Editing
+- [x] Profile Deactivation
+- [x] User Following
+- [x] User Unfollowing
+- [ ] User Blocking
+- [ ] User Muting
+- [x] User Searching
+- [ ] User Filtering
+- [x] Trending Posts
+- [ ] Hashtag Searching
+- [ ] Post Tagging
+- [ ] User Mentioning
+- [x] Recommendations
+- [ ] Search Suggestions
+- [x] Settings
+- [x] Support
+- [x] Dynamic Theme
+
+## Upcoming Features
+
+- [ ] P2P Messaging
+- [ ] Group Messaging
+- [ ] Push Notifications
+- [ ] End-to-End Encryption
 
 ## License
 

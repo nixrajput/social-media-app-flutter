@@ -1,11 +1,13 @@
-import 'package:equatable/equatable.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:social_media_app/constants/hive_type_id.dart';
 
 part 'media_file.g.dart';
 
 @JsonSerializable()
-class MediaFile extends Equatable {
-  const MediaFile({
+@HiveType(typeId: HiveTypeId.mediaFile)
+class MediaFile extends HiveObject {
+  MediaFile({
     this.publicId,
     this.url,
   });
@@ -16,14 +18,10 @@ class MediaFile extends Equatable {
   Map<String, dynamic> toJson() => _$MediaFileToJson(this);
 
   @JsonKey(name: 'public_id')
+  @HiveField(0)
   final String? publicId;
 
   @JsonKey(name: 'url')
+  @HiveField(1)
   final String? url;
-
-  @override
-  List<Object?> get props => <Object?>[
-        publicId,
-        url,
-      ];
 }

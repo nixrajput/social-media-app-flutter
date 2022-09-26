@@ -1,20 +1,35 @@
-import 'dart:typed_data';
+import 'dart:convert';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:get/get.dart';
 import 'package:libsignal_protocol_dart/libsignal_protocol_dart.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
-import 'package:social_media_app/e2ee/encrypted_local_user.dart';
-import 'package:social_media_app/e2ee/encrypted_remote_user.dart';
-import 'package:social_media_app/e2ee/encrypted_session.dart';
+import 'package:social_media_app/apis/models/entities/chat_message.dart';
+import 'package:social_media_app/apis/models/entities/server_key.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
+import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class SingleChatController extends GetxController {
+  SingleChatController({
+    required this.receiverId,
+    required this.receiverUname,
+    required this.serverKey,
+  });
+
   static SingleChatController get find => Get.find();
 
-  final auth = AuthService.find;
+  //final _auth = AuthService.find;
+  final chatController = ChatController.find;
+  final profile = ProfileController.find;
+  final _hiveService = HiveService();
 
-  final messageTextController = TextEditingController();
+  final String receiverId;
+  final String receiverUname;
+  final ServerKey? serverKey;
+
+  final messageTextController = material.TextEditingController();
 
   final _isLoading = false.obs;
   final _message = ''.obs;
@@ -23,128 +38,154 @@ class SingleChatController extends GetxController {
 
   String get message => _message.value;
 
-  List<String> logs = [];
-
   void onChangedText(value) {
     _message.value = value;
     update();
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    _initData();
-  }
+  // void _initData() async {
+  //   _isLoading.value = true;
+  //   update();
+  //   var secretKeys = await _e2eeService.getSecretKeys();
+  //   logs.add(secretKeys.toString());
+  //   update();
+  //
+  //   var regId = int.parse(
+  //     String.fromCharCodes(base64Decode(secretKeys.registrationId)),
+  //   );
+  //
+  //   var preKeys = secretKeys.preKeys;
+  //   var serializedPreKeys = <Uint8List>[];
+  //   for (var item in preKeys) {
+  //     var decodedPreKey = base64Decode(item);
+  //     var preKey = PreKeyRecord.fromBuffer(decodedPreKey);
+  //     serializedPreKeys.add(preKey.serialize());
+  //   }
+  //
+  //   var signedPreKeyString = secretKeys.signedPreKey;
+  //   var decodedSignedPreKey = base64Decode(signedPreKeyString);
+  //   var signedPreKey = SignedPreKeyRecord.fromSerialized(decodedSignedPreKey);
+  //
+  //   var identityKeyPairString = secretKeys.identityKeyPair;
+  //   var decodedIdentityKeyPair = base64Decode(identityKeyPairString);
+  //   var identityKeyPair =
+  //       IdentityKeyPair.fromSerialized(decodedIdentityKeyPair);
+  //
+  //   var localUser = EncryptedLocalUser(
+  //     registrationId: regId,
+  //     name: profile.profileDetails!.user!.uname,
+  //     //deviceId: _auth.deviceId,
+  //     deviceId: 101,
+  //     preKeys: serializedPreKeys,
+  //     signedPreKey: signedPreKey.serialize(),
+  //     identityKeyPair: identityKeyPair.serialize(),
+  //   );
+  //
 
-  void _initData() async {
-    logs.add("Controller Initialized...");
-    update();
-  }
+  //
+  //     var remoteUser = EncryptedRemoteUser(
+  //       registrationId: remoteRegId,
+  //       name: receiverUname,
+  //       deviceId: 102,
+  //       preKeyId: remotePreKeyId,
+  //       preKeyPublicKey: remotePreKeyPublicKey,
+  //       signedPreKeyId: remoteSignedPreKeyId,
+  //       signedPreKeyPublicKey: remoteSignedPreKeyPublicKey,
+  //       signedPreKeySignature: remotePreKeySignature,
+  //       identityKeyPairPublicKey: remoteIdentityKeyPairPublicKey,
+  //     );
+  //     session = EncryptedSession(localUser, remoteUser);
+  //   }
+  //   AppUtility.printLog('session created');
+  //   _isLoading.value = false;
+  //   update();
+  // }
 
-  void testEncryption() async {
-    logs.add("Encryption/Decryption Started");
-    update();
-    final identityKeyPair = generateIdentityKeyPair();
-    final registrationId = generateRegistrationId(false);
-    final preKeys = generatePreKeys(0, 110);
-    final signedPreKey = generateSignedPreKey(identityKeyPair, 2);
+  void sendMessage() async {
+    material.FocusManager.instance.primaryFocus!.unfocus();
+    var remoteSecretKeys = serverKey;
+    var remoteDeviceId = 102;
 
-    var serializedPreKeys = <Uint8List>[];
-    for (var item in preKeys) {
-      serializedPreKeys.add(item.serialize());
+    if (remoteSecretKeys == null) {
+      AppUtility.printLog('remote user keys not found');
+      return;
     }
-
-    AppUtility.printLog('Bob Secrets generated');
-    logs.add("Bob secrets generated");
-    update();
-
-    var bobAsLocalUser = EncryptedLocalUser(
-      registrationId: registrationId,
-      name: 'bob',
-      deviceId: 1,
-      preKeys: serializedPreKeys,
-      signedPreKey: signedPreKey.serialize(),
-      identityKeyPair: identityKeyPair.serialize(),
+    var remoteRegId = int.parse(
+      String.fromCharCodes(base64Decode(remoteSecretKeys.registrationId)),
     );
 
-    var bobAsRemoteUser = EncryptedRemoteUser(
-      registrationId: registrationId,
-      name: 'bob',
-      deviceId: 1,
-      preKeyId: preKeys.elementAt(0).id,
-      preKeyPublicKey: preKeys.elementAt(0).getKeyPair().publicKey.serialize(),
-      signedPreKeyId: signedPreKey.id,
-      signedPreKeyPublicKey: signedPreKey.getKeyPair().publicKey.serialize(),
-      signedPreKeySignature: signedPreKey.signature,
-      identityKeyPairPublicKey: identityKeyPair.getPublicKey().serialize(),
+    var remotePreKeyId = int.parse(
+      String.fromCharCodes(base64Decode(remoteSecretKeys.preKeyId)),
     );
 
-    // Should get remote from the server
-    final remoteRegId = generateRegistrationId(false);
-    final remoteIdentityKeyPair = generateIdentityKeyPair();
-    final remotePreKeys = generatePreKeys(0, 110);
-    final remoteSignedPreKey = generateSignedPreKey(remoteIdentityKeyPair, 5);
-
-    var serializedRemotePreKeys = <Uint8List>[];
-    for (var item in remotePreKeys) {
-      serializedRemotePreKeys.add(item.serialize());
-    }
-
-    AppUtility.printLog('Alice Secrets generated');
-    logs.add("Alice secrets generated");
-    update();
-
-    var aliceAsLocalUser = EncryptedLocalUser(
-      registrationId: remoteRegId,
-      name: 'alice',
-      deviceId: 2,
-      preKeys: serializedRemotePreKeys,
-      signedPreKey: remoteSignedPreKey.serialize(),
-      identityKeyPair: remoteIdentityKeyPair.serialize(),
+    var remotePreKeyPublicKey = base64Decode(remoteSecretKeys.preKeyPublicKey);
+    var remoteSignedPreKeyId = int.parse(
+      String.fromCharCodes(base64Decode(remoteSecretKeys.signedPreKeyId)),
     );
 
-    var aliceAsRemoteUser = EncryptedRemoteUser(
-      registrationId: remoteRegId,
-      name: 'alice',
-      deviceId: 2,
-      preKeyId: remotePreKeys.elementAt(0).id,
-      preKeyPublicKey:
-          remotePreKeys.elementAt(0).getKeyPair().publicKey.serialize(),
-      signedPreKeyId: remoteSignedPreKey.id,
-      signedPreKeyPublicKey:
-          remoteSignedPreKey.getKeyPair().publicKey.serialize(),
-      signedPreKeySignature: remoteSignedPreKey.signature,
-      identityKeyPairPublicKey:
-          remoteIdentityKeyPair.getPublicKey().serialize(),
+    var remoteSignedPreKeyPublicKey =
+        base64Decode(remoteSecretKeys.signedPreKeyPublicKey);
+    var remotePreKeySignature =
+        base64Decode(remoteSecretKeys.signedPreKeySignature);
+    var remoteIdentityKeyPairPublicKey =
+        base64Decode(remoteSecretKeys.identityKeyPairPublicKey);
+    var preKeyBundle = PreKeyBundle(
+      remoteRegId,
+      remoteDeviceId,
+      remotePreKeyId,
+      Curve.decodePoint(remotePreKeyPublicKey, 0),
+      remoteSignedPreKeyId,
+      Curve.decodePoint(remoteSignedPreKeyPublicKey, 0),
+      remotePreKeySignature,
+      IdentityKey.fromBytes(remoteIdentityKeyPairPublicKey, 0),
     );
-
-    var bobToAliceSession = EncryptedSession(bobAsLocalUser, aliceAsRemoteUser);
-    AppUtility.printLog('Session Created: Bob To Alice');
-    logs.add("Session Created: Bob To Alice");
-    update();
-    var aliceToBobSession = EncryptedSession(aliceAsLocalUser, bobAsRemoteUser);
-    AppUtility.printLog('Session Created: Alice To Bob');
-    logs.add("Session Created: Alice To Bob");
-    update();
-
-    var check = bobToAliceSession == aliceToBobSession;
-    AppUtility.printLog('Same session: $check');
-
     try {
-      var bobEncryptedMessage =
-          await bobToAliceSession.encrypt('Hello from Bob');
-      logs.add("Message: Hello from Bob");
-      update();
-      AppUtility.printLog('Encrypted message at Bob end: $bobEncryptedMessage');
-      logs.add("Encrypted message at Bob end: $bobEncryptedMessage");
-      update();
+      var encryptedMessage = await chatController.signalProtocolManager
+          .encrypt(message, receiverId, remoteDeviceId, preKeyBundle);
+      AppUtility.printLog('Encrypted message: $encryptedMessage');
+      chatController.channel.sink.add(
+        jsonEncode(
+          {
+            "type": "send-message",
+            "payload": {
+              "message": encryptedMessage,
+              "type": "text",
+              "receiverId": receiverId,
+            }
+          },
+        ),
+      );
+      var self = profile.profileDetails!.user!;
+      chatController.chats.add(
+        ChatMessage(
+          message: message,
+          type: 'text',
+          sender: User(
+            id: self.id,
+            fname: self.fname,
+            lname: self.lname,
+            uname: self.uname,
+            email: self.email,
+            avatar: self.avatar,
+            isPrivate: self.isPrivate,
+            followingStatus: 'self',
+            accountStatus: 'active',
+            isVerified: self.isVerified,
+            createdAt: self.createdAt,
+            updatedAt: self.updatedAt,
+          ),
+          //receiver: receiverId,
+          deliveredAt: DateTime.now(),
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ),
+      );
 
-      var aliceDecryptedMessage =
-          await aliceToBobSession.decrypt(bobEncryptedMessage);
-      AppUtility.printLog(
-          'Decrypted message at Alice end: $aliceDecryptedMessage');
-      logs.add("Decrypted message at Alice end: $aliceDecryptedMessage");
       update();
+      _message.value = '';
+      messageTextController.clear();
+      update();
+      await _hiveService.addBox('chats', jsonEncode(chatController.chats));
     } on UntrustedIdentityException catch (err) {
       AppUtility.printLog('${err.key} ${err.name}');
       return;
@@ -158,38 +199,5 @@ class SingleChatController extends GetxController {
       AppUtility.printLog(err.detailMessage);
       return;
     }
-
-    /// ------------------------------------------------------------------------
-
-    try {
-      var aliceEncryptedMessage =
-          await aliceToBobSession.encrypt('Hello from Alice');
-      logs.add("Message: Hello from Alice");
-      update();
-      AppUtility.printLog(
-          'Encrypted message at Alice end: $aliceEncryptedMessage');
-      logs.add("Encrypted message at Alice end: $aliceEncryptedMessage");
-      update();
-
-      var bobDecryptedMessage =
-          await bobToAliceSession.decrypt(aliceEncryptedMessage);
-      AppUtility.printLog('Decrypted message at Bob end: $bobDecryptedMessage');
-      logs.add("Decrypted message at Bob end: $bobDecryptedMessage");
-      update();
-    } on UntrustedIdentityException catch (err) {
-      AppUtility.printLog('${err.key} ${err.name}');
-      return;
-    } on InvalidKeyException catch (err) {
-      AppUtility.printLog(err.detailMessage);
-      return;
-    } on InvalidKeyIdException catch (err) {
-      AppUtility.printLog(err.detailMessage);
-      return;
-    } on DuplicateMessageException catch (err) {
-      AppUtility.printLog(err.detailMessage);
-      return;
-    }
-    logs.add("Encryption/Decryption Finished");
-    update();
   }
 }

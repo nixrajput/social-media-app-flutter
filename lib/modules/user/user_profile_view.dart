@@ -17,6 +17,8 @@ import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/modules/chat/bindings/single_chat_binding.dart';
+import 'package:social_media_app/modules/chat/views/single_chat_view.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -307,24 +309,55 @@ class UserProfileView extends StatelessWidget {
       );
     }
 
-    return NxOutlinedButton(
-      label: getFollowStatus(user.followingStatus),
-      bgColor: getButtonColor(user.followingStatus),
-      borderColor: ColorValues.primaryColor,
-      borderStyle: getBorderStyle(user.followingStatus),
-      onTap: () {
-        if (user.followingStatus == "requested") {
-          logic.cancelFollowRequest(user);
-          return;
-        }
-        logic.followUnfollowUser(user);
-      },
-      padding: Dimens.edgeInsets0_8,
-      width: Dimens.screenWidth,
-      height: Dimens.thirtySix,
-      labelStyle: AppStyles.style14Normal.copyWith(
-        color: getLabelColor(user.followingStatus),
-      ),
+    return Row(
+      children: [
+        Expanded(
+          child: NxOutlinedButton(
+            label: getFollowStatus(user.followingStatus),
+            bgColor: getButtonColor(user.followingStatus),
+            borderColor: ColorValues.primaryColor,
+            borderStyle: getBorderStyle(user.followingStatus),
+            onTap: () {
+              if (user.followingStatus == "requested") {
+                logic.cancelFollowRequest(user);
+                return;
+              }
+              logic.followUnfollowUser(user);
+            },
+            padding: Dimens.edgeInsets0_8,
+            width: Dimens.screenWidth,
+            height: Dimens.thirtySix,
+            labelStyle: AppStyles.style14Normal.copyWith(
+              color: getLabelColor(user.followingStatus),
+            ),
+          ),
+        ),
+        if (user.publicKeys != null) Dimens.boxWidth16,
+        if (user.publicKeys != null)
+          Expanded(
+            child: NxOutlinedButton(
+              label: StringValues.message.toTitleCase(),
+              width: Dimens.screenWidth,
+              height: Dimens.thirtySix,
+              padding: Dimens.edgeInsets0_8,
+              borderRadius: Dimens.eight,
+              borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              labelStyle: AppStyles.style14Normal.copyWith(
+                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              ),
+              onTap: () => Get.to(
+                binding: SingleChatBinding(),
+                () => SingleChatView(
+                  receiverId: user.id,
+                  receiverUname: user.uname,
+                  serverKey: user.publicKeys,
+                ),
+                transition: Transition.circularReveal,
+                duration: const Duration(milliseconds: 500),
+              ),
+            ),
+          )
+      ],
     );
   }
 

@@ -12,7 +12,6 @@ import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
 import 'package:social_media_app/modules/auth/views/send_account_verification_otp_view.dart';
 import 'package:social_media_app/modules/auth/views/verify_account_view.dart';
-import 'package:social_media_app/modules/chat/bindings/chat_binding.dart';
 import 'package:social_media_app/modules/chat/views/chat_view.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_binding.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_view.dart';
@@ -165,7 +164,6 @@ abstract class AppPages {
     GetPage(
       name: _Routes.chats,
       page: ChatView.new,
-      binding: ChatBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),

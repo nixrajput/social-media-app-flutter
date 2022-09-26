@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_linkify/flutter_linkify.dart';
 
 class MentionLinker extends Linkifier {
@@ -14,7 +12,7 @@ class MentionLinker extends Linkifier {
 
       if (element.text.contains("@")) {
         element.text.split(" ").forEach((innerText) {
-          stdin.readLineSync();
+          // stdin.readLineSync();
           if (innerText.contains("@")) {
             // added space in front of all mention
             if (index != 0) {

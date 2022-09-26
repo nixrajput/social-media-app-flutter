@@ -150,28 +150,6 @@ class CreatePostController extends GetxController {
     final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
     var mediaFiles = <Object>[];
 
-    // for (var file in _pickedFileList) {
-    //   var filePath = file.path;
-    //   var sizeInKb = file.sizeToKb();
-    //   if (AppUtility.isVideoFile(filePath)) {
-    //     if (sizeInKb > 30 * 1024) {
-    //       AppUtility.showSnackBar(
-    //         'Video file size must be lower than 30 MB',
-    //         StringValues.warning,
-    //       );
-    //       return;
-    //     }
-    //   } else {
-    //     if (sizeInKb > 2048) {
-    //       AppUtility.showSnackBar(
-    //         'Image file size must be lower than 2 MB',
-    //         StringValues.warning,
-    //       );
-    //       return;
-    //     }
-    //   }
-    // }
-
     AppUtility.showLoadingDialog(message: "Uploading...");
     _isLoading.value = true;
     update();
@@ -301,7 +279,6 @@ class CreatePostController extends GetxController {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
@@ -644,12 +621,10 @@ class CreatePostController extends GetxController {
   }
 
   Future<void> createNewPost() async {
-    if (_pickedFileList.isNotEmpty) {
-      await _createNewPost();
-    } else {
-      _pickedFileList.value = await AppUtility.selectMultipleFiles();
-      update();
+    if (_pickedFileList.isEmpty) {
+      return;
     }
+    await _createNewPost();
   }
 
 // Future<void> _showHashtagsDialog() async {

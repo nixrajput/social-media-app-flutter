@@ -24,7 +24,7 @@ class UserDetailsController extends GetxController {
   final _isLoading = false.obs;
   final _isPostLoading = false.obs;
   final _isMorePostLoading = false.obs;
-  final _postData = const PostResponse().obs;
+  final _postData = PostResponse().obs;
   final _userDetails = const UserDetailsResponse().obs;
   final List<Post> _postList = [];
 

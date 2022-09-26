@@ -10,7 +10,9 @@ import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
+import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class PostController extends GetxController {
@@ -18,10 +20,11 @@ class PostController extends GetxController {
 
   final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
+  final _hiveService = HiveService();
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
-  final _postData = const PostResponse().obs;
+  final _postData = PostResponse().obs;
 
   final List<Post> _postList = [];
 
@@ -42,6 +45,19 @@ class PostController extends GetxController {
   }
 
   _getData() async {
+    var isExists = await _hiveService.isExists(boxName: 'posts');
+
+    if (isExists) {
+      //await _hiveService.clearBox('posts');
+
+      var data = await _hiveService.getBox('posts');
+      var cachedData = jsonDecode(data);
+      setPostData = PostResponse.fromJson(cachedData);
+      _postList.clear();
+      _postList.addAll(_postData.value.results!);
+    }
+    update();
+    ChatController.find.initialize();
     await _fetchPosts();
     await Future.delayed(const Duration(seconds: 5), () async {
       await LoginDeviceInfoController.find.getLoginDeviceInfo();
@@ -62,6 +78,7 @@ class PostController extends GetxController {
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
+        await _hiveService.addBox('posts', jsonEncode(decodedData));
         _isLoading.value = false;
         update();
       } else {

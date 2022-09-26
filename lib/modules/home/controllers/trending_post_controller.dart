@@ -21,7 +21,7 @@ class TrendingPostController extends GetxController {
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
-  final _postData = const PostResponse().obs;
+  final _postData = PostResponse().obs;
 
   final searchTextController = TextEditingController();
 

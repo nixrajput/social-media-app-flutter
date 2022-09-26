@@ -4,6 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:social_media_app/apis/models/entities/media_file.dart';
+import 'package:social_media_app/apis/models/entities/post.dart';
+import 'package:social_media_app/apis/models/entities/post_media_file.dart';
+import 'package:social_media_app/apis/models/entities/secret_key.dart';
+import 'package:social_media_app/apis/models/entities/server_key.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
+import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/apis/services/theme_controller.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -35,6 +43,14 @@ String serverHealth = "offline";
 
 Future<void> initServices() async {
   await GetStorage.init();
+  await Hive.initFlutter();
+  Hive.registerAdapter(PostAdapter());
+  Hive.registerAdapter(MediaFileAdapter());
+  Hive.registerAdapter(PostMediaFileAdapter());
+  Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(PostResponseAdapter());
+  Hive.registerAdapter(SecretKeyAdapter());
+  Hive.registerAdapter(ServerKeyAdapter());
   Get
     ..put(AppThemeController(), permanent: true)
     ..put(AuthService(), permanent: true)

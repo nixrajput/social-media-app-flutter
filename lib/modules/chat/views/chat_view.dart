@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -8,8 +9,8 @@ import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/modules/chat/bindings/single_chat_binding.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
+import 'package:social_media_app/modules/chat/views/single_chat_view.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_widget.dart';
-import 'package:social_media_app/modules/chat/widgets/single_chat_view.dart';
 
 class ChatView extends StatelessWidget {
   const ChatView({Key? key}) : super(key: key);
@@ -20,20 +21,59 @@ class ChatView extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
       child: Scaffold(
         body: SafeArea(
-          child: NxRefreshIndicator(
-            onRefresh: () async {},
-            showProgress: false,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NxAppBar(
-                  title: StringValues.chats,
-                  padding: Dimens.edgeInsets8_16,
-                ),
-                Dimens.boxHeight8,
-                _buildBody(),
-              ],
+          child: SizedBox(
+            width: Dimens.screenWidth,
+            height: Dimens.screenHeight,
+            child: NxRefreshIndicator(
+              onRefresh: () async {},
+              showProgress: false,
+              child: Stack(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      NxAppBar(
+                        title: StringValues.chats,
+                        padding: Dimens.edgeInsets8_16,
+                      ),
+                      Dimens.boxHeight8,
+                      _buildBody(),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: Dimens.sixTeen,
+                    right: Dimens.sixTeen,
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        padding: Dimens.edgeInsets12,
+                        constraints: BoxConstraints(
+                          minWidth: Dimens.fourty,
+                          minHeight: Dimens.fourty,
+                        ),
+                        decoration: BoxDecoration(
+                            color: ColorValues.primaryColor,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                offset: Offset(Dimens.zero, Dimens.eight),
+                                blurRadius: Dimens.eight,
+                                color: ColorValues.blackColor.withOpacity(0.1),
+                              )
+                            ]),
+                        child: Center(
+                          child: Icon(
+                            Icons.add_outlined,
+                            size: Dimens.thirtyTwo,
+                            color: ColorValues.whiteColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -70,7 +110,10 @@ class ChatView extends StatelessWidget {
                     var present = <String>{};
                     var uniqueList = <ChatMessage>[];
                     uniqueList = logic.chats
-                        .where((element) => present.add(element.sender!.id))
+                        .where((element) =>
+                            element.sender!.id !=
+                                logic.profile.profileDetails!.user!.id &&
+                            present.add(element.sender!.id))
                         .toList();
                     setInnerState(() {});
                     return Column(
@@ -80,8 +123,9 @@ class ChatView extends StatelessWidget {
                                 onTap: () => Get.to(
                                   binding: SingleChatBinding(),
                                   () => SingleChatView(
-                                    userId: item.sender!.id,
-                                    username: item.sender!.uname,
+                                    receiverId: item.sender!.id,
+                                    receiverUname: item.sender!.uname,
+                                    serverKey: item.sender!.publicKeys,
                                   ),
                                   transition: Transition.circularReveal,
                                   duration: const Duration(milliseconds: 500),

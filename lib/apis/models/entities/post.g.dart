@@ -3,6 +3,104 @@
 part of 'post.dart';
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class PostAdapter extends TypeAdapter<Post> {
+  @override
+  final int typeId = 1;
+
+  @override
+  Post read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Post(
+      id: fields[0] as String?,
+      caption: fields[1] as String?,
+      mediaFiles: (fields[2] as List?)?.cast<PostMediaFile>(),
+      owner: fields[3] as User,
+      hashtags: (fields[4] as List).cast<String>(),
+      userMentions: (fields[5] as List).cast<String>(),
+      postType: fields[6] as String,
+      likesCount: fields[7] as int,
+      commentsCount: fields[8] as int,
+      isLiked: fields[9] as bool,
+      isArchived: fields[10] as bool,
+      visibility: fields[11] as String,
+      allowComments: fields[12] as bool,
+      allowLikes: fields[13] as bool,
+      allowReposts: fields[14] as bool,
+      allowShare: fields[15] as bool,
+      allowSave: fields[16] as bool,
+      allowDownload: fields[17] as bool,
+      postStatus: fields[18] as String,
+      createdAt: fields[19] as DateTime,
+      updatedAt: fields[20] as DateTime,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Post obj) {
+    writer
+      ..writeByte(21)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.caption)
+      ..writeByte(2)
+      ..write(obj.mediaFiles)
+      ..writeByte(3)
+      ..write(obj.owner)
+      ..writeByte(4)
+      ..write(obj.hashtags)
+      ..writeByte(5)
+      ..write(obj.userMentions)
+      ..writeByte(6)
+      ..write(obj.postType)
+      ..writeByte(7)
+      ..write(obj.likesCount)
+      ..writeByte(8)
+      ..write(obj.commentsCount)
+      ..writeByte(9)
+      ..write(obj.isLiked)
+      ..writeByte(10)
+      ..write(obj.isArchived)
+      ..writeByte(11)
+      ..write(obj.visibility)
+      ..writeByte(12)
+      ..write(obj.allowComments)
+      ..writeByte(13)
+      ..write(obj.allowLikes)
+      ..writeByte(14)
+      ..write(obj.allowReposts)
+      ..writeByte(15)
+      ..write(obj.allowShare)
+      ..writeByte(16)
+      ..write(obj.allowSave)
+      ..writeByte(17)
+      ..write(obj.allowDownload)
+      ..writeByte(18)
+      ..write(obj.postStatus)
+      ..writeByte(19)
+      ..write(obj.createdAt)
+      ..writeByte(20)
+      ..write(obj.updatedAt);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PostAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

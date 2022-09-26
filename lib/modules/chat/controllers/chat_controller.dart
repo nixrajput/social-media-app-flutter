@@ -1,14 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:libsignal_protocol_dart/libsignal_protocol_dart.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/responses/chat_message_list_response.dart';
 import 'package:social_media_app/apis/models/responses/chat_message_response.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/secrets.dart';
-import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/e2ee/signal_protocol_manager.dart';
+import 'package:social_media_app/e2ee/signal_protocol_store.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/services/e2ee_service.dart';
+import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -16,12 +20,16 @@ class ChatController extends GetxController {
   static ChatController get find => Get.find();
 
   final _auth = AuthService.find;
+  final _e2eeService = E2EEService();
+  final _hiveService = HiveService();
+  final profile = ProfileController.find;
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
-  late final WebSocketChannel _channel;
   final _chatListData = const ChatMessageListResponse().obs;
   final List<ChatMessage> _chats = [];
+  late final WebSocketChannel channel;
+  late SignalProtocolManager signalProtocolManager;
 
   /// Getters
   bool get isLoading => _isLoading.value;
@@ -33,26 +41,41 @@ class ChatController extends GetxController {
   List<ChatMessage> get chats => _chats;
 
   @override
-  void onInit() {
-    super.onInit();
+  void onClose() {
+    channel.sink.close();
+    super.onClose();
+  }
+
+  void initialize() {
     _initChannel().then((_) {
       _savePublicKey();
     });
   }
 
-  @override
-  void onClose() {
-    _channel.sink.close();
-    super.onClose();
-  }
-
   Future<void> _initChannel() async {
-    _channel = WebSocketChannel.connect(
+    var secretKeys = await _e2eeService.getSecretKeys();
+    var regId = int.parse(
+      String.fromCharCodes(base64Decode(secretKeys.registrationId)),
+    );
+    var identityKeyPairString = secretKeys.identityKeyPair;
+    var decodedIdentityKeyPair = base64Decode(identityKeyPairString);
+    var identityKeyPair =
+        IdentityKeyPair.fromSerialized(decodedIdentityKeyPair);
+    var protocolStore = NxSignalProtocolStore(identityKeyPair, regId);
+    signalProtocolManager = SignalProtocolManager(protocolStore);
+
+    var isChatDataExists = await _hiveService.isExists(boxName: 'chats');
+
+    if (isChatDataExists) {
+      var data = await _hiveService.getBox('chats');
+      var decodedData = jsonDecode(data);
+      _chats.addAll(decodedData);
+    }
+
+    channel = WebSocketChannel.connect(
         Uri.parse('${AppSecrets.awsWebSocketUrl}?token=${_auth.token}'));
-    _channel.stream.listen((value) {
+    channel.stream.listen((value) async {
       var decodedData = jsonDecode(value);
-      // AppUtility.printLog(decodedData);
-      // AppUtility.printLog(decodedData['data'] is List);
 
       if (decodedData['results'] != null) {
         _chatListData.value = ChatMessageListResponse.fromJson(decodedData);
@@ -62,8 +85,30 @@ class ChatController extends GetxController {
       }
       if (decodedData['data'] != null) {
         var chatResponse = ChatMessageResponse.fromJson(decodedData);
-        _chats.insert(0, chatResponse.data!);
-        update();
+        if (chatResponse.data!.sender!.id != profile.profileDetails!.user!.id) {
+          var decryptedMessage = await signalProtocolManager.decrypt(
+            chatResponse.data!.message!,
+            chatResponse.data!.sender!.id,
+            102,
+          );
+          var chatMessage = ChatMessage(
+            id: chatResponse.data!.id,
+            message: decryptedMessage,
+            type: chatResponse.data!.type,
+            sender: chatResponse.data!.sender,
+            delivered: chatResponse.data!.delivered,
+            deliveredAt: chatResponse.data!.deliveredAt,
+            seen: chatResponse.data!.seen,
+            seenAt: chatResponse.data!.seenAt,
+            deleted: chatResponse.data!.deleted,
+            deletedAt: chatResponse.data!.deletedAt,
+            createdAt: chatResponse.data!.createdAt,
+            updatedAt: chatResponse.data!.updatedAt,
+          );
+          _chats.add(chatMessage);
+          update();
+        }
+        await _hiveService.addBox('chats', jsonEncode(chats));
         AppUtility.printLog("Chat Added");
       }
     }, onError: (err) {
@@ -72,20 +117,19 @@ class ChatController extends GetxController {
   }
 
   _savePublicKey() async {
-    // await AppE2EE().generateKeys();
-    // var publicKeyJwk = await AppE2EE().publicKey!.exportJsonWebKey();
-    // _channel.sink.add(
-    //   jsonEncode(
-    //     {
-    //       'type': 'save-public-key',
-    //       'payload': {
-    //         'publicKey': jsonEncode(publicKeyJwk),
-    //       }
-    //     },
-    //   ),
-    // );
-    // AppUtility.printLog("Public key saved to server");
-    _channel.sink.add(
+    var serverKeys = await _e2eeService.getServerKeys();
+    channel.sink.add(
+      jsonEncode(
+        {
+          'type': 'save-public-key',
+          'payload': {
+            'publicKeys': serverKeys.toJson(),
+          }
+        },
+      ),
+    );
+    AppUtility.printLog("Public key saved to server");
+    channel.sink.add(
       jsonEncode(
         {
           'type': 'get-all-messages',
@@ -96,99 +140,4 @@ class ChatController extends GetxController {
       ),
     );
   }
-
-  Future<void> _fetchMessages({int? page}) async {
-    AppUtility.printLog("Fetching Messages Request");
-
-    try {
-      _channel.sink.add(
-        jsonEncode(
-          {
-            'type': 'get-all-messages',
-            'payload': {
-              'page': page,
-              'limit': 10,
-            }
-          },
-        ),
-      );
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Messages Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Messages Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Messages Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    } catch (exc) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Messages Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    }
-  }
-
-  Future<void> _sendMessage(String message, String receiverId) async {
-    AppUtility.printLog("Send Message Request");
-    try {
-      _channel.sink.add(
-        jsonEncode(
-          {
-            'type': 'send-message',
-            "payload": {
-              "message": message,
-              "type": "text",
-              "receiverId": receiverId
-            },
-          },
-        ),
-      );
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Message Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Message Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Message Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    } catch (exc) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Message Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
-    }
-  }
-
-  Future<void> fetchPosts() async => await _fetchMessages();
-
-  void sendMessage(String message, String receiverId) async =>
-      await _sendMessage(message, receiverId);
 }

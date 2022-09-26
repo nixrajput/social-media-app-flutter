@@ -2,13 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -410,129 +407,36 @@ abstract class AppUtility {
         "=======================================================================");
   }
 
-  static Future<dynamic> selectSingleImage({ImageSource? imageSource}) async {
-    final imagePicker = ImagePicker();
-    final imageCropper = ImageCropper();
-    final pickedImage = await imagePicker.pickImage(
-      maxWidth: 1080.0,
-      maxHeight: 1080.0,
-      source: imageSource ?? ImageSource.gallery,
-    );
+  /// Save Post Data --------------------------------------------------------
 
-    if (pickedImage != null) {
-      var croppedFile = await imageCropper.cropImage(
-        maxWidth: 1080,
-        maxHeight: 1080,
-        sourcePath: pickedImage.path,
-        compressFormat: ImageCompressFormat.png,
-        aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-        cropStyle: CropStyle.circle,
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-            toolbarTitle: StringValues.cropImage,
-            toolbarWidgetColor: Theme.of(Get.context!).primaryColor,
-            backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-          ),
-          IOSUiSettings(
-            title: StringValues.cropImage,
-            minimumAspectRatio: 1.0,
-          ),
-        ],
-        compressQuality: 70,
-      );
-
-      return File(croppedFile!.path);
+  static Future<void> savePostDataToLocalStorage(postData) async {
+    final storage = GetStorage();
+    if (postData != null) {
+      await storage.write("posts", jsonEncode(postData));
+      printLog("Post Data Saved To Local Storage");
+    } else {
+      printLog("Failed To Save Post Data To Local Storage");
     }
+  }
 
+  static Future<dynamic> readPostDataFromLocalStorage() async {
+    final storage = GetStorage();
+    if (storage.hasData("posts")) {
+      final data = await storage.read("posts");
+      printLog("Post Data Fetched From Local Storage");
+      return jsonDecode(data);
+    }
+    printLog("Failed To Fetch Post Data From Local Storage");
     return null;
   }
 
-  static Future<dynamic> selectMultipleImage() async {
-    final imagePicker = ImagePicker();
-    final imageCropper = ImageCropper();
-    var imageList = <File>[];
-    final pickedImages = await imagePicker.pickMultiImage(
-      maxWidth: 1920.0,
-      maxHeight: 1920.0,
-    );
-
-    if (pickedImages != null) {
-      for (var pickedImage in pickedImages) {
-        var croppedFile = await imageCropper.cropImage(
-          maxWidth: 1920,
-          maxHeight: 1920,
-          sourcePath: pickedImage.path,
-          aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-          uiSettings: [
-            AndroidUiSettings(
-              toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-              toolbarTitle: StringValues.cropImage,
-              toolbarWidgetColor: Theme.of(Get.context!).primaryColor,
-              backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-            ),
-            IOSUiSettings(
-              title: StringValues.cropImage,
-              minimumAspectRatio: 1.0,
-            ),
-          ],
-          compressQuality: 70,
-        );
-        imageList.add(File(croppedFile!.path));
-      }
-    }
-
-    return imageList;
+  static Future<void> deletePostDataFromLocalStorage() async {
+    final storage = GetStorage();
+    await storage.remove("posts");
+    printLog("Post Data Deleted From Local Storage");
   }
 
-  static Future<dynamic> selectMultipleFiles() async {
-    final filePicker = FilePicker.platform;
-    final imageCropper = ImageCropper();
-    var fileList = <PlatformFile>[];
-    var resultList = <File>[];
-    final pickedFiles = await filePicker.pickFiles(
-      allowMultiple: true,
-      withReadStream: true,
-      type: FileType.custom,
-      allowedExtensions: ['png', 'jpg', 'jpeg', 'mp4', 'mkv'],
-    );
-
-    if (pickedFiles != null) {
-      fileList = pickedFiles.files;
-
-      for (var pickedImage in fileList) {
-        var fileExt = pickedImage.extension;
-
-        if (['png', 'jpg', 'jpeg'].contains(fileExt)) {
-          var croppedFile = await imageCropper.cropImage(
-            maxWidth: 1920,
-            maxHeight: 1920,
-            sourcePath: pickedImage.path!,
-            compressFormat: ImageCompressFormat.png,
-            aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-            uiSettings: [
-              AndroidUiSettings(
-                toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-                toolbarTitle: StringValues.cropImage,
-                toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
-                backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-              ),
-              IOSUiSettings(
-                title: StringValues.cropImage,
-                minimumAspectRatio: 1.0,
-              ),
-            ],
-            compressQuality: 100,
-          );
-          resultList.add(File(croppedFile!.path));
-        } else {
-          resultList.add(File(pickedImage.path!));
-        }
-      }
-    }
-
-    return resultList;
-  }
+  /// --------------------------------------------------------------------------
 
   /// Check if video file
   static bool isVideoFile(String path) {

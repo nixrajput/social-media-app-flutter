@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_controller.dart';
 import 'package:social_media_app/modules/home/controllers/banner_controller.dart';
 import 'package:social_media_app/modules/home/controllers/home_controller.dart';
@@ -14,6 +15,7 @@ class InitialBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(HomeController.new, fenix: true);
+    Get.lazyPut(ChatController.new, fenix: true);
     Get.lazyPut(PostController.new, fenix: true);
     Get.put(CreatePostController(), permanent: true);
     Get.lazyPut(TrendingTabController.new);

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:libsignal_protocol_dart/libsignal_protocol_dart.dart';
 import 'package:social_media_app/e2ee/encrypted_local_user.dart';
 import 'package:social_media_app/e2ee/encrypted_remote_user.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 enum Operation { encrypt, decrypt }
 
@@ -91,7 +92,12 @@ class EncryptedSession {
     try {
       await _createSession(Operation.decrypt);
       var bytes = Uint8List.fromList(base64Decode(encryptedMessage));
-      Uint8List decryptedMessage;
+      Uint8List? decryptedMessage;
+
+      if (_sessionCipher == null) {
+        AppUtility.printLog('session cipher not found');
+        return 'An error occurred while decrypting message';
+      }
 
       if (!await _protocolStore!.containsSession(_protocolAddress!)) {
         decryptedMessage = await _sessionCipher!

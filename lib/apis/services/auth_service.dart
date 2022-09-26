@@ -24,12 +24,12 @@ class AuthService extends GetxService {
 
   String _token = '';
   int _expiresAt = 0;
-  String _deviceId = '';
+  int _deviceId = 0;
   AuthResponse _loginData = const AuthResponse();
 
   String get token => _token;
 
-  String get deviceId => _deviceId;
+  int get deviceId => _deviceId;
 
   int get expiresAt => _expiresAt;
 
@@ -101,7 +101,8 @@ class AuthService extends GetxService {
   Future<void> _logout(bool showLoading) async {
     AppUtility.printLog("Logout Request");
     if (showLoading) AppUtility.showLoadingDialog();
-    await LoginDeviceInfoController.find.deleteLoginDeviceInfo(_deviceId);
+    await LoginDeviceInfoController.find
+        .deleteLoginDeviceInfo(_deviceId.toString());
     setToken = '';
     setExpiresAt = 0;
     await AppUtility.clearLoginDataFromLocalStorage();
@@ -109,11 +110,8 @@ class AuthService extends GetxService {
     AppUtility.printLog("Logout Success");
   }
 
-  Future<void> getDeviceId() async {
-    final devData = GetStorage();
-
-    const chars =
-        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  String generateDeviceId() {
+    const chars = '1234567890';
     var rnd = Random();
 
     var devId = String.fromCharCodes(
@@ -123,9 +121,22 @@ class AuthService extends GetxService {
       ),
     );
 
-    await devData.writeIfNull('deviceId', devId);
+    return devId;
+  }
 
-    _deviceId = devData.read('deviceId');
+  Future<void> getDeviceId() async {
+    final devData = GetStorage();
+
+    var savedDevId = devData.read('deviceId');
+
+    try {
+      _deviceId = int.parse(savedDevId);
+    } catch (err) {
+      var devId = generateDeviceId();
+      await devData.write('deviceId', devId);
+      var savedDevId = devData.read('deviceId');
+      _deviceId = int.parse(savedDevId);
+    }
 
     AppUtility.printLog("deviceId: $_deviceId");
   }
