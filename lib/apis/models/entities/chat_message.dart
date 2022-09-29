@@ -1,8 +1,10 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 
 part 'chat_message.g.dart';
 
+@CopyWith()
 @JsonSerializable()
 class ChatMessage {
   const ChatMessage({
@@ -10,6 +12,7 @@ class ChatMessage {
     this.message,
     this.type,
     this.sender,
+    this.receiver,
     this.delivered,
     this.deliveredAt,
     this.seen,
@@ -31,11 +34,14 @@ class ChatMessage {
   @JsonKey(name: 'message')
   final String? message;
 
-  @JsonKey(name: 'type ')
+  @JsonKey(name: 'type')
   final String? type;
 
   @JsonKey(name: 'sender')
   final User? sender;
+
+  @JsonKey(name: 'receiver')
+  final User? receiver;
 
   @JsonKey(name: 'delivered')
   final bool? delivered;

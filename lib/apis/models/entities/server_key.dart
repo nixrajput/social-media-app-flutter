@@ -8,13 +8,10 @@ part 'server_key.g.dart';
 @HiveType(typeId: HiveTypeId.serverKey)
 class ServerKey extends HiveObject {
   ServerKey({
+    required this.identityPublicKey,
     required this.registrationId,
-    required this.preKeyId,
-    required this.preKeyPublicKey,
-    required this.signedPreKeyId,
-    required this.signedPreKeyPublicKey,
-    required this.signedPreKeySignature,
-    required this.identityKeyPairPublicKey,
+    required this.preKey,
+    required this.signedPreKey,
   });
 
   factory ServerKey.fromJson(Map<String, dynamic> json) =>
@@ -22,31 +19,63 @@ class ServerKey extends HiveObject {
 
   Map<String, dynamic> toJson() => _$ServerKeyToJson(this);
 
-  @JsonKey(name: 'registrationId')
+  @JsonKey(name: 'identityPublicKey')
   @HiveField(0)
+  final String identityPublicKey;
+
+  @JsonKey(name: 'registrationId')
+  @HiveField(1)
   final String registrationId;
 
-  @JsonKey(name: 'preKeyId')
-  @HiveField(1)
-  final String preKeyId;
-
-  @JsonKey(name: 'preKeyPublicKey')
+  @JsonKey(name: 'preKey')
   @HiveField(2)
-  final String preKeyPublicKey;
+  final ServerPreKey preKey;
 
-  @JsonKey(name: 'signedPreKeyId')
+  @JsonKey(name: 'signedPreKey')
   @HiveField(3)
-  final String signedPreKeyId;
+  final ServerSignedPreKey signedPreKey;
+}
 
-  @JsonKey(name: 'signedPreKeyPublicKey')
-  @HiveField(4)
-  final String signedPreKeyPublicKey;
+@JsonSerializable()
+class ServerPreKey extends HiveObject {
+  ServerPreKey({required this.keyId, required this.publicKey});
 
-  @JsonKey(name: 'signedPreKeySignature')
-  @HiveField(5)
-  final String signedPreKeySignature;
+  factory ServerPreKey.fromJson(Map<String, dynamic> json) =>
+      _$ServerPreKeyFromJson(json);
 
-  @JsonKey(name: 'identityKeyPairPublicKey')
-  @HiveField(6)
-  final String identityKeyPairPublicKey;
+  Map<String, dynamic> toJson() => _$ServerPreKeyToJson(this);
+
+  @JsonKey(name: 'keyId')
+  @HiveField(0)
+  final String keyId;
+
+  @JsonKey(name: 'publicKey')
+  @HiveField(1)
+  final String publicKey;
+}
+
+@JsonSerializable()
+class ServerSignedPreKey extends HiveObject {
+  ServerSignedPreKey({
+    required this.keyId,
+    required this.publicKey,
+    required this.signature,
+  });
+
+  factory ServerSignedPreKey.fromJson(Map<String, dynamic> json) =>
+      _$ServerSignedPreKeyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ServerSignedPreKeyToJson(this);
+
+  @JsonKey(name: 'keyId')
+  @HiveField(0)
+  final String keyId;
+
+  @JsonKey(name: 'publicKey')
+  @HiveField(1)
+  final String publicKey;
+
+  @JsonKey(name: 'signature')
+  @HiveField(2)
+  final String signature;
 }

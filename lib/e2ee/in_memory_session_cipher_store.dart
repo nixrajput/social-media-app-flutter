@@ -39,6 +39,6 @@ class InMemorySessionCipherStore {
 
   Future<void> storeSessionCipher(
       String remoteUserId, SessionCipher cipher) async {
-    sessionCiphers['cipher$remoteUserId'] = cipher;
+    sessionCiphers[remoteUserId] = cipher;
   }
 }

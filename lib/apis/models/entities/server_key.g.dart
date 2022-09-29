@@ -17,34 +17,25 @@ class ServerKeyAdapter extends TypeAdapter<ServerKey> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ServerKey(
-      registrationId: fields[0] as String,
-      preKeyId: fields[1] as String,
-      preKeyPublicKey: fields[2] as String,
-      signedPreKeyId: fields[3] as String,
-      signedPreKeyPublicKey: fields[4] as String,
-      signedPreKeySignature: fields[5] as String,
-      identityKeyPairPublicKey: fields[6] as String,
+      identityPublicKey: fields[0] as String,
+      registrationId: fields[1] as String,
+      preKey: fields[2] as ServerPreKey,
+      signedPreKey: fields[3] as ServerSignedPreKey,
     );
   }
 
   @override
   void write(BinaryWriter writer, ServerKey obj) {
     writer
-      ..writeByte(7)
-      ..writeByte(0)
-      ..write(obj.registrationId)
-      ..writeByte(1)
-      ..write(obj.preKeyId)
-      ..writeByte(2)
-      ..write(obj.preKeyPublicKey)
-      ..writeByte(3)
-      ..write(obj.signedPreKeyId)
       ..writeByte(4)
-      ..write(obj.signedPreKeyPublicKey)
-      ..writeByte(5)
-      ..write(obj.signedPreKeySignature)
-      ..writeByte(6)
-      ..write(obj.identityKeyPairPublicKey);
+      ..writeByte(0)
+      ..write(obj.identityPublicKey)
+      ..writeByte(1)
+      ..write(obj.registrationId)
+      ..writeByte(2)
+      ..write(obj.preKey)
+      ..writeByte(3)
+      ..write(obj.signedPreKey);
   }
 
   @override
@@ -63,21 +54,41 @@ class ServerKeyAdapter extends TypeAdapter<ServerKey> {
 // **************************************************************************
 
 ServerKey _$ServerKeyFromJson(Map<String, dynamic> json) => ServerKey(
+      identityPublicKey: json['identityPublicKey'] as String,
       registrationId: json['registrationId'] as String,
-      preKeyId: json['preKeyId'] as String,
-      preKeyPublicKey: json['preKeyPublicKey'] as String,
-      signedPreKeyId: json['signedPreKeyId'] as String,
-      signedPreKeyPublicKey: json['signedPreKeyPublicKey'] as String,
-      signedPreKeySignature: json['signedPreKeySignature'] as String,
-      identityKeyPairPublicKey: json['identityKeyPairPublicKey'] as String,
+      preKey: ServerPreKey.fromJson(json['preKey'] as Map<String, dynamic>),
+      signedPreKey: ServerSignedPreKey.fromJson(
+          json['signedPreKey'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ServerKeyToJson(ServerKey instance) => <String, dynamic>{
+      'identityPublicKey': instance.identityPublicKey,
       'registrationId': instance.registrationId,
-      'preKeyId': instance.preKeyId,
-      'preKeyPublicKey': instance.preKeyPublicKey,
-      'signedPreKeyId': instance.signedPreKeyId,
-      'signedPreKeyPublicKey': instance.signedPreKeyPublicKey,
-      'signedPreKeySignature': instance.signedPreKeySignature,
-      'identityKeyPairPublicKey': instance.identityKeyPairPublicKey,
+      'preKey': instance.preKey,
+      'signedPreKey': instance.signedPreKey,
+    };
+
+ServerPreKey _$ServerPreKeyFromJson(Map<String, dynamic> json) => ServerPreKey(
+      keyId: json['keyId'] as String,
+      publicKey: json['publicKey'] as String,
+    );
+
+Map<String, dynamic> _$ServerPreKeyToJson(ServerPreKey instance) =>
+    <String, dynamic>{
+      'keyId': instance.keyId,
+      'publicKey': instance.publicKey,
+    };
+
+ServerSignedPreKey _$ServerSignedPreKeyFromJson(Map<String, dynamic> json) =>
+    ServerSignedPreKey(
+      keyId: json['keyId'] as String,
+      publicKey: json['publicKey'] as String,
+      signature: json['signature'] as String,
+    );
+
+Map<String, dynamic> _$ServerSignedPreKeyToJson(ServerSignedPreKey instance) =>
+    <String, dynamic>{
+      'keyId': instance.keyId,
+      'publicKey': instance.publicKey,
+      'signature': instance.signature,
     };

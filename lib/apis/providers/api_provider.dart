@@ -137,6 +137,58 @@ class ApiProvider {
     return response;
   }
 
+  Future<http.Response> getPreKeyBundle(String token, String userId) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.preKeyBundleEndpoint}?id=$userId'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> savePreKeyBundle(
+      String token, Map<String, dynamic> body) async {
+    final response = await _client.post(
+      Uri.parse('${baseUrl!}${AppUrls.preKeyBundleEndpoint}'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getDeviceId(String token, String userId) async {
+    final response = await _client.get(
+      Uri.parse('${baseUrl!}${AppUrls.deviceIdEndpoint}?id=$userId'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> saveDeviceId(
+      String token, Map<String, dynamic> body) async {
+    final response = await _client.post(
+      Uri.parse('${baseUrl!}${AppUrls.deviceIdEndpoint}'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
   Future<http.Response> uploadProfilePicture(
     String token,
     Map<String, dynamic> body,

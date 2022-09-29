@@ -268,8 +268,11 @@ abstract class AppUtility {
         ),
         mainButton: Padding(
           padding: Dimens.edgeInsets0_8,
-          child: const NxTextButton(
-            label: 'OK',
+          child: NxTextButton(
+            label: 'DISMISS',
+            labelStyle: AppStyles.style13Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.bodyText1!.color!,
+            ),
             onTap: closeSnackBar,
           ),
         ),

@@ -138,7 +138,55 @@ class AuthService extends GetxService {
       _deviceId = int.parse(savedDevId);
     }
 
+    final response = await _apiProvider.saveDeviceId(
+      token,
+      {'deviceId': _deviceId.toString()},
+    );
+
+    final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+    if (response.statusCode == 200) {
+      AppUtility.printLog(decodedData[StringValues.message]);
+    } else {
+      AppUtility.printLog(decodedData[StringValues.message]);
+    }
+
     AppUtility.printLog("deviceId: $_deviceId");
+  }
+
+  Future<void> savePreKeyBundle(Map<String, dynamic> preKeyBundle) async {
+    AppUtility.printLog("Save PreKeyBundle Request");
+
+    try {
+      final response = await _apiProvider.savePreKeyBundle(
+        _token,
+        {'preKeyBundle': preKeyBundle},
+      );
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.printLog("Save PreKeyBundle Success");
+      } else {
+        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.printLog("Save PreKeyBundle Error");
+      }
+    } on SocketException {
+      AppUtility.printLog("Save PreKeyBundle Error");
+      AppUtility.printLog(StringValues.internetConnError);
+    } on TimeoutException {
+      AppUtility.printLog("Save PreKeyBundle Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+    } on FormatException catch (e) {
+      AppUtility.printLog("Save PreKeyBundle Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+    } catch (exc) {
+      AppUtility.printLog("Save PreKeyBundle Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+    }
   }
 
   Future<dynamic> getDeviceInfo() async {

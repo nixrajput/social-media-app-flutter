@@ -1,9 +1,11 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 
 part 'like_details.g.dart';
 
+@CopyWith()
 @JsonSerializable()
 class LikeDetails extends Equatable {
   const LikeDetails({

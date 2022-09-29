@@ -5,6 +5,7 @@ import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class ChatWidget extends StatelessWidget {
   const ChatWidget({Key? key, required this.chat, this.onTap})
@@ -15,6 +16,10 @@ class ChatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var user =
+        chat.sender!.id == ProfileController.find.profileDetails!.user!.id
+            ? chat.receiver!
+            : chat.sender!;
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -38,7 +43,7 @@ class ChatWidget extends StatelessWidget {
                       Stack(
                         children: [
                           AvatarWidget(
-                            avatar: chat.sender!.avatar,
+                            avatar: user.avatar,
                             size: Dimens.twentyFour,
                           ),
                           // Positioned(
@@ -63,7 +68,7 @@ class ChatWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              chat.sender!.uname,
+                              user.uname,
                               style: AppStyles.style13Normal.copyWith(
                                 fontWeight: chat.seen == true
                                     ? FontWeight.w400

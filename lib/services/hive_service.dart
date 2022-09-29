@@ -22,6 +22,20 @@ class HiveService {
     await openBox.put('data', items);
   }
 
+  Future<void> updateBox<T>(
+    String boxName,
+    T items,
+  ) async {
+    var boxExists = await isExists(boxName: boxName);
+    if (!boxExists) {
+      AppUtility.printLog('box: $boxName not found');
+      return;
+    }
+    AppUtility.printLog('updating box: $boxName');
+    final openBox = await Hive.openBox(boxName);
+    await openBox.put('data', items);
+  }
+
   Future<void> clearBox<T>(String boxName) async {
     AppUtility.printLog('deleting box: $boxName');
     await Hive.deleteBoxFromDisk(boxName);

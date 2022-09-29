@@ -56,7 +56,7 @@ class WelcomeView extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Dimens.boxHeight48,
+                      Dimens.boxHeight32,
                       const Expanded(
                         child: NxAssetImage(
                           imgAsset: AssetValues.welcome,

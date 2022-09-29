@@ -1,9 +1,11 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/server_key.dart';
 
 part 'user_details.g.dart';
 
+@CopyWith()
 @JsonSerializable()
 class UserDetails {
   UserDetails({
@@ -27,7 +29,7 @@ class UserDetails {
     required this.isValid,
     required this.isVerified,
     required this.role,
-    this.publicKeys,
+    this.deviceId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -97,8 +99,8 @@ class UserDetails {
   @JsonKey(name: 'role')
   final String role;
 
-  @JsonKey(name: 'publicKeys')
-  ServerKey? publicKeys;
+  @JsonKey(name: 'deviceId')
+  String? deviceId;
 
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;

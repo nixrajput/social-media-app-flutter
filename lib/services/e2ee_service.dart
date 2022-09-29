@@ -9,7 +9,7 @@ import 'package:social_media_app/utils/utility.dart';
 class E2EEService {
   final _hiveService = HiveService();
 
-  Future<ServerKey> getServerKeys() async {
+  Future<ServerKey> getServerPreKeyBundle() async {
     var secretKeys = await getSecretKeys();
 
     var regId = int.parse(
@@ -29,22 +29,52 @@ class E2EEService {
     var identityKeyPair =
         IdentityKeyPair.fromSerialized(decodedIdentityKeyPair);
 
-    var serverKeysMap = {
-      'registrationId': base64Encode(regId.toString().codeUnits),
-      'preKeyId': base64Encode(preKey.id.toString().codeUnits),
-      'preKeyPublicKey':
-          base64Encode(preKey.getKeyPair().publicKey.serialize()),
-      'signedPreKeyId': base64Encode(signedPreKey.id.toString().codeUnits),
-      'signedPreKeyPublicKey':
-          base64Encode(signedPreKey.getKeyPair().publicKey.serialize()),
-      'signedPreKeySignature': base64Encode(signedPreKey.signature),
-      'identityKeyPairPublicKey':
+    var serverKey = ServerKey(
+      identityPublicKey:
           base64Encode(identityKeyPair.getPublicKey().serialize()),
-    };
-
-    var serverKey = ServerKey.fromJson(serverKeysMap);
+      registrationId: base64Encode(regId.toString().codeUnits),
+      preKey: ServerPreKey(
+        keyId: base64Encode(preKey.id.toString().codeUnits),
+        publicKey: base64Encode(preKey.getKeyPair().publicKey.serialize()),
+      ),
+      signedPreKey: ServerSignedPreKey(
+        keyId: base64Encode(signedPreKey.id.toString().codeUnits),
+        publicKey:
+            base64Encode(signedPreKey.getKeyPair().publicKey.serialize()),
+        signature: base64Encode(signedPreKey.signature),
+      ),
+    );
 
     return serverKey;
+  }
+
+  Future<PreKeyBundle> getPreKeyBundle(
+      ServerKey serverKey, int remoteDeviceId) async {
+    var registrationId = int.parse(
+      String.fromCharCodes(base64Decode(serverKey.registrationId)),
+    );
+    var preKeyId = int.parse(
+      String.fromCharCodes(base64Decode(serverKey.preKey.keyId)),
+    );
+    var preKeyPublicKey = base64Decode(serverKey.preKey.publicKey);
+
+    var signedPreKeyId = int.parse(
+      String.fromCharCodes(base64Decode(serverKey.signedPreKey.keyId)),
+    );
+    var signedPreKeyPublicKey = base64Decode(serverKey.signedPreKey.publicKey);
+    var signedPreKeySignature = base64Decode(serverKey.signedPreKey.signature);
+    var remoteIdentityPublicKey = base64Decode(serverKey.identityPublicKey);
+
+    return PreKeyBundle(
+      registrationId,
+      remoteDeviceId,
+      preKeyId,
+      Curve.decodePoint(preKeyPublicKey, 0),
+      signedPreKeyId,
+      Curve.decodePoint(signedPreKeyPublicKey, 0),
+      signedPreKeySignature,
+      IdentityKey.fromBytes(remoteIdentityPublicKey, 0),
+    );
   }
 
   Future<SecretKey> getSecretKeys() async {

@@ -1,3 +1,4 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
@@ -6,6 +7,7 @@ import 'package:social_media_app/constants/hive_type_id.dart';
 
 part 'user.g.dart';
 
+@CopyWith()
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.users)
 class User extends HiveObject {
@@ -21,7 +23,7 @@ class User extends HiveObject {
     required this.followingStatus,
     required this.accountStatus,
     required this.isVerified,
-    this.publicKeys,
+    this.deviceId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -74,9 +76,9 @@ class User extends HiveObject {
   @HiveField(10)
   bool isVerified;
 
-  @JsonKey(name: 'publicKeys')
+  @JsonKey(name: 'deviceId')
   @HiveField(11)
-  ServerKey? publicKeys;
+  String? deviceId;
 
   @JsonKey(name: 'createdAt')
   @HiveField(12)

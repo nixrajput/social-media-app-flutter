@@ -46,6 +46,9 @@ abstract class AppUrls {
   static const String getLoginInfoEndpoint = '/get-device-info';
   static const String deleteDeviceInfoEndpoint = '/delete-device-info';
 
+  static const String preKeyBundleEndpoint = '/pre-key-bundle';
+  static const String deviceIdEndpoint = '/device-id';
+
   static const String searchUserEndpoint = '/search-user';
   static const String followUserEndpoint = '/follow-user';
   static const String getFollowRequests = '/get-follow-requests';

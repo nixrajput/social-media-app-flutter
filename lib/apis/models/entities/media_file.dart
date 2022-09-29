@@ -1,9 +1,11 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/constants/hive_type_id.dart';
 
 part 'media_file.g.dart';
 
+@CopyWith()
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.mediaFile)
 class MediaFile extends HiveObject {

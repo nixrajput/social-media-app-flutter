@@ -30,97 +30,60 @@ class HomeTabView extends StatelessWidget {
         child: NxRefreshIndicator(
           onRefresh: () => PostController.find.fetchPosts(),
           showProgress: false,
-          child: Stack(
-            children: [
-              CustomScrollView(
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                slivers: [
-                  NxSliverAppBar(
-                    bgColor: Theme.of(context).scaffoldBackgroundColor,
-                    leading: AppUtility.buildAppLogo(),
-                    actions: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GetBuilder<FollowRequestController>(
-                          builder: (logic) => Stack(
-                            children: [
-                              InkWell(
-                                onTap: RouteManagement.goToFollowRequestsView,
-                                child: Icon(
-                                  Icons.person_add_alt_rounded,
-                                  size: Dimens.twentyFour,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color,
-                                ),
-                              ),
-                              if (logic.followRequestData != null &&
-                                  logic.followRequestList.isNotEmpty)
-                                Positioned(
-                                  right: Dimens.zero,
-                                  top: Dimens.two,
-                                  child: Container(
-                                    width: Dimens.six,
-                                    height: Dimens.six,
-                                    decoration: const BoxDecoration(
-                                      color: ColorValues.errorColor,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                        Dimens.boxWidth12,
-                        InkWell(
-                          onTap: RouteManagement.goToChatsView,
-                          child: Icon(
-                            Icons.send,
-                            size: Dimens.twentyFour,
-                            color: Theme.of(context).textTheme.bodyText1!.color,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  _buildBody(),
-                ],
-              ),
-              Positioned(
-                bottom: Dimens.sixTeen,
-                right: Dimens.sixTeen,
-                child: InkWell(
-                  onTap: _showCreatePostOptions,
-                  child: Container(
-                    padding: Dimens.edgeInsets12,
-                    constraints: BoxConstraints(
-                      minWidth: Dimens.fourty,
-                      minHeight: Dimens.fourty,
-                    ),
-                    decoration: BoxDecoration(
-                        color: ColorValues.primaryColor,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            offset: Offset(Dimens.zero, Dimens.eight),
-                            blurRadius: Dimens.eight,
-                            color: ColorValues.blackColor.withOpacity(0.1),
-                          )
-                        ]),
-                    child: Center(
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            slivers: [
+              NxSliverAppBar(
+                bgColor: Theme.of(context).scaffoldBackgroundColor,
+                leading: AppUtility.buildAppLogo(),
+                actions: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: _showCreatePostOptions,
                       child: Icon(
-                        Icons.add_outlined,
-                        size: Dimens.thirtyTwo,
-                        color: ColorValues.whiteColor,
+                        Icons.add_circle_outline_rounded,
+                        size: Dimens.twentyFour,
+                        color: Theme.of(context).textTheme.bodyText1!.color,
                       ),
                     ),
-                  ),
+                    Dimens.boxWidth12,
+                    GetBuilder<FollowRequestController>(
+                      builder: (logic) => Stack(
+                        children: [
+                          InkWell(
+                            onTap: RouteManagement.goToFollowRequestsView,
+                            child: Icon(
+                              Icons.person_add_alt_rounded,
+                              size: Dimens.twentyFour,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color,
+                            ),
+                          ),
+                          if (logic.followRequestData != null &&
+                              logic.followRequestList.isNotEmpty)
+                            Positioned(
+                              right: Dimens.zero,
+                              top: Dimens.two,
+                              child: Container(
+                                width: Dimens.six,
+                                height: Dimens.six,
+                                decoration: const BoxDecoration(
+                                  color: ColorValues.errorColor,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              _buildBody(),
             ],
           ),
         ),

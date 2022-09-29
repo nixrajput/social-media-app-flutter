@@ -5,7 +5,6 @@ class CountryCode {
     required this.dialCode,
   });
 
-  /// Converts the country code from map to the actual item.
   factory CountryCode.fromMap(Map<String, dynamic> map) {
     return CountryCode(
       name: map['name'] as String? ?? 'India',

@@ -3,6 +3,139 @@
 part of 'comment.dart';
 
 // **************************************************************************
+// CopyWithGenerator
+// **************************************************************************
+
+abstract class _$CommentCWProxy {
+  Comment comment(String comment);
+
+  Comment commentStatus(String commentStatus);
+
+  Comment createdAt(DateTime createdAt);
+
+  Comment id(String id);
+
+  Comment likesCount(int likesCount);
+
+  Comment post(String post);
+
+  Comment updatedAt(DateTime updatedAt);
+
+  Comment user(User user);
+
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Comment(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  ///
+  /// Usage
+  /// ```dart
+  /// Comment(...).copyWith(id: 12, name: "My name")
+  /// ````
+  Comment call({
+    String? comment,
+    String? commentStatus,
+    DateTime? createdAt,
+    String? id,
+    int? likesCount,
+    String? post,
+    DateTime? updatedAt,
+    User? user,
+  });
+}
+
+/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfComment.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfComment.copyWith.fieldName(...)`
+class _$CommentCWProxyImpl implements _$CommentCWProxy {
+  final Comment _value;
+
+  const _$CommentCWProxyImpl(this._value);
+
+  @override
+  Comment comment(String comment) => this(comment: comment);
+
+  @override
+  Comment commentStatus(String commentStatus) =>
+      this(commentStatus: commentStatus);
+
+  @override
+  Comment createdAt(DateTime createdAt) => this(createdAt: createdAt);
+
+  @override
+  Comment id(String id) => this(id: id);
+
+  @override
+  Comment likesCount(int likesCount) => this(likesCount: likesCount);
+
+  @override
+  Comment post(String post) => this(post: post);
+
+  @override
+  Comment updatedAt(DateTime updatedAt) => this(updatedAt: updatedAt);
+
+  @override
+  Comment user(User user) => this(user: user);
+
+  @override
+
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Comment(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  ///
+  /// Usage
+  /// ```dart
+  /// Comment(...).copyWith(id: 12, name: "My name")
+  /// ````
+  Comment call({
+    Object? comment = const $CopyWithPlaceholder(),
+    Object? commentStatus = const $CopyWithPlaceholder(),
+    Object? createdAt = const $CopyWithPlaceholder(),
+    Object? id = const $CopyWithPlaceholder(),
+    Object? likesCount = const $CopyWithPlaceholder(),
+    Object? post = const $CopyWithPlaceholder(),
+    Object? updatedAt = const $CopyWithPlaceholder(),
+    Object? user = const $CopyWithPlaceholder(),
+  }) {
+    return Comment(
+      comment: comment == const $CopyWithPlaceholder() || comment == null
+          ? _value.comment
+          // ignore: cast_nullable_to_non_nullable
+          : comment as String,
+      commentStatus:
+          commentStatus == const $CopyWithPlaceholder() || commentStatus == null
+              ? _value.commentStatus
+              // ignore: cast_nullable_to_non_nullable
+              : commentStatus as String,
+      createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
+          ? _value.createdAt
+          // ignore: cast_nullable_to_non_nullable
+          : createdAt as DateTime,
+      id: id == const $CopyWithPlaceholder() || id == null
+          ? _value.id
+          // ignore: cast_nullable_to_non_nullable
+          : id as String,
+      likesCount:
+          likesCount == const $CopyWithPlaceholder() || likesCount == null
+              ? _value.likesCount
+              // ignore: cast_nullable_to_non_nullable
+              : likesCount as int,
+      post: post == const $CopyWithPlaceholder() || post == null
+          ? _value.post
+          // ignore: cast_nullable_to_non_nullable
+          : post as String,
+      updatedAt: updatedAt == const $CopyWithPlaceholder() || updatedAt == null
+          ? _value.updatedAt
+          // ignore: cast_nullable_to_non_nullable
+          : updatedAt as DateTime,
+      user: user == const $CopyWithPlaceholder() || user == null
+          ? _value.user
+          // ignore: cast_nullable_to_non_nullable
+          : user as User,
+    );
+  }
+}
+
+extension $CommentCopyWith on Comment {
+  /// Returns a callable class that can be used as follows: `instanceOfComment.copyWith(...)` or like so:`instanceOfComment.copyWith.fieldName(...)`.
+  // ignore: library_private_types_in_public_api
+  _$CommentCWProxy get copyWith => _$CommentCWProxyImpl(this);
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
