@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
    <application
-        android:label="Rippl!"
+        android:label="Rippl"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

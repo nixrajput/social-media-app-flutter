@@ -1,7 +1,6 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
-import 'package:social_media_app/apis/models/entities/server_key.dart';
 
 part 'user_details.g.dart';
 

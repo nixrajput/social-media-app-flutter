@@ -5,10 +5,8 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/global_widgets/circular_network_image.dart';
 import 'package:social_media_app/global_widgets/keep_alive_page.dart';
-import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
-import 'package:social_media_app/modules/home/views/tab_views/chats_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/home_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/notification_tab.dart';
 import 'package:social_media_app/modules/home/views/tab_views/profile_tab.dart';
@@ -31,7 +29,7 @@ class HomeController extends GetxController {
       const KeepAlivePage(child: HomeTabView()),
       const KeepAlivePage(child: TrendingTabView()),
       const KeepAlivePage(child: NotificationTabView()),
-      const KeepAlivePage(child: ChatsTabView()),
+      // const KeepAlivePage(child: ChatsTabView()),
       const KeepAlivePage(child: ProfileTabView()),
     ];
   }
@@ -74,32 +72,32 @@ class HomeController extends GetxController {
         ),
         label: StringValues.notifications,
       ),
-      BottomNavigationBarItem(
-        icon: GetBuilder<ChatController>(
-          builder: (logic) => Column(
-            children: [
-              if (logic.chats
-                  .map((e) =>
-                      e.receiver!.id ==
-                          ProfileController.find.profileDetails!.user!.id &&
-                      e.seen == false)
-                  .contains(false))
-                Container(
-                  width: Dimens.six,
-                  height: Dimens.six,
-                  decoration: const BoxDecoration(
-                    color: ColorValues.errorColor,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              _currentPageIndex.value == 3
-                  ? const Icon(Icons.email)
-                  : const Icon(Icons.email_outlined)
-            ],
-          ),
-        ),
-        label: StringValues.message,
-      ),
+      // BottomNavigationBarItem(
+      //   icon: GetBuilder<ChatController>(
+      //     builder: (logic) => Column(
+      //       children: [
+      //         if (logic.chats
+      //             .map((e) =>
+      //                 e.receiver!.id ==
+      //                     ProfileController.find.profileDetails!.user!.id &&
+      //                 e.seen == false)
+      //             .contains(false))
+      //           Container(
+      //             width: Dimens.six,
+      //             height: Dimens.six,
+      //             decoration: const BoxDecoration(
+      //               color: ColorValues.errorColor,
+      //               shape: BoxShape.circle,
+      //             ),
+      //           ),
+      //         _currentPageIndex.value == 3
+      //             ? const Icon(Icons.email)
+      //             : const Icon(Icons.email_outlined)
+      //       ],
+      //     ),
+      //   ),
+      //   label: StringValues.message,
+      // ),
       BottomNavigationBarItem(
         icon: GetBuilder<ProfileController>(
           builder: (logic) {
@@ -115,10 +113,10 @@ class HomeController extends GetxController {
                   Dimens.fourtyEight * 2,
                 ),
                 border: Border.all(
-                  color: currentPageIndex == 4
+                  color: currentPageIndex == 3
                       ? ColorValues.primaryColor
                       : Colors.transparent,
-                  width: currentPageIndex == 4 ? Dimens.two : Dimens.zero,
+                  width: currentPageIndex == 3 ? Dimens.two : Dimens.zero,
                 ),
               ),
               child: NxCircleNetworkImage(

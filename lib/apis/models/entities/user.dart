@@ -2,7 +2,6 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
-import 'package:social_media_app/apis/models/entities/server_key.dart';
 import 'package:social_media_app/constants/hive_type_id.dart';
 
 part 'user.g.dart';
