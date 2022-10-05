@@ -52,8 +52,8 @@ class EditProfilePictureController extends GetxController {
 
     if (pickedImage != null) {
       var croppedFile = await imageCropper.cropImage(
-        maxWidth: 400,
-        maxHeight: 400,
+        maxWidth: 1080,
+        maxHeight: 1080,
         sourcePath: pickedImage.path,
         compressFormat: ImageCompressFormat.jpg,
         aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),

@@ -67,6 +67,9 @@ abstract class AppUrls {
   static const String markNotificationsReadEndpoint = '/mark-read-notification';
   static const String deleteNotificationsEndpoint = '/delete-notification';
 
+  static const String getAllLastMessageEndpoint = '/get-all-last-messages';
+  static const String getMessagesByIdEndpoint = '/get-messages-by-id';
+
   static const String checkAppUpdateEndpoint =
       '/repos/nixrajput/social-media-app-flutter/releases/latest';
 }

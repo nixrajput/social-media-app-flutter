@@ -6,6 +6,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
 class CommentWidget extends StatelessWidget {
   const CommentWidget({Key? key, required this.comment}) : super(key: key);
@@ -26,9 +27,13 @@ class CommentWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AvatarWidget(
-                avatar: comment.user.avatar,
-                size: Dimens.twentyFour,
+              GestureDetector(
+                onTap: () =>
+                    RouteManagement.goToUserProfileView(comment.user.id),
+                child: AvatarWidget(
+                  avatar: comment.user.avatar,
+                  size: Dimens.twentyFour,
+                ),
               ),
               Dimens.boxWidth8,
               Expanded(
@@ -40,9 +45,13 @@ class CommentWidget extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          comment.user.uname,
-                          style: AppStyles.style13Bold,
+                        GestureDetector(
+                          onTap: () => RouteManagement.goToUserProfileView(
+                              comment.user.id),
+                          child: Text(
+                            comment.user.uname,
+                            style: AppStyles.style13Bold,
+                          ),
                         ),
                         Dimens.boxWidth4,
                         Container(

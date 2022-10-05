@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/responses/chat_message_list_response.dart';
 import 'package:social_media_app/apis/models/responses/chat_message_response.dart';
+import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/secrets.dart';
-import 'package:social_media_app/e2ee/signal_protocol_manager.dart';
+import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -17,26 +20,32 @@ class ChatController extends GetxController {
   static ChatController get find => Get.find();
 
   final _auth = AuthService.find;
+  final _apiProvider = ApiProvider(http.Client());
   final _hiveService = HiveService();
   final profile = ProfileController.find;
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
-  final _chatListData = const ChatMessageListResponse().obs;
-  final List<ChatMessage> _chats = [];
+  final _lastMessageData = const ChatMessageListResponse().obs;
   late final WebSocketChannel channel;
-  late SignalProtocolManager signalProtocolManager;
-  final List<ChatMessage> _conversations = [];
+  // late SignalProtocolManager signalProtocolManager;
+  final List<ChatMessage> _lastMessageList = [];
+  final List<ChatMessage> _allMessages = [];
 
   /// Getters
   bool get isLoading => _isLoading.value;
 
   bool get isMoreLoading => _isMoreLoading.value;
 
-  ChatMessageListResponse? get chatListData => _chatListData.value;
+  ChatMessageListResponse? get lastMessageData => _lastMessageData.value;
 
-  List<ChatMessage> get chats => _chats;
-  List<ChatMessage> get conversations => _conversations;
+  List<ChatMessage> get lastMessageList => _lastMessageList;
+
+  List<ChatMessage> get allMessages => _allMessages;
+
+  /// Setters
+  set setLastMessageData(ChatMessageListResponse response) =>
+      _lastMessageData.value = response;
 
   @override
   void onClose() {
@@ -46,14 +55,8 @@ class ChatController extends GetxController {
 
   void initialize() {
     _initChannel().then((_) {
-      _getAllLastConversation();
+      _getData();
     });
-  }
-
-  void addToChatList(ChatMessage message) async {
-    _chats.add(message);
-    update();
-    await _hiveService.addBox('chats', jsonEncode(_chats));
   }
 
   Future<void> _initChannel() async {
@@ -87,14 +90,14 @@ class ChatController extends GetxController {
     //
     // signalProtocolManager = SignalProtocolManager(protocolStore);
 
-    var isChatDataExists = await _hiveService.isExists(boxName: 'chats');
+    // var isChatDataExists = await _hiveService.isExists(boxName: 'chats');
 
-    // if (isChatDataExists) {
-    //   var data = await _hiveService.getBox('chats');
-    //   var decodedData = jsonDecode(data) as Iterable<ChatMessage>;
-    //   _chats.addAll(decodedData);
-    //   update();
-    // }
+    // // if (isChatDataExists) {
+    // //   var data = await _hiveService.getBox('chats');
+    // //   var decodedData = jsonDecode(data) as Iterable<ChatMessage>;
+    // //   _chats.addAll(decodedData);
+    // //   update();
+    // // }
 
     channel = WebSocketChannel.connect(
         Uri.parse('${AppSecrets.awsWebSocketUrl}?token=${_auth.token}'));
@@ -102,39 +105,30 @@ class ChatController extends GetxController {
     channel.stream.listen(
       (value) async {
         var decodedData = jsonDecode(value);
-        //AppUtility.printLog(decodedData['data']);
-
-        if (decodedData['results'] != null) {
-          _chatListData.value = ChatMessageListResponse.fromJson(decodedData);
-          for (var element in _chatListData.value.results!) {
-            var isSame = _checkIfSameMessage(element);
-            if (!isSame) {
-              _chats.add(element);
-            }
-            var index = _checkIfAlreadyPresent(element);
-            if (index < 0) {
-              _conversations.add(element);
-            } else {
-              var oldMessage = _conversations.elementAt(index);
-              var isAfter = _checkIfLatestChat(oldMessage, element);
-              if (isAfter) {
-                _conversations.remove(oldMessage);
-                _conversations.add(element);
-              }
-            }
-          }
-          update();
-          AppUtility.printLog("Chat List Added");
-        }
         if (decodedData['data'] != null) {
           var chatResponse = ChatMessageResponse.fromJson(decodedData);
-          var encryptedMessage = chatResponse.data!.message!;
-          var decryptedMessage = await _decryptMessage(encryptedMessage);
-          var decrypted =
-              chatResponse.data!.copyWith(message: decryptedMessage);
-          _chats.add(decrypted);
-          update();
-          await _hiveService.addBox('chats', jsonEncode(_chats));
+          var encryptedMessage = chatResponse.data!;
+
+          if (!_checkIfSameMessageInAllMessages(encryptedMessage)) {
+            _allMessages.add(encryptedMessage);
+            update();
+          }
+
+          if (!_checkIfSameMessageInLastMessages(encryptedMessage)) {
+            var index = _checkIfAlreadyPresentInLastMessages(encryptedMessage);
+            if (index < 0) {
+              _lastMessageList.add(encryptedMessage);
+            } else {
+              var oldMessage = _lastMessageList.elementAt(index);
+              var isAfter = _checkIfLatestChatInLastMessages(
+                  oldMessage, encryptedMessage);
+              if (isAfter) {
+                _lastMessageList.remove(oldMessage);
+                _lastMessageList.add(encryptedMessage);
+              }
+            }
+            update();
+          }
           AppUtility.printLog("Chat Added");
         }
       },
@@ -142,31 +136,53 @@ class ChatController extends GetxController {
         AppUtility.printLog(err);
       },
     );
+
+    //get-undelivered-messages
+    channel.sink.add(jsonEncode({
+      'type': 'get-undelivered-messages',
+    }));
   }
 
-  Future<String> _decryptMessage(String encryptedMessage) async {
-    var decryptedMessage = String.fromCharCodes(base64Decode(encryptedMessage));
-    AppUtility.printLog("decryptedMessage: $decryptedMessage");
+  void addToAllMessages(ChatMessage message) async {
+    if (_checkIfSameMessageInAllMessages(message)) {
+      return;
+    }
+    _allMessages.add(message);
+    update();
+    // await _hiveService.addBox('lastMessage', jsonEncode(_lastMessageData));
+  }
+
+  String decryptMessage(String encryptedMessage) {
+    var decryptedMessage = utf8.decode(base64Decode(encryptedMessage));
+    //AppUtility.printLog("decryptedMessage: $decryptedMessage");
     return decryptedMessage;
   }
 
-  bool _checkIfSameMessage(ChatMessage message) {
-    var item = _conversations.any((element) => element.id == message.id);
+  bool _checkIfSameMessageInLastMessages(ChatMessage message) {
+    var item = _lastMessageList.any((element) => element.id == message.id);
 
     if (item) return true;
 
     return false;
   }
 
-  int _checkIfAlreadyPresent(ChatMessage message) {
-    var item = _conversations.any((element) =>
+  bool _checkIfSameMessageInAllMessages(ChatMessage message) {
+    var item = _allMessages.any((element) => element.id == message.id);
+
+    if (item) return true;
+
+    return false;
+  }
+
+  int _checkIfAlreadyPresentInLastMessages(ChatMessage message) {
+    var item = _lastMessageList.any((element) =>
         (element.sender!.id == message.sender!.id &&
             element.receiver!.id == message.receiver!.id) ||
         (element.sender!.id == message.receiver!.id &&
             element.receiver!.id == message.sender!.id));
 
     if (item) {
-      var index = _conversations.indexWhere((element) =>
+      var index = _lastMessageList.indexWhere((element) =>
           (element.sender!.id == message.sender!.id &&
               element.receiver!.id == message.receiver!.id) ||
           (element.sender!.id == message.receiver!.id &&
@@ -176,27 +192,148 @@ class ChatController extends GetxController {
     return -1;
   }
 
-  bool _checkIfLatestChat(ChatMessage oldMessage, ChatMessage newMessage) {
+  bool _checkIfLatestChatInLastMessages(
+      ChatMessage oldMessage, ChatMessage newMessage) {
     var isAfter = newMessage.createdAt!.isAfter(oldMessage.createdAt!);
     if (isAfter) return true;
     return false;
   }
 
-  //get-all-conversations
-  //get-undelivered-messages
-  //get-message-by-id
+  _getData() async {
+    var isExists = await _hiveService.isExists(boxName: 'lastMessage');
 
-  _getAllLastConversation({int? page}) {
-    channel.sink.add(
-      jsonEncode(
-        {
-          'type': 'get-all-conversations',
-          'payload': {
-            'limit': 5,
-            'page': page,
-          }
-        },
-      ),
-    );
+    if (isExists) {
+      // await _hiveService.clearBox('lastMessage');
+
+      var data = await _hiveService.getBox('lastMessage');
+      var cachedData = jsonDecode(data);
+      setLastMessageData = ChatMessageListResponse.fromJson(cachedData);
+      _lastMessageList.clear();
+      _lastMessageList.addAll(_lastMessageData.value.results!);
+      _allMessages.clear();
+      _allMessages.addAll(_lastMessageData.value.results!);
+    }
+    update();
+
+    await _fetchLastMessages();
   }
+
+  Future<void> _fetchLastMessages() async {
+    AppUtility.printLog("Fetching Last Messages Request");
+    _isLoading.value = true;
+    update();
+
+    try {
+      final response = await _apiProvider.getAllLastMessages(_auth.token);
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        AppUtility.printLog("Fetching Last Messages Success");
+        setLastMessageData = ChatMessageListResponse.fromJson(decodedData);
+        _lastMessageList.clear();
+        _lastMessageList.addAll(_lastMessageData.value.results!);
+        _allMessages.clear();
+        _allMessages.addAll(_lastMessageData.value.results!);
+        await _hiveService.addBox('lastMessage', jsonEncode(decodedData));
+        _isLoading.value = false;
+        update();
+      } else {
+        _isLoading.value = false;
+        update();
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+        AppUtility.printLog("Fetching Last Messages Error");
+      }
+    } on SocketException {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Fetching Last Messages Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Fetching Last Messages Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Fetching Last Messages Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _isLoading.value = false;
+      update();
+      AppUtility.printLog("Fetching Last Messages Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+  }
+
+  Future<void> _loadMore({int? page}) async {
+    AppUtility.printLog("Fetching More Last Messages Request");
+    _isMoreLoading.value = true;
+    update();
+
+    try {
+      final response =
+          await _apiProvider.getAllLastMessages(_auth.token, page: page);
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        setLastMessageData = ChatMessageListResponse.fromJson(decodedData);
+        _lastMessageList.addAll(_lastMessageData.value.results!);
+        _allMessages.addAll(_lastMessageData.value.results!);
+        _isMoreLoading.value = false;
+        update();
+        AppUtility.printLog("Fetching More Last Messages Success");
+      } else {
+        _isMoreLoading.value = false;
+        update();
+        AppUtility.printLog("Fetching More Last Messages Error");
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } on SocketException {
+      _isMoreLoading.value = false;
+      update();
+      AppUtility.printLog("Fetching More Last Messages Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _isMoreLoading.value = false;
+      update();
+      AppUtility.printLog("Fetching More Last Messages Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _isMoreLoading.value = false;
+      update();
+      AppUtility.printLog("Fetching More Last Messages Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _isMoreLoading.value = false;
+      update();
+      AppUtility.printLog("Fetching More Last Messages Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+  }
+
+  Future<void> fetchLastMessages() async => await _fetchLastMessages();
+
+  Future<void> loadMore() async =>
+      await _loadMore(page: _lastMessageData.value.currentPage! + 1);
 }

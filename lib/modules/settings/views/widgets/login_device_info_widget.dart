@@ -69,7 +69,7 @@ class LoginDeviceInfoWidget extends StatelessWidget {
                       color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                     ),
                   ),
-                  if (item.deviceId == AuthService.find.deviceId)
+                  if (item.deviceId == AuthService.find.deviceId.toString())
                     TextSpan(
                       text: "  •",
                       style: AppStyles.style14Bold.copyWith(
@@ -137,7 +137,7 @@ class LoginDeviceInfoWidget extends StatelessWidget {
                   ),
                   onTap: () async {
                     AppUtility.closeDialog();
-                    if (deviceId == AuthService.find.deviceId) {
+                    if (deviceId == AuthService.find.deviceId.toString()) {
                       await AuthService.find.logout();
                       RouteManagement.goToWelcomeView();
                       return;

@@ -34,7 +34,7 @@ class SingleChatView extends StatelessWidget {
                 width: Dimens.screenWidth,
                 height: Dimens.screenHeight,
                 child: NxRefreshIndicator(
-                  onRefresh: () async {},
+                  onRefresh: logic.fetchLatestMessages,
                   showProgress: false,
                   child: Stack(
                     children: [
@@ -123,6 +123,23 @@ class SingleChatView extends StatelessWidget {
                           ),
                         ),
                       ),
+                      if (logic.scrollToBottom == false)
+                        Positioned(
+                          bottom: Dimens.hundred,
+                          right: Dimens.sixTeen,
+                          child: Container(
+                            padding: Dimens.edgeInsets8,
+                            decoration: const BoxDecoration(
+                                color: ColorValues.primaryColor,
+                                shape: BoxShape.circle),
+                            child: NxIconButton(
+                              icon: Icons.arrow_downward,
+                              iconSize: Dimens.twentyFour,
+                              iconColor: ColorValues.whiteColor,
+                              onTap: logic.scrollToLast,
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -144,6 +161,8 @@ class SingleChatView extends StatelessWidget {
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
+        reverse: true,
+        controller: logic.scrollController,
         padding: Dimens.edgeInsets0_16,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -151,19 +170,18 @@ class SingleChatView extends StatelessWidget {
           children: [
             GetBuilder<ChatController>(
               builder: (chatsLogic) {
-                chatsLogic.chats
+                chatsLogic.allMessages
                     .sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    if (chatsLogic.chatListData!.hasNextPage!)
+                    if (logic.messageData!.hasNextPage!)
                       Center(
                         child: NxTextButton(
-                          label: 'Load more messages',
-                          onTap: () => logic.loadMoreMessages(
-                              chatsLogic.chatListData!.currentPage!),
+                          label: 'Load older messages',
+                          onTap: () => logic.loadMore(),
                           labelStyle: AppStyles.style14Bold.copyWith(
                             color: ColorValues.primaryLightColor,
                           ),
@@ -174,7 +192,7 @@ class SingleChatView extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: chatsLogic.chats
+                      children: chatsLogic.allMessages
                           .where((element) =>
                               (element.sender!.id ==
                                       ProfileController
@@ -213,7 +231,7 @@ class SingleChatView extends StatelessWidget {
                                         ? BubbleType.sendBubble
                                         : BubbleType.receiverBubble),
                                     child: Text(
-                                      e.message!,
+                                      chatsLogic.decryptMessage(e.message!),
                                       style: AppStyles.style13Normal,
                                     ),
                                   ),

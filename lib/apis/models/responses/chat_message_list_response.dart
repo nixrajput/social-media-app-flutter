@@ -8,7 +8,6 @@ part 'chat_message_list_response.g.dart';
 class ChatMessageListResponse extends Equatable {
   const ChatMessageListResponse({
     this.success,
-    this.message,
     this.currentPage,
     this.totalPages,
     this.limit,
@@ -27,9 +26,6 @@ class ChatMessageListResponse extends Equatable {
   @JsonKey(name: 'success')
   final bool? success;
 
-  @JsonKey(name: 'message')
-  final String? message;
-
   @JsonKey(name: 'currentPage')
   final int? currentPage;
 
@@ -43,13 +39,13 @@ class ChatMessageListResponse extends Equatable {
   final bool? hasPrevPage;
 
   @JsonKey(name: 'prevPage')
-  final int? prevPage;
+  final String? prevPage;
 
   @JsonKey(name: 'hasNextPage')
   final bool? hasNextPage;
 
   @JsonKey(name: 'nextPage')
-  final int? nextPage;
+  final String? nextPage;
 
   @JsonKey(name: 'results')
   final List<ChatMessage>? results;
@@ -57,7 +53,6 @@ class ChatMessageListResponse extends Equatable {
   @override
   List<Object?> get props => <Object?>[
         success,
-        message,
         currentPage,
         totalPages,
         limit,

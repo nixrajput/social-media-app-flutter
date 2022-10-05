@@ -857,6 +857,36 @@ class ApiProvider {
     return response;
   }
 
+  /// Chat ---------------------------------------------------------------------
+
+  Future<http.Response> getAllLastMessages(String token,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl!}${AppUrls.getAllLastMessageEndpoint}?page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
+  Future<http.Response> getMessagesById(String token, String id,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl!}${AppUrls.getMessagesByIdEndpoint}?id=$id&page=$page&limit=$limit'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+    );
+
+    return response;
+  }
+
   /// App Update ---------------------------------------------------------------
 
   Future<http.Response> getLatestReleaseInfo() async {

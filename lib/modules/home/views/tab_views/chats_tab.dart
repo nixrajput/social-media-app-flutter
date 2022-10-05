@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -22,7 +25,7 @@ class ChatsTabView extends StatelessWidget {
           width: Dimens.screenWidth,
           height: Dimens.screenHeight,
           child: NxRefreshIndicator(
-            onRefresh: () async {},
+            onRefresh: ChatController.find.fetchLastMessages,
             showProgress: false,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -46,6 +49,8 @@ class ChatsTabView extends StatelessWidget {
     return Expanded(
       child: GetBuilder<ChatController>(
         builder: (logic) {
+          logic.lastMessageList
+              .sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
@@ -55,7 +60,8 @@ class ChatsTabView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (logic.chatListData == null || logic.chats.isEmpty)
+                if (logic.lastMessageData == null ||
+                    logic.lastMessageList.isEmpty)
                   Center(
                     child: Text(
                       StringValues.noConversation,
@@ -68,10 +74,12 @@ class ChatsTabView extends StatelessWidget {
                   )
                 else
                   Column(
-                    children: logic.conversations
+                    children: logic.lastMessageList
                         .map(
                           (item) => ChatWidget(
                             chat: item,
+                            totalLength: logic.lastMessageList.length,
+                            index: logic.lastMessageList.indexOf(item),
                             onTap: () => RouteManagement.goToChatDetailsView(
                               item.sender!.id ==
                                       ProfileController
@@ -87,6 +95,20 @@ class ChatsTabView extends StatelessWidget {
                           ),
                         )
                         .toList(),
+                  ),
+                if (logic.isMoreLoading) Dimens.boxHeight8,
+                if (logic.isMoreLoading)
+                  const Center(child: NxCircularProgressIndicator()),
+                if (!logic.isMoreLoading && logic.lastMessageData!.hasNextPage!)
+                  Center(
+                    child: NxTextButton(
+                      label: 'Load more',
+                      onTap: logic.loadMore,
+                      labelStyle: AppStyles.style14Bold.copyWith(
+                        color: ColorValues.primaryLightColor,
+                      ),
+                      padding: Dimens.edgeInsets8_0,
+                    ),
                   ),
                 Dimens.boxHeight16,
               ],

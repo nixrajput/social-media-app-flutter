@@ -7,7 +7,7 @@ part 'chat_message.g.dart';
 @CopyWith()
 @JsonSerializable()
 class ChatMessage {
-  const ChatMessage({
+  ChatMessage({
     this.id,
     this.message,
     this.type,
@@ -44,22 +44,22 @@ class ChatMessage {
   final User? receiver;
 
   @JsonKey(name: 'delivered')
-  final bool? delivered;
+  bool? delivered;
 
   @JsonKey(name: 'deliveredAt')
-  final DateTime? deliveredAt;
+  DateTime? deliveredAt;
 
   @JsonKey(name: 'seen')
-  final bool? seen;
+  bool? seen;
 
   @JsonKey(name: 'seenAt')
-  final DateTime? seenAt;
+  DateTime? seenAt;
 
   @JsonKey(name: 'deleted')
-  final bool? deleted;
+  bool? deleted;
 
   @JsonKey(name: 'deletedAt')
-  final DateTime? deletedAt;
+  DateTime? deletedAt;
 
   @JsonKey(name: 'createdAt')
   final DateTime? createdAt;

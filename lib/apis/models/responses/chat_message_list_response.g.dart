@@ -10,14 +10,13 @@ ChatMessageListResponse _$ChatMessageListResponseFromJson(
         Map<String, dynamic> json) =>
     ChatMessageListResponse(
       success: json['success'] as bool?,
-      message: json['message'] as String?,
       currentPage: json['currentPage'] as int?,
       totalPages: json['totalPages'] as int?,
       limit: json['limit'] as int?,
       hasPrevPage: json['hasPrevPage'] as bool?,
-      prevPage: json['prevPage'] as int?,
+      prevPage: json['prevPage'] as String?,
       hasNextPage: json['hasNextPage'] as bool?,
-      nextPage: json['nextPage'] as int?,
+      nextPage: json['nextPage'] as String?,
       results: (json['results'] as List<dynamic>?)
           ?.map((e) => ChatMessage.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -27,7 +26,6 @@ Map<String, dynamic> _$ChatMessageListResponseToJson(
         ChatMessageListResponse instance) =>
     <String, dynamic>{
       'success': instance.success,
-      'message': instance.message,
       'currentPage': instance.currentPage,
       'totalPages': instance.totalPages,
       'limit': instance.limit,
