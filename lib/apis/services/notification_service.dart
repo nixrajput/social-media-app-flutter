@@ -26,7 +26,7 @@ class NotificationService {
   }
 
   void showNotification({
-    required String title,
+    String? title,
     required String body,
     int? id,
     String? channelId,
@@ -35,9 +35,11 @@ class NotificationService {
     String? largeIcon,
   }) async {
     var androidNot = AndroidNotificationDetails(
-      channelId ?? 'Rippl notifications',
-      channelName ?? 'Rippl notifications',
+      channelId ?? 'General Notifications',
+      channelName ?? 'General Notifications',
       priority: priority == true ? Priority.high : Priority.defaultPriority,
+      importance:
+          priority == true ? Importance.max : Importance.defaultImportance,
     );
     var iosNot = DarwinNotificationDetails(
       interruptionLevel: priority == true
@@ -49,6 +51,12 @@ class NotificationService {
       iOS: iosNot,
     );
 
-    await _notificationPlugin.show(id ?? 0, title, body, platformNot);
+    await _notificationPlugin.show(
+      id ?? 0,
+      title,
+      body,
+      platformNot,
+      payload: 'Default_Sound',
+    );
   }
 }

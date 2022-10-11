@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -7,6 +6,24 @@ import 'package:flutter/foundation.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/apis/services/notification_service.dart';
 import 'package:social_media_app/utils/utility.dart';
+
+@pragma('vm:entry-point')
+int setNotificationId(String type) {
+  switch (type) {
+    case 'Chats':
+      return 2;
+    case 'Followers':
+      return 3;
+    case 'Likes':
+      return 4;
+    case 'Comments':
+      return 5;
+    case 'Follow Requests':
+      return 6;
+    default:
+      return 1;
+  }
+}
 
 @pragma('vm:entry-point')
 Future<void> initializeFirebaseService() async {
@@ -62,23 +79,20 @@ Future<void> initializeFirebaseService() async {
 
     if (message.data.isNotEmpty) {
       var messageData = message.data;
-      var extras = jsonDecode(messageData['extra']);
 
-      var senderName = extras['senderName'];
-      var messageBody = extras['message'];
-      String? decryptedMessage;
-      if (messageBody != null) {
-        decryptedMessage = utf8.decode(base64Decode(messageBody));
-      }
+      var title = messageData['title'];
+      var body = messageData['body'];
+      var imageUrl = messageData['image'];
+      var type = messageData['type'];
 
       notificationService.showNotification(
-        title: senderName ?? messageData['title'],
-        body: decryptedMessage ?? messageData['body'],
+        title: title ?? '',
+        body: body ?? '',
         priority: true,
-        channelId:
-            messageData['type'] == 'chat' ? 'Chats' : 'Rippl notifications',
-        channelName:
-            messageData['type'] == 'chat' ? 'Chats' : 'Rippl notifications',
+        id: setNotificationId(type),
+        largeIcon: imageUrl,
+        channelId: type ?? 'General Notifications',
+        channelName: type ?? 'General notifications',
       );
     }
 
@@ -87,22 +101,6 @@ Future<void> initializeFirebaseService() async {
           'Message also contained a notification: ${message.notification}');
     }
   });
-
-  // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-  //   debugPrint('A new onMessageOpenedApp event was published!');
-  //   debugPrint('Message data: ${message.data}');
-
-  //   if (message.notification != null) {
-  //     notificationService.showNotification(
-  //       title: message.notification!.title!,
-  //       body: message.notification!.body!,
-  //       channelId: 'Rippl notifications',
-  //       channelName: 'Rippl notifications',
-  //     );
-  //     debugPrint(
-  //         'Message also contained a notification: ${message.notification}');
-  //   }
-  // });
 }
 
 @pragma('vm:entry-point')
@@ -118,23 +116,20 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
 
   if (message.data.isNotEmpty) {
     var messageData = message.data;
-    var extras = jsonDecode(messageData['extra']);
 
-    var senderName = extras['senderName'];
-    var messageBody = extras['message'];
-    String? decryptedMessage;
-    if (messageBody != null) {
-      decryptedMessage = utf8.decode(base64Decode(messageBody));
-    }
+    var title = messageData['title'];
+    var body = messageData['body'];
+    var imageUrl = messageData['image'];
+    var type = messageData['type'];
 
     notificationService.showNotification(
-      title: senderName ?? messageData['title'],
-      body: decryptedMessage ?? messageData['body'],
+      title: title ?? '',
+      body: body ?? '',
       priority: true,
-      channelId:
-          messageData['type'] == 'chat' ? 'Chats' : 'Rippl notifications',
-      channelName:
-          messageData['type'] == 'chat' ? 'Chats' : 'Rippl notifications',
+      id: setNotificationId(type),
+      largeIcon: imageUrl,
+      channelId: type ?? 'General Notifications',
+      channelName: type ?? 'General notifications',
     );
   }
 
