@@ -92,13 +92,6 @@ class ChatController extends GetxController {
 
     // var isChatDataExists = await _hiveService.isExists(boxName: 'chats');
 
-    // // if (isChatDataExists) {
-    // //   var data = await _hiveService.getBox('chats');
-    // //   var decodedData = jsonDecode(data) as Iterable<ChatMessage>;
-    // //   _chats.addAll(decodedData);
-    // //   update();
-    // // }
-
     channel = WebSocketChannel.connect(
         Uri.parse('${AppSecrets.awsWebSocketUrl}?token=${_auth.token}'));
 
@@ -111,6 +104,23 @@ class ChatController extends GetxController {
 
           if (!_checkIfSameMessageInAllMessages(encryptedMessage)) {
             _allMessages.add(encryptedMessage);
+            update();
+          } else {
+            var tempIndex = _allMessages.indexWhere(
+              (element) => element.id == encryptedMessage.id,
+            );
+            var tempMessage = _allMessages[tempIndex];
+            var updatedMessage = tempMessage.copyWith(
+              sent: encryptedMessage.sent,
+              sentAt: encryptedMessage.sentAt,
+              delivered: encryptedMessage.delivered,
+              deliveredAt: encryptedMessage.deliveredAt,
+              seen: encryptedMessage.seen,
+              seenAt: encryptedMessage.seenAt,
+              deleted: encryptedMessage.deleted,
+              deletedAt: encryptedMessage.deletedAt,
+            );
+            _allMessages[tempIndex] = updatedMessage;
             update();
           }
 
@@ -127,6 +137,23 @@ class ChatController extends GetxController {
                 _lastMessageList.add(encryptedMessage);
               }
             }
+            update();
+          } else {
+            var tempIndex = _lastMessageList.indexWhere(
+              (element) => element.id == encryptedMessage.id,
+            );
+            var tempMessage = _lastMessageList[tempIndex];
+            var updatedMessage = tempMessage.copyWith(
+              sent: encryptedMessage.sent,
+              sentAt: encryptedMessage.sentAt,
+              delivered: encryptedMessage.delivered,
+              deliveredAt: encryptedMessage.deliveredAt,
+              seen: encryptedMessage.seen,
+              seenAt: encryptedMessage.seenAt,
+              deleted: encryptedMessage.deleted,
+              deletedAt: encryptedMessage.deletedAt,
+            );
+            _lastMessageList[tempIndex] = updatedMessage;
             update();
           }
           AppUtility.printLog("Chat Added");
@@ -156,6 +183,16 @@ class ChatController extends GetxController {
     var decryptedMessage = utf8.decode(base64Decode(encryptedMessage));
     //AppUtility.printLog("decryptedMessage: $decryptedMessage");
     return decryptedMessage;
+  }
+
+  bool checkIfYourMessage(ChatMessage message) {
+    var yourId = profile.profileDetails!.user!.id;
+
+    if (message.sender!.id == yourId) {
+      return true;
+    }
+
+    return false;
   }
 
   bool _checkIfSameMessageInLastMessages(ChatMessage message) {

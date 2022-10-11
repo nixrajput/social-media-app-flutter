@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
+import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
@@ -25,10 +25,12 @@ class ChatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var user =
-        chat.sender!.id == ProfileController.find.profileDetails!.user!.id
-            ? chat.receiver!
-            : chat.sender!;
+    var profile = ProfileController.find;
+    var user = chat.sender!.id == profile.profileDetails!.user!.id
+        ? chat.receiver!
+        : chat.sender!;
+
+    var isSender = chat.sender!.id == profile.profileDetails!.user!.id;
     return InkWell(
       onTap: onTap,
       child: Column(
@@ -125,19 +127,32 @@ class ChatWidget extends StatelessWidget {
                     Dimens.boxWidth8,
                     Expanded(
                       flex: 0,
-                      child: Text(
-                        GetTimeAgo.parse(chat.createdAt!),
-                        style: AppStyles.style12Normal.copyWith(
-                          color: chat.seen == true
-                              ? Theme.of(Get.context!)
-                                  .textTheme
-                                  .subtitle1!
-                                  .color
-                              : Theme.of(Get.context!)
-                                  .textTheme
-                                  .bodyText1!
-                                  .color,
-                        ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          GetTimeAgoWidget(
+                            date: chat.createdAt!,
+                            builder: (BuildContext context, String value) =>
+                                Text(
+                              value,
+                              style: AppStyles.style12Normal.copyWith(
+                                color: Theme.of(Get.context!)
+                                    .textTheme
+                                    .subtitle1!
+                                    .color,
+                              ),
+                            ),
+                          ),
+                          if (isSender) Dimens.boxHeight2,
+                          if (isSender)
+                            Text(
+                              _setMessageStatus(),
+                              style: AppStyles.style13Normal.copyWith(
+                                fontSize: Dimens.eleven,
+                                color: _setMessageStatusColor(),
+                              ),
+                            )
+                        ],
                       ),
                     ),
                   ],
@@ -149,5 +164,29 @@ class ChatWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _setMessageStatus() {
+    if (chat.seen == true) {
+      return 'Seen';
+    } else if (chat.delivered == true) {
+      return 'Delivered';
+    } else if (chat.sent == true) {
+      return 'Sent';
+    }
+
+    return 'Pending';
+  }
+
+  Color _setMessageStatusColor() {
+    if (chat.seen == true) {
+      return ColorValues.successColor;
+    } else if (chat.delivered == true) {
+      return ColorValues.warningColor;
+    } else if (chat.sent == true) {
+      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    }
+
+    return ColorValues.darkGrayColor;
   }
 }

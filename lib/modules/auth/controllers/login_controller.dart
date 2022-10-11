@@ -89,6 +89,17 @@ class LoginController extends GetxController {
         _auth.setExpiresAt = expiresAt;
         _auth.autoLogout();
         await _profile.fetchProfileDetails().then((_) async {
+          var fcmToken = await AppUtility.readFcmTokenFromLocalStorage();
+
+          if (_auth.deviceId != null && _auth.deviceId! != 0) {
+            await _auth.saveDeviceIdToServer(_auth.deviceId.toString());
+          }
+
+          if (fcmToken.isNotEmpty) {
+            AppUtility.printLog('fcmToken: $fcmToken');
+            await _auth.saveFcmToken(fcmToken);
+          }
+
           await _auth.saveLoginInfo();
           await LoginDeviceInfoController.find.getLoginDeviceInfo();
           _clearLoginTextControllers();

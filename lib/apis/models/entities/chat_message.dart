@@ -13,6 +13,8 @@ class ChatMessage {
     this.type,
     this.sender,
     this.receiver,
+    this.sent,
+    this.sentAt,
     this.delivered,
     this.deliveredAt,
     this.seen,
@@ -42,6 +44,12 @@ class ChatMessage {
 
   @JsonKey(name: 'receiver')
   final User? receiver;
+
+  @JsonKey(name: 'sent')
+  bool? sent;
+
+  @JsonKey(name: 'sentAt')
+  DateTime? sentAt;
 
   @JsonKey(name: 'delivered')
   bool? delivered;

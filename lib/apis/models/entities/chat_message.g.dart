@@ -29,6 +29,10 @@ abstract class _$ChatMessageCWProxy {
 
   ChatMessage sender(User? sender);
 
+  ChatMessage sent(bool? sent);
+
+  ChatMessage sentAt(DateTime? sentAt);
+
   ChatMessage type(String? type);
 
   ChatMessage updatedAt(DateTime? updatedAt);
@@ -51,6 +55,8 @@ abstract class _$ChatMessageCWProxy {
     bool? seen,
     DateTime? seenAt,
     User? sender,
+    bool? sent,
+    DateTime? sentAt,
     String? type,
     DateTime? updatedAt,
   });
@@ -97,6 +103,12 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
   ChatMessage sender(User? sender) => this(sender: sender);
 
   @override
+  ChatMessage sent(bool? sent) => this(sent: sent);
+
+  @override
+  ChatMessage sentAt(DateTime? sentAt) => this(sentAt: sentAt);
+
+  @override
   ChatMessage type(String? type) => this(type: type);
 
   @override
@@ -122,6 +134,8 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
     Object? seen = const $CopyWithPlaceholder(),
     Object? seenAt = const $CopyWithPlaceholder(),
     Object? sender = const $CopyWithPlaceholder(),
+    Object? sent = const $CopyWithPlaceholder(),
+    Object? sentAt = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
@@ -170,6 +184,14 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
           ? _value.sender
           // ignore: cast_nullable_to_non_nullable
           : sender as User?,
+      sent: sent == const $CopyWithPlaceholder()
+          ? _value.sent
+          // ignore: cast_nullable_to_non_nullable
+          : sent as bool?,
+      sentAt: sentAt == const $CopyWithPlaceholder()
+          ? _value.sentAt
+          // ignore: cast_nullable_to_non_nullable
+          : sentAt as DateTime?,
       type: type == const $CopyWithPlaceholder()
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
@@ -202,6 +224,10 @@ ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) => ChatMessage(
       receiver: json['receiver'] == null
           ? null
           : User.fromJson(json['receiver'] as Map<String, dynamic>),
+      sent: json['sent'] as bool?,
+      sentAt: json['sentAt'] == null
+          ? null
+          : DateTime.parse(json['sentAt'] as String),
       delivered: json['delivered'] as bool?,
       deliveredAt: json['deliveredAt'] == null
           ? null
@@ -229,6 +255,8 @@ Map<String, dynamic> _$ChatMessageToJson(ChatMessage instance) =>
       'type': instance.type,
       'sender': instance.sender,
       'receiver': instance.receiver,
+      'sent': instance.sent,
+      'sentAt': instance.sentAt?.toIso8601String(),
       'delivered': instance.delivered,
       'deliveredAt': instance.deliveredAt?.toIso8601String(),
       'seen': instance.seen,

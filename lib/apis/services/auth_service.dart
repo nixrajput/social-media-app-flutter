@@ -29,7 +29,7 @@ class AuthService extends GetxService {
 
   String get token => _token;
 
-  int get deviceId => _deviceId;
+  int? get deviceId => _deviceId;
 
   int get expiresAt => _expiresAt;
 
@@ -41,6 +41,21 @@ class AuthService extends GetxService {
 
   set setExpiresAt(int value) => _expiresAt = value;
 
+  set setDeviceId(int value) => _deviceId = value;
+
+  @override
+  void onInit() {
+    _checkForInternetConnectivity();
+    getDeviceId();
+    super.onInit();
+  }
+
+  @override
+  onClose() {
+    _streamSubscription?.cancel();
+    super.onClose();
+  }
+
   Future<String> getToken() async {
     var token = '';
     final decodedData = await AppUtility.readLoginDataFromLocalStorage();
@@ -48,7 +63,6 @@ class AuthService extends GetxService {
       _expiresAt = decodedData[StringValues.expiresAt];
       setToken = decodedData[StringValues.token];
       token = decodedData[StringValues.token];
-      await getDeviceId();
     }
     return token;
   }
@@ -130,28 +144,50 @@ class AuthService extends GetxService {
     var savedDevId = devData.read('deviceId');
 
     try {
-      _deviceId = int.parse(savedDevId);
+      setDeviceId = int.parse(savedDevId);
     } catch (err) {
       var devId = generateDeviceId();
       await devData.write('deviceId', devId);
       var savedDevId = devData.read('deviceId');
-      _deviceId = int.parse(savedDevId);
-    }
-
-    final response = await _apiProvider.saveDeviceId(
-      token,
-      {'deviceId': _deviceId.toString()},
-    );
-
-    final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-    if (response.statusCode == 200) {
-      AppUtility.printLog(decodedData[StringValues.message]);
-    } else {
-      AppUtility.printLog(decodedData[StringValues.message]);
+      setDeviceId = int.parse(savedDevId);
     }
 
     AppUtility.printLog("deviceId: $_deviceId");
+  }
+
+  Future<void> saveDeviceIdToServer(String deviceId) async {
+    AppUtility.printLog("Save DeviceId Request");
+
+    try {
+      final response = await _apiProvider.saveDeviceId(
+        token,
+        {'deviceId': deviceId},
+      );
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.printLog("Save DeviceId Success");
+      } else {
+        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.printLog("Save DeviceId Error");
+      }
+    } on SocketException {
+      AppUtility.printLog("Save DeviceId Error");
+      AppUtility.printLog(StringValues.internetConnError);
+    } on TimeoutException {
+      AppUtility.printLog("Save DeviceId Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+    } on FormatException catch (e) {
+      AppUtility.printLog("Save DeviceId Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+    } catch (exc) {
+      AppUtility.printLog("Save DeviceId Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+    }
   }
 
   Future<void> savePreKeyBundle(Map<String, dynamic> preKeyBundle) async {
@@ -184,6 +220,41 @@ class AuthService extends GetxService {
       AppUtility.printLog(e);
     } catch (exc) {
       AppUtility.printLog("Save PreKeyBundle Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+    }
+  }
+
+  Future<void> saveFcmToken(String fcmToken) async {
+    AppUtility.printLog("Save FcmToken Request");
+
+    try {
+      final response = await _apiProvider.saveFcmToken(
+        _token,
+        fcmToken,
+      );
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.printLog("Save FcmToken Success");
+      } else {
+        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.printLog("Save FcmToken Error");
+      }
+    } on SocketException {
+      AppUtility.printLog("Save FcmToken Error");
+      AppUtility.printLog(StringValues.internetConnError);
+    } on TimeoutException {
+      AppUtility.printLog("Save FcmToken Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+    } on FormatException catch (e) {
+      AppUtility.printLog("Save FcmToken Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+    } catch (exc) {
+      AppUtility.printLog("Save FcmToken Error");
       AppUtility.printLog(StringValues.errorOccurred);
       AppUtility.printLog(exc);
     }
@@ -325,16 +396,4 @@ class AuthService extends GetxService {
   Future<bool> validateToken(String token) async => await _validateToken(token);
 
   Future<String> checkServerHealth() async => await _checkServerHealth();
-
-  @override
-  void onInit() {
-    _checkForInternetConnectivity();
-    super.onInit();
-  }
-
-  @override
-  onClose() {
-    _streamSubscription?.cancel();
-    super.onClose();
-  }
 }

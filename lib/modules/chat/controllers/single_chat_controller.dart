@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/responses/chat_message_list_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -26,14 +27,14 @@ class SingleChatController extends GetxController {
   final scrollController = material.ScrollController();
 
   final _isLoading = false.obs;
-  final _scrollToBottom = true.obs;
+  final _scrolledToBottom = true.obs;
   final _isMoreLoading = false.obs;
   final _message = ''.obs;
   final _messageData = const ChatMessageListResponse().obs;
 
   bool get isLoading => _isLoading.value;
   bool get isMoreLoading => _isMoreLoading.value;
-  bool get scrollToBottom => _scrollToBottom.value;
+  bool get scrolledToBottom => _scrolledToBottom.value;
   String get message => _message.value;
 
   ChatMessageListResponse? get messageData => _messageData.value;
@@ -103,12 +104,12 @@ class SingleChatController extends GetxController {
     }
     material.WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController.addListener(() {
-        if (scrollController.position.pixels ==
-            scrollController.position.minScrollExtent) {
-          _scrollToBottom.value = true;
+        if (scrollController.position.pixels >=
+            scrollController.position.minScrollExtent + (2 * Dimens.hundred)) {
+          _scrolledToBottom.value = false;
           update();
         } else {
-          _scrollToBottom.value = false;
+          _scrolledToBottom.value = true;
           update();
         }
       });
@@ -139,6 +140,7 @@ class SingleChatController extends GetxController {
                 "type": "message-read",
                 "payload": {
                   "messageId": message.id,
+                  "senderId": message.sender!.id,
                 }
               },
             ),

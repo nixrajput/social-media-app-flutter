@@ -10,6 +10,7 @@ abstract class Dimens {
 
   static double sixTeen = 16.r;
   static double nineteen = 19.r;
+  static double eleven = 11.r;
   static double three = 3.r;
   static double eight = 8.r;
   static double zero = 0.r;

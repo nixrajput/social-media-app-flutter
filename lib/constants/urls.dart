@@ -70,6 +70,8 @@ abstract class AppUrls {
   static const String getAllLastMessageEndpoint = '/get-all-last-messages';
   static const String getMessagesByIdEndpoint = '/get-messages-by-id';
 
+  static const String fcmTokenEndpoint = '/fcm-token';
+
   static const String checkAppUpdateEndpoint =
       '/repos/nixrajput/social-media-app-flutter/releases/latest';
 }

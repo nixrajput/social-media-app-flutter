@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/notification.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
+import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -110,11 +110,16 @@ class NotificationWidget extends StatelessWidget {
                         ),
                       ),
                       Dimens.boxHeight4,
-                      Text(
-                        GetTimeAgo.parse(notification.createdAt),
-                        style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      GetTimeAgoWidget(
+                        date: notification.createdAt,
+                        builder: (BuildContext context, String value) => Text(
+                          value,
+                          style: AppStyles.style12Normal.copyWith(
+                            color: Theme.of(Get.context!)
+                                .textTheme
+                                .subtitle1!
+                                .color,
+                          ),
                         ),
                       ),
                     ],

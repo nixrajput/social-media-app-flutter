@@ -189,6 +189,21 @@ class ApiProvider {
     return response;
   }
 
+  Future<http.Response> saveFcmToken(String token, String fcmToken) async {
+    final response = await _client.post(
+      Uri.parse('${baseUrl!}${AppUrls.fcmTokenEndpoint}'),
+      headers: {
+        "content-type": "application/json",
+        "authorization": "Bearer $token",
+      },
+      body: jsonEncode({
+        "fcmToken": fcmToken,
+      }),
+    );
+
+    return response;
+  }
+
   Future<http.Response> uploadProfilePicture(
     String token,
     Map<String, dynamic> body,

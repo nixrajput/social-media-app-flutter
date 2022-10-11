@@ -13,6 +13,7 @@ import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
 import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
+import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
@@ -372,13 +373,14 @@ class PostWidget extends StatelessWidget {
 
   Widget _buildPostTime() {
     GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
-    return Text(
-      GetTimeAgo.parse(
-        post.createdAt,
-        pattern: 'dd MMM yyyy hh:mm a',
-      ),
-      style: AppStyles.style13Normal.copyWith(
-        color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+    return GetTimeAgoWidget(
+      date: post.createdAt,
+      pattern: 'dd MMM yyyy hh:mm a',
+      builder: (BuildContext context, String value) => Text(
+        value,
+        style: AppStyles.style13Normal.copyWith(
+          color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+        ),
       ),
     );
   }

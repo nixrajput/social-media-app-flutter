@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:social_media_app/modules/chat/widgets/bubble_type.dart';
 
-class ChatBubbleClipper6 extends CustomClipper<Path> {
+class ChatBubbleClipper extends CustomClipper<Path> {
   final BubbleType? type;
   final double radius;
   final double nipSize;
   final double sizeRatio;
 
-  ChatBubbleClipper6(
+  ChatBubbleClipper(
       {this.type, this.radius = 10, this.nipSize = 8, this.sizeRatio = 2});
 
   @override

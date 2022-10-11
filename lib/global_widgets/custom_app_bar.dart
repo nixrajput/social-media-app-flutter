@@ -48,17 +48,26 @@ class NxAppBar extends StatelessWidget {
                 ),
               ),
             if (showBackBtn == true) Dimens.boxWidth16,
-            if (leading != null) leading!,
-            if (leading != null && title != null) Dimens.boxWidth16,
-            if (title != null && title!.isNotEmpty)
-              Text(
-                title!,
-                style: titleStyle ??
-                    AppStyles.style18Bold.copyWith(
-                      color: Theme.of(context).textTheme.bodyText1!.color,
-                      height: 1.0,
-                    ),
-              )
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (leading != null) leading!,
+                  if (leading != null && title != null) Dimens.boxWidth16,
+                  if (title != null && title!.isNotEmpty)
+                    Text(
+                      title!,
+                      style: titleStyle ??
+                          AppStyles.style18Bold.copyWith(
+                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            height: 1.0,
+                          ),
+                    )
+                ],
+              ),
+            ),
           ],
         ),
       ),

@@ -441,6 +441,39 @@ abstract class AppUtility {
 
   /// --------------------------------------------------------------------------
 
+  /// Save Post Data --------------------------------------------------------
+
+  static Future<void> saveFcmTokenToLocalStorage(String fcmToken) async {
+    final storage = GetStorage();
+    if (fcmToken.isNotEmpty) {
+      await storage.write("fcmToken", base64Encode(fcmToken.codeUnits));
+      printLog("FcmToken Saved To Local Storage");
+    } else {
+      printLog("Failed To Save FcmToken To Local Storage");
+    }
+  }
+
+  static Future<String> readFcmTokenFromLocalStorage() async {
+    final storage = GetStorage();
+    var fcmToken = "";
+    if (storage.hasData("fcmToken")) {
+      final data = await storage.read("fcmToken");
+      printLog("FcmToken Fetched From Local Storage");
+      fcmToken = String.fromCharCodes(base64Decode(data));
+    } else {
+      printLog("Failed To Fetch FcmToken From Local Storage");
+    }
+    return fcmToken;
+  }
+
+  static Future<void> deleteFcmTokenFromLocalStorage() async {
+    final storage = GetStorage();
+    await storage.remove("fcmToken");
+    printLog("FcmToken Deleted From Local Storage");
+  }
+
+  /// --------------------------------------------------------------------------
+
   /// Check if video file
   static bool isVideoFile(String path) {
     const videoFilesTypes = [".mp4", ".mkv"];

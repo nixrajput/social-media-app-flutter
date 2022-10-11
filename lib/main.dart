@@ -13,7 +13,9 @@ import 'package:social_media_app/apis/models/entities/server_key.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/apis/services/notification_service.dart';
 import 'package:social_media_app/apis/services/theme_controller.dart';
+import 'package:social_media_app/background_service/background_service.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
@@ -27,6 +29,11 @@ import 'package:social_media_app/utils/utility.dart';
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
+    await GetStorage.init();
+    await Hive.initFlutter();
+    Get.put(AuthService(), permanent: true);
+    await NotificationService().initialize();
+    await initializeFirebaseService();
     await initServices();
     runApp(const MyApp());
     await AppUpdateController.find.checkAppUpdate(
@@ -42,8 +49,6 @@ bool isLogin = false;
 String serverHealth = "offline";
 
 Future<void> initServices() async {
-  await GetStorage.init();
-  await Hive.initFlutter();
   Hive.registerAdapter(PostAdapter());
   Hive.registerAdapter(MediaFileAdapter());
   Hive.registerAdapter(PostMediaFileAdapter());
@@ -53,12 +58,11 @@ Future<void> initServices() async {
   Hive.registerAdapter(ServerKeyAdapter());
   Get
     ..put(AppThemeController(), permanent: true)
-    ..put(AuthService(), permanent: true)
     ..put(AppUpdateController(), permanent: true)
     ..put(ProfileController(), permanent: true)
     ..put(LoginDeviceInfoController(), permanent: true);
 
-  serverHealth = await Get.find<AuthService>().checkServerHealth();
+  serverHealth = await AuthService.find.checkServerHealth();
   AppUtility.printLog("ServerHealth: $serverHealth");
 
   /// If [serverHealth] is `offline` or `maintenance`,
@@ -67,12 +71,12 @@ Future<void> initServices() async {
       serverHealth.toLowerCase() == "maintenance") {
     return;
   }
-  await Get.find<AuthService>().getToken().then((token) async {
-    Get.find<AuthService>().autoLogout();
+  await AuthService.find.getToken().then((token) async {
+    AuthService.find.autoLogout();
     if (token.isNotEmpty) {
-      var tokenValid = await Get.find<AuthService>().validateToken(token);
+      var tokenValid = await AuthService.find.validateToken(token);
       if (tokenValid) {
-        var hasData = await Get.find<ProfileController>().loadProfileDetails();
+        var hasData = await ProfileController.find.loadProfileDetails();
         if (hasData) {
           isLogin = true;
         } else {
