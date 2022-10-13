@@ -82,7 +82,6 @@ class CommentController extends GetxController {
       update();
       AppUtility.printLog("Fetch Comment Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading.value = false;
@@ -147,7 +146,6 @@ class CommentController extends GetxController {
       update();
       AppUtility.printLog("Fetch More Comment Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isMoreLoading.value = false;
@@ -171,13 +169,21 @@ class CommentController extends GetxController {
 
     if (commentId.isEmpty) return;
 
+    var index = _commentList.indexWhere((element) => element.id == commentId);
+    var comment = _commentList[index];
+
+    if (index == -1) return;
+
+    _commentList.removeAt(index);
+    update();
+
     try {
       final response = await _apiProvider.deleteComment(_auth.token, commentId);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        await _fetchComments();
+        // await _fetchComments();
         AppUtility.printLog("Delete Comment Success");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
@@ -185,6 +191,8 @@ class CommentController extends GetxController {
           duration: 2,
         );
       } else {
+        _commentList.insert(index, comment);
+        update();
         AppUtility.printLog("Delete Comment Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
@@ -192,20 +200,28 @@ class CommentController extends GetxController {
         );
       }
     } on SocketException {
+      _commentList.insert(index, comment);
+      update();
       AppUtility.printLog("Delete Comment Error");
       AppUtility.printLog(StringValues.internetConnError);
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
+      _commentList.insert(index, comment);
+      update();
       AppUtility.printLog("Delete Comment Error");
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
+      _commentList.insert(index, comment);
+      update();
       AppUtility.printLog("Delete Comment Error");
       AppUtility.printLog(StringValues.formatExcError);
       AppUtility.printLog(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
+      _commentList.insert(index, comment);
+      update();
       AppUtility.printLog("Delete Comment Error");
       AppUtility.printLog(StringValues.errorOccurred);
       AppUtility.printLog(exc);

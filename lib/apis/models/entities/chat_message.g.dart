@@ -23,15 +23,21 @@ abstract class _$ChatMessageCWProxy {
 
   ChatMessage receiver(User? receiver);
 
+  ChatMessage receiverId(String? receiverId);
+
   ChatMessage seen(bool? seen);
 
   ChatMessage seenAt(DateTime? seenAt);
 
   ChatMessage sender(User? sender);
 
+  ChatMessage senderId(String? senderId);
+
   ChatMessage sent(bool? sent);
 
   ChatMessage sentAt(DateTime? sentAt);
+
+  ChatMessage tempId(String? tempId);
 
   ChatMessage type(String? type);
 
@@ -52,11 +58,14 @@ abstract class _$ChatMessageCWProxy {
     String? id,
     String? message,
     User? receiver,
+    String? receiverId,
     bool? seen,
     DateTime? seenAt,
     User? sender,
+    String? senderId,
     bool? sent,
     DateTime? sentAt,
+    String? tempId,
     String? type,
     DateTime? updatedAt,
   });
@@ -94,6 +103,9 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
   ChatMessage receiver(User? receiver) => this(receiver: receiver);
 
   @override
+  ChatMessage receiverId(String? receiverId) => this(receiverId: receiverId);
+
+  @override
   ChatMessage seen(bool? seen) => this(seen: seen);
 
   @override
@@ -103,10 +115,16 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
   ChatMessage sender(User? sender) => this(sender: sender);
 
   @override
+  ChatMessage senderId(String? senderId) => this(senderId: senderId);
+
+  @override
   ChatMessage sent(bool? sent) => this(sent: sent);
 
   @override
   ChatMessage sentAt(DateTime? sentAt) => this(sentAt: sentAt);
+
+  @override
+  ChatMessage tempId(String? tempId) => this(tempId: tempId);
 
   @override
   ChatMessage type(String? type) => this(type: type);
@@ -131,11 +149,14 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
     Object? id = const $CopyWithPlaceholder(),
     Object? message = const $CopyWithPlaceholder(),
     Object? receiver = const $CopyWithPlaceholder(),
+    Object? receiverId = const $CopyWithPlaceholder(),
     Object? seen = const $CopyWithPlaceholder(),
     Object? seenAt = const $CopyWithPlaceholder(),
     Object? sender = const $CopyWithPlaceholder(),
+    Object? senderId = const $CopyWithPlaceholder(),
     Object? sent = const $CopyWithPlaceholder(),
     Object? sentAt = const $CopyWithPlaceholder(),
+    Object? tempId = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
@@ -172,6 +193,10 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
           ? _value.receiver
           // ignore: cast_nullable_to_non_nullable
           : receiver as User?,
+      receiverId: receiverId == const $CopyWithPlaceholder()
+          ? _value.receiverId
+          // ignore: cast_nullable_to_non_nullable
+          : receiverId as String?,
       seen: seen == const $CopyWithPlaceholder()
           ? _value.seen
           // ignore: cast_nullable_to_non_nullable
@@ -184,6 +209,10 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
           ? _value.sender
           // ignore: cast_nullable_to_non_nullable
           : sender as User?,
+      senderId: senderId == const $CopyWithPlaceholder()
+          ? _value.senderId
+          // ignore: cast_nullable_to_non_nullable
+          : senderId as String?,
       sent: sent == const $CopyWithPlaceholder()
           ? _value.sent
           // ignore: cast_nullable_to_non_nullable
@@ -192,6 +221,10 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
           ? _value.sentAt
           // ignore: cast_nullable_to_non_nullable
           : sentAt as DateTime?,
+      tempId: tempId == const $CopyWithPlaceholder()
+          ? _value.tempId
+          // ignore: cast_nullable_to_non_nullable
+          : tempId as String?,
       type: type == const $CopyWithPlaceholder()
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
@@ -216,6 +249,9 @@ extension $ChatMessageCopyWith on ChatMessage {
 
 ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) => ChatMessage(
       id: json['_id'] as String?,
+      tempId: json['tempId'] as String?,
+      senderId: json['senderId'] as String?,
+      receiverId: json['receiverId'] as String?,
       message: json['message'] as String?,
       type: json['type'] as String?,
       sender: json['sender'] == null
@@ -251,6 +287,9 @@ ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) => ChatMessage(
 Map<String, dynamic> _$ChatMessageToJson(ChatMessage instance) =>
     <String, dynamic>{
       '_id': instance.id,
+      'tempId': instance.tempId,
+      'senderId': instance.senderId,
+      'receiverId': instance.receiverId,
       'message': instance.message,
       'type': instance.type,
       'sender': instance.sender,

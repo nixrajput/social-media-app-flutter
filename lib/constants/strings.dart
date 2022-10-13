@@ -162,8 +162,8 @@ abstract class StringValues {
   static const commentDeleteSuccess = 'Comment deleted.';
   static const deleteConfirmationText =
       "Are you sure you want to delete it? You can confirm your choice by selecting the option below.";
-  static const chooseVideos = 'Choose Videos';
-  static const chooseImages = 'Choose Images';
+  static const chooseVideos = 'Choose Multiple Videos';
+  static const chooseImages = 'Choose Multiple Images';
   static const captureImage = 'Capture Image';
   static const recordVideo = 'Record Video';
   static const yes = 'Yes';

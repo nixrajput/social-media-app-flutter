@@ -5,16 +5,19 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/like_details.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/apis/models/responses/post_like_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class PostLikedUsersController extends GetxController {
   static PostLikedUsersController get find => Get.find();
 
   final _auth = AuthService.find;
+  final _profile = ProfileController.find;
   final _apiProvider = ApiProvider(http.Client());
 
   final _isLoading = false.obs;
@@ -32,6 +35,12 @@ class PostLikedUsersController extends GetxController {
 
   set setPostLikedUsersData(PostLikeResponse response) {
     _postLikedUsersData.value = response;
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    _fetchPostLikedUsers();
   }
 
   Future<void> _fetchPostLikedUsers() async {
@@ -77,7 +86,6 @@ class PostLikedUsersController extends GetxController {
       _isLoading.value = false;
       update();
       AppUtility.printLog("Fetch Post Liked Users Error");
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
@@ -143,7 +151,6 @@ class PostLikedUsersController extends GetxController {
       update();
       AppUtility.printLog("Fetch More Post Liked Users Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isMoreLoading.value = false;
@@ -162,14 +169,149 @@ class PostLikedUsersController extends GetxController {
     }
   }
 
+  void _toggleFollowUser(User user) {
+    if (user.isPrivate) {
+      if (user.followingStatus == "notFollowing") {
+        user.followingStatus = "requested";
+        update();
+        return;
+      }
+      if (user.followingStatus == "requested") {
+        user.followingStatus = "notFollowing";
+        update();
+        return;
+      }
+      if (user.followingStatus == "following") {
+        user.followingStatus = "notFollowing";
+        update();
+        return;
+      }
+    } else {
+      if (user.followingStatus == "notFollowing") {
+        user.followingStatus = "following";
+        update();
+        _profile.fetchProfileDetails(fetchPost: false);
+        return;
+      } else {
+        user.followingStatus = "notFollowing";
+        update();
+        _profile.fetchProfileDetails(fetchPost: false);
+        return;
+      }
+    }
+  }
+
+  Future<void> _followUnfollowUser(User user) async {
+    AppUtility.printLog("Follow/Unfollow User Request");
+    _toggleFollowUser(user);
+
+    try {
+      final response =
+          await _apiProvider.followUnfollowUser(_auth.token, user.id);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        await _profile.fetchProfileDetails(fetchPost: false);
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+          duration: 2,
+        );
+        AppUtility.printLog("Follow/Unfollow User Success");
+      } else {
+        _toggleFollowUser(user);
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+          duration: 2,
+        );
+        AppUtility.printLog("Follow/Unfollow User Error");
+      }
+    } on SocketException {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Follow/Unfollow User Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Follow/Unfollow User Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Follow/Unfollow User Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Follow/Unfollow User Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+  }
+
+  Future<void> _cancelFollowRequest(User user) async {
+    AppUtility.printLog("Cancel Follow Request");
+    _toggleFollowUser(user);
+
+    try {
+      final response =
+          await _apiProvider.cancelFollowRequest(_auth.token, user.id);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+        );
+        AppUtility.printLog("Cancel FollowRequest Success");
+      } else {
+        _toggleFollowUser(user);
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+        AppUtility.printLog("Cancel FollowRequest Error");
+      }
+    } on SocketException {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Cancel FollowRequest Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Cancel FollowRequest Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Cancel FollowRequest Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Cancel FollowRequest Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+  }
+
+  Future<void> followUnfollowUser(User user) async =>
+      await _followUnfollowUser(user);
+
+  Future<void> cancelFollowRequest(User user) async =>
+      await _cancelFollowRequest(user);
+
   Future<void> fetchPostLikedUsers() async => await _fetchPostLikedUsers();
 
   Future<void> loadMore() async =>
       await _loadMore(page: _postLikedUsersData.value.currentPage! + 1);
-
-  @override
-  void onInit() {
-    super.onInit();
-    _fetchPostLikedUsers();
-  }
 }

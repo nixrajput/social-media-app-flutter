@@ -79,7 +79,8 @@ class TrendingPostsTab extends StatelessWidget {
           Dimens.boxHeight8,
         ],
       );
-    } else if (logic.postData == null || logic.postList.isEmpty) {
+    }
+    if (logic.postData == null || logic.postList.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,15 +112,17 @@ class TrendingPostsTab extends StatelessWidget {
               Dimens.boxHeight8,
             ],
           ),
-        ListView(
+        ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          children: logic.postList
-              .map((post) => PostWidget(
-                    post: post,
-                    controller: logic,
-                  ))
-              .toList(),
+          itemCount: logic.postList.length,
+          itemBuilder: (context, index) {
+            var post = logic.postList[index];
+            return PostWidget(
+              post: post,
+              controller: logic,
+            );
+          },
         ),
         if (logic.isMoreLoading) Dimens.boxHeight8,
         if (logic.isMoreLoading)

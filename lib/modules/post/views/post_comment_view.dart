@@ -8,6 +8,7 @@ import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/create_comment_controller.dart';
 import 'package:social_media_app/modules/post/views/widgets/comment_widget.dart';
@@ -142,17 +143,23 @@ class PostCommentView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: commentsLogic.commentList
-                        .map((e) => InkWell(
-                              child: CommentWidget(comment: e),
-                              onLongPress: () =>
-                                  commentsLogic.showDeleteCommentOptions(e.id),
-                            ))
-                        .toList(),
+                  ListView.builder(
+                    itemBuilder: (context, index) {
+                      var comment = commentsLogic.commentList[index];
+                      return InkWell(
+                        child: CommentWidget(comment: comment),
+                        onLongPress: () {
+                          if (comment.user.id !=
+                              ProfileController.find.profileDetails!.user!.id) {
+                            return;
+                          }
+                          commentsLogic.showDeleteCommentOptions(comment.id);
+                        },
+                      );
+                    },
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: commentsLogic.commentList.length,
                   ),
                   if (commentsLogic.isMoreLoading) Dimens.boxHeight8,
                   if (commentsLogic.isMoreLoading)

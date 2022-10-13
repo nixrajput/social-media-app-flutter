@@ -20,6 +20,7 @@ import 'package:social_media_app/modules/chat/controllers/single_chat_controller
 import 'package:social_media_app/modules/chat/widgets/bubble_type.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_bubble_clipper.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class SingleChatView extends StatelessWidget {
   const SingleChatView({Key? key}) : super(key: key);
@@ -55,7 +56,7 @@ class SingleChatView extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    logic.receiverUname ?? '',
+                                    logic.username ?? '',
                                     style: AppStyles.style18Bold,
                                   ),
                                   const Spacer(),
@@ -141,6 +142,7 @@ class SingleChatView extends StatelessWidget {
                                           .bodyText1!
                                           .color,
                                       onTap: () {},
+                                      //onTap: _showCreatePostOptions,
                                     )
                                   ],
                                 ),
@@ -181,6 +183,8 @@ class SingleChatView extends StatelessWidget {
       return const Center(child: NxCircularProgressIndicator());
     }
 
+    final currentUser = logic.profile.profileDetails!.user!;
+
     return Expanded(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(
@@ -197,6 +201,20 @@ class SingleChatView extends StatelessWidget {
               builder: (chatsLogic) {
                 chatsLogic.allMessages
                     .sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+                var filteredMessages = chatsLogic.allMessages
+                    .where((element) =>
+                        (element.senderId == currentUser.id &&
+                            element.receiverId == logic.userId) ||
+                        (element.senderId == logic.userId &&
+                            element.receiver!.id == currentUser.id))
+                    .toList();
+
+                if (logic.scrolledToBottom) {
+                  Future.delayed(const Duration(milliseconds: 100), () {
+                    logic.markMessageAsRead();
+                  });
+                }
+
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -213,26 +231,16 @@ class SingleChatView extends StatelessWidget {
                           padding: Dimens.edgeInsets8_0,
                         ),
                       ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: chatsLogic.allMessages
-                          .where((element) =>
-                              (element.sender!.id ==
-                                      ProfileController
-                                          .find.profileDetails!.user!.id &&
-                                  element.receiver!.id == logic.receiverId) ||
-                              (element.sender!.id == logic.receiverId &&
-                                  element.receiver!.id ==
-                                      ProfileController
-                                          .find.profileDetails!.user!.id))
-                          .map(
-                            (msg) => ChatBubble(
-                              message: msg,
-                            ),
-                          )
-                          .toList(),
+                    ListView.builder(
+                      itemCount: filteredMessages.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final message = filteredMessages[index];
+                        return ChatBubble(
+                          message: message,
+                        );
+                      },
                     ),
                   ],
                 );
@@ -244,6 +252,55 @@ class SingleChatView extends StatelessWidget {
       ),
     );
   }
+
+  void _showCreatePostOptions() => AppUtility.showBottomSheet(
+        [
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              //CreatePostController.find.captureImage();
+            },
+            leading: const Icon(Icons.camera),
+            title: Text(
+              StringValues.captureImage,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              //CreatePostController.find.recordVideo();
+            },
+            leading: const Icon(Icons.videocam),
+            title: Text(
+              StringValues.recordVideo,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              // CreatePostController.find.selectPostImages();
+            },
+            leading: const Icon(Icons.photo_album),
+            title: Text(
+              StringValues.chooseImages,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              // CreatePostController.find.selectPosVideos();
+            },
+            leading: const Icon(Icons.video_collection),
+            title: Text(
+              StringValues.chooseVideos,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+        ],
+      );
 }
 
 class ChatBubble extends StatelessWidget {
@@ -307,10 +364,8 @@ class ChatBubble extends StatelessWidget {
   Color _setMessageStatusColor() {
     if (message.seen == true) {
       return ColorValues.successColor;
-    } else if (message.delivered == true) {
-      return ColorValues.warningColor;
-    } else if (message.sent == true) {
-      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    } else if (message.delivered == true || message.sent == true) {
+      return Theme.of(Get.context!).textTheme.subtitle1!.color!;
     }
 
     return ColorValues.darkGrayColor;
@@ -319,10 +374,10 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var profile = ProfileController.find;
-    var isSenderBubble = message.sender!.id == profile.profileDetails!.user!.id;
+    var isYourMessage = message.senderId == profile.profileDetails!.user!.id;
 
     return Container(
-      alignment: isSenderBubble ? Alignment.topRight : Alignment.topLeft,
+      alignment: isYourMessage ? Alignment.topRight : Alignment.topLeft,
       margin: Dimens.edgeInsetsOnlyBottom8,
       constraints: BoxConstraints(
         maxWidth: Dimens.screenWidth,
@@ -330,10 +385,10 @@ class ChatBubble extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment:
-            isSenderBubble ? MainAxisAlignment.end : MainAxisAlignment.start,
+            isYourMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (!isSenderBubble)
+          if (!isYourMessage)
             AvatarWidget(
               avatar: message.sender!.avatar,
               size: Dimens.sixTeen,
@@ -342,20 +397,20 @@ class ChatBubble extends StatelessWidget {
             elevation: Dimens.two,
             clipper: ChatBubbleClipper(
               radius: Dimens.eight,
-              type: isSenderBubble
+              type: isYourMessage
                   ? BubbleType.sendBubble
                   : BubbleType.receiverBubble,
             ),
-            color: _setBubbleColor(isSenderBubble),
+            color: _setBubbleColor(isYourMessage),
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 maxWidth: Dimens.screenWidth * 0.7,
               ),
               child: Padding(
-                padding: _setPadding(isSenderBubble),
+                padding: _setPadding(isYourMessage),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: isSenderBubble
+                  crossAxisAlignment: isYourMessage
                       ? CrossAxisAlignment.start
                       : CrossAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
@@ -363,13 +418,13 @@ class ChatBubble extends StatelessWidget {
                     Text(
                       _decryptMessage(message.message!),
                       style: AppStyles.style13Normal.copyWith(
-                        color: _setMessageColor(isSenderBubble),
+                        color: _setMessageColor(isYourMessage),
                       ),
                     ),
                     Dimens.boxHeight8,
                     Align(
                       widthFactor: Dimens.one,
-                      alignment: isSenderBubble
+                      alignment: isYourMessage
                           ? Alignment.topLeft
                           : Alignment.topRight,
                       child: GetTimeAgoWidget(
@@ -383,14 +438,14 @@ class ChatBubble extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (isSenderBubble)
+                    if (isYourMessage)
                       Align(
                         widthFactor: Dimens.one,
-                        alignment: isSenderBubble
+                        alignment: isYourMessage
                             ? Alignment.topLeft
                             : Alignment.topRight,
                         child: Text(
-                          _setMessageStatus(isSenderBubble),
+                          _setMessageStatus(isYourMessage),
                           style: AppStyles.style13Normal.copyWith(
                             fontSize: Dimens.eleven,
                             color: _setMessageStatusColor(),
@@ -402,9 +457,9 @@ class ChatBubble extends StatelessWidget {
               ),
             ),
           ),
-          if (isSenderBubble)
+          if (isYourMessage)
             AvatarWidget(
-              avatar: message.sender!.avatar,
+              avatar: profile.profileDetails!.user!.avatar,
               size: Dimens.sixTeen,
             ),
         ],

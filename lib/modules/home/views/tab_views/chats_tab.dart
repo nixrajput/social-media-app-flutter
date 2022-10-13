@@ -51,6 +51,7 @@ class ChatsTabView extends StatelessWidget {
         builder: (logic) {
           logic.lastMessageList
               .sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
@@ -60,6 +61,9 @@ class ChatsTabView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (logic.isLoading)
+                  const Center(child: NxCircularProgressIndicator()),
+                if (logic.isLoading) Dimens.boxHeight16,
                 if (logic.lastMessageData == null ||
                     logic.lastMessageList.isEmpty)
                   Center(
@@ -73,28 +77,30 @@ class ChatsTabView extends StatelessWidget {
                     ),
                   )
                 else
-                  Column(
-                    children: logic.lastMessageList
-                        .map(
-                          (item) => ChatWidget(
-                            chat: item,
-                            totalLength: logic.lastMessageList.length,
-                            index: logic.lastMessageList.indexOf(item),
-                            onTap: () => RouteManagement.goToChatDetailsView(
-                              item.sender!.id ==
-                                      ProfileController
-                                          .find.profileDetails!.user!.id
-                                  ? item.receiver!.id
-                                  : item.sender!.id,
-                              item.sender!.id ==
-                                      ProfileController
-                                          .find.profileDetails!.user!.id
-                                  ? item.receiver!.uname
-                                  : item.sender!.uname,
-                            ),
-                          ),
-                        )
-                        .toList(),
+                  ListView.builder(
+                    itemCount: logic.lastMessageList.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      final item = logic.lastMessageList[index];
+                      return ChatWidget(
+                        chat: item,
+                        totalLength: logic.lastMessageList.length,
+                        index: logic.lastMessageList.indexOf(item),
+                        onTap: () => RouteManagement.goToChatDetailsView(
+                          item.sender!.id ==
+                                  ProfileController
+                                      .find.profileDetails!.user!.id
+                              ? item.receiver!.id
+                              : item.sender!.id,
+                          item.sender!.id ==
+                                  ProfileController
+                                      .find.profileDetails!.user!.id
+                              ? item.receiver!.uname
+                              : item.sender!.uname,
+                        ),
+                      );
+                    },
                   ),
                 if (logic.isMoreLoading) Dimens.boxHeight8,
                 if (logic.isMoreLoading)

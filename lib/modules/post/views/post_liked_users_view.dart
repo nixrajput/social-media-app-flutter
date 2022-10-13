@@ -10,6 +10,7 @@ import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
 import 'package:social_media_app/modules/post/controllers/post_liked_users_controller.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
 class PostLikedUsersView extends StatelessWidget {
   const PostLikedUsersView({Key? key}) : super(key: key);
@@ -76,6 +77,15 @@ class PostLikedUsersView extends StatelessWidget {
                             user: item!,
                             totalLength: logic.postLikedUsersList.length,
                             index: index,
+                            onTap: () =>
+                                RouteManagement.goToUserProfileView(item.id),
+                            onActionTap: () {
+                              if (item.followingStatus == "requested") {
+                                logic.cancelFollowRequest(item);
+                                return;
+                              }
+                              logic.followUnfollowUser(item);
+                            },
                           );
                         },
                       ),

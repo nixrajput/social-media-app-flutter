@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/utils/utility.dart';
 
 enum AppThemeModes {
   system,
@@ -19,35 +18,35 @@ class AppThemeController extends GetxController {
 
   @override
   void onInit() {
-    themeData.writeIfNull(StringValues.themeMode, 'system');
-    getThemeMode();
     super.onInit();
+    getThemeMode();
   }
 
-  void setThemeMode(AppThemeModes value) {
-    _themeMode(value);
-    if (value == AppThemeModes.light) {
-      themeData.write(StringValues.themeMode, 'light');
-    } else if (value == AppThemeModes.dark) {
-      themeData.write(StringValues.themeMode, 'dark');
-    } else {
-      themeData.write(StringValues.themeMode, 'system');
-    }
-    AppUtility.printLog('changed to ${_themeMode.value}');
+  void setThemeMode(AppThemeModes mode) {
+    _themeMode.value = mode;
+    themeData.write(StringValues.themeMode, mode.toString().split('.').last);
     update();
   }
 
-  void getThemeMode() async {
-    String themeMode = await themeData.read(StringValues.themeMode);
-    AppUtility.printLog('saved theme mode = $themeMode');
-    if (themeMode == 'light') {
-      _themeMode(AppThemeModes.light);
-    } else if (themeMode == 'dark') {
-      _themeMode(AppThemeModes.dark);
-    } else {
-      _themeMode(AppThemeModes.system);
+  void getThemeMode() {
+    final themeMode = themeData.read(StringValues.themeMode);
+    switch (themeMode) {
+      case 'system':
+        _themeMode.value = AppThemeModes.system;
+        update();
+        break;
+      case 'light':
+        _themeMode.value = AppThemeModes.light;
+        update();
+        break;
+      case 'dark':
+        _themeMode.value = AppThemeModes.dark;
+        update();
+        break;
+      default:
+        _themeMode.value = AppThemeModes.system;
+        update();
+        break;
     }
-    AppUtility.printLog(_themeMode.value);
-    update();
   }
 }

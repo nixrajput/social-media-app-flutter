@@ -15,7 +15,7 @@ import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/apis/services/notification_service.dart';
 import 'package:social_media_app/apis/services/theme_controller.dart';
-import 'package:social_media_app/background_service/background_service.dart';
+import 'package:social_media_app/background_service/firebase_service.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
@@ -29,26 +29,19 @@ import 'package:social_media_app/utils/utility.dart';
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
-    await GetStorage.init();
-    await Hive.initFlutter();
-    Get.put(AuthService(), permanent: true);
-    await NotificationService().initialize();
-    await initializeFirebaseService();
-    await initServices();
+    await initPreAppServices();
+    await checkAuthData();
     runApp(const MyApp());
-    await AppUpdateController.find.checkAppUpdate(
-      showLoading: false,
-      showAlert: false,
-    );
+    await Get.put(AppUpdateController(), permanent: true).init();
   } catch (err) {
     AppUtility.printLog(err);
   }
 }
 
-bool isLogin = false;
-String serverHealth = "offline";
+Future<void> initPreAppServices() async {
+  await GetStorage.init();
+  await Hive.initFlutter();
 
-Future<void> initServices() async {
   Hive.registerAdapter(PostAdapter());
   Hive.registerAdapter(MediaFileAdapter());
   Hive.registerAdapter(PostMediaFileAdapter());
@@ -56,12 +49,20 @@ Future<void> initServices() async {
   Hive.registerAdapter(PostResponseAdapter());
   Hive.registerAdapter(SecretKeyAdapter());
   Hive.registerAdapter(ServerKeyAdapter());
-  Get
-    ..put(AppThemeController(), permanent: true)
-    ..put(AppUpdateController(), permanent: true)
-    ..put(ProfileController(), permanent: true)
-    ..put(LoginDeviceInfoController(), permanent: true);
 
+  Get.put(AuthService(), permanent: true);
+  await NotificationService().initialize();
+  await initializeFirebaseService();
+
+  Get.put(AppThemeController(), permanent: true);
+  Get.put(ProfileController(), permanent: true);
+  Get.put(LoginDeviceInfoController(), permanent: true);
+}
+
+bool isLogin = false;
+String serverHealth = "offline";
+
+Future<void> checkAuthData() async {
   serverHealth = await AuthService.find.checkServerHealth();
   AppUtility.printLog("ServerHealth: $serverHealth");
 

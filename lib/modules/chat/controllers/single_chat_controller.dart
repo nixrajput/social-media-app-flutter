@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart' as material;
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/responses/chat_message_list_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
@@ -31,11 +32,13 @@ class SingleChatController extends GetxController {
   final _isMoreLoading = false.obs;
   final _message = ''.obs;
   final _messageData = const ChatMessageListResponse().obs;
+  final _pickedFileList = RxList<File>();
 
   bool get isLoading => _isLoading.value;
   bool get isMoreLoading => _isMoreLoading.value;
   bool get scrolledToBottom => _scrolledToBottom.value;
   String get message => _message.value;
+  List<File>? get pickedFileList => _pickedFileList;
 
   ChatMessageListResponse? get messageData => _messageData.value;
 
@@ -43,8 +46,8 @@ class SingleChatController extends GetxController {
   set setMessageData(ChatMessageListResponse response) =>
       _messageData.value = response;
 
-  String? receiverId;
-  String? receiverUname;
+  String? userId;
+  String? username;
 
   void onChangedText(value) {
     _message.value = value;
@@ -77,6 +80,23 @@ class SingleChatController extends GetxController {
     messageTextController.clear();
     var encryptedMessage = base64Encode(utf8.encode(message));
     AppUtility.printLog('Encrypted message: $encryptedMessage');
+
+    var tempId = AppUtility.generateUid(10);
+
+    var tempMessage = ChatMessage(
+      tempId: tempId,
+      senderId: profile.profileDetails!.user!.id,
+      receiverId: userId!,
+      message: encryptedMessage,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      seen: false,
+      sender: null,
+      receiver: null,
+    );
+
+    chatController.addTempMessage(tempMessage);
+
     chatController.channel.sink.add(
       jsonEncode(
         {
@@ -84,7 +104,10 @@ class SingleChatController extends GetxController {
           "payload": {
             "message": encryptedMessage,
             "type": "text",
-            "receiverId": receiverId,
+            "receiverId": userId,
+            "tempId": tempId,
+            // "mediaFiles": [],
+            // "replyTo": "",
           }
         },
       ),
@@ -97,9 +120,9 @@ class SingleChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    receiverId = Get.arguments[0];
-    receiverUname = Get.arguments[1];
-    if (receiverId != null) {
+    userId = Get.arguments[0];
+    username = Get.arguments[1];
+    if (userId != null) {
       _getData();
     }
     material.WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -125,15 +148,13 @@ class SingleChatController extends GetxController {
     if (chatController.allMessages.isNotEmpty) {
       var unreadMessages = chatController.allMessages
           .where((element) =>
-              element.sender!.id == receiverId &&
-              element.receiver!.id == profile.profileDetails!.user!.id &&
+              (element.senderId == userId &&
+                  element.receiverId == profile.profileDetails!.user!.id) &&
               element.seen == false)
           .toList();
       if (unreadMessages.isNotEmpty) {
+        AppUtility.printLog('Marking message as read');
         for (var message in unreadMessages) {
-          message.seen = true;
-          message.seenAt = DateTime.now();
-          update();
           chatController.channel.sink.add(
             jsonEncode(
               {
@@ -145,6 +166,9 @@ class SingleChatController extends GetxController {
               },
             ),
           );
+          message.seen = true;
+          message.seenAt = DateTime.now();
+          update();
         }
       }
     }
@@ -156,8 +180,7 @@ class SingleChatController extends GetxController {
     update();
 
     try {
-      final response =
-          await _apiProvider.getMessagesById(_auth.token, receiverId!);
+      final response = await _apiProvider.getMessagesById(_auth.token, userId!);
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
@@ -215,8 +238,8 @@ class SingleChatController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider
-          .getMessagesById(_auth.token, receiverId!, page: page);
+      final response =
+          await _apiProvider.getMessagesById(_auth.token, userId!, page: page);
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
@@ -272,4 +295,6 @@ class SingleChatController extends GetxController {
 
   Future<void> loadMore() async =>
       await _loadMore(page: _messageData.value.currentPage! + 1);
+
+  void markMessageAsRead() => _markMessageAsRead();
 }

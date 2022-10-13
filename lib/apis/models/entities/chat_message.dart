@@ -9,6 +9,9 @@ part 'chat_message.g.dart';
 class ChatMessage {
   ChatMessage({
     this.id,
+    this.tempId,
+    this.senderId,
+    this.receiverId,
     this.message,
     this.type,
     this.sender,
@@ -32,6 +35,15 @@ class ChatMessage {
 
   @JsonKey(name: '_id')
   final String? id;
+
+  @JsonKey(name: 'tempId')
+  final String? tempId;
+
+  @JsonKey(name: 'senderId')
+  final String? senderId;
+
+  @JsonKey(name: 'receiverId')
+  final String? receiverId;
 
   @JsonKey(name: 'message')
   final String? message;

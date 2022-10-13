@@ -48,8 +48,6 @@ class PostController extends GetxController {
     var isExists = await _hiveService.isExists(boxName: 'posts');
 
     if (isExists) {
-      //await _hiveService.clearBox('posts');
-
       var data = await _hiveService.getBox('posts');
       var cachedData = jsonDecode(data);
       setPostData = PostResponse.fromJson(cachedData);
@@ -177,14 +175,14 @@ class PostController extends GetxController {
   Future<void> _deletePost(String postId) async {
     AppUtility.printLog("Post Delete Request");
 
-    var isPostPresent = _postList.any((element) => element.id == postId);
+    if (postId.isEmpty) return;
 
-    if (isPostPresent == true) {
-      var postIndex = _postList.indexWhere((element) => element.id == postId);
-      var post = _postList.elementAt(postIndex);
-      _postList.remove(post);
-      update();
-    }
+    var postIndex = _postList.indexWhere((element) => element.id == postId);
+    var post = _postList[postIndex];
+    if (postIndex == -1) return;
+
+    _postList.removeAt(postIndex);
+    update();
 
     try {
       final response = await _apiProvider.deletePost(_auth.token, postId);
@@ -199,7 +197,7 @@ class PostController extends GetxController {
         );
         AppUtility.printLog("Post Delete Success");
       } else {
-        //_postList.insert(postIndex, post);
+        _postList.insert(postIndex, post);
         update();
         AppUtility.printLog("Post Delete Error");
         AppUtility.showSnackBar(
@@ -208,27 +206,27 @@ class PostController extends GetxController {
         );
       }
     } on SocketException {
-      //_postList.insert(postIndex, post);
+      _postList.insert(postIndex, post);
       update();
       AppUtility.printLog("Post Delete Error");
       AppUtility.printLog(StringValues.internetConnError);
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
-      //_postList.insert(postIndex, post);
+      _postList.insert(postIndex, post);
       update();
       AppUtility.printLog("Post Delete Error");
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      //_postList.insert(postIndex, post);
+      _postList.insert(postIndex, post);
       update();
       AppUtility.printLog("Post Delete Error");
       AppUtility.printLog(StringValues.formatExcError);
       AppUtility.printLog(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      //_postList.insert(postIndex, post);
+      _postList.insert(postIndex, post);
       update();
       AppUtility.printLog("Post Delete Error");
       AppUtility.printLog(StringValues.errorOccurred);

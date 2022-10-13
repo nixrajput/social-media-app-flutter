@@ -82,7 +82,8 @@ class PeopleTab extends StatelessWidget {
           Dimens.boxHeight16,
         ],
       );
-    } else if (logic.recommendedUsersData == null ||
+    }
+    if (logic.recommendedUsersData == null ||
         logic.recommendedUsersList.isEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -127,6 +128,13 @@ class PeopleTab extends StatelessWidget {
               totalLength: logic.recommendedUsersList.length,
               index: index,
               onTap: () => RouteManagement.goToUserProfileView(item.id),
+              onActionTap: () {
+                if (item.followingStatus == "requested") {
+                  logic.cancelFollowRequest(item);
+                  return;
+                }
+                logic.followUnfollowUser(item);
+              },
             );
           },
         ),

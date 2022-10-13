@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
@@ -22,6 +24,11 @@ class ChatWidget extends StatelessWidget {
   final VoidCallback? onTap;
   final int totalLength;
   final int index;
+
+  String _decryptMessage(String encryptedMessage) {
+    var decryptedMessage = utf8.decode(base64Decode(encryptedMessage));
+    return decryptedMessage;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +119,7 @@ class ChatWidget extends StatelessWidget {
                                   style: AppStyles.style13Bold,
                                 ),
                                 Text(
-                                  ChatController.find
-                                      .decryptMessage(chat.message!),
+                                  _decryptMessage(chat.message!),
                                   style: AppStyles.style13Normal,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
@@ -181,10 +187,8 @@ class ChatWidget extends StatelessWidget {
   Color _setMessageStatusColor() {
     if (chat.seen == true) {
       return ColorValues.successColor;
-    } else if (chat.delivered == true) {
-      return ColorValues.warningColor;
-    } else if (chat.sent == true) {
-      return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    } else if (chat.delivered == true || chat.sent == true) {
+      return Theme.of(Get.context!).textTheme.subtitle1!.color!;
     }
 
     return ColorValues.darkGrayColor;

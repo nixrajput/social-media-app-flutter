@@ -9,7 +9,6 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
-import 'package:social_media_app/routes/route_management.dart';
 
 class UserWidget extends StatelessWidget {
   const UserWidget({
@@ -24,6 +23,7 @@ class UserWidget extends StatelessWidget {
     required this.totalLength,
     required this.index,
     this.extraActions,
+    this.onActionTap,
   }) : super(key: key);
 
   final User user;
@@ -31,6 +31,7 @@ class UserWidget extends StatelessWidget {
   final int index;
   final double? bottomMargin;
   final VoidCallback? onTap;
+  final VoidCallback? onActionTap;
   final double? avatarSize;
   final EdgeInsets? padding;
   final Color? bgColor;
@@ -41,7 +42,7 @@ class UserWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final profile = ProfileController.find;
     return InkWell(
-      onTap: onTap ?? () => RouteManagement.goToUserProfileView(user.id),
+      onTap: onTap,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,26 +156,18 @@ class UserWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Dimens.boxWidth16,
-            GetBuilder<ProfileController>(
-              builder: (logic) => NxOutlinedButton(
-                label: getFollowStatus(user.followingStatus),
-                bgColor: getButtonColor(user.followingStatus),
-                borderColor: ColorValues.primaryColor,
-                borderStyle: getBorderStyle(user.followingStatus),
-                onTap: () {
-                  if (user.followingStatus == "requested") {
-                    logic.cancelFollowRequest(user);
-                    return;
-                  }
-                  logic.followUnfollowUser(user);
-                },
-                padding: Dimens.edgeInsets6_12,
-                borderWidth: Dimens.one,
-                borderRadius: Dimens.eight,
-                labelStyle: AppStyles.style13Normal.copyWith(
-                  color: getLabelColor(user.followingStatus),
-                  fontWeight: FontWeight.w500,
-                ),
+            NxOutlinedButton(
+              label: getFollowStatus(user.followingStatus),
+              bgColor: getButtonColor(user.followingStatus),
+              borderColor: ColorValues.primaryColor,
+              borderStyle: getBorderStyle(user.followingStatus),
+              onTap: onActionTap,
+              padding: Dimens.edgeInsets6_12,
+              borderWidth: Dimens.one,
+              borderRadius: Dimens.eight,
+              labelStyle: AppStyles.style13Normal.copyWith(
+                color: getLabelColor(user.followingStatus),
+                fontWeight: FontWeight.w500,
               ),
             ),
             if (extraActions != null) extraActions!

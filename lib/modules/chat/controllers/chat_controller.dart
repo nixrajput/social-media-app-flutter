@@ -59,6 +59,11 @@ class ChatController extends GetxController {
     });
   }
 
+  void addTempMessage(ChatMessage message) {
+    _allMessages.add(message);
+    update();
+  }
+
   Future<void> _initChannel() async {
     // var secretKeys = await _e2eeService.getSecretKeys();
     // var regId = int.parse(
@@ -107,10 +112,15 @@ class ChatController extends GetxController {
             update();
           } else {
             var tempIndex = _allMessages.indexWhere(
-              (element) => element.id == encryptedMessage.id,
+              (element) =>
+                  element.tempId == encryptedMessage.tempId ||
+                  element.id == encryptedMessage.id,
             );
             var tempMessage = _allMessages[tempIndex];
             var updatedMessage = tempMessage.copyWith(
+              id: encryptedMessage.id,
+              sender: encryptedMessage.sender,
+              receiver: encryptedMessage.receiver,
               sent: encryptedMessage.sent,
               sentAt: encryptedMessage.sentAt,
               delivered: encryptedMessage.delivered,
@@ -140,10 +150,15 @@ class ChatController extends GetxController {
             update();
           } else {
             var tempIndex = _lastMessageList.indexWhere(
-              (element) => element.id == encryptedMessage.id,
+              (element) =>
+                  element.tempId == encryptedMessage.tempId ||
+                  element.id == encryptedMessage.id,
             );
             var tempMessage = _lastMessageList[tempIndex];
             var updatedMessage = tempMessage.copyWith(
+              id: encryptedMessage.id,
+              sender: encryptedMessage.sender,
+              receiver: encryptedMessage.receiver,
               sent: encryptedMessage.sent,
               sentAt: encryptedMessage.sentAt,
               delivered: encryptedMessage.delivered,
@@ -179,16 +194,10 @@ class ChatController extends GetxController {
     // await _hiveService.addBox('lastMessage', jsonEncode(_lastMessageData));
   }
 
-  String decryptMessage(String encryptedMessage) {
-    var decryptedMessage = utf8.decode(base64Decode(encryptedMessage));
-    //AppUtility.printLog("decryptedMessage: $decryptedMessage");
-    return decryptedMessage;
-  }
-
   bool checkIfYourMessage(ChatMessage message) {
     var yourId = profile.profileDetails!.user!.id;
 
-    if (message.sender!.id == yourId) {
+    if (message.senderId == yourId) {
       return true;
     }
 
@@ -196,7 +205,11 @@ class ChatController extends GetxController {
   }
 
   bool _checkIfSameMessageInLastMessages(ChatMessage message) {
-    var item = _lastMessageList.any((element) => element.id == message.id);
+    var item = _lastMessageList.any((element) =>
+        element.id == message.id ||
+        (element.tempId != null &&
+            message.tempId != null &&
+            element.tempId == message.tempId));
 
     if (item) return true;
 
@@ -204,7 +217,11 @@ class ChatController extends GetxController {
   }
 
   bool _checkIfSameMessageInAllMessages(ChatMessage message) {
-    var item = _allMessages.any((element) => element.id == message.id);
+    var item = _allMessages.any((element) =>
+        element.id == message.id ||
+        (element.tempId != null &&
+            message.tempId != null &&
+            element.tempId == message.tempId));
 
     if (item) return true;
 
@@ -213,17 +230,17 @@ class ChatController extends GetxController {
 
   int _checkIfAlreadyPresentInLastMessages(ChatMessage message) {
     var item = _lastMessageList.any((element) =>
-        (element.sender!.id == message.sender!.id &&
-            element.receiver!.id == message.receiver!.id) ||
-        (element.sender!.id == message.receiver!.id &&
-            element.receiver!.id == message.sender!.id));
+        (element.senderId == message.senderId &&
+            element.receiverId == message.receiverId) ||
+        (element.senderId == message.receiverId &&
+            element.receiverId == message.senderId));
 
     if (item) {
       var index = _lastMessageList.indexWhere((element) =>
-          (element.sender!.id == message.sender!.id &&
-              element.receiver!.id == message.receiver!.id) ||
-          (element.sender!.id == message.receiver!.id &&
-              element.receiver!.id == message.sender!.id));
+          (element.senderId == message.senderId &&
+              element.receiverId == message.receiverId) ||
+          (element.senderId == message.receiverId &&
+              element.receiverId == message.senderId));
       return index;
     }
     return -1;

@@ -11,6 +11,7 @@ import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class TrendingPostController extends GetxController {
@@ -18,6 +19,7 @@ class TrendingPostController extends GetxController {
 
   final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
+  final _hiveService = HiveService();
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
@@ -44,6 +46,19 @@ class TrendingPostController extends GetxController {
   }
 
   _getData() async {
+    _isLoading.value = true;
+    update();
+    var isExists = await _hiveService.isExists(boxName: 'trendingPosts');
+
+    if (isExists) {
+      var data = await _hiveService.getBox('trendingPosts');
+      var cachedData = jsonDecode(data);
+      setPostData = PostResponse.fromJson(cachedData);
+      _postList.clear();
+      _postList.addAll(_postData.value.results!);
+    }
+    _isLoading.value = false;
+    update();
     await _fetchTrendingPosts();
   }
 
@@ -61,6 +76,7 @@ class TrendingPostController extends GetxController {
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
+        await _hiveService.addBox('trendingPosts', jsonEncode(decodedData));
         _isLoading.value = false;
         update();
         AppUtility.printLog("Fetching Trending Posts Success");
@@ -161,14 +177,14 @@ class TrendingPostController extends GetxController {
   Future<void> _deletePost(String postId) async {
     AppUtility.printLog("Post Delete Request");
 
-    var isPostPresent = _postList.any((element) => element.id == postId);
+    if (postId.isEmpty) return;
 
-    if (isPostPresent == true) {
-      var postIndex = _postList.indexWhere((element) => element.id == postId);
-      var post = _postList.elementAt(postIndex);
-      _postList.remove(post);
-      update();
-    }
+    var postIndex = _postList.indexWhere((element) => element.id == postId);
+    var post = _postList[postIndex];
+    if (postIndex == -1) return;
+
+    _postList.removeAt(postIndex);
+    update();
 
     try {
       final response = await _apiProvider.deletePost(_auth.token, postId);
@@ -183,6 +199,7 @@ class TrendingPostController extends GetxController {
         );
         AppUtility.printLog("Post Delete Success");
       } else {
+        _postList.insert(postIndex, post);
         update();
         AppUtility.printLog("Post Delete Error");
         AppUtility.showSnackBar(
@@ -191,24 +208,27 @@ class TrendingPostController extends GetxController {
         );
       }
     } on SocketException {
+      _postList.insert(postIndex, post);
       update();
       AppUtility.printLog("Post Delete Error");
       AppUtility.printLog(StringValues.internetConnError);
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
+      _postList.insert(postIndex, post);
       update();
       AppUtility.printLog("Post Delete Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
+      _postList.insert(postIndex, post);
       update();
       AppUtility.printLog("Post Delete Error");
       AppUtility.printLog(StringValues.formatExcError);
       AppUtility.printLog(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
+      _postList.insert(postIndex, post);
       update();
       AppUtility.printLog("Post Delete Error");
       AppUtility.printLog(StringValues.errorOccurred);
@@ -258,7 +278,6 @@ class TrendingPostController extends GetxController {
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _toggleLike(post);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {

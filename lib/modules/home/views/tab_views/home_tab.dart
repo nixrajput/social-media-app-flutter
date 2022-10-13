@@ -184,17 +184,17 @@ class HomeTabView extends StatelessWidget {
                     ],
                   ),
                 _buildBanner(),
-                ListView(
+                ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  children: logic.postList
-                      .map(
-                        (post) => PostWidget(
-                          post: post,
-                          controller: logic,
-                        ),
-                      )
-                      .toList(),
+                  itemCount: logic.postList.length,
+                  itemBuilder: (context, index) {
+                    final post = logic.postList[index];
+                    return PostWidget(
+                      post: post,
+                      controller: logic,
+                    );
+                  },
                 ),
                 if (logic.isMoreLoading) Dimens.boxHeight8,
                 if (logic.isMoreLoading)

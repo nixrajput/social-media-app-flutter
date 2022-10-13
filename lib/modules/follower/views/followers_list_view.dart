@@ -11,6 +11,7 @@ import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
+import 'package:social_media_app/routes/route_management.dart';
 
 class FollowersListView extends StatelessWidget {
   const FollowersListView({Key? key}) : super(key: key);
@@ -104,7 +105,8 @@ class FollowersListView extends StatelessWidget {
     if (logic.isLoading &&
         (logic.followersData == null || logic.followersList.isEmpty)) {
       return const Center(child: NxCircularProgressIndicator());
-    } else if (logic.followersData == null || logic.followersList.isEmpty) {
+    }
+    if (logic.followersData == null || logic.followersList.isEmpty) {
       return Padding(
         padding: Dimens.edgeInsets0_16,
         child: Column(
@@ -149,6 +151,14 @@ class FollowersListView extends StatelessWidget {
               user: item,
               totalLength: logic.followersList.length,
               index: index,
+              onTap: () => RouteManagement.goToUserProfileView(item.id),
+              onActionTap: () {
+                if (item.followingStatus == "requested") {
+                  logic.cancelFollowRequest(item);
+                  return;
+                }
+                logic.followUnfollowUser(item);
+              },
               extraActions:
                   logic.userId == logic.profile.profileDetails!.user!.id
                       ? Row(

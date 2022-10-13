@@ -45,9 +45,9 @@ class AuthService extends GetxService {
 
   @override
   void onInit() {
+    super.onInit();
     _checkForInternetConnectivity();
     getDeviceId();
-    super.onInit();
   }
 
   @override

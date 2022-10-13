@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/follower.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/apis/models/responses/follower_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
@@ -43,6 +44,13 @@ class FollowersListController extends GetxController {
   /// Setters
   set setFollowersListData(FollowerResponse value) {
     _followersData.value = value;
+  }
+
+  @override
+  void onInit() async {
+    _userId.value = Get.arguments;
+    super.onInit();
+    await _getFollowersList();
   }
 
   Future<void> _getFollowersList() async {
@@ -241,6 +249,147 @@ class FollowersListController extends GetxController {
     }
   }
 
+  void _toggleFollowUser(User user) {
+    if (user.isPrivate) {
+      if (user.followingStatus == "notFollowing") {
+        user.followingStatus = "requested";
+        update();
+        return;
+      }
+      if (user.followingStatus == "requested") {
+        user.followingStatus = "notFollowing";
+        update();
+        return;
+      }
+      if (user.followingStatus == "following") {
+        user.followingStatus = "notFollowing";
+        update();
+        return;
+      }
+    } else {
+      if (user.followingStatus == "notFollowing") {
+        user.followingStatus = "following";
+        update();
+        profile.fetchProfileDetails(fetchPost: false);
+        return;
+      } else {
+        user.followingStatus = "notFollowing";
+        update();
+        profile.fetchProfileDetails(fetchPost: false);
+        return;
+      }
+    }
+  }
+
+  Future<void> _followUnfollowUser(User user) async {
+    AppUtility.printLog("Follow/Unfollow User Request");
+    _toggleFollowUser(user);
+
+    try {
+      final response =
+          await _apiProvider.followUnfollowUser(_auth.token, user.id);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        await profile.fetchProfileDetails(fetchPost: false);
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+          duration: 2,
+        );
+        AppUtility.printLog("Follow/Unfollow User Success");
+      } else {
+        _toggleFollowUser(user);
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+          duration: 2,
+        );
+        AppUtility.printLog("Follow/Unfollow User Error");
+      }
+    } on SocketException {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Follow/Unfollow User Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Follow/Unfollow User Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Follow/Unfollow User Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Follow/Unfollow User Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+  }
+
+  Future<void> _cancelFollowRequest(User user) async {
+    AppUtility.printLog("Cancel Follow Request");
+    _toggleFollowUser(user);
+
+    try {
+      final response =
+          await _apiProvider.cancelFollowRequest(_auth.token, user.id);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+        );
+        AppUtility.printLog("Cancel FollowRequest Success");
+      } else {
+        _toggleFollowUser(user);
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+        AppUtility.printLog("Cancel FollowRequest Error");
+      }
+    } on SocketException {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Cancel FollowRequest Error");
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Cancel FollowRequest Error");
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Cancel FollowRequest Error");
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      _toggleFollowUser(user);
+      AppUtility.printLog("Cancel FollowRequest Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+  }
+
+  Future<void> followUnfollowUser(User user) async =>
+      await _followUnfollowUser(user);
+
+  Future<void> cancelFollowRequest(User user) async =>
+      await _cancelFollowRequest(user);
+
   Future<void> getFollowersList() async => await _getFollowersList();
 
   Future<void> loadMore() async =>
@@ -248,11 +397,4 @@ class FollowersListController extends GetxController {
 
   Future<void> searchFollowers(String searchText) async =>
       await _searchFollowers(searchText);
-
-  @override
-  void onInit() async {
-    _userId.value = Get.arguments;
-    super.onInit();
-    await _getFollowersList();
-  }
 }

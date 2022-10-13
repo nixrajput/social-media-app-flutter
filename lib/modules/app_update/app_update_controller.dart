@@ -52,6 +52,10 @@ class AppUpdateController extends GetxController {
 
   set changelog(value) => _changelog.value = value;
 
+  Future<void> init() async {
+    await _checkAppUpdate(false, false);
+  }
+
   Future<void> _getPackageInfo() async {
     AppUtility.printLog("Getting package info...");
     var packageInfo = await PackageInfo.fromPlatform();

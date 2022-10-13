@@ -46,6 +46,18 @@ class UserDetailsController extends GetxController {
 
   set setUserDetails(UserDetailsResponse value) => _userDetails.value = value;
 
+  @override
+  void onInit() async {
+    super.onInit();
+    var type = Get.arguments[1];
+
+    if (type == 'uid') {
+      await _fetchUserDetailsById();
+    } else {
+      await _fetchUserDetailsByUsername();
+    }
+  }
+
   Future<void> _fetchUserDetailsById() async {
     var userId = Get.arguments[0];
 
@@ -333,13 +345,13 @@ class UserDetailsController extends GetxController {
         user.followingStatus = "following";
         user.followersCount++;
         update();
-        ProfileController.find.fetchProfileDetails(fetchPost: false);
+        profile.fetchProfileDetails(fetchPost: false);
         return;
       } else {
         user.followingStatus = "notFollowing";
         user.followersCount--;
         update();
-        ProfileController.find.fetchProfileDetails(fetchPost: false);
+        profile.fetchProfileDetails(fetchPost: false);
         return;
       }
     }
@@ -379,7 +391,6 @@ class UserDetailsController extends GetxController {
     } on TimeoutException {
       _toggleFollowUser(user);
       AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
@@ -431,7 +442,6 @@ class UserDetailsController extends GetxController {
       _toggleFollowUser(user);
       AppUtility.printLog("Cancel FollowRequest Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _toggleFollowUser(user);
@@ -463,16 +473,4 @@ class UserDetailsController extends GetxController {
 
   Future<void> cancelFollowRequest(UserDetails user) async =>
       await _cancelFollowRequest(user);
-
-  @override
-  void onInit() async {
-    super.onInit();
-    var type = Get.arguments[1];
-
-    if (type == 'uid') {
-      await _fetchUserDetailsById();
-    } else {
-      await _fetchUserDetailsByUsername();
-    }
-  }
 }
