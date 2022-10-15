@@ -3,7 +3,7 @@ description: A social media app using Flutter, Dart, GetX, and REST API that all
 
 publish_to: "none"
 
-version: 1.0.1+18
+version: 1.0.1+19
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
@@ -14,8 +14,8 @@ dependencies:
 
   cupertino_icons: ^1.0.5
 
-  device_info_plus: ^5.0.5
-  package_info_plus: ^1.4.3+1
+  device_info_plus: ^6.0.0
+  package_info_plus: ^2.0.0
   geolocator: ^9.0.2
   geocoding: ^2.0.5
 
@@ -33,7 +33,7 @@ dependencies:
   cloudinary: ^1.0.3
   r_upgrade: ^0.3.8+2
 
-  libsignal_protocol_dart: ^0.6.3
+  libsignal_protocol_dart: ^0.6.5
 
   cached_network_image: ^3.2.2
   hive: ^2.2.3
@@ -46,13 +46,13 @@ dependencies:
   share_plus: ^4.5.3
   flutter_email_sender: ^5.1.0
 
-  flutter_local_notifications: ^12.0.1+1
+  flutter_local_notifications: ^12.0.2
   firebase_core: ^1.24.0
   firebase_messaging: ^13.1.0
 
   better_player: ^0.0.83
   path: ^1.8.2
-  file_picker: ^5.2.0+1
+  file_picker: ^5.2.1
   path_provider: ^2.0.11
   flutter_markdown: ^0.6.12
 
@@ -66,7 +66,7 @@ dependencies:
   built_value: ^8.4.1
   json_annotation: ^4.7.0
   equatable: ^2.0.5
-  copy_with_extension: ^4.0.3
+  copy_with_extension: ^4.0.4
 
 dev_dependencies:
   flutter_test:
@@ -74,12 +74,12 @@ dev_dependencies:
 
   flutter_lints: ^2.0.1
   flutter_launcher_icons: ^0.10.0
-  flutter_native_splash: ^2.2.10+1
+  flutter_native_splash: ^2.2.11
 
-  build_runner: ^2.2.1
+  build_runner: ^2.3.0
   hive_generator: ^1.1.3
-  json_serializable: ^6.5.0
-  copy_with_extension_gen: ^4.0.3
+  json_serializable: ^6.5.1
+  copy_with_extension_gen: ^4.0.4
 
 flutter:
   uses-material-design: true

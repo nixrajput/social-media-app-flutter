@@ -72,6 +72,8 @@ Future<void> checkAuthData() async {
       serverHealth.toLowerCase() == "maintenance") {
     return;
   }
+
+  /// If [serverHealth] is `online`
   await AuthService.find.getToken().then((token) async {
     AuthService.find.autoLogout();
     if (token.isNotEmpty) {
@@ -81,10 +83,13 @@ Future<void> checkAuthData() async {
         if (hasData) {
           isLogin = true;
         } else {
-          await AppUtility.clearLoginDataFromLocalStorage();
+          await AppUtility.deleteProfileDataFromLocalStorage();
         }
       } else {
         await AppUtility.clearLoginDataFromLocalStorage();
+        await AppUtility.deleteFcmTokenFromLocalStorage();
+        await AppUtility.deletePostDataFromLocalStorage();
+        await AppUtility.deleteProfilePostDataFromLocalStorage();
       }
     }
     isLogin

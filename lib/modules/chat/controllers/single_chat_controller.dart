@@ -6,8 +6,10 @@ import 'package:flutter/material.dart' as material;
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
+import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/responses/chat_message_list_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
+import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -20,9 +22,9 @@ class SingleChatController extends GetxController {
 
   final chatController = ChatController.find;
   final profile = ProfileController.find;
-
   final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
+  final _socketApiProvider = SocketApiProvider();
 
   final messageTextController = material.TextEditingController();
   final scrollController = material.ScrollController();
@@ -35,9 +37,13 @@ class SingleChatController extends GetxController {
   final _pickedFileList = RxList<File>();
 
   bool get isLoading => _isLoading.value;
+
   bool get isMoreLoading => _isMoreLoading.value;
+
   bool get scrolledToBottom => _scrolledToBottom.value;
+
   String get message => _message.value;
+
   List<File>? get pickedFileList => _pickedFileList;
 
   ChatMessageListResponse? get messageData => _messageData.value;
@@ -48,6 +54,7 @@ class SingleChatController extends GetxController {
 
   String? userId;
   String? username;
+  MediaFile? profileImage;
 
   void onChangedText(value) {
     _message.value = value;
@@ -97,21 +104,16 @@ class SingleChatController extends GetxController {
 
     chatController.addTempMessage(tempMessage);
 
-    chatController.channel.sink.add(
-      jsonEncode(
-        {
-          "type": "send-message",
-          "payload": {
-            "message": encryptedMessage,
-            "type": "text",
-            "receiverId": userId,
-            "tempId": tempId,
-            // "mediaFiles": [],
-            // "replyTo": "",
-          }
-        },
-      ),
-    );
+    _socketApiProvider.sendJson({
+      "type": "send-message",
+      "payload": {
+        "message": encryptedMessage,
+        "receiverId": userId,
+        "tempId": tempId,
+        // "mediaFiles": [],
+        // "replyTo": "",
+      },
+    });
     _message.value = '';
     update();
     scrollToLast();
@@ -122,6 +124,7 @@ class SingleChatController extends GetxController {
     super.onInit();
     userId = Get.arguments[0];
     username = Get.arguments[1];
+    profileImage = Get.arguments[2];
     if (userId != null) {
       _getData();
     }
@@ -144,6 +147,34 @@ class SingleChatController extends GetxController {
     _markMessageAsRead();
   }
 
+  void deleteMultipleMessages(List<String> messageIds) {
+    _socketApiProvider.sendJson({
+      'type': 'delete-messages',
+      'payload': {
+        'messageIds': messageIds,
+      }
+    });
+  }
+
+  void deleteMessage(String messageId) {
+    _socketApiProvider.sendJson({
+      'type': 'delete-message',
+      'payload': {
+        'messageId': messageId,
+      }
+    });
+  }
+
+  void sendTypingStatus(String status) {
+    _socketApiProvider.sendJson({
+      'type': 'message-typing',
+      'payload': {
+        'receiverId': userId,
+        'status': status,
+      }
+    });
+  }
+
   void _markMessageAsRead() async {
     if (chatController.allMessages.isNotEmpty) {
       var unreadMessages = chatController.allMessages
@@ -155,16 +186,13 @@ class SingleChatController extends GetxController {
       if (unreadMessages.isNotEmpty) {
         AppUtility.printLog('Marking message as read');
         for (var message in unreadMessages) {
-          chatController.channel.sink.add(
-            jsonEncode(
-              {
-                "type": "message-read",
-                "payload": {
-                  "messageId": message.id,
-                  "senderId": message.sender!.id,
-                }
-              },
-            ),
+          _socketApiProvider.sendJson(
+            {
+              "type": "read-message",
+              "payload": {
+                "messageId": message.id,
+              }
+            },
           );
           message.seen = true;
           message.seenAt = DateTime.now();

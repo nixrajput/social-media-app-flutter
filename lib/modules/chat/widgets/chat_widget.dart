@@ -8,22 +8,23 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
-import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class ChatWidget extends StatelessWidget {
-  const ChatWidget(
-      {Key? key,
-      required this.chat,
-      this.onTap,
-      required this.totalLength,
-      required this.index})
-      : super(key: key);
+  const ChatWidget({
+    Key? key,
+    required this.chat,
+    this.onTap,
+    required this.totalLength,
+    required this.index,
+    required this.isOnline,
+  }) : super(key: key);
 
   final ChatMessage chat;
   final VoidCallback? onTap;
   final int totalLength;
   final int index;
+  final bool isOnline;
 
   String _decryptMessage(String encryptedMessage) {
     var decryptedMessage = utf8.decode(base64Decode(encryptedMessage));
@@ -93,18 +94,19 @@ class ChatWidget extends StatelessWidget {
                                 avatar: user.avatar,
                                 size: Dimens.twentyFour,
                               ),
-                              // Positioned(
-                              //   top: Dimens.two,
-                              //   right: Dimens.two,
-                              //   child: Container(
-                              //     width: Dimens.twelve,
-                              //     height: Dimens.twelve,
-                              //     decoration: const BoxDecoration(
-                              //       color: ColorValues.successColor,
-                              //       shape: BoxShape.circle,
-                              //     ),
-                              //   ),
-                              // ),
+                              if (isOnline)
+                                Positioned(
+                                  top: Dimens.two,
+                                  right: Dimens.two,
+                                  child: Container(
+                                    width: Dimens.twelve,
+                                    height: Dimens.twelve,
+                                    decoration: const BoxDecoration(
+                                      color: ColorValues.successColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                           Dimens.boxWidth8,
@@ -135,8 +137,11 @@ class ChatWidget extends StatelessWidget {
                       flex: 0,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           GetTimeAgoWidget(
+                            pattern: 'dd MMM',
                             date: chat.createdAt!,
                             builder: (BuildContext context, String value) =>
                                 Text(

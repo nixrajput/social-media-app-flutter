@@ -80,7 +80,7 @@ class HomeController extends GetxController {
             children: [
               if (logic.lastMessageList
                   .map((e) =>
-                      e.receiver!.id ==
+                      e.receiverId ==
                           ProfileController.find.profileDetails!.user!.id &&
                       e.seen == false)
                   .contains(true))

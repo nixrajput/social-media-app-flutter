@@ -10,6 +10,7 @@ class NotificationService {
   bool _initialized = false;
 
   bool get isInitialized => _initialized;
+
   String get fcmToken => _fcmToken;
 
   set setFcmToken(String value) => _fcmToken = value;

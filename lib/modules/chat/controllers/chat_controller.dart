@@ -5,16 +5,15 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
+import 'package:social_media_app/apis/models/entities/online_user.dart';
 import 'package:social_media_app/apis/models/responses/chat_message_list_response.dart';
-import 'package:social_media_app/apis/models/responses/chat_message_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
+import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
-import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class ChatController extends GetxController {
   static ChatController get find => Get.find();
@@ -23,14 +22,17 @@ class ChatController extends GetxController {
   final _apiProvider = ApiProvider(http.Client());
   final _hiveService = HiveService();
   final profile = ProfileController.find;
+  final SocketApiProvider _socketApiProvider = SocketApiProvider();
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
   final _lastMessageData = const ChatMessageListResponse().obs;
-  late final WebSocketChannel channel;
+
   // late SignalProtocolManager signalProtocolManager;
   final List<ChatMessage> _lastMessageList = [];
   final List<ChatMessage> _allMessages = [];
+  final List<OnlineUser> _onlineUsers = [];
+  final List<String> _typingUsers = [];
 
   /// Getters
   bool get isLoading => _isLoading.value;
@@ -43,20 +45,177 @@ class ChatController extends GetxController {
 
   List<ChatMessage> get allMessages => _allMessages;
 
+  List<OnlineUser> get onlineUsers => _onlineUsers;
+
+  List<String> get typingUsers => _typingUsers;
+
   /// Setters
   set setLastMessageData(ChatMessageListResponse response) =>
       _lastMessageData.value = response;
 
-  @override
-  void onClose() {
-    channel.sink.close();
-    super.onClose();
+  void initialize() {
+    _socketApiProvider.socketEventStream.listen(_addSocketEventListener);
+    _getLastMessages();
+    _socketApiProvider.sendJson({'type': 'get-undelivered-messages'});
   }
 
-  void initialize() {
-    _initChannel().then((_) {
-      _getData();
-    });
+  void _addSocketEventListener(dynamic event) {
+    var decodedData = jsonDecode(event);
+
+    var type = decodedData['type'];
+    AppUtility.printLog("Socket Event Type: $type");
+
+    switch (type) {
+      case 'message':
+        var chatMessage = ChatMessage.fromJson(decodedData['data']);
+        _addMessageListener(chatMessage);
+        break;
+
+      case 'onlineStatus':
+        var onlineUser = OnlineUser.fromJson(decodedData['data']);
+        _addOnlineUserListener(onlineUser);
+        break;
+
+      case 'messageDelete':
+        var messageId = decodedData['messageId'];
+        _deleteMessageListener(messageId);
+        break;
+
+      case 'messageTyping':
+        var userId = decodedData['data']['senderId'];
+        var isTyping = decodedData['data']['status'];
+        _addTypingIndicatorListener(userId, isTyping);
+        break;
+
+      case 'error':
+        AppUtility.printLog("Error: ${decodedData['message']}");
+        AppUtility.showSnackBar(decodedData['message'], StringValues.error);
+        break;
+
+      default:
+        AppUtility.printLog("Invalid event type: $type");
+        break;
+    }
+  }
+
+  void _addTypingIndicatorListener(String userId, String status) {
+    if (status == 'start') {
+      _typingUsers.add(userId);
+    } else {
+      _typingUsers.remove(userId);
+    }
+    update();
+    AppUtility.printLog("Typing Users: $_typingUsers");
+  }
+
+  void _addOnlineUserListener(OnlineUser onlineUser) {
+    var status = onlineUser.status!;
+
+    switch (status) {
+      case 'online':
+        _onlineUsers.add(onlineUser);
+        update();
+        break;
+
+      case 'offline':
+        _onlineUsers
+            .removeWhere((element) => element.userId == onlineUser.userId);
+        update();
+        break;
+
+      default:
+        AppUtility.printLog("Invalid status: $status");
+        break;
+    }
+
+    AppUtility.printLog('Online Users: ${_onlineUsers.length}');
+  }
+
+  void _addMessageListener(ChatMessage encryptedMessage) {
+    if (!_checkIfSameMessageInAllMessages(encryptedMessage)) {
+      _allMessages.add(encryptedMessage);
+      update();
+    } else {
+      var tempIndex = _allMessages.indexWhere(
+        (element) =>
+            element.tempId == encryptedMessage.tempId ||
+            element.id == encryptedMessage.id,
+      );
+      var tempMessage = _allMessages[tempIndex];
+      var updatedMessage = tempMessage.copyWith(
+        id: encryptedMessage.id,
+        sender: encryptedMessage.sender,
+        receiver: encryptedMessage.receiver,
+        sent: encryptedMessage.sent,
+        sentAt: encryptedMessage.sentAt,
+        delivered: encryptedMessage.delivered,
+        deliveredAt: encryptedMessage.deliveredAt,
+        seen: encryptedMessage.seen,
+        seenAt: encryptedMessage.seenAt,
+        deleted: encryptedMessage.deleted,
+        deletedAt: encryptedMessage.deletedAt,
+      );
+      _allMessages[tempIndex] = updatedMessage;
+      update();
+    }
+
+    if (!_checkIfSameMessageInLastMessages(encryptedMessage)) {
+      var index = _checkIfAlreadyPresentInLastMessages(encryptedMessage);
+      if (index < 0) {
+        _lastMessageList.add(encryptedMessage);
+      } else {
+        var oldMessage = _lastMessageList.elementAt(index);
+        var isAfter =
+            _checkIfLatestChatInLastMessages(oldMessage, encryptedMessage);
+        if (isAfter) {
+          _lastMessageList.remove(oldMessage);
+          _lastMessageList.add(encryptedMessage);
+        }
+      }
+      update();
+    } else {
+      var tempIndex = _lastMessageList.indexWhere(
+        (element) =>
+            element.tempId == encryptedMessage.tempId ||
+            element.id == encryptedMessage.id,
+      );
+      var tempMessage = _lastMessageList[tempIndex];
+      var updatedMessage = tempMessage.copyWith(
+        id: encryptedMessage.id,
+        sender: encryptedMessage.sender,
+        receiver: encryptedMessage.receiver,
+        sent: encryptedMessage.sent,
+        sentAt: encryptedMessage.sentAt,
+        delivered: encryptedMessage.delivered,
+        deliveredAt: encryptedMessage.deliveredAt,
+        seen: encryptedMessage.seen,
+        seenAt: encryptedMessage.seenAt,
+        deleted: encryptedMessage.deleted,
+        deletedAt: encryptedMessage.deletedAt,
+      );
+      _lastMessageList[tempIndex] = updatedMessage;
+      update();
+    }
+    AppUtility.printLog("Chat Message Added");
+  }
+
+  void _deleteMessageListener(String messageId) {
+    var indexInAllMessages =
+        _allMessages.indexWhere((element) => element.id == messageId);
+
+    var indexInLastMessages =
+        _lastMessageList.indexWhere((element) => element.id == messageId);
+
+    if (indexInAllMessages >= 0) {
+      _allMessages.removeAt(indexInAllMessages);
+    }
+
+    if (indexInLastMessages >= 0) {
+      _lastMessageList.removeAt(indexInLastMessages);
+    }
+
+    update();
+    AppUtility.printLog("Chat Message Deleted");
   }
 
   void addTempMessage(ChatMessage message) {
@@ -64,125 +223,64 @@ class ChatController extends GetxController {
     update();
   }
 
-  Future<void> _initChannel() async {
-    // var secretKeys = await _e2eeService.getSecretKeys();
-    // var regId = int.parse(
-    //   String.fromCharCodes(base64Decode(secretKeys.registrationId)),
-    // );
-    // var identityKeyPairString = secretKeys.identityKeyPair;
-    // var decodedIdentityKeyPair = base64Decode(identityKeyPairString);
-    // var identityKeyPair =
-    //     IdentityKeyPair.fromSerialized(decodedIdentityKeyPair);
-    // var protocolStore = NxSignalProtocolStore(identityKeyPair, regId);
-    // var preKeys = secretKeys.preKeys;
-    // var serializedPreKeys = <PreKeyRecord>[];
-    // for (var item in preKeys) {
-    //   var decodedPreKey = base64Decode(item);
-    //   var preKey = PreKeyRecord.fromBuffer(decodedPreKey);
-    //   serializedPreKeys.add(preKey);
-    // }
-    // var signedPreKeyString = secretKeys.signedPreKey;
-    // var decodedSignedPreKey = base64Decode(signedPreKeyString);
-    // var signedPreKey = SignedPreKeyRecord.fromSerialized(decodedSignedPreKey);
-    //
-    // for (var item in serializedPreKeys) {
-    //   await protocolStore.storePreKey(item.id, item);
-    // }
-    // await protocolStore.storeSignedPreKey(
-    //   signedPreKey.id,
-    //   signedPreKey,
-    // );
-    //
-    // signalProtocolManager = SignalProtocolManager(protocolStore);
+  //message-typing
 
-    // var isChatDataExists = await _hiveService.isExists(boxName: 'chats');
+  // void deleteMultipleMessages(List<String> messageIds) {
+  //   _socketApiProvider.sendJson({
+  //     'type': 'delete-messages',
+  //     'payload': {
+  //       'messageIds': messageIds,
+  //     }
+  //   });
+  // }
 
-    channel = WebSocketChannel.connect(
-        Uri.parse('${AppSecrets.awsWebSocketUrl}?token=${_auth.token}'));
+  // void deleteMessage(String messageId) {
+  //   _socketApiProvider.sendJson({
+  //     'type': 'delete-message',
+  //     'payload': {
+  //       'messageId': messageId,
+  //     }
+  //   });
+  // }
 
-    channel.stream.listen(
-      (value) async {
-        var decodedData = jsonDecode(value);
-        if (decodedData['data'] != null) {
-          var chatResponse = ChatMessageResponse.fromJson(decodedData);
-          var encryptedMessage = chatResponse.data!;
+  // var secretKeys = await _e2eeService.getSecretKeys();
+  // var regId = int.parse(
+  //   String.fromCharCodes(base64Decode(secretKeys.registrationId)),
+  // );
+  // var identityKeyPairString = secretKeys.identityKeyPair;
+  // var decodedIdentityKeyPair = base64Decode(identityKeyPairString);
+  // var identityKeyPair =
+  //     IdentityKeyPair.fromSerialized(decodedIdentityKeyPair);
+  // var protocolStore = NxSignalProtocolStore(identityKeyPair, regId);
+  // var preKeys = secretKeys.preKeys;
+  // var serializedPreKeys = <PreKeyRecord>[];
+  // for (var item in preKeys) {
+  //   var decodedPreKey = base64Decode(item);
+  //   var preKey = PreKeyRecord.fromBuffer(decodedPreKey);
+  //   serializedPreKeys.add(preKey);
+  // }
+  // var signedPreKeyString = secretKeys.signedPreKey;
+  // var decodedSignedPreKey = base64Decode(signedPreKeyString);
+  // var signedPreKey = SignedPreKeyRecord.fromSerialized(decodedSignedPreKey);
+  //
+  // for (var item in serializedPreKeys) {
+  //   await protocolStore.storePreKey(item.id, item);
+  // }
+  // await protocolStore.storeSignedPreKey(
+  //   signedPreKey.id,
+  //   signedPreKey,
+  // );
+  //
 
-          if (!_checkIfSameMessageInAllMessages(encryptedMessage)) {
-            _allMessages.add(encryptedMessage);
-            update();
-          } else {
-            var tempIndex = _allMessages.indexWhere(
-              (element) =>
-                  element.tempId == encryptedMessage.tempId ||
-                  element.id == encryptedMessage.id,
-            );
-            var tempMessage = _allMessages[tempIndex];
-            var updatedMessage = tempMessage.copyWith(
-              id: encryptedMessage.id,
-              sender: encryptedMessage.sender,
-              receiver: encryptedMessage.receiver,
-              sent: encryptedMessage.sent,
-              sentAt: encryptedMessage.sentAt,
-              delivered: encryptedMessage.delivered,
-              deliveredAt: encryptedMessage.deliveredAt,
-              seen: encryptedMessage.seen,
-              seenAt: encryptedMessage.seenAt,
-              deleted: encryptedMessage.deleted,
-              deletedAt: encryptedMessage.deletedAt,
-            );
-            _allMessages[tempIndex] = updatedMessage;
-            update();
-          }
+  bool isUserTyping(String userId) {
+    return _typingUsers.contains(userId);
+  }
 
-          if (!_checkIfSameMessageInLastMessages(encryptedMessage)) {
-            var index = _checkIfAlreadyPresentInLastMessages(encryptedMessage);
-            if (index < 0) {
-              _lastMessageList.add(encryptedMessage);
-            } else {
-              var oldMessage = _lastMessageList.elementAt(index);
-              var isAfter = _checkIfLatestChatInLastMessages(
-                  oldMessage, encryptedMessage);
-              if (isAfter) {
-                _lastMessageList.remove(oldMessage);
-                _lastMessageList.add(encryptedMessage);
-              }
-            }
-            update();
-          } else {
-            var tempIndex = _lastMessageList.indexWhere(
-              (element) =>
-                  element.tempId == encryptedMessage.tempId ||
-                  element.id == encryptedMessage.id,
-            );
-            var tempMessage = _lastMessageList[tempIndex];
-            var updatedMessage = tempMessage.copyWith(
-              id: encryptedMessage.id,
-              sender: encryptedMessage.sender,
-              receiver: encryptedMessage.receiver,
-              sent: encryptedMessage.sent,
-              sentAt: encryptedMessage.sentAt,
-              delivered: encryptedMessage.delivered,
-              deliveredAt: encryptedMessage.deliveredAt,
-              seen: encryptedMessage.seen,
-              seenAt: encryptedMessage.seenAt,
-              deleted: encryptedMessage.deleted,
-              deletedAt: encryptedMessage.deletedAt,
-            );
-            _lastMessageList[tempIndex] = updatedMessage;
-            update();
-          }
-          AppUtility.printLog("Chat Added");
-        }
-      },
-      onError: (err) {
-        AppUtility.printLog(err);
-      },
+  bool isUserOnline(String userId) {
+    var user = _onlineUsers.any(
+      (element) => element.userId == userId,
     );
-
-    //get-undelivered-messages
-    channel.sink.add(jsonEncode({
-      'type': 'get-undelivered-messages',
-    }));
+    return user;
   }
 
   void addToAllMessages(ChatMessage message) async {
@@ -253,19 +351,19 @@ class ChatController extends GetxController {
     return false;
   }
 
-  _getData() async {
+  _getLastMessages() async {
     var isExists = await _hiveService.isExists(boxName: 'lastMessage');
 
     if (isExists) {
-      // await _hiveService.clearBox('lastMessage');
+      await _hiveService.clearBox('lastMessage');
 
-      var data = await _hiveService.getBox('lastMessage');
-      var cachedData = jsonDecode(data);
-      setLastMessageData = ChatMessageListResponse.fromJson(cachedData);
-      _lastMessageList.clear();
-      _lastMessageList.addAll(_lastMessageData.value.results!);
-      _allMessages.clear();
-      _allMessages.addAll(_lastMessageData.value.results!);
+      // var data = await _hiveService.getBox('lastMessage');
+      // var cachedData = jsonDecode(data);
+      // setLastMessageData = ChatMessageListResponse.fromJson(cachedData);
+      // _lastMessageList.clear();
+      // _lastMessageList.addAll(_lastMessageData.value.results!);
+      // _allMessages.clear();
+      // _allMessages.addAll(_lastMessageData.value.results!);
     }
     update();
 

@@ -361,6 +361,13 @@ abstract class AppUtility {
     return null;
   }
 
+  static Future<void> deleteProfileDataFromLocalStorage() async {
+    final storage = GetStorage();
+    await storage.remove(StringValues.profileData);
+    await deleteProfilePostDataFromLocalStorage();
+    printLog("Profile Data Deleted From Local Storage");
+  }
+
   static Future<void> clearLoginDataFromLocalStorage() async {
     final storage = GetStorage();
     await storage.remove(StringValues.loginData);

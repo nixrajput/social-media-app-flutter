@@ -23,7 +23,8 @@
         <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="fullSensor" android:theme="@style/Theme.AppCompat.Light.NoActionBar" tools:ignore="MissingClass" />
 
         <meta-data android:name="flutterEmbedding" android:value="2" />
-
+        <meta-data android:name="io.flutter.network-policy"
+            android:resource="@xml/network_security_config"/>
         <meta-data android:name="firebase_messaging_auto_init_enabled" android:value="false" />
         <meta-data android:name="firebase_analytics_collection_enabled" android:value="false" />
         <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="Default Notifications" />

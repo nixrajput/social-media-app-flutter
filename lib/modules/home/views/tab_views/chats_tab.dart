@@ -46,6 +46,8 @@ class ChatsTabView extends StatelessWidget {
   }
 
   Widget _buildBody() {
+    final profile = ProfileController.find;
+
     return Expanded(
       child: GetBuilder<ChatController>(
         builder: (logic) {
@@ -83,22 +85,20 @@ class ChatsTabView extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       final item = logic.lastMessageList[index];
+                      final isMe =
+                          item.senderId == profile.profileDetails!.user!.id;
+                      final isUserOnline = logic.isUserOnline(
+                          isMe ? item.receiverId! : item.senderId!);
                       return ChatWidget(
                         chat: item,
                         totalLength: logic.lastMessageList.length,
                         index: logic.lastMessageList.indexOf(item),
                         onTap: () => RouteManagement.goToChatDetailsView(
-                          item.sender!.id ==
-                                  ProfileController
-                                      .find.profileDetails!.user!.id
-                              ? item.receiver!.id
-                              : item.sender!.id,
-                          item.sender!.id ==
-                                  ProfileController
-                                      .find.profileDetails!.user!.id
-                              ? item.receiver!.uname
-                              : item.sender!.uname,
+                          isMe ? item.receiverId! : item.senderId!,
+                          isMe ? item.receiver!.uname : item.sender!.uname,
+                          isMe ? item.receiver!.avatar! : item.sender!.avatar!,
                         ),
+                        isOnline: isUserOnline,
                       );
                     },
                   ),

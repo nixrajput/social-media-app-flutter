@@ -120,6 +120,9 @@ class AuthService extends GetxService {
     setToken = '';
     setExpiresAt = 0;
     await AppUtility.clearLoginDataFromLocalStorage();
+    await AppUtility.deleteFcmTokenFromLocalStorage();
+    await AppUtility.deletePostDataFromLocalStorage();
+    await AppUtility.deleteProfilePostDataFromLocalStorage();
     if (showLoading) AppUtility.closeDialog();
     AppUtility.printLog("Logout Success");
   }

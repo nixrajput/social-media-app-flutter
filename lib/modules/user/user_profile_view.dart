@@ -342,8 +342,11 @@ class UserProfileView extends StatelessWidget {
             labelStyle: AppStyles.style14Normal.copyWith(
               color: Theme.of(Get.context!).textTheme.bodyText1!.color,
             ),
-            onTap: () =>
-                RouteManagement.goToChatDetailsView(user.id, user.uname),
+            onTap: () => RouteManagement.goToChatDetailsView(
+              user.id,
+              user.uname,
+              user.avatar!,
+            ),
           ),
         )
       ],

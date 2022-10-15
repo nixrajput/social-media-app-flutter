@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/modules/chat/controllers/single_chat_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
@@ -58,9 +59,10 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.chats);
   }
 
-  static void goToChatDetailsView(String userId, String username) {
+  static void goToChatDetailsView(
+      String userId, String username, MediaFile avatar) {
     Get.delete<SingleChatController>();
-    Get.toNamed(AppRoutes.chatDetails, arguments: [userId, username]);
+    Get.toNamed(AppRoutes.chatDetails, arguments: [userId, username, avatar]);
   }
 
   /// --------------------------------------------------------------------------

@@ -8,6 +8,7 @@ import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/responses/common_response.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
+import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
@@ -45,6 +46,7 @@ class PostController extends GetxController {
   }
 
   _getData() async {
+    await SocketApiProvider.init(_auth.token);
     var isExists = await _hiveService.isExists(boxName: 'posts');
 
     if (isExists) {
