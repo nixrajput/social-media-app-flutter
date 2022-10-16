@@ -6,6 +6,7 @@ import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -120,12 +121,26 @@ class ChatWidget extends StatelessWidget {
                                   user.uname,
                                   style: AppStyles.style13Bold,
                                 ),
-                                Text(
-                                  _decryptMessage(chat.message!),
-                                  style: AppStyles.style13Normal,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                )
+                                if (chat.mediaFile != null &&
+                                    chat.mediaFile!.url != null)
+                                  Text(
+                                    chat.mediaFile!.mediaType!.toTitleCase(),
+                                    style: AppStyles.style13Normal.copyWith(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1!
+                                          .color!,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  )
+                                else
+                                  Text(
+                                    _decryptMessage(chat.message!),
+                                    style: AppStyles.style13Normal,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
                               ],
                             ),
                           ),

@@ -21,6 +21,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/extensions/file_extensions.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/file_utility.dart';
 import 'package:social_media_app/utils/utility.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
 
@@ -155,7 +156,7 @@ class CreatePostController extends GetxController {
     update();
 
     for (var file in _pickedFileList) {
-      if (AppUtility.isVideoFile(file.path)) {
+      if (FileUtility.isVideoFile(file.path)) {
         var thumbnailFile = await VideoCompress.getFileThumbnail(
           file.path,
           quality: 60,

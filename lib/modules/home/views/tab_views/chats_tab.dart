@@ -34,6 +34,7 @@ class ChatsTabView extends StatelessWidget {
                 NxAppBar(
                   title: StringValues.chats,
                   padding: Dimens.edgeInsets8_16,
+                  showBackBtn: false,
                 ),
                 Dimens.boxHeight8,
                 _buildBody(),

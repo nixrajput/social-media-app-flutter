@@ -52,6 +52,7 @@ Future<void> initializeFirebaseService() async {
   var authServices = AuthService.find;
 
   if (fcmToken.isEmpty) {
+    await messaging.deleteToken();
     var token = await messaging.getToken();
     AppUtility.printLog('fcmToken: $token');
     await AppUtility.saveFcmTokenToLocalStorage(token!);

@@ -1,16 +1,24 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/date_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
-import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/global_widgets/video_player_widget.dart';
+import 'package:social_media_app/modules/chat/controllers/single_chat_controller.dart';
 import 'package:social_media_app/modules/chat/widgets/bubble_type.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_bubble_clipper.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class ChatBubble extends StatelessWidget {
   const ChatBubble({Key? key, required this.message}) : super(key: key);
@@ -93,8 +101,7 @@ class ChatBubble extends StatelessWidget {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment:
-            isYourMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           if (!isYourMessage)
@@ -102,66 +109,90 @@ class ChatBubble extends StatelessWidget {
               avatar: message.sender!.avatar,
               size: Dimens.sixTeen,
             ),
-          PhysicalShape(
-            elevation: Dimens.two,
-            clipper: ChatBubbleClipper(
-              radius: Dimens.eight,
-              type: isYourMessage
-                  ? BubbleType.sendBubble
-                  : BubbleType.receiverBubble,
-            ),
-            color: _setBubbleColor(isYourMessage),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: Dimens.screenWidth * 0.7,
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onLongPress: showChatDetailsAndOptions,
+            child: PhysicalShape(
+              elevation: Dimens.two,
+              clipper: ChatBubbleClipper(
+                radius: Dimens.eight,
+                type: isYourMessage
+                    ? BubbleType.sendBubble
+                    : BubbleType.receiverBubble,
               ),
-              child: Padding(
-                padding: _setPadding(isYourMessage),
+              color: _setBubbleColor(isYourMessage),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: Dimens.screenWidth * 0.75,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: isYourMessage
-                      ? CrossAxisAlignment.start
-                      : CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      _decryptMessage(message.message!),
-                      style: AppStyles.style13Normal.copyWith(
-                        color: _setMessageColor(isYourMessage),
-                      ),
-                    ),
-                    Dimens.boxHeight8,
-                    Align(
-                      widthFactor: Dimens.one,
-                      alignment: isYourMessage
-                          ? Alignment.topLeft
-                          : Alignment.topRight,
-                      child: GetTimeAgoWidget(
-                        date: message.createdAt!,
-                        pattern: 'dd MMM',
-                        builder: (BuildContext context, String value) => Text(
-                          value,
-                          style: AppStyles.style13Normal.copyWith(
-                            fontSize: Dimens.eleven,
-                            color: ColorValues.darkGrayColor,
-                          ),
+                    if (message.mediaFile != null &&
+                        message.mediaFile!.url != null)
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: Dimens.eight,
+                          bottom: Dimens.zero,
+                          left: isYourMessage ? Dimens.eight : Dimens.sixTeen,
+                          right: isYourMessage ? Dimens.sixTeen : Dimens.eight,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(Dimens.eight),
+                          child: _buildMediaFile(),
                         ),
                       ),
-                    ),
-                    if (isYourMessage)
-                      Align(
-                        widthFactor: Dimens.one,
-                        alignment: isYourMessage
-                            ? Alignment.topLeft
-                            : Alignment.topRight,
-                        child: Text(
-                          _setMessageStatus(isYourMessage),
-                          style: AppStyles.style13Normal.copyWith(
-                            fontSize: Dimens.eleven,
-                            color: _setMessageStatusColor(),
+                    Padding(
+                      padding: _setPadding(isYourMessage),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (message.message != null &&
+                              message.message!.isNotEmpty)
+                            Text(
+                              _decryptMessage(message.message!),
+                              style: AppStyles.style13Normal.copyWith(
+                                color: _setMessageColor(isYourMessage),
+                              ),
+                            ),
+                          Dimens.boxHeight8,
+                          Text(
+                            message.createdAt!.formatTime(),
+                            style: AppStyles.style12Normal.copyWith(
+                              fontSize: Dimens.ten,
+                              color: ColorValues.darkGrayColor,
+                            ),
                           ),
-                        ),
+                          if (isYourMessage)
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _setMessageStatus(isYourMessage),
+                                  style: AppStyles.style12Normal.copyWith(
+                                    fontSize: Dimens.ten,
+                                    color: _setMessageStatusColor(),
+                                  ),
+                                ),
+                                Dimens.boxWidth8,
+                                if (_setMessageStatus(isYourMessage) ==
+                                    'Pending')
+                                  NxCircularProgressIndicator(
+                                    size: Dimens.fourteen,
+                                    strokeWidth: Dimens.one,
+                                    color: _setMessageStatusColor(),
+                                  ),
+                              ],
+                            ),
+                        ],
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -174,6 +205,119 @@ class ChatBubble extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMediaFile() {
+    if (message.mediaFile!.mediaType == "video") {
+      return NxVideoPlayerWidget(
+        url: message.mediaFile!.url!,
+        thumbnailUrl: message.mediaFile!.thumbnail!.url,
+        showControls: true,
+      );
+    }
+    if (message.mediaFile!.url!.startsWith("http") ||
+        message.mediaFile!.url!.startsWith("https")) {
+      return CachedNetworkImage(
+        imageUrl: message.mediaFile!.url!,
+        fit: BoxFit.cover,
+        progressIndicatorBuilder: (ctx, url, downloadProgress) => Container(
+          width: double.infinity,
+          height: Dimens.hundred * 2,
+          decoration: BoxDecoration(
+            color: ColorValues.grayColor.withOpacity(0.25),
+          ),
+          child: Center(
+            child: NxCircularProgressIndicator(
+              value: downloadProgress.progress,
+            ),
+          ),
+        ),
+        errorWidget: (ctx, url, err) => Container(
+          width: double.infinity,
+          height: Dimens.hundred * 2,
+          decoration: BoxDecoration(
+            color: ColorValues.grayColor.withOpacity(0.25),
+          ),
+          child: const Center(
+            child: Icon(
+              Icons.info,
+              color: ColorValues.errorColor,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Image.file(
+      File(message.mediaFile!.url!),
+      fit: BoxFit.cover,
+      errorBuilder: (context, url, error) => Container(
+        width: double.infinity,
+        height: Dimens.hundred * 2,
+        decoration: BoxDecoration(
+          color: ColorValues.grayColor.withOpacity(0.25),
+        ),
+        child: const Center(
+          child: Icon(
+            Icons.info,
+            color: ColorValues.errorColor,
+          ),
+        ),
+      ),
+    );
+  }
+
+  showChatDetailsAndOptions() {
+    var controller = SingleChatController.find;
+    var currentUserId = controller.profile.profileDetails!.user!.id;
+
+    AppUtility.showBottomSheet(
+      [
+        Padding(
+          padding: Dimens.edgeInsets8_16,
+          child: Text(
+            DateFormat('dd MMM yyyy, hh:mm a').format(message.createdAt!),
+            style: AppStyles.style14Normal.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle2!.color,
+            ),
+          ),
+        ),
+        if (message.senderId == currentUserId)
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              controller.deleteMessage(message.id!);
+            },
+            leading: const Icon(Icons.delete),
+            title: Text(
+              StringValues.delete,
+              style: AppStyles.style16Bold.copyWith(
+                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              ),
+            ),
+          ),
+        ListTile(
+          onTap: AppUtility.closeBottomSheet,
+          leading: const Icon(Icons.reply),
+          title: Text(
+            StringValues.reply,
+            style: AppStyles.style16Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+            ),
+          ),
+        ),
+        ListTile(
+          onTap: AppUtility.closeBottomSheet,
+          leading: const Icon(Icons.report),
+          title: Text(
+            StringValues.report,
+            style: AppStyles.style16Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

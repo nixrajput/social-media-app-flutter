@@ -53,10 +53,32 @@ class ChatController extends GetxController {
   set setLastMessageData(ChatMessageListResponse response) =>
       _lastMessageData.value = response;
 
-  void initialize() {
+  void initialize() async {
     _socketApiProvider.socketEventStream.listen(_addSocketEventListener);
-    _getLastMessages();
-    _socketApiProvider.sendJson({'type': 'get-undelivered-messages'});
+    await _getLastMessages();
+    _getUndeliveredMessages();
+    _checkOnlineUsers();
+  }
+
+  void _getUndeliveredMessages() {
+    _socketApiProvider.sendJson({
+      'type': 'get-undelivered-messages',
+    });
+  }
+
+  void _checkOnlineUsers() {
+    var userIds = _lastMessageList
+        .map((e) => e.senderId == profile.profileDetails!.user!.id
+            ? e.receiverId
+            : e.senderId)
+        .toList();
+
+    _socketApiProvider.sendJson({
+      'type': 'check-online-users',
+      'payload': {
+        'userIds': userIds,
+      },
+    });
   }
 
   void _addSocketEventListener(dynamic event) {
@@ -105,7 +127,6 @@ class ChatController extends GetxController {
       _typingUsers.remove(userId);
     }
     update();
-    AppUtility.printLog("Typing Users: $_typingUsers");
   }
 
   void _addOnlineUserListener(OnlineUser onlineUser) {
@@ -152,8 +173,6 @@ class ChatController extends GetxController {
         deliveredAt: encryptedMessage.deliveredAt,
         seen: encryptedMessage.seen,
         seenAt: encryptedMessage.seenAt,
-        deleted: encryptedMessage.deleted,
-        deletedAt: encryptedMessage.deletedAt,
       );
       _allMessages[tempIndex] = updatedMessage;
       update();
@@ -190,8 +209,6 @@ class ChatController extends GetxController {
         deliveredAt: encryptedMessage.deliveredAt,
         seen: encryptedMessage.seen,
         seenAt: encryptedMessage.seenAt,
-        deleted: encryptedMessage.deleted,
-        deletedAt: encryptedMessage.deletedAt,
       );
       _lastMessageList[tempIndex] = updatedMessage;
       update();

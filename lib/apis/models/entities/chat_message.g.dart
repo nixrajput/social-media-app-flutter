@@ -9,21 +9,21 @@ part of 'chat_message.dart';
 abstract class _$ChatMessageCWProxy {
   ChatMessage createdAt(DateTime? createdAt);
 
-  ChatMessage deleted(bool? deleted);
-
-  ChatMessage deletedAt(DateTime? deletedAt);
-
   ChatMessage delivered(bool? delivered);
 
   ChatMessage deliveredAt(DateTime? deliveredAt);
 
   ChatMessage id(String? id);
 
+  ChatMessage mediaFile(PostMediaFile? mediaFile);
+
   ChatMessage message(String? message);
 
   ChatMessage receiver(User? receiver);
 
   ChatMessage receiverId(String? receiverId);
+
+  ChatMessage replyTo(String? replyTo);
 
   ChatMessage seen(bool? seen);
 
@@ -39,8 +39,6 @@ abstract class _$ChatMessageCWProxy {
 
   ChatMessage tempId(String? tempId);
 
-  ChatMessage type(String? type);
-
   ChatMessage updatedAt(DateTime? updatedAt);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `ChatMessage(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -51,14 +49,14 @@ abstract class _$ChatMessageCWProxy {
   /// ````
   ChatMessage call({
     DateTime? createdAt,
-    bool? deleted,
-    DateTime? deletedAt,
     bool? delivered,
     DateTime? deliveredAt,
     String? id,
+    PostMediaFile? mediaFile,
     String? message,
     User? receiver,
     String? receiverId,
+    String? replyTo,
     bool? seen,
     DateTime? seenAt,
     User? sender,
@@ -66,7 +64,6 @@ abstract class _$ChatMessageCWProxy {
     bool? sent,
     DateTime? sentAt,
     String? tempId,
-    String? type,
     DateTime? updatedAt,
   });
 }
@@ -81,12 +78,6 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
   ChatMessage createdAt(DateTime? createdAt) => this(createdAt: createdAt);
 
   @override
-  ChatMessage deleted(bool? deleted) => this(deleted: deleted);
-
-  @override
-  ChatMessage deletedAt(DateTime? deletedAt) => this(deletedAt: deletedAt);
-
-  @override
   ChatMessage delivered(bool? delivered) => this(delivered: delivered);
 
   @override
@@ -97,6 +88,9 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
   ChatMessage id(String? id) => this(id: id);
 
   @override
+  ChatMessage mediaFile(PostMediaFile? mediaFile) => this(mediaFile: mediaFile);
+
+  @override
   ChatMessage message(String? message) => this(message: message);
 
   @override
@@ -104,6 +98,9 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
 
   @override
   ChatMessage receiverId(String? receiverId) => this(receiverId: receiverId);
+
+  @override
+  ChatMessage replyTo(String? replyTo) => this(replyTo: replyTo);
 
   @override
   ChatMessage seen(bool? seen) => this(seen: seen);
@@ -127,9 +124,6 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
   ChatMessage tempId(String? tempId) => this(tempId: tempId);
 
   @override
-  ChatMessage type(String? type) => this(type: type);
-
-  @override
   ChatMessage updatedAt(DateTime? updatedAt) => this(updatedAt: updatedAt);
 
   @override
@@ -142,14 +136,14 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
   /// ````
   ChatMessage call({
     Object? createdAt = const $CopyWithPlaceholder(),
-    Object? deleted = const $CopyWithPlaceholder(),
-    Object? deletedAt = const $CopyWithPlaceholder(),
     Object? delivered = const $CopyWithPlaceholder(),
     Object? deliveredAt = const $CopyWithPlaceholder(),
     Object? id = const $CopyWithPlaceholder(),
+    Object? mediaFile = const $CopyWithPlaceholder(),
     Object? message = const $CopyWithPlaceholder(),
     Object? receiver = const $CopyWithPlaceholder(),
     Object? receiverId = const $CopyWithPlaceholder(),
+    Object? replyTo = const $CopyWithPlaceholder(),
     Object? seen = const $CopyWithPlaceholder(),
     Object? seenAt = const $CopyWithPlaceholder(),
     Object? sender = const $CopyWithPlaceholder(),
@@ -157,7 +151,6 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
     Object? sent = const $CopyWithPlaceholder(),
     Object? sentAt = const $CopyWithPlaceholder(),
     Object? tempId = const $CopyWithPlaceholder(),
-    Object? type = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
     return ChatMessage(
@@ -165,14 +158,6 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
           ? _value.createdAt
           // ignore: cast_nullable_to_non_nullable
           : createdAt as DateTime?,
-      deleted: deleted == const $CopyWithPlaceholder()
-          ? _value.deleted
-          // ignore: cast_nullable_to_non_nullable
-          : deleted as bool?,
-      deletedAt: deletedAt == const $CopyWithPlaceholder()
-          ? _value.deletedAt
-          // ignore: cast_nullable_to_non_nullable
-          : deletedAt as DateTime?,
       delivered: delivered == const $CopyWithPlaceholder()
           ? _value.delivered
           // ignore: cast_nullable_to_non_nullable
@@ -185,6 +170,10 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
           : id as String?,
+      mediaFile: mediaFile == const $CopyWithPlaceholder()
+          ? _value.mediaFile
+          // ignore: cast_nullable_to_non_nullable
+          : mediaFile as PostMediaFile?,
       message: message == const $CopyWithPlaceholder()
           ? _value.message
           // ignore: cast_nullable_to_non_nullable
@@ -197,6 +186,10 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
           ? _value.receiverId
           // ignore: cast_nullable_to_non_nullable
           : receiverId as String?,
+      replyTo: replyTo == const $CopyWithPlaceholder()
+          ? _value.replyTo
+          // ignore: cast_nullable_to_non_nullable
+          : replyTo as String?,
       seen: seen == const $CopyWithPlaceholder()
           ? _value.seen
           // ignore: cast_nullable_to_non_nullable
@@ -225,10 +218,6 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
           ? _value.tempId
           // ignore: cast_nullable_to_non_nullable
           : tempId as String?,
-      type: type == const $CopyWithPlaceholder()
-          ? _value.type
-          // ignore: cast_nullable_to_non_nullable
-          : type as String?,
       updatedAt: updatedAt == const $CopyWithPlaceholder()
           ? _value.updatedAt
           // ignore: cast_nullable_to_non_nullable
@@ -253,7 +242,10 @@ ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) => ChatMessage(
       senderId: json['senderId'] as String?,
       receiverId: json['receiverId'] as String?,
       message: json['message'] as String?,
-      type: json['type'] as String?,
+      mediaFile: json['mediaFile'] == null
+          ? null
+          : PostMediaFile.fromJson(json['mediaFile'] as Map<String, dynamic>),
+      replyTo: json['replyTo'] as String?,
       sender: json['sender'] == null
           ? null
           : User.fromJson(json['sender'] as Map<String, dynamic>),
@@ -272,10 +264,6 @@ ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) => ChatMessage(
       seenAt: json['seenAt'] == null
           ? null
           : DateTime.parse(json['seenAt'] as String),
-      deleted: json['deleted'] as bool?,
-      deletedAt: json['deletedAt'] == null
-          ? null
-          : DateTime.parse(json['deletedAt'] as String),
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -291,7 +279,8 @@ Map<String, dynamic> _$ChatMessageToJson(ChatMessage instance) =>
       'senderId': instance.senderId,
       'receiverId': instance.receiverId,
       'message': instance.message,
-      'type': instance.type,
+      'mediaFile': instance.mediaFile,
+      'replyTo': instance.replyTo,
       'sender': instance.sender,
       'receiver': instance.receiver,
       'sent': instance.sent,
@@ -300,8 +289,6 @@ Map<String, dynamic> _$ChatMessageToJson(ChatMessage instance) =>
       'deliveredAt': instance.deliveredAt?.toIso8601String(),
       'seen': instance.seen,
       'seenAt': instance.seenAt?.toIso8601String(),
-      'deleted': instance.deleted,
-      'deletedAt': instance.deletedAt?.toIso8601String(),
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };

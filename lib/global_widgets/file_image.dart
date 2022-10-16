@@ -13,6 +13,7 @@ class NxFileImage extends StatelessWidget {
     this.maxWidth,
     this.maxHeight,
     this.scale,
+    this.fit,
   }) : super(key: key);
 
   final File file;
@@ -21,6 +22,7 @@ class NxFileImage extends StatelessWidget {
   final double? maxWidth;
   final double? maxHeight;
   final double? scale;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +35,13 @@ class NxFileImage extends StatelessWidget {
       ),
       child: Image.file(
         file,
-        fit: BoxFit.cover,
+        fit: fit ?? BoxFit.cover,
         errorBuilder: (ctx, url, err) => const Icon(
           CupertinoIcons.info,
           color: ColorValues.errorColor,
         ),
         width: width,
         height: height,
-        scale: scale ?? 1.0,
       ),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,7 +61,10 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
             placeholderOnTop: true,
             placeholder: widget.thumbnailUrl == null
                 ? const SizedBox()
-                : NxNetworkImage(imageUrl: widget.thumbnailUrl!),
+                : widget.thumbnailUrl!.startsWith("http") ||
+                        widget.thumbnailUrl!.startsWith("https")
+                    ? NxNetworkImage(imageUrl: widget.thumbnailUrl!)
+                    : Image.file(File(widget.thumbnailUrl!)),
             expandToFill: true,
             autoDetectFullscreenDeviceOrientation: true,
             deviceOrientationsOnFullScreen: [

@@ -8,8 +8,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/post_media_file.dart';
-import 'package:social_media_app/apis/models/entities/secret_key.dart';
-import 'package:social_media_app/apis/models/entities/server_key.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
@@ -47,8 +45,6 @@ Future<void> initPreAppServices() async {
   Hive.registerAdapter(PostMediaFileAdapter());
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(PostResponseAdapter());
-  Hive.registerAdapter(SecretKeyAdapter());
-  Hive.registerAdapter(ServerKeyAdapter());
 
   Get.put(AuthService(), permanent: true);
   await NotificationService().initialize();

@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:path/path.dart' as p;
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -17,7 +15,6 @@ import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:video_compress_ds/video_compress_ds.dart';
 
 abstract class AppUtility {
   /// Close any open snack bar.
@@ -480,24 +477,6 @@ abstract class AppUtility {
   }
 
   /// --------------------------------------------------------------------------
-
-  /// Check if video file
-  static bool isVideoFile(String path) {
-    const videoFilesTypes = [".mp4", ".mkv"];
-    var ext = p.extension(path);
-    // printLog('extension : $ext');
-    // printLog(videoFilesTypes.contains(ext).toString());
-    return videoFilesTypes.contains(ext);
-  }
-
-  /// Get Video Thumbnail
-  static Future<File> getVideoThumb(String path) async {
-    var thumbFile = await VideoCompress.getFileThumbnail(
-      path,
-      quality: 50,
-    );
-    return thumbFile;
-  }
 
   /// Open Url
   static Future<void> openUrl(Uri url) async {

@@ -1,0 +1,235 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:social_media_app/extensions/file_extensions.dart';
+import 'package:social_media_app/utils/utility.dart';
+import 'package:video_compress_ds/video_compress_ds.dart';
+
+const maxImageBytes = 1048576;
+const maxVideoBytes = 10485760;
+
+abstract class FileUtility {
+  static Future<String> read(String path) async {
+    return await File(path).readAsString();
+  }
+
+  static Future<void> write(String path, String content) async {
+    await File(path).writeAsString(content);
+  }
+
+  static bool isVideoFile(String path) {
+    const videoFilesTypes = [".mp4", ".mkv"];
+    var ext = p.extension(path);
+    // printLog('extension : $ext');
+    // printLog(videoFilesTypes.contains(ext).toString());
+    return videoFilesTypes.contains(ext);
+  }
+
+  /// Get Video Thumbnail
+  static Future<File?> getVideoThumbnail(String path) async {
+    try {
+      var thumbFile = await VideoCompress.getFileThumbnail(
+        path,
+        quality: 60,
+        position: 500,
+      );
+
+      return thumbFile;
+    } catch (e) {
+      AppUtility.printLog('getVideoThumbnailError : $e');
+      return null;
+    }
+  }
+
+  static Future<File?> compressImage(String path) async {
+    File? resultFile = File(path);
+    var size = resultFile.lengthSync();
+    AppUtility.printLog('Original file size: ${resultFile.sizeToKb()} KB');
+
+    if (size < (maxImageBytes / 2)) {
+      AppUtility.printLog('Result $resultFile');
+      AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+      return resultFile;
+    }
+    var tempDir = await getTemporaryDirectory();
+
+    /// --------- Compressing Image ------------------------------------
+
+    var timestamp = DateTime.now().millisecondsSinceEpoch;
+    AppUtility.printLog('Compressing...');
+    resultFile = await FlutterImageCompress.compressAndGetFile(
+      resultFile.path,
+      '${tempDir.absolute.path}/temp$timestamp.jpg',
+      quality: 60,
+      format: CompressFormat.jpeg,
+    );
+    size = resultFile!.lengthSync();
+
+    /// ----------------------------------------------------------------
+    AppUtility.printLog('Result $resultFile');
+    AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+    return resultFile;
+  }
+
+  static Future<File?> compressVideo(String path) async {
+    File? videoFile = File(path);
+    var size = videoFile.lengthSync();
+    AppUtility.printLog('Original file size: ${videoFile.sizeToKb()} KB');
+
+    if (size < maxVideoBytes) {
+      AppUtility.printLog('Result $videoFile');
+      AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+
+      return videoFile;
+    }
+
+    /// ----------- Compress Video ---------------------------------------
+
+    var info = await VideoCompress.compressVideo(
+      videoFile.path,
+      quality: VideoQuality.DefaultQuality,
+    );
+    AppUtility.closeDialog();
+    AppUtility.printLog('Result ${info!.toJson()}');
+    videoFile = info.file!;
+    size = info.filesize!;
+
+    /// ------------------------------------------------------------------
+
+    AppUtility.printLog('Result $videoFile');
+    AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+
+    if (size > (2 * maxVideoBytes)) {
+      AppUtility.showSnackBar(
+        'Video size is too large',
+        '',
+      );
+
+      return null;
+    }
+
+    return videoFile;
+  }
+
+  static Future<File?> captureImage() async {
+    final imagePicker = ImagePicker();
+
+    final pickedImage = await imagePicker.pickImage(
+      imageQuality: 100,
+      source: ImageSource.camera,
+      preferredCameraDevice: CameraDevice.front,
+    );
+
+    if (pickedImage == null) {
+      AppUtility.printLog('No image selected');
+      return null;
+    }
+
+    var imageFile = File(pickedImage.path);
+    var size = imageFile.lengthSync();
+
+    if (size > (5 * maxImageBytes)) {
+      AppUtility.showSnackBar(
+        'Image size must be less than 5mb',
+        '',
+      );
+      return null;
+    }
+    return imageFile;
+  }
+
+  static Future<List<File>?> selectMultipleImages() async {
+    var fileList = <File>[];
+    final imagePicker = ImagePicker();
+
+    final pickedImages = await imagePicker.pickMultiImage(
+      imageQuality: 100,
+    );
+
+    if (pickedImages.isEmpty) {
+      AppUtility.printLog('No image selected');
+      return null;
+    }
+
+    for (var image in pickedImages) {
+      var imageFile = File(image.path);
+      var size = imageFile.lengthSync();
+
+      if (size > (5 * maxImageBytes)) {
+        AppUtility.showSnackBar(
+          'Image size must be less than 5mb',
+          '',
+        );
+      } else {
+        fileList.add(imageFile);
+      }
+    }
+
+    return fileList;
+  }
+
+  static Future<File?> recordVideo() async {
+    final imagePicker = ImagePicker();
+
+    final pickedVideo = await imagePicker.pickVideo(
+      source: ImageSource.camera,
+      preferredCameraDevice: CameraDevice.front,
+      maxDuration: const Duration(seconds: 30),
+    );
+
+    if (pickedVideo == null) {
+      AppUtility.printLog('No video selected');
+      return null;
+    }
+
+    var imageFile = File(pickedVideo.path);
+    var size = imageFile.lengthSync();
+
+    if (size > (10 * maxVideoBytes)) {
+      AppUtility.showSnackBar(
+        'Video size must be less than 100mb',
+        '',
+      );
+      return null;
+    }
+    return imageFile;
+  }
+
+  static Future<List<File>?> selectMultipleVideos() async {
+    final filePicker = FilePicker.platform;
+    var fileList = <File>[];
+
+    final pickedVideos = await filePicker.pickFiles(
+      allowMultiple: true,
+      withReadStream: true,
+      allowCompression: false,
+      type: FileType.custom,
+      allowedExtensions: ['mp4', 'mkv'],
+    );
+
+    if (pickedVideos!.files.isEmpty) {
+      AppUtility.printLog('No video selected');
+      return null;
+    }
+
+    for (var video in pickedVideos.files) {
+      var videoFile = File(video.path!);
+      var size = videoFile.lengthSync();
+
+      if (size > (10 * maxVideoBytes)) {
+        AppUtility.showSnackBar(
+          'Video size must be less than 100mb',
+          '',
+        );
+      } else {
+        fileList.add(videoFile);
+      }
+    }
+
+    return fileList;
+  }
+}

@@ -1,5 +1,6 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 
 part 'chat_message.g.dart';
@@ -13,7 +14,8 @@ class ChatMessage {
     this.senderId,
     this.receiverId,
     this.message,
-    this.type,
+    this.mediaFile,
+    this.replyTo,
     this.sender,
     this.receiver,
     this.sent,
@@ -22,8 +24,6 @@ class ChatMessage {
     this.deliveredAt,
     this.seen,
     this.seenAt,
-    this.deleted,
-    this.deletedAt,
     this.createdAt,
     this.updatedAt,
   });
@@ -48,8 +48,11 @@ class ChatMessage {
   @JsonKey(name: 'message')
   final String? message;
 
-  @JsonKey(name: 'type')
-  final String? type;
+  @JsonKey(name: 'mediaFile')
+  final PostMediaFile? mediaFile;
+
+  @JsonKey(name: 'replyTo')
+  final String? replyTo;
 
   @JsonKey(name: 'sender')
   final User? sender;
@@ -74,12 +77,6 @@ class ChatMessage {
 
   @JsonKey(name: 'seenAt')
   DateTime? seenAt;
-
-  @JsonKey(name: 'deleted')
-  bool? deleted;
-
-  @JsonKey(name: 'deletedAt')
-  DateTime? deletedAt;
 
   @JsonKey(name: 'createdAt')
   final DateTime? createdAt;

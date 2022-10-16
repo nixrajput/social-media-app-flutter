@@ -11,6 +11,7 @@ import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
+import 'package:social_media_app/utils/file_utility.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class CreatePostView extends StatelessWidget {
@@ -69,7 +70,7 @@ class CreatePostView extends StatelessWidget {
                                   ClipRRect(
                                     borderRadius:
                                         BorderRadius.circular(Dimens.eight),
-                                    child: AppUtility.isVideoFile(logic
+                                    child: FileUtility.isVideoFile(logic
                                             .pickedFileList![itemIndex].path)
                                         ? NxVideoPlayerWidget(
                                             url: logic

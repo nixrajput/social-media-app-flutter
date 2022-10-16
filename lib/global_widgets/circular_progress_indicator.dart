@@ -8,11 +8,13 @@ class NxCircularProgressIndicator extends StatelessWidget {
     this.size,
     this.strokeWidth,
     this.color,
+    this.value,
   }) : super(key: key);
 
   final double? size;
   final double? strokeWidth;
   final Color? color;
+  final double? value;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class NxCircularProgressIndicator extends StatelessWidget {
       child: CircularProgressIndicator(
         strokeWidth: strokeWidth ?? Dimens.two,
         color: color ?? ColorValues.primaryColor,
+        value: value,
       ),
     );
   }
