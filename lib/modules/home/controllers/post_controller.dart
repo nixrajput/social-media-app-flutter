@@ -46,9 +46,9 @@ class PostController extends GetxController {
   }
 
   _getData() async {
-    await SocketApiProvider.init(_auth.token);
+    await SocketApiProvider().init(_auth.token);
+    await ChatController.find.initialize();
     var isExists = await _hiveService.isExists(boxName: 'posts');
-
     if (isExists) {
       var data = await _hiveService.getBox('posts');
       var cachedData = jsonDecode(data);
@@ -57,7 +57,6 @@ class PostController extends GetxController {
       _postList.addAll(_postData.value.results!);
     }
     update();
-    ChatController.find.initialize();
     await _fetchPosts();
     await Future.delayed(const Duration(seconds: 5), () async {
       await LoginDeviceInfoController.find.getLoginDeviceInfo();

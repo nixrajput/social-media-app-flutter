@@ -53,7 +53,7 @@ class ChatController extends GetxController {
   set setLastMessageData(ChatMessageListResponse response) =>
       _lastMessageData.value = response;
 
-  void initialize() async {
+  Future<void> initialize() async {
     _socketApiProvider.socketEventStream.listen(_addSocketEventListener);
     await _getLastMessages();
     _getUndeliveredMessages();
@@ -61,12 +61,14 @@ class ChatController extends GetxController {
   }
 
   void _getUndeliveredMessages() {
+    AppUtility.printLog('Get Undelivered Messages');
     _socketApiProvider.sendJson({
       'type': 'get-undelivered-messages',
     });
   }
 
   void _checkOnlineUsers() {
+    AppUtility.printLog('Check Online Users');
     var userIds = _lastMessageList
         .map((e) => e.senderId == profile.profileDetails!.user!.id
             ? e.receiverId

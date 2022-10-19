@@ -13,6 +13,7 @@ import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -126,7 +127,8 @@ class AuthService extends GetxService {
     setToken = '';
     setExpiresAt = 0;
     _isLogin = false;
-    SocketApiProvider().dispose();
+    SocketApiProvider().close();
+    ChatController.find.onClose();
     await AppUtility.clearLoginDataFromLocalStorage();
     await AppUtility.deleteFcmTokenFromLocalStorage();
     await AppUtility.deletePostDataFromLocalStorage();

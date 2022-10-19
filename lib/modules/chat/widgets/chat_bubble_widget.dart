@@ -157,7 +157,6 @@ class ChatBubble extends StatelessWidget {
                           ),
                           child: ChatReplyToWidget(
                             reply: message.replyTo!,
-                            key: GlobalObjectKey(message.replyTo!.id!),
                           ),
                         ),
                       if (message.mediaFile != null &&
@@ -330,7 +329,10 @@ class ChatBubble extends StatelessWidget {
             ),
           ),
         ListTile(
-          onTap: AppUtility.closeBottomSheet,
+          onTap: () {
+            AppUtility.closeBottomSheet();
+            onSwipeRight?.call();
+          },
           leading: const Icon(Icons.reply),
           title: Text(
             StringValues.reply,

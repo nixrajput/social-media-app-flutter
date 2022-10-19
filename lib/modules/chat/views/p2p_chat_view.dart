@@ -332,59 +332,67 @@ class P2PChatView extends StatelessWidget {
     );
   }
 
-  ListView _buildChatMessages(
+  Column _buildChatMessages(
       List<ChatMessage> filteredMessages, P2PChatController logic) {
-    return ListView.builder(
-      itemCount: filteredMessages.length,
-      shrinkWrap: true,
-      controller: logic.listScrollController,
-      physics:
-          const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      itemBuilder: (context, index) {
-        final message = filteredMessages[index];
-        var isSameDate = true;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (var i = 0; i < filteredMessages.length; i++)
+          _buildChatBubble(
+            filteredMessages,
+            filteredMessages[i],
+            i,
+            logic,
+          ),
+      ],
+    );
+  }
 
-        final date = message.createdAt!;
+  _buildChatBubble(List<ChatMessage> filteredMessages, ChatMessage message,
+      int index, P2PChatController logic) {
+    var isSameDate = true;
 
-        if (index == 0) {
-          isSameDate = false;
-        } else {
-          final previousDate = filteredMessages[index - 1].createdAt!;
-          isSameDate = date.isSameDate(previousDate);
-        }
+    final date = message.createdAt!;
 
-        if (index == 0 || !isSameDate) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(date.formatDate()),
-              Dimens.boxHeight8,
-              ChatBubble(
-                key: GlobalObjectKey(message.id ?? message.tempId!),
-                message: message,
-                onSwipeLeft: () {
-                  AppUtility.printLog('swipe left');
-                },
-                onSwipeRight: () {
-                  logic.onChangeReplyTo(message);
-                },
-              )
-            ],
-          );
-        }
+    if (index == 0) {
+      isSameDate = false;
+    } else {
+      final previousDate = filteredMessages[index - 1].createdAt!;
+      isSameDate = date.isSameDate(previousDate);
+    }
 
-        return ChatBubble(
-          key: GlobalObjectKey(message.id ?? message.tempId!),
-          message: message,
-          onSwipeLeft: () {
-            AppUtility.printLog('swipe left');
-          },
-          onSwipeRight: () {
-            logic.onChangeReplyTo(message);
-          },
-        );
+    if (index == 0 || !isSameDate) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(date.formatDate()),
+          Dimens.boxHeight8,
+          ChatBubble(
+            key: GlobalObjectKey(message.id ?? message.tempId!),
+            message: message,
+            onSwipeLeft: () {
+              AppUtility.printLog('swipe left');
+            },
+            onSwipeRight: () {
+              logic.onChangeReplyTo(message);
+            },
+          )
+        ],
+      );
+    }
+
+    return ChatBubble(
+      key: GlobalObjectKey(message.id ?? message.tempId!),
+      message: message,
+      onSwipeLeft: () {
+        AppUtility.printLog('swipe left');
+      },
+      onSwipeRight: () {
+        logic.onChangeReplyTo(message);
       },
     );
   }

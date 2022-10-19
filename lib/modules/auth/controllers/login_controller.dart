@@ -90,7 +90,9 @@ class LoginController extends GetxController {
         _auth.setToken = token;
         _auth.setExpiresAt = expiresAt;
         _auth.autoLogout();
-        await _profile.fetchProfileDetails().then((_) async {
+
+        try {
+          await _profile.fetchProfileDetails();
           var fcmToken = await AppUtility.readFcmTokenFromLocalStorage();
 
           if (_auth.deviceId != null && _auth.deviceId! != 0) {
@@ -112,24 +114,22 @@ class LoginController extends GetxController {
           await LoginDeviceInfoController.find.getLoginDeviceInfo();
           _clearLoginTextControllers();
 
-          AppUtility.closeDialog();
           _isLoading.value = false;
-          RouteManagement.goToHomeView();
           update();
+          AppUtility.closeDialog();
+          RouteManagement.goToHomeView();
+
           AppUtility.showSnackBar(
             StringValues.loginSuccessful,
             StringValues.success,
           );
-        }).catchError((_) {
-          AppUtility.closeDialog();
+        } catch (e) {
+          AppUtility.printLog("Error: $e");
           _isLoading.value = false;
           update();
-          AppUtility.showSnackBar(
-            StringValues.errorOccurred,
-            StringValues.error,
-          );
+          AppUtility.closeDialog();
           return;
-        });
+        }
       } else {
         AppUtility.printLog("User Login Error");
         AppUtility.printLog(decodedData);

@@ -8,10 +8,12 @@ class SocketApiProvider {
   // A static private instance to access _socketApi from inside class only
   static final SocketApiProvider _socketApi = SocketApiProvider._internal();
 
-  // An internal private constructor to access it for only once for static instance of class.
+  // An internal private constructor to access it for only once for static
+  // instance of class.
   SocketApiProvider._internal();
 
-  // Factory constructor to return same static instance everytime you create any object.
+  // Factory constructor to return same static instance everytime you
+  // create any object.
   factory SocketApiProvider() {
     return _socketApi;
   }
@@ -30,7 +32,8 @@ class SocketApiProvider {
   bool get isNotConnected => _socket?.readyState != WebSocket.open;
 
   // All socket related functions.
-  static Future<void> init(String token) async {
+  Future<void> init(String token) async {
+    AppUtility.printLog("Socket init called");
     if (token.isEmpty) {
       AppUtility.printLog("Socket token is empty");
       return;
@@ -44,7 +47,8 @@ class SocketApiProvider {
     try {
       _socket =
           await WebSocket.connect('${AppSecrets.awsWebSocketUrl}?token=$token');
-      AppUtility.printLog("Socket connected");
+      AppUtility.printLog("Socket connection established");
+
       _socket!.listen(_socketEventHandler, onError: (error) {
         AppUtility.printLog("Socket error: $error");
       }, onDone: () {
@@ -57,13 +61,15 @@ class SocketApiProvider {
     AppUtility.printLog("Socket init done");
   }
 
-  static void _socketEventHandler(dynamic event) {
-    AppUtility.printLog("Socket event");
+  void _socketEventHandler(dynamic event) {
+    AppUtility.printLog("Socket event received");
     _socketApi._socketEventStream.add(event);
   }
 
   void close() {
+    _socketApi._socketEventStream.close();
     _socket?.close();
+    AppUtility.printLog("Socket closed");
   }
 
   void send(String message) {
@@ -72,10 +78,5 @@ class SocketApiProvider {
 
   void sendJson(Map<String, dynamic> json) {
     _socket?.add(jsonEncode(json));
-  }
-
-  void dispose() {
-    _socketEventStream.close();
-    _socket?.close();
   }
 }

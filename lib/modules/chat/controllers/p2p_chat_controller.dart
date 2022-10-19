@@ -33,7 +33,6 @@ class P2PChatController extends GetxController {
 
   final messageTextController = material.TextEditingController();
   final scrollController = material.ScrollController();
-  final listScrollController = material.ScrollController();
 
   final _isLoading = false.obs;
   final _scrolledToBottom = true.obs;
@@ -110,23 +109,19 @@ class P2PChatController extends GetxController {
   }
 
   void scrollToLast() {
-    material.WidgetsBinding.instance.addPostFrameCallback((_) {
-      scrollController.animateTo(
-        scrollController.position.minScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: material.Curves.easeOut,
-      );
-    });
+    scrollController.animateTo(
+      scrollController.position.minScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: material.Curves.easeOut,
+    );
   }
 
   void scrollToFirst() {
-    material.WidgetsBinding.instance.addPostFrameCallback((_) {
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: material.Curves.easeOut,
-      );
-    });
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: material.Curves.easeOut,
+    );
   }
 
   void scrollToCustomChatMessage(String messageId) async {
@@ -137,9 +132,9 @@ class P2PChatController extends GetxController {
       var renderedObj = dataKey.currentContext!.findRenderObject();
       AppUtility.printLog('renderedObj $renderedObj');
       AppUtility.printLog('Searching object');
-      await listScrollController.position.ensureVisible(
+      await scrollController.position.ensureVisible(
         renderedObj!,
-        //alignment: 0.5,
+        alignment: 0.5,
         duration: const Duration(milliseconds: 300),
         curve: material.Curves.easeOut,
       );

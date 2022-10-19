@@ -27,7 +27,8 @@ class ChatReplyToWidget extends StatelessWidget {
     var profile = ProfileController.find.profileDetails!.user!;
     var p2pController = P2PChatController.find;
     return GestureDetector(
-      // onTap: () => p2pController.scrollToCustomChatMessage(reply.id!),
+      onTap: () =>
+          p2pController.scrollToCustomChatMessage(reply.id ?? reply.tempId!),
       child: Container(
         padding: Dimens.edgeInsets8,
         decoration: BoxDecoration(

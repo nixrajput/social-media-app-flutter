@@ -52,6 +52,10 @@ class ChatsTabView extends StatelessWidget {
     return Expanded(
       child: GetBuilder<ChatController>(
         builder: (logic) {
+          if (!logic.initialized) {
+            return const Center(child: NxCircularProgressIndicator());
+          }
+
           logic.lastMessageList
               .sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
 
