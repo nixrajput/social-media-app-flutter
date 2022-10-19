@@ -203,8 +203,8 @@ class SettingsView extends StatelessWidget {
                     style: AppStyles.style16Bold,
                   ),
                   onTap: () async {
-                    await AuthService.find.logout(showLoading: true);
                     RouteManagement.goToWelcomeView();
+                    await AuthService.find.logout();
                   },
                 ),
                 Dimens.boxHeight16,

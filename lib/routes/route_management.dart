@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
-import 'package:social_media_app/modules/chat/controllers/single_chat_controller.dart';
+import 'package:social_media_app/modules/chat/controllers/p2p_chat_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/following_list_controller.dart';
 import 'package:social_media_app/modules/post/controllers/post_details_controller.dart';
@@ -61,7 +61,7 @@ abstract class RouteManagement {
 
   static void goToChatDetailsView(
       String userId, String username, MediaFile avatar) {
-    Get.delete<SingleChatController>();
+    Get.delete<P2PChatController>();
     Get.toNamed(AppRoutes.chatDetails, arguments: [userId, username, avatar]);
   }
 

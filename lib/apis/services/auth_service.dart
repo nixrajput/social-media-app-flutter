@@ -13,7 +13,6 @@ import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -27,6 +26,7 @@ class AuthService extends GetxService {
   String _token = '';
   int _expiresAt = 0;
   int _deviceId = 0;
+  bool _isLogin = false;
   AuthResponse _loginData = const AuthResponse();
 
   String get token => _token;
@@ -34,6 +34,8 @@ class AuthService extends GetxService {
   int? get deviceId => _deviceId;
 
   int get expiresAt => _expiresAt;
+
+  bool get isLogin => _isLogin;
 
   AuthResponse get loginData => _loginData;
 
@@ -47,9 +49,11 @@ class AuthService extends GetxService {
 
   @override
   void onInit() {
+    AppUtility.printLog("AuthService onInit");
     super.onInit();
     _checkForInternetConnectivity();
     getDeviceId();
+    AppUtility.printLog("AuthService onInit end");
   }
 
   @override
@@ -65,6 +69,7 @@ class AuthService extends GetxService {
       _expiresAt = decodedData[StringValues.expiresAt];
       setToken = decodedData[StringValues.token];
       token = decodedData[StringValues.token];
+      _isLogin = true;
     }
     return token;
   }
@@ -114,21 +119,23 @@ class AuthService extends GetxService {
     return isValid;
   }
 
-  Future<void> _logout(bool showLoading) async {
+  Future<void> _logout() async {
     AppUtility.printLog("Logout Request");
-    if (showLoading) AppUtility.showLoadingDialog();
     await LoginDeviceInfoController.find
         .deleteLoginDeviceInfo(_deviceId.toString());
     setToken = '';
     setExpiresAt = 0;
+    _isLogin = false;
     SocketApiProvider().dispose();
-    ChatController.find.dispose();
     await AppUtility.clearLoginDataFromLocalStorage();
     await AppUtility.deleteFcmTokenFromLocalStorage();
     await AppUtility.deletePostDataFromLocalStorage();
     await AppUtility.deleteProfilePostDataFromLocalStorage();
-    if (showLoading) AppUtility.closeDialog();
     AppUtility.printLog("Logout Success");
+    AppUtility.showSnackBar(
+      'Logout Successfully',
+      '',
+    );
   }
 
   String generateDeviceId() {
@@ -397,8 +404,7 @@ class AuthService extends GetxService {
     });
   }
 
-  Future<void> logout({showLoading = false}) async =>
-      await _logout(showLoading);
+  Future<void> logout() async => await _logout();
 
   Future<bool> validateToken(String token) async => await _validateToken(token);
 

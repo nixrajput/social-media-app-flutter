@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class NotificationService {
   final _notificationPlugin = FlutterLocalNotificationsPlugin();
@@ -16,6 +17,7 @@ class NotificationService {
   set setFcmToken(String value) => _fcmToken = value;
 
   Future<void> initialize() async {
+    AppUtility.printLog('Initializing Notification Service');
     if (!_initialized) {
       final initializationSettings = InitializationSettings(
         iOS: _iosInitSettings,
@@ -24,6 +26,7 @@ class NotificationService {
       await _notificationPlugin.initialize(initializationSettings);
       _initialized = true;
     }
+    AppUtility.printLog('Notification Service Initialized');
   }
 
   void showNotification({

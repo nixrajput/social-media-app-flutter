@@ -111,18 +111,25 @@ conduct, and the process for submitting pull requests to us.
 - [x] Settings
 - [x] Support
 - [x] Dynamic Theme
+- [x] P2P Messaging
+- [x] Push Notifications
 
 ## Upcoming Features
 
-- [ ] P2P Messaging
 - [ ] Group Messaging
-- [ ] Push Notifications
+- [ ] Group Creation
+- [ ] Post Sharing
+- [ ] Post and Chat Settings
 - [ ] End-to-End Encryption
 
 ## License
 
 This project is licensed under the GPL-3.0 License - see the
-[LICENSE.md](LICENSE.md) file for details
+[LICENSE.md](LICENSE.md) file for details.
+
+## Activities
+
+![Alt](https://repobeats.axiom.co/api/embed/e86f92199e9d903eba60dadebd6f780fda7c5815.svg "Repobeats analytics image")
 
 ## Connect With Me
 

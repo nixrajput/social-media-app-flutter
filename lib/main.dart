@@ -11,7 +11,6 @@ import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
-import 'package:social_media_app/apis/services/notification_service.dart';
 import 'package:social_media_app/apis/services/theme_controller.dart';
 import 'package:social_media_app/background_service/firebase_service.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -46,8 +45,6 @@ Future<void> initPreAppServices() async {
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(PostResponseAdapter());
 
-  Get.put(AuthService(), permanent: true);
-  await NotificationService().initialize();
   await initializeFirebaseService();
 
   Get.put(AppThemeController(), permanent: true);
@@ -69,17 +66,20 @@ Future<void> checkAuthData() async {
     return;
   }
 
+  var authService = AuthService.find;
+
   /// If [serverHealth] is `online`
-  await AuthService.find.getToken().then((token) async {
-    AuthService.find.autoLogout();
+  await authService.getToken().then((token) async {
+    authService.autoLogout();
     if (token.isNotEmpty) {
-      var tokenValid = await AuthService.find.validateToken(token);
+      var tokenValid = await authService.validateToken(token);
       if (tokenValid) {
         var hasData = await ProfileController.find.loadProfileDetails();
         if (hasData) {
           isLogin = true;
         } else {
           await AppUtility.deleteProfileDataFromLocalStorage();
+          return;
         }
       } else {
         await AppUtility.clearLoginDataFromLocalStorage();
@@ -136,17 +136,23 @@ class MyApp extends StatelessWidget {
           theme: AppThemes.lightTheme,
           darkTheme: AppThemes.darkTheme,
           getPages: AppPages.pages,
-          initialRoute: serverHealth.toLowerCase() == "maintenance"
-              ? AppRoutes.maintenance
-              : isLogin
-                  ? AppRoutes.home
-                  : AppRoutes.welcome,
+          initialRoute: _handleAppInitialRoute(),
           translations: AppTranslation(),
           locale: Get.deviceLocale,
           fallbackLocale: const Locale('en', 'US'),
         ),
       ),
     );
+  }
+
+  String _handleAppInitialRoute() {
+    if (serverHealth.toLowerCase() == "maintenance") {
+      return AppRoutes.maintenance;
+    } else if (isLogin) {
+      return AppRoutes.home;
+    } else {
+      return AppRoutes.welcome;
+    }
   }
 
   ThemeMode _handleAppTheme(AppThemeModes mode) {

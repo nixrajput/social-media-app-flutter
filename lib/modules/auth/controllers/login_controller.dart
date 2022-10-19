@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -67,7 +68,7 @@ class LoginController extends GetxController {
       'password': password,
     };
 
-    AppUtility.printLog("User Login Request...");
+    AppUtility.printLog("User Login Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -78,6 +79,7 @@ class LoginController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
+        AppUtility.printLog("User Login Success");
         _auth.setLoginData = AuthResponse.fromJson(decodedData);
 
         var token = _auth.loginData.token!;
@@ -98,6 +100,12 @@ class LoginController extends GetxController {
           if (fcmToken.isNotEmpty) {
             AppUtility.printLog('fcmToken: $fcmToken');
             await _auth.saveFcmToken(fcmToken);
+          } else {
+            var messaging = FirebaseMessaging.instance;
+            var token = await messaging.getToken();
+            AppUtility.printLog('fcmToken: $token');
+            await AppUtility.saveFcmTokenToLocalStorage(token!);
+            await _auth.saveFcmToken(token);
           }
 
           await _auth.saveLoginInfo();
@@ -123,20 +131,49 @@ class LoginController extends GetxController {
           return;
         });
       } else {
+        AppUtility.printLog("User Login Error");
         AppUtility.printLog(decodedData);
-        _accountStatus.value = decodedData['accountStatus'];
+
         _isLoading.value = false;
         update();
         AppUtility.closeDialog();
-        if (_accountStatus.value == "deactivated") {
-          RouteManagement.goToReactivateAccountView();
+
+        if (decodedData['accountStatus'] != null) {
+          _accountStatus.value = decodedData['accountStatus'];
+          switch (_accountStatus.value) {
+            case 'unverified':
+              RouteManagement.goToSendVerifyAccountOtpView();
+              AppUtility.showSnackBar(
+                decodedData[StringValues.message],
+                StringValues.error,
+              );
+              break;
+            case 'deactivated':
+              RouteManagement.goToReactivateAccountView();
+              AppUtility.showSnackBar(
+                decodedData[StringValues.message],
+                StringValues.error,
+              );
+              break;
+            case 'blocked':
+              AppUtility.showSnackBar(
+                decodedData[StringValues.message],
+                StringValues.error,
+              );
+              break;
+            default:
+              AppUtility.printLog("Invalid Account Status");
+              break;
+          }
+        } else {
+          AppUtility.showSnackBar(
+            decodedData[StringValues.message],
+            StringValues.error,
+          );
         }
-        AppUtility.showSnackBar(
-          decodedData[StringValues.message],
-          StringValues.error,
-        );
       }
     } on SocketException {
+      AppUtility.printLog("User Login Error");
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
@@ -144,13 +181,14 @@ class LoginController extends GetxController {
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
+      AppUtility.printLog("User Login Error");
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
+      AppUtility.printLog("User Login Error");
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
@@ -158,10 +196,10 @@ class LoginController extends GetxController {
       AppUtility.printLog(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
+      AppUtility.printLog("User Login Error");
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.errorOccurred);
       AppUtility.printLog(exc);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }

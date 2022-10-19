@@ -23,7 +23,7 @@ abstract class _$ChatMessageCWProxy {
 
   ChatMessage receiverId(String? receiverId);
 
-  ChatMessage replyTo(String? replyTo);
+  ChatMessage replyTo(ChatMessage? replyTo);
 
   ChatMessage seen(bool? seen);
 
@@ -56,7 +56,7 @@ abstract class _$ChatMessageCWProxy {
     String? message,
     User? receiver,
     String? receiverId,
-    String? replyTo,
+    ChatMessage? replyTo,
     bool? seen,
     DateTime? seenAt,
     User? sender,
@@ -100,7 +100,7 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
   ChatMessage receiverId(String? receiverId) => this(receiverId: receiverId);
 
   @override
-  ChatMessage replyTo(String? replyTo) => this(replyTo: replyTo);
+  ChatMessage replyTo(ChatMessage? replyTo) => this(replyTo: replyTo);
 
   @override
   ChatMessage seen(bool? seen) => this(seen: seen);
@@ -189,7 +189,7 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
       replyTo: replyTo == const $CopyWithPlaceholder()
           ? _value.replyTo
           // ignore: cast_nullable_to_non_nullable
-          : replyTo as String?,
+          : replyTo as ChatMessage?,
       seen: seen == const $CopyWithPlaceholder()
           ? _value.seen
           // ignore: cast_nullable_to_non_nullable
@@ -245,7 +245,9 @@ ChatMessage _$ChatMessageFromJson(Map<String, dynamic> json) => ChatMessage(
       mediaFile: json['mediaFile'] == null
           ? null
           : PostMediaFile.fromJson(json['mediaFile'] as Map<String, dynamic>),
-      replyTo: json['replyTo'] as String?,
+      replyTo: json['replyTo'] == null
+          ? null
+          : ChatMessage.fromJson(json['replyTo'] as Map<String, dynamic>),
       sender: json['sender'] == null
           ? null
           : User.fromJson(json['sender'] as Map<String, dynamic>),

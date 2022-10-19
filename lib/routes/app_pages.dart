@@ -13,7 +13,7 @@ import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
 import 'package:social_media_app/modules/auth/views/send_account_verification_otp_view.dart';
 import 'package:social_media_app/modules/auth/views/verify_account_view.dart';
 import 'package:social_media_app/modules/chat/bindings/single_chat_binding.dart';
-import 'package:social_media_app/modules/chat/views/single_chat_view.dart';
+import 'package:social_media_app/modules/chat/views/p2p_chat_view.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_binding.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_view.dart';
 import 'package:social_media_app/modules/follower/bindings/followers_list_binding.dart';
@@ -164,7 +164,7 @@ abstract class AppPages {
 
     GetPage(
       name: _Routes.chatDetails,
-      page: SingleChatView.new,
+      page: P2PChatView.new,
       binding: SingleChatBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,

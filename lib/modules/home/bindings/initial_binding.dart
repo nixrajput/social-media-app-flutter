@@ -17,7 +17,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut(HomeController.new, fenix: true);
     Get.lazyPut(ChatController.new, fenix: true);
     Get.lazyPut(PostController.new, fenix: true);
-    Get.put(CreatePostController(), permanent: true);
+    Get.lazyPut(CreatePostController.new, fenix: true);
     Get.lazyPut(TrendingTabController.new);
     Get.lazyPut(FollowRequestController.new, fenix: true);
     Get.lazyPut(TrendingPostController.new, fenix: true);

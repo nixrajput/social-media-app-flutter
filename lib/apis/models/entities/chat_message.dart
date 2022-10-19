@@ -52,7 +52,7 @@ class ChatMessage {
   final PostMediaFile? mediaFile;
 
   @JsonKey(name: 'replyTo')
-  final String? replyTo;
+  final ChatMessage? replyTo;
 
   @JsonKey(name: 'sender')
   final User? sender;

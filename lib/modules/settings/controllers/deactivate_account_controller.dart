@@ -61,7 +61,7 @@ class DeactivateAccountController extends GetxController {
 
       if (response.statusCode == 200) {
         AppUtility.printLog("Deactivate Account Success");
-        await _auth.logout(showLoading: false);
+        await _auth.logout();
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();

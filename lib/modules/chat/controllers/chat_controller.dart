@@ -88,6 +88,10 @@ class ChatController extends GetxController {
     AppUtility.printLog("Socket Event Type: $type");
 
     switch (type) {
+      case 'connection':
+        AppUtility.printLog("Socket Connected");
+        break;
+
       case 'message':
         var chatMessage = ChatMessage.fromJson(decodedData['data']);
         _addMessageListener(chatMessage);
@@ -167,6 +171,7 @@ class ChatController extends GetxController {
         id: encryptedMessage.id,
         sender: encryptedMessage.sender,
         receiver: encryptedMessage.receiver,
+        replyTo: encryptedMessage.replyTo,
         sent: encryptedMessage.sent,
         sentAt: encryptedMessage.sentAt,
         delivered: encryptedMessage.delivered,
@@ -203,6 +208,7 @@ class ChatController extends GetxController {
         id: encryptedMessage.id,
         sender: encryptedMessage.sender,
         receiver: encryptedMessage.receiver,
+        replyTo: encryptedMessage.replyTo,
         sent: encryptedMessage.sent,
         sentAt: encryptedMessage.sentAt,
         delivered: encryptedMessage.delivered,
@@ -372,7 +378,7 @@ class ChatController extends GetxController {
     var isExists = await _hiveService.isExists(boxName: 'lastMessage');
 
     if (isExists) {
-      await _hiveService.clearBox('lastMessage');
+      // await _hiveService.clearBox('lastMessage');
 
       // var data = await _hiveService.getBox('lastMessage');
       // var cachedData = jsonDecode(data);

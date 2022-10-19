@@ -22,8 +22,8 @@ import 'package:social_media_app/modules/home/controllers/profile_controller.dar
 import 'package:social_media_app/utils/file_utility.dart';
 import 'package:social_media_app/utils/utility.dart';
 
-class SingleChatController extends GetxController {
-  static SingleChatController get find => Get.find();
+class P2PChatController extends GetxController {
+  static P2PChatController get find => Get.find();
 
   final chatController = ChatController.find;
   final profile = ProfileController.find;
@@ -33,12 +33,13 @@ class SingleChatController extends GetxController {
 
   final messageTextController = material.TextEditingController();
   final scrollController = material.ScrollController();
+  final listScrollController = material.ScrollController();
 
   final _isLoading = false.obs;
   final _scrolledToBottom = true.obs;
   final _isMoreLoading = false.obs;
-  final _emojiShowing = false.obs;
   final _message = ''.obs;
+  final _replyTo = ChatMessage().obs;
   final _messageData = const ChatMessageListResponse().obs;
   final _mediaFileMessages = RxList<MediaFileMessage>();
 
@@ -46,11 +47,11 @@ class SingleChatController extends GetxController {
 
   bool get isMoreLoading => _isMoreLoading.value;
 
-  bool get emojiShowing => _emojiShowing.value;
-
   bool get scrolledToBottom => _scrolledToBottom.value;
 
   String get message => _message.value;
+
+  ChatMessage get replyTo => _replyTo.value;
 
   List<MediaFileMessage>? get mediaFileMessages => _mediaFileMessages;
 
@@ -74,8 +75,13 @@ class SingleChatController extends GetxController {
     update();
   }
 
-  void onEmojiShowing() {
-    _emojiShowing.value = !_emojiShowing.value;
+  void onChangeReplyTo(ChatMessage replyTo) {
+    _replyTo.value = replyTo;
+    update();
+  }
+
+  void clearReplyTo() {
+    _replyTo.value = ChatMessage();
     update();
   }
 
@@ -121,6 +127,24 @@ class SingleChatController extends GetxController {
         curve: material.Curves.easeOut,
       );
     });
+  }
+
+  void scrollToCustomChatMessage(String messageId) async {
+    var dataKey = material.GlobalObjectKey(messageId);
+    AppUtility.printLog('key $dataKey');
+    AppUtility.printLog('context ${dataKey.currentContext}');
+    if (dataKey.currentContext != null) {
+      var renderedObj = dataKey.currentContext!.findRenderObject();
+      AppUtility.printLog('renderedObj $renderedObj');
+      AppUtility.printLog('Searching object');
+      await listScrollController.position.ensureVisible(
+        renderedObj!,
+        //alignment: 0.5,
+        duration: const Duration(milliseconds: 300),
+        curve: material.Curves.easeOut,
+      );
+      AppUtility.printLog('Searching done');
+    }
   }
 
   Future<Map<String, dynamic>?> _uploadVideo(File file, File thumbnail) async {
@@ -244,7 +268,7 @@ class SingleChatController extends GetxController {
                   "receiverId": userId,
                   "tempId": tempId,
                   "mediaFile": urlResult,
-                  // "replyTo": "",
+                  "replyTo": _replyTo.value.id,
                 },
               });
             }
@@ -283,7 +307,7 @@ class SingleChatController extends GetxController {
                   "receiverId": userId,
                   "tempId": tempId,
                   "mediaFile": urlResult,
-                  // "replyTo": "",
+                  "replyTo": _replyTo.value.id,
                 },
               });
             }
@@ -291,8 +315,10 @@ class SingleChatController extends GetxController {
         }
       }
 
+      _replyTo.value = ChatMessage();
       _mediaFileMessages.clear();
       update();
+      scrollToLast();
       return;
     }
 
@@ -321,11 +347,12 @@ class SingleChatController extends GetxController {
         "message": encryptedMessage,
         "receiverId": userId,
         "tempId": tempId,
-        // "replyTo": "",
+        "replyTo": _replyTo.value.id,
       },
     });
 
     _message.value = '';
+    _replyTo.value = ChatMessage();
     update();
     scrollToLast();
   }

@@ -8,7 +8,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/file_image.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
-import 'package:social_media_app/modules/chat/controllers/single_chat_controller.dart';
+import 'package:social_media_app/modules/chat/controllers/p2p_chat_controller.dart';
 import 'package:social_media_app/utils/file_utility.dart';
 
 class PreviewMediaFilesView extends StatelessWidget {
@@ -22,7 +22,7 @@ class PreviewMediaFilesView extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
           child: SizedBox(
-            child: GetBuilder<SingleChatController>(
+            child: GetBuilder<P2PChatController>(
               builder: (logic) {
                 return Stack(
                   children: [
