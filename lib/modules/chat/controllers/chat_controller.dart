@@ -49,26 +49,42 @@ class ChatController extends GetxController {
 
   List<String> get typingUsers => _typingUsers;
 
+  StreamSubscription<dynamic>? _socketSubscription;
+
   /// Setters
   set setLastMessageData(ChatMessageListResponse response) =>
       _lastMessageData.value = response;
 
   Future<void> initialize() async {
-    _socketApiProvider.socketEventStream.listen(_addSocketEventListener);
+    if (_socketApiProvider.isConnected) {
+      _socketSubscription ??=
+          _socketApiProvider.socketEventStream!.listen(_addSocketEventListener);
+    }
     await _getLastMessages();
     _getUndeliveredMessages();
     _checkOnlineUsers();
   }
 
+  Future<void> close() async {
+    await _socketSubscription?.cancel();
+    _socketSubscription = null;
+    _allMessages.clear();
+    _lastMessageList.clear();
+    _onlineUsers.clear();
+    _typingUsers.clear();
+    update();
+    AppUtility.log("ChatController closed");
+  }
+
   void _getUndeliveredMessages() {
-    AppUtility.printLog('Get Undelivered Messages');
+    AppUtility.log('Get Undelivered Messages');
     _socketApiProvider.sendJson({
       'type': 'get-undelivered-messages',
     });
   }
 
   void _checkOnlineUsers() {
-    AppUtility.printLog('Check Online Users');
+    AppUtility.log('Check Online Users');
     var userIds = _lastMessageList
         .map((e) => e.senderId == profile.profileDetails!.user!.id
             ? e.receiverId
@@ -87,11 +103,11 @@ class ChatController extends GetxController {
     var decodedData = jsonDecode(event);
 
     var type = decodedData['type'];
-    AppUtility.printLog("Socket Event Type: $type");
+    AppUtility.log("Socket Event Type: $type");
 
     switch (type) {
       case 'connection':
-        AppUtility.printLog("Socket Connected");
+        AppUtility.log("Socket Connected");
         break;
 
       case 'message':
@@ -116,12 +132,12 @@ class ChatController extends GetxController {
         break;
 
       case 'error':
-        AppUtility.printLog("Error: ${decodedData['message']}");
+        AppUtility.log("Error: ${decodedData['message']}");
         AppUtility.showSnackBar(decodedData['message'], StringValues.error);
         break;
 
       default:
-        AppUtility.printLog("Invalid event type: $type");
+        AppUtility.log("Invalid event type: $type");
         break;
     }
   }
@@ -151,11 +167,11 @@ class ChatController extends GetxController {
         break;
 
       default:
-        AppUtility.printLog("Invalid status: $status");
+        AppUtility.log("Invalid status: $status");
         break;
     }
 
-    AppUtility.printLog('Online Users: ${_onlineUsers.length}');
+    AppUtility.log('Online Users: ${_onlineUsers.length}');
   }
 
   void _addMessageListener(ChatMessage encryptedMessage) {
@@ -221,7 +237,7 @@ class ChatController extends GetxController {
       _lastMessageList[tempIndex] = updatedMessage;
       update();
     }
-    AppUtility.printLog("Chat Message Added");
+    AppUtility.log("Chat Message Added");
   }
 
   void _deleteMessageListener(String messageId) {
@@ -240,7 +256,7 @@ class ChatController extends GetxController {
     }
 
     update();
-    AppUtility.printLog("Chat Message Deleted");
+    AppUtility.log("Chat Message Deleted");
   }
 
   void addTempMessage(ChatMessage message) {
@@ -396,7 +412,7 @@ class ChatController extends GetxController {
   }
 
   Future<void> _fetchLastMessages() async {
-    AppUtility.printLog("Fetching Last Messages Request");
+    AppUtility.log("Fetching Last Messages Request");
     _isLoading.value = true;
     update();
 
@@ -405,7 +421,7 @@ class ChatController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        AppUtility.printLog("Fetching Last Messages Success");
+        AppUtility.log("Fetching Last Messages Success");
         setLastMessageData = ChatMessageListResponse.fromJson(decodedData);
         _lastMessageList.clear();
         _lastMessageList.addAll(_lastMessageData.value.results!);
@@ -421,40 +437,40 @@ class ChatController extends GetxController {
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Fetching Last Messages Error");
+        AppUtility.log("Fetching Last Messages Error");
       }
     } on SocketException {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.internetConnError);
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.formatExcError);
+      AppUtility.log(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.errorOccurred);
+      AppUtility.log(exc);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.printLog("Fetching More Last Messages Request");
+    AppUtility.log("Fetching More Last Messages Request");
     _isMoreLoading.value = true;
     update();
 
@@ -469,11 +485,11 @@ class ChatController extends GetxController {
         _allMessages.addAll(_lastMessageData.value.results!);
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Last Messages Success");
+        AppUtility.log("Fetching More Last Messages Success");
       } else {
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Last Messages Error");
+        AppUtility.log("Fetching More Last Messages Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
@@ -482,29 +498,29 @@ class ChatController extends GetxController {
     } on SocketException {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Last Messages Error");
-      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.log("Fetching More Last Messages Error");
+      AppUtility.log(StringValues.internetConnError);
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Last Messages Error");
-      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.log("Fetching More Last Messages Error");
+      AppUtility.log(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Last Messages Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log("Fetching More Last Messages Error");
+      AppUtility.log(StringValues.formatExcError);
+      AppUtility.log(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Last Messages Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log("Fetching More Last Messages Error");
+      AppUtility.log(StringValues.errorOccurred);
+      AppUtility.log(exc);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }

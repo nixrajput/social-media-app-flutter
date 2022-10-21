@@ -15,6 +15,7 @@ import 'package:social_media_app/global_widgets/keyboard_visibility_builder.dart
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/typing_indicator_dots.dart';
+import 'package:social_media_app/helpers/global_string_key.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/chat/controllers/p2p_chat_controller.dart';
 import 'package:social_media_app/modules/chat/views/preview_media_files_view.dart';
@@ -272,7 +273,9 @@ class P2PChatView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    if (logic.messageData!.hasNextPage!)
+                    if (logic.messageData != null &&
+                        logic.messageData!.hasNextPage != null &&
+                        logic.messageData!.hasNextPage!)
                       Center(
                         child: NxTextButton(
                           label: 'Load older messages',
@@ -372,7 +375,7 @@ class P2PChatView extends StatelessWidget {
           Text(date.formatDate()),
           Dimens.boxHeight8,
           ChatBubble(
-            key: GlobalObjectKey(message.id ?? message.tempId!),
+            key: GlobalStringKey(message.id ?? message.tempId!),
             message: message,
             onSwipeLeft: () {
               AppUtility.printLog('swipe left');
@@ -386,7 +389,7 @@ class P2PChatView extends StatelessWidget {
     }
 
     return ChatBubble(
-      key: GlobalObjectKey(message.id ?? message.tempId!),
+      key: GlobalStringKey(message.id ?? message.tempId!),
       message: message,
       onSwipeLeft: () {
         AppUtility.printLog('swipe left');

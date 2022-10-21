@@ -64,7 +64,7 @@ class PostController extends GetxController {
   }
 
   Future<void> _fetchPosts({int? page}) async {
-    AppUtility.printLog("Fetching Posts Request");
+    AppUtility.log("Fetching Posts Request");
     _isLoading.value = true;
     update();
 
@@ -73,7 +73,7 @@ class PostController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        AppUtility.printLog("Fetching Posts Success");
+        AppUtility.log("Fetching Posts Success");
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
@@ -81,46 +81,45 @@ class PostController extends GetxController {
         _isLoading.value = false;
         update();
       } else {
+        AppUtility.log("Fetching Posts Error: ${decodedData['message']}",
+            tag: 'error');
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Fetching Posts Error");
       }
     } on SocketException {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Posts Error");
-      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.log("Fetching Posts Error");
+      AppUtility.log(StringValues.internetConnError, tag: 'error');
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Posts Error");
-      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.log("Fetching Posts Error");
+      AppUtility.log(StringValues.connTimedOut, tag: 'error');
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Posts Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log("Fetching Posts Error");
+      AppUtility.log(StringValues.formatExcError, tag: 'error');
+      AppUtility.log(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Posts Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log("Fetching Posts Error $exc", tag: 'error');
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.printLog("Fetching More Posts Request");
+    AppUtility.log("Fetching More Posts Request");
     _isMoreLoading.value = true;
     update();
 
@@ -129,15 +128,18 @@ class PostController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
+        AppUtility.log("Fetching More Posts Success");
         setPostData = PostResponse.fromJson(decodedData);
         _postList.addAll(_postData.value.results!);
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Posts Success");
       } else {
+        AppUtility.log("Fetching More Posts Error: ${decodedData['message']}",
+            tag: 'error');
+
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Posts Error");
+
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
@@ -146,35 +148,33 @@ class PostController extends GetxController {
     } on SocketException {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Posts Error");
-      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.log("Fetching More Posts Error");
+      AppUtility.log(StringValues.internetConnError, tag: 'error');
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Posts Error");
-      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.log("Fetching More Posts Error");
+      AppUtility.log(StringValues.connTimedOut, tag: 'error');
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Posts Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log("Fetching More Posts Error");
+      AppUtility.log('Format Exception Error: $e', tag: 'error');
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Posts Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log("Fetching More Posts Error");
+      AppUtility.log('Error: $exc', tag: 'error');
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> _deletePost(String postId) async {
-    AppUtility.printLog("Post Delete Request");
+    AppUtility.log("Post Delete Request");
 
     if (postId.isEmpty) return;
 
@@ -196,11 +196,11 @@ class PostController extends GetxController {
           apiResponse.message!,
           StringValues.success,
         );
-        AppUtility.printLog("Post Delete Success");
+        AppUtility.log("Post Delete Success");
       } else {
         _postList.insert(postIndex, post);
         update();
-        AppUtility.printLog("Post Delete Error");
+        AppUtility.log("Post Delete Error");
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.error,
@@ -209,29 +209,27 @@ class PostController extends GetxController {
     } on SocketException {
       _postList.insert(postIndex, post);
       update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.log("Post Delete Error");
+      AppUtility.log(StringValues.internetConnError, tag: 'error');
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _postList.insert(postIndex, post);
       update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.log("Post Delete Error");
+      AppUtility.log(StringValues.connTimedOut, tag: 'error');
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _postList.insert(postIndex, post);
       update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log("Post Delete Error");
+      AppUtility.log('Format Exception Error: $e', tag: 'error');
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _postList.insert(postIndex, post);
       update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log("Post Delete Error");
+      AppUtility.log('Error: $exc', tag: 'error');
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
@@ -251,7 +249,7 @@ class PostController extends GetxController {
   }
 
   Future<void> _toggleLikePost(Post post) async {
-    AppUtility.printLog("Like/Unlike Post Request...");
+    AppUtility.log("Like/Unlike Post Request");
 
     _toggleLike(post);
 
@@ -262,7 +260,7 @@ class PostController extends GetxController {
       final apiResponse = CommonResponse.fromJson(decodedData);
 
       if (response.statusCode == 200) {
-        AppUtility.printLog(apiResponse.message!);
+        AppUtility.log(apiResponse.message!);
       } else {
         _toggleLike(post);
         AppUtility.showSnackBar(
@@ -272,22 +270,20 @@ class PostController extends GetxController {
       }
     } on SocketException {
       _toggleLike(post);
-      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.log(StringValues.internetConnError, tag: 'error');
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _toggleLike(post);
-      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.log(StringValues.connTimedOut, tag: 'error');
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _toggleLike(post);
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log('Format Exception Error: $e', tag: 'error');
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleLike(post);
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log('Error: $exc', tag: 'error');
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }

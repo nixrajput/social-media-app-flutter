@@ -20,10 +20,10 @@ class SocketApiProvider {
 
   // All the private and public variables
   static WebSocket? _socket;
-  final _socketEventStream = StreamController<dynamic>();
+  StreamController<dynamic>? _socketEventStream;
 
-  Stream<dynamic> get socketEventStream =>
-      _socketEventStream.stream.asBroadcastStream();
+  Stream<dynamic>? get socketEventStream =>
+      _socketEventStream?.stream.asBroadcastStream();
   WebSocket? get socket => _socket;
   bool get isConnected => _socket?.readyState == WebSocket.open;
   bool get isDisconnected => _socket?.readyState == WebSocket.closed;
@@ -33,43 +33,55 @@ class SocketApiProvider {
 
   // All socket related functions.
   Future<void> init(String token) async {
-    AppUtility.printLog("Socket init called");
-    if (token.isEmpty) {
-      AppUtility.printLog("Socket token is empty");
+    AppUtility.log("Socket initializing...");
+
+    if (_socket != null && isConnected) {
+      AppUtility.log("Socket already connected.");
       return;
     }
 
-    if (_socket != null && _socket!.readyState == WebSocket.open) {
-      AppUtility.printLog("Socket is already connected");
+    if (token.isEmpty) {
+      AppUtility.log("Socket token is empty", tag: 'warning');
       return;
     }
 
     try {
       _socket =
           await WebSocket.connect('${AppSecrets.awsWebSocketUrl}?token=$token');
-      AppUtility.printLog("Socket connection established");
 
-      _socket!.listen(_socketEventHandler, onError: (error) {
-        AppUtility.printLog("Socket error: $error");
-      }, onDone: () {
-        AppUtility.printLog("Socket done");
-      }, cancelOnError: true);
+      if (_socket != null && isConnected) {
+        AppUtility.log("Socket connection established");
+        _socketEventStream = StreamController<dynamic>.broadcast();
+      }
+
+      _socket!.listen(
+        _socketEventHandler,
+        onError: (error) {
+          AppUtility.log("Socket error: $error", tag: 'error');
+        },
+        onDone: () {
+          AppUtility.log("Socket done");
+        },
+        cancelOnError: true,
+      );
     } catch (e) {
-      AppUtility.printLog("Socket connection error: $e");
+      AppUtility.log("Socket connection error: $e", tag: 'error');
     }
 
-    AppUtility.printLog("Socket init done");
+    AppUtility.log("Socket initialized");
   }
 
   void _socketEventHandler(dynamic event) {
-    AppUtility.printLog("Socket event received");
-    _socketApi._socketEventStream.add(event);
+    AppUtility.log("Socket event received");
+    _socketApi._socketEventStream?.add(event);
   }
 
   void close() {
-    _socketApi._socketEventStream.close();
+    _socketApi._socketEventStream?.close();
     _socket?.close();
-    AppUtility.printLog("Socket closed");
+    _socketApi._socketEventStream = null;
+    _socket = null;
+    AppUtility.log("Socket closed");
   }
 
   void send(String message) {

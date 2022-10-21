@@ -39,6 +39,8 @@ abstract class _$ProfileCWProxy {
 
   Profile isVerified(bool isVerified);
 
+  Profile lastSeen(DateTime? lastSeen);
+
   Profile lname(String lname);
 
   Profile location(String? location);
@@ -52,6 +54,8 @@ abstract class _$ProfileCWProxy {
   Profile profession(String? profession);
 
   Profile role(String role);
+
+  Profile showOnlineStatus(bool? showOnlineStatus);
 
   Profile uname(String uname);
 
@@ -84,6 +88,7 @@ abstract class _$ProfileCWProxy {
     bool? isPrivate,
     bool? isValid,
     bool? isVerified,
+    DateTime? lastSeen,
     String? lname,
     String? location,
     String? phone,
@@ -91,6 +96,7 @@ abstract class _$ProfileCWProxy {
     int? postsCount,
     String? profession,
     String? role,
+    bool? showOnlineStatus,
     String? uname,
     DateTime? updatedAt,
     String? verificationStatus,
@@ -157,6 +163,9 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
   Profile isVerified(bool isVerified) => this(isVerified: isVerified);
 
   @override
+  Profile lastSeen(DateTime? lastSeen) => this(lastSeen: lastSeen);
+
+  @override
   Profile lname(String lname) => this(lname: lname);
 
   @override
@@ -177,6 +186,10 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
 
   @override
   Profile role(String role) => this(role: role);
+
+  @override
+  Profile showOnlineStatus(bool? showOnlineStatus) =>
+      this(showOnlineStatus: showOnlineStatus);
 
   @override
   Profile uname(String uname) => this(uname: uname);
@@ -216,6 +229,7 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
     Object? isPrivate = const $CopyWithPlaceholder(),
     Object? isValid = const $CopyWithPlaceholder(),
     Object? isVerified = const $CopyWithPlaceholder(),
+    Object? lastSeen = const $CopyWithPlaceholder(),
     Object? lname = const $CopyWithPlaceholder(),
     Object? location = const $CopyWithPlaceholder(),
     Object? phone = const $CopyWithPlaceholder(),
@@ -223,6 +237,7 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
     Object? postsCount = const $CopyWithPlaceholder(),
     Object? profession = const $CopyWithPlaceholder(),
     Object? role = const $CopyWithPlaceholder(),
+    Object? showOnlineStatus = const $CopyWithPlaceholder(),
     Object? uname = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
     Object? verificationStatus = const $CopyWithPlaceholder(),
@@ -298,6 +313,10 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
               ? _value.isVerified
               // ignore: cast_nullable_to_non_nullable
               : isVerified as bool,
+      lastSeen: lastSeen == const $CopyWithPlaceholder()
+          ? _value.lastSeen
+          // ignore: cast_nullable_to_non_nullable
+          : lastSeen as DateTime?,
       lname: lname == const $CopyWithPlaceholder() || lname == null
           ? _value.lname
           // ignore: cast_nullable_to_non_nullable
@@ -327,6 +346,10 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
           ? _value.role
           // ignore: cast_nullable_to_non_nullable
           : role as String,
+      showOnlineStatus: showOnlineStatus == const $CopyWithPlaceholder()
+          ? _value.showOnlineStatus
+          // ignore: cast_nullable_to_non_nullable
+          : showOnlineStatus as bool?,
       uname: uname == const $CopyWithPlaceholder() || uname == null
           ? _value.uname
           // ignore: cast_nullable_to_non_nullable
@@ -386,6 +409,10 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       verificationStatus: json['verificationStatus'] as String,
       isValid: json['isValid'] as bool,
       isVerified: json['isVerified'] as bool,
+      showOnlineStatus: json['showOnlineStatus'] as bool?,
+      lastSeen: json['lastSeen'] == null
+          ? null
+          : DateTime.parse(json['lastSeen'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -416,6 +443,8 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'isVerified': instance.isVerified,
       'verificationStatus': instance.verificationStatus,
       'role': instance.role,
+      'showOnlineStatus': instance.showOnlineStatus,
+      'lastSeen': instance.lastSeen?.toIso8601String(),
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };

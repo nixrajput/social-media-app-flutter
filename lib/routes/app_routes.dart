@@ -4,6 +4,7 @@ abstract class AppRoutes {
   static const splash = _Routes.splash;
   static const maintenance = _Routes.maintenance;
   static const welcome = _Routes.welcome;
+  static const offline = _Routes.offline;
   static const error = _Routes.error;
   static const home = _Routes.home;
   static const chats = _Routes.chats;
@@ -76,6 +77,7 @@ abstract class _Routes {
   static const splash = '/';
   static const maintenance = '/maintenance';
   static const welcome = '/welcome';
+  static const offline = '/offline';
   static const error = '/error';
   static const home = '/home';
   static const chats = '/chats';

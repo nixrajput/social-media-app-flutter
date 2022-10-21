@@ -39,10 +39,10 @@ abstract class StringValues {
   static const profile = 'Profile';
   static const doNotHaveAccount = "Don't have an account?";
   static const alreadyHaveAccount = "Already have an account?";
-  static const String themeMode = 'themeMode';
-  static const String system = 'System';
-  static const String light = 'Light';
-  static const String dark = 'Dark';
+  static const themeMode = 'themeMode';
+  static const system = 'System';
+  static const light = 'Light';
+  static const dark = 'Dark';
   static const okay = 'Okay';
   static const info = 'info';
   static const success = 'success';
@@ -50,6 +50,10 @@ abstract class StringValues {
   static const error = 'error';
   static const none = 'none';
   static const message = 'message';
+  static const title = 'title';
+  static const cancel = 'cancel';
+  static const messages = 'Messages';
+  static const connections = 'Connections';
   static const enterFirstName = 'Enter your first name';
   static const enterLastName = 'Enter your last name';
   static const enterEmail = 'Enter your email';
@@ -209,6 +213,8 @@ abstract class StringValues {
   static const privacyPolicy = 'Privacy Policy';
   static const termsOfUse = 'Terms of Use';
   static const website = 'Website';
+  static const aboutUs = 'About Us';
+  static const onlineStatus = 'Online Status';
   static const nameHelpText =
       "Either your full name, nickname, or business name.";
   static const accountSettingsHelp =

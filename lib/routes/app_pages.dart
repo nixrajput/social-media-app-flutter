@@ -22,7 +22,6 @@ import 'package:social_media_app/modules/follower/views/followers_list_view.dart
 import 'package:social_media_app/modules/follower/views/following_list_view.dart';
 import 'package:social_media_app/modules/home/bindings/initial_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
-import 'package:social_media_app/modules/maintenance/server_maintenance_view.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
 import 'package:social_media_app/modules/post/bindings/post_details_binding.dart';
 import 'package:social_media_app/modules/post/bindings/post_liked_users_binding.dart';
@@ -47,6 +46,8 @@ import 'package:social_media_app/modules/profile/views/edit_views/edit_professio
 import 'package:social_media_app/modules/profile/views/edit_views/edit_username_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_website_view.dart';
 import 'package:social_media_app/modules/profile/views/profile_details_view.dart';
+import 'package:social_media_app/modules/server_maintenance/server_maintenance_view.dart';
+import 'package:social_media_app/modules/server_offline/server_offline_view.dart';
 import 'package:social_media_app/modules/settings/bindings/change_email_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/change_password_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/change_phone_binding.dart';
@@ -90,6 +91,14 @@ abstract class AppPages {
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
+
+    GetPage(
+      name: _Routes.offline,
+      page: ServerOfflineView.new,
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
     GetPage(
       name: _Routes.welcome,
       page: WelcomeView.new,

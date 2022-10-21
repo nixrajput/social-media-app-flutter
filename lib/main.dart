@@ -31,7 +31,7 @@ void main() async {
     runApp(const MyApp());
     await Get.put(AppUpdateController(), permanent: true).init();
   } catch (err) {
-    AppUtility.printLog(err);
+    AppUtility.log('Error in main: $err', tag: 'error');
   }
 }
 
@@ -57,7 +57,7 @@ String serverHealth = "offline";
 
 Future<void> checkAuthData() async {
   serverHealth = await AuthService.find.checkServerHealth();
-  AppUtility.printLog("ServerHealth: $serverHealth");
+  AppUtility.log("ServerHealth: $serverHealth");
 
   /// If [serverHealth] is `offline` or `maintenance`,
   /// then return
@@ -89,8 +89,8 @@ Future<void> checkAuthData() async {
       }
     }
     isLogin
-        ? AppUtility.printLog("User is logged in")
-        : AppUtility.printLog("User is not logged in");
+        ? AppUtility.log("User is logged in")
+        : AppUtility.log("User is not logged in", tag: 'warning');
   });
 }
 
@@ -148,6 +148,8 @@ class MyApp extends StatelessWidget {
   String _handleAppInitialRoute() {
     if (serverHealth.toLowerCase() == "maintenance") {
       return AppRoutes.maintenance;
+    } else if (serverHealth.toLowerCase() == "offline") {
+      return AppRoutes.offline;
     } else if (isLogin) {
       return AppRoutes.home;
     } else {

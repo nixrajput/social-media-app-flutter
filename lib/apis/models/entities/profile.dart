@@ -33,6 +33,8 @@ class Profile {
     required this.verificationStatus,
     required this.isValid,
     required this.isVerified,
+    this.showOnlineStatus,
+    this.lastSeen,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -116,6 +118,12 @@ class Profile {
 
   @JsonKey(name: 'role')
   String role;
+
+  @JsonKey(name: 'showOnlineStatus')
+  bool? showOnlineStatus;
+
+  @JsonKey(name: 'lastSeen')
+  DateTime? lastSeen;
 
   @JsonKey(name: 'createdAt')
   DateTime createdAt;

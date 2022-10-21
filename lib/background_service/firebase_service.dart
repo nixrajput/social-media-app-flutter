@@ -43,11 +43,12 @@ Future<void> initializeFirebaseService() async {
   );
 
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    AppUtility.printLog('User granted permission');
+    AppUtility.log('User granted permission');
   } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-    AppUtility.printLog('User granted provisional permission');
+    AppUtility.log('User granted provisional permission');
   } else {
-    AppUtility.printLog('User declined or has not accepted permission');
+    AppUtility.log('User declined or has not accepted permission',
+        tag: 'warning');
     return;
   }
 
@@ -82,17 +83,17 @@ Future<void> initializeFirebaseService() async {
 
   if (authService.isLogin) {
     var fcmToken = await AppUtility.readFcmTokenFromLocalStorage();
-    AppUtility.printLog('fcmToken: $fcmToken');
+    AppUtility.log('fcmToken: $fcmToken');
 
     if (fcmToken.isEmpty) {
       await messaging.deleteToken();
       var token = await messaging.getToken();
-      AppUtility.printLog('fcmToken: $token');
+      AppUtility.log('fcmToken: $token');
       await AppUtility.saveFcmTokenToLocalStorage(token!);
     }
 
     messaging.onTokenRefresh.listen((newToken) async {
-      AppUtility.printLog('fcmToken refreshed: $newToken');
+      AppUtility.log('fcmToken refreshed: $newToken');
       await AppUtility.saveFcmTokenToLocalStorage(newToken);
       if (authService.token.isNotEmpty) {
         await authService.saveFcmToken(newToken);
@@ -106,8 +107,8 @@ Future<void> initializeFirebaseService() async {
   FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    AppUtility.printLog('Got a message whilst in the foreground!');
-    AppUtility.printLog('Message data: ${message.data}');
+    AppUtility.log('Got a message whilst in the foreground!');
+    AppUtility.log('Message data: ${message.data}');
 
     if (message.data.isNotEmpty) {
       var messageData = message.data;
@@ -129,7 +130,7 @@ Future<void> initializeFirebaseService() async {
     }
 
     if (message.notification != null) {
-      AppUtility.printLog(
+      AppUtility.log(
           'Message also contained a notification: ${message.notification}');
     }
   });
@@ -166,7 +167,7 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
   }
 
   if (message.notification != null) {
-    AppUtility.printLog(
+    AppUtility.log(
         'Message also contained a notification: ${message.notification}');
   }
 }

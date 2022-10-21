@@ -19,6 +19,10 @@ abstract class RouteManagement {
     Get.offAllNamed(AppRoutes.maintenance);
   }
 
+  static void goToServerOfflineView() {
+    Get.offAllNamed(AppRoutes.offline);
+  }
+
   static void goToLoginView() {
     Get.toNamed(AppRoutes.login);
   }

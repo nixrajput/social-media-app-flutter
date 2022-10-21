@@ -17,6 +17,7 @@ import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/helpers/global_string_key.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/utils/file_utility.dart';
@@ -125,20 +126,15 @@ class P2PChatController extends GetxController {
   }
 
   void scrollToCustomChatMessage(String messageId) async {
-    var dataKey = material.GlobalObjectKey(messageId);
-    AppUtility.printLog('key $dataKey');
-    AppUtility.printLog('context ${dataKey.currentContext}');
+    var dataKey = GlobalStringKey(messageId);
     if (dataKey.currentContext != null) {
-      var renderedObj = dataKey.currentContext!.findRenderObject();
-      AppUtility.printLog('renderedObj $renderedObj');
-      AppUtility.printLog('Searching object');
+      var renderedObj = dataKey.currentContext!.findRenderObject()!;
       await scrollController.position.ensureVisible(
-        renderedObj!,
+        renderedObj,
         alignment: 0.5,
         duration: const Duration(milliseconds: 300),
         curve: material.Curves.easeOut,
       );
-      AppUtility.printLog('Searching done');
     }
   }
 
@@ -152,7 +148,7 @@ class P2PChatController extends GetxController {
       folder: 'social_media_api/chats/thumbnails',
       progressCallback: (count, total) {
         var progress = ((count / total) * 100).toStringAsFixed(2);
-        AppUtility.printLog('Uploading Thumbnail : $progress %');
+        AppUtility.log('Uploading Thumbnail : $progress %');
       },
     );
 
@@ -172,7 +168,7 @@ class P2PChatController extends GetxController {
         folder: "social_media_api/chats/videos",
         progressCallback: (count, total) {
           var progress = ((count / total) * 100).toStringAsFixed(2);
-          AppUtility.printLog('Uploading Video : $progress %');
+          AppUtility.log('Uploading Video : $progress %');
         },
       );
       return {
@@ -185,7 +181,7 @@ class P2PChatController extends GetxController {
         "mediaType": "video"
       };
     } catch (err) {
-      AppUtility.printLog(err);
+      AppUtility.log(err);
       AppUtility.showSnackBar('Video upload failed.', StringValues.error);
       return null;
     }
@@ -202,7 +198,7 @@ class P2PChatController extends GetxController {
         folder: "social_media_api/chats/images",
         progressCallback: (count, total) {
           var progress = ((count / total) * 100).toStringAsFixed(2);
-          AppUtility.printLog('Uploading Image : $progress %');
+          AppUtility.log('Uploading Image : $progress %');
         },
       );
       return {
@@ -211,7 +207,7 @@ class P2PChatController extends GetxController {
         "mediaType": "image"
       };
     } catch (err) {
-      AppUtility.printLog(err);
+      AppUtility.log(err);
       AppUtility.showSnackBar('Image upload failed.', StringValues.error);
       return null;
     }
@@ -417,7 +413,7 @@ class P2PChatController extends GetxController {
               element.seen == false)
           .toList();
       if (unreadMessages.isNotEmpty) {
-        AppUtility.printLog('Marking message as read');
+        AppUtility.log('Marking message as read');
         for (var message in unreadMessages) {
           _socketApiProvider.sendJson(
             {
@@ -508,7 +504,7 @@ class P2PChatController extends GetxController {
   // }
 
   Future<void> _fetchMessagesById() async {
-    AppUtility.printLog("Fetching Messages Request");
+    AppUtility.log("Fetching Messages Request");
     _isLoading.value = true;
     update();
 
@@ -517,7 +513,7 @@ class P2PChatController extends GetxController {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        AppUtility.printLog("Fetching Messages Success");
+        AppUtility.log("Fetching Messages Success");
         setMessageData = ChatMessageListResponse.fromJson(decodedData);
 
         for (var element in messageData!.results!) {
@@ -533,40 +529,40 @@ class P2PChatController extends GetxController {
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Fetching Messages Error");
+        AppUtility.log("Fetching Messages Error");
       }
     } on SocketException {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.internetConnError);
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.formatExcError);
+      AppUtility.log(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.errorOccurred);
+      AppUtility.log(exc);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.printLog("Fetching More Last Messages Request");
+    AppUtility.log("Fetching More Last Messages Request");
     _isMoreLoading.value = true;
     update();
 
@@ -584,11 +580,11 @@ class P2PChatController extends GetxController {
 
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Messages Success");
+        AppUtility.log("Fetching More Messages Success");
       } else {
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetching Last Messages Error");
+        AppUtility.log("Fetching Last Messages Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
@@ -597,29 +593,29 @@ class P2PChatController extends GetxController {
     } on SocketException {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.internetConnError);
       AppUtility.showSnackBar(
           StringValues.internetConnError, StringValues.error);
     } on TimeoutException {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.formatExcError);
+      AppUtility.log(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Last Messages Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log("Fetching Last Messages Error");
+      AppUtility.log(StringValues.errorOccurred);
+      AppUtility.log(exc);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     }
   }

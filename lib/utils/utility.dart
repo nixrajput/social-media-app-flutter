@@ -14,9 +14,37 @@ import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:talker/talker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class AppUtility {
+  /// Logger
+
+  static final _logger = Talker();
+
+  static void log(dynamic message, {String? tag}) {
+    switch (tag) {
+      case 'error':
+        _logger.error(message);
+        break;
+      case 'warning':
+        _logger.warning(message);
+        break;
+      case 'info':
+        _logger.info(message);
+        break;
+      case 'debug':
+        _logger.debug(message);
+        break;
+      case 'critical':
+        _logger.critical(message);
+        break;
+      default:
+        _logger.verbose(message);
+        break;
+    }
+  }
+
   /// Close any open snack bar.
 
   static void closeSnackBar() {
@@ -43,8 +71,13 @@ abstract class AppUtility {
 
   /// Show Loading Dialog
 
-  static void showLoadingDialog(
-      {double? value, bool? barrierDismissible, String? message}) {
+  static void showLoadingDialog({
+    double? value,
+    bool? barrierDismissible,
+    String? message,
+  }) {
+    closeSnackBar();
+    closeDialog();
     Get.dialog(
       WillPopScope(
         onWillPop: () async => false,
@@ -69,6 +102,7 @@ abstract class AppUtility {
                   NxCircularProgressIndicator(
                     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                     size: Dimens.fourtyEight,
+                    value: value,
                   ),
                   Dimens.boxHeight12,
                   Text(
@@ -84,6 +118,8 @@ abstract class AppUtility {
         ),
       ),
       barrierDismissible: barrierDismissible ?? false,
+      name: 'loading_dialog',
+      navigatorKey: GlobalKey<NavigatorState>(),
     );
   }
 
@@ -135,6 +171,7 @@ abstract class AppUtility {
       ),
       barrierDismissible: barrierDismissible,
       barrierColor: ColorValues.blackColor.withOpacity(0.75),
+      name: 'simple_dialog',
     );
   }
 
@@ -196,6 +233,7 @@ abstract class AppUtility {
         ),
       ),
       barrierDismissible: false,
+      name: 'no_internet_dialog',
     );
   }
 

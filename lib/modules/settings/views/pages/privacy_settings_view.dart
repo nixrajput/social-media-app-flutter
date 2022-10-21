@@ -69,6 +69,36 @@ class PrivacySettingsView extends StatelessWidget {
 
               Dimens.divider,
 
+              /// Online Status
+
+              NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                leading: Icon(
+                  Icons.online_prediction_outlined,
+                  size: Dimens.twenty,
+                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                ),
+                title: Text(
+                  StringValues.onlineStatus,
+                  style: AppStyles.style14Bold,
+                ),
+                trailing: GetBuilder<ProfileController>(
+                  builder: (logic) {
+                    return Switch(
+                      value:
+                          logic.profileDetails!.user!.showOnlineStatus ?? true,
+                      onChanged: (value) {
+                        logic.updateProfile({'showOnlineStatus': '$value'});
+                      },
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    );
+                  },
+                ),
+              ),
+
+              Dimens.divider,
+
               /// Posts
 
               NxListTile(
@@ -99,6 +129,24 @@ class PrivacySettingsView extends StatelessWidget {
                 ),
                 title: Text(
                   StringValues.comments,
+                  style: AppStyles.style14Bold,
+                ),
+              ),
+
+              Dimens.divider,
+
+              /// Messages
+
+              NxListTile(
+                padding: Dimens.edgeInsets12_8,
+                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                leading: Icon(
+                  Icons.send_outlined,
+                  size: Dimens.twenty,
+                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                ),
+                title: Text(
+                  StringValues.messages,
                   style: AppStyles.style14Bold,
                 ),
               ),

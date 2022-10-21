@@ -50,11 +50,11 @@ class AuthService extends GetxService {
 
   @override
   void onInit() {
-    AppUtility.printLog("AuthService onInit");
+    AppUtility.log("AuthService Initializing");
     super.onInit();
     _checkForInternetConnectivity();
     getDeviceId();
-    AppUtility.printLog("AuthService onInit end");
+    AppUtility.log("AuthService Initialized");
   }
 
   @override
@@ -76,24 +76,23 @@ class AuthService extends GetxService {
   }
 
   Future<String> _checkServerHealth() async {
-    AppUtility.printLog('Check Server Health Request');
+    AppUtility.log('Check Server Health Request');
     var serverHealth = 'offline';
     try {
       final response = await _apiProvider.checkServerHealth();
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      AppUtility.printLog(decodedData);
+      AppUtility.log(decodedData);
       if (response.statusCode == 200) {
-        AppUtility.printLog('Check Server Health Success');
+        AppUtility.log('Check Server Health Success');
         serverHealth = decodedData['server'];
       } else {
-        AppUtility.printLog('Check Server Health Error');
+        AppUtility.log('Check Server Health Error');
         serverHealth = decodedData['server'];
       }
     } catch (exc) {
-      AppUtility.printLog('Check Server Health Error');
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log('Check Server Health Error');
+      AppUtility.log('Error: $exc', tag: 'error');
     }
 
     return serverHealth;
@@ -105,35 +104,34 @@ class AuthService extends GetxService {
       final response = await _apiProvider.validateToken(token);
 
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      AppUtility.printLog(decodedData);
+      AppUtility.log(decodedData);
       if (response.statusCode == 200) {
         isValid = true;
-        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.log(decodedData[StringValues.message]);
       } else {
-        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.log(decodedData[StringValues.message], tag: 'error');
       }
     } catch (exc) {
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log('Error: $exc', tag: 'error');
     }
 
     return isValid;
   }
 
   Future<void> _logout() async {
-    AppUtility.printLog("Logout Request");
+    AppUtility.log("Logout Request");
     await LoginDeviceInfoController.find
         .deleteLoginDeviceInfo(_deviceId.toString());
     setToken = '';
     setExpiresAt = 0;
     _isLogin = false;
     SocketApiProvider().close();
-    ChatController.find.onClose();
+    await ChatController.find.close();
     await AppUtility.clearLoginDataFromLocalStorage();
     await AppUtility.deleteFcmTokenFromLocalStorage();
     await AppUtility.deletePostDataFromLocalStorage();
     await AppUtility.deleteProfilePostDataFromLocalStorage();
-    AppUtility.printLog("Logout Success");
+    AppUtility.log("Logout Success");
     AppUtility.showSnackBar(
       'Logout Successfully',
       '',
@@ -168,11 +166,11 @@ class AuthService extends GetxService {
       setDeviceId = int.parse(savedDevId);
     }
 
-    AppUtility.printLog("deviceId: $_deviceId");
+    AppUtility.log("deviceId: $_deviceId");
   }
 
   Future<void> saveDeviceIdToServer(String deviceId) async {
-    AppUtility.printLog("Save DeviceId Request");
+    AppUtility.log("Save DeviceId Request");
 
     try {
       final response = await _apiProvider.saveDeviceId(
@@ -183,26 +181,24 @@ class AuthService extends GetxService {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        AppUtility.printLog(decodedData[StringValues.message]);
-        AppUtility.printLog("Save DeviceId Success");
+        AppUtility.log("Save DeviceId Success");
+        AppUtility.log(decodedData[StringValues.message], tag: 'info');
       } else {
-        AppUtility.printLog(decodedData[StringValues.message]);
-        AppUtility.printLog("Save DeviceId Error");
+        AppUtility.log("Save DeviceId Error");
+        AppUtility.log(decodedData[StringValues.message], tag: 'error');
       }
     } on SocketException {
-      AppUtility.printLog("Save DeviceId Error");
-      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.log("Save DeviceId Error");
+      AppUtility.log(StringValues.internetConnError, tag: 'error');
     } on TimeoutException {
-      AppUtility.printLog("Save DeviceId Error");
-      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.log("Save DeviceId Error");
+      AppUtility.log(StringValues.connTimedOut, tag: 'error');
     } on FormatException catch (e) {
-      AppUtility.printLog("Save DeviceId Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log("Save DeviceId Error");
+      AppUtility.log('Format Exception: $e', tag: 'error');
     } catch (exc) {
       AppUtility.printLog("Save DeviceId Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.log('Error: $exc', tag: 'error');
     }
   }
 
@@ -231,18 +227,16 @@ class AuthService extends GetxService {
       AppUtility.printLog("Save PreKeyBundle Error");
       AppUtility.printLog(StringValues.connTimedOut);
     } on FormatException catch (e) {
-      AppUtility.printLog("Save PreKeyBundle Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log("Save DeviceId Error");
+      AppUtility.log('Format Exception: $e', tag: 'error');
     } catch (exc) {
-      AppUtility.printLog("Save PreKeyBundle Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.printLog("Save DeviceId Error");
+      AppUtility.log('Error: $exc', tag: 'error');
     }
   }
 
   Future<void> saveFcmToken(String fcmToken) async {
-    AppUtility.printLog("Save FcmToken Request");
+    AppUtility.log("Save FcmToken Request");
 
     try {
       final response = await _apiProvider.saveFcmToken(
@@ -253,26 +247,25 @@ class AuthService extends GetxService {
       final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode == 200) {
-        AppUtility.printLog(decodedData[StringValues.message]);
+        AppUtility.log(decodedData[StringValues.message]);
         AppUtility.printLog("Save FcmToken Success");
       } else {
-        AppUtility.printLog(decodedData[StringValues.message]);
-        AppUtility.printLog("Save FcmToken Error");
+        AppUtility.log(
+            "Save FcmToken Error: ${decodedData[StringValues.message]}",
+            tag: 'error');
       }
     } on SocketException {
-      AppUtility.printLog("Save FcmToken Error");
-      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.log("Save FcmToken Error");
+      AppUtility.log(StringValues.internetConnError);
     } on TimeoutException {
-      AppUtility.printLog("Save FcmToken Error");
-      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.log("Save FcmToken Error");
+      AppUtility.log(StringValues.connTimedOut);
     } on FormatException catch (e) {
-      AppUtility.printLog("Save FcmToken Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
+      AppUtility.log("Save DeviceId Error");
+      AppUtility.log('Format Exception: $e', tag: 'error');
     } catch (exc) {
-      AppUtility.printLog("Save FcmToken Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
+      AppUtility.printLog("Save DeviceId Error");
+      AppUtility.log('Error: $exc', tag: 'error');
     }
   }
 
@@ -322,13 +315,11 @@ class AuthService extends GetxService {
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log("Save DeviceId Error");
+      AppUtility.log('Format Exception: $e', tag: 'error');
     } catch (exc) {
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.printLog("Save DeviceId Error");
+      AppUtility.log('Error: $exc', tag: 'error');
     }
 
     return locationInfo;
@@ -370,15 +361,11 @@ class AuthService extends GetxService {
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
-      AppUtility.printLog("Save LoginInfo Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log("Save LoginInfo Error");
+      AppUtility.log('Format Exception: $e', tag: 'error');
     } catch (exc) {
       AppUtility.printLog("Save LoginInfo Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
     }
   }
 

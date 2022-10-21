@@ -17,7 +17,7 @@ class NotificationService {
   set setFcmToken(String value) => _fcmToken = value;
 
   Future<void> initialize() async {
-    AppUtility.printLog('Initializing Notification Service');
+    AppUtility.log('Initializing Notification Service');
     if (!_initialized) {
       final initializationSettings = InitializationSettings(
         iOS: _iosInitSettings,
@@ -26,7 +26,7 @@ class NotificationService {
       await _notificationPlugin.initialize(initializationSettings);
       _initialized = true;
     }
-    AppUtility.printLog('Notification Service Initialized');
+    AppUtility.log('Notification Service Initialized');
   }
 
   void showNotification({

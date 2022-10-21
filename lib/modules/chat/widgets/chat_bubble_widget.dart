@@ -16,6 +16,7 @@ import 'package:social_media_app/global_widgets/circular_progress_indicator.dart
 import 'package:social_media_app/global_widgets/swipeable_widget.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/chat/controllers/p2p_chat_controller.dart';
+import 'package:social_media_app/modules/chat/views/image_viewer_screen.dart';
 import 'package:social_media_app/modules/chat/widgets/bubble_type.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_bubble_clipper.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_reply_to_widget.dart';
@@ -41,14 +42,14 @@ class ChatBubble extends StatelessWidget {
 
   Color _setBubbleColor(bool isSenderBubble) {
     if (isSenderBubble) {
-      return Theme.of(Get.context!).dialogBackgroundColor.withOpacity(0.75);
+      return ColorValues.primaryLightColor;
     }
     return Theme.of(Get.context!).dialogBackgroundColor;
   }
 
   Color _setMessageColor(bool isSenderBubble) {
     // if (isSenderBubble) {
-    //   return ColorValues.whiteColor;
+    //   return ColorValues.primaryLightColor;
     // }
     return Theme.of(Get.context!).textTheme.bodyText1!.color!;
   }
@@ -90,7 +91,7 @@ class ChatBubble extends StatelessWidget {
   Color _setMessageStatusColor() {
     if (message.seen == true) {
       return ColorValues.successColor;
-    } else if (message.delivered == true || message.sent == true) {
+    } else if (message.delivered == true) {
       return Theme.of(Get.context!).textTheme.subtitle1!.color!;
     }
 
@@ -136,9 +137,14 @@ class ChatBubble extends StatelessWidget {
                       : BubbleType.receiverBubble,
                 ),
                 color: _setBubbleColor(isYourMessage),
-                child: ConstrainedBox(
+                child: Container(
+                  margin: _setPadding(isYourMessage),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).dialogBackgroundColor,
+                    borderRadius: BorderRadius.circular(Dimens.eight),
+                  ),
                   constraints: BoxConstraints(
-                    maxWidth: Dimens.screenWidth * 0.75,
+                    maxWidth: Dimens.screenWidth * 0.7,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -148,13 +154,16 @@ class ChatBubble extends StatelessWidget {
                       if (message.replyTo != null &&
                           message.replyTo!.id != null)
                         Padding(
-                          padding: EdgeInsets.only(
-                            top: Dimens.eight,
-                            bottom: Dimens.zero,
-                            left: isYourMessage ? Dimens.eight : Dimens.sixTeen,
-                            right:
-                                isYourMessage ? Dimens.sixTeen : Dimens.eight,
-                          ),
+                          padding: isYourMessage
+                              ? EdgeInsets.only(
+                                  top: Dimens.eight,
+                                  bottom: Dimens.zero,
+                                  left: Dimens.eight,
+                                  right: Dimens.eight,
+                                )
+                              : Dimens.edgeInsets0.copyWith(
+                                  bottom: Dimens.eight,
+                                ),
                           child: ChatReplyToWidget(
                             reply: message.replyTo!,
                           ),
@@ -162,20 +171,21 @@ class ChatBubble extends StatelessWidget {
                       if (message.mediaFile != null &&
                           message.mediaFile!.url != null)
                         Padding(
-                          padding: EdgeInsets.only(
-                            top: Dimens.eight,
-                            bottom: Dimens.zero,
-                            left: isYourMessage ? Dimens.eight : Dimens.sixTeen,
-                            right:
-                                isYourMessage ? Dimens.sixTeen : Dimens.eight,
-                          ),
+                          padding: Dimens.edgeInsets0,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(Dimens.eight),
                             child: _buildMediaFile(),
                           ),
                         ),
                       Padding(
-                        padding: _setPadding(isYourMessage),
+                        padding: isYourMessage
+                            ? EdgeInsets.only(
+                                top: Dimens.eight,
+                                bottom: Dimens.eight,
+                                left: Dimens.eight,
+                                right: Dimens.eight,
+                              )
+                            : Dimens.edgeInsets0,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,7 +199,9 @@ class ChatBubble extends StatelessWidget {
                                   color: _setMessageColor(isYourMessage),
                                 ),
                               ),
-                            Dimens.boxHeight8,
+                            if (message.message != null &&
+                                message.message!.isNotEmpty)
+                              Dimens.boxHeight8,
                             Text(
                               message.createdAt!.formatTime(),
                               style: AppStyles.style12Normal.copyWith(
@@ -249,31 +261,38 @@ class ChatBubble extends StatelessWidget {
     }
     if (message.mediaFile!.url!.startsWith("http") ||
         message.mediaFile!.url!.startsWith("https")) {
-      return CachedNetworkImage(
-        imageUrl: message.mediaFile!.url!,
-        fit: BoxFit.cover,
-        progressIndicatorBuilder: (ctx, url, downloadProgress) => Container(
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () =>
+            Get.to(() => ImageViewerScreen(url: message.mediaFile!.url!)),
+        child: CachedNetworkImage(
+          imageUrl: message.mediaFile!.url!,
+          fit: BoxFit.cover,
           width: double.infinity,
-          height: Dimens.hundred * 2,
-          decoration: BoxDecoration(
-            color: ColorValues.grayColor.withOpacity(0.25),
-          ),
-          child: Center(
-            child: NxCircularProgressIndicator(
-              value: downloadProgress.progress,
+          height: Dimens.hundred * 2.4,
+          progressIndicatorBuilder: (ctx, url, downloadProgress) => Container(
+            width: double.infinity,
+            height: Dimens.hundred * 2.4,
+            decoration: BoxDecoration(
+              color: ColorValues.grayColor.withOpacity(0.25),
+            ),
+            child: Center(
+              child: NxCircularProgressIndicator(
+                value: downloadProgress.progress,
+              ),
             ),
           ),
-        ),
-        errorWidget: (ctx, url, err) => Container(
-          width: double.infinity,
-          height: Dimens.hundred * 2,
-          decoration: BoxDecoration(
-            color: ColorValues.grayColor.withOpacity(0.25),
-          ),
-          child: const Center(
-            child: Icon(
-              Icons.info,
-              color: ColorValues.errorColor,
+          errorWidget: (ctx, url, err) => Container(
+            width: double.infinity,
+            height: Dimens.hundred * 2.4,
+            decoration: BoxDecoration(
+              color: ColorValues.grayColor.withOpacity(0.25),
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.info,
+                color: ColorValues.errorColor,
+              ),
             ),
           ),
         ),
@@ -283,9 +302,11 @@ class ChatBubble extends StatelessWidget {
     return Image.file(
       File(message.mediaFile!.url!),
       fit: BoxFit.cover,
+      width: double.infinity,
+      height: Dimens.hundred * 2.4,
       errorBuilder: (context, url, error) => Container(
         width: double.infinity,
-        height: Dimens.hundred * 2,
+        height: Dimens.hundred * 2.4,
         decoration: BoxDecoration(
           color: ColorValues.grayColor.withOpacity(0.25),
         ),

@@ -117,7 +117,6 @@ class ProfileController extends GetxController {
       update();
       AppUtility.printLog("Fetching Profile Details Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isLoading = false;
@@ -198,7 +197,6 @@ class ProfileController extends GetxController {
       _toggleFollowUser(user);
       AppUtility.printLog("Follow/Unfollow User Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _toggleFollowUser(user);
@@ -248,7 +246,6 @@ class ProfileController extends GetxController {
     } on TimeoutException {
       _toggleFollowUser(user);
       AppUtility.printLog("Cancel Follow Error");
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
@@ -310,7 +307,6 @@ class ProfileController extends GetxController {
       update();
       AppUtility.printLog("Fetching Profile Posts Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isPostLoading.value = false;
@@ -370,7 +366,6 @@ class ProfileController extends GetxController {
       update();
       AppUtility.printLog("Fetching More Profile Posts Error");
       AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
       AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
     } on FormatException catch (e) {
       _isMorePostLoading.value = false;
@@ -383,6 +378,64 @@ class ProfileController extends GetxController {
       _isMorePostLoading.value = false;
       update();
       AppUtility.printLog("Fetching More Profile Posts Error");
+      AppUtility.printLog(StringValues.errorOccurred);
+      AppUtility.printLog(exc);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    }
+  }
+
+  Future<void> _updateProfile(Map<String, dynamic> details) async {
+    AppUtility.printLog("Update Profile Request");
+
+    if (details.isEmpty) {
+      AppUtility.printLog("No Data To Update");
+      return;
+    }
+
+    final body = details;
+
+    try {
+      final response = await _apiProvider.updateProfile(_auth.token, body);
+
+      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      if (response.statusCode == 200) {
+        AppUtility.printLog("Update Profile Success");
+
+        await _fetchProfileDetails(fetchPost: false);
+
+        AppUtility.showSnackBar(
+          StringValues.updateProfileSuccessful,
+          StringValues.success,
+        );
+      } else {
+        AppUtility.printLog("Update Profile Error");
+
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } on SocketException {
+      AppUtility.printLog("Update Profile Error");
+
+      AppUtility.printLog(StringValues.internetConnError);
+      AppUtility.showSnackBar(
+          StringValues.internetConnError, StringValues.error);
+    } on TimeoutException {
+      AppUtility.printLog("Update Profile Error");
+
+      AppUtility.printLog(StringValues.connTimedOut);
+      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
+    } on FormatException catch (e) {
+      AppUtility.printLog("Update Profile Error");
+
+      AppUtility.printLog(StringValues.formatExcError);
+      AppUtility.printLog(e);
+      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+    } catch (exc) {
+      AppUtility.printLog("Update Profile Error");
+
       AppUtility.printLog(StringValues.errorOccurred);
       AppUtility.printLog(exc);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
@@ -404,4 +457,7 @@ class ProfileController extends GetxController {
 
   Future<void> loadMore() async =>
       await _loadMore(page: _postData.value.currentPage! + 1);
+
+  Future<void> updateProfile(Map<String, dynamic> details) async =>
+      await _updateProfile(details);
 }
