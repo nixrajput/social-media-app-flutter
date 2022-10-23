@@ -19,7 +19,6 @@ class TrendingPostController extends GetxController {
 
   final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
-  final _hiveService = HiveService();
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
@@ -48,14 +47,11 @@ class TrendingPostController extends GetxController {
   _getData() async {
     _isLoading.value = true;
     update();
-    var isExists = await _hiveService.isExists(boxName: 'trendingPosts');
-
+    var isExists = await HiveService.hasLength<Post>('trendingPosts');
     if (isExists) {
-      var data = await _hiveService.getBox('trendingPosts');
-      var cachedData = jsonDecode(data);
-      setPostData = PostResponse.fromJson(cachedData);
+      var data = await HiveService.getAll<Post>('trendingPosts');
       _postList.clear();
-      _postList.addAll(_postData.value.results!);
+      _postList.addAll(data!.toList());
     }
     _isLoading.value = false;
     update();
@@ -63,7 +59,6 @@ class TrendingPostController extends GetxController {
   }
 
   Future<void> _fetchTrendingPosts({int? page}) async {
-    AppUtility.printLog("Fetching Trending Posts Request");
     _isLoading.value = true;
     update();
 
@@ -76,7 +71,7 @@ class TrendingPostController extends GetxController {
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
-        await _hiveService.addBox('trendingPosts', jsonEncode(decodedData));
+        await HiveService.addAll<Post>('trendingPosts', _postList);
         _isLoading.value = false;
         update();
         AppUtility.printLog("Fetching Trending Posts Success");
@@ -132,6 +127,7 @@ class TrendingPostController extends GetxController {
       if (response.statusCode == 200) {
         setPostData = PostResponse.fromJson(decodedData);
         _postList.addAll(_postData.value.results!);
+        await HiveService.addAll<Post>('trendingPosts', _postList);
         _isMoreLoading.value = false;
         update();
         AppUtility.printLog("Fetching More Trending Posts Success");
@@ -175,8 +171,6 @@ class TrendingPostController extends GetxController {
   }
 
   Future<void> _deletePost(String postId) async {
-    AppUtility.printLog("Post Delete Request");
-
     if (postId.isEmpty) return;
 
     var postIndex = _postList.indexWhere((element) => element.id == postId);
@@ -189,51 +183,27 @@ class TrendingPostController extends GetxController {
     try {
       final response = await _apiProvider.deletePost(_auth.token, postId);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      final apiResponse = CommonResponse.fromJson(decodedData);
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.success,
         );
-        AppUtility.printLog("Post Delete Success");
       } else {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         _postList.insert(postIndex, post);
         update();
-        AppUtility.printLog("Post Delete Error");
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.error,
         );
       }
-    } on SocketException {
-      _postList.insert(postIndex, post);
-      update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _postList.insert(postIndex, post);
-      update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _postList.insert(postIndex, post);
-      update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _postList.insert(postIndex, post);
       update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -252,44 +222,27 @@ class TrendingPostController extends GetxController {
   }
 
   Future<void> _toggleLikePost(Post post) async {
-    AppUtility.printLog("Like/Unlike Post Request...");
-
     _toggleLike(post);
 
     try {
       final response = await _apiProvider.likeUnlikePost(_auth.token, post.id!);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      final apiResponse = CommonResponse.fromJson(decodedData);
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog(apiResponse.message!);
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
+        AppUtility.log(apiResponse.message!);
       } else {
         _toggleLike(post);
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.error,
         );
       }
-    } on SocketException {
-      _toggleLike(post);
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _toggleLike(post);
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _toggleLike(post);
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleLike(post);
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

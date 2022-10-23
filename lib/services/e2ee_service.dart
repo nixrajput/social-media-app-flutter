@@ -7,8 +7,6 @@ import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class E2EEService {
-  final _hiveService = HiveService();
-
   Future<ServerKey> getServerPreKeyBundle() async {
     var secretKeys = await getSecretKeys();
 
@@ -78,19 +76,17 @@ class E2EEService {
   }
 
   Future<SecretKey> getSecretKeys() async {
-    var isSecretKeysExists = await _hiveService.isExists(boxName: 'secretKeys');
+    var isSecretKeysExists = await HiveService.hasLength('secretKeys');
 
     if (!isSecretKeysExists) {
-      AppUtility.printLog('secret keys does not exists');
+      AppUtility.log('secret keys does not exists');
       await _generateAndSaveKeys();
     }
 
-    AppUtility.printLog('secret keys exists');
+    AppUtility.log('secret keys exists');
 
-    var data = await _hiveService.getBox('secretKeys');
-    var decodedData = jsonDecode(data);
-
-    return SecretKey.fromJson(decodedData);
+    var data = await HiveService.getBox('secretKeys');
+    return SecretKey.fromJson(data);
   }
 
   Future<void> _saveSecretKeys({
@@ -106,8 +102,14 @@ class E2EEService {
       'signedPreKey': signedPreKey,
     };
 
-    await _hiveService.addBox('secretKeys', jsonEncode(secretKeys));
-    AppUtility.printLog('secret keys saved to local');
+    for (var element in secretKeys.entries) {
+      await HiveService.put(
+        'secretKeys',
+        element.key,
+        element.value,
+      );
+    }
+    AppUtility.log('secret keys saved to local');
   }
 
   Future<void> _generateAndSaveKeys() async {

@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -38,11 +36,8 @@ class AccountVerificationController extends GetxController {
       return;
     }
 
-    final body = {
-      'email': email,
-    };
+    final body = {'email': email};
 
-    AppUtility.printLog("Send Verify Account OTP Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -50,61 +45,32 @@ class AccountVerificationController extends GetxController {
     try {
       final response = await _apiProvider.sendVerifyAccountOtp(body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Send Verify Account OTP Success");
+
+        RouteManagement.goToBack();
+        RouteManagement.goToVerifyAccountView();
         AppUtility.showSnackBar(
           StringValues.otpSendSuccessful,
           StringValues.success,
         );
-        RouteManagement.goToBack();
-        RouteManagement.goToVerifyAccountView();
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Send Verify Account OTP Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Verify Account OTP Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Verify Account OTP Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Verify Account OTP Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Send Verify Account OTP Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -122,7 +88,6 @@ class AccountVerificationController extends GetxController {
       'otp': otp,
     };
 
-    AppUtility.printLog("Verify Account Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -130,14 +95,12 @@ class AccountVerificationController extends GetxController {
     try {
       final response = await _apiProvider.verifyAccount(body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
         _clearTextControllers();
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Verify Account Success");
+
         RouteManagement.goToBack();
         RouteManagement.goToLoginView();
         AppUtility.showSnackBar(
@@ -145,47 +108,20 @@ class AccountVerificationController extends GetxController {
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Verify Account Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Verify Account Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Verify Account Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Verify Account Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Verify Account Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

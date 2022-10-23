@@ -24,8 +24,8 @@ abstract class FileUtility {
   static bool isVideoFile(String path) {
     const videoFilesTypes = [".mp4", ".mkv"];
     var ext = p.extension(path);
-    // printLog('extension : $ext');
-    // printLog(videoFilesTypes.contains(ext).toString());
+    // log('extension : $ext');
+    // log(videoFilesTypes.contains(ext).toString());
     return videoFilesTypes.contains(ext);
   }
 
@@ -40,7 +40,7 @@ abstract class FileUtility {
 
       return thumbFile;
     } catch (e) {
-      AppUtility.printLog('getVideoThumbnailError : $e');
+      AppUtility.log('getVideoThumbnailError : $e');
       return null;
     }
   }
@@ -48,11 +48,11 @@ abstract class FileUtility {
   static Future<File?> compressImage(String path) async {
     File? resultFile = File(path);
     var size = resultFile.lengthSync();
-    AppUtility.printLog('Original file size: ${resultFile.sizeToKb()} KB');
+    AppUtility.log('Original file size: ${resultFile.sizeToKb()} KB');
 
     if (size < (maxImageBytes / 2)) {
-      AppUtility.printLog('Result $resultFile');
-      AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+      AppUtility.log('Result $resultFile');
+      AppUtility.log('Result file size: ${resultFile.sizeToKb()} KB');
       return resultFile;
     }
     var tempDir = await getTemporaryDirectory();
@@ -60,7 +60,7 @@ abstract class FileUtility {
     /// --------- Compressing Image ------------------------------------
 
     var timestamp = DateTime.now().millisecondsSinceEpoch;
-    AppUtility.printLog('Compressing...');
+    AppUtility.log('Compressing...');
     resultFile = await FlutterImageCompress.compressAndGetFile(
       resultFile.path,
       '${tempDir.absolute.path}/temp$timestamp.jpg',
@@ -70,19 +70,19 @@ abstract class FileUtility {
     size = resultFile!.lengthSync();
 
     /// ----------------------------------------------------------------
-    AppUtility.printLog('Result $resultFile');
-    AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+    AppUtility.log('Result $resultFile');
+    AppUtility.log('Result file size: ${resultFile.sizeToKb()} KB');
     return resultFile;
   }
 
   static Future<File?> compressVideo(String path) async {
     File? videoFile = File(path);
     var size = videoFile.lengthSync();
-    AppUtility.printLog('Original file size: ${videoFile.sizeToKb()} KB');
+    AppUtility.log('Original file size: ${videoFile.sizeToKb()} KB');
 
     if (size < maxVideoBytes) {
-      AppUtility.printLog('Result $videoFile');
-      AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+      AppUtility.log('Result $videoFile');
+      AppUtility.log('Result video size: ${videoFile.sizeToMb()} MB');
 
       return videoFile;
     }
@@ -94,14 +94,14 @@ abstract class FileUtility {
       quality: VideoQuality.DefaultQuality,
     );
     AppUtility.closeDialog();
-    AppUtility.printLog('Result ${info!.toJson()}');
+    AppUtility.log('Result ${info!.toJson()}');
     videoFile = info.file!;
     size = info.filesize!;
 
     /// ------------------------------------------------------------------
 
-    AppUtility.printLog('Result $videoFile');
-    AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+    AppUtility.log('Result $videoFile');
+    AppUtility.log('Result video size: ${videoFile.sizeToMb()} MB');
 
     if (size > (2 * maxVideoBytes)) {
       AppUtility.showSnackBar(
@@ -125,7 +125,7 @@ abstract class FileUtility {
     );
 
     if (pickedImage == null) {
-      AppUtility.printLog('No image selected');
+      AppUtility.log('No image selected');
       return null;
     }
 
@@ -151,7 +151,7 @@ abstract class FileUtility {
     );
 
     if (pickedImages.isEmpty) {
-      AppUtility.printLog('No image selected');
+      AppUtility.log('No image selected');
       return null;
     }
 
@@ -182,7 +182,7 @@ abstract class FileUtility {
     );
 
     if (pickedVideo == null) {
-      AppUtility.printLog('No video selected');
+      AppUtility.log('No video selected');
       return null;
     }
 
@@ -212,7 +212,7 @@ abstract class FileUtility {
     );
 
     if (pickedVideos!.files.isEmpty) {
-      AppUtility.printLog('No video selected');
+      AppUtility.log('No video selected');
       return null;
     }
 

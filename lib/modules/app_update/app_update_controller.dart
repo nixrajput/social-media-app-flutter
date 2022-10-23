@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -57,18 +55,16 @@ class AppUpdateController extends GetxController {
   }
 
   Future<void> _getPackageInfo() async {
-    AppUtility.printLog("Getting package info...");
+    AppUtility.log("Getting package info...");
     var packageInfo = await PackageInfo.fromPlatform();
     version = packageInfo.version;
     buildNumber = packageInfo.buildNumber;
-    AppUtility.printLog('version: $version');
-    AppUtility.printLog('buildNumber: $buildNumber');
+    AppUtility.log('version: $version');
+    AppUtility.log('buildNumber: $buildNumber');
   }
 
   Future<void> _checkAppUpdate(bool showLoading, bool showAlert) async {
     await _getPackageInfo();
-
-    AppUtility.printLog("Check App Update Request");
 
     _isLoading.value = true;
     update();
@@ -80,9 +76,8 @@ class AppUpdateController extends GetxController {
     try {
       final response = await _apiProvider.getLatestReleaseInfo();
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        var decodedData = response.data;
         String latestVersion = decodedData['tag_name'];
 
         if (latestVersion.contains('+')) {
@@ -131,7 +126,7 @@ class AppUpdateController extends GetxController {
           }
 
           if (_hasUpdate.value == true) {
-            AppUtility.printLog("Update found");
+            AppUtility.log("Update found");
             List<dynamic> assets = decodedData['assets'];
             var apk = assets.singleWhere(
               (element) => element['name'] == 'app-release.apk',
@@ -155,7 +150,7 @@ class AppUpdateController extends GetxController {
             if (showAlert) {
               AppUtility.showSnackBar('You have the latest version.', '');
             }
-            AppUtility.printLog("No update found");
+            AppUtility.log("No update found");
           }
         } else {
           _isLoading.value = false;
@@ -165,58 +160,22 @@ class AppUpdateController extends GetxController {
           }
           _hasUpdate.value = false;
           _apkDownloadLink.value = '';
-          AppUtility.printLog("Bad format of release version");
+          AppUtility.log("Bad format of release version", tag: 'error');
         }
-        AppUtility.printLog("Check App Update Success");
       } else {
         if (showLoading) {
           AppUtility.closeDialog();
         }
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Check App Update Error");
-        AppUtility.printLog(decodedData);
       }
-    } on SocketException {
-      if (showLoading) {
-        AppUtility.closeDialog();
-      }
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Check App Update Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      if (showLoading) {
-        AppUtility.closeDialog();
-      }
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Check App Update Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      if (showLoading) {
-        AppUtility.closeDialog();
-      }
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Check App Update Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       if (showLoading) {
         AppUtility.closeDialog();
       }
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Check App Update Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar(exc.toString(), StringValues.error);
     }
   }
 

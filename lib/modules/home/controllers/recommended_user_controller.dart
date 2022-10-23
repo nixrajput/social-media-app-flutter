@@ -20,7 +20,6 @@ class RecommendedUsersController extends GetxController {
   final _auth = AuthService.find;
   final _profile = ProfileController.find;
   final _apiProvider = ApiProvider(http.Client());
-  final _hiveService = HiveService();
 
   final _recommendedUsersData = const UserListResponse().obs;
   final _isLoading = false.obs;
@@ -51,14 +50,11 @@ class RecommendedUsersController extends GetxController {
   _getData() async {
     _isLoading.value = true;
     update();
-    var isExists = await _hiveService.isExists(boxName: 'recommendedUsers');
-
+    var isExists = await HiveService.hasLength<User>('recommendedUsers');
     if (isExists) {
-      var data = await _hiveService.getBox('recommendedUsers');
-      var cachedData = jsonDecode(data);
-      setRecommendedUsersData = UserListResponse.fromJson(cachedData);
+      var data = await HiveService.getAll<User>('recommendedUsers');
       _recommendedUsersList.clear();
-      _recommendedUsersList.addAll(_recommendedUsersData.value.results!);
+      _recommendedUsersList.addAll(data!.toList());
     }
     _isLoading.value = false;
     update();
@@ -79,7 +75,8 @@ class RecommendedUsersController extends GetxController {
         setRecommendedUsersData = UserListResponse.fromJson(decodedData);
         _recommendedUsersList.clear();
         _recommendedUsersList.addAll(_recommendedUsersData.value.results!);
-        await _hiveService.addBox('recommendedUsers', jsonEncode(decodedData));
+        await HiveService.addAll<User>(
+            'recommendedUsers', _recommendedUsersList);
         _isLoading.value = false;
         update();
         AppUtility.printLog("Get Recommended Users Success");
@@ -135,6 +132,8 @@ class RecommendedUsersController extends GetxController {
       if (response.statusCode == 200) {
         setRecommendedUsersData = UserListResponse.fromJson(decodedData);
         _recommendedUsersList.addAll(_recommendedUsersData.value.results!);
+        await HiveService.addAll<User>(
+            'recommendedUsers', _recommendedUsersList);
         _isMoreLoading.value = false;
         update();
         AppUtility.printLog("Fetching More Recommended Users Success");

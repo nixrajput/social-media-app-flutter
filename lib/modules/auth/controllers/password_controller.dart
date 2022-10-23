@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -49,11 +47,8 @@ class PasswordController extends GetxController {
       return;
     }
 
-    final body = {
-      'email': email,
-    };
+    final body = {'email': email};
 
-    AppUtility.printLog("Send Password Reset OTP Request...");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -61,9 +56,7 @@ class PasswordController extends GetxController {
     try {
       final response = await _apiProvider.forgotPassword(body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
         _clearResetPasswordTextControllers();
         AppUtility.closeDialog();
         _isLoading.value = false;
@@ -74,6 +67,7 @@ class PasswordController extends GetxController {
         );
         RouteManagement.goToResetPasswordView();
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
@@ -82,33 +76,11 @@ class PasswordController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -154,9 +126,7 @@ class PasswordController extends GetxController {
     try {
       final response = await _apiProvider.resetPassword(body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
         _clearResetPasswordTextControllers();
         AppUtility.closeDialog();
         _isLoading.value = false;
@@ -167,6 +137,7 @@ class PasswordController extends GetxController {
         );
         RouteManagement.goToLoginView();
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
@@ -175,33 +146,11 @@ class PasswordController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

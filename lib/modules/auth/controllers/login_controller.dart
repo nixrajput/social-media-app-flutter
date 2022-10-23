@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,7 +66,6 @@ class LoginController extends GetxController {
       'password': password,
     };
 
-    AppUtility.printLog("User Login Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -76,11 +73,8 @@ class LoginController extends GetxController {
     try {
       final response = await _apiProvider.login(body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog("User Login Success");
-        _auth.setLoginData = AuthResponse.fromJson(decodedData);
+      if (response.isSuccessful) {
+        _auth.setLoginData = AuthResponse.fromJson(response.data);
 
         var token = _auth.loginData.token!;
         var expiresAt = _auth.loginData.expiresAt!;
@@ -93,19 +87,21 @@ class LoginController extends GetxController {
 
         try {
           await _profile.fetchProfileDetails();
-          var fcmToken = await AppUtility.readFcmTokenFromLocalStorage();
 
           if (_auth.deviceId != null && _auth.deviceId! != 0) {
             await _auth.saveDeviceIdToServer(_auth.deviceId.toString());
           }
 
+          var fcmToken = await AppUtility.readFcmTokenFromLocalStorage();
+
           if (fcmToken.isNotEmpty) {
-            AppUtility.printLog('fcmToken: $fcmToken');
+            AppUtility.log('fcmToken: $fcmToken');
             await _auth.saveFcmToken(fcmToken);
           } else {
+            AppUtility.log('Generating FCM token');
             var messaging = FirebaseMessaging.instance;
             var token = await messaging.getToken();
-            AppUtility.printLog('fcmToken: $token');
+            AppUtility.log('fcmToken: $token');
             await AppUtility.saveFcmTokenToLocalStorage(token!);
             await _auth.saveFcmToken(token);
           }
@@ -124,84 +120,56 @@ class LoginController extends GetxController {
             StringValues.success,
           );
         } catch (e) {
-          AppUtility.printLog("Error: $e");
+          AppUtility.log("Error: $e");
           _isLoading.value = false;
           update();
           AppUtility.closeDialog();
           return;
         }
       } else {
-        AppUtility.printLog("User Login Error");
-        AppUtility.printLog(decodedData);
-
         _isLoading.value = false;
         update();
         AppUtility.closeDialog();
 
-        if (decodedData['accountStatus'] != null) {
-          _accountStatus.value = decodedData['accountStatus'];
+        if (response.data['accountStatus'] != null) {
+          _accountStatus.value = response.data['accountStatus'];
           switch (_accountStatus.value) {
             case 'unverified':
               RouteManagement.goToSendVerifyAccountOtpView();
               AppUtility.showSnackBar(
-                decodedData[StringValues.message],
+                response.data[StringValues.message],
                 StringValues.error,
               );
               break;
             case 'deactivated':
               RouteManagement.goToReactivateAccountView();
               AppUtility.showSnackBar(
-                decodedData[StringValues.message],
+                response.data[StringValues.message],
                 StringValues.error,
               );
               break;
             case 'blocked':
               AppUtility.showSnackBar(
-                decodedData[StringValues.message],
+                response.data[StringValues.message],
                 StringValues.error,
               );
               break;
             default:
-              AppUtility.printLog("Invalid Account Status");
+              AppUtility.log("Invalid Account Status", tag: 'error');
               break;
           }
         } else {
           AppUtility.showSnackBar(
-            decodedData[StringValues.message],
+            response.data[StringValues.message],
             StringValues.error,
           );
         }
       }
-    } on SocketException {
-      AppUtility.printLog("User Login Error");
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog("User Login Error");
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.printLog("User Login Error");
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtility.printLog("User Login Error");
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

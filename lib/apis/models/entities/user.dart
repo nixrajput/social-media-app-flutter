@@ -8,7 +8,7 @@ part 'user.g.dart';
 
 @CopyWith()
 @JsonSerializable()
-@HiveType(typeId: HiveTypeId.users)
+@HiveType(typeId: HiveTypeId.user)
 class User extends HiveObject {
   User({
     required this.id,

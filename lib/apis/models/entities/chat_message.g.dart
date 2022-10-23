@@ -233,6 +233,92 @@ extension $ChatMessageCopyWith on ChatMessage {
 }
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
+  @override
+  final int typeId = 11;
+
+  @override
+  ChatMessage read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return ChatMessage(
+      id: fields[0] as String?,
+      tempId: fields[1] as String?,
+      senderId: fields[2] as String?,
+      receiverId: fields[3] as String?,
+      message: fields[4] as String?,
+      mediaFile: fields[5] as PostMediaFile?,
+      replyTo: fields[6] as ChatMessage?,
+      sender: fields[7] as User?,
+      receiver: fields[8] as User?,
+      sent: fields[9] as bool?,
+      sentAt: fields[10] as DateTime?,
+      delivered: fields[11] as bool?,
+      deliveredAt: fields[12] as DateTime?,
+      seen: fields[13] as bool?,
+      seenAt: fields[14] as DateTime?,
+      createdAt: fields[15] as DateTime?,
+      updatedAt: fields[16] as DateTime?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, ChatMessage obj) {
+    writer
+      ..writeByte(17)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.tempId)
+      ..writeByte(2)
+      ..write(obj.senderId)
+      ..writeByte(3)
+      ..write(obj.receiverId)
+      ..writeByte(4)
+      ..write(obj.message)
+      ..writeByte(5)
+      ..write(obj.mediaFile)
+      ..writeByte(6)
+      ..write(obj.replyTo)
+      ..writeByte(7)
+      ..write(obj.sender)
+      ..writeByte(8)
+      ..write(obj.receiver)
+      ..writeByte(9)
+      ..write(obj.sent)
+      ..writeByte(10)
+      ..write(obj.sentAt)
+      ..writeByte(11)
+      ..write(obj.delivered)
+      ..writeByte(12)
+      ..write(obj.deliveredAt)
+      ..writeByte(13)
+      ..write(obj.seen)
+      ..writeByte(14)
+      ..write(obj.seenAt)
+      ..writeByte(15)
+      ..write(obj.createdAt)
+      ..writeByte(16)
+      ..write(obj.updatedAt);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ChatMessageAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

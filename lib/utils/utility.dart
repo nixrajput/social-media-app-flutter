@@ -352,9 +352,9 @@ abstract class AppUtility {
       });
 
       await storage.write(StringValues.loginData, data);
-      printLog(StringValues.authDetailsSaved);
+      log(StringValues.authDetailsSaved);
     } else {
-      printLog(StringValues.authDetailsNotSaved);
+      log(StringValues.authDetailsNotSaved, tag: 'error');
     }
   }
 
@@ -363,10 +363,10 @@ abstract class AppUtility {
     if (storage.hasData(StringValues.loginData)) {
       final data = await storage.read(StringValues.loginData);
       var decodedData = jsonDecode(data) as Map<String, dynamic>;
-      printLog(StringValues.authDetailsFound);
+      log(StringValues.authDetailsFound);
       return decodedData;
     }
-    printLog(StringValues.authDetailsNotFound);
+    log(StringValues.authDetailsNotFound, tag: 'error');
     return null;
   }
 
@@ -378,9 +378,9 @@ abstract class AppUtility {
       final data = jsonEncode(response);
 
       await storage.write(StringValues.profileData, data);
-      printLog(StringValues.profileDetailsSaved);
+      log(StringValues.profileDetailsSaved);
     } else {
-      printLog(StringValues.profileDetailsNotSaved);
+      log(StringValues.profileDetailsNotSaved, tag: 'error');
     }
   }
 
@@ -389,10 +389,10 @@ abstract class AppUtility {
     if (storage.hasData(StringValues.profileData)) {
       final data = await storage.read(StringValues.profileData);
       var decodedData = jsonDecode(data);
-      printLog(StringValues.profileDetailsFound);
+      log(StringValues.profileDetailsFound);
       return decodedData;
     }
-    printLog(StringValues.profileDetailsNotFound);
+    log(StringValues.profileDetailsNotFound, tag: 'error');
     return null;
   }
 
@@ -400,15 +400,15 @@ abstract class AppUtility {
     final storage = GetStorage();
     await storage.remove(StringValues.profileData);
     await deleteProfilePostDataFromLocalStorage();
-    printLog("Profile Data Deleted From Local Storage");
+    log("Profile Data Deleted From Local Storage");
   }
 
   static Future<void> clearLoginDataFromLocalStorage() async {
     final storage = GetStorage();
     await storage.remove(StringValues.loginData);
     await storage.remove(StringValues.profileData);
-    printLog(StringValues.authDetailsRemoved);
-    printLog(StringValues.profileDetailsRemoved);
+    log(StringValues.authDetailsRemoved);
+    log(StringValues.profileDetailsRemoved);
   }
 
   /// --------------------------------------------------------------------------
@@ -419,9 +419,9 @@ abstract class AppUtility {
     final storage = GetStorage();
     if (postData != null) {
       await storage.write("profilePosts", jsonEncode(postData));
-      printLog("Profile Post Data Saved To Local Storage");
+      log("Profile Post Data Saved To Local Storage");
     } else {
-      printLog("Failed To Save Profile Post Data To Local Storage");
+      log("Failed To Save Profile Post Data To Local Storage", tag: 'error');
     }
   }
 
@@ -429,17 +429,17 @@ abstract class AppUtility {
     final storage = GetStorage();
     if (storage.hasData("profilePosts")) {
       final data = await storage.read("profilePosts");
-      printLog("Profile Post Data Fetched From Local Storage");
+      log("Profile Post Data Fetched From Local Storage");
       return jsonDecode(data);
     }
-    printLog("Failed To Fetch Profile Post Data From Local Storage");
+    log("Failed To Fetch Profile Post Data From Local Storage", tag: 'error');
     return null;
   }
 
   static Future<void> deleteProfilePostDataFromLocalStorage() async {
     final storage = GetStorage();
     await storage.remove("profilePosts");
-    printLog("Profile Post Data Deleted From Local Storage");
+    log("Profile Post Data Deleted From Local Storage");
   }
 
   /// --------------------------------------------------------------------------
@@ -458,9 +458,9 @@ abstract class AppUtility {
     final storage = GetStorage();
     if (postData != null) {
       await storage.write("posts", jsonEncode(postData));
-      printLog("Post Data Saved To Local Storage");
+      log("Post Data Saved To Local Storage");
     } else {
-      printLog("Failed To Save Post Data To Local Storage");
+      log("Failed To Save Post Data To Local Storage", tag: 'error');
     }
   }
 
@@ -468,17 +468,17 @@ abstract class AppUtility {
     final storage = GetStorage();
     if (storage.hasData("posts")) {
       final data = await storage.read("posts");
-      printLog("Post Data Fetched From Local Storage");
+      log("Post Data Fetched From Local Storage");
       return jsonDecode(data);
     }
-    printLog("Failed To Fetch Post Data From Local Storage");
+    log("Failed To Fetch Post Data From Local Storage", tag: 'error');
     return null;
   }
 
   static Future<void> deletePostDataFromLocalStorage() async {
     final storage = GetStorage();
     await storage.remove("posts");
-    printLog("Post Data Deleted From Local Storage");
+    log("Post Data Deleted From Local Storage");
   }
 
   /// --------------------------------------------------------------------------
@@ -489,9 +489,9 @@ abstract class AppUtility {
     final storage = GetStorage();
     if (fcmToken.isNotEmpty) {
       await storage.write("fcmToken", base64Encode(fcmToken.codeUnits));
-      printLog("FcmToken Saved To Local Storage");
+      log("FcmToken Saved To Local Storage");
     } else {
-      printLog("Failed To Save FcmToken To Local Storage");
+      log("Failed To Save FcmToken To Local Storage", tag: 'error');
     }
   }
 
@@ -500,10 +500,10 @@ abstract class AppUtility {
     var fcmToken = "";
     if (storage.hasData("fcmToken")) {
       final data = await storage.read("fcmToken");
-      printLog("FcmToken Fetched From Local Storage");
+      log("FcmToken Fetched From Local Storage");
       fcmToken = String.fromCharCodes(base64Decode(data));
     } else {
-      printLog("Failed To Fetch FcmToken From Local Storage");
+      log("Failed To Fetch FcmToken From Local Storage", tag: 'error');
     }
     return fcmToken;
   }
@@ -511,7 +511,7 @@ abstract class AppUtility {
   static Future<void> deleteFcmTokenFromLocalStorage() async {
     final storage = GetStorage();
     await storage.remove("fcmToken");
-    printLog("FcmToken Deleted From Local Storage");
+    log("FcmToken Deleted From Local Storage");
   }
 
   /// --------------------------------------------------------------------------

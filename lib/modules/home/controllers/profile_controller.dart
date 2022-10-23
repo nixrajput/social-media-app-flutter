@@ -47,7 +47,7 @@ class ProfileController extends GetxController {
       _profileDetails.value = value;
 
   Future<bool> _loadProfileDetails() async {
-    AppUtility.printLog("Loading Profile Details From Local Storage Request");
+    AppUtility.log("Loading Profile Details From Local Storage Request");
 
     final decodedData = await AppUtility.readProfileDataFromLocalStorage();
 
@@ -61,21 +61,28 @@ class ProfileController extends GetxController {
           setPostData = PostResponse.fromJson(decodedPostData);
           _postList.clear();
           _postList.addAll(_postData.value.results!);
-          AppUtility.printLog(
-              "Loading Profile Details From Local Storage Success");
+          AppUtility.log("Loading Profile Details From Local Storage Success");
           return true;
         } catch (err) {
-          AppUtility.printLog(
-              "Loading Profile Details From Local Storage Error");
+          AppUtility.log(
+            "Loading Profile Details From Local Storage Error",
+            tag: 'error',
+          );
           AppUtility.printLog(err);
           return false;
         }
       } else {
-        AppUtility.printLog("Profile Post Data Not Found");
+        AppUtility.log("Profile Post Data Not Found", tag: 'error');
       }
     } else {
-      AppUtility.printLog("Loading Profile Details From Local Storage Error");
-      AppUtility.printLog(StringValues.profileDetailsNotFound);
+      AppUtility.log(
+        "Loading Profile Details From Local Storage Error",
+        tag: 'error',
+      );
+      AppUtility.log(
+        StringValues.profileDetailsNotFound,
+        tag: 'error',
+      );
     }
     return false;
   }
@@ -83,55 +90,30 @@ class ProfileController extends GetxController {
   Future<void> _fetchProfileDetails({bool fetchPost = true}) async {
     _isLoading = true;
     update();
-    AppUtility.printLog("Fetching Profile Details Request");
+
     try {
       final response = await _apiProvider.getProfileDetails(_auth.token);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setProfileDetailsData = ProfileResponse.fromJson(decodedData);
         await AppUtility.saveProfileDataToLocalStorage(decodedData);
         _isLoading = false;
         update();
-        AppUtility.printLog("Fetching Profile Details Success");
         if (fetchPost) await _fetchPosts();
       } else {
+        final decodedData = response.data;
         _isLoading = false;
         update();
-        AppUtility.printLog("Fetching Profile Details Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading = false;
-      update();
-      AppUtility.printLog("Fetching Profile Details Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading = false;
-      update();
-      AppUtility.printLog("Fetching Profile Details Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading = false;
-      update();
-      AppUtility.printLog("Fetching Profile Details Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e.toString());
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading = false;
       update();
-      AppUtility.printLog("Fetching Profile Details Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc.toString());
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -206,10 +188,7 @@ class ProfileController extends GetxController {
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -256,10 +235,7 @@ class ProfileController extends GetxController {
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleFollowUser(user);
-      AppUtility.printLog("Cancel Follow Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -318,14 +294,11 @@ class ProfileController extends GetxController {
     } catch (exc) {
       _isPostLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Profile Posts Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
-  Future<void> _loadMore({int? page}) async {
+  Future<void> _loadMoreProfilePosts({int? page}) async {
     AppUtility.printLog("Fetching More Profile Posts Request");
     _isMorePostLoading.value = true;
     update();
@@ -377,10 +350,7 @@ class ProfileController extends GetxController {
     } catch (exc) {
       _isMorePostLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Profile Posts Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -434,11 +404,7 @@ class ProfileController extends GetxController {
       AppUtility.printLog(e);
       AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtility.printLog("Update Profile Error");
-
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -456,7 +422,7 @@ class ProfileController extends GetxController {
   Future<void> fetchPosts() async => await _fetchPosts();
 
   Future<void> loadMore() async =>
-      await _loadMore(page: _postData.value.currentPage! + 1);
+      await _loadMoreProfilePosts(page: _postData.value.currentPage! + 1);
 
   Future<void> updateProfile(Map<String, dynamic> details) async =>
       await _updateProfile(details);

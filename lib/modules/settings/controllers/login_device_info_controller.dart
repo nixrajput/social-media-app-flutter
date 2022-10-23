@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -33,64 +31,37 @@ class LoginDeviceInfoController extends GetxController {
       _loginDeviceInfoData.value = value;
 
   Future<void> _getLoginDeviceInfo() async {
-    AppUtility.printLog("Get LoginDeviceInfo Request");
     _isLoading.value = true;
     update();
 
     try {
       final response = await _apiProvider.getDeviceInfo(_auth.token);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setLoginDeviceInfoData = DeviceInfoResponse.fromJson(decodedData);
         _loginDeviceInfoList.clear();
         _loginDeviceInfoList.addAll(_loginDeviceInfoData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Get LoginDeviceInfo Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Get LoginDeviceInfo Error");
+
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get LoginDeviceInfo Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get LoginDeviceInfo Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get LoginDeviceInfo Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Get LoginDeviceInfo Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _deleteLoginDeviceInfo(String deviceId) async {
-    AppUtility.printLog("Delete LoginDeviceInfo Request");
-
     var isPresent =
         _loginDeviceInfoList.any((element) => element.deviceId == deviceId);
 
@@ -105,10 +76,9 @@ class LoginDeviceInfoController extends GetxController {
       final response =
           await _apiProvider.deleteDeviceInfo(_auth.token, deviceId);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      final apiResponse = CommonResponse.fromJson(decodedData);
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         AppUtility.printLog("Delete LoginDeviceInfo Success");
         AppUtility.showSnackBar(
           apiResponse.message!,
@@ -116,6 +86,8 @@ class LoginDeviceInfoController extends GetxController {
           duration: 1,
         );
       } else {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         update();
         AppUtility.printLog("Delete LoginDeviceInfo Error");
         AppUtility.showSnackBar(
@@ -123,32 +95,10 @@ class LoginDeviceInfoController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      update();
-      AppUtility.printLog("Delete LoginDeviceInfo Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      //_postList.insert(postIndex, post);
-      update();
-      AppUtility.printLog("Delete LoginDeviceInfo Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      //_postList.insert(postIndex, post);
-      update();
-      AppUtility.printLog("Delete LoginDeviceInfo Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       //_postList.insert(postIndex, post);
       update();
-      AppUtility.printLog("Delete LoginDeviceInfo Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

@@ -35,6 +35,23 @@ class PostDetailsController extends GetxController {
     _postDetailsData.value = response;
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    String? postId = Get.arguments[0];
+    Post? post = Get.arguments[1];
+    if (post != null) {
+      setPostDetailsData = PostDetailsResponse(success: true, post: post);
+      update();
+    }
+
+    if (post == null && postId != null) {
+      _postId.value = postId;
+      _fetchPostDetails();
+    }
+  }
+
   Future<void> _fetchPostDetails() async {
     AppUtility.printLog("Fetch Post Details Request");
 
@@ -93,54 +110,30 @@ class PostDetailsController extends GetxController {
   }
 
   Future<void> _deletePost(String postId) async {
-    AppUtility.printLog("Post Delete Request");
-
     RouteManagement.goToBack();
 
     try {
       final response = await _apiProvider.deletePost(_auth.token, postId);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      final apiResponse = CommonResponse.fromJson(decodedData);
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog("Post Delete Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         update();
-        AppUtility.printLog("Post Delete Error");
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.error,
         );
       }
-    } on SocketException {
-      update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       update();
-      AppUtility.printLog("Post Delete Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -159,45 +152,27 @@ class PostDetailsController extends GetxController {
   }
 
   Future<void> _toggleLikePost(Post post) async {
-    AppUtility.printLog("Like/Unlike Post Request...");
-
     _toggleLike(post);
 
     try {
       final response = await _apiProvider.likeUnlikePost(_auth.token, post.id!);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      final apiResponse = CommonResponse.fromJson(decodedData);
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog(apiResponse.message!);
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
+        AppUtility.log(apiResponse.message!);
       } else {
         _toggleLike(post);
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.error,
         );
       }
-    } on SocketException {
-      _toggleLike(post);
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _toggleLike(post);
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _toggleLike(post);
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleLike(post);
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -206,21 +181,4 @@ class PostDetailsController extends GetxController {
   Future<void> toggleLikePost(Post post) async => await _toggleLikePost(post);
 
   Future<void> fetchPostDetails() async => await _fetchPostDetails();
-
-  @override
-  void onInit() {
-    super.onInit();
-
-    String? postId = Get.arguments[0];
-    Post? post = Get.arguments[1];
-    if (post != null) {
-      setPostDetailsData = PostDetailsResponse(success: true, post: post);
-      update();
-    }
-
-    if (post == null && postId != null) {
-      _postId.value = postId;
-      _fetchPostDetails();
-    }
-  }
 }

@@ -1,49 +1,90 @@
 import 'package:hive/hive.dart';
 import 'package:social_media_app/utils/utility.dart';
 
-class HiveService {
-  Future<bool> isExists({required String boxName}) async {
-    final openBox = await Hive.openBox(boxName);
-    var length = openBox.length;
-    if (length != 0) {
-      AppUtility.printLog('box [$boxName] exists');
+abstract class HiveService {
+  static Future<Box<E>> _openBox<E>(String boxName) async {
+    AppUtility.log('opening box [$boxName]');
+    if (Hive.isBoxOpen(boxName)) {
+      return Hive.box<E>(boxName);
     } else {
-      AppUtility.printLog('box [$boxName] does not exists');
+      return Hive.openBox<E>(boxName);
     }
+  }
+
+  static Future<bool> hasLength<E>(String boxName) async {
+    final openBox = await _openBox<E>(boxName);
+    var length = openBox.length;
+    AppUtility.log('box [$boxName] length: $length');
     return length != 0;
   }
 
-  Future<void> addBox<T>(
-    String boxName,
-    T items,
-  ) async {
-    AppUtility.printLog('adding box: $boxName');
-    final openBox = await Hive.openBox(boxName);
-    await openBox.put('data', items);
+  static Future<void> add<E>(String boxName, E item) async {
+    AppUtility.log('adding item [$item] to box [$boxName]');
+    final box = await _openBox<E>(boxName);
+    await box.add(item);
   }
 
-  Future<void> updateBox<T>(
-    String boxName,
-    T items,
-  ) async {
-    var boxExists = await isExists(boxName: boxName);
-    if (!boxExists) {
-      AppUtility.printLog('box: $boxName not found');
-      return;
+  static Future<void> addAll<E>(String boxName, List<E> items) async {
+    AppUtility.log('adding items [$items] to box [$boxName]');
+    final box = await _openBox<E>(boxName);
+    await box.addAll(items);
+  }
+
+  static Future<void> putAt<E>(String boxName, int index, E item) async {
+    AppUtility.log('putting item [$item] at index [$index] to box [$boxName]');
+    final box = await _openBox<E>(boxName);
+    await box.putAt(index, item);
+  }
+
+  static Future<void> put<E>(String boxName, dynamic key, E item) async {
+    AppUtility.log('putting item [$item] at key [$key] to box [$boxName]');
+    final box = await _openBox<E>(boxName);
+    await box.put(key, item);
+  }
+
+  static Future<E?> get<E>(String boxName, int key) async {
+    AppUtility.log('getting item at key [$key] from box [$boxName]');
+    final box = await _openBox<E>(boxName);
+    return box.get(key);
+  }
+
+  static Future<Map<String, dynamic>> getBox<E>(String boxName) async {
+    AppUtility.log('getting box [$boxName]');
+    final box = await _openBox<E>(boxName);
+    return box.toMap() as Map<String, dynamic>;
+  }
+
+  static Future<List<E>?> getAll<E>(String boxName) async {
+    AppUtility.log('getting all items from box [$boxName]');
+    final box = await _openBox<E>(boxName);
+    return box.toMap().values.toList();
+  }
+
+  static Future<void> deleteAt<E>(String boxName, int index) async {
+    AppUtility.log('deleting item at index [$index] from box [$boxName]');
+    final box = await _openBox<E>(boxName);
+    var values = box.toMap().values.toList();
+    if (values.length > index) {
+      await box.deleteAt(index);
     }
-    AppUtility.printLog('updating box: $boxName');
-    final openBox = await Hive.openBox(boxName);
-    await openBox.put('data', items);
   }
 
-  Future<void> clearBox<T>(String boxName) async {
-    AppUtility.printLog('deleting box: $boxName');
-    await Hive.deleteBoxFromDisk(boxName);
+  static Future<void> closeBox(String boxName) async {
+    AppUtility.log('closing box [$boxName]');
+    if (Hive.isBoxOpen(boxName)) {
+      await Hive.box(boxName).close();
+    }
   }
 
-  Future<String> getBox(String boxName) async {
-    AppUtility.printLog('reading box: $boxName');
-    final openBox = await Hive.openBox(boxName);
-    return openBox.get('data');
+  static Future<void> deleteBox(String boxName) async {
+    AppUtility.log('deleting box [$boxName]');
+    if (Hive.isBoxOpen(boxName)) {
+      await Hive.box(boxName).deleteFromDisk();
+    }
+  }
+
+  static Future<void> deleteAllBoxes() async {
+    AppUtility.log('deleting all boxes');
+    await Hive.deleteFromDisk();
   }
 }

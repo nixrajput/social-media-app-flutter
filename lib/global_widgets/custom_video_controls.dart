@@ -6,7 +6,6 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
-import 'package:social_media_app/utils/utility.dart';
 
 class CustomControlsWidget extends StatefulWidget {
   final BetterPlayerController? controller;
@@ -97,7 +96,7 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
   }
 
   void onPlayerEvent(BetterPlayerEvent evt) {
-    AppUtility.printLog('Video Player Event: ${evt.betterPlayerEventType}');
+    /// AppUtility.log('Video Player Event: ${evt.betterPlayerEventType}');
     if (evt.betterPlayerEventType == BetterPlayerEventType.initialized) {
       if (widget.controller!.videoPlayerController!.value.volume > 0) {
         setState(() {

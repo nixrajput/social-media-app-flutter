@@ -20,7 +20,6 @@ class ChatController extends GetxController {
 
   final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
-  final _hiveService = HiveService();
   final profile = ProfileController.find;
   final SocketApiProvider _socketApiProvider = SocketApiProvider();
 
@@ -174,10 +173,11 @@ class ChatController extends GetxController {
     AppUtility.log('Online Users: ${_onlineUsers.length}');
   }
 
-  void _addMessageListener(ChatMessage encryptedMessage) {
+  void _addMessageListener(ChatMessage encryptedMessage) async {
     if (!_checkIfSameMessageInAllMessages(encryptedMessage)) {
       _allMessages.add(encryptedMessage);
       update();
+      // await HiveService.add<ChatMessage>('allMessages', encryptedMessage);
     } else {
       var tempIndex = _allMessages.indexWhere(
         (element) =>
@@ -205,6 +205,7 @@ class ChatController extends GetxController {
       var index = _checkIfAlreadyPresentInLastMessages(encryptedMessage);
       if (index < 0) {
         _lastMessageList.add(encryptedMessage);
+        //await HiveService.add<ChatMessage>('lastMessages', encryptedMessage);
       } else {
         var oldMessage = _lastMessageList.elementAt(index);
         var isAfter =
@@ -212,6 +213,7 @@ class ChatController extends GetxController {
         if (isAfter) {
           _lastMessageList.remove(oldMessage);
           _lastMessageList.add(encryptedMessage);
+          // await HiveService.add<ChatMessage>('lastMessages', encryptedMessage);
         }
       }
       update();
@@ -393,18 +395,14 @@ class ChatController extends GetxController {
   }
 
   _getLastMessages() async {
-    var isExists = await _hiveService.isExists(boxName: 'lastMessage');
+    var isExists = await HiveService.hasLength<ChatMessage>('lastMessages');
 
     if (isExists) {
-      // await _hiveService.clearBox('lastMessage');
-
-      // var data = await _hiveService.getBox('lastMessage');
-      // var cachedData = jsonDecode(data);
-      // setLastMessageData = ChatMessageListResponse.fromJson(cachedData);
-      // _lastMessageList.clear();
-      // _lastMessageList.addAll(_lastMessageData.value.results!);
-      // _allMessages.clear();
-      // _allMessages.addAll(_lastMessageData.value.results!);
+      var data = await HiveService.getAll<ChatMessage>('lastMessages');
+      _lastMessageList.clear();
+      _lastMessageList.addAll(data!.toList());
+      _allMessages.clear();
+      _allMessages.addAll(data.toList());
     }
     update();
 
@@ -427,7 +425,7 @@ class ChatController extends GetxController {
         _lastMessageList.addAll(_lastMessageData.value.results!);
         _allMessages.clear();
         _allMessages.addAll(_lastMessageData.value.results!);
-        await _hiveService.addBox('lastMessage', jsonEncode(decodedData));
+        await HiveService.addAll<ChatMessage>('lastMessages', _lastMessageList);
         _isLoading.value = false;
         update();
       } else {

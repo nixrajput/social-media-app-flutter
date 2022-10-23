@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +19,6 @@ class PostController extends GetxController {
 
   final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
-  final _hiveService = HiveService();
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
@@ -46,17 +43,18 @@ class PostController extends GetxController {
   }
 
   _getData() async {
+    _isLoading.value = true;
+    update();
+    var isExists = await HiveService.hasLength<Post>('posts');
+    if (isExists) {
+      var data = await HiveService.getAll<Post>('posts');
+      _postList.clear();
+      _postList.addAll(data!.toList());
+    }
+    _isLoading.value = false;
+    update();
     await SocketApiProvider().init(_auth.token);
     await ChatController.find.initialize();
-    var isExists = await _hiveService.isExists(boxName: 'posts');
-    if (isExists) {
-      var data = await _hiveService.getBox('posts');
-      var cachedData = jsonDecode(data);
-      setPostData = PostResponse.fromJson(cachedData);
-      _postList.clear();
-      _postList.addAll(_postData.value.results!);
-    }
-    update();
     await _fetchPosts();
     await Future.delayed(const Duration(seconds: 5), () async {
       await LoginDeviceInfoController.find.getLoginDeviceInfo();
@@ -64,25 +62,22 @@ class PostController extends GetxController {
   }
 
   Future<void> _fetchPosts({int? page}) async {
-    AppUtility.log("Fetching Posts Request");
     _isLoading.value = true;
     update();
 
     try {
       final response = await _apiProvider.getPosts(_auth.token, page: page);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
-        AppUtility.log("Fetching Posts Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
-        await _hiveService.addBox('posts', jsonEncode(decodedData));
+        await HiveService.addAll<Post>('posts', _postList);
         _isLoading.value = false;
         update();
       } else {
-        AppUtility.log("Fetching Posts Error: ${decodedData['message']}",
-            tag: 'error');
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
@@ -90,53 +85,29 @@ class PostController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.log("Fetching Posts Error");
-      AppUtility.log(StringValues.internetConnError, tag: 'error');
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.log("Fetching Posts Error");
-      AppUtility.log(StringValues.connTimedOut, tag: 'error');
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.log("Fetching Posts Error");
-      AppUtility.log(StringValues.formatExcError, tag: 'error');
-      AppUtility.log(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.log("Fetching Posts Error $exc", tag: 'error');
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.log("Fetching More Posts Request");
     _isMoreLoading.value = true;
     update();
 
     try {
       final response = await _apiProvider.getPosts(_auth.token, page: page);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
-        AppUtility.log("Fetching More Posts Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostData = PostResponse.fromJson(decodedData);
         _postList.addAll(_postData.value.results!);
+        await HiveService.addAll<Post>('posts', _postList);
         _isMoreLoading.value = false;
         update();
       } else {
-        AppUtility.log("Fetching More Posts Error: ${decodedData['message']}",
-            tag: 'error');
-
+        final decodedData = response.data;
         _isMoreLoading.value = false;
         update();
 
@@ -145,37 +116,14 @@ class PostController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.log("Fetching More Posts Error");
-      AppUtility.log(StringValues.internetConnError, tag: 'error');
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.log("Fetching More Posts Error");
-      AppUtility.log(StringValues.connTimedOut, tag: 'error');
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.log("Fetching More Posts Error");
-      AppUtility.log('Format Exception Error: $e', tag: 'error');
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.log("Fetching More Posts Error");
-      AppUtility.log('Error: $exc', tag: 'error');
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _deletePost(String postId) async {
-    AppUtility.log("Post Delete Request");
-
     if (postId.isEmpty) return;
 
     var postIndex = _postList.indexWhere((element) => element.id == postId);
@@ -188,49 +136,27 @@ class PostController extends GetxController {
     try {
       final response = await _apiProvider.deletePost(_auth.token, postId);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      final apiResponse = CommonResponse.fromJson(decodedData);
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.success,
         );
-        AppUtility.log("Post Delete Success");
       } else {
         _postList.insert(postIndex, post);
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         update();
-        AppUtility.log("Post Delete Error");
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.error,
         );
       }
-    } on SocketException {
-      _postList.insert(postIndex, post);
-      update();
-      AppUtility.log("Post Delete Error");
-      AppUtility.log(StringValues.internetConnError, tag: 'error');
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _postList.insert(postIndex, post);
-      update();
-      AppUtility.log("Post Delete Error");
-      AppUtility.log(StringValues.connTimedOut, tag: 'error');
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _postList.insert(postIndex, post);
-      update();
-      AppUtility.log("Post Delete Error");
-      AppUtility.log('Format Exception Error: $e', tag: 'error');
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _postList.insert(postIndex, post);
       update();
-      AppUtility.log("Post Delete Error");
-      AppUtility.log('Error: $exc', tag: 'error');
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -249,42 +175,27 @@ class PostController extends GetxController {
   }
 
   Future<void> _toggleLikePost(Post post) async {
-    AppUtility.log("Like/Unlike Post Request");
-
     _toggleLike(post);
 
     try {
       final response = await _apiProvider.likeUnlikePost(_auth.token, post.id!);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      final apiResponse = CommonResponse.fromJson(decodedData);
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         AppUtility.log(apiResponse.message!);
       } else {
         _toggleLike(post);
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.error,
         );
       }
-    } on SocketException {
-      _toggleLike(post);
-      AppUtility.log(StringValues.internetConnError, tag: 'error');
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _toggleLike(post);
-      AppUtility.log(StringValues.connTimedOut, tag: 'error');
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _toggleLike(post);
-      AppUtility.log('Format Exception Error: $e', tag: 'error');
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleLike(post);
-      AppUtility.log('Error: $exc', tag: 'error');
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

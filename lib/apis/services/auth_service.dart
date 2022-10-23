@@ -48,6 +48,18 @@ class AuthService extends GetxService {
 
   set setDeviceId(int value) => _deviceId = value;
 
+  void _checkForInternetConnectivity() {
+    _streamSubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      if (result != ConnectivityResult.none) {
+        AppUtility.closeDialog();
+      } else {
+        AppUtility.showNoInternetDialog();
+      }
+    });
+  }
+
   @override
   void onInit() {
     AppUtility.log("AuthService Initializing");
@@ -81,17 +93,12 @@ class AuthService extends GetxService {
     try {
       final response = await _apiProvider.checkServerHealth();
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      AppUtility.log(decodedData);
-      if (response.statusCode == 200) {
-        AppUtility.log('Check Server Health Success');
-        serverHealth = decodedData['server'];
+      if (response.isSuccessful) {
+        serverHealth = response.data['server'];
       } else {
-        AppUtility.log('Check Server Health Error');
-        serverHealth = decodedData['server'];
+        serverHealth = response.data['server'];
       }
     } catch (exc) {
-      AppUtility.log('Check Server Health Error');
       AppUtility.log('Error: $exc', tag: 'error');
     }
 
@@ -103,16 +110,16 @@ class AuthService extends GetxService {
     try {
       final response = await _apiProvider.validateToken(token);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-      AppUtility.log(decodedData);
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        var data = response.data;
         isValid = true;
-        AppUtility.log(decodedData[StringValues.message]);
+        AppUtility.log(data[StringValues.message]);
       } else {
-        AppUtility.log(decodedData[StringValues.message], tag: 'error');
+        var data = response.data;
+        AppUtility.log(data[StringValues.message], tag: 'error');
       }
     } catch (exc) {
-      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
     }
 
     return isValid;
@@ -300,25 +307,14 @@ class AuthService extends GetxService {
     try {
       final response = await _apiProvider.getLocationInfo();
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         locationInfo = LocationInfo.fromJson(decodedData);
       } else {
+        final decodedData = response.data;
         AppUtility.printLog(decodedData[StringValues.message]);
       }
-    } on SocketException {
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.log("Save DeviceId Error");
-      AppUtility.log('Format Exception: $e', tag: 'error');
     } catch (exc) {
-      AppUtility.printLog("Save DeviceId Error");
       AppUtility.log('Error: $exc', tag: 'error');
     }
 
@@ -337,34 +333,17 @@ class AuthService extends GetxService {
       'lastActive': DateTime.now().toIso8601String(),
     };
 
-    AppUtility.printLog("Save LoginInfo Request");
-
     try {
       final response = await _apiProvider.saveDeviceInfo(_token, body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog(decodedData[StringValues.message]);
-        AppUtility.printLog("Save LoginInfo Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        AppUtility.log(decodedData[StringValues.message]);
       } else {
-        AppUtility.printLog(decodedData[StringValues.message]);
-        AppUtility.printLog("Save LoginInfo Error");
+        final decodedData = response.data;
+        AppUtility.log(decodedData[StringValues.message], tag: 'error');
       }
-    } on SocketException {
-      AppUtility.printLog("Save LoginInfo Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog("Save LoginInfo Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.log("Save LoginInfo Error");
-      AppUtility.log('Format Exception: $e', tag: 'error');
     } catch (exc) {
-      AppUtility.printLog("Save LoginInfo Error");
       AppUtility.log('Error: $exc', tag: 'error');
     }
   }
@@ -379,18 +358,6 @@ class AuthService extends GetxService {
         await AppUtility.clearLoginDataFromLocalStorage();
       }
     }
-  }
-
-  void _checkForInternetConnectivity() {
-    _streamSubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) async {
-      if (result != ConnectivityResult.none) {
-        AppUtility.closeDialog();
-      } else {
-        AppUtility.showNoInternetDialog();
-      }
-    });
   }
 
   Future<void> logout() async => await _logout();

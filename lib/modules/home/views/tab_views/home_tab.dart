@@ -143,12 +143,13 @@ class HomeTabView extends StatelessWidget {
   Widget _buildBody() {
     return GetBuilder<PostController>(
       builder: (logic) {
-        if (logic.isLoading && logic.postData == null ||
-            logic.postList.isEmpty) {
+        if ((logic.postData == null || logic.postList.isEmpty) &&
+            logic.isLoading) {
           return const SliverFillRemaining(
             child: Center(child: NxCircularProgressIndicator()),
           );
-        } else if (logic.postData == null || logic.postList.isEmpty) {
+        } else if ((logic.postData == null || logic.postList.isEmpty) &&
+            !logic.isLoading) {
           return SliverFillRemaining(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -174,8 +175,8 @@ class HomeTabView extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                if (logic.isLoading &&
-                    (logic.postData != null || logic.postList.isNotEmpty))
+                if ((logic.postData != null || logic.postList.isNotEmpty) &&
+                    logic.isLoading)
                   Column(
                     children: [
                       Dimens.boxHeight8,
@@ -199,7 +200,9 @@ class HomeTabView extends StatelessWidget {
                 if (logic.isMoreLoading) Dimens.boxHeight8,
                 if (logic.isMoreLoading)
                   const Center(child: NxCircularProgressIndicator()),
-                if (!logic.isMoreLoading && logic.postData!.hasNextPage!)
+                if (!logic.isMoreLoading &&
+                    logic.postData!.results != null &&
+                    logic.postData!.hasNextPage!)
                   Center(
                     child: NxTextButton(
                       label: 'Load more posts',

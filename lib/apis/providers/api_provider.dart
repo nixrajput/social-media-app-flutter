@@ -1,8 +1,22 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/urls.dart';
+import 'package:social_media_app/helpers/exceptions.dart';
+import 'package:social_media_app/utils/utility.dart';
+
+class ResponseData {
+  ResponseData({
+    required this.data,
+    required this.isSuccessful,
+  });
+
+  dynamic data;
+  bool isSuccessful;
+}
 
 class ApiProvider {
   ApiProvider(this._client, {this.baseUrl}) {
@@ -13,12 +27,135 @@ class ApiProvider {
 
   String? baseUrl;
 
+  Future<dynamic> _catchAsyncApiError({
+    String? baseUrl,
+    required String endPoint,
+    required String method,
+    required String feature,
+    Map<String, dynamic>? body,
+    Map<String, String>? headers,
+    Map<String, dynamic>? queryParams,
+  }) async {
+    AppUtility.log('$feature Request');
+
+    var url = Uri.parse((baseUrl ?? this.baseUrl!) + endPoint);
+
+    if (queryParams != null) {
+      url = url.replace(queryParameters: queryParams);
+    }
+
+    AppUtility.log('URL: $url');
+
+    var headersWithContentType = {
+      "content-type": "application/json",
+    };
+
+    if (headers != null) {
+      headersWithContentType.addAll(headers);
+    }
+
+    try {
+      switch (method) {
+        case "GET":
+          var response = await _client.get(
+            url,
+            headers: headersWithContentType,
+          );
+
+          var decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            AppUtility.log('$feature Request Success');
+            return ResponseData(data: decodedData, isSuccessful: true);
+          } else {
+            AppUtility.log('$feature Request Error', tag: 'error');
+            AppUtility.log(
+                'Error: ${response.statusCode} ${response.reasonPhrase} ${response.body}');
+            return ResponseData(data: decodedData, isSuccessful: false);
+          }
+
+        case "POST":
+          var response = await _client.post(
+            url,
+            body: jsonEncode(body),
+            headers: headersWithContentType,
+          );
+
+          var decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            AppUtility.log('$feature Request Success');
+            return ResponseData(data: decodedData, isSuccessful: true);
+          } else {
+            AppUtility.log('$feature Request Error', tag: 'error');
+            AppUtility.log(
+                'Error: ${response.statusCode} ${response.reasonPhrase} ${response.body}');
+            return ResponseData(data: decodedData, isSuccessful: false);
+          }
+
+        case "PUT":
+          var response = await _client.put(
+            url,
+            body: jsonEncode(body),
+            headers: headersWithContentType,
+          );
+
+          var decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            AppUtility.log('$feature Request Success');
+            return ResponseData(data: decodedData, isSuccessful: true);
+          } else {
+            AppUtility.log('$feature Request Error', tag: 'error');
+            AppUtility.log(
+                'Error: ${response.statusCode} ${response.reasonPhrase} ${response.body}');
+            return ResponseData(data: decodedData, isSuccessful: false);
+          }
+
+        case "DELETE":
+          var response = await _client.delete(
+            url,
+            headers: headersWithContentType,
+          );
+
+          var decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            AppUtility.log('$feature Request Success');
+            return ResponseData(data: decodedData, isSuccessful: true);
+          } else {
+            AppUtility.log('$feature Request Error', tag: 'error');
+            AppUtility.log(
+                'Error: ${response.statusCode} ${response.reasonPhrase} $decodedData');
+            return ResponseData(data: decodedData, isSuccessful: false);
+          }
+      }
+    } on SocketException {
+      AppUtility.log('$feature Request Error', tag: 'error');
+      AppUtility.log('Error: No Internet Connection', tag: 'error');
+      throw AppException('No Internet Connection');
+    } on TimeoutException {
+      AppUtility.log('$feature Request Error', tag: 'error');
+      AppUtility.log('Error: Request Timeout', tag: 'error');
+      throw AppException('Request Timeout');
+    } on FormatException catch (e) {
+      AppUtility.log('$feature Request Error', tag: 'error');
+      AppUtility.log('Format Exception: $e', tag: 'error');
+      throw AppException('Format Exception: $e');
+    } catch (exc) {
+      AppUtility.log('$feature Request Error', tag: 'error');
+      AppUtility.log('Error: $exc', tag: 'error');
+      throw AppException(exc.toString());
+    }
+  }
+
   /// Server -------------------------------------------------------------------
 
-  Future<http.Response> checkServerHealth() async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl!}${AppUrls.serverHealthEndpoint}'),
-      headers: {"content-type": "application/json"},
+  Future<ResponseData> checkServerHealth() async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.serverHealthEndpoint,
+      method: 'GET',
+      feature: 'Server Health',
     );
 
     return response;
@@ -26,112 +163,147 @@ class ApiProvider {
 
   /// Auth ---------------------------------------------------------------------
 
-  Future<http.Response> login(Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.loginEndpoint),
-      headers: {
-        "content-type": "application/json",
-      },
-      body: jsonEncode(body),
+  Future<ResponseData> validateToken(String token) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.validateTokenEndpoint,
+      method: 'GET',
+      feature: 'Validate Token',
+      headers: {'authorization': 'Bearer $token'},
+      queryParams: {'token': token},
     );
 
     return response;
   }
 
-  Future<http.Response> register(Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.registerEndpoint),
-      headers: {
-        "content-type": "application/json",
-      },
-      body: jsonEncode(body),
+  Future<ResponseData> login(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.loginEndpoint,
+      method: 'POST',
+      feature: 'Login',
+      body: body,
     );
 
     return response;
   }
 
-  Future<http.Response> forgotPassword(Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.forgotPasswordEndpoint),
-      headers: {
-        "content-type": "application/json",
-      },
-      body: jsonEncode(body),
+  Future<ResponseData> register(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.registerEndpoint,
+      method: 'POST',
+      feature: 'Register',
+      body: body,
     );
 
     return response;
   }
 
-  Future<http.Response> resetPassword(Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.resetPasswordEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-      },
-      body: jsonEncode(body),
+  Future<ResponseData> forgotPassword(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.forgotPasswordEndpoint,
+      method: 'POST',
+      feature: 'Forgot Password',
+      body: body,
     );
 
     return response;
   }
 
-  Future<http.Response> sendVerifyAccountOtp(Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.verifyAccountEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-      },
-      body: jsonEncode(body),
+  Future<ResponseData> resetPassword(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.resetPasswordEndpoint,
+      method: 'POST',
+      feature: 'Reset Password',
+      body: body,
     );
 
     return response;
   }
 
-  Future<http.Response> verifyAccount(Map<String, dynamic> body) async {
-    final response = await _client.put(
-      Uri.parse('${baseUrl!}${AppUrls.verifyAccountEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-      },
-      body: jsonEncode(body),
+  Future<ResponseData> sendVerifyAccountOtp(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.verifyAccountEndpoint,
+      method: 'POST',
+      feature: 'Send Verify Account OTP',
+      body: body,
     );
 
     return response;
   }
 
-  Future<http.Response> validateToken(String token) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl!}${AppUrls.validateTokenEndpoint}?token=$token'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> verifyAccount(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.verifyAccountEndpoint,
+      method: 'PUT',
+      feature: 'Verify Account',
+      body: body,
     );
 
     return response;
   }
 
-  /// Location Info ------------------------------------------------------------
+  /// --------------------------------------------------------------------------
 
-  Future<http.Response> getLocationInfo() async {
-    final response = await _client.get(
-      Uri.parse(AppUrls.locationUrl),
-      headers: {
-        "content-type": "application/json",
-      },
+  /// Location & Device Info ---------------------------------------------------
+
+  Future<ResponseData> getLocationInfo() async {
+    final response = await _catchAsyncApiError(
+      baseUrl: AppUrls.locationUrl,
+      endPoint: '',
+      method: 'GET',
+      feature: 'Location Info',
     );
 
     return response;
   }
+
+  Future<ResponseData> saveDeviceInfo(
+    String token,
+    Map<String, dynamic> body,
+  ) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.saveLoginInfoEndpoint,
+      method: 'POST',
+      feature: 'Save Device Info',
+      body: body,
+      headers: {"authorization": "Bearer $token"},
+    );
+
+    return response;
+  }
+
+  Future<ResponseData> getDeviceInfo(String token) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getLoginInfoEndpoint,
+      method: 'GET',
+      feature: 'Get Login Info',
+      headers: {"authorization": "Bearer $token"},
+    );
+
+    return response;
+  }
+
+  Future<ResponseData> deleteDeviceInfo(String token, String deviceId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.deleteDeviceInfoEndpoint,
+      method: 'DELETE',
+      feature: 'Delete Device Info',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'deviceId': deviceId},
+    );
+
+    return response;
+  }
+
+  /// --------------------------------------------------------------------------
 
   /// User ---------------------------------------------------------------------
 
-  Future<http.Response> getProfileDetails(String token) async {
-    final response = await _client.get(
-      Uri.parse(baseUrl! + AppUrls.profileDetailsEndpoint),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> getProfileDetails(String token) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.profileDetailsEndpoint,
+      method: 'GET',
+      feature: 'Get Profile Details',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
@@ -394,14 +566,23 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getPosts(String token, {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.getPostsEndpoint}?page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> getPosts(String token, {int? page, int? limit}) async {
+    var queryParameters = <String, dynamic>{};
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getPostsEndpoint,
+      method: 'GET',
+      feature: 'Get Posts',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
@@ -421,27 +602,13 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getTrendingPosts(String token,
-      {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.getTrendingPostsEndpoint}?page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-    );
-
-    return response;
-  }
-
-  Future<http.Response> likeUnlikePost(String token, String postId) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl!}${AppUrls.likePostEndpoint}?id=$postId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> likeUnlikePost(String token, String postId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.likePostEndpoint,
+      method: 'GET',
+      feature: 'Like/Unlike Post',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'id': postId},
     );
 
     return response;
@@ -459,9 +626,25 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> deletePost(String token, String postId) async {
-    final response = await _client.delete(
-      Uri.parse('${baseUrl!}${AppUrls.postEndpoint}?id=$postId'),
+  Future<ResponseData> deletePost(String token, String postId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.postEndpoint,
+      method: 'DELETE',
+      feature: 'Delete Post',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'id': postId},
+    );
+
+    return response;
+  }
+
+  /// Misc ---------------------------------------------------------------------
+
+  Future<http.Response> getTrendingPosts(String token,
+      {int? page, int? limit}) async {
+    final response = await _client.get(
+      Uri.parse(
+          '${baseUrl! + AppUrls.getTrendingPostsEndpoint}?page=$page&limit=$limit'),
       headers: {
         "content-type": "application/json",
         "authorization": "Bearer $token",
@@ -470,8 +653,6 @@ class ApiProvider {
 
     return response;
   }
-
-  /// Misc ---------------------------------------------------------------------
 
   Future<http.Response> getRecommendedUsers(String token,
       {int? page, int? limit}) async {
@@ -831,46 +1012,7 @@ class ApiProvider {
     return response;
   }
 
-  /// Device Info --------------------------------------------------------------
-
-  Future<http.Response> saveDeviceInfo(
-      String token, Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.saveLoginInfoEndpoint),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
-    );
-
-    return response;
-  }
-
-  Future<http.Response> getDeviceInfo(String token) async {
-    final response = await _client.get(
-      Uri.parse(baseUrl! + AppUrls.getLoginInfoEndpoint),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-    );
-
-    return response;
-  }
-
-  Future<http.Response> deleteDeviceInfo(String token, String deviceId) async {
-    final response = await _client.delete(
-      Uri.parse(
-          '${baseUrl! + AppUrls.deleteDeviceInfoEndpoint}?deviceId=$deviceId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-    );
-
-    return response;
-  }
+  /// --------------------------------------------------------------------------
 
   /// Chat ---------------------------------------------------------------------
 
@@ -904,11 +1046,13 @@ class ApiProvider {
 
   /// App Update ---------------------------------------------------------------
 
-  Future<http.Response> getLatestReleaseInfo() async {
-    final response = await _client.get(
-      Uri.parse(AppUrls.githubApiUrl + AppUrls.checkAppUpdateEndpoint),
+  Future<ResponseData> getLatestReleaseInfo() async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.checkAppUpdateEndpoint,
+      method: 'GET',
+      feature: 'App Update',
+      baseUrl: AppUrls.githubApiUrl,
       headers: {
-        "content-type": "application/json",
         "authorization": "Bearer ${AppSecrets.githubToken}",
       },
     );

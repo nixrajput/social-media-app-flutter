@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -113,7 +111,6 @@ class RegisterController extends GetxController {
       'confirmPassword': confPassword,
     };
 
-    AppUtility.printLog("User Registration Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -121,14 +118,11 @@ class RegisterController extends GetxController {
     try {
       final response = await _apiProvider.register(body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 201) {
+      if (response.isSuccessful) {
         _clearRegisterTextControllers();
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("User Registration Success");
         AppUtility.showSnackBar(
           StringValues.registrationSuccessful,
           StringValues.success,
@@ -136,46 +130,20 @@ class RegisterController extends GetxController {
         RouteManagement.goToBack();
         RouteManagement.goToSendVerifyAccountOtpView();
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("User Registration Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("User Registration Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("User Registration Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("User Registration Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog("User Registration Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

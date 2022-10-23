@@ -9,7 +9,7 @@ part 'post.g.dart';
 
 @CopyWith()
 @JsonSerializable()
-@HiveType(typeId: HiveTypeId.posts)
+@HiveType(typeId: HiveTypeId.post)
 class Post extends HiveObject {
   Post({
     this.id,

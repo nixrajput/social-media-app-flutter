@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/post_media_file.dart';
@@ -39,11 +40,26 @@ Future<void> initPreAppServices() async {
   await GetStorage.init();
   await Hive.initFlutter();
 
+  AppUtility.log('Registering Hive Adapters');
+
   Hive.registerAdapter(PostAdapter());
   Hive.registerAdapter(MediaFileAdapter());
   Hive.registerAdapter(PostMediaFileAdapter());
   Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(ChatMessageAdapter());
   Hive.registerAdapter(PostResponseAdapter());
+
+  AppUtility.log('Opening Hive Boxes');
+
+  await Hive.openBox<Post>('posts');
+  await Hive.openBox<Post>('trendingPosts');
+  await Hive.openBox<User>('recommendedUsers');
+  await Hive.openBox('auth');
+  await Hive.openBox<ChatMessage>('lastMessages');
+  await Hive.openBox<ChatMessage>('allMessages');
+
+  // AppUtility.log('Deleting Hive Boxes');
+  // await HiveService.deleteAllBoxes();
 
   await initializeFirebaseService();
 
@@ -90,7 +106,7 @@ Future<void> checkAuthData() async {
     }
     isLogin
         ? AppUtility.log("User is logged in")
-        : AppUtility.log("User is not logged in", tag: 'warning');
+        : AppUtility.log("User is not logged in", tag: 'error');
   });
 }
 
