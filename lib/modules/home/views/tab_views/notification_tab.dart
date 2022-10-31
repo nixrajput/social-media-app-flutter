@@ -4,6 +4,7 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/date_extensions.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
@@ -91,7 +92,37 @@ class NotificationTabView extends StatelessWidget {
                   itemCount: logic.notificationList.length,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (ctx, index) {
-                    var item = logic.notificationList.elementAt(index);
+                    var item = logic.notificationList[index];
+                    var isSameDate = true;
+
+                    final date = item.createdAt;
+
+                    if (index == 0) {
+                      isSameDate = false;
+                    } else {
+                      final previousDate =
+                          logic.notificationList[index - 1].createdAt;
+                      isSameDate = date.isSameDate(previousDate);
+                    }
+
+                    if (index == 0 || !isSameDate) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Dimens.boxHeight8,
+                          Text(date.formatDate()),
+                          Dimens.boxHeight8,
+                          NotificationWidget(
+                            notification: item,
+                            totalLength: logic.notificationList.length,
+                            index: index,
+                          ),
+                        ],
+                      );
+                    }
+
                     return NotificationWidget(
                       notification: item,
                       totalLength: logic.notificationList.length,
@@ -99,11 +130,14 @@ class NotificationTabView extends StatelessWidget {
                     );
                   },
                 ),
-                if (logic.isMoreLoading || logic.notificationData!.hasNextPage!)
+                if (logic.isMoreLoading ||
+                    (logic.notificationData!.results != null &&
+                        logic.notificationData!.hasNextPage!))
                   Dimens.boxHeight8,
                 if (logic.isMoreLoading)
                   const Center(child: CircularProgressIndicator()),
                 if (!logic.isMoreLoading &&
+                    logic.notificationData!.results != null &&
                     logic.notificationData!.hasNextPage!)
                   Center(
                     child: NxTextButton(

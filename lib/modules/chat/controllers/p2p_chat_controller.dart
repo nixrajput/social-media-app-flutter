@@ -504,16 +504,14 @@ class P2PChatController extends GetxController {
   // }
 
   Future<void> _fetchMessagesById() async {
-    AppUtility.log("Fetching Messages Request");
     _isLoading.value = true;
     update();
 
     try {
       final response = await _apiProvider.getMessagesById(_auth.token, userId!);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
-        AppUtility.log("Fetching Messages Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setMessageData = ChatMessageListResponse.fromJson(decodedData);
 
         for (var element in messageData!.results!) {
@@ -523,55 +521,31 @@ class P2PChatController extends GetxController {
         _isLoading.value = false;
         update();
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.log("Fetching Messages Error");
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.formatExcError);
-      AppUtility.log(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.errorOccurred);
-      AppUtility.log(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.log("Fetching More Last Messages Request");
     _isMoreLoading.value = true;
     update();
 
     try {
       final response =
           await _apiProvider.getMessagesById(_auth.token, userId!, page: page);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setMessageData = ChatMessageListResponse.fromJson(decodedData);
 
         for (var element in messageData!.results!) {
@@ -580,43 +554,19 @@ class P2PChatController extends GetxController {
 
         _isMoreLoading.value = false;
         update();
-        AppUtility.log("Fetching More Messages Success");
       } else {
+        final decodedData = response.data;
         _isMoreLoading.value = false;
         update();
-        AppUtility.log("Fetching Last Messages Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.formatExcError);
-      AppUtility.log(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      _isMoreLoading.value = false;
+      _isLoading.value = false;
       update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.errorOccurred);
-      AppUtility.log(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

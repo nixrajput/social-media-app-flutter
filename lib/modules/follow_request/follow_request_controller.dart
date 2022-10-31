@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -39,63 +37,36 @@ class FollowRequestController extends GetxController {
       _followRequestData.value = value;
 
   Future<void> _fetchFollowRequests() async {
-    AppUtility.printLog("Fetching FollowRequest Request");
     _isLoadingFollowRequest.value = true;
     update();
 
     try {
       final response = await _apiProvider.getFollowRequests(_auth.token);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setFollowRequestData = FollowRequestResponse.fromJson(decodedData);
         _followRequestList.clear();
         _followRequestList.addAll(_followRequestData.value.results!);
         _isLoadingFollowRequest.value = false;
         update();
-        AppUtility.printLog("Fetching FollowRequest Success");
       } else {
+        final decodedData = response.data;
         _isLoadingFollowRequest.value = false;
         update();
-        AppUtility.printLog("Fetching FollowRequest Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoadingFollowRequest.value = false;
-      update();
-      AppUtility.printLog("Fetching FollowRequest Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoadingFollowRequest.value = false;
-      update();
-      AppUtility.printLog("Fetching FollowRequest Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoadingFollowRequest.value = false;
-      update();
-      AppUtility.printLog("Fetching FollowRequest Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoadingFollowRequest.value = false;
       update();
-      AppUtility.printLog("Fetching FollowRequest Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMoreFollowRequests({int? page}) async {
-    AppUtility.printLog("Fetching More FollowRequest Request");
     _isMoreLoadingFollowRequest.value = true;
     update();
 
@@ -103,56 +74,29 @@ class FollowRequestController extends GetxController {
       final response =
           await _apiProvider.getFollowRequests(_auth.token, page: page);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setFollowRequestData = FollowRequestResponse.fromJson(decodedData);
         _followRequestList.addAll(_followRequestData.value.results!);
         _isMoreLoadingFollowRequest.value = false;
         update();
-        AppUtility.printLog("Fetching More FollowRequest Success");
       } else {
+        final decodedData = response.data;
         _isMoreLoadingFollowRequest.value = false;
         update();
-        AppUtility.printLog("Fetching More FollowRequest Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoadingFollowRequest.value = false;
-      update();
-      AppUtility.printLog("Fetching More FollowRequest Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoadingFollowRequest.value = false;
-      update();
-      AppUtility.printLog("Fetching More FollowRequest Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoadingFollowRequest.value = false;
-      update();
-      AppUtility.printLog("Fetching More FollowRequest Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoadingFollowRequest.value = false;
       update();
-      AppUtility.printLog("Fetching More FollowRequest Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _acceptFollowRequest(String followRequestId) async {
-    AppUtility.printLog("Accept FollowRequest Request");
-
     var isPresent =
         _followRequestList.any((element) => element.id == followRequestId);
 
@@ -169,47 +113,26 @@ class FollowRequestController extends GetxController {
         followRequestId,
       );
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
         );
         await profile.fetchProfileDetails(fetchPost: false);
-        AppUtility.printLog("Accept FollowRequest Success");
       } else {
-        AppUtility.printLog("Accept FollowRequest Error");
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.printLog("Accept FollowRequest Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog("Accept FollowRequest Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.printLog("Accept FollowRequest Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtility.printLog("Accept FollowRequest Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _removeFollowRequest(String followRequestId) async {
-    AppUtility.printLog("Accept FollowRequest Request");
-
     var isPresent =
         _followRequestList.any((element) => element.id == followRequestId);
 
@@ -226,41 +149,22 @@ class FollowRequestController extends GetxController {
         followRequestId,
       );
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog(decodedData);
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
+          duration: 2,
         );
-        AppUtility.printLog("Accept FollowRequest Success");
       } else {
-        AppUtility.printLog("Accept FollowRequest Error");
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.printLog("Accept FollowRequest Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog("Accept FollowRequest Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.printLog("Accept FollowRequest Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtility.printLog("Accept FollowRequest Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

@@ -204,9 +204,11 @@ class P2PChatView extends StatelessWidget {
       child: Container(
         padding: Dimens.edgeInsets8,
         decoration: const BoxDecoration(
-            color: ColorValues.primaryColor, shape: BoxShape.circle),
+          color: ColorValues.primaryLightColor,
+          shape: BoxShape.circle,
+        ),
         child: NxIconButton(
-          icon: Icons.arrow_downward,
+          icon: Icons.keyboard_double_arrow_down,
           iconSize: Dimens.twentyFour,
           iconColor: ColorValues.whiteColor,
           onTap: logic.scrollToLast,

@@ -6,32 +6,32 @@ part of 'notification.dart';
 // CopyWithGenerator
 // **************************************************************************
 
-abstract class _$ApiNotificationCWProxy {
-  ApiNotification body(String body);
+abstract class _$NotificationModelCWProxy {
+  NotificationModel body(String body);
 
-  ApiNotification createdAt(DateTime createdAt);
+  NotificationModel createdAt(DateTime createdAt);
 
-  ApiNotification from(User from);
+  NotificationModel from(User from);
 
-  ApiNotification id(String id);
+  NotificationModel id(String id);
 
-  ApiNotification isRead(bool isRead);
+  NotificationModel isRead(bool isRead);
 
-  ApiNotification refId(String? refId);
+  NotificationModel refId(String? refId);
 
-  ApiNotification to(User to);
+  NotificationModel to(User to);
 
-  ApiNotification type(String type);
+  NotificationModel type(String type);
 
-  ApiNotification updatedAt(DateTime updatedAt);
+  NotificationModel updatedAt(DateTime updatedAt);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `ApiNotification(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `NotificationModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// ApiNotification(...).copyWith(id: 12, name: "My name")
+  /// NotificationModel(...).copyWith(id: 12, name: "My name")
   /// ````
-  ApiNotification call({
+  NotificationModel call({
     String? body,
     DateTime? createdAt,
     User? from,
@@ -44,48 +44,48 @@ abstract class _$ApiNotificationCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfApiNotification.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfApiNotification.copyWith.fieldName(...)`
-class _$ApiNotificationCWProxyImpl implements _$ApiNotificationCWProxy {
-  final ApiNotification _value;
+/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfNotificationModel.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfNotificationModel.copyWith.fieldName(...)`
+class _$NotificationModelCWProxyImpl implements _$NotificationModelCWProxy {
+  final NotificationModel _value;
 
-  const _$ApiNotificationCWProxyImpl(this._value);
-
-  @override
-  ApiNotification body(String body) => this(body: body);
+  const _$NotificationModelCWProxyImpl(this._value);
 
   @override
-  ApiNotification createdAt(DateTime createdAt) => this(createdAt: createdAt);
+  NotificationModel body(String body) => this(body: body);
 
   @override
-  ApiNotification from(User from) => this(from: from);
+  NotificationModel createdAt(DateTime createdAt) => this(createdAt: createdAt);
 
   @override
-  ApiNotification id(String id) => this(id: id);
+  NotificationModel from(User from) => this(from: from);
 
   @override
-  ApiNotification isRead(bool isRead) => this(isRead: isRead);
+  NotificationModel id(String id) => this(id: id);
 
   @override
-  ApiNotification refId(String? refId) => this(refId: refId);
+  NotificationModel isRead(bool isRead) => this(isRead: isRead);
 
   @override
-  ApiNotification to(User to) => this(to: to);
+  NotificationModel refId(String? refId) => this(refId: refId);
 
   @override
-  ApiNotification type(String type) => this(type: type);
+  NotificationModel to(User to) => this(to: to);
 
   @override
-  ApiNotification updatedAt(DateTime updatedAt) => this(updatedAt: updatedAt);
+  NotificationModel type(String type) => this(type: type);
+
+  @override
+  NotificationModel updatedAt(DateTime updatedAt) => this(updatedAt: updatedAt);
 
   @override
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `ApiNotification(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `NotificationModel(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// ApiNotification(...).copyWith(id: 12, name: "My name")
+  /// NotificationModel(...).copyWith(id: 12, name: "My name")
   /// ````
-  ApiNotification call({
+  NotificationModel call({
     Object? body = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
     Object? from = const $CopyWithPlaceholder(),
@@ -96,7 +96,7 @@ class _$ApiNotificationCWProxyImpl implements _$ApiNotificationCWProxy {
     Object? type = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
-    return ApiNotification(
+    return NotificationModel(
       body: body == const $CopyWithPlaceholder() || body == null
           ? _value.body
           // ignore: cast_nullable_to_non_nullable
@@ -137,18 +137,81 @@ class _$ApiNotificationCWProxyImpl implements _$ApiNotificationCWProxy {
   }
 }
 
-extension $ApiNotificationCopyWith on ApiNotification {
-  /// Returns a callable class that can be used as follows: `instanceOfApiNotification.copyWith(...)` or like so:`instanceOfApiNotification.copyWith.fieldName(...)`.
+extension $NotificationModelCopyWith on NotificationModel {
+  /// Returns a callable class that can be used as follows: `instanceOfNotificationModel.copyWith(...)` or like so:`instanceOfNotificationModel.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
-  _$ApiNotificationCWProxy get copyWith => _$ApiNotificationCWProxyImpl(this);
+  _$NotificationModelCWProxy get copyWith =>
+      _$NotificationModelCWProxyImpl(this);
+}
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class NotificationModelAdapter extends TypeAdapter<NotificationModel> {
+  @override
+  final int typeId = 12;
+
+  @override
+  NotificationModel read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return NotificationModel(
+      id: fields[0] as String,
+      to: fields[1] as User,
+      from: fields[2] as User,
+      body: fields[3] as String,
+      refId: fields[4] as String?,
+      type: fields[5] as String,
+      isRead: fields[6] as bool,
+      createdAt: fields[7] as DateTime,
+      updatedAt: fields[8] as DateTime,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, NotificationModel obj) {
+    writer
+      ..writeByte(9)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.to)
+      ..writeByte(2)
+      ..write(obj.from)
+      ..writeByte(3)
+      ..write(obj.body)
+      ..writeByte(4)
+      ..write(obj.refId)
+      ..writeByte(5)
+      ..write(obj.type)
+      ..writeByte(6)
+      ..write(obj.isRead)
+      ..writeByte(7)
+      ..write(obj.createdAt)
+      ..writeByte(8)
+      ..write(obj.updatedAt);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is NotificationModelAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ApiNotification _$ApiNotificationFromJson(Map<String, dynamic> json) =>
-    ApiNotification(
+NotificationModel _$NotificationModelFromJson(Map<String, dynamic> json) =>
+    NotificationModel(
       id: json['_id'] as String,
       to: User.fromJson(json['to'] as Map<String, dynamic>),
       from: User.fromJson(json['from'] as Map<String, dynamic>),
@@ -160,7 +223,7 @@ ApiNotification _$ApiNotificationFromJson(Map<String, dynamic> json) =>
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
-Map<String, dynamic> _$ApiNotificationToJson(ApiNotification instance) =>
+Map<String, dynamic> _$NotificationModelToJson(NotificationModel instance) =>
     <String, dynamic>{
       '_id': instance.id,
       'to': instance.to,

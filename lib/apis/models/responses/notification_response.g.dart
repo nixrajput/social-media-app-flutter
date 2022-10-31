@@ -18,7 +18,7 @@ NotificationResponse _$NotificationResponseFromJson(
       hasNextPage: json['hasNextPage'] as bool?,
       nextPage: json['nextPage'] as String?,
       results: (json['results'] as List<dynamic>?)
-          ?.map((e) => ApiNotification.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => NotificationModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

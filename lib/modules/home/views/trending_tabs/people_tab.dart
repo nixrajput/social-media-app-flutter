@@ -138,11 +138,15 @@ class PeopleTab extends StatelessWidget {
             );
           },
         ),
-        if (logic.isMoreLoading || logic.recommendedUsersData!.hasNextPage!)
+        if (logic.isMoreLoading ||
+            (logic.recommendedUsersData!.results != null &&
+                logic.recommendedUsersData!.hasNextPage!))
           Dimens.boxHeight8,
         if (logic.isMoreLoading)
           const Center(child: NxCircularProgressIndicator()),
-        if (!logic.isMoreLoading && logic.recommendedUsersData!.hasNextPage!)
+        if (!logic.isMoreLoading &&
+            logic.recommendedUsersData!.results != null &&
+            logic.recommendedUsersData!.hasNextPage!)
           Center(
             child: NxTextButton(
               label: 'Load more people',

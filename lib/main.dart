@@ -7,6 +7,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
+import 'package:social_media_app/apis/models/entities/notification.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
@@ -48,6 +49,7 @@ Future<void> initPreAppServices() async {
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(ChatMessageAdapter());
   Hive.registerAdapter(PostResponseAdapter());
+  Hive.registerAdapter(NotificationModelAdapter());
 
   AppUtility.log('Opening Hive Boxes');
 
@@ -57,6 +59,7 @@ Future<void> initPreAppServices() async {
   await Hive.openBox('auth');
   await Hive.openBox<ChatMessage>('lastMessages');
   await Hive.openBox<ChatMessage>('allMessages');
+  await Hive.openBox<NotificationModel>('notifications');
 
   // AppUtility.log('Deleting Hive Boxes');
   // await HiveService.deleteAllBoxes();

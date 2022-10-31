@@ -3,7 +3,7 @@ import 'package:social_media_app/utils/utility.dart';
 
 abstract class HiveService {
   static Future<Box<E>> _openBox<E>(String boxName) async {
-    AppUtility.log('opening box [$boxName]');
+    // AppUtility.log('opening box [$boxName]');
     if (Hive.isBoxOpen(boxName)) {
       return Hive.box<E>(boxName);
     } else {
@@ -31,18 +31,18 @@ abstract class HiveService {
   }
 
   static Future<void> putAt<E>(String boxName, int index, E item) async {
-    AppUtility.log('putting item [$item] at index [$index] to box [$boxName]');
+    // AppUtility.log('putting item [$item] at index [$index] to box [$boxName]');
     final box = await _openBox<E>(boxName);
     await box.putAt(index, item);
   }
 
   static Future<void> put<E>(String boxName, dynamic key, E item) async {
-    AppUtility.log('putting item [$item] at key [$key] to box [$boxName]');
+    // AppUtility.log('putting item [$item] at key [$key] to box [$boxName]');
     final box = await _openBox<E>(boxName);
     await box.put(key, item);
   }
 
-  static Future<E?> get<E>(String boxName, int key) async {
+  static Future<E?> get<E>(String boxName, dynamic key) async {
     AppUtility.log('getting item at key [$key] from box [$boxName]');
     final box = await _openBox<E>(boxName);
     return box.get(key);
@@ -57,13 +57,22 @@ abstract class HiveService {
   static Future<List<E>?> getAll<E>(String boxName) async {
     AppUtility.log('getting all items from box [$boxName]');
     final box = await _openBox<E>(boxName);
-    return box.toMap().values.toList();
+    return box.values.toList();
+  }
+
+  static Future<void> delete<E>(String boxName, dynamic key) async {
+    AppUtility.log('deleting item at key [$key] from box [$boxName]');
+    final box = await _openBox<E>(boxName);
+    var values = box.values.toList();
+    if (values.isEmpty) return;
+    await box.delete(key);
+    AppUtility.log('item with key [$key] deleted from [$boxName]');
   }
 
   static Future<void> deleteAt<E>(String boxName, int index) async {
     AppUtility.log('deleting item at index [$index] from box [$boxName]');
     final box = await _openBox<E>(boxName);
-    var values = box.toMap().values.toList();
+    var values = box.values.toList();
     if (values.length > index) {
       await box.deleteAt(index);
     }
@@ -76,10 +85,11 @@ abstract class HiveService {
     }
   }
 
-  static Future<void> deleteBox(String boxName) async {
+  static Future<void> deleteBox<E>(String boxName) async {
     AppUtility.log('deleting box [$boxName]');
     if (Hive.isBoxOpen(boxName)) {
-      await Hive.box(boxName).deleteFromDisk();
+      await Hive.box<E>(boxName).deleteFromDisk();
+      AppUtility.log('box [$boxName] deleted');
     }
   }
 

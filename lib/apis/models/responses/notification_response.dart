@@ -48,7 +48,7 @@ class NotificationResponse extends Equatable {
   final String? nextPage;
 
   @JsonKey(name: 'results')
-  final List<ApiNotification>? results;
+  final List<NotificationModel>? results;
 
   @override
   List<Object?> get props => <Object?>[

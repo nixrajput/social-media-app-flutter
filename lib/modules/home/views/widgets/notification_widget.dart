@@ -20,7 +20,7 @@ class NotificationWidget extends StatelessWidget {
       required this.index})
       : super(key: key);
 
-  final ApiNotification notification;
+  final NotificationModel notification;
   final int totalLength;
   final int index;
 

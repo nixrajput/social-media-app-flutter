@@ -127,7 +127,9 @@ class TrendingPostsTab extends StatelessWidget {
         if (logic.isMoreLoading) Dimens.boxHeight8,
         if (logic.isMoreLoading)
           const Center(child: NxCircularProgressIndicator()),
-        if (!logic.isMoreLoading && logic.postData!.hasNextPage!)
+        if (!logic.isMoreLoading &&
+            logic.postData!.results != null &&
+            logic.postData!.hasNextPage!)
           Center(
             child: NxTextButton(
               label: 'Load more posts',

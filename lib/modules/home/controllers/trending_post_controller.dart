@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -58,115 +56,77 @@ class TrendingPostController extends GetxController {
     await _fetchTrendingPosts();
   }
 
-  Future<void> _fetchTrendingPosts({int? page}) async {
+  Future<void> _fetchTrendingPosts() async {
     _isLoading.value = true;
     update();
 
     try {
-      final response =
-          await _apiProvider.getTrendingPosts(_auth.token, page: page);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
+      final response = await _apiProvider.getTrendingPosts(_auth.token);
 
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
-        await HiveService.addAll<Post>('trendingPosts', _postList);
+        for (var item in _postData.value.results!) {
+          await HiveService.put<Post>(
+            'trendingPosts',
+            item.id,
+            item,
+          );
+        }
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Fetching Trending Posts Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Fetching Trending Posts Error");
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Trending Posts Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Trending Posts Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Trending Posts Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Trending Posts Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.printLog("Fetching More Trending Posts Request");
     _isMoreLoading.value = true;
     update();
 
     try {
       final response =
           await _apiProvider.getTrendingPosts(_auth.token, page: page);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostData = PostResponse.fromJson(decodedData);
         _postList.addAll(_postData.value.results!);
-        await HiveService.addAll<Post>('trendingPosts', _postList);
+        for (var item in _postData.value.results!) {
+          await HiveService.put<Post>(
+            'trendingPosts',
+            item.id,
+            item,
+          );
+        }
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Trending Posts Success");
       } else {
+        final decodedData = response.data;
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Trending Posts Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Trending Posts Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Trending Posts Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Trending Posts Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      _isMoreLoading.value = false;
+      _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Trending Posts Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -186,6 +146,7 @@ class TrendingPostController extends GetxController {
       if (response.isSuccessful) {
         final decodedData = response.data;
         final apiResponse = CommonResponse.fromJson(decodedData);
+        await HiveService.delete<Post>('trendingPosts', postId);
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.success,
@@ -252,58 +213,32 @@ class TrendingPostController extends GetxController {
       return;
     }
 
-    AppUtility.printLog("Search Users Request");
     _isLoading.value = true;
     update();
 
     try {
       final response = await _apiProvider.searchPosts(_auth.token, searchText);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Search Posts Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Search Posts Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Posts Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Posts Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Posts Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Search Posts Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

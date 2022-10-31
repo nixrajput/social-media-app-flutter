@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -62,117 +60,76 @@ class RecommendedUsersController extends GetxController {
   }
 
   Future<void> _getUsers() async {
-    AppUtility.printLog("Get Recommended Users Request");
     _isLoading.value = true;
     update();
 
     try {
       final response = await _apiProvider.getRecommendedUsers(_auth.token);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setRecommendedUsersData = UserListResponse.fromJson(decodedData);
         _recommendedUsersList.clear();
         _recommendedUsersList.addAll(_recommendedUsersData.value.results!);
-        await HiveService.addAll<User>(
-            'recommendedUsers', _recommendedUsersList);
+        for (var item in _recommendedUsersData.value.results!) {
+          await HiveService.put<User>(
+            'recommendedUsers',
+            item.id,
+            item,
+          );
+        }
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Get Recommended Users Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Get Recommended Users Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get Recommended Users Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get Recommended Users Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get Recommended Users Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Get Recommended Users Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.printLog("Fetching More Recommended Users Request");
     _isMoreLoading.value = true;
     update();
 
     try {
       final response =
           await _apiProvider.getRecommendedUsers(_auth.token, page: page);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setRecommendedUsersData = UserListResponse.fromJson(decodedData);
         _recommendedUsersList.addAll(_recommendedUsersData.value.results!);
-        await HiveService.addAll<User>(
-            'recommendedUsers', _recommendedUsersList);
+        for (var item in _recommendedUsersData.value.results!) {
+          await HiveService.put<User>(
+            'recommendedUsers',
+            item.id,
+            item,
+          );
+        }
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Recommended Users Success");
       } else {
+        final decodedData = response.data;
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Recommended Users Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Recommended Users Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Recommended Users Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Recommended Users Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      _isMoreLoading.value = false;
+      _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Recommended Users Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -182,58 +139,32 @@ class RecommendedUsersController extends GetxController {
       return;
     }
 
-    AppUtility.printLog("Search Users Request");
     _isLoading.value = true;
     update();
 
     try {
       final response = await _apiProvider.searchUser(_auth.token, searchText);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setRecommendedUsersData = UserListResponse.fromJson(decodedData);
         _recommendedUsersList.clear();
         _recommendedUsersList.addAll(_recommendedUsersData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Search Users Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Search Users Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Users Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Users Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Users Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Search Users Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -270,104 +201,61 @@ class RecommendedUsersController extends GetxController {
   }
 
   Future<void> _followUnfollowUser(User user) async {
-    AppUtility.printLog("Follow/Unfollow User Request");
     _toggleFollowUser(user);
 
     try {
       final response =
           await _apiProvider.followUnfollowUser(_auth.token, user.id);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         await _profile.fetchProfileDetails(fetchPost: false);
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
           duration: 2,
         );
-        AppUtility.printLog("Follow/Unfollow User Success");
       } else {
+        final decodedData = response.data;
         _toggleFollowUser(user);
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Follow/Unfollow User Error");
       }
-    } on SocketException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      _isLoading.value = false;
+      update();
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _cancelFollowRequest(User user) async {
-    AppUtility.printLog("Cancel Follow Request");
     _toggleFollowUser(user);
 
     try {
       final response =
           await _apiProvider.cancelFollowRequest(_auth.token, user.id);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
+          duration: 2,
         );
-        AppUtility.printLog("Cancel FollowRequest Success");
       } else {
+        final decodedData = response.data;
         _toggleFollowUser(user);
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Cancel FollowRequest Error");
       }
-    } on SocketException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Cancel FollowRequest Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Cancel FollowRequest Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Cancel FollowRequest Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Cancel FollowRequest Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      _isLoading.value = false;
+      update();
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

@@ -9,4 +9,5 @@ abstract class HiveTypeId {
   static const secretKey = 9;
   static const serverKey = 10;
   static const chatMessage = 11;
+  static const notification = 12;
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -410,116 +409,79 @@ class ChatController extends GetxController {
   }
 
   Future<void> _fetchLastMessages() async {
-    AppUtility.log("Fetching Last Messages Request");
     _isLoading.value = true;
     update();
 
     try {
       final response = await _apiProvider.getAllLastMessages(_auth.token);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
-        AppUtility.log("Fetching Last Messages Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setLastMessageData = ChatMessageListResponse.fromJson(decodedData);
         _lastMessageList.clear();
         _lastMessageList.addAll(_lastMessageData.value.results!);
         _allMessages.clear();
         _allMessages.addAll(_lastMessageData.value.results!);
-        await HiveService.addAll<ChatMessage>('lastMessages', _lastMessageList);
+        for (var item in _lastMessageList) {
+          await HiveService.put<ChatMessage>(
+            'lastMessages',
+            item.id ?? item.tempId,
+            item,
+          );
+        }
         _isLoading.value = false;
         update();
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.log("Fetching Last Messages Error");
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.formatExcError);
-      AppUtility.log(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.log("Fetching Last Messages Error");
-      AppUtility.log(StringValues.errorOccurred);
-      AppUtility.log(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.log("Fetching More Last Messages Request");
     _isMoreLoading.value = true;
     update();
 
     try {
       final response =
           await _apiProvider.getAllLastMessages(_auth.token, page: page);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setLastMessageData = ChatMessageListResponse.fromJson(decodedData);
         _lastMessageList.addAll(_lastMessageData.value.results!);
         _allMessages.addAll(_lastMessageData.value.results!);
+        for (var item in _lastMessageData.value.results!) {
+          await HiveService.put<ChatMessage>(
+            'lastMessages',
+            item.id ?? item.tempId,
+            item,
+          );
+        }
         _isMoreLoading.value = false;
         update();
-        AppUtility.log("Fetching More Last Messages Success");
       } else {
+        final decodedData = response.data;
         _isMoreLoading.value = false;
         update();
-        AppUtility.log("Fetching More Last Messages Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.log("Fetching More Last Messages Error");
-      AppUtility.log(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.log("Fetching More Last Messages Error");
-      AppUtility.log(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.log("Fetching More Last Messages Error");
-      AppUtility.log(StringValues.formatExcError);
-      AppUtility.log(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      _isMoreLoading.value = false;
+      _isLoading.value = false;
       update();
-      AppUtility.log("Fetching More Last Messages Error");
-      AppUtility.log(StringValues.errorOccurred);
-      AppUtility.log(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

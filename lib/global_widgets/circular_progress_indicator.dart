@@ -19,10 +19,10 @@ class NxCircularProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: size ?? Dimens.fourty,
-      height: size ?? Dimens.fourty,
+      width: size ?? Dimens.sixTeen,
+      height: size ?? Dimens.sixTeen,
       child: CircularProgressIndicator(
-        strokeWidth: strokeWidth ?? Dimens.two,
+        strokeWidth: strokeWidth ?? Dimens.three,
         color: color ?? ColorValues.primaryColor,
         value: value,
       ),

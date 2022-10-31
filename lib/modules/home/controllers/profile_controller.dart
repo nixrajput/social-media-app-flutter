@@ -145,47 +145,28 @@ class ProfileController extends GetxController {
   }
 
   Future<void> _followUnfollowUser(User user) async {
-    AppUtility.printLog("Follow/Unfollow User Request");
     _toggleFollowUser(user);
 
     try {
       final response =
           await _apiProvider.followUnfollowUser(_auth.token, user.id);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         await _fetchProfileDetails(fetchPost: false);
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
+          duration: 2,
         );
-        AppUtility.printLog("Follow/Unfollow User Success");
       } else {
+        final decodedData = response.data;
         _toggleFollowUser(user);
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Follow/Unfollow User Error");
       }
-    } on SocketException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleFollowUser(user);
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
@@ -193,46 +174,26 @@ class ProfileController extends GetxController {
   }
 
   Future<void> _cancelFollowRequest(User user) async {
-    AppUtility.printLog("Cancel Follow Request");
     _toggleFollowUser(user);
 
     try {
       final response =
           await _apiProvider.cancelFollowRequest(_auth.token, user.id);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
         );
-        AppUtility.printLog("Cancel Follow Success");
       } else {
+        final decodedData = response.data;
         _toggleFollowUser(user);
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Cancel Follow Error");
       }
-    } on SocketException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Cancel Follow Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Cancel Follow Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Cancel Follow Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleFollowUser(user);
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);

@@ -73,7 +73,13 @@ class PostController extends GetxController {
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
-        await HiveService.addAll<Post>('posts', _postList);
+        for (var item in _postData.value.results!) {
+          await HiveService.put<Post>(
+            'posts',
+            item.id,
+            item,
+          );
+        }
         _isLoading.value = false;
         update();
       } else {
@@ -103,7 +109,13 @@ class PostController extends GetxController {
         final decodedData = response.data;
         setPostData = PostResponse.fromJson(decodedData);
         _postList.addAll(_postData.value.results!);
-        await HiveService.addAll<Post>('posts', _postList);
+        for (var item in _postData.value.results!) {
+          await HiveService.put<Post>(
+            'posts',
+            item.id,
+            item,
+          );
+        }
         _isMoreLoading.value = false;
         update();
       } else {
@@ -139,6 +151,7 @@ class PostController extends GetxController {
       if (response.isSuccessful) {
         final decodedData = response.data;
         final apiResponse = CommonResponse.fromJson(decodedData);
+        await HiveService.delete<Post>('posts', postId);
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.success,

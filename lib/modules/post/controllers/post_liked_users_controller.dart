@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -75,33 +74,10 @@ class PostLikedUsersController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch Post Liked Users Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch Post Liked Users Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch Post Liked Users Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetch Post Liked Users Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -139,33 +115,10 @@ class PostLikedUsersController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch More Post Liked Users Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch More Post Liked Users Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch More Post Liked Users Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetch More Post Liked Users Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -202,105 +155,60 @@ class PostLikedUsersController extends GetxController {
   }
 
   Future<void> _followUnfollowUser(User user) async {
-    AppUtility.printLog("Follow/Unfollow User Request");
     _toggleFollowUser(user);
 
     try {
       final response =
           await _apiProvider.followUnfollowUser(_auth.token, user.id);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         await _profile.fetchProfileDetails(fetchPost: false);
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
           duration: 2,
         );
-        AppUtility.printLog("Follow/Unfollow User Success");
       } else {
+        final decodedData = response.data;
         _toggleFollowUser(user);
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
           duration: 2,
         );
-        AppUtility.printLog("Follow/Unfollow User Error");
       }
-    } on SocketException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleFollowUser(user);
-      AppUtility.printLog("Follow/Unfollow User Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _cancelFollowRequest(User user) async {
-    AppUtility.printLog("Cancel Follow Request");
     _toggleFollowUser(user);
 
     try {
       final response =
           await _apiProvider.cancelFollowRequest(_auth.token, user.id);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
+          duration: 2,
         );
-        AppUtility.printLog("Cancel FollowRequest Success");
       } else {
+        final decodedData = response.data;
         _toggleFollowUser(user);
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Cancel FollowRequest Error");
       }
-    } on SocketException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Cancel FollowRequest Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Cancel FollowRequest Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _toggleFollowUser(user);
-      AppUtility.printLog("Cancel FollowRequest Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _toggleFollowUser(user);
-      AppUtility.printLog("Cancel FollowRequest Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

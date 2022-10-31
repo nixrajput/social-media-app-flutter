@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +11,7 @@ import 'package:social_media_app/modules/follow_request/follow_request_controlle
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class NotificationController extends GetxController {
@@ -25,7 +24,7 @@ class NotificationController extends GetxController {
   final _isLoadingNotification = false.obs;
   final _isMoreLoadingNotification = false.obs;
   final _notificationData = const NotificationResponse().obs;
-  final List<ApiNotification> _notificationList = [];
+  final List<NotificationModel> _notificationList = [];
 
   /// Getters
   bool get isLoading => _isLoadingNotification.value;
@@ -34,7 +33,7 @@ class NotificationController extends GetxController {
 
   NotificationResponse? get notificationData => _notificationData.value;
 
-  List<ApiNotification> get notificationList => _notificationList;
+  List<NotificationModel> get notificationList => _notificationList;
 
   /// Setters
   set setNotificationData(NotificationResponse value) =>
@@ -47,6 +46,13 @@ class NotificationController extends GetxController {
   }
 
   void _getData() async {
+    var isExists =
+        await HiveService.hasLength<NotificationModel>('notifications');
+    if (isExists) {
+      var data = await HiveService.getAll<NotificationModel>('posts');
+      _notificationList.clear();
+      _notificationList.addAll(data!.toList());
+    }
     await Future.delayed(const Duration(seconds: 1), () async {
       await _fetchNotifications();
       await FollowRequestController.find.fetchFollowRequests();
@@ -54,63 +60,43 @@ class NotificationController extends GetxController {
   }
 
   Future<void> _fetchNotifications() async {
-    AppUtility.printLog("Fetching Notifications Request");
     _isLoadingNotification.value = true;
     update();
 
     try {
       final response = await _apiProvider.getNotifications(_auth.token);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setNotificationData = NotificationResponse.fromJson(decodedData);
         _notificationList.clear();
         _notificationList.addAll(_notificationData.value.results!);
+        for (var item in _notificationData.value.results!) {
+          await HiveService.put<NotificationModel>(
+            'notifications',
+            item.id,
+            item,
+          );
+        }
         _isLoadingNotification.value = false;
         update();
-        AppUtility.printLog("Fetching Notifications Success");
       } else {
+        final decodedData = response.data;
         _isLoadingNotification.value = false;
         update();
-        AppUtility.printLog("Fetching Notifications Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoadingNotification.value = false;
-      update();
-      AppUtility.printLog("Fetching Notifications Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoadingNotification.value = false;
-      update();
-      AppUtility.printLog("Fetching Notifications Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoadingNotification.value = false;
-      update();
-      AppUtility.printLog("Fetching Notifications Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoadingNotification.value = false;
       update();
-      AppUtility.printLog("Fetching Notifications Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.printLog("Fetching More Notifications Request");
     _isMoreLoadingNotification.value = true;
     update();
 
@@ -118,56 +104,36 @@ class NotificationController extends GetxController {
       final response =
           await _apiProvider.getNotifications(_auth.token, page: page);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setNotificationData = NotificationResponse.fromJson(decodedData);
         _notificationList.addAll(_notificationData.value.results!);
+        for (var item in _notificationData.value.results!) {
+          await HiveService.put<NotificationModel>(
+            'notifications',
+            item.id,
+            item,
+          );
+        }
         _isMoreLoadingNotification.value = false;
         update();
-        AppUtility.printLog("Fetching More Notifications Success");
       } else {
+        final decodedData = response.data;
         _isMoreLoadingNotification.value = false;
         update();
-        AppUtility.printLog("Fetching More Notifications Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoadingNotification.value = false;
-      update();
-      AppUtility.printLog("Fetching More Notifications Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoadingNotification.value = false;
-      update();
-      AppUtility.printLog("Fetching More Notifications Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoadingNotification.value = false;
-      update();
-      AppUtility.printLog("Fetching More Notifications Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoadingNotification.value = false;
       update();
-      AppUtility.printLog("Fetching More Notifications Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _markNotificationRead(String id) async {
-    AppUtility.printLog("Mark Notification Request");
-
     var isPresent = _notificationList.any((element) => element.id == id);
 
     if (isPresent == true) {
@@ -178,37 +144,19 @@ class NotificationController extends GetxController {
     try {
       final response = await _apiProvider.markNotificationRead(_auth.token, id);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog(decodedData);
-        AppUtility.printLog("Mark Notification Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        AppUtility.log(decodedData);
       } else {
-        AppUtility.printLog("Mark Notification Error");
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.printLog("Mark Notification Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog("Mark Notification Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.printLog("Mark Notification Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtility.printLog("Mark Notification Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      update();
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -226,8 +174,6 @@ class NotificationController extends GetxController {
   }
 
   Future<void> _deleteNotification(String id) async {
-    AppUtility.printLog("Delete Notification Request");
-
     var isPresent = _notificationList.any((element) => element.id == id);
 
     if (isPresent == true) {
@@ -238,37 +184,23 @@ class NotificationController extends GetxController {
     try {
       final response = await _apiProvider.deleteNotification(_auth.token, id);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog(decodedData);
-        AppUtility.printLog("Delete Notification Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+          duration: 2,
+        );
       } else {
-        AppUtility.printLog("Delete Notification Error");
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.printLog("Delete Notification Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog("Delete Notification Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.printLog("Delete Notification Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtility.printLog("Delete Notification Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      update();
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

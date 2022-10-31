@@ -640,95 +640,136 @@ class ApiProvider {
 
   /// Misc ---------------------------------------------------------------------
 
-  Future<http.Response> getTrendingPosts(String token,
+  Future<ResponseData> getTrendingPosts(String token,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.getTrendingPostsEndpoint}?page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getTrendingPostsEndpoint,
+      method: 'GET',
+      feature: 'Get Trending Posts',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> getRecommendedUsers(String token,
+  Future<ResponseData> getRecommendedUsers(String token,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.getRecommendUsersEndpoint}?page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getRecommendUsersEndpoint,
+      method: 'GET',
+      feature: 'Get Recommended Users',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> followUnfollowUser(String token, String userId) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl! + AppUrls.followUserEndpoint}?id=$userId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> followUnfollowUser(String token, String userId) async {
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = userId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.followUserEndpoint,
+      method: 'GET',
+      feature: 'Follow/Unfollow User',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> cancelFollowRequest(String token, String userId) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl! + AppUrls.cancelFollowRequestEndpoint}?id=$userId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> cancelFollowRequest(String token, String userId) async {
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = userId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.cancelFollowRequestEndpoint,
+      method: 'GET',
+      feature: 'Cancel Follow Request',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> getFollowRequests(String token,
+  Future<ResponseData> getFollowRequests(String token,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.getFollowRequests}?page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getFollowRequests,
+      method: 'GET',
+      feature: 'Get Follow Requests',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> acceptFollowRequest(
+  Future<ResponseData> acceptFollowRequest(
       String token, String followRequestId) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.acceptFollowRequestEndpoint}?id=$followRequestId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = followRequestId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.acceptFollowRequestEndpoint,
+      method: 'GET',
+      feature: 'Accept Follow Request',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> removeFollowRequest(
+  Future<ResponseData> removeFollowRequest(
       String token, String followRequestId) async {
-    final response = await _client.delete(
-      Uri.parse(
-          '${baseUrl! + AppUrls.removeFollowRequestEndpoint}?id=$followRequestId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = followRequestId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.removeFollowRequestEndpoint,
+      method: 'DELETE',
+      feature: 'Remove Follow Request',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
@@ -857,29 +898,51 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> searchUser(String token, String text,
+  Future<ResponseData> searchUser(String token, String text,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.searchUserEndpoint}?q=$text&page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['q'] = text;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.searchUserEndpoint,
+      method: 'GET',
+      feature: 'Search User',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> searchPosts(String token, String text,
+  Future<ResponseData> searchPosts(String token, String text,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.searchPostsEndpoint}?q=$text&page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['q'] = text;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.searchPostsEndpoint,
+      method: 'GET',
+      feature: 'Search Posts',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
@@ -974,39 +1037,54 @@ class ApiProvider {
 
   /// Notification -------------------------------------------------------------
 
-  Future<http.Response> getNotifications(String token,
+  Future<ResponseData> getNotifications(String token,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl!}${AppUrls.getNotificationsEndpoint}?page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getNotificationsEndpoint,
+      method: 'GET',
+      feature: 'Get Notifications',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> markNotificationRead(String token, String id) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl!}${AppUrls.markNotificationsReadEndpoint}?id=$id'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> markNotificationRead(String token, String id) async {
+    var queryParameters = <String, dynamic>{};
+    queryParameters['id'] = id;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.markNotificationsReadEndpoint,
+      method: 'GET',
+      feature: 'Mark Notification Read',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> deleteNotification(String token, String id) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl!}${AppUrls.deleteNotificationsEndpoint}?id=$id'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> deleteNotification(String token, String id) async {
+    var queryParameters = <String, dynamic>{};
+    queryParameters['id'] = id;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.deleteNotificationsEndpoint,
+      method: 'GET',
+      feature: 'Delete Notification',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
@@ -1016,29 +1094,49 @@ class ApiProvider {
 
   /// Chat ---------------------------------------------------------------------
 
-  Future<http.Response> getAllLastMessages(String token,
+  Future<ResponseData> getAllLastMessages(String token,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl!}${AppUrls.getAllLastMessageEndpoint}?page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getAllLastMessageEndpoint,
+      method: 'GET',
+      feature: 'Get Last Messages',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> getMessagesById(String token, String id,
+  Future<ResponseData> getMessagesById(String token, String id,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl!}${AppUrls.getMessagesByIdEndpoint}?id=$id&page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = id;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getMessagesByIdEndpoint,
+      method: 'GET',
+      feature: 'Get Messages By Id',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
