@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/apis/services/notification_service.dart';
+import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 @pragma('vm:entry-point')
@@ -82,25 +83,25 @@ Future<void> initializeFirebaseService() async {
   });
 
   if (authService.isLogin) {
-    var fcmToken = await AppUtility.readFcmTokenFromLocalStorage();
+    var fcmToken = await authService.readFcmTokenFromLocalStorage();
     AppUtility.log('fcmToken: $fcmToken');
 
     if (fcmToken.isEmpty) {
       await messaging.deleteToken();
       var token = await messaging.getToken();
       AppUtility.log('fcmToken: $token');
-      await AppUtility.saveFcmTokenToLocalStorage(token!);
+      await authService.saveFcmTokenToLocalStorage(token!);
     }
 
     messaging.onTokenRefresh.listen((newToken) async {
       AppUtility.log('fcmToken refreshed: $newToken');
-      await AppUtility.saveFcmTokenToLocalStorage(newToken);
+      await authService.saveFcmTokenToLocalStorage(newToken);
       if (authService.token.isNotEmpty) {
         await authService.saveFcmToken(newToken);
       }
     });
   } else {
-    await AppUtility.deleteFcmTokenFromLocalStorage();
+    await StorageService.remove("fcmToken");
     await messaging.deleteToken();
   }
 

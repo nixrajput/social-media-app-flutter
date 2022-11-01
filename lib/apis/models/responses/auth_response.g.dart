@@ -3,6 +3,139 @@
 part of 'auth_response.dart';
 
 // **************************************************************************
+// CopyWithGenerator
+// **************************************************************************
+
+abstract class _$AuthResponseCWProxy {
+  AuthResponse expiresAt(int? expiresAt);
+
+  AuthResponse message(String? message);
+
+  AuthResponse success(bool? success);
+
+  AuthResponse token(String? token);
+
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `AuthResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  ///
+  /// Usage
+  /// ```dart
+  /// AuthResponse(...).copyWith(id: 12, name: "My name")
+  /// ````
+  AuthResponse call({
+    int? expiresAt,
+    String? message,
+    bool? success,
+    String? token,
+  });
+}
+
+/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfAuthResponse.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfAuthResponse.copyWith.fieldName(...)`
+class _$AuthResponseCWProxyImpl implements _$AuthResponseCWProxy {
+  final AuthResponse _value;
+
+  const _$AuthResponseCWProxyImpl(this._value);
+
+  @override
+  AuthResponse expiresAt(int? expiresAt) => this(expiresAt: expiresAt);
+
+  @override
+  AuthResponse message(String? message) => this(message: message);
+
+  @override
+  AuthResponse success(bool? success) => this(success: success);
+
+  @override
+  AuthResponse token(String? token) => this(token: token);
+
+  @override
+
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `AuthResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  ///
+  /// Usage
+  /// ```dart
+  /// AuthResponse(...).copyWith(id: 12, name: "My name")
+  /// ````
+  AuthResponse call({
+    Object? expiresAt = const $CopyWithPlaceholder(),
+    Object? message = const $CopyWithPlaceholder(),
+    Object? success = const $CopyWithPlaceholder(),
+    Object? token = const $CopyWithPlaceholder(),
+  }) {
+    return AuthResponse(
+      expiresAt: expiresAt == const $CopyWithPlaceholder()
+          ? _value.expiresAt
+          // ignore: cast_nullable_to_non_nullable
+          : expiresAt as int?,
+      message: message == const $CopyWithPlaceholder()
+          ? _value.message
+          // ignore: cast_nullable_to_non_nullable
+          : message as String?,
+      success: success == const $CopyWithPlaceholder()
+          ? _value.success
+          // ignore: cast_nullable_to_non_nullable
+          : success as bool?,
+      token: token == const $CopyWithPlaceholder()
+          ? _value.token
+          // ignore: cast_nullable_to_non_nullable
+          : token as String?,
+    );
+  }
+}
+
+extension $AuthResponseCopyWith on AuthResponse {
+  /// Returns a callable class that can be used as follows: `instanceOfAuthResponse.copyWith(...)` or like so:`instanceOfAuthResponse.copyWith.fieldName(...)`.
+  // ignore: library_private_types_in_public_api
+  _$AuthResponseCWProxy get copyWith => _$AuthResponseCWProxyImpl(this);
+}
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class AuthResponseAdapter extends TypeAdapter<AuthResponse> {
+  @override
+  final int typeId = 13;
+
+  @override
+  AuthResponse read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return AuthResponse(
+      success: fields[0] as bool?,
+      message: fields[1] as String?,
+      token: fields[2] as String?,
+      expiresAt: fields[3] as int?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, AuthResponse obj) {
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.success)
+      ..writeByte(1)
+      ..write(obj.message)
+      ..writeByte(2)
+      ..write(obj.token)
+      ..writeByte(3)
+      ..write(obj.expiresAt);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AuthResponseAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

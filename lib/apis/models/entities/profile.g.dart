@@ -378,6 +378,128 @@ extension $ProfileCopyWith on Profile {
 }
 
 // **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
+class ProfileAdapter extends TypeAdapter<Profile> {
+  @override
+  final int typeId = 3;
+
+  @override
+  Profile read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Profile(
+      id: fields[0] as String,
+      fname: fields[1] as String,
+      lname: fields[2] as String,
+      email: fields[3] as String,
+      emailVerified: fields[4] as bool,
+      uname: fields[5] as String,
+      avatar: fields[6] as MediaFile?,
+      phone: fields[7] as String?,
+      countryCode: fields[8] as String?,
+      phoneVerified: fields[9] as bool?,
+      gender: fields[10] as String?,
+      dob: fields[11] as String?,
+      about: fields[12] as String?,
+      profession: fields[13] as String?,
+      location: fields[14] as String?,
+      website: fields[15] as String?,
+      postsCount: fields[16] as int,
+      followersCount: fields[17] as int,
+      followingCount: fields[18] as int,
+      role: fields[24] as String,
+      isPrivate: fields[20] as bool,
+      accountStatus: fields[19] as String,
+      verificationStatus: fields[23] as String,
+      isValid: fields[21] as bool,
+      isVerified: fields[22] as bool,
+      showOnlineStatus: fields[25] as bool?,
+      lastSeen: fields[26] as DateTime?,
+      createdAt: fields[27] as DateTime,
+      updatedAt: fields[28] as DateTime,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Profile obj) {
+    writer
+      ..writeByte(29)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.fname)
+      ..writeByte(2)
+      ..write(obj.lname)
+      ..writeByte(3)
+      ..write(obj.email)
+      ..writeByte(4)
+      ..write(obj.emailVerified)
+      ..writeByte(5)
+      ..write(obj.uname)
+      ..writeByte(6)
+      ..write(obj.avatar)
+      ..writeByte(7)
+      ..write(obj.phone)
+      ..writeByte(8)
+      ..write(obj.countryCode)
+      ..writeByte(9)
+      ..write(obj.phoneVerified)
+      ..writeByte(10)
+      ..write(obj.gender)
+      ..writeByte(11)
+      ..write(obj.dob)
+      ..writeByte(12)
+      ..write(obj.about)
+      ..writeByte(13)
+      ..write(obj.profession)
+      ..writeByte(14)
+      ..write(obj.location)
+      ..writeByte(15)
+      ..write(obj.website)
+      ..writeByte(16)
+      ..write(obj.postsCount)
+      ..writeByte(17)
+      ..write(obj.followersCount)
+      ..writeByte(18)
+      ..write(obj.followingCount)
+      ..writeByte(19)
+      ..write(obj.accountStatus)
+      ..writeByte(20)
+      ..write(obj.isPrivate)
+      ..writeByte(21)
+      ..write(obj.isValid)
+      ..writeByte(22)
+      ..write(obj.isVerified)
+      ..writeByte(23)
+      ..write(obj.verificationStatus)
+      ..writeByte(24)
+      ..write(obj.role)
+      ..writeByte(25)
+      ..write(obj.showOnlineStatus)
+      ..writeByte(26)
+      ..write(obj.lastSeen)
+      ..writeByte(27)
+      ..write(obj.createdAt)
+      ..writeByte(28)
+      ..write(obj.updatedAt);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProfileAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+// **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 

@@ -6,11 +6,14 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
+import 'package:social_media_app/apis/models/entities/follower.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/notification.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/post_media_file.dart';
+import 'package:social_media_app/apis/models/entities/profile.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
+import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/apis/services/theme_controller.dart';
@@ -22,6 +25,7 @@ import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
+import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/translations/app_translations.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -43,6 +47,8 @@ Future<void> initPreAppServices() async {
 
   AppUtility.log('Registering Hive Adapters');
 
+  Hive.registerAdapter(AuthResponseAdapter());
+  Hive.registerAdapter(ProfileAdapter());
   Hive.registerAdapter(PostAdapter());
   Hive.registerAdapter(MediaFileAdapter());
   Hive.registerAdapter(PostMediaFileAdapter());
@@ -50,16 +56,19 @@ Future<void> initPreAppServices() async {
   Hive.registerAdapter(ChatMessageAdapter());
   Hive.registerAdapter(PostResponseAdapter());
   Hive.registerAdapter(NotificationModelAdapter());
+  Hive.registerAdapter(FollowerAdapter());
 
   AppUtility.log('Opening Hive Boxes');
 
   await Hive.openBox<Post>('posts');
   await Hive.openBox<Post>('trendingPosts');
   await Hive.openBox<User>('recommendedUsers');
-  await Hive.openBox('auth');
   await Hive.openBox<ChatMessage>('lastMessages');
   await Hive.openBox<ChatMessage>('allMessages');
   await Hive.openBox<NotificationModel>('notifications');
+  await Hive.openBox<Post>('profilePosts');
+  await Hive.openBox<Follower>('followers');
+  await Hive.openBox<Follower>('followings');
 
   // AppUtility.log('Deleting Hive Boxes');
   // await HiveService.deleteAllBoxes();
@@ -97,14 +106,11 @@ Future<void> checkAuthData() async {
         if (hasData) {
           isLogin = true;
         } else {
-          await AppUtility.deleteProfileDataFromLocalStorage();
+          await StorageService.remove('profileData');
           return;
         }
       } else {
-        await AppUtility.clearLoginDataFromLocalStorage();
-        await AppUtility.deleteFcmTokenFromLocalStorage();
-        await AppUtility.deletePostDataFromLocalStorage();
-        await AppUtility.deleteProfilePostDataFromLocalStorage();
+        await authService.deleteLoginDataFromLocalStorage();
       }
     }
     isLogin

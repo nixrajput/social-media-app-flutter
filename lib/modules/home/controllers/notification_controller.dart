@@ -49,9 +49,10 @@ class NotificationController extends GetxController {
     var isExists =
         await HiveService.hasLength<NotificationModel>('notifications');
     if (isExists) {
-      var data = await HiveService.getAll<NotificationModel>('posts');
+      var data = await HiveService.getAll<NotificationModel>('notifications');
+      data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
       _notificationList.clear();
-      _notificationList.addAll(data!.toList());
+      _notificationList.addAll(data.toList());
     }
     await Future.delayed(const Duration(seconds: 1), () async {
       await _fetchNotifications();

@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -342,106 +340,6 @@ abstract class AppUtility {
     return CupertinoIcons.info_circle_fill;
   }
 
-  static Future<void> saveLoginDataToLocalStorage(
-      String token, int expiresAt) async {
-    final storage = GetStorage();
-    if (token.isNotEmpty && expiresAt > 0) {
-      final data = jsonEncode({
-        StringValues.token: token,
-        StringValues.expiresAt: expiresAt,
-      });
-
-      await storage.write(StringValues.loginData, data);
-      log(StringValues.authDetailsSaved);
-    } else {
-      log(StringValues.authDetailsNotSaved, tag: 'error');
-    }
-  }
-
-  static Future<dynamic> readLoginDataFromLocalStorage() async {
-    final storage = GetStorage();
-    if (storage.hasData(StringValues.loginData)) {
-      final data = await storage.read(StringValues.loginData);
-      var decodedData = jsonDecode(data) as Map<String, dynamic>;
-      log(StringValues.authDetailsFound);
-      return decodedData;
-    }
-    log(StringValues.authDetailsNotFound, tag: 'error');
-    return null;
-  }
-
-  /// Profile Data -------------------------------------------------------------
-
-  static Future<void> saveProfileDataToLocalStorage(response) async {
-    final storage = GetStorage();
-    if (response != null) {
-      final data = jsonEncode(response);
-
-      await storage.write(StringValues.profileData, data);
-      log(StringValues.profileDetailsSaved);
-    } else {
-      log(StringValues.profileDetailsNotSaved, tag: 'error');
-    }
-  }
-
-  static Future<dynamic> readProfileDataFromLocalStorage() async {
-    final storage = GetStorage();
-    if (storage.hasData(StringValues.profileData)) {
-      final data = await storage.read(StringValues.profileData);
-      var decodedData = jsonDecode(data);
-      log(StringValues.profileDetailsFound);
-      return decodedData;
-    }
-    log(StringValues.profileDetailsNotFound, tag: 'error');
-    return null;
-  }
-
-  static Future<void> deleteProfileDataFromLocalStorage() async {
-    final storage = GetStorage();
-    await storage.remove(StringValues.profileData);
-    await deleteProfilePostDataFromLocalStorage();
-    log("Profile Data Deleted From Local Storage");
-  }
-
-  static Future<void> clearLoginDataFromLocalStorage() async {
-    final storage = GetStorage();
-    await storage.remove(StringValues.loginData);
-    await storage.remove(StringValues.profileData);
-    log(StringValues.authDetailsRemoved);
-    log(StringValues.profileDetailsRemoved);
-  }
-
-  /// --------------------------------------------------------------------------
-
-  /// Profile Post Data --------------------------------------------------------
-
-  static Future<void> saveProfilePostDataToLocalStorage(postData) async {
-    final storage = GetStorage();
-    if (postData != null) {
-      await storage.write("profilePosts", jsonEncode(postData));
-      log("Profile Post Data Saved To Local Storage");
-    } else {
-      log("Failed To Save Profile Post Data To Local Storage", tag: 'error');
-    }
-  }
-
-  static Future<dynamic> readProfilePostDataFromLocalStorage() async {
-    final storage = GetStorage();
-    if (storage.hasData("profilePosts")) {
-      final data = await storage.read("profilePosts");
-      log("Profile Post Data Fetched From Local Storage");
-      return jsonDecode(data);
-    }
-    log("Failed To Fetch Profile Post Data From Local Storage", tag: 'error');
-    return null;
-  }
-
-  static Future<void> deleteProfilePostDataFromLocalStorage() async {
-    final storage = GetStorage();
-    await storage.remove("profilePosts");
-    log("Profile Post Data Deleted From Local Storage");
-  }
-
   /// --------------------------------------------------------------------------
 
   static void printLog(message) {
@@ -450,68 +348,6 @@ abstract class AppUtility {
     debugPrint(message.toString(), wrapWidth: 1024);
     debugPrint(
         "=======================================================================");
-  }
-
-  /// Save Post Data --------------------------------------------------------
-
-  static Future<void> savePostDataToLocalStorage(postData) async {
-    final storage = GetStorage();
-    if (postData != null) {
-      await storage.write("posts", jsonEncode(postData));
-      log("Post Data Saved To Local Storage");
-    } else {
-      log("Failed To Save Post Data To Local Storage", tag: 'error');
-    }
-  }
-
-  static Future<dynamic> readPostDataFromLocalStorage() async {
-    final storage = GetStorage();
-    if (storage.hasData("posts")) {
-      final data = await storage.read("posts");
-      log("Post Data Fetched From Local Storage");
-      return jsonDecode(data);
-    }
-    log("Failed To Fetch Post Data From Local Storage", tag: 'error');
-    return null;
-  }
-
-  static Future<void> deletePostDataFromLocalStorage() async {
-    final storage = GetStorage();
-    await storage.remove("posts");
-    log("Post Data Deleted From Local Storage");
-  }
-
-  /// --------------------------------------------------------------------------
-
-  /// Save Post Data --------------------------------------------------------
-
-  static Future<void> saveFcmTokenToLocalStorage(String fcmToken) async {
-    final storage = GetStorage();
-    if (fcmToken.isNotEmpty) {
-      await storage.write("fcmToken", base64Encode(fcmToken.codeUnits));
-      log("FcmToken Saved To Local Storage");
-    } else {
-      log("Failed To Save FcmToken To Local Storage", tag: 'error');
-    }
-  }
-
-  static Future<String> readFcmTokenFromLocalStorage() async {
-    final storage = GetStorage();
-    var fcmToken = "";
-    if (storage.hasData("fcmToken")) {
-      final data = await storage.read("fcmToken");
-      log("FcmToken Fetched From Local Storage");
-      fcmToken = String.fromCharCodes(base64Decode(data));
-    } else {
-      log("Failed To Fetch FcmToken From Local Storage", tag: 'error');
-    }
-    return fcmToken;
-  }
-
-  static Future<void> deleteFcmTokenFromLocalStorage() async {
-    final storage = GetStorage();
-    await storage.remove("fcmToken");
-    log("FcmToken Deleted From Local Storage");
   }
 
   /// --------------------------------------------------------------------------

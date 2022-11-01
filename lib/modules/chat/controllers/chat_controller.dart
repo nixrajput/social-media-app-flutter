@@ -398,8 +398,9 @@ class ChatController extends GetxController {
 
     if (isExists) {
       var data = await HiveService.getAll<ChatMessage>('lastMessages');
+      data.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       _lastMessageList.clear();
-      _lastMessageList.addAll(data!.toList());
+      _lastMessageList.addAll(data.toList());
       _allMessages.clear();
       _allMessages.addAll(data.toList());
     }

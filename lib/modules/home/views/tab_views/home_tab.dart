@@ -143,13 +143,14 @@ class HomeTabView extends StatelessWidget {
   Widget _buildBody() {
     return GetBuilder<PostController>(
       builder: (logic) {
-        if ((logic.postData == null || logic.postList.isEmpty) &&
-            logic.isLoading) {
+        if (logic.isLoading &&
+            (logic.postData == null || logic.postList.isEmpty)) {
           return const SliverFillRemaining(
             child: Center(child: NxCircularProgressIndicator()),
           );
-        } else if ((logic.postData == null || logic.postList.isEmpty) &&
-            !logic.isLoading) {
+        }
+
+        if (logic.postData == null || logic.postList.isEmpty) {
           return SliverFillRemaining(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -175,9 +176,10 @@ class HomeTabView extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                if ((logic.postData != null || logic.postList.isNotEmpty) &&
-                    logic.isLoading)
+                if (logic.isLoading &&
+                    (logic.postData != null || logic.postList.isNotEmpty))
                   Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Dimens.boxHeight8,
                       const NxCircularProgressIndicator(),

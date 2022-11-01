@@ -40,7 +40,7 @@ class ApiProvider {
 
     var url = Uri.parse((baseUrl ?? this.baseUrl!) + endPoint);
 
-    if (queryParams != null) {
+    if (queryParams != null && queryParams.isNotEmpty) {
       url = url.replace(queryParameters: queryParams);
     }
 
@@ -800,15 +800,26 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getUserPosts(String token, String userId,
+  Future<ResponseData> getUserPosts(String token, String userId,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.getUserPostsEndpoint}?id=$userId&page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = userId;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getUserPostsEndpoint,
+      method: 'GET',
+      feature: 'Get User Posts',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;

@@ -11,6 +11,8 @@ import 'package:social_media_app/apis/models/responses/profile_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/services/hive_service.dart';
+import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class ProfileController extends GetxController {
@@ -46,45 +48,80 @@ class ProfileController extends GetxController {
   set setProfileDetailsData(ProfileResponse value) =>
       _profileDetails.value = value;
 
-  Future<bool> _loadProfileDetails() async {
-    AppUtility.log("Loading Profile Details From Local Storage Request");
+  static Future<void> _saveProfileDataToLocalStorage(
+      ProfileResponse respone) async {
+    var data = jsonEncode(respone.toJson());
+    await StorageService.write('profileData', data);
+    AppUtility.log('Profile data saved to local storage');
+  }
 
-    final decodedData = await AppUtility.readProfileDataFromLocalStorage();
+  static Future<ProfileResponse?> _readProfileDataFromLocalStorage() async {
+    var hasData = await StorageService.hasData('profileData');
 
-    if (decodedData != null) {
-      setProfileDetailsData = ProfileResponse.fromJson(decodedData);
-
-      final decodedPostData =
-          await AppUtility.readProfilePostDataFromLocalStorage();
-      if (decodedPostData != null) {
-        try {
-          setPostData = PostResponse.fromJson(decodedPostData);
-          _postList.clear();
-          _postList.addAll(_postData.value.results!);
-          AppUtility.log("Loading Profile Details From Local Storage Success");
-          return true;
-        } catch (err) {
-          AppUtility.log(
-            "Loading Profile Details From Local Storage Error",
-            tag: 'error',
-          );
-          AppUtility.printLog(err);
-          return false;
-        }
-      } else {
-        AppUtility.log("Profile Post Data Not Found", tag: 'error');
-      }
+    if (hasData) {
+      AppUtility.log('Profile data found in local storage');
+      var data = StorageService.read('profileData');
+      return ProfileResponse.fromJson(jsonDecode(data));
     } else {
-      AppUtility.log(
-        "Loading Profile Details From Local Storage Error",
-        tag: 'error',
-      );
-      AppUtility.log(
-        StringValues.profileDetailsNotFound,
-        tag: 'error',
+      AppUtility.log('Profile data not found in local storage', tag: 'error');
+      return null;
+    }
+  }
+
+  static Future<void> _saveProfilePostsToLocalStorage(List<Post> posts) async {
+    AppUtility.log('Saving profile posts to local storage');
+
+    if (posts.isEmpty) {
+      AppUtility.log('No posts found to save', tag: 'error');
+      return;
+    }
+
+    for (var item in posts) {
+      await HiveService.put<Post>(
+        'profilePosts',
+        item.id,
+        item,
       );
     }
-    return false;
+    AppUtility.log('Profile posts saved to local storage');
+  }
+
+  static Future<List<Post>?> _readProfilePostsFromLocalStorage() async {
+    var isExists = await HiveService.hasLength<Post>('profilePosts');
+    if (isExists) {
+      var data = await HiveService.getAll<Post>('profilePosts');
+      data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      return data;
+    }
+    return null;
+  }
+
+  Future<bool> _loadProfileDetails() async {
+    AppUtility.log("Loading Profile Details");
+
+    final decodedData = await _readProfileDataFromLocalStorage();
+
+    if (decodedData != null) {
+      setProfileDetailsData = decodedData;
+
+      final profilePosts = await _readProfilePostsFromLocalStorage();
+
+      if (profilePosts != null) {
+        _postList.clear();
+        _postList.addAll(profilePosts);
+        await _fetchPosts();
+        AppUtility.log("Profile Posts Loaded From Local Storage");
+        return true;
+      } else {
+        AppUtility.log("Failed To Load Profile Posts From Local Storage",
+            tag: 'error');
+        return false;
+      }
+    } else {
+      AppUtility.log("Failed To Load Profile Details From Local Storage",
+          tag: 'error');
+      return false;
+    }
   }
 
   Future<void> _fetchProfileDetails({bool fetchPost = true}) async {
@@ -97,7 +134,7 @@ class ProfileController extends GetxController {
       if (response.isSuccessful) {
         final decodedData = response.data;
         setProfileDetailsData = ProfileResponse.fromJson(decodedData);
-        await AppUtility.saveProfileDataToLocalStorage(decodedData);
+        await _saveProfileDataToLocalStorage(_profileDetails.value);
         _isLoading = false;
         update();
         if (fetchPost) await _fetchPosts();
@@ -200,8 +237,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> _fetchPosts({int? page}) async {
-    AppUtility.printLog("Fetching Profile Posts Request");
+  Future<void> _fetchPosts() async {
     _isPostLoading.value = true;
     update();
 
@@ -209,49 +245,26 @@ class ProfileController extends GetxController {
       final response = await _apiProvider.getUserPosts(
         _auth.token,
         _profileDetails.value.user!.id,
-        page: page,
-        limit: 12,
+        limit: 16,
       );
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
-        await AppUtility.deleteProfilePostDataFromLocalStorage();
-        await AppUtility.saveProfilePostDataToLocalStorage(decodedData);
+        await _saveProfilePostsToLocalStorage(_postData.value.results!);
         _isPostLoading.value = false;
         update();
-        AppUtility.printLog("Fetching Profile Posts Success");
       } else {
+        final decodedData = response.data;
         _isPostLoading.value = false;
         update();
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Fetching Profile Posts Error");
       }
-    } on SocketException {
-      _isPostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Profile Posts Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isPostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Profile Posts Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isPostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Profile Posts Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isPostLoading.value = false;
       update();
@@ -260,7 +273,6 @@ class ProfileController extends GetxController {
   }
 
   Future<void> _loadMoreProfilePosts({int? page}) async {
-    AppUtility.printLog("Fetching More Profile Posts Request");
     _isMorePostLoading.value = true;
     update();
 
@@ -269,45 +281,25 @@ class ProfileController extends GetxController {
         _auth.token,
         _profileDetails.value.user!.id,
         page: page,
-        limit: 12,
+        limit: 16,
       );
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostData = PostResponse.fromJson(decodedData);
         _postList.addAll(_postData.value.results!);
+        await _saveProfilePostsToLocalStorage(_postData.value.results!);
         _isMorePostLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Profile Posts Success");
       } else {
+        final decodedData = response.data;
         _isMorePostLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Profile Posts Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMorePostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Profile Posts Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMorePostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Profile Posts Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMorePostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Profile Posts Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMorePostLoading.value = false;
       update();

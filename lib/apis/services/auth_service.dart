@@ -15,6 +15,8 @@ import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
+import 'package:social_media_app/services/hive_service.dart';
+import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class AuthService extends GetxService {
@@ -28,7 +30,7 @@ class AuthService extends GetxService {
   int _expiresAt = 0;
   int _deviceId = 0;
   bool _isLogin = false;
-  AuthResponse _loginData = const AuthResponse();
+  AuthResponse _loginData = AuthResponse();
 
   String get token => _token;
 
@@ -77,7 +79,7 @@ class AuthService extends GetxService {
 
   Future<String> getToken() async {
     var token = '';
-    final decodedData = await AppUtility.readLoginDataFromLocalStorage();
+    final decodedData = await readLoginDataFromLocalStorage();
     if (decodedData != null) {
       _expiresAt = decodedData[StringValues.expiresAt];
       setToken = decodedData[StringValues.token];
@@ -134,15 +136,71 @@ class AuthService extends GetxService {
     _isLogin = false;
     SocketApiProvider().close();
     await ChatController.find.close();
-    await AppUtility.clearLoginDataFromLocalStorage();
-    await AppUtility.deleteFcmTokenFromLocalStorage();
-    await AppUtility.deletePostDataFromLocalStorage();
-    await AppUtility.deleteProfilePostDataFromLocalStorage();
+    await deleteLoginDataFromLocalStorage();
     AppUtility.log("Logout Success");
     AppUtility.showSnackBar(
       'Logout Successfully',
       '',
     );
+  }
+
+  Future<Map<String, dynamic>?> readLoginDataFromLocalStorage() async {
+    var hasData = await StorageService.hasData('loginData');
+
+    if (hasData) {
+      AppUtility.log('Login Data Found');
+      var data = StorageService.read('loginData') as Map<String, dynamic>;
+      return data;
+    } else {
+      AppUtility.log('No Login Data Found', tag: 'error');
+      return null;
+    }
+  }
+
+  Future<void> saveLoginDataToLocalStorage(String token, int expiresAt) async {
+    if (token.isEmpty && expiresAt <= 0) {
+      AppUtility.log('Token or ExpiresAt is empty', tag: 'error');
+      return;
+    }
+
+    final data = {
+      StringValues.token: token,
+      StringValues.expiresAt: expiresAt,
+    };
+
+    await StorageService.write('loginData', data);
+    AppUtility.log('Login Data Saved to Local Storage');
+  }
+
+  Future<void> deleteLoginDataFromLocalStorage() async {
+    await StorageService.remove('loginData');
+    await StorageService.remove('profileData');
+    await StorageService.remove("fcmToken");
+    await HiveService.deleteAllBoxes();
+    AppUtility.log('Local Data Removed');
+  }
+
+  Future<void> saveFcmTokenToLocalStorage(String fcmToken) async {
+    if (fcmToken.isEmpty) {
+      AppUtility.log('Fcm Token is empty', tag: 'error');
+      return;
+    }
+
+    await StorageService.write('fcmToken', base64Encode(fcmToken.codeUnits));
+    AppUtility.log('Fcm Token Saved to Local Storage');
+  }
+
+  Future<String> readFcmTokenFromLocalStorage() async {
+    var hasData = await StorageService.hasData('fcmToken');
+
+    if (hasData) {
+      AppUtility.log('Fcm Token Found');
+      var data = StorageService.read('fcmToken');
+      return String.fromCharCodes(base64Decode(data));
+    } else {
+      AppUtility.log('No Fcm Token Found', tag: 'error');
+      return '';
+    }
   }
 
   String generateDeviceId() {
@@ -355,7 +413,7 @@ class AuthService extends GetxService {
       if (_expiresAt < currentTimestamp) {
         setToken = '';
         setExpiresAt = 0;
-        await AppUtility.clearLoginDataFromLocalStorage();
+        await deleteLoginDataFromLocalStorage();
       }
     }
   }

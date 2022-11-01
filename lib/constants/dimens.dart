@@ -243,7 +243,11 @@ abstract class Dimens {
 
   static SizedBox boxHeight80 = SizedBox(height: eighty);
 
-  static SizedBox shrinkBox = const SizedBox.shrink();
+  static SizedBox shrinkedBox = const SizedBox.shrink();
+
+  static SizedBox boxHeight(double height) => SizedBox(height: height);
+
+  static SizedBox boxWidth(double width) => SizedBox(width: width);
 
   static Divider divider = const Divider(height: 0.0, thickness: 0.4);
 

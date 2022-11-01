@@ -79,7 +79,7 @@ class LoginController extends GetxController {
         var token = _auth.loginData.token!;
         var expiresAt = _auth.loginData.expiresAt!;
 
-        await AppUtility.saveLoginDataToLocalStorage(token, expiresAt);
+        await _auth.saveLoginDataToLocalStorage(token, expiresAt);
 
         _auth.setToken = token;
         _auth.setExpiresAt = expiresAt;
@@ -92,7 +92,7 @@ class LoginController extends GetxController {
             await _auth.saveDeviceIdToServer(_auth.deviceId.toString());
           }
 
-          var fcmToken = await AppUtility.readFcmTokenFromLocalStorage();
+          var fcmToken = await _auth.readFcmTokenFromLocalStorage();
 
           if (fcmToken.isNotEmpty) {
             AppUtility.log('fcmToken: $fcmToken');
@@ -102,7 +102,7 @@ class LoginController extends GetxController {
             var messaging = FirebaseMessaging.instance;
             var token = await messaging.getToken();
             AppUtility.log('fcmToken: $token');
-            await AppUtility.saveFcmTokenToLocalStorage(token!);
+            await _auth.saveFcmTokenToLocalStorage(token!);
             await _auth.saveFcmToken(token);
           }
 

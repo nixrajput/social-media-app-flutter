@@ -51,8 +51,9 @@ class RecommendedUsersController extends GetxController {
     var isExists = await HiveService.hasLength<User>('recommendedUsers');
     if (isExists) {
       var data = await HiveService.getAll<User>('recommendedUsers');
+      data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
       _recommendedUsersList.clear();
-      _recommendedUsersList.addAll(data!.toList());
+      _recommendedUsersList.addAll(data.toList());
     }
     _isLoading.value = false;
     update();

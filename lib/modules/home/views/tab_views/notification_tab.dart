@@ -44,117 +44,127 @@ class NotificationTabView extends StatelessWidget {
   }
 
   Widget _buildNotificationBody() {
-    return GetBuilder<NotificationController>(builder: (logic) {
-      if (logic.isLoading) {
-        return const Expanded(
-          child: Center(
-            child: NxCircularProgressIndicator(),
-          ),
-        );
-      }
-      if (logic.notificationData == null || logic.notificationList.isEmpty) {
-        return Expanded(
-          child: Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Dimens.boxHeight8,
-                Text(
-                  StringValues.noNotifications,
-                  style: AppStyles.style32Bold.copyWith(
-                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                Dimens.boxHeight16,
-              ],
-            ),
-          ),
-        );
-      }
+    return GetBuilder<NotificationController>(
+      builder: (logic) {
+        if (logic.isLoading &&
+            (logic.notificationData == null ||
+                logic.notificationList.isEmpty)) {
+          return const Expanded(
+            child: Center(child: NxCircularProgressIndicator()),
+          );
+        }
 
-      return Expanded(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics(),
-          ),
-          child: Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: logic.notificationList.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (ctx, index) {
-                    var item = logic.notificationList[index];
-                    var isSameDate = true;
-
-                    final date = item.createdAt;
-
-                    if (index == 0) {
-                      isSameDate = false;
-                    } else {
-                      final previousDate =
-                          logic.notificationList[index - 1].createdAt;
-                      isSameDate = date.isSameDate(previousDate);
-                    }
-
-                    if (index == 0 || !isSameDate) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Dimens.boxHeight8,
-                          Text(date.formatDate()),
-                          Dimens.boxHeight8,
-                          NotificationWidget(
-                            notification: item,
-                            totalLength: logic.notificationList.length,
-                            index: index,
-                          ),
-                        ],
-                      );
-                    }
-
-                    return NotificationWidget(
-                      notification: item,
-                      totalLength: logic.notificationList.length,
-                      index: index,
-                    );
-                  },
-                ),
-                if (logic.isMoreLoading ||
-                    (logic.notificationData!.results != null &&
-                        logic.notificationData!.hasNextPage!))
-                  Dimens.boxHeight8,
-                if (logic.isMoreLoading)
-                  const Center(child: CircularProgressIndicator()),
-                if (!logic.isMoreLoading &&
-                    logic.notificationData!.results != null &&
-                    logic.notificationData!.hasNextPage!)
-                  Center(
-                    child: NxTextButton(
-                      label: 'Load more notifications',
-                      onTap: logic.loadMore,
-                      labelStyle: AppStyles.style14Bold.copyWith(
-                        color: ColorValues.primaryLightColor,
-                      ),
-                      padding: Dimens.edgeInsets8_0,
+        if (logic.notificationData == null || logic.notificationList.isEmpty) {
+          return Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              padding: Dimens.edgeInsets0_16,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Dimens.boxHeight(Dimens.screenHeight * 0.25),
+                  Text(
+                    StringValues.noNotifications,
+                    style: AppStyles.style32Bold.copyWith(
+                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                Dimens.boxHeight16,
-              ],
+                  Dimens.boxHeight16,
+                ],
+              ),
+            ),
+          );
+        }
+
+        return Expanded(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            child: Padding(
+              padding: Dimens.edgeInsets0_16,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (logic.isLoading &&
+                      (logic.notificationData != null ||
+                          logic.notificationList.isNotEmpty))
+                    const Center(child: NxCircularProgressIndicator()),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: logic.notificationList.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (ctx, index) {
+                      var item = logic.notificationList[index];
+                      var isSameDate = true;
+
+                      final date = item.createdAt;
+
+                      if (index == 0) {
+                        isSameDate = false;
+                      } else {
+                        final previousDate =
+                            logic.notificationList[index - 1].createdAt;
+                        isSameDate = date.isSameDate(previousDate);
+                      }
+
+                      if (index == 0 || !isSameDate) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Dimens.boxHeight8,
+                            Text(date.formatDate()),
+                            Dimens.boxHeight8,
+                            NotificationWidget(
+                              notification: item,
+                              totalLength: logic.notificationList.length,
+                              index: index,
+                            ),
+                          ],
+                        );
+                      }
+
+                      return NotificationWidget(
+                        notification: item,
+                        totalLength: logic.notificationList.length,
+                        index: index,
+                      );
+                    },
+                  ),
+                  if (logic.isMoreLoading ||
+                      (logic.notificationData!.results != null &&
+                          logic.notificationData!.hasNextPage!))
+                    Dimens.boxHeight8,
+                  if (logic.isMoreLoading)
+                    const Center(child: CircularProgressIndicator()),
+                  if (!logic.isMoreLoading &&
+                      logic.notificationData!.results != null &&
+                      logic.notificationData!.hasNextPage!)
+                    Center(
+                      child: NxTextButton(
+                        label: 'Load more notifications',
+                        onTap: logic.loadMore,
+                        labelStyle: AppStyles.style14Bold.copyWith(
+                          color: ColorValues.primaryLightColor,
+                        ),
+                        padding: Dimens.edgeInsets8_0,
+                      ),
+                    ),
+                  Dimens.boxHeight16,
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

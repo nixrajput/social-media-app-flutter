@@ -204,7 +204,7 @@ class UserDetailsController extends GetxController {
     }
   }
 
-  Future<void> _fetchUserPosts({int? page}) async {
+  Future<void> _fetchUserPosts() async {
     AppUtility.printLog("Fetching Profile Posts Request");
     _isPostLoading.value = true;
     update();
@@ -213,54 +213,29 @@ class UserDetailsController extends GetxController {
       final response = await _apiProvider.getUserPosts(
         _auth.token,
         _userDetails.value.user!.id,
-        page: page,
         limit: 12,
       );
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostData = PostResponse.fromJson(decodedData);
         _postList.clear();
         _postList.addAll(_postData.value.results!);
         _isPostLoading.value = false;
         update();
-        AppUtility.printLog("Fetching Profile Posts Success");
       } else {
+        final decodedData = response.data;
         _isPostLoading.value = false;
         update();
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
-        AppUtility.printLog("Fetching Profile Posts Error");
       }
-    } on SocketException {
-      _isPostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Profile Posts Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isPostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Profile Posts Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isPostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching Profile Posts Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isPostLoading.value = false;
       update();
-      AppUtility.printLog("Fetching Profile Posts Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -276,50 +251,26 @@ class UserDetailsController extends GetxController {
         page: page,
         limit: 12,
       );
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostData = PostResponse.fromJson(decodedData);
         _postList.addAll(_postData.value.results!);
         _isMorePostLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Profile Posts Success");
       } else {
+        final decodedData = response.data;
         _isMorePostLoading.value = false;
         update();
-        AppUtility.printLog("Fetching More Profile Posts Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMorePostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Profile Posts Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMorePostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Profile Posts Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMorePostLoading.value = false;
-      update();
-      AppUtility.printLog("Fetching More Profile Posts Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMorePostLoading.value = false;
       update();
-      AppUtility.printLog("Fetching More Profile Posts Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

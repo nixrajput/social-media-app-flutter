@@ -173,7 +173,7 @@ class FollowersListView extends StatelessWidget {
                             ),
                           ],
                         )
-                      : Dimens.shrinkBox,
+                      : Dimens.shrinkedBox,
             );
           },
         ),

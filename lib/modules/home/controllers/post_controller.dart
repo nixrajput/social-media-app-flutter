@@ -48,8 +48,9 @@ class PostController extends GetxController {
     var isExists = await HiveService.hasLength<Post>('posts');
     if (isExists) {
       var data = await HiveService.getAll<Post>('posts');
+      data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
       _postList.clear();
-      _postList.addAll(data!.toList());
+      _postList.addAll(data.toList());
     }
     _isLoading.value = false;
     update();
