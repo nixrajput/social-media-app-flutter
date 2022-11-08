@@ -8,7 +8,7 @@ part 'media_file.g.dart';
 @CopyWith()
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.mediaFile)
-class MediaFile extends HiveObject {
+class MediaFile {
   MediaFile({
     this.publicId,
     this.url,

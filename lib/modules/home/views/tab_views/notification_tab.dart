@@ -120,13 +120,21 @@ class NotificationTabView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Dimens.boxHeight8,
-                            Text(date.formatDate()),
+                            Text(
+                              date.formatDate(),
+                              style: AppStyles.style12Bold.copyWith(
+                                color: Theme.of(Get.context!)
+                                    .textTheme
+                                    .subtitle1!
+                                    .color,
+                              ),
+                            ),
                             Dimens.boxHeight8,
                             NotificationWidget(
                               notification: item,
                               totalLength: logic.notificationList.length,
                               index: index,
+                              isSameDay: isSameDate,
                             ),
                           ],
                         );
@@ -136,6 +144,7 @@ class NotificationTabView extends StatelessWidget {
                         notification: item,
                         totalLength: logic.notificationList.length,
                         index: index,
+                        isSameDay: isSameDate,
                       );
                     },
                   ),
@@ -144,7 +153,7 @@ class NotificationTabView extends StatelessWidget {
                           logic.notificationData!.hasNextPage!))
                     Dimens.boxHeight8,
                   if (logic.isMoreLoading)
-                    const Center(child: CircularProgressIndicator()),
+                    const Center(child: NxCircularProgressIndicator()),
                   if (!logic.isMoreLoading &&
                       logic.notificationData!.results != null &&
                       logic.notificationData!.hasNextPage!)

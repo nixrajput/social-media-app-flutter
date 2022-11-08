@@ -6,7 +6,7 @@ part 'secret_key.g.dart';
 
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.secretKey)
-class SecretKey extends HiveObject {
+class SecretKey {
   SecretKey({
     required this.identityKeyPair,
     required this.registrationId,

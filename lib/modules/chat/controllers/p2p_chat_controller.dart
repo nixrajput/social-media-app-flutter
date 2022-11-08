@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cloudinary/cloudinary.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
@@ -20,6 +21,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/global_string_key.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/file_utility.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -40,6 +42,7 @@ class P2PChatController extends GetxController {
   final _isMoreLoading = false.obs;
   final _message = ''.obs;
   final _replyTo = ChatMessage().obs;
+  final _chatMessages = <ChatMessage>[].obs;
   final _messageData = const ChatMessageListResponse().obs;
   final _mediaFileMessages = RxList<MediaFileMessage>();
 
@@ -56,6 +59,8 @@ class P2PChatController extends GetxController {
   List<MediaFileMessage>? get mediaFileMessages => _mediaFileMessages;
 
   ChatMessageListResponse? get messageData => _messageData.value;
+
+  List<ChatMessage> get chatMessages => _chatMessages;
 
   /// Setters
   set setMessageData(ChatMessageListResponse response) =>
@@ -213,6 +218,11 @@ class P2PChatController extends GetxController {
     }
   }
 
+  void addTempMessage(ChatMessage message) {
+    _chatMessages.add(message);
+    update();
+  }
+
   void sendMessage() async {
     material.FocusManager.instance.primaryFocus!.unfocus();
 
@@ -247,7 +257,7 @@ class P2PChatController extends GetxController {
               receiver: null,
             );
 
-            chatController.addTempMessage(tempMessage);
+            addTempMessage(tempMessage);
 
             var urlResult = await _uploadVideo(compressdFile, thumbnailFile);
 
@@ -286,7 +296,7 @@ class P2PChatController extends GetxController {
               receiver: null,
             );
 
-            chatController.addTempMessage(tempMessage);
+            addTempMessage(tempMessage);
 
             var urlResult = await _uploadImage(compressdFile);
 
@@ -330,7 +340,7 @@ class P2PChatController extends GetxController {
       receiver: null,
     );
 
-    chatController.addTempMessage(tempMessage);
+    addTempMessage(tempMessage);
 
     _socketApiProvider.sendJson({
       "type": "send-message",
@@ -372,6 +382,62 @@ class P2PChatController extends GetxController {
   }
 
   _getData() async {
+    var isAllMessagesExists =
+        await HiveService.hasLength<ChatMessage>('allMessages');
+
+    if (isAllMessagesExists) {
+      final currentUserId = profile.profileDetails!.user!.id;
+      var data = await HiveService.getAll<ChatMessage>('allMessages');
+
+      var messages = data
+          .where((element) =>
+              (element.senderId == currentUserId &&
+                  element.receiverId == userId) ||
+              (element.senderId == userId &&
+                  element.receiverId == currentUserId))
+          .toList();
+
+      _chatMessages.addAll(messages);
+      _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+    }
+    Hive.box<ChatMessage>('allMessages').watch().listen((event) async {
+      AppUtility.log('ChatBox Event : ${event.key}');
+      if (event.deleted) {
+        AppUtility.log('ChatBox Event : ${event.key} deleted');
+        _chatMessages.removeWhere((element) => element.id == event.key);
+        update();
+      } else {
+        var message = event.value;
+        var tempMessage = _chatMessages.firstWhereOrNull((element) =>
+            element.id == message.id || element.tempId == message.tempId);
+        if (tempMessage != null) {
+          var updatedMessage = tempMessage.copyWith(
+            id: message.id,
+            sender: message.sender,
+            receiver: message.receiver,
+            replyTo: message.replyTo,
+            sent: message.sent,
+            sentAt: message.sentAt,
+            delivered: message.delivered,
+            deliveredAt: message.deliveredAt,
+            seen: message.seen,
+            seenAt: message.seenAt,
+            createdAt: message.createdAt,
+            updatedAt: message.updatedAt,
+          );
+          _chatMessages.removeWhere((element) =>
+              element.id == message.id || element.tempId == message.tempId);
+          _chatMessages.add(updatedMessage);
+          _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+          update();
+        } else {
+          _chatMessages.add(message);
+          _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+          update();
+        }
+      }
+    });
+
     await _fetchMessagesById();
     _markMessageAsRead();
   }
@@ -405,8 +471,8 @@ class P2PChatController extends GetxController {
   }
 
   void _markMessageAsRead() async {
-    if (chatController.allMessages.isNotEmpty) {
-      var unreadMessages = chatController.allMessages
+    if (_chatMessages.isNotEmpty) {
+      var unreadMessages = _chatMessages
           .where((element) =>
               (element.senderId == userId &&
                   element.receiverId == profile.profileDetails!.user!.id) &&
@@ -515,7 +581,17 @@ class P2PChatController extends GetxController {
         setMessageData = ChatMessageListResponse.fromJson(decodedData);
 
         for (var element in messageData!.results!) {
-          chatController.addToAllMessages(element);
+          var item = await HiveService.get<ChatMessage>(
+            'allMessages',
+            element.id!,
+          );
+          if (item == null) {
+            await HiveService.put<ChatMessage>(
+              'allMessages',
+              element.id!,
+              element,
+            );
+          }
         }
 
         _isLoading.value = false;
@@ -549,7 +625,17 @@ class P2PChatController extends GetxController {
         setMessageData = ChatMessageListResponse.fromJson(decodedData);
 
         for (var element in messageData!.results!) {
-          chatController.addToAllMessages(element);
+          var item = await HiveService.get<ChatMessage>(
+            'allMessages',
+            element.id!,
+          );
+          if (item == null) {
+            await HiveService.put<ChatMessage>(
+              'allMessages',
+              element.id!,
+              element,
+            );
+          }
         }
 
         _isMoreLoading.value = false;

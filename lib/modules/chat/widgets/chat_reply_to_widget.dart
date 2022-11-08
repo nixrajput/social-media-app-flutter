@@ -13,9 +13,11 @@ class ChatReplyToWidget extends StatelessWidget {
   const ChatReplyToWidget({
     Key? key,
     required this.reply,
+    required this.isYourMessage,
   }) : super(key: key);
 
   final ChatMessage reply;
+  final bool isYourMessage;
 
   String _decryptMessage(String encryptedMessage) {
     var decryptedMessage = utf8.decode(base64Decode(encryptedMessage));
@@ -26,13 +28,14 @@ class ChatReplyToWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var profile = ProfileController.find.profileDetails!.user!;
     var p2pController = P2PChatController.find;
+
     return GestureDetector(
       onTap: () =>
           p2pController.scrollToCustomChatMessage(reply.id ?? reply.tempId!),
       child: Container(
         padding: Dimens.edgeInsets8,
         decoration: BoxDecoration(
-          color: Theme.of(Get.context!).scaffoldBackgroundColor,
+          color: ColorValues.grayColor.withOpacity(0.25),
           borderRadius: BorderRadius.circular(Dimens.eight),
         ),
         child: Column(
@@ -54,7 +57,9 @@ class ChatReplyToWidget extends StatelessWidget {
                 Text(
                   'Replying to',
                   style: AppStyles.style12Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                    color: isYourMessage
+                        ? ColorValues.lightGrayColor
+                        : Theme.of(Get.context!).textTheme.subtitle1!.color,
                   ),
                 ),
               ],
@@ -65,7 +70,9 @@ class ChatReplyToWidget extends StatelessWidget {
                   ? 'You'
                   : '${reply.sender!.fname} ${reply.sender!.lname}',
               style: AppStyles.style13Bold.copyWith(
-                color: ColorValues.primaryColor,
+                color: isYourMessage
+                    ? ColorValues.primaryLightColor
+                    : ColorValues.primaryColor,
               ),
             ),
             Dimens.boxHeight4,
@@ -86,7 +93,9 @@ class ChatReplyToWidget extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  color: isYourMessage
+                      ? ColorValues.lightBgColor
+                      : Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
               ),
           ],

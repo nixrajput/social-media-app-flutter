@@ -9,7 +9,7 @@ part 'profile.g.dart';
 @CopyWith()
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.profile)
-class Profile extends HiveObject {
+class Profile {
   Profile({
     required this.id,
     required this.fname,

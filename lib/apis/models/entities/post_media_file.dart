@@ -9,7 +9,7 @@ part 'post_media_file.g.dart';
 @CopyWith()
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.postMediaFle)
-class PostMediaFile extends HiveObject {
+class PostMediaFile {
   PostMediaFile({
     this.id,
     this.publicId,

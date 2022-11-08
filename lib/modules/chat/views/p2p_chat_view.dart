@@ -230,7 +230,7 @@ class P2PChatView extends StatelessWidget {
   }
 
   Widget _buildBody(P2PChatController logic) {
-    if (logic.isLoading) {
+    if (logic.isLoading && logic.chatMessages.isEmpty) {
       return Center(
           child: Padding(
         padding: Dimens.edgeInsetsOnlyTop8,
@@ -238,7 +238,25 @@ class P2PChatView extends StatelessWidget {
       ));
     }
 
-    final currentUser = logic.profile.profileDetails!.user!;
+    if (!logic.isLoading && logic.chatMessages.isEmpty) {
+      return Expanded(
+        child: Center(
+          child: Text(
+            StringValues.noMessages,
+            style: AppStyles.style32Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    if (logic.scrolledToBottom) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        logic.markMessageAsRead();
+      });
+    }
 
     return Expanded(
       child: SingleChildScrollView(
@@ -252,51 +270,33 @@ class P2PChatView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GetBuilder<ChatController>(
-              builder: (chatsLogic) {
-                chatsLogic.allMessages
-                    .sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-                var filteredMessages = chatsLogic.allMessages
-                    .where((element) =>
-                        (element.senderId == currentUser.id &&
-                            element.receiverId == logic.userId) ||
-                        (element.senderId == logic.userId &&
-                            element.receiver!.id == currentUser.id))
-                    .toList();
-
-                if (logic.scrolledToBottom) {
-                  Future.delayed(const Duration(milliseconds: 100), () {
-                    logic.markMessageAsRead();
-                  });
-                }
-
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (logic.messageData != null &&
-                        logic.messageData!.hasNextPage != null &&
-                        logic.messageData!.hasNextPage!)
-                      Center(
-                        child: NxTextButton(
-                          label: 'Load older messages',
-                          onTap: () => logic.loadMore(),
-                          labelStyle: AppStyles.style14Bold.copyWith(
-                            color: ColorValues.primaryLightColor,
-                          ),
-                          padding: Dimens.edgeInsets8_0,
-                        ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (logic.messageData != null &&
+                    logic.messageData!.hasNextPage != null &&
+                    logic.messageData!.hasNextPage!)
+                  Center(
+                    child: NxTextButton(
+                      label: 'Load older messages',
+                      onTap: () => logic.loadMore(),
+                      labelStyle: AppStyles.style14Bold.copyWith(
+                        color: ColorValues.primaryLightColor,
                       ),
-                    _buildChatMessages(filteredMessages, logic),
-                    if (chatsLogic.isUserTyping(logic.userId!))
-                      Dimens.boxHeight8,
-                    if (chatsLogic.isUserTyping(logic.userId!))
-                      _buildTypingBubble(logic, chatsLogic),
-                  ],
-                );
-              },
+                      padding: Dimens.edgeInsets8_0,
+                    ),
+                  ),
+                _buildChatMessages(logic.chatMessages, logic),
+                if (logic.chatController.isUserTyping(logic.userId!))
+                  Dimens.boxHeight8,
+                if (logic.chatController.isUserTyping(logic.userId!))
+                  _buildTypingBubble(logic, logic.chatController),
+              ],
             ),
+            if (logic.isLoading && logic.chatMessages.isNotEmpty)
+              const Center(child: NxCircularProgressIndicator()),
             Dimens.boxHeight60,
           ],
         ),
@@ -374,7 +374,12 @@ class P2PChatView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(date.formatDate()),
+          Text(
+            date.formatDate(),
+            style: AppStyles.style12Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            ),
+          ),
           Dimens.boxHeight8,
           ChatBubble(
             key: GlobalStringKey(message.id ?? message.tempId!),

@@ -6,7 +6,7 @@ part 'server_key.g.dart';
 
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.serverKey)
-class ServerKey extends HiveObject {
+class ServerKey {
   ServerKey({
     required this.identityPublicKey,
     required this.registrationId,

@@ -110,7 +110,9 @@ class ChatsTabView extends StatelessWidget {
                 if (logic.isMoreLoading) Dimens.boxHeight8,
                 if (logic.isMoreLoading)
                   const Center(child: NxCircularProgressIndicator()),
-                if (!logic.isMoreLoading && logic.lastMessageData!.hasNextPage!)
+                if (!logic.isMoreLoading &&
+                    logic.lastMessageData!.results != null &&
+                    logic.lastMessageData!.hasNextPage!)
                   Center(
                     child: NxTextButton(
                       label: 'Load more',

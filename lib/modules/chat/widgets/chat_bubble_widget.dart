@@ -42,15 +42,15 @@ class ChatBubble extends StatelessWidget {
 
   Color _setBubbleColor(bool isSenderBubble) {
     if (isSenderBubble) {
-      return ColorValues.primaryLightColor;
+      return ColorValues.darkChatBubbleColor;
     }
     return Theme.of(Get.context!).dialogBackgroundColor;
   }
 
   Color _setMessageColor(bool isSenderBubble) {
-    // if (isSenderBubble) {
-    //   return ColorValues.primaryLightColor;
-    // }
+    if (isSenderBubble) {
+      return ColorValues.lightBgColor;
+    }
     return Theme.of(Get.context!).textTheme.bodyText1!.color!;
   }
 
@@ -95,7 +95,7 @@ class ChatBubble extends StatelessWidget {
       return Theme.of(Get.context!).textTheme.subtitle1!.color!;
     }
 
-    return ColorValues.darkGrayColor;
+    return ColorValues.lightGrayColor;
   }
 
   @override
@@ -140,7 +140,6 @@ class ChatBubble extends StatelessWidget {
                 child: Container(
                   margin: _setPadding(isYourMessage),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).dialogBackgroundColor,
                     borderRadius: BorderRadius.circular(Dimens.eight),
                   ),
                   constraints: BoxConstraints(
@@ -154,18 +153,12 @@ class ChatBubble extends StatelessWidget {
                       if (message.replyTo != null &&
                           message.replyTo!.id != null)
                         Padding(
-                          padding: isYourMessage
-                              ? EdgeInsets.only(
-                                  top: Dimens.eight,
-                                  bottom: Dimens.zero,
-                                  left: Dimens.eight,
-                                  right: Dimens.eight,
-                                )
-                              : Dimens.edgeInsets0.copyWith(
-                                  bottom: Dimens.eight,
-                                ),
+                          padding: Dimens.edgeInsets0.copyWith(
+                            bottom: Dimens.four,
+                          ),
                           child: ChatReplyToWidget(
                             reply: message.replyTo!,
+                            isYourMessage: isYourMessage,
                           ),
                         ),
                       if (message.mediaFile != null &&
@@ -177,63 +170,53 @@ class ChatBubble extends StatelessWidget {
                             child: _buildMediaFile(),
                           ),
                         ),
-                      Padding(
-                        padding: isYourMessage
-                            ? EdgeInsets.only(
-                                top: Dimens.eight,
-                                bottom: Dimens.eight,
-                                left: Dimens.eight,
-                                right: Dimens.eight,
-                              )
-                            : Dimens.edgeInsets0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (message.message != null &&
-                                message.message!.isNotEmpty)
-                              Text(
-                                _decryptMessage(message.message!),
-                                style: AppStyles.style13Normal.copyWith(
-                                  color: _setMessageColor(isYourMessage),
-                                ),
-                              ),
-                            if (message.message != null &&
-                                message.message!.isNotEmpty)
-                              Dimens.boxHeight8,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (message.message != null &&
+                              message.message!.isNotEmpty)
                             Text(
-                              message.createdAt!.formatTime(),
-                              style: AppStyles.style12Normal.copyWith(
-                                fontSize: Dimens.ten,
-                                color: ColorValues.darkGrayColor,
+                              _decryptMessage(message.message!),
+                              style: AppStyles.style13Normal.copyWith(
+                                color: _setMessageColor(isYourMessage),
                               ),
                             ),
-                            if (isYourMessage)
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    _setMessageStatus(isYourMessage),
-                                    style: AppStyles.style12Normal.copyWith(
-                                      fontSize: Dimens.ten,
-                                      color: _setMessageStatusColor(),
-                                    ),
+                          if (message.message != null &&
+                              message.message!.isNotEmpty)
+                            Dimens.boxHeight8,
+                          Text(
+                            message.createdAt!.getTime(),
+                            style: AppStyles.style12Normal.copyWith(
+                              fontSize: Dimens.ten,
+                              color: ColorValues.grayColor,
+                            ),
+                          ),
+                          if (isYourMessage)
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _setMessageStatus(isYourMessage),
+                                  style: AppStyles.style12Normal.copyWith(
+                                    fontSize: Dimens.ten,
+                                    color: _setMessageStatusColor(),
                                   ),
-                                  Dimens.boxWidth8,
-                                  if (_setMessageStatus(isYourMessage) ==
-                                      'Pending')
-                                    NxCircularProgressIndicator(
-                                      size: Dimens.fourteen,
-                                      strokeWidth: Dimens.one,
-                                      color: _setMessageStatusColor(),
-                                    ),
-                                ],
-                              ),
-                          ],
-                        ),
+                                ),
+                                Dimens.boxWidth8,
+                                if (_setMessageStatus(isYourMessage) ==
+                                    'Pending')
+                                  NxCircularProgressIndicator(
+                                    size: Dimens.fourteen,
+                                    strokeWidth: Dimens.one,
+                                    color: _setMessageStatusColor(),
+                                  ),
+                              ],
+                            ),
+                        ],
                       ),
                     ],
                   ),

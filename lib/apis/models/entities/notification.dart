@@ -9,7 +9,7 @@ part 'notification.g.dart';
 @CopyWith()
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.notification)
-class NotificationModel extends HiveObject {
+class NotificationModel {
   NotificationModel({
     required this.id,
     required this.to,

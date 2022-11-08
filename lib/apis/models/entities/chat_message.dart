@@ -10,7 +10,7 @@ part 'chat_message.g.dart';
 @CopyWith()
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.chatMessage)
-class ChatMessage extends HiveObject {
+class ChatMessage {
   ChatMessage({
     this.id,
     this.tempId,

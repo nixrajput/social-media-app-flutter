@@ -8,7 +8,7 @@ part 'auth_response.g.dart';
 @CopyWith()
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.auth)
-class AuthResponse extends HiveObject {
+class AuthResponse {
   AuthResponse({
     this.success,
     this.message,

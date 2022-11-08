@@ -102,6 +102,7 @@ abstract class StringValues {
   static const followRequests = 'Follow Requests';
   static const noFollowRequests = "No follow requests yet";
   static const noComments = 'No comments yet';
+  static const noMessages = 'No conversation yet';
   static const postDetailsNotFound = 'Post deleted or archived';
   static const changePassword = 'Change Password';
   static const about = 'About';
