@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -69,7 +67,6 @@ class UserDetailsController extends GetxController {
       return;
     }
 
-    AppUtility.printLog("Get User Profile Details Request...");
     _isLoading.value = true;
     update();
 
@@ -77,9 +74,8 @@ class UserDetailsController extends GetxController {
       final response =
           await _apiProvider.getUserDetailsById(_auth.token, userId);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setUserDetails = UserDetailsResponse.fromJson(decodedData);
         _isLoading.value = false;
         update();
@@ -98,6 +94,7 @@ class UserDetailsController extends GetxController {
           }
         }
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
@@ -105,29 +102,11 @@ class UserDetailsController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -142,7 +121,6 @@ class UserDetailsController extends GetxController {
       return;
     }
 
-    AppUtility.printLog("Get User Profile Details Request...");
     _isLoading.value = true;
     update();
 
@@ -150,9 +128,8 @@ class UserDetailsController extends GetxController {
       final response =
           await _apiProvider.getUserDetailsByUsername(_auth.token, username);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setUserDetails = UserDetailsResponse.fromJson(decodedData);
         _isLoading.value = false;
         update();
@@ -171,6 +148,7 @@ class UserDetailsController extends GetxController {
           }
         }
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
@@ -178,34 +156,15 @@ class UserDetailsController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _fetchUserPosts() async {
-    AppUtility.printLog("Fetching Profile Posts Request");
     _isPostLoading.value = true;
     update();
 
@@ -235,12 +194,12 @@ class UserDetailsController extends GetxController {
     } catch (exc) {
       _isPostLoading.value = false;
       update();
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMoreUserPosts({int? page}) async {
-    AppUtility.printLog("Fetching More Profile Posts Request");
     _isMorePostLoading.value = true;
     update();
 
@@ -270,6 +229,7 @@ class UserDetailsController extends GetxController {
     } catch (exc) {
       _isMorePostLoading.value = false;
       update();
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
@@ -334,6 +294,7 @@ class UserDetailsController extends GetxController {
       }
     } catch (exc) {
       _toggleFollowUser(user);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
@@ -362,6 +323,7 @@ class UserDetailsController extends GetxController {
       }
     } catch (exc) {
       _toggleFollowUser(user);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }

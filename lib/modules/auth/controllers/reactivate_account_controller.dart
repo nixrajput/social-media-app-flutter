@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -64,7 +62,6 @@ class ReactivateAccountController extends GetxController {
       'password': password,
     };
 
-    AppUtility.printLog("Send Reactivate Account OTP Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -72,10 +69,8 @@ class ReactivateAccountController extends GetxController {
     try {
       final response = await _apiProvider.sendReactivateAccountOtp(body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog("Send Reactivate Account OTP Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         _otpSent.value = true;
@@ -85,46 +80,21 @@ class ReactivateAccountController extends GetxController {
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Send Reactivate Account OTP Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Reactivate Account OTP Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Reactivate Account OTP Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Reactivate Account OTP Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Send Reactivate Account OTP Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 
@@ -143,7 +113,6 @@ class ReactivateAccountController extends GetxController {
       'otp': otp,
     };
 
-    AppUtility.printLog("Reactivate Account Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -151,14 +120,12 @@ class ReactivateAccountController extends GetxController {
     try {
       final response = await _apiProvider.reactivateAccount(body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         _clearTextControllers();
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Reactivate Account Success");
         RouteManagement.goToBack();
         RouteManagement.goToLoginView();
         AppUtility.showSnackBar(
@@ -166,46 +133,19 @@ class ReactivateAccountController extends GetxController {
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Reactivate Account Error");
         AppUtility.showSnackBar(
-          decodedData[StringValues.message],
-          StringValues.error,
-        );
+            decodedData[StringValues.message], StringValues.error);
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Reactivate Account Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Reactivate Account Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Reactivate Account Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Reactivate Account Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 

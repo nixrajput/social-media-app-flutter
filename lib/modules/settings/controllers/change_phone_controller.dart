@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -83,7 +81,6 @@ class ChangePhoneController extends GetxController {
       "countryCode": code.dialCode,
     };
 
-    AppUtility.printLog("Send Change Phone OTP Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -92,10 +89,8 @@ class ChangePhoneController extends GetxController {
       final response =
           await _apiProvider.sendAddChangePhoneOtp(_auth.token, body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog("Send Change Phone OTP Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         _otpSent.value = true;
@@ -105,46 +100,21 @@ class ChangePhoneController extends GetxController {
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Send Change Phone OTP Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Change Phone OTP Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Change Phone OTP Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Send Change Phone OTP Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Send Change Phone OTP Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 
@@ -171,7 +141,6 @@ class ChangePhoneController extends GetxController {
       "countryCode": code.dialCode,
     };
 
-    AppUtility.printLog("Change Phone Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -179,10 +148,8 @@ class ChangePhoneController extends GetxController {
     try {
       final response = await _apiProvider.addChangePhone(_auth.token, body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog("Change Phone Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         await profile.fetchProfileDetails(fetchPost: false);
         AppUtility.closeDialog();
         _isLoading.value = false;
@@ -193,46 +160,21 @@ class ChangePhoneController extends GetxController {
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Change Phone Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Change Phone Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Change Phone Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Change Phone Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Change Phone Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 

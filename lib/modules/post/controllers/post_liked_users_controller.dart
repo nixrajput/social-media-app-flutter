@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -43,8 +42,6 @@ class PostLikedUsersController extends GetxController {
   }
 
   Future<void> _fetchPostLikedUsers() async {
-    AppUtility.printLog("Fetch Post Liked Users Request");
-
     var postId = Get.arguments;
 
     if (postId == '' || postId == null) return;
@@ -56,19 +53,17 @@ class PostLikedUsersController extends GetxController {
       final response =
           await _apiProvider.getPostLikedUsers(_auth.token, postId);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostLikedUsersData = PostLikeResponse.fromJson(decodedData);
         _postLikedUsersList.clear();
         _postLikedUsersList.addAll(_postLikedUsersData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Fetch Post Liked Users Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Fetch Post Liked Users Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
@@ -77,13 +72,12 @@ class PostLikedUsersController extends GetxController {
     } catch (exc) {
       _isLoading.value = false;
       update();
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.printLog("Fetch More Post Liked Users Request");
-
     var postId = Get.arguments;
 
     if (postId == '' || postId == null) return;
@@ -98,18 +92,16 @@ class PostLikedUsersController extends GetxController {
         page: page,
       );
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setPostLikedUsersData = PostLikeResponse.fromJson(decodedData);
         _postLikedUsersList.addAll(_postLikedUsersData.value.results!);
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetch More Post Liked Users Success");
       } else {
+        final decodedData = response.data;
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetch More Post Liked Users Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
@@ -118,6 +110,7 @@ class PostLikedUsersController extends GetxController {
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
@@ -180,6 +173,7 @@ class PostLikedUsersController extends GetxController {
       }
     } catch (exc) {
       _toggleFollowUser(user);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
@@ -208,6 +202,7 @@ class PostLikedUsersController extends GetxController {
       }
     } catch (exc) {
       _toggleFollowUser(user);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }

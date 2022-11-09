@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -68,43 +66,23 @@ class EditUsernameController extends GetxController {
       return;
     }
 
-    AppUtility.printLog("Check Username Request");
-
     try {
       final response = await _apiProvider.checkUsername(_auth.token, uname);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.printLog(decodedData);
         _isUnameAvailable.value = StringValues.success;
         update();
-        AppUtility.printLog("Check Username Success");
       } else {
-        AppUtility.printLog(decodedData);
+        final decodedData = response.data;
+        AppUtility.log(decodedData['message'], tag: 'error');
         _isUnameAvailable.value = StringValues.error;
         update();
-        AppUtility.printLog("Check Username Error");
       }
-    } on SocketException {
-      AppUtility.printLog("Check Username Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog("Check Username Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.printLog("Check Username Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtility.printLog("Check Username Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -117,7 +95,6 @@ class EditUsernameController extends GetxController {
       return;
     }
 
-    AppUtility.printLog("Update Username Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -125,60 +102,33 @@ class EditUsernameController extends GetxController {
     try {
       final response = await _apiProvider.changeUsername(_auth.token, uname);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         await _profile.fetchProfileDetails(fetchPost: false);
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Update Username Success");
         RouteManagement.goToBack();
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Update Username Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Update Username Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Update Username Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Update Username Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Update Username Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

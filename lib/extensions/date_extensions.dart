@@ -31,17 +31,21 @@ extension DateHelper on DateTime {
 
     if (!is24Hour) {
       if (hr >= 13) {
-        hr -= 12;
+        hrStr = (hr - 12).toString();
+        hrStr = hrStr.length == 1 ? '0$hrStr' : hrStr;
       }
       if (hr == 0) {
-        hr = 12;
+        hrStr = '12';
       }
-      time = '$hr:$minStr';
-      time += ' ${hr >= 12 ? 'PM' : 'AM'}';
+      time = '$hrStr:$minStr';
     }
 
     if (showSeconds) {
       time += ':$secStr';
+    }
+
+    if (!is24Hour) {
+      time += ' ${hr >= 12 ? 'PM' : 'AM'}';
     }
 
     return time;

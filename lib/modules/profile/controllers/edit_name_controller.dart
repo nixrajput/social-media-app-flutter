@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -68,7 +66,6 @@ class EditNameController extends GetxController {
       'lname': lname,
     };
 
-    AppUtility.printLog("Update Name Request...");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -76,19 +73,19 @@ class EditNameController extends GetxController {
     try {
       final response = await _apiProvider.updateProfile(_auth.token, body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         await _profile.fetchProfileDetails(fetchPost: false);
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
         RouteManagement.goToBack();
         AppUtility.showSnackBar(
-          StringValues.updateProfileSuccessful,
+          decodedData['message'],
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
@@ -97,33 +94,12 @@ class EditNameController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 

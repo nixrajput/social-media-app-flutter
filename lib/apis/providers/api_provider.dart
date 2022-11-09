@@ -309,242 +309,231 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getPreKeyBundle(String token, String userId) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl!}${AppUrls.preKeyBundleEndpoint}?id=$userId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> getPreKeyBundle(String token, String userId) async {
+    var queryParameters = <String, dynamic>{};
+    queryParameters['id'] = userId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.preKeyBundleEndpoint,
+      method: 'GET',
+      feature: 'Get Pre Key Bundle',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> savePreKeyBundle(
+  Future<ResponseData> savePreKeyBundle(
       String token, Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.preKeyBundleEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.preKeyBundleEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Save Pre Key Bundle',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> getDeviceId(String token, String userId) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl!}${AppUrls.deviceIdEndpoint}?id=$userId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> getDeviceId(String token, String userId) async {
+    var queryParameters = <String, dynamic>{};
+    queryParameters['id'] = userId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.deviceIdEndpoint,
+      method: 'GET',
+      feature: 'Get Device Id',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> saveDeviceId(
+  Future<ResponseData> saveDeviceId(
       String token, Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.deviceIdEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.deviceIdEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Save Device Id',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> saveFcmToken(String token, String fcmToken) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.fcmTokenEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode({
-        "fcmToken": fcmToken,
-      }),
+  Future<ResponseData> saveFcmToken(String token, String fcmToken) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.fcmTokenEndpoint,
+      method: 'POST',
+      body: {"fcmToken": fcmToken},
+      feature: 'Save FCM Token',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> uploadProfilePicture(
+  Future<ResponseData> uploadProfilePicture(
     String token,
     Map<String, dynamic> body,
   ) async {
-    final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.uploadProfilePicEndpoint),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.uploadProfilePicEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Upload Profile Picture',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> deleteProfilePicture(String token) async {
-    final response = await _client.delete(
-      Uri.parse('${baseUrl!}${AppUrls.deleteProfilePicEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> deleteProfilePicture(String token) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.deleteProfilePicEndpoint,
+      method: 'DELETE',
+      feature: 'Delete Profile Picture',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> updateProfile(
+  Future<ResponseData> updateProfile(
       String token, Map<String, dynamic> body) async {
-    final response = await _client.put(
-      Uri.parse('${baseUrl!}${AppUrls.updateProfileEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.updateProfileEndpoint,
+      method: 'PUT',
+      body: body,
+      feature: 'Update Profile',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> changePassword(
+  Future<ResponseData> changePassword(
       String token, Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.changePasswordEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.changePasswordEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Change Password',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> sendChangeEmailOtp(
+  Future<ResponseData> sendChangeEmailOtp(
     String token,
     Map<String, dynamic> body,
   ) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.changeEmailEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.changeEmailEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Send Change Email OTP',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> changeEmail(
+  Future<ResponseData> changeEmail(
     String token,
     Map<String, dynamic> body,
   ) async {
-    final response = await _client.put(
-      Uri.parse('${baseUrl!}${AppUrls.changeEmailEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.changeEmailEndpoint,
+      method: 'PUT',
+      body: body,
+      feature: 'Change Email',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> sendAddChangePhoneOtp(
+  Future<ResponseData> sendAddChangePhoneOtp(
     String token,
     Map<String, dynamic> body,
   ) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.addChangePhoneEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.addChangePhoneEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Send Add/Change Phone OTP',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> addChangePhone(
+  Future<ResponseData> addChangePhone(
     String token,
     Map<String, dynamic> body,
   ) async {
-    final response = await _client.put(
-      Uri.parse('${baseUrl!}${AppUrls.addChangePhoneEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.addChangePhoneEndpoint,
+      method: 'PUT',
+      body: body,
+      feature: 'Add/Change Phone',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> verifyPassword(String token, String password) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.verifyPasswordEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode({"password": password}),
+  Future<ResponseData> verifyPassword(String token, String password) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.verifyPasswordEndpoint,
+      method: 'POST',
+      body: {"password": password},
+      feature: 'Verify Password',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> deactivateAccount(
+  Future<ResponseData> deactivateAccount(
     String token,
     Map<String, dynamic> body,
   ) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.deactivateAccountEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.deactivateAccountEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Deactivate Account',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
   }
 
-  Future<http.Response> sendReactivateAccountOtp(
+  Future<ResponseData> sendReactivateAccountOtp(
       Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl!}${AppUrls.reactivateAccountEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.reactivateAccountEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Send Reactivate Account OTP',
     );
 
     return response;
   }
 
-  Future<http.Response> reactivateAccount(Map<String, dynamic> body) async {
-    final response = await _client.put(
-      Uri.parse('${baseUrl!}${AppUrls.reactivateAccountEndpoint}'),
-      headers: {
-        "content-type": "application/json",
-      },
-      body: jsonEncode(body),
+  Future<ResponseData> reactivateAccount(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.reactivateAccountEndpoint,
+      method: 'PUT',
+      body: body,
+      feature: 'Reactivate Account',
     );
 
     return response;
@@ -552,15 +541,14 @@ class ApiProvider {
 
   /// Post ---------------------------------------------------------------------
 
-  Future<http.Response> createPost(
+  Future<ResponseData> createPost(
       String token, Map<String, dynamic> body) async {
-    final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.createPostEndpoint),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode(body),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.createPostEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Create Post',
+      headers: {"authorization": "Bearer $token"},
     );
 
     return response;
@@ -588,15 +576,26 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getPostsByTag(String token,
+  Future<ResponseData> getPostsByTag(String token, String tag,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.getPostsByTagEndpoint}?page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['q'] = tag;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getPostsByTagEndpoint,
+      method: 'GET',
+      feature: 'Get Posts By Tag',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
@@ -614,13 +613,13 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getPostLikedUsers(String token, String postId) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl!}${AppUrls.getPostLikedUsersEndpoint}?id=$postId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> getPostLikedUsers(String token, String postId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getPostLikedUsersEndpoint,
+      method: 'GET',
+      feature: 'Get Post Liked Users',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'id': postId},
     );
 
     return response;
@@ -775,26 +774,26 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> getUserDetailsById(String token, String userId) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl! + AppUrls.userDetailsEndpoint}?id=$userId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> getUserDetailsById(String token, String userId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.userDetailsEndpoint,
+      method: 'GET',
+      feature: 'Get User Details By Id',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'id': userId},
     );
 
     return response;
   }
 
-  Future<http.Response> getUserDetailsByUsername(
+  Future<ResponseData> getUserDetailsByUsername(
       String token, String username) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl! + AppUrls.userDetailsEndpoint}?username=$username'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.userDetailsEndpoint,
+      method: 'GET',
+      feature: 'Get User Details By Username',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'username': username},
     );
 
     return response;
@@ -825,67 +824,87 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> checkUsername(String token, String uname) async {
-    final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.checkUsernameEndpoint),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode({'uname': uname}),
+  Future<ResponseData> checkUsername(String token, String uname) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.checkUsernameEndpoint,
+      method: 'GET',
+      feature: 'Check Username',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'username': uname},
     );
 
     return response;
   }
 
-  Future<http.Response> changeUsername(String token, String uname) async {
-    final response = await _client.post(
-      Uri.parse(baseUrl! + AppUrls.changeUsernameEndpoint),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode({'uname': uname}),
+  Future<ResponseData> changeUsername(String token, String uname) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.changeUsernameEndpoint,
+      method: 'POST',
+      feature: 'Change Username',
+      headers: {"authorization": "Bearer $token"},
+      body: {'username': uname},
     );
 
     return response;
   }
 
-  Future<http.Response> getFollowers(String token, String userId,
+  Future<ResponseData> getFollowers(String token, String userId,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.getFollowersEndpoint}?id=$userId&page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = userId;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getFollowersEndpoint,
+      method: 'GET',
+      feature: 'Get Followers',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> getFollowings(String token, String userId,
+  Future<ResponseData> getFollowings(String token, String userId,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.getFollowingEndpoint}?id=$userId&page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = userId;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getFollowingEndpoint,
+      method: 'GET',
+      feature: 'Get Followings',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> getPostDetails(String token, String postId) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl! + AppUrls.postEndpoint}?id=$postId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> getPostDetails(String token, String postId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.postEndpoint,
+      method: 'GET',
+      feature: 'Get Post Details',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'id': postId},
     );
 
     return response;
@@ -895,15 +914,26 @@ class ApiProvider {
 
   /// Search -------------------------------------------------------------------
 
-  Future<http.Response> searchTag(String token, String text,
+  Future<ResponseData> searchTag(String token, String text,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.searchTagEndpoint}?q=$text&page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['q'] = text;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.searchTagEndpoint,
+      method: 'GET',
+      feature: 'Search Tag',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
@@ -959,31 +989,54 @@ class ApiProvider {
     return response;
   }
 
-  Future<http.Response> searchFollowers(
-      String token, String userId, String text,
+  Future<ResponseData> searchFollowers(String token, String userId, String text,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.searchFollowersEndpoint}?id=$userId&q=$text&page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = userId;
+    queryParameters['q'] = text;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.searchFollowersEndpoint,
+      method: 'GET',
+      feature: 'Search Followers',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> searchFollowings(
+  Future<ResponseData> searchFollowings(
       String token, String userId, String text,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.searchFollowingEndpoint}?id=$userId&q=$text&page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = userId;
+    queryParameters['q'] = text;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.searchFollowingEndpoint,
+      method: 'GET',
+      feature: 'Search Followings',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
@@ -993,54 +1046,63 @@ class ApiProvider {
 
   /// Comment ------------------------------------------------------------------
 
-  Future<http.Response> addComment(
+  Future<ResponseData> addComment(
       String token, String postId, String comment) async {
-    final response = await _client.post(
-      Uri.parse('${baseUrl! + AppUrls.addCommentEndpoint}?postId=$postId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
-      body: jsonEncode({'comment': comment}),
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.addCommentEndpoint,
+      method: 'POST',
+      feature: 'Add Comment',
+      headers: {"authorization": "Bearer $token"},
+      body: {'postId': postId, 'text': comment},
     );
 
     return response;
   }
 
-  Future<http.Response> getComments(String token, String postId,
+  Future<ResponseData> getComments(String token, String postId,
       {int? page, int? limit}) async {
-    final response = await _client.get(
-      Uri.parse(
-          '${baseUrl! + AppUrls.getCommentsEndpoint}?postId=$postId&page=$page&limit=$limit'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['postId'] = postId;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getCommentsEndpoint,
+      method: 'GET',
+      feature: 'Get Comments',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<http.Response> deleteComment(String token, String commentId) async {
-    final response = await _client.delete(
-      Uri.parse('${baseUrl! + AppUrls.deleteCommentEndpoint}?id=$commentId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> deleteComment(String token, String commentId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.deleteCommentEndpoint,
+      method: 'DELETE',
+      feature: 'Delete Comment',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'id': commentId},
     );
 
     return response;
   }
 
-  Future<http.Response> likeUnlikeComment(
-      String token, String commentId) async {
-    final response = await _client.get(
-      Uri.parse('${baseUrl! + AppUrls.likeCommentEndpoint}?id=$commentId'),
-      headers: {
-        "content-type": "application/json",
-        "authorization": "Bearer $token",
-      },
+  Future<ResponseData> likeUnlikeComment(String token, String commentId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.likeCommentEndpoint,
+      method: 'GET',
+      feature: 'Like Unlike Comment',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'id': commentId},
     );
 
     return response;

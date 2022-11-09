@@ -1,21 +1,16 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloudinary/cloudinary.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/services/auth_service.dart';
 import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/extensions/file_extensions.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/utils/file_utility.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class EditProfilePictureController extends GetxController {
@@ -39,83 +34,26 @@ class EditProfilePictureController extends GetxController {
   var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
       defaultValue: AppSecrets.cloudinaryUploadPreset);
 
-  Future<void> selectSingleImage({ImageSource? imageSource}) async {
-    final imagePicker = ImagePicker();
-    final imageCropper = ImageCropper();
-    const maxImageBytes = 1048576;
+  Future<void> selectProfileImage({ImageSource? imageSource}) async {
+    var imageFile = await FileUtility.selectImage(source: imageSource);
 
-    final pickedImage = await imagePicker.pickImage(
-      maxWidth: 1080.0,
-      maxHeight: 1080.0,
-      source: imageSource ?? ImageSource.gallery,
-    );
-
-    if (pickedImage != null) {
-      var croppedFile = await imageCropper.cropImage(
-        maxWidth: 1080,
-        maxHeight: 1080,
-        sourcePath: pickedImage.path,
-        compressFormat: ImageCompressFormat.jpg,
-        aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-        cropStyle: CropStyle.circle,
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-            toolbarTitle: StringValues.cropImage,
-            toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
-            backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-          ),
-          IOSUiSettings(
-            title: StringValues.cropImage,
-            minimumAspectRatio: 1.0,
-          ),
-        ],
-        compressQuality: 100,
-      );
-
-      var croppedImage = File(croppedFile!.path);
-      File? resultFile = croppedImage;
-      var size = croppedImage.lengthSync();
-      AppUtility.printLog('Original file size: ${resultFile.sizeToKb()} KB');
-
-      if (size > (5 * maxImageBytes)) {
-        AppUtility.showSnackBar(
-          'Image size must be less than 5mb',
-          '',
-        );
-      } else if (size < (maxImageBytes / 2)) {
-        AppUtility.printLog('Result $resultFile');
-        AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
-        _pickedImage.value = croppedImage;
-        update();
-      } else {
-        var tempDir = await getTemporaryDirectory();
-
-        /// --------- Compressing Image ------------------------------------
-
-        AppUtility.showLoadingDialog(message: 'Compressing...');
-        var timestamp = DateTime.now().millisecondsSinceEpoch;
-        AppUtility.printLog('Compressing...');
-        resultFile = await FlutterImageCompress.compressAndGetFile(
-          resultFile.path,
-          '${tempDir.absolute.path}/temp$timestamp.jpg',
-          quality: 60,
-          format: CompressFormat.jpeg,
-        );
-        size = resultFile!.lengthSync();
-        AppUtility.closeDialog();
-
-        /// ----------------------------------------------------------------
-        AppUtility.printLog('Result $resultFile');
-        AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
-        _pickedImage.value = croppedImage;
-        update();
-      }
+    if (imageFile == null) {
+      AppUtility.log('Image file is null', tag: 'error');
+      return;
     }
+
+    var compressdFile = await FileUtility.compressImage(imageFile.path);
+
+    if (compressdFile == null) {
+      AppUtility.log('Compressed file is null', tag: 'error');
+      return;
+    }
+    _pickedImage.value = compressdFile;
+    update();
   }
 
   Future<void> chooseImage() async {
-    await selectSingleImage();
+    await selectProfileImage();
 
     if (_pickedImage.value == null) {
       AppUtility.showSnackBar(
@@ -129,7 +67,6 @@ class EditProfilePictureController extends GetxController {
 
   Future<void> _uploadProfilePicture() async {
     final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
-    AppUtility.printLog("Update Profile Picture Request");
 
     var filePath = _pickedImage.value!.path;
 
@@ -148,15 +85,15 @@ class EditProfilePictureController extends GetxController {
       folder: "social_media_api/avatars",
       progressCallback: (count, total) {
         var progress = ((count / total) * 100).toStringAsFixed(2);
-        AppUtility.printLog('Uploading : $progress %');
+        AppUtility.log('Uploading : $progress %');
       },
     )
         .then((value) {
       publicId = value.publicId;
       url = value.secureUrl;
     }).catchError((err) {
-      AppUtility.printLog(err);
-      AppUtility.showSnackBar('image upload failed.', StringValues.error);
+      AppUtility.log('Error: $err', tag: 'error');
+      AppUtility.showSnackBar('Error: $err', StringValues.error);
     });
 
     final body = {
@@ -165,16 +102,12 @@ class EditProfilePictureController extends GetxController {
     };
 
     try {
-      final response = await _apiProvider.uploadProfilePicture(
-        _auth.token,
-        body,
-      );
+      final response =
+          await _apiProvider.uploadProfilePicture(_auth.token, body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.closeDialog();
-        AppUtility.printLog("Update Profile Picture Success");
         await _profile.fetchProfileDetails(fetchPost: false);
         _isLoading.value = false;
         update();
@@ -183,8 +116,8 @@ class EditProfilePictureController extends GetxController {
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
-        AppUtility.printLog("Update Profile Picture Error");
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
@@ -192,53 +125,26 @@ class EditProfilePictureController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      AppUtility.printLog("Update Profile Picture Error");
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      AppUtility.printLog("Update Profile Picture Error");
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      AppUtility.printLog("Update Profile Picture Error");
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
-      AppUtility.printLog("Update Profile Picture Error");
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 
   Future<void> _removeProfilePicture() async {
-    AppUtility.printLog("Remove Profile Picture Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
 
     try {
       final response = await _apiProvider.deleteProfilePicture(_auth.token);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.closeDialog();
-        AppUtility.printLog("Remove Profile Picture Success");
         await _profile.fetchProfileDetails();
         _isLoading.value = false;
         update();
@@ -247,8 +153,8 @@ class EditProfilePictureController extends GetxController {
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
-        AppUtility.printLog("Remove Profile Picture Error");
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
@@ -256,37 +162,12 @@ class EditProfilePictureController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      AppUtility.printLog("Remove Profile Picture Error");
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      AppUtility.printLog("Remove Profile Picture Error");
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      AppUtility.printLog("Remove Profile Picture Error");
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
-      AppUtility.printLog("Remove Profile Picture Error");
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 

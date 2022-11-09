@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -40,8 +38,6 @@ class CommentController extends GetxController {
   }
 
   Future<void> _fetchComments() async {
-    AppUtility.printLog("Fetch Comment Request");
-
     var postId = Get.arguments;
 
     if (postId == '' || postId == null) return;
@@ -52,57 +48,31 @@ class CommentController extends GetxController {
     try {
       final response = await _apiProvider.getComments(_auth.token, postId);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setCommentData = CommentsResponse.fromJson(decodedData);
         _commentList.clear();
         _commentList.addAll(_commentsData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Fetch Comment Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Fetch Comment Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch Comment Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch Comment Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch Comment Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Fetch Comment Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.printLog("Fetch More Comment Request");
-
     var postId = Get.arguments;
 
     if (postId == '' || postId == null) return;
@@ -117,56 +87,30 @@ class CommentController extends GetxController {
         page: page,
       );
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setCommentData = CommentsResponse.fromJson(decodedData);
         _commentList.addAll(_commentsData.value.results!);
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetch More Comment Success");
       } else {
+        final decodedData = response.data;
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Fetch More Comment Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch More Comment Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch More Comment Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Fetch More Comment Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Fetch More Comment Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _deleteComment(String commentId) async {
-    AppUtility.printLog("Delete Comment Request");
-
     if (commentId.isEmpty) return;
 
     var index = _commentList.indexWhere((element) => element.id == commentId);
@@ -180,52 +124,27 @@ class CommentController extends GetxController {
     try {
       final response = await _apiProvider.deleteComment(_auth.token, commentId);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        // await _fetchComments();
-        AppUtility.printLog("Delete Comment Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
           duration: 2,
         );
       } else {
+        final decodedData = response.data;
         _commentList.insert(index, comment);
         update();
-        AppUtility.printLog("Delete Comment Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _commentList.insert(index, comment);
-      update();
-      AppUtility.printLog("Delete Comment Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _commentList.insert(index, comment);
-      update();
-      AppUtility.printLog("Delete Comment Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _commentList.insert(index, comment);
-      update();
-      AppUtility.printLog("Delete Comment Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _commentList.insert(index, comment);
       update();
-      AppUtility.printLog("Delete Comment Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

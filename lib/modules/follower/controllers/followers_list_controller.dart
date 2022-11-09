@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -54,10 +52,8 @@ class FollowersListController extends GetxController {
   }
 
   Future<void> _getFollowersList() async {
-    AppUtility.printLog("Get Followers List Request");
-
     if (_userId.value.isEmpty) {
-      AppUtility.printLog("UserId not found");
+      AppUtility.log('User id is empty', tag: 'error');
       return;
     }
 
@@ -65,68 +61,39 @@ class FollowersListController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.getFollowers(
-        _auth.token,
-        _userId.value,
-      );
+      final response =
+          await _apiProvider.getFollowers(_auth.token, _userId.value);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setFollowersListData = FollowerResponse.fromJson(decodedData);
         _followersList.clear();
         _followersList.addAll(_followersData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Get Followers List Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Get Followers List Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get Followers List Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get Followers List Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get Followers List Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Get Followers List Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.printLog("Get Followers List Request");
-
     if (_userId.value.isEmpty) {
-      AppUtility.printLog("UserId not found");
+      AppUtility.log('User id is empty', tag: 'error');
       return;
     }
 
-    AppUtility.printLog("Get More Followers List Request");
     _isMoreLoading.value = true;
     update();
 
@@ -137,50 +104,26 @@ class FollowersListController extends GetxController {
         page: page,
       );
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setFollowersListData = FollowerResponse.fromJson(decodedData);
         _followersList.addAll(_followersData.value.results!);
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Get More Followers List Success");
       } else {
+        final decodedData = response.data;
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Get More Followers List Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Get More Followers List Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Get More Followers List Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Get More Followers List Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Get More Followers List Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -190,7 +133,6 @@ class FollowersListController extends GetxController {
       return;
     }
 
-    AppUtility.printLog("Search Followers Request");
     _isLoading.value = true;
     update();
 
@@ -201,51 +143,27 @@ class FollowersListController extends GetxController {
         searchText,
       );
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setFollowersListData = FollowerResponse.fromJson(decodedData);
         _followersList.clear();
         _followersList.addAll(_followersData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Search Followers Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Search Followers Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Followers Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Followers Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Followers Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Search Followers Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -307,6 +225,7 @@ class FollowersListController extends GetxController {
       }
     } catch (exc) {
       _toggleFollowUser(user);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
@@ -335,6 +254,7 @@ class FollowersListController extends GetxController {
       }
     } catch (exc) {
       _toggleFollowUser(user);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }

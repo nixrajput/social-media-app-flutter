@@ -212,7 +212,7 @@ class P2PChatController extends GetxController {
         "mediaType": "image"
       };
     } catch (err) {
-      AppUtility.log(err);
+      AppUtility.log('Image upload failed. Error: $err', tag: 'error');
       AppUtility.showSnackBar('Image upload failed.', StringValues.error);
       return null;
     }

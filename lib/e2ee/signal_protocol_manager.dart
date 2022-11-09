@@ -34,14 +34,12 @@ class SignalProtocolManager {
         remoteAddress,
       );
 
-      // Get preKeyBundleFromServer
-      AppUtility.printLog('Get PreKeyBundle Request');
+      /// Get preKeyBundle From Server
       var response =
           await _apiProvider.getPreKeyBundle(_auth.token, remoteUserId);
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (response.statusCode == 200) {
-        AppUtility.printLog('Get PreKeyBundle Success');
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.printLog(decodedData[StringValues.message]);
         var serverKey = ServerKey.fromJson(decodedData['data']['preKeyBundle']);
         var preKeyBundle =
@@ -50,8 +48,8 @@ class SignalProtocolManager {
         var sessionCipher = SessionCipher.fromStore(store, remoteAddress);
         await store.storeSessionCipher(remoteUserId, sessionCipher);
       } else {
-        AppUtility.printLog('Get PreKeyBundle Error');
-        AppUtility.printLog(decodedData[StringValues.message]);
+        final decodedData = response.data;
+        AppUtility.log(decodedData[StringValues.message], tag: 'error');
         throw Exception(decodedData[StringValues.message]);
       }
     }

@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -45,11 +43,10 @@ class DeactivateAccountController extends GetxController {
     }
 
     final body = {
-      'email': profile.profileDetails!.user!.email,
+      'email': profile.profileDetails!.user!.email.trim(),
       "password": passwordTextController.text.trim(),
     };
 
-    AppUtility.printLog("Deactivate Account Request");
     AppUtility.showLoadingDialog();
     _isLoading.value = true;
     update();
@@ -57,10 +54,8 @@ class DeactivateAccountController extends GetxController {
     try {
       final response = await _apiProvider.deactivateAccount(_auth.token, body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog("Deactivate Account Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         await _auth.logout();
         AppUtility.closeDialog();
         _isLoading.value = false;
@@ -71,46 +66,21 @@ class DeactivateAccountController extends GetxController {
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Deactivate Account Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Deactivate Account Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Deactivate Account Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Deactivate Account Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Deactivate Account Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 

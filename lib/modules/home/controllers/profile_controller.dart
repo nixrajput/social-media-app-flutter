@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -308,8 +307,6 @@ class ProfileController extends GetxController {
   }
 
   Future<void> _updateProfile(Map<String, dynamic> details) async {
-    AppUtility.printLog("Update Profile Request");
-
     if (details.isEmpty) {
       AppUtility.printLog("No Data To Update");
       return;
@@ -320,44 +317,23 @@ class ProfileController extends GetxController {
     try {
       final response = await _apiProvider.updateProfile(_auth.token, body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog("Update Profile Success");
-
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         await _fetchProfileDetails(fetchPost: false);
-
         AppUtility.showSnackBar(
-          StringValues.updateProfileSuccessful,
+          decodedData[StringValues.message],
           StringValues.success,
         );
       } else {
-        AppUtility.printLog("Update Profile Error");
-
+        final decodedData = response.data;
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.printLog("Update Profile Error");
-
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog("Update Profile Error");
-
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.printLog("Update Profile Error");
-
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
-      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 

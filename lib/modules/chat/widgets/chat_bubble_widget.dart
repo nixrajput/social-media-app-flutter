@@ -125,6 +125,23 @@ class ChatBubble extends StatelessWidget {
                 avatar: message.sender!.avatar,
                 size: Dimens.sixTeen,
               ),
+            if (isYourMessage && _setMessageStatus(isYourMessage) == 'Pending')
+              Padding(
+                padding: EdgeInsets.only(bottom: Dimens.eight),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    NxCircularProgressIndicator(
+                      size: Dimens.twenty,
+                      strokeWidth: Dimens.one,
+                      color: ColorValues.lightGrayColor,
+                    ),
+                    Dimens.boxWidth8,
+                  ],
+                ),
+              ),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onLongPress: showChatDetailsAndOptions,
@@ -183,9 +200,7 @@ class ChatBubble extends StatelessWidget {
                                 color: _setMessageColor(isYourMessage),
                               ),
                             ),
-                          if (message.message != null &&
-                              message.message!.isNotEmpty)
-                            Dimens.boxHeight8,
+                          Dimens.boxHeight8,
                           Text(
                             message.createdAt!.getTime(),
                             style: AppStyles.style12Normal.copyWith(
@@ -194,27 +209,12 @@ class ChatBubble extends StatelessWidget {
                             ),
                           ),
                           if (isYourMessage)
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  _setMessageStatus(isYourMessage),
-                                  style: AppStyles.style12Normal.copyWith(
-                                    fontSize: Dimens.ten,
-                                    color: _setMessageStatusColor(),
-                                  ),
-                                ),
-                                Dimens.boxWidth8,
-                                if (_setMessageStatus(isYourMessage) ==
-                                    'Pending')
-                                  NxCircularProgressIndicator(
-                                    size: Dimens.fourteen,
-                                    strokeWidth: Dimens.one,
-                                    color: _setMessageStatusColor(),
-                                  ),
-                              ],
+                            Text(
+                              _setMessageStatus(isYourMessage),
+                              style: AppStyles.style12Normal.copyWith(
+                                fontSize: Dimens.ten,
+                                color: _setMessageStatusColor(),
+                              ),
                             ),
                         ],
                       ),
@@ -223,6 +223,23 @@ class ChatBubble extends StatelessWidget {
                 ),
               ),
             ),
+            if (!isYourMessage && _setMessageStatus(isYourMessage) == 'Pending')
+              Padding(
+                padding: EdgeInsets.only(bottom: Dimens.eight),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Dimens.boxWidth8,
+                    NxCircularProgressIndicator(
+                      size: Dimens.twenty,
+                      strokeWidth: Dimens.one,
+                      color: ColorValues.lightGrayColor,
+                    ),
+                  ],
+                ),
+              ),
             if (isYourMessage)
               AvatarWidget(
                 avatar: profile.profileDetails!.user!.avatar,

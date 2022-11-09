@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -54,10 +52,8 @@ class FollowingListController extends GetxController {
   }
 
   Future<void> _getFollowingList() async {
-    AppUtility.printLog("Get Following List Request");
-
     if (_userId.value.isEmpty) {
-      AppUtility.printLog("UserId not found");
+      AppUtility.log('User id is empty', tag: 'error');
       return;
     }
 
@@ -70,59 +66,33 @@ class FollowingListController extends GetxController {
         _userId.value,
       );
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setFollowingListData = FollowerResponse.fromJson(decodedData);
         _followingList.clear();
         _followingList.addAll(_followingData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Get Following List Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Get Following List Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get Following List Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get Following List Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Get Following List Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Get Following List Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    AppUtility.printLog("Get Following List Request");
-
     if (_userId.value.isEmpty) {
-      AppUtility.printLog("UserId not found");
+      AppUtility.log('User id is empty', tag: 'error');
       return;
     }
 
@@ -136,50 +106,26 @@ class FollowingListController extends GetxController {
         page: page,
       );
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setFollowingListData = FollowerResponse.fromJson(decodedData);
         _followingList.addAll(_followingData.value.results!);
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Get More Following List Success");
       } else {
+        final decodedData = response.data;
         _isMoreLoading.value = false;
         update();
-        AppUtility.printLog("Get More Following List Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Get More Following List Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Get More Following List Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isMoreLoading.value = false;
-      update();
-      AppUtility.printLog("Get More Following List Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.printLog("Get More Following List Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -189,7 +135,6 @@ class FollowingListController extends GetxController {
       return;
     }
 
-    AppUtility.printLog("Search Followings Request");
     _isLoading.value = true;
     update();
 
@@ -200,51 +145,27 @@ class FollowingListController extends GetxController {
         searchText,
       );
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         setFollowingListData = FollowerResponse.fromJson(decodedData);
         _followingList.clear();
         _followingList.addAll(_followingData.value.results!);
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Search Followings Success");
       } else {
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
-        AppUtility.printLog("Search Followings Error");
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
-    } on SocketException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Followings Error");
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Followings Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog("Search Followings Error");
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.printLog("Search Followings Error");
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -306,6 +227,7 @@ class FollowingListController extends GetxController {
       }
     } catch (exc) {
       _toggleFollowUser(user);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
@@ -334,6 +256,7 @@ class FollowingListController extends GetxController {
       }
     } catch (exc) {
       _toggleFollowUser(user);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }

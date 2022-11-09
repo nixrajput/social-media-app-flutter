@@ -142,6 +142,32 @@ abstract class FileUtility {
     return imageFile;
   }
 
+  static Future<File?> selectImage({ImageSource? source}) async {
+    final imagePicker = ImagePicker();
+
+    final pickedImage = await imagePicker.pickImage(
+      source: source ?? ImageSource.gallery,
+      imageQuality: 100,
+    );
+
+    if (pickedImage == null) {
+      AppUtility.log('No image selected');
+      return null;
+    }
+
+    var imageFile = File(pickedImage.path);
+    var size = imageFile.lengthSync();
+
+    if (size > (5 * maxImageBytes)) {
+      AppUtility.showSnackBar(
+        'Image size must be less than 5mb',
+        '',
+      );
+      return null;
+    }
+    return imageFile;
+  }
+
   static Future<List<File>?> selectMultipleImages() async {
     var fileList = <File>[];
     final imagePicker = ImagePicker();

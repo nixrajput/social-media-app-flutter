@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,7 +34,6 @@ class CreateCommentController extends GetxController {
   bool get isLoading => _isLoading.value;
 
   Future<void> _createNewComment(String comment, String postId) async {
-    AppUtility.printLog("Add Comment Request");
     commentTextController.clear();
     _comment.value = '';
     _isLoading.value = true;
@@ -46,10 +43,8 @@ class CreateCommentController extends GetxController {
       final response =
           await _apiProvider.addComment(_auth.token, postId, comment);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog("Add Comment Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         _commentController.commentList
             .insert(0, Comment.fromJson(decodedData['comment']));
         _commentController.update();
@@ -61,7 +56,7 @@ class CreateCommentController extends GetxController {
           duration: 2,
         );
       } else {
-        AppUtility.printLog("Add Comment Error");
+        final decodedData = response.data;
         _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
@@ -69,33 +64,12 @@ class CreateCommentController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.printLog("Add Comment Error");
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.printLog("Add Comment Error");
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.printLog("Add Comment Error");
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.printLog("Add Comment Error");
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 

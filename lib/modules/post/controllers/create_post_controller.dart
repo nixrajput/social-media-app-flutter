@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloudinary/cloudinary.dart';
@@ -170,7 +169,7 @@ class CreatePostController extends GetxController {
           folder: 'social_media_api/posts/thumbnails',
           progressCallback: (count, total) {
             var progress = ((count / total) * 100).toStringAsFixed(2);
-            AppUtility.printLog('Uploading Thumbnail : $progress %');
+            AppUtility.log('Uploading Thumbnail : $progress %');
           },
         );
 
@@ -190,7 +189,7 @@ class CreatePostController extends GetxController {
           folder: "social_media_api/posts/videos",
           progressCallback: (count, total) {
             var progress = ((count / total) * 100).toStringAsFixed(2);
-            AppUtility.printLog('Uploading Video : $progress %');
+            AppUtility.log('Uploading Video : $progress %');
           },
         )
             .then((value) {
@@ -204,8 +203,9 @@ class CreatePostController extends GetxController {
             "mediaType": "video"
           });
         }).catchError((err) {
-          AppUtility.printLog(err);
-          AppUtility.showSnackBar('Video upload failed.', StringValues.error);
+          AppUtility.log('Video upload failed. Error: $err', tag: 'error');
+          AppUtility.showSnackBar(
+              'Video upload failed. Error: $err', StringValues.error);
           return;
         });
       } else {
@@ -217,7 +217,7 @@ class CreatePostController extends GetxController {
           folder: "social_media_api/posts/images",
           progressCallback: (count, total) {
             var progress = ((count / total) * 100).toStringAsFixed(2);
-            AppUtility.printLog('Uploading : $progress %');
+            AppUtility.log('Uploading : $progress %');
           },
         )
             .then((value) {
@@ -227,8 +227,9 @@ class CreatePostController extends GetxController {
             "mediaType": "image"
           });
         }).catchError((err) {
-          AppUtility.printLog(err);
-          AppUtility.showSnackBar('Image upload failed.', StringValues.error);
+          AppUtility.log('Image upload failed. Error: $err', tag: 'error');
+          AppUtility.showSnackBar(
+              'Image upload failed. Error: $err', StringValues.error);
           return;
         });
       }
@@ -245,9 +246,8 @@ class CreatePostController extends GetxController {
 
       final response = await _apiProvider.createPost(_auth.token, body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 201) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         _caption.value = '';
         _pickedFileList.clear();
         _postController.postList.insert(0, Post.fromJson(decodedData['post']));
@@ -261,6 +261,7 @@ class CreatePostController extends GetxController {
           StringValues.success,
         );
       } else {
+        final decodedData = response.data;
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
@@ -269,33 +270,12 @@ class CreatePostController extends GetxController {
           StringValues.error,
         );
       }
-    } on SocketException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.internetConnError);
-      AppUtility.showSnackBar(
-          StringValues.internetConnError, StringValues.error);
-    } on TimeoutException {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.connTimedOut);
-      AppUtility.showSnackBar(StringValues.connTimedOut, StringValues.error);
-    } on FormatException catch (e) {
-      AppUtility.closeDialog();
-      _isLoading.value = false;
-      update();
-      AppUtility.printLog(StringValues.formatExcError);
-      AppUtility.printLog(e);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
     } catch (exc) {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.printLog(StringValues.errorOccurred);
-      AppUtility.printLog(exc);
-      AppUtility.showSnackBar(StringValues.errorOccurred, StringValues.error);
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 
@@ -337,7 +317,7 @@ class CreatePostController extends GetxController {
       var croppedImage = File(croppedFile!.path);
       File? resultFile = croppedImage;
       var size = croppedImage.lengthSync();
-      AppUtility.printLog('Original file size: ${resultFile.sizeToKb()} KB');
+      AppUtility.log('Original file size: ${resultFile.sizeToKb()} KB');
 
       if (size > (5 * maxImageBytes)) {
         AppUtility.showSnackBar(
@@ -345,8 +325,8 @@ class CreatePostController extends GetxController {
           '',
         );
       } else if (size < (maxImageBytes / 2)) {
-        AppUtility.printLog('Result $resultFile');
-        AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+        AppUtility.log('Result $resultFile');
+        AppUtility.log('Result file size: ${resultFile.sizeToKb()} KB');
         _pickedFileList.add(resultFile);
         update();
       } else {
@@ -356,7 +336,7 @@ class CreatePostController extends GetxController {
 
         AppUtility.showLoadingDialog(message: 'Compressing...');
         var timestamp = DateTime.now().millisecondsSinceEpoch;
-        AppUtility.printLog('Compressing...');
+        AppUtility.log('Compressing...');
         resultFile = await FlutterImageCompress.compressAndGetFile(
           resultFile.path,
           '${tempDir.absolute.path}/temp$timestamp.jpg',
@@ -367,8 +347,8 @@ class CreatePostController extends GetxController {
         AppUtility.closeDialog();
 
         /// ----------------------------------------------------------------
-        AppUtility.printLog('Result $resultFile');
-        AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+        AppUtility.log('Result $resultFile');
+        AppUtility.log('Result file size: ${resultFile.sizeToKb()} KB');
         _pickedFileList.add(resultFile);
         update();
       }
@@ -417,7 +397,7 @@ class CreatePostController extends GetxController {
         var croppedImage = File(croppedFile!.path);
         File? resultFile = croppedImage;
         var size = croppedImage.lengthSync();
-        AppUtility.printLog('Original file size: ${resultFile.sizeToKb()} KB');
+        AppUtility.log('Original file size: ${resultFile.sizeToKb()} KB');
 
         if (size > (5 * maxImageBytes)) {
           AppUtility.showSnackBar(
@@ -425,8 +405,8 @@ class CreatePostController extends GetxController {
             '',
           );
         } else if (size < (maxImageBytes / 2)) {
-          AppUtility.printLog('Result $resultFile');
-          AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+          AppUtility.log('Result $resultFile');
+          AppUtility.log('Result file size: ${resultFile.sizeToKb()} KB');
           _pickedFileList.add(resultFile);
           update();
         } else {
@@ -436,7 +416,7 @@ class CreatePostController extends GetxController {
 
           AppUtility.showLoadingDialog(message: 'Compressing...');
           var timestamp = DateTime.now().millisecondsSinceEpoch;
-          AppUtility.printLog('Compressing...');
+          AppUtility.log('Compressing...');
           resultFile = await FlutterImageCompress.compressAndGetFile(
             resultFile.path,
             '${tempDir.absolute.path}/temp$timestamp.jpg',
@@ -447,8 +427,8 @@ class CreatePostController extends GetxController {
           AppUtility.closeDialog();
 
           /// ----------------------------------------------------------------
-          AppUtility.printLog('Result $resultFile');
-          AppUtility.printLog('Result file size: ${resultFile.sizeToKb()} KB');
+          AppUtility.log('Result $resultFile');
+          AppUtility.log('Result file size: ${resultFile.sizeToKb()} KB');
           _pickedFileList.add(resultFile);
           update();
         }
@@ -472,7 +452,7 @@ class CreatePostController extends GetxController {
 
       var videoFile = File(pickedVideo.path);
       var videoSize = videoFile.lengthSync();
-      AppUtility.printLog('Original video size: ${videoFile.sizeToMb()} MB');
+      AppUtility.log('Original video size: ${videoFile.sizeToMb()} MB');
 
       if (videoSize > (10 * maxVideoBytes)) {
         AppUtility.showSnackBar(
@@ -480,8 +460,8 @@ class CreatePostController extends GetxController {
           '',
         );
       } else if (videoSize < maxVideoBytes) {
-        AppUtility.printLog('Result $videoFile');
-        AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+        AppUtility.log('Result $videoFile');
+        AppUtility.log('Result video size: ${videoFile.sizeToMb()} MB');
 
         _pickedFileList.add(videoFile);
         update();
@@ -494,14 +474,14 @@ class CreatePostController extends GetxController {
           quality: VideoQuality.DefaultQuality,
         );
         AppUtility.closeDialog();
-        AppUtility.printLog('Result ${info!.toJson()}');
+        AppUtility.log('Result ${info!.toJson()}');
         videoFile = info.file!;
         videoSize = info.filesize!;
 
         /// ------------------------------------------------------------------
 
-        AppUtility.printLog('Result $videoFile');
-        AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+        AppUtility.log('Result $videoFile');
+        AppUtility.log('Result video size: ${videoFile.sizeToMb()} MB');
 
         if (videoSize > (2 * maxVideoBytes)) {
           AppUtility.showSnackBar(
@@ -538,7 +518,7 @@ class CreatePostController extends GetxController {
 
         var videoFile = File(file.path!);
         var videoSize = file.size;
-        AppUtility.printLog('Original video size: ${videoFile.sizeToMb()} MB');
+        AppUtility.log('Original video size: ${videoFile.sizeToMb()} MB');
 
         if (videoSize > (10 * maxVideoBytes)) {
           AppUtility.showSnackBar(
@@ -546,8 +526,8 @@ class CreatePostController extends GetxController {
             '',
           );
         } else if (videoSize < maxVideoBytes) {
-          AppUtility.printLog('Result $videoFile');
-          AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+          AppUtility.log('Result $videoFile');
+          AppUtility.log('Result video size: ${videoFile.sizeToMb()} MB');
 
           _pickedFileList.add(videoFile);
           update();
@@ -560,14 +540,14 @@ class CreatePostController extends GetxController {
             quality: VideoQuality.DefaultQuality,
           );
           AppUtility.closeDialog();
-          AppUtility.printLog('Result ${info!.toJson()}');
+          AppUtility.log('Result ${info!.toJson()}');
           videoFile = info.file!;
           videoSize = info.filesize!;
 
           /// ------------------------------------------------------------------
 
-          AppUtility.printLog('Result $videoFile');
-          AppUtility.printLog('Result video size: ${videoFile.sizeToMb()} MB');
+          AppUtility.log('Result $videoFile');
+          AppUtility.log('Result video size: ${videoFile.sizeToMb()} MB');
 
           if (videoSize > (2 * maxVideoBytes)) {
             AppUtility.showSnackBar(

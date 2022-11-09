@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math' show Random;
 
 import 'package:connectivity/connectivity.dart';
@@ -235,101 +234,52 @@ class AuthService extends GetxService {
   }
 
   Future<void> saveDeviceIdToServer(String deviceId) async {
-    AppUtility.log("Save DeviceId Request");
+    var body = {'deviceId': deviceId};
 
     try {
-      final response = await _apiProvider.saveDeviceId(
-        token,
-        {'deviceId': deviceId},
-      );
+      final response = await _apiProvider.saveDeviceId(token, body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.log("Save DeviceId Success");
-        AppUtility.log(decodedData[StringValues.message], tag: 'info');
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        AppUtility.log(decodedData[StringValues.message]);
       } else {
-        AppUtility.log("Save DeviceId Error");
+        final decodedData = response.data;
         AppUtility.log(decodedData[StringValues.message], tag: 'error');
       }
-    } on SocketException {
-      AppUtility.log("Save DeviceId Error");
-      AppUtility.log(StringValues.internetConnError, tag: 'error');
-    } on TimeoutException {
-      AppUtility.log("Save DeviceId Error");
-      AppUtility.log(StringValues.connTimedOut, tag: 'error');
-    } on FormatException catch (e) {
-      AppUtility.log("Save DeviceId Error");
-      AppUtility.log('Format Exception: $e', tag: 'error');
     } catch (exc) {
-      AppUtility.printLog("Save DeviceId Error");
-      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
     }
   }
 
   Future<void> savePreKeyBundle(Map<String, dynamic> preKeyBundle) async {
-    AppUtility.printLog("Save PreKeyBundle Request");
-
+    var body = {'preKeyBundle': preKeyBundle};
     try {
-      final response = await _apiProvider.savePreKeyBundle(
-        _token,
-        {'preKeyBundle': preKeyBundle},
-      );
+      final response = await _apiProvider.savePreKeyBundle(_token, body);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
-        AppUtility.printLog(decodedData[StringValues.message]);
-        AppUtility.printLog("Save PreKeyBundle Success");
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        AppUtility.log(decodedData[StringValues.message]);
       } else {
-        AppUtility.printLog(decodedData[StringValues.message]);
-        AppUtility.printLog("Save PreKeyBundle Error");
+        final decodedData = response.data;
+        AppUtility.log(decodedData[StringValues.message], tag: 'error');
       }
-    } on SocketException {
-      AppUtility.printLog("Save PreKeyBundle Error");
-      AppUtility.printLog(StringValues.internetConnError);
-    } on TimeoutException {
-      AppUtility.printLog("Save PreKeyBundle Error");
-      AppUtility.printLog(StringValues.connTimedOut);
-    } on FormatException catch (e) {
-      AppUtility.log("Save DeviceId Error");
-      AppUtility.log('Format Exception: $e', tag: 'error');
     } catch (exc) {
-      AppUtility.printLog("Save DeviceId Error");
       AppUtility.log('Error: $exc', tag: 'error');
     }
   }
 
   Future<void> saveFcmToken(String fcmToken) async {
-    AppUtility.log("Save FcmToken Request");
-
     try {
-      final response = await _apiProvider.saveFcmToken(
-        _token,
-        fcmToken,
-      );
+      final response = await _apiProvider.saveFcmToken(_token, fcmToken);
 
-      final decodedData = jsonDecode(utf8.decode(response.bodyBytes));
-
-      if (response.statusCode == 200) {
+      if (response.isSuccessful) {
+        final decodedData = response.data;
         AppUtility.log(decodedData[StringValues.message]);
-        AppUtility.printLog("Save FcmToken Success");
       } else {
-        AppUtility.log(
-            "Save FcmToken Error: ${decodedData[StringValues.message]}",
-            tag: 'error');
+        final decodedData = response.data;
+        AppUtility.log("${decodedData[StringValues.message]}", tag: 'error');
       }
-    } on SocketException {
-      AppUtility.log("Save FcmToken Error");
-      AppUtility.log(StringValues.internetConnError);
-    } on TimeoutException {
-      AppUtility.log("Save FcmToken Error");
-      AppUtility.log(StringValues.connTimedOut);
-    } on FormatException catch (e) {
-      AppUtility.log("Save DeviceId Error");
-      AppUtility.log('Format Exception: $e', tag: 'error');
     } catch (exc) {
-      AppUtility.printLog("Save DeviceId Error");
       AppUtility.log('Error: $exc', tag: 'error');
     }
   }
