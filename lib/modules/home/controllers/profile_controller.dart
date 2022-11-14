@@ -8,7 +8,7 @@ import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/models/responses/profile_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/services/storage_service.dart';
@@ -114,11 +114,13 @@ class ProfileController extends GetxController {
       } else {
         AppUtility.log("Failed To Load Profile Posts From Local Storage",
             tag: 'error');
+        await _auth.deleteAllLocalDataAndCache();
         return false;
       }
     } else {
       AppUtility.log("Failed To Load Profile Details From Local Storage",
           tag: 'error');
+      await _auth.deleteAllLocalDataAndCache();
       return false;
     }
   }

@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
-import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
+import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -88,10 +88,6 @@ class LoginController extends GetxController {
         try {
           await _profile.fetchProfileDetails();
 
-          if (_auth.deviceId != null && _auth.deviceId! != 0) {
-            await _auth.saveDeviceIdToServer(_auth.deviceId.toString());
-          }
-
           var fcmToken = await _auth.readFcmTokenFromLocalStorage();
 
           if (fcmToken.isNotEmpty) {
@@ -107,7 +103,7 @@ class LoginController extends GetxController {
           }
 
           await _auth.saveLoginInfo();
-          await LoginDeviceInfoController.find.getLoginDeviceInfo();
+          await LoginInfoController.find.getLoginHisory();
           _clearLoginTextControllers();
 
           _isLoading.value = false;

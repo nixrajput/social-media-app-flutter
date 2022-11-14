@@ -20,7 +20,7 @@ class ResponseData {
 
 class ApiProvider {
   ApiProvider(this._client, {this.baseUrl}) {
-    baseUrl ??= AppSecrets.awsServerUrl;
+    baseUrl ??= AppUrls.baseUrl;
   }
 
   final http.Client _client;
@@ -245,25 +245,14 @@ class ApiProvider {
 
   /// Location & Device Info ---------------------------------------------------
 
-  Future<ResponseData> getLocationInfo() async {
-    final response = await _catchAsyncApiError(
-      baseUrl: AppUrls.locationUrl,
-      endPoint: '',
-      method: 'GET',
-      feature: 'Location Info',
-    );
-
-    return response;
-  }
-
-  Future<ResponseData> saveDeviceInfo(
+  Future<ResponseData> saveLoginInfo(
     String token,
     Map<String, dynamic> body,
   ) async {
     final response = await _catchAsyncApiError(
-      endPoint: AppUrls.saveLoginInfoEndpoint,
+      endPoint: AppUrls.loginInfoEndpoint,
       method: 'POST',
-      feature: 'Save Device Info',
+      feature: 'Save Login Info',
       body: body,
       headers: {"authorization": "Bearer $token"},
     );
@@ -271,20 +260,49 @@ class ApiProvider {
     return response;
   }
 
-  Future<ResponseData> getDeviceInfo(String token) async {
+  Future<ResponseData> getLoginHistory(String token,
+      {int? page, int? limit}) async {
+    var queryParameters = <String, dynamic>{};
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
     final response = await _catchAsyncApiError(
-      endPoint: AppUrls.getLoginInfoEndpoint,
+      endPoint: AppUrls.getLoginHistoryEndpoint,
       method: 'GET',
-      feature: 'Get Login Info',
+      feature: 'Get Login History',
       headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
     );
 
     return response;
   }
 
-  Future<ResponseData> deleteDeviceInfo(String token, String deviceId) async {
+  Future<ResponseData> getLoginInfoDetails(
+      String token, String deviceId, String ip) async {
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['deviceId'] = deviceId;
+    queryParameters['ip'] = ip;
+
     final response = await _catchAsyncApiError(
-      endPoint: AppUrls.deleteDeviceInfoEndpoint,
+      endPoint: AppUrls.getLoginHistoryEndpoint,
+      method: 'GET',
+      feature: 'Get Login History',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
+    );
+
+    return response;
+  }
+
+  Future<ResponseData> deleteLoginInfo(String token, String deviceId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.loginInfoEndpoint,
       method: 'DELETE',
       feature: 'Delete Device Info',
       headers: {"authorization": "Bearer $token"},
@@ -337,28 +355,29 @@ class ApiProvider {
     return response;
   }
 
-  Future<ResponseData> getDeviceId(String token, String userId) async {
+  // Future<ResponseData> getDeviceId(String token, String userId) async {
+  //   var queryParameters = <String, dynamic>{};
+  //   queryParameters['id'] = userId;
+
+  //   final response = await _catchAsyncApiError(
+  //     endPoint: AppUrls.deviceIdEndpoint,
+  //     method: 'GET',
+  //     feature: 'Get Device Id',
+  //     headers: {"authorization": "Bearer $token"},
+  //     queryParams: queryParameters,
+  //   );
+
+  //   return response;
+  // }
+
+  Future<ResponseData> getFcmToken(String token, String userId) async {
     var queryParameters = <String, dynamic>{};
     queryParameters['id'] = userId;
 
     final response = await _catchAsyncApiError(
-      endPoint: AppUrls.deviceIdEndpoint,
+      endPoint: AppUrls.fcmTokenEndpoint,
       method: 'GET',
-      feature: 'Get Device Id',
-      headers: {"authorization": "Bearer $token"},
-      queryParams: queryParameters,
-    );
-
-    return response;
-  }
-
-  Future<ResponseData> saveDeviceId(
-      String token, Map<String, dynamic> body) async {
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.deviceIdEndpoint,
-      method: 'POST',
-      body: body,
-      feature: 'Save Device Id',
+      feature: 'Get FCM Token',
       headers: {"authorization": "Bearer $token"},
     );
 

@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/comment.dart';
 import 'package:social_media_app/apis/models/responses/comments_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';

@@ -22,7 +22,6 @@ class User {
     required this.followingStatus,
     required this.accountStatus,
     required this.isVerified,
-    this.deviceId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -75,15 +74,11 @@ class User {
   @HiveField(10)
   bool isVerified;
 
-  @JsonKey(name: 'deviceId')
-  @HiveField(11)
-  String? deviceId;
-
   @JsonKey(name: 'createdAt')
-  @HiveField(12)
+  @HiveField(11)
   final DateTime createdAt;
 
   @JsonKey(name: 'updatedAt')
-  @HiveField(13)
+  @HiveField(12)
   final DateTime updatedAt;
 }

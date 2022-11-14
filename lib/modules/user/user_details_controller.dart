@@ -7,7 +7,7 @@ import 'package:social_media_app/apis/models/entities/user_details.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/models/responses/user_details_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/utils/utility.dart';

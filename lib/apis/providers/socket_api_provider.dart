@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:social_media_app/constants/secrets.dart';
+import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class SocketApiProvider {
@@ -46,8 +46,7 @@ class SocketApiProvider {
     }
 
     try {
-      _socket =
-          await WebSocket.connect('${AppSecrets.awsWebSocketUrl}?token=$token');
+      _socket = await WebSocket.connect('${AppUrls.webSocketUrl}?token=$token');
 
       if (_socket != null && isConnected) {
         AppUtility.log("Socket connection established");

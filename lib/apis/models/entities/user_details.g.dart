@@ -15,8 +15,6 @@ abstract class _$UserDetailsCWProxy {
 
   UserDetails createdAt(DateTime createdAt);
 
-  UserDetails deviceId(String? deviceId);
-
   UserDetails dob(String? dob);
 
   UserDetails email(String email);
@@ -64,7 +62,6 @@ abstract class _$UserDetailsCWProxy {
     String? accountStatus,
     MediaFile? avatar,
     DateTime? createdAt,
-    String? deviceId,
     String? dob,
     String? email,
     String? fname,
@@ -104,9 +101,6 @@ class _$UserDetailsCWProxyImpl implements _$UserDetailsCWProxy {
 
   @override
   UserDetails createdAt(DateTime createdAt) => this(createdAt: createdAt);
-
-  @override
-  UserDetails deviceId(String? deviceId) => this(deviceId: deviceId);
 
   @override
   UserDetails dob(String? dob) => this(dob: dob);
@@ -178,7 +172,6 @@ class _$UserDetailsCWProxyImpl implements _$UserDetailsCWProxy {
     Object? accountStatus = const $CopyWithPlaceholder(),
     Object? avatar = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
-    Object? deviceId = const $CopyWithPlaceholder(),
     Object? dob = const $CopyWithPlaceholder(),
     Object? email = const $CopyWithPlaceholder(),
     Object? fname = const $CopyWithPlaceholder(),
@@ -216,10 +209,6 @@ class _$UserDetailsCWProxyImpl implements _$UserDetailsCWProxy {
           ? _value.createdAt
           // ignore: cast_nullable_to_non_nullable
           : createdAt as DateTime,
-      deviceId: deviceId == const $CopyWithPlaceholder()
-          ? _value.deviceId
-          // ignore: cast_nullable_to_non_nullable
-          : deviceId as String?,
       dob: dob == const $CopyWithPlaceholder()
           ? _value.dob
           // ignore: cast_nullable_to_non_nullable
@@ -334,7 +323,6 @@ UserDetails _$UserDetailsFromJson(Map<String, dynamic> json) => UserDetails(
       isValid: json['isValid'] as bool,
       isVerified: json['isVerified'] as bool,
       role: json['role'] as String,
-      deviceId: json['deviceId'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -361,7 +349,6 @@ Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
       'isValid': instance.isValid,
       'isVerified': instance.isVerified,
       'role': instance.role,
-      'deviceId': instance.deviceId,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';

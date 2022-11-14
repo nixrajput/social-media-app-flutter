@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
-import 'package:social_media_app/modules/settings/views/widgets/login_device_info_widget.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
+import 'package:social_media_app/modules/settings/views/widgets/login_info_widget.dart';
 
-class LoginActivityView extends StatelessWidget {
-  const LoginActivityView({Key? key}) : super(key: key);
+class LoginInfoHistoryView extends StatelessWidget {
+  const LoginInfoHistoryView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,7 @@ class LoginActivityView extends StatelessWidget {
           width: Dimens.screenWidth,
           height: Dimens.screenHeight,
           child: NxRefreshIndicator(
-            onRefresh: LoginDeviceInfoController.find.getLoginDeviceInfo,
+            onRefresh: LoginInfoController.find.getLoginHisory,
             showProgress: false,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -43,7 +46,7 @@ class LoginActivityView extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: Dimens.edgeInsets0_16,
-        child: GetBuilder<LoginDeviceInfoController>(
+        child: GetBuilder<LoginInfoController>(
           builder: (logic) {
             if (logic.isLoading) {
               return const Center(child: NxCircularProgressIndicator());
@@ -60,17 +63,33 @@ class LoginActivityView extends StatelessWidget {
                 children: [
                   ListView.builder(
                     shrinkWrap: true,
-                    itemCount: logic.loginDeviceInfoList.length,
+                    itemCount: logic.loginInfoList.length,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (ctx, index) {
-                      var item = logic.loginDeviceInfoList.elementAt(index);
-                      return LoginDeviceInfoWidget(
+                      var item = logic.loginInfoList.elementAt(index);
+                      return LoginInfoWidget(
                         item: item,
-                        totalLength: logic.loginDeviceInfoList.length,
+                        totalLength: logic.loginInfoList.length,
                         index: index,
                       );
                     },
                   ),
+                  if (logic.isMoreLoading) Dimens.boxHeight8,
+                  if (logic.isMoreLoading)
+                    const Center(child: NxCircularProgressIndicator()),
+                  if (!logic.isMoreLoading &&
+                      logic.loginHistoryData!.results != null &&
+                      logic.loginHistoryData!.hasNextPage!)
+                    Center(
+                      child: NxTextButton(
+                        label: 'Load more',
+                        onTap: logic.loadMore,
+                        labelStyle: AppStyles.style14Bold.copyWith(
+                          color: ColorValues.primaryLightColor,
+                        ),
+                        padding: Dimens.edgeInsets8_0,
+                      ),
+                    ),
                   Dimens.boxHeight16,
                 ],
               ),

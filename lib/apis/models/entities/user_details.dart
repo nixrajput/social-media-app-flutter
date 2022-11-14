@@ -28,7 +28,6 @@ class UserDetails {
     required this.isValid,
     required this.isVerified,
     required this.role,
-    this.deviceId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -97,9 +96,6 @@ class UserDetails {
 
   @JsonKey(name: 'role')
   final String role;
-
-  @JsonKey(name: 'deviceId')
-  String? deviceId;
 
   @JsonKey(name: 'createdAt')
   final DateTime createdAt;

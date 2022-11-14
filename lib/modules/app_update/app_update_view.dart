@@ -7,6 +7,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -45,28 +46,35 @@ class AppUpdateView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   AppUtility.buildAppLogo(fontSize: Dimens.thirtyTwo),
-                  Dimens.boxHeight16,
+                  Dimens.boxHeight8,
                   RichText(
                     text: TextSpan(
                       text: StringValues.appUpdateAvailable.toTitleCase(),
-                      style: AppStyles.style18Bold.copyWith(
+                      style: AppStyles.style14Bold.copyWith(
                         color:
                             Theme.of(Get.context!).textTheme.bodyText1!.color,
                       ),
                     ),
                   ),
-                  Dimens.boxHeight16,
+                  Dimens.boxHeight12,
                   Container(
-                    height: Dimens.hundred * 2.4,
+                    height: Dimens.screenWidth,
                     decoration: BoxDecoration(
                       color: Theme.of(Get.context!).dialogBackgroundColor,
                       borderRadius: BorderRadius.circular(Dimens.eight),
                     ),
-                    child: Markdown(
-                      shrinkWrap: true,
+                    child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      padding: Dimens.edgeInsets8,
-                      data: logic.changelog,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildCurrentVersionText(logic),
+                          _buildLatestVersionText(logic),
+                          _buildChangelogMarkdown(logic),
+                        ],
+                      ),
                     ),
                   ),
                   Dimens.boxHeight20,
@@ -78,7 +86,7 @@ class AppUpdateView extends StatelessWidget {
                     padding: Dimens.edgeInsets0_8,
                     width: Dimens.screenWidth,
                     height: Dimens.fourty,
-                    labelStyle: AppStyles.style14Normal.copyWith(
+                    labelStyle: AppStyles.style14Bold.copyWith(
                       color: Theme.of(Get.context!).scaffoldBackgroundColor,
                     ),
                     onTap: () => logic.downloadAppUpdate(),
@@ -89,6 +97,83 @@ class AppUpdateView extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Markdown _buildChangelogMarkdown(AppUpdateController logic) {
+    return Markdown(
+      shrinkWrap: true,
+      physics: const BouncingScrollPhysics(),
+      padding: Dimens.edgeInsets8,
+      data: logic.changelog,
+      styleSheet: MarkdownStyleSheet(
+        p: AppStyles.style12Normal.copyWith(
+          color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+        ),
+        h1: AppStyles.style16Bold.copyWith(
+          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+        ),
+        h2: AppStyles.style16Bold.copyWith(
+          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+        ),
+        em: AppStyles.style12Normal.copyWith(
+          color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+        ),
+        blockquote: AppStyles.style12Normal.copyWith(
+          color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+        ),
+        code: AppStyles.style12Normal.copyWith(
+          color: ColorValues.successColor,
+        ),
+      ),
+    );
+  }
+
+  Padding _buildLatestVersionText(AppUpdateController logic) {
+    return Padding(
+      padding: Dimens.edgeInsets8.copyWith(
+        top: Dimens.zero,
+      ),
+      child: Row(
+        children: [
+          Text(
+            'Latest:',
+            style: AppStyles.style13Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            ),
+          ),
+          Dimens.boxWidth4,
+          Text(
+            logic.latestVersion,
+            style: AppStyles.style13Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _buildCurrentVersionText(AppUpdateController logic) {
+    return Padding(
+      padding: Dimens.edgeInsets8,
+      child: Row(
+        children: [
+          Text(
+            'Version:',
+            style: AppStyles.style13Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            ),
+          ),
+          Dimens.boxWidth4,
+          Text(
+            '${logic.version}+${logic.buildNumber}',
+            style: AppStyles.style13Bold.copyWith(
+              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -127,13 +212,20 @@ class AppUpdateView extends StatelessWidget {
                   label: snapshot.data!.status == DownloadStatus.STATUS_RUNNING
                       ? 'Pause'.toTitleCase()
                       : 'Resume'.toTitleCase(),
+                  bgColor:
+                      snapshot.data!.status == DownloadStatus.STATUS_RUNNING
+                          ? Colors.transparent
+                          : Theme.of(Get.context!).textTheme.bodyText1!.color,
                   borderColor:
                       Theme.of(Get.context!).textTheme.bodyText1!.color,
                   padding: Dimens.edgeInsets0_8,
-                  width: Dimens.hundred,
-                  height: Dimens.thirtySix,
-                  labelStyle: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  width: Dimens.screenWidth,
+                  height: Dimens.fourty,
+                  labelStyle: AppStyles.style14Bold.copyWith(
+                    color:
+                        snapshot.data!.status == DownloadStatus.STATUS_RUNNING
+                            ? Theme.of(Get.context!).textTheme.bodyText1!.color
+                            : Theme.of(Get.context!).scaffoldBackgroundColor,
                   ),
                   onTap: snapshot.data!.status == DownloadStatus.STATUS_RUNNING
                       ? () => RUpgrade.pause(snapshot.data!.id!)
@@ -145,7 +237,7 @@ class AppUpdateView extends StatelessWidget {
             return SizedBox(
               width: Dimens.sixty,
               height: Dimens.sixty,
-              child: CircularProgressIndicator(strokeWidth: Dimens.two),
+              child: const NxCircularProgressIndicator(),
             );
           }
         },

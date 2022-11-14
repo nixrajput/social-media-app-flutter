@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:r_upgrade/r_upgrade.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -19,6 +20,7 @@ class AppUpdateController extends GetxController {
   static AppUpdateController get find => Get.find();
 
   final _apiProvider = ApiProvider(http.Client());
+  final _authService = AuthService.find;
 
   final _isLoading = false.obs;
   final _hasUpdate = false.obs;
@@ -127,6 +129,9 @@ class AppUpdateController extends GetxController {
 
           if (_hasUpdate.value == true) {
             AppUtility.log("Update found");
+            if (_authService.token.isNotEmpty) {
+              await _authService.logout();
+            }
             List<dynamic> assets = decodedData['assets'];
             var apk = assets.singleWhere(
               (element) => element['name'] == 'app-release.apk',

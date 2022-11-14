@@ -13,8 +13,6 @@ abstract class _$UserCWProxy {
 
   User createdAt(DateTime createdAt);
 
-  User deviceId(String? deviceId);
-
   User email(String email);
 
   User fname(String fname);
@@ -45,7 +43,6 @@ abstract class _$UserCWProxy {
     String? accountStatus,
     MediaFile? avatar,
     DateTime? createdAt,
-    String? deviceId,
     String? email,
     String? fname,
     String? followingStatus,
@@ -74,9 +71,6 @@ class _$UserCWProxyImpl implements _$UserCWProxy {
 
   @override
   User createdAt(DateTime createdAt) => this(createdAt: createdAt);
-
-  @override
-  User deviceId(String? deviceId) => this(deviceId: deviceId);
 
   @override
   User email(String email) => this(email: email);
@@ -121,7 +115,6 @@ class _$UserCWProxyImpl implements _$UserCWProxy {
     Object? accountStatus = const $CopyWithPlaceholder(),
     Object? avatar = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
-    Object? deviceId = const $CopyWithPlaceholder(),
     Object? email = const $CopyWithPlaceholder(),
     Object? fname = const $CopyWithPlaceholder(),
     Object? followingStatus = const $CopyWithPlaceholder(),
@@ -147,10 +140,6 @@ class _$UserCWProxyImpl implements _$UserCWProxy {
           ? _value.createdAt
           // ignore: cast_nullable_to_non_nullable
           : createdAt as DateTime,
-      deviceId: deviceId == const $CopyWithPlaceholder()
-          ? _value.deviceId
-          // ignore: cast_nullable_to_non_nullable
-          : deviceId as String?,
       email: email == const $CopyWithPlaceholder() || email == null
           ? _value.email
           // ignore: cast_nullable_to_non_nullable
@@ -229,16 +218,15 @@ class UserAdapter extends TypeAdapter<User> {
       followingStatus: fields[6] as String,
       accountStatus: fields[7] as String,
       isVerified: fields[10] as bool,
-      deviceId: fields[11] as String?,
-      createdAt: fields[12] as DateTime,
-      updatedAt: fields[13] as DateTime,
+      createdAt: fields[11] as DateTime,
+      updatedAt: fields[12] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -262,10 +250,8 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(10)
       ..write(obj.isVerified)
       ..writeByte(11)
-      ..write(obj.deviceId)
-      ..writeByte(12)
       ..write(obj.createdAt)
-      ..writeByte(13)
+      ..writeByte(12)
       ..write(obj.updatedAt);
   }
 
@@ -298,7 +284,6 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       followingStatus: json['followingStatus'] as String,
       accountStatus: json['accountStatus'] as String,
       isVerified: json['isVerified'] as bool,
-      deviceId: json['deviceId'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -315,7 +300,6 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'profession': instance.profession,
       'isPrivate': instance.isPrivate,
       'isVerified': instance.isVerified,
-      'deviceId': instance.deviceId,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };

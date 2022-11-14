@@ -52,7 +52,7 @@ import 'package:social_media_app/modules/settings/bindings/change_email_binding.
 import 'package:social_media_app/modules/settings/bindings/change_password_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/change_phone_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/deactivate_account_binding.dart';
-import 'package:social_media_app/modules/settings/bindings/login_device_info_binding.dart';
+import 'package:social_media_app/modules/settings/bindings/login_info_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/report_issue_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/send_suggestions_binding.dart';
@@ -68,7 +68,7 @@ import 'package:social_media_app/modules/settings/views/pages/help_settings_view
 import 'package:social_media_app/modules/settings/views/pages/privacy/account_privacy_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/security/change_password_view.dart';
-import 'package:social_media_app/modules/settings/views/pages/security/login_activity_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/security/login_info_history_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/security_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/theme_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
@@ -346,7 +346,7 @@ abstract class AppPages {
     GetPage(
       name: _Routes.securitySettings,
       page: SecuritySettingsView.new,
-      binding: LoginDeviceInfoBinding(),
+      binding: LoginInfoBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
@@ -442,8 +442,8 @@ abstract class AppPages {
 
     GetPage(
       name: _Routes.loginActivitySettings,
-      page: LoginActivityView.new,
-      binding: LoginDeviceInfoBinding(),
+      page: LoginInfoHistoryView.new,
+      binding: LoginInfoBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),

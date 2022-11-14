@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/apis/models/entities/login_device_info.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/apis/models/entities/login_info.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
+import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
 
-class LoginDeviceInfoWidget extends StatelessWidget {
-  const LoginDeviceInfoWidget({
+class LoginInfoWidget extends StatelessWidget {
+  const LoginInfoWidget({
     Key? key,
     required this.item,
     required this.totalLength,
     required this.index,
   }) : super(key: key);
 
-  final LoginDeviceInfo item;
+  final LoginInfo item;
   final int totalLength;
   final int index;
 
@@ -53,31 +53,46 @@ class LoginDeviceInfoWidget extends StatelessWidget {
             ),
             title: RichText(
               text: TextSpan(
-                text:
-                    "${item.locationInfo!.city!}, ${item.locationInfo!.regionName!}, ${item.locationInfo!.country!}",
+                text: "${item.city!}, ${item.regionName!}, ${item.country!}",
                 style: AppStyles.style14Bold.copyWith(
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
               ),
             ),
-            subtitle: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: item.deviceInfo!['model'],
+            subtitle: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: item.ip!,
                     style: AppStyles.style13Normal.copyWith(
                       color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                     ),
                   ),
-                  if (item.deviceId == AuthService.find.deviceId.toString())
-                    TextSpan(
-                      text: "  •",
-                      style: AppStyles.style14Bold.copyWith(
-                        color: ColorValues.successColor,
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: item.deviceModel!,
+                        style: AppStyles.style13Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                        ),
                       ),
-                    ),
-                ],
-              ),
+                      if (item.deviceId == AuthService.find.deviceId.toString())
+                        TextSpan(
+                          text: "  •",
+                          style: AppStyles.style14Bold.copyWith(
+                            color: ColorValues.successColor,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             trailing: GestureDetector(
               onTap: () => _showDeleteDialog(item.deviceId!),
@@ -142,7 +157,7 @@ class LoginDeviceInfoWidget extends StatelessWidget {
                       RouteManagement.goToWelcomeView();
                       return;
                     } else {
-                      await LoginDeviceInfoController.find
+                      await LoginInfoController.find
                           .deleteLoginDeviceInfo(deviceId);
                     }
                   },

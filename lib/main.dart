@@ -15,15 +15,15 @@ import 'package:social_media_app/apis/models/entities/profile.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
-import 'package:social_media_app/apis/services/theme_controller.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
+import 'package:social_media_app/app_services/theme_controller.dart';
 import 'package:social_media_app/background_service/firebase_service.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
-import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
+import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/translations/app_translations.dart';
@@ -77,7 +77,7 @@ Future<void> initPreAppServices() async {
 
   Get.put(AppThemeController(), permanent: true);
   Get.put(ProfileController(), permanent: true);
-  Get.put(LoginDeviceInfoController(), permanent: true);
+  Get.put(LoginInfoController(), permanent: true);
 }
 
 bool isLogin = false;
@@ -110,7 +110,7 @@ Future<void> checkAuthData() async {
           return;
         }
       } else {
-        await authService.deleteLoginDataFromLocalStorage();
+        await authService.deleteAllLocalDataAndCache();
       }
     }
     isLogin

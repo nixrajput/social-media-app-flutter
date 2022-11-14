@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/apis/services/theme_controller.dart';
+import 'package:social_media_app/app_services/theme_controller.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';

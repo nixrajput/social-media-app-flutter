@@ -1,8 +1,8 @@
 abstract class AppUrls {
   /// Base URLs
-  static const String locationUrl = 'http://ip-api.com/json';
-  static const String baseUrl = 'https://social-api.nixlab.co.in/api/v1';
+  static const String baseUrl = 'https://api.nixlab.co.in/api/v1';
   static const String githubApiUrl = 'https://api.github.com';
+  static const webSocketUrl = 'wss://api.nixlab.co.in/api/v1/ws';
 
   ///  Endpoints
   static const String serverHealthEndpoint = '/health';
@@ -42,12 +42,10 @@ abstract class AppUrls {
   static const String deactivateAccountEndpoint = '/deactivate-account';
   static const String reactivateAccountEndpoint = '/reactivate-account';
 
-  static const String saveLoginInfoEndpoint = '/save-device-info';
-  static const String getLoginInfoEndpoint = '/get-device-info';
-  static const String deleteDeviceInfoEndpoint = '/delete-device-info';
+  static const loginInfoEndpoint = '/login-info';
+  static const getLoginHistoryEndpoint = '/get-login-history';
 
   static const String preKeyBundleEndpoint = '/pre-key-bundle';
-  static const String deviceIdEndpoint = '/device-id';
 
   static const String searchUserEndpoint = '/search-user';
   static const String followUserEndpoint = '/follow-user';

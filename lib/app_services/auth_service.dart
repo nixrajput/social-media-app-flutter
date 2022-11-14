@@ -7,13 +7,12 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/apis/models/entities/location_info.dart';
 import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
-import 'package:social_media_app/modules/settings/controllers/login_device_info_controller.dart';
+import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
 import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -128,14 +127,13 @@ class AuthService extends GetxService {
 
   Future<void> _logout() async {
     AppUtility.log("Logout Request");
-    await LoginDeviceInfoController.find
-        .deleteLoginDeviceInfo(_deviceId.toString());
+    await LoginInfoController.find.deleteLoginDeviceInfo(_deviceId.toString());
     setToken = '';
     setExpiresAt = 0;
     _isLogin = false;
     SocketApiProvider().close();
     await ChatController.find.close();
-    await deleteLoginDataFromLocalStorage();
+    await deleteAllLocalDataAndCache();
     AppUtility.log("Logout Success");
     AppUtility.showSnackBar(
       'Logout Successfully',
@@ -171,7 +169,7 @@ class AuthService extends GetxService {
     AppUtility.log('Login Data Saved to Local Storage');
   }
 
-  Future<void> deleteLoginDataFromLocalStorage() async {
+  Future<void> deleteAllLocalDataAndCache() async {
     await StorageService.remove('loginData');
     await StorageService.remove('profileData');
     await StorageService.remove("fcmToken");
@@ -233,24 +231,6 @@ class AuthService extends GetxService {
     AppUtility.log("deviceId: $_deviceId");
   }
 
-  Future<void> saveDeviceIdToServer(String deviceId) async {
-    var body = {'deviceId': deviceId};
-
-    try {
-      final response = await _apiProvider.saveDeviceId(token, body);
-
-      if (response.isSuccessful) {
-        final decodedData = response.data;
-        AppUtility.log(decodedData[StringValues.message]);
-      } else {
-        final decodedData = response.data;
-        AppUtility.log(decodedData[StringValues.message], tag: 'error');
-      }
-    } catch (exc) {
-      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
-    }
-  }
-
   Future<void> savePreKeyBundle(Map<String, dynamic> preKeyBundle) async {
     var body = {'preKeyBundle': preKeyBundle};
     try {
@@ -284,65 +264,51 @@ class AuthService extends GetxService {
     }
   }
 
-  Future<dynamic> getDeviceInfo() async {
+  Future<dynamic> _getDeviceInfo() async {
     var deviceInfoPlugin = DeviceInfoPlugin();
     Map<String, dynamic> deviceInfo;
     if (GetPlatform.isIOS) {
       var iosInfo = await deviceInfoPlugin.iosInfo;
-      var deviceModel = iosInfo.utsname.machine;
-      var deviceSystemVersion = iosInfo.utsname.release;
 
       deviceInfo = <String, dynamic>{
-        "model": deviceModel,
-        "osVersion": deviceSystemVersion
+        "deviceName": iosInfo.utsname.machine,
+        "deviceModel": iosInfo.utsname.machine,
+        "deviceBrand": "Apple",
+        "deviceManufacturer": "Apple",
+        "deviceOs": iosInfo.utsname.sysname,
+        "deviceOsVersion": iosInfo.utsname.version,
+        "deviceType": "ios",
+        "deviceUniqueId": iosInfo.identifierForVendor,
       };
     } else {
       var androidInfo = await deviceInfoPlugin.androidInfo;
-      var deviceModel = androidInfo.model;
-      var deviceSystemVersion = androidInfo.version.release;
 
       deviceInfo = <String, dynamic>{
-        "model": deviceModel,
-        "osVersion": deviceSystemVersion
+        "deviceName": androidInfo.device,
+        "deviceModel": androidInfo.model,
+        "deviceBrand": androidInfo.brand,
+        "deviceManufacturer": androidInfo.manufacturer,
+        "deviceOs": androidInfo.version.release,
+        "deviceOsVersion": androidInfo.version.sdkInt.toString(),
+        "deviceType": "android",
+        "deviceUniqueId": androidInfo.id,
       };
     }
 
     return deviceInfo;
   }
 
-  Future<LocationInfo> getLocationInfo() async {
-    var locationInfo = const LocationInfo();
-    try {
-      final response = await _apiProvider.getLocationInfo();
-
-      if (response.isSuccessful) {
-        final decodedData = response.data;
-        locationInfo = LocationInfo.fromJson(decodedData);
-      } else {
-        final decodedData = response.data;
-        AppUtility.printLog(decodedData[StringValues.message]);
-      }
-    } catch (exc) {
-      AppUtility.log('Error: $exc', tag: 'error');
-    }
-
-    return locationInfo;
-  }
-
   Future<void> saveLoginInfo() async {
-    var deviceInfo = await getDeviceInfo();
+    var deviceInfo = await _getDeviceInfo();
     await getDeviceId();
-    var locationInfo = await getLocationInfo();
 
     final body = {
-      "deviceId": _deviceId,
+      'deviceId': _deviceId.toString(),
       'deviceInfo': deviceInfo,
-      'locationInfo': locationInfo,
-      'lastActive': DateTime.now().toIso8601String(),
     };
 
     try {
-      final response = await _apiProvider.saveDeviceInfo(_token, body);
+      final response = await _apiProvider.saveLoginInfo(_token, body);
 
       if (response.isSuccessful) {
         final decodedData = response.data;
@@ -363,7 +329,7 @@ class AuthService extends GetxService {
       if (_expiresAt < currentTimestamp) {
         setToken = '';
         setExpiresAt = 0;
-        await deleteLoginDataFromLocalStorage();
+        await deleteAllLocalDataAndCache();
       }
     }
   }

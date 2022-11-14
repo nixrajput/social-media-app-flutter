@@ -61,8 +61,6 @@ abstract class _$ProfileCWProxy {
 
   Profile updatedAt(DateTime updatedAt);
 
-  Profile verificationStatus(String verificationStatus);
-
   Profile website(String? website);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Profile(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -99,7 +97,6 @@ abstract class _$ProfileCWProxy {
     bool? showOnlineStatus,
     String? uname,
     DateTime? updatedAt,
-    String? verificationStatus,
     String? website,
   });
 }
@@ -198,10 +195,6 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
   Profile updatedAt(DateTime updatedAt) => this(updatedAt: updatedAt);
 
   @override
-  Profile verificationStatus(String verificationStatus) =>
-      this(verificationStatus: verificationStatus);
-
-  @override
   Profile website(String? website) => this(website: website);
 
   @override
@@ -240,7 +233,6 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
     Object? showOnlineStatus = const $CopyWithPlaceholder(),
     Object? uname = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
-    Object? verificationStatus = const $CopyWithPlaceholder(),
     Object? website = const $CopyWithPlaceholder(),
   }) {
     return Profile(
@@ -358,11 +350,6 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
           ? _value.updatedAt
           // ignore: cast_nullable_to_non_nullable
           : updatedAt as DateTime,
-      verificationStatus: verificationStatus == const $CopyWithPlaceholder() ||
-              verificationStatus == null
-          ? _value.verificationStatus
-          // ignore: cast_nullable_to_non_nullable
-          : verificationStatus as String,
       website: website == const $CopyWithPlaceholder()
           ? _value.website
           // ignore: cast_nullable_to_non_nullable
@@ -411,23 +398,22 @@ class ProfileAdapter extends TypeAdapter<Profile> {
       postsCount: fields[16] as int,
       followersCount: fields[17] as int,
       followingCount: fields[18] as int,
-      role: fields[24] as String,
+      role: fields[23] as String,
       isPrivate: fields[20] as bool,
       accountStatus: fields[19] as String,
-      verificationStatus: fields[23] as String,
       isValid: fields[21] as bool,
       isVerified: fields[22] as bool,
-      showOnlineStatus: fields[25] as bool?,
-      lastSeen: fields[26] as DateTime?,
-      createdAt: fields[27] as DateTime,
-      updatedAt: fields[28] as DateTime,
+      showOnlineStatus: fields[24] as bool?,
+      lastSeen: fields[25] as DateTime?,
+      createdAt: fields[26] as DateTime,
+      updatedAt: fields[27] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, Profile obj) {
     writer
-      ..writeByte(29)
+      ..writeByte(28)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -475,16 +461,14 @@ class ProfileAdapter extends TypeAdapter<Profile> {
       ..writeByte(22)
       ..write(obj.isVerified)
       ..writeByte(23)
-      ..write(obj.verificationStatus)
-      ..writeByte(24)
       ..write(obj.role)
-      ..writeByte(25)
+      ..writeByte(24)
       ..write(obj.showOnlineStatus)
-      ..writeByte(26)
+      ..writeByte(25)
       ..write(obj.lastSeen)
-      ..writeByte(27)
+      ..writeByte(26)
       ..write(obj.createdAt)
-      ..writeByte(28)
+      ..writeByte(27)
       ..write(obj.updatedAt);
   }
 
@@ -528,7 +512,6 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       role: json['role'] as String,
       isPrivate: json['isPrivate'] as bool,
       accountStatus: json['accountStatus'] as String,
-      verificationStatus: json['verificationStatus'] as String,
       isValid: json['isValid'] as bool,
       isVerified: json['isVerified'] as bool,
       showOnlineStatus: json['showOnlineStatus'] as bool?,
@@ -563,7 +546,6 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'isPrivate': instance.isPrivate,
       'isValid': instance.isValid,
       'isVerified': instance.isVerified,
-      'verificationStatus': instance.verificationStatus,
       'role': instance.role,
       'showOnlineStatus': instance.showOnlineStatus,
       'lastSeen': instance.lastSeen?.toIso8601String(),

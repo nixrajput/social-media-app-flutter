@@ -14,7 +14,7 @@ import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/apis/models/responses/chat_message_list_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/providers/socket_api_provider.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';

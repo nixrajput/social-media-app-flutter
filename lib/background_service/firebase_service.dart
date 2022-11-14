@@ -4,8 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
-import 'package:social_media_app/apis/services/notification_service.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
+import 'package:social_media_app/app_services/notification_service.dart';
 import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 

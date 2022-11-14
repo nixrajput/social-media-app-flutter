@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:libsignal_protocol_dart/libsignal_protocol_dart.dart';
 import 'package:social_media_app/apis/models/entities/server_key.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/e2ee/signal_protocol_store.dart';
 import 'package:social_media_app/services/e2ee_service.dart';

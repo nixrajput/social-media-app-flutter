@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/notification.dart';
 import 'package:social_media_app/apis/models/responses/notification_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
-import 'package:social_media_app/apis/services/auth_service.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
