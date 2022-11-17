@@ -329,7 +329,8 @@ class ChatBubble extends StatelessWidget {
         Padding(
           padding: Dimens.edgeInsets8_16,
           child: Text(
-            DateFormat('dd MMM yyyy, hh:mm a').format(message.createdAt!),
+            DateFormat('dd MMM yyyy, hh:mm a')
+                .format(message.createdAt!.toLocal()),
             style: AppStyles.style14Normal.copyWith(
               color: Theme.of(Get.context!).textTheme.subtitle2!.color,
             ),

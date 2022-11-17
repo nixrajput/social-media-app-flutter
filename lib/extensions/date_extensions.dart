@@ -30,11 +30,10 @@ extension DateHelper on DateTime {
     var time = '$hrStr:$minStr';
 
     if (!is24Hour) {
-      if (hr >= 13) {
+      if (hr > 12) {
         hrStr = (hr - 12).toString();
         hrStr = hrStr.length == 1 ? '0$hrStr' : hrStr;
-      }
-      if (hr == 0) {
+      } else if (hr == 0) {
         hrStr = '12';
       }
       time = '$hrStr:$minStr';

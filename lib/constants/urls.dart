@@ -1,75 +1,84 @@
 abstract class AppUrls {
   /// Base URLs
-  static const String baseUrl = 'https://api.nixlab.co.in/api/v1';
-  static const String githubApiUrl = 'https://api.github.com';
+  static const baseUrl = 'https://api.nixlab.co.in/api/v1';
+  static const githubApiUrl = 'https://api.github.com';
   static const webSocketUrl = 'wss://api.nixlab.co.in/api/v1/ws';
 
   ///  Endpoints
-  static const String serverHealthEndpoint = '/health';
-  static const String loginEndpoint = '/login';
-  static const String registerEndpoint = '/register';
-  static const String forgotPasswordEndpoint = '/forgot-password';
-  static const String resetPasswordEndpoint = '/reset-password';
-  static const String verifyAccountEndpoint = '/verify-account';
+  static const serverHealthEndpoint = '/health';
+  static const loginEndpoint = '/login';
+  static const registerEndpoint = '/register';
+  static const forgotPasswordEndpoint = '/forgot-password';
+  static const resetPasswordEndpoint = '/reset-password';
+  static const verifyAccountEndpoint = '/verify-account';
 
-  static const String getPostsEndpoint = '/get-posts';
-  static const String postEndpoint = '/post';
-  static const String searchPostsEndpoint = '/search-posts';
-  static const String createPostEndpoint = '/create-post';
-  static const String likePostEndpoint = '/like-post';
-  static const String getPostLikedUsersEndpoint = '/get-post-liked-users';
-  static const String searchTagEndpoint = '/search-tag';
-  static const String getPostsByTagEndpoint = '/get-posts-by-tag';
-  static const String getTrendingPostsEndpoint = '/get-trending-posts';
+  static const getPostsEndpoint = '/get-posts';
+  static const postEndpoint = '/post';
+  static const searchPostsEndpoint = '/search-posts';
+  static const createPostEndpoint = '/create-post';
+  static const likePostEndpoint = '/like-post';
+  static const getPostLikedUsersEndpoint = '/get-post-liked-users';
+  static const searchTagEndpoint = '/search-tag';
+  static const getPostsByTagEndpoint = '/get-posts-by-tag';
+  static const getTrendingPostsEndpoint = '/get-trending-posts';
 
-  static const String addCommentEndpoint = '/add-comment';
-  static const String getCommentsEndpoint = '/get-comments';
-  static const String likeCommentEndpoint = '/like-comment';
-  static const String deleteCommentEndpoint = '/delete-comment';
+  static const addCommentEndpoint = '/add-comment';
+  static const getCommentsEndpoint = '/get-comments';
+  static const likeCommentEndpoint = '/like-comment';
+  static const deleteCommentEndpoint = '/delete-comment';
 
-  static const String profileDetailsEndpoint = '/me';
-  static const String uploadProfilePicEndpoint = '/upload-profile-picture';
-  static const String deleteProfilePicEndpoint = '/remove-profile-picture';
-  static const String changePasswordEndpoint = '/change-password';
-  static const String updateProfileEndpoint = '/update-profile';
-  static const String checkUsernameEndpoint = '/check-username';
-  static const String changeUsernameEndpoint = '/change-username';
-  static const String deleteProfileEndpoint = '/delete-profile';
-  static const String validateTokenEndpoint = '/validate-token';
-  static const String addChangePhoneEndpoint = '/add-change-phone';
-  static const String changeEmailEndpoint = '/change-email';
-  static const String verifyPasswordEndpoint = '/verify-password';
-  static const String deactivateAccountEndpoint = '/deactivate-account';
-  static const String reactivateAccountEndpoint = '/reactivate-account';
+  static const profileDetailsEndpoint = '/me';
+  static const uploadProfilePicEndpoint = '/upload-profile-picture';
+  static const deleteProfilePicEndpoint = '/remove-profile-picture';
+  static const changePasswordEndpoint = '/change-password';
+  static const updateProfileEndpoint = '/update-profile';
+  static const checkUsernameEndpoint = '/check-username';
+  static const changeUsernameEndpoint = '/change-username';
+  static const deleteProfileEndpoint = '/delete-profile';
+  static const validateTokenEndpoint = '/validate-token';
+  static const addChangePhoneEndpoint = '/add-change-phone';
+  static const changeEmailEndpoint = '/change-email';
+  static const verifyPasswordEndpoint = '/verify-password';
+  static const deactivateAccountEndpoint = '/deactivate-account';
+  static const reactivateAccountEndpoint = '/reactivate-account';
 
   static const loginInfoEndpoint = '/login-info';
   static const getLoginHistoryEndpoint = '/get-login-history';
+  static const verifyLoginInfoEndpoint = '/verify-login-info';
 
-  static const String preKeyBundleEndpoint = '/pre-key-bundle';
+  static const preKeyBundleEndpoint = '/pre-key-bundle';
 
-  static const String searchUserEndpoint = '/search-user';
-  static const String followUserEndpoint = '/follow-user';
-  static const String getFollowRequests = '/get-follow-requests';
-  static const String acceptFollowRequestEndpoint = '/accept-follow-request';
-  static const String removeFollowRequestEndpoint = '/remove-follow-request';
-  static const String cancelFollowRequestEndpoint = '/cancel-follow-request';
-  static const String getRecommendUsersEndpoint = '/get-recommend-users';
-  static const String userDetailsEndpoint = '/user-details';
-  static const String getFollowersEndpoint = '/get-followers';
-  static const String getFollowingEndpoint = '/get-followings';
-  static const String searchFollowersEndpoint = '/search-followers';
-  static const String searchFollowingEndpoint = '/search-followings';
-  static const String getUserPostsEndpoint = '/get-user-posts';
+  static const getLocationInfoEndpoint = '/get-location-info';
 
-  static const String getNotificationsEndpoint = '/get-notifications';
-  static const String markNotificationsReadEndpoint = '/mark-read-notification';
-  static const String deleteNotificationsEndpoint = '/delete-notification';
+  static const reportUserEndpoint = '/report-user';
+  static const reportPostEndpoint = '/report-post';
+  static const reportCommentEndpoint = '/report-comment';
 
-  static const String getAllLastMessageEndpoint = '/get-all-last-messages';
-  static const String getMessagesByIdEndpoint = '/get-messages-by-id';
+  static const requestBlueTickEndpoint = '/request-blue-tick';
 
-  static const String fcmTokenEndpoint = '/fcm-token';
+  static const searchUserEndpoint = '/search-user';
+  static const followUserEndpoint = '/follow-user';
+  static const getFollowRequests = '/get-follow-requests';
+  static const acceptFollowRequestEndpoint = '/accept-follow-request';
+  static const removeFollowRequestEndpoint = '/remove-follow-request';
+  static const cancelFollowRequestEndpoint = '/cancel-follow-request';
+  static const getRecommendUsersEndpoint = '/get-recommend-users';
+  static const userDetailsEndpoint = '/user-details';
+  static const getFollowersEndpoint = '/get-followers';
+  static const getFollowingEndpoint = '/get-followings';
+  static const searchFollowersEndpoint = '/search-followers';
+  static const searchFollowingEndpoint = '/search-followings';
+  static const getUserPostsEndpoint = '/get-user-posts';
 
-  static const String checkAppUpdateEndpoint =
+  static const getNotificationsEndpoint = '/get-notifications';
+  static const markNotificationsReadEndpoint = '/mark-read-notification';
+  static const deleteNotificationsEndpoint = '/delete-notification';
+
+  static const getAllLastMessageEndpoint = '/get-all-last-messages';
+  static const getMessagesByIdEndpoint = '/get-messages-by-id';
+
+  static const fcmTokenEndpoint = '/fcm-token';
+
+  static const checkAppUpdateEndpoint =
       '/repos/nixrajput/social-media-app-flutter/releases/latest';
 }

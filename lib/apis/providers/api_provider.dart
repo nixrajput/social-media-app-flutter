@@ -27,6 +27,7 @@ class ApiProvider {
 
   String? baseUrl;
 
+  /// This is the method that is called from the service class.
   Future<dynamic> _catchAsyncApiError({
     String? baseUrl,
     required String endPoint,
@@ -56,6 +57,8 @@ class ApiProvider {
 
     try {
       switch (method) {
+
+        /// GET request
         case "GET":
           var response = await _client.get(
             url,
@@ -74,6 +77,7 @@ class ApiProvider {
             return ResponseData(data: decodedData, isSuccessful: false);
           }
 
+        /// POST request
         case "POST":
           var response = await _client.post(
             url,
@@ -93,6 +97,7 @@ class ApiProvider {
             return ResponseData(data: decodedData, isSuccessful: false);
           }
 
+        /// PUT request
         case "PUT":
           var response = await _client.put(
             url,
@@ -112,6 +117,7 @@ class ApiProvider {
             return ResponseData(data: decodedData, isSuccessful: false);
           }
 
+        /// DELETE request
         case "DELETE":
           var response = await _client.delete(
             url,
@@ -149,8 +155,11 @@ class ApiProvider {
     }
   }
 
+  /// --------------------------------------------------------------------------
+
   /// Server -------------------------------------------------------------------
 
+  /// Check Server Health
   Future<ResponseData> checkServerHealth() async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.serverHealthEndpoint,
@@ -161,8 +170,11 @@ class ApiProvider {
     return response;
   }
 
+  /// --------------------------------------------------------------------------
+
   /// Auth ---------------------------------------------------------------------
 
+  /// Validate Token
   Future<ResponseData> validateToken(String token) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.validateTokenEndpoint,
@@ -175,6 +187,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Login
   Future<ResponseData> login(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.loginEndpoint,
@@ -186,6 +199,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Register
   Future<ResponseData> register(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.registerEndpoint,
@@ -197,6 +211,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Forgot Password
   Future<ResponseData> forgotPassword(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.forgotPasswordEndpoint,
@@ -208,6 +223,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Reset Password
   Future<ResponseData> resetPassword(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.resetPasswordEndpoint,
@@ -219,6 +235,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Send Verify Account OTP
   Future<ResponseData> sendVerifyAccountOtp(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.verifyAccountEndpoint,
@@ -230,6 +247,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Verify Account
   Future<ResponseData> verifyAccount(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.verifyAccountEndpoint,
@@ -243,8 +261,28 @@ class ApiProvider {
 
   /// --------------------------------------------------------------------------
 
-  /// Location & Device Info ---------------------------------------------------
+  /// Login Info & Location ----------------------------------------------------
 
+  /// Get Location Info From IP
+  Future<ResponseData> getLocationInfoFromIp(String token, {String? ip}) async {
+    var queryParameters = <String, dynamic>{};
+
+    if (ip != null) {
+      queryParameters['ip'] = ip;
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.verifyLoginInfoEndpoint,
+      method: 'GET',
+      feature: 'Get Location Info From IP',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
+    );
+
+    return response;
+  }
+
+  /// Save Login Info
   Future<ResponseData> saveLoginInfo(
     String token,
     Map<String, dynamic> body,
@@ -260,6 +298,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Get Login History
   Future<ResponseData> getLoginHistory(String token,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -282,6 +321,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Get Login Info Details
   Future<ResponseData> getLoginInfoDetails(
       String token, String deviceId, String ip) async {
     var queryParameters = <String, dynamic>{};
@@ -292,7 +332,7 @@ class ApiProvider {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.getLoginHistoryEndpoint,
       method: 'GET',
-      feature: 'Get Login History',
+      feature: 'Get Login Info Details',
       headers: {"authorization": "Bearer $token"},
       queryParams: queryParameters,
     );
@@ -300,6 +340,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Delete Login Info
   Future<ResponseData> deleteLoginInfo(String token, String deviceId) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.loginInfoEndpoint,
@@ -312,10 +353,24 @@ class ApiProvider {
     return response;
   }
 
+  /// Verify Login Info & Session
+  Future<ResponseData> verifyLoginInfo(String token, String deviceId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.verifyLoginInfoEndpoint,
+      method: 'GET',
+      feature: 'Verify Login Info',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'deviceId': deviceId},
+    );
+
+    return response;
+  }
+
   /// --------------------------------------------------------------------------
 
   /// User ---------------------------------------------------------------------
 
+  /// Get Profile Details
   Future<ResponseData> getProfileDetails(String token) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.profileDetailsEndpoint,
@@ -327,75 +382,7 @@ class ApiProvider {
     return response;
   }
 
-  Future<ResponseData> getPreKeyBundle(String token, String userId) async {
-    var queryParameters = <String, dynamic>{};
-    queryParameters['id'] = userId;
-
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.preKeyBundleEndpoint,
-      method: 'GET',
-      feature: 'Get Pre Key Bundle',
-      headers: {"authorization": "Bearer $token"},
-      queryParams: queryParameters,
-    );
-
-    return response;
-  }
-
-  Future<ResponseData> savePreKeyBundle(
-      String token, Map<String, dynamic> body) async {
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.preKeyBundleEndpoint,
-      method: 'POST',
-      body: body,
-      feature: 'Save Pre Key Bundle',
-      headers: {"authorization": "Bearer $token"},
-    );
-
-    return response;
-  }
-
-  // Future<ResponseData> getDeviceId(String token, String userId) async {
-  //   var queryParameters = <String, dynamic>{};
-  //   queryParameters['id'] = userId;
-
-  //   final response = await _catchAsyncApiError(
-  //     endPoint: AppUrls.deviceIdEndpoint,
-  //     method: 'GET',
-  //     feature: 'Get Device Id',
-  //     headers: {"authorization": "Bearer $token"},
-  //     queryParams: queryParameters,
-  //   );
-
-  //   return response;
-  // }
-
-  Future<ResponseData> getFcmToken(String token, String userId) async {
-    var queryParameters = <String, dynamic>{};
-    queryParameters['id'] = userId;
-
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.fcmTokenEndpoint,
-      method: 'GET',
-      feature: 'Get FCM Token',
-      headers: {"authorization": "Bearer $token"},
-    );
-
-    return response;
-  }
-
-  Future<ResponseData> saveFcmToken(String token, String fcmToken) async {
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.fcmTokenEndpoint,
-      method: 'POST',
-      body: {"fcmToken": fcmToken},
-      feature: 'Save FCM Token',
-      headers: {"authorization": "Bearer $token"},
-    );
-
-    return response;
-  }
-
+  /// Upload Profile Picture
   Future<ResponseData> uploadProfilePicture(
     String token,
     Map<String, dynamic> body,
@@ -411,6 +398,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Delete Profile Picture
   Future<ResponseData> deleteProfilePicture(String token) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.deleteProfilePicEndpoint,
@@ -422,6 +410,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Update Profile Details
   Future<ResponseData> updateProfile(
       String token, Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
@@ -435,6 +424,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Change Password
   Future<ResponseData> changePassword(
       String token, Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
@@ -448,6 +438,65 @@ class ApiProvider {
     return response;
   }
 
+  /// Get PreKey Bundle
+  Future<ResponseData> getPreKeyBundle(String token, String userId) async {
+    var queryParameters = <String, dynamic>{};
+    queryParameters['id'] = userId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.preKeyBundleEndpoint,
+      method: 'GET',
+      feature: 'Get Pre Key Bundle',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
+    );
+
+    return response;
+  }
+
+  /// Save PreKey Bundle
+  Future<ResponseData> savePreKeyBundle(
+      String token, Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.preKeyBundleEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Save Pre Key Bundle',
+      headers: {"authorization": "Bearer $token"},
+    );
+
+    return response;
+  }
+
+  /// Get FCM Token
+  Future<ResponseData> getFcmToken(String token, String userId) async {
+    var queryParameters = <String, dynamic>{};
+    queryParameters['id'] = userId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.fcmTokenEndpoint,
+      method: 'GET',
+      feature: 'Get FCM Token',
+      headers: {"authorization": "Bearer $token"},
+    );
+
+    return response;
+  }
+
+  /// Save FCM Token
+  Future<ResponseData> saveFcmToken(String token, String fcmToken) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.fcmTokenEndpoint,
+      method: 'POST',
+      body: {"fcmToken": fcmToken},
+      feature: 'Save FCM Token',
+      headers: {"authorization": "Bearer $token"},
+    );
+
+    return response;
+  }
+
+  /// Send Email Change OTP
   Future<ResponseData> sendChangeEmailOtp(
     String token,
     Map<String, dynamic> body,
@@ -463,6 +512,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Change Profile Email
   Future<ResponseData> changeEmail(
     String token,
     Map<String, dynamic> body,
@@ -478,6 +528,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Send Phone Change OTP
   Future<ResponseData> sendAddChangePhoneOtp(
     String token,
     Map<String, dynamic> body,
@@ -493,6 +544,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Add/Change Phone
   Future<ResponseData> addChangePhone(
     String token,
     Map<String, dynamic> body,
@@ -508,6 +560,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Verify Password
   Future<ResponseData> verifyPassword(String token, String password) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.verifyPasswordEndpoint,
@@ -520,6 +573,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Deactivate Account
   Future<ResponseData> deactivateAccount(
     String token,
     Map<String, dynamic> body,
@@ -535,6 +589,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Send Reactivate Account OTP
   Future<ResponseData> sendReactivateAccountOtp(
       Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
@@ -547,6 +602,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Reactivate Account
   Future<ResponseData> reactivateAccount(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.reactivateAccountEndpoint,
@@ -558,8 +614,25 @@ class ApiProvider {
     return response;
   }
 
+  /// Request Blue Tick
+  Future<ResponseData> requestBlueTick(
+      String token, Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.reportUserEndpoint,
+      method: 'POST',
+      feature: 'Report User',
+      headers: {"authorization": "Bearer $token"},
+      body: body,
+    );
+
+    return response;
+  }
+
+  /// --------------------------------------------------------------------------
+
   /// Post ---------------------------------------------------------------------
 
+  /// Create New Post
   Future<ResponseData> createPost(
       String token, Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
@@ -573,6 +646,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Get Posts in Feed
   Future<ResponseData> getPosts(String token, {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
 
@@ -595,6 +669,20 @@ class ApiProvider {
     return response;
   }
 
+  /// Get Post Details
+  Future<ResponseData> getPostDetails(String token, String postId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.postEndpoint,
+      method: 'GET',
+      feature: 'Get Post Details',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'id': postId},
+    );
+
+    return response;
+  }
+
+  /// Get Posts By Tag
   Future<ResponseData> getPostsByTag(String token, String tag,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -620,6 +708,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Like/Unlike Post
   Future<ResponseData> likeUnlikePost(String token, String postId) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.likePostEndpoint,
@@ -632,6 +721,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Get Post's Liked Users
   Future<ResponseData> getPostLikedUsers(String token, String postId) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.getPostLikedUsersEndpoint,
@@ -644,6 +734,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Delete Post
   Future<ResponseData> deletePost(String token, String postId) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.postEndpoint,
@@ -656,8 +747,11 @@ class ApiProvider {
     return response;
   }
 
+  /// --------------------------------------------------------------------------
+
   /// Misc ---------------------------------------------------------------------
 
+  /// Get Trending Posts
   Future<ResponseData> getTrendingPosts(String token,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -681,6 +775,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Get Recommended Users
   Future<ResponseData> getRecommendedUsers(String token,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -704,95 +799,7 @@ class ApiProvider {
     return response;
   }
 
-  Future<ResponseData> followUnfollowUser(String token, String userId) async {
-    var queryParameters = <String, dynamic>{};
-
-    queryParameters['id'] = userId;
-
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.followUserEndpoint,
-      method: 'GET',
-      feature: 'Follow/Unfollow User',
-      headers: {"authorization": "Bearer $token"},
-      queryParams: queryParameters,
-    );
-
-    return response;
-  }
-
-  Future<ResponseData> cancelFollowRequest(String token, String userId) async {
-    var queryParameters = <String, dynamic>{};
-
-    queryParameters['id'] = userId;
-
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.cancelFollowRequestEndpoint,
-      method: 'GET',
-      feature: 'Cancel Follow Request',
-      headers: {"authorization": "Bearer $token"},
-      queryParams: queryParameters,
-    );
-
-    return response;
-  }
-
-  Future<ResponseData> getFollowRequests(String token,
-      {int? page, int? limit}) async {
-    var queryParameters = <String, dynamic>{};
-
-    if (page != null) {
-      queryParameters['page'] = page.toString();
-    }
-
-    if (limit != null) {
-      queryParameters['limit'] = limit.toString();
-    }
-
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.getFollowRequests,
-      method: 'GET',
-      feature: 'Get Follow Requests',
-      headers: {"authorization": "Bearer $token"},
-      queryParams: queryParameters,
-    );
-
-    return response;
-  }
-
-  Future<ResponseData> acceptFollowRequest(
-      String token, String followRequestId) async {
-    var queryParameters = <String, dynamic>{};
-
-    queryParameters['id'] = followRequestId;
-
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.acceptFollowRequestEndpoint,
-      method: 'GET',
-      feature: 'Accept Follow Request',
-      headers: {"authorization": "Bearer $token"},
-      queryParams: queryParameters,
-    );
-
-    return response;
-  }
-
-  Future<ResponseData> removeFollowRequest(
-      String token, String followRequestId) async {
-    var queryParameters = <String, dynamic>{};
-
-    queryParameters['id'] = followRequestId;
-
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.removeFollowRequestEndpoint,
-      method: 'DELETE',
-      feature: 'Remove Follow Request',
-      headers: {"authorization": "Bearer $token"},
-      queryParams: queryParameters,
-    );
-
-    return response;
-  }
-
+  /// Get User Details By ID
   Future<ResponseData> getUserDetailsById(String token, String userId) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.userDetailsEndpoint,
@@ -805,6 +812,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Get User Details By Username
   Future<ResponseData> getUserDetailsByUsername(
       String token, String username) async {
     final response = await _catchAsyncApiError(
@@ -818,6 +826,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Get User's Posts
   Future<ResponseData> getUserPosts(String token, String userId,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -843,6 +852,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Check Username Availability
   Future<ResponseData> checkUsername(String token, String uname) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.checkUsernameEndpoint,
@@ -855,6 +865,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Change Username
   Future<ResponseData> changeUsername(String token, String uname) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.changeUsernameEndpoint,
@@ -867,6 +878,105 @@ class ApiProvider {
     return response;
   }
 
+  /// --------------------------------------------------------------------------
+
+  /// Follower -----------------------------------------------------------------
+
+  /// Follow/Unfollow User
+  Future<ResponseData> followUnfollowUser(String token, String userId) async {
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = userId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.followUserEndpoint,
+      method: 'GET',
+      feature: 'Follow/Unfollow User',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
+    );
+
+    return response;
+  }
+
+  /// Cancel Follow Request
+  Future<ResponseData> cancelFollowRequest(String token, String userId) async {
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = userId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.cancelFollowRequestEndpoint,
+      method: 'GET',
+      feature: 'Cancel Follow Request',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
+    );
+
+    return response;
+  }
+
+  /// Get Follow Requests
+  Future<ResponseData> getFollowRequests(String token,
+      {int? page, int? limit}) async {
+    var queryParameters = <String, dynamic>{};
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getFollowRequests,
+      method: 'GET',
+      feature: 'Get Follow Requests',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
+    );
+
+    return response;
+  }
+
+  /// Accept Follow Request
+  Future<ResponseData> acceptFollowRequest(
+      String token, String followRequestId) async {
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = followRequestId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.acceptFollowRequestEndpoint,
+      method: 'GET',
+      feature: 'Accept Follow Request',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
+    );
+
+    return response;
+  }
+
+  /// Remove Follow Request
+  Future<ResponseData> removeFollowRequest(
+      String token, String followRequestId) async {
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['id'] = followRequestId;
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.removeFollowRequestEndpoint,
+      method: 'DELETE',
+      feature: 'Remove Follow Request',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
+    );
+
+    return response;
+  }
+
+  /// Get Followers
   Future<ResponseData> getFollowers(String token, String userId,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -892,6 +1002,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Get Followings
   Future<ResponseData> getFollowings(String token, String userId,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -917,22 +1028,11 @@ class ApiProvider {
     return response;
   }
 
-  Future<ResponseData> getPostDetails(String token, String postId) async {
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.postEndpoint,
-      method: 'GET',
-      feature: 'Get Post Details',
-      headers: {"authorization": "Bearer $token"},
-      queryParams: {'id': postId},
-    );
-
-    return response;
-  }
-
   /// --------------------------------------------------------------------------
 
   /// Search -------------------------------------------------------------------
 
+  /// Search Tag
   Future<ResponseData> searchTag(String token, String text,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -958,6 +1058,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Search User
   Future<ResponseData> searchUser(String token, String text,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -983,6 +1084,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Search Posts
   Future<ResponseData> searchPosts(String token, String text,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -1008,6 +1110,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Search Followers
   Future<ResponseData> searchFollowers(String token, String userId, String text,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -1034,6 +1137,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Search Followings
   Future<ResponseData> searchFollowings(
       String token, String userId, String text,
       {int? page, int? limit}) async {
@@ -1065,6 +1169,7 @@ class ApiProvider {
 
   /// Comment ------------------------------------------------------------------
 
+  /// Add New Comment
   Future<ResponseData> addComment(
       String token, String postId, String comment) async {
     final response = await _catchAsyncApiError(
@@ -1078,6 +1183,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Get Comments
   Future<ResponseData> getComments(String token, String postId,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -1103,6 +1209,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Delete Comment
   Future<ResponseData> deleteComment(String token, String commentId) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.deleteCommentEndpoint,
@@ -1115,6 +1222,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Like/Unlike Comment
   Future<ResponseData> likeUnlikeComment(String token, String commentId) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.likeCommentEndpoint,
@@ -1127,8 +1235,11 @@ class ApiProvider {
     return response;
   }
 
+  /// --------------------------------------------------------------------------
+
   /// Notification -------------------------------------------------------------
 
+  /// Get Notifications
   Future<ResponseData> getNotifications(String token,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -1152,6 +1263,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Mark Notification As Read
   Future<ResponseData> markNotificationRead(String token, String id) async {
     var queryParameters = <String, dynamic>{};
     queryParameters['id'] = id;
@@ -1167,6 +1279,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Delete Notification
   Future<ResponseData> deleteNotification(String token, String id) async {
     var queryParameters = <String, dynamic>{};
     queryParameters['id'] = id;
@@ -1186,6 +1299,7 @@ class ApiProvider {
 
   /// Chat ---------------------------------------------------------------------
 
+  /// Get Last Messages
   Future<ResponseData> getAllLastMessages(String token,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -1209,6 +1323,7 @@ class ApiProvider {
     return response;
   }
 
+  /// Get Messages By User's ID
   Future<ResponseData> getMessagesById(String token, String id,
       {int? page, int? limit}) async {
     var queryParameters = <String, dynamic>{};
@@ -1234,8 +1349,57 @@ class ApiProvider {
     return response;
   }
 
+  /// --------------------------------------------------------------------------
+
+  /// Report -------------------------------------------------------------------
+
+  /// Report User
+  Future<ResponseData> reportUser(
+      String token, Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.reportUserEndpoint,
+      method: 'POST',
+      feature: 'Report User',
+      headers: {"authorization": "Bearer $token"},
+      body: body,
+    );
+
+    return response;
+  }
+
+  /// Report Post
+  Future<ResponseData> reportPost(
+      String token, Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.reportPostEndpoint,
+      method: 'POST',
+      feature: 'Report Post',
+      headers: {"authorization": "Bearer $token"},
+      body: body,
+    );
+
+    return response;
+  }
+
+  /// Report Comment
+  Future<ResponseData> reportComment(
+      String token, Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.reportCommentEndpoint,
+      method: 'POST',
+      feature: 'Report Comment',
+      headers: {"authorization": "Bearer $token"},
+      body: body,
+    );
+
+    return response;
+  }
+
+  /// --------------------------------------------------------------------------
+
   /// App Update ---------------------------------------------------------------
 
+  /// Get Latest App Release Info
   Future<ResponseData> getLatestReleaseInfo() async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.checkAppUpdateEndpoint,
@@ -1250,3 +1414,5 @@ class ApiProvider {
     return response;
   }
 }
+
+/// ----------------------------------------------------------------------------
