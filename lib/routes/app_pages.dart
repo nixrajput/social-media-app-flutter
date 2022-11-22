@@ -60,6 +60,7 @@ import 'package:social_media_app/modules/settings/bindings/report_issue_binding.
 import 'package:social_media_app/modules/settings/bindings/send_suggestions_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
 import 'package:social_media_app/modules/settings/views/pages/about_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/account/blue_tick_application_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/change_email_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/change_phone_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/deactivate_account_view.dart';
@@ -467,6 +468,13 @@ abstract class AppPages {
       page: ChangePhoneView.new,
       transitionDuration: transitionDuration,
       binding: ChangePhoneBinding(),
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.blueTickVerification,
+      page: BlueTickVerificationView.new,
+      transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
 

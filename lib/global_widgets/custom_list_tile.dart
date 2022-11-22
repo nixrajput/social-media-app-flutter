@@ -51,12 +51,14 @@ class NxListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
+              flex: 2,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   if (leading != null)
                     Expanded(flex: leadingFlex ?? 0, child: leading!),
-                  if (title != null || subtitle != null) Dimens.boxWidth16,
+                  if (leading != null && (title != null || subtitle != null))
+                    Dimens.boxWidth16,
                   Expanded(
                     flex: titleFlex ?? 1,
                     child: Column(
@@ -65,7 +67,8 @@ class NxListTile extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (title != null) title!,
-                        if (subtitle != null) Dimens.boxHeight2,
+                        if (title != null && subtitle != null)
+                          Dimens.boxHeight2,
                         if (subtitle != null) subtitle!
                       ],
                     ),

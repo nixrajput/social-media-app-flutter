@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_radio_tile.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
@@ -40,6 +42,9 @@ class EditGenderView extends StatelessWidget {
   Widget _buildBody() => GetBuilder<EditGenderController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
             child: Padding(
               padding: Dimens.edgeInsets0_16,
               child: Column(
@@ -47,9 +52,8 @@ class EditGenderView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   /// Male
-
                   NxRadioTile(
-                    padding: Dimens.edgeInsets8,
+                    padding: Dimens.edgeInsets16_12,
                     bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(Dimens.eight),
@@ -59,7 +63,10 @@ class EditGenderView extends StatelessWidget {
                     onChanged: (value) {
                       logic.setGender = value.toString();
                     },
-                    title: StringValues.male,
+                    title: Text(
+                      StringValues.male.toTitleCase(),
+                      style: AppStyles.style14Bold,
+                    ),
                     value: StringValues.male,
                     groupValue: logic.gender,
                   ),
@@ -69,13 +76,16 @@ class EditGenderView extends StatelessWidget {
                   /// Female
 
                   NxRadioTile(
-                    padding: Dimens.edgeInsets8,
+                    padding: Dimens.edgeInsets16_12,
                     bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                     onTap: () => logic.setGender = StringValues.female,
                     onChanged: (value) {
                       logic.setGender = value.toString();
                     },
-                    title: StringValues.female,
+                    title: Text(
+                      StringValues.female.toTitleCase(),
+                      style: AppStyles.style14Bold,
+                    ),
                     value: StringValues.female,
                     groupValue: logic.gender,
                   ),
@@ -83,9 +93,8 @@ class EditGenderView extends StatelessWidget {
                   Dimens.divider,
 
                   /// Others
-
                   NxRadioTile(
-                    padding: Dimens.edgeInsets8,
+                    padding: Dimens.edgeInsets16_12,
                     bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(Dimens.eight),
@@ -95,7 +104,10 @@ class EditGenderView extends StatelessWidget {
                     onChanged: (value) {
                       logic.setGender = value.toString();
                     },
-                    title: StringValues.others,
+                    title: Text(
+                      StringValues.others.toTitleCase(),
+                      style: AppStyles.style14Bold,
+                    ),
                     value: StringValues.others,
                     groupValue: logic.gender,
                   ),

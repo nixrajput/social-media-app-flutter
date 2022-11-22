@@ -96,13 +96,15 @@ class ChangePhoneView extends StatelessWidget {
                           ),
                         ),
                       Dimens.boxHeight32,
-                      Row(
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          InkWell(
+                          GestureDetector(
                             onTap: _showCountryCodeBottomSheet,
                             child: Container(
                               height: Dimens.fiftySix,
-                              padding: Dimens.edgeInsets0_16,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Theme.of(Get.context!).dividerColor,
@@ -112,47 +114,44 @@ class ChangePhoneView extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  logic.code.dialCode,
-                                  style: AppStyles.style14Bold,
+                                  '${logic.code.name} (${logic.code.dialCode})',
+                                  style: AppStyles.style14Normal,
                                 ),
                               ),
                             ),
                           ),
-                          Dimens.boxWidth16,
-                          Expanded(
-                            child: Container(
-                              height: Dimens.fiftySix,
-                              constraints:
-                                  BoxConstraints(maxWidth: Dimens.screenWidth),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(Dimens.eight),
-                                  ),
-                                  hintStyle: AppStyles.style14Normal.copyWith(
-                                    color: ColorValues.grayColor,
-                                  ),
-                                  hintText: StringValues.phoneNo,
+                          Dimens.boxHeight16,
+                          Container(
+                            height: Dimens.fiftySix,
+                            constraints:
+                                BoxConstraints(maxWidth: Dimens.screenWidth),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(Dimens.eight),
                                 ),
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  LengthLimitingTextInputFormatter(12),
-                                ],
-                                enabled: logic.otpSent ? false : true,
-                                keyboardType: TextInputType.phone,
-                                maxLines: 1,
-                                style: AppStyles.style14Normal.copyWith(
-                                  color: Theme.of(Get.context!)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color,
+                                hintStyle: AppStyles.style14Normal.copyWith(
+                                  color: ColorValues.grayColor,
                                 ),
-                                onChanged: (value) =>
-                                    logic.onChangePhone(value),
-                                onEditingComplete: () =>
-                                    logic.focusNode.unfocus(),
+                                hintText: StringValues.phoneNo,
                               ),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(12),
+                              ],
+                              enabled: logic.otpSent ? false : true,
+                              keyboardType: TextInputType.phone,
+                              maxLines: 1,
+                              style: AppStyles.style14Normal.copyWith(
+                                color: Theme.of(Get.context!)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color,
+                              ),
+                              onChanged: (value) => logic.onChangeOtp(value),
+                              onEditingComplete: () =>
+                                  logic.focusNode.unfocus(),
                             ),
                           ),
                         ],
@@ -214,7 +213,7 @@ class ChangePhoneView extends StatelessWidget {
     var lastIndex = 20;
     var countryCodes = StaticData.countryCodes.sublist(0, lastIndex);
     AppUtility.showBottomSheet(
-      [
+      children: [
         Padding(
           padding: Dimens.edgeInsets8_16,
           child: Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -27,7 +28,7 @@ class PrivacySettingsView extends StatelessWidget {
                 padding: Dimens.edgeInsets8_16,
               ),
               Dimens.boxHeight16,
-              _buildBody(),
+              _buildBody(context),
             ],
           ),
         ),
@@ -35,33 +36,39 @@ class PrivacySettingsView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Expanded(
       child: Padding(
         padding: Dimens.edgeInsets0_16,
         child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               /// Account Privacy
-
               GetBuilder<ProfileController>(
                 builder: (logic) => NxListTile(
-                  padding: Dimens.edgeInsets12_8,
-                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                  padding: Dimens.edgeInsets16_12,
+                  bgColor: Theme.of(context).dialogBackgroundColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(Dimens.eight),
                     topRight: Radius.circular(Dimens.eight),
                   ),
-                  leading: Icon(
-                    Icons.lock_outline,
-                    size: Dimens.twenty,
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  ),
                   title: Text(
                     StringValues.accountPrivacy,
                     style: AppStyles.style14Bold,
+                  ),
+                  subtitle: Text(
+                    logic.profileDetails!.user!.isPrivate
+                        ? StringValues.on
+                        : StringValues.off,
+                    style: AppStyles.style13Normal.copyWith(
+                      color: logic.profileDetails!.user!.isPrivate
+                          ? ColorValues.successColor
+                          : Theme.of(context).textTheme.subtitle1!.color,
+                    ),
                   ),
                   onTap: RouteManagement.goToChangeAccountPrivacyView,
                 ),
@@ -70,106 +77,113 @@ class PrivacySettingsView extends StatelessWidget {
               Dimens.divider,
 
               /// Online Status
-
-              NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                leading: Icon(
-                  Icons.online_prediction_outlined,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
-                title: Text(
-                  StringValues.onlineStatus,
-                  style: AppStyles.style14Bold,
-                ),
-                trailing: GetBuilder<ProfileController>(
-                  builder: (logic) {
-                    return Switch(
-                      value:
-                          logic.profileDetails!.user!.showOnlineStatus ?? true,
-                      onChanged: (value) {
-                        logic.updateProfile({'showOnlineStatus': '$value'});
-                      },
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    );
-                  },
-                ),
-              ),
+              GetBuilder<ProfileController>(builder: (logic) {
+                return NxListTile(
+                  padding: Dimens.edgeInsets16_12,
+                  bgColor: Theme.of(context).dialogBackgroundColor,
+                  title: Text(
+                    StringValues.onlineStatus,
+                    style: AppStyles.style14Bold,
+                  ),
+                  subtitle: Text(
+                    logic.profileDetails!.user!.showOnlineStatus == true
+                        ? StringValues.on
+                        : StringValues.off,
+                    style: AppStyles.style13Normal.copyWith(
+                      color: logic.profileDetails!.user!.isPrivate
+                          ? ColorValues.successColor
+                          : Theme.of(context).textTheme.subtitle1!.color,
+                    ),
+                  ),
+                  trailing: GetBuilder<ProfileController>(
+                    builder: (logic) {
+                      return Switch(
+                        value: logic.profileDetails!.user!.showOnlineStatus ??
+                            true,
+                        onChanged: (value) {
+                          var body = {'showOnlineStatus': '$value'};
+                          logic.updateProfile(body);
+                        },
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      );
+                    },
+                  ),
+                );
+              }),
 
               Dimens.divider,
 
               /// Posts
-
               NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                leading: Icon(
-                  Icons.add_circle_outline,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
+                padding: Dimens.edgeInsets16_12,
+                bgColor: Theme.of(context).dialogBackgroundColor,
                 title: Text(
-                  StringValues.posts,
+                  StringValues.postPrivacy,
                   style: AppStyles.style14Bold,
+                ),
+                subtitle: Text(
+                  StringValues.postPrivacyDesc,
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
                 ),
               ),
 
               Dimens.divider,
 
               /// Comments
-
               NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                leading: Icon(
-                  Icons.chat_bubble_outline,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
+                padding: Dimens.edgeInsets16_12,
+                bgColor: Theme.of(context).dialogBackgroundColor,
                 title: Text(
-                  StringValues.comments,
+                  StringValues.commentPrivacy,
                   style: AppStyles.style14Bold,
+                ),
+                subtitle: Text(
+                  StringValues.commentPrivacyDesc,
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
                 ),
               ),
 
               Dimens.divider,
 
               /// Messages
-
               NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                leading: Icon(
-                  Icons.send_outlined,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
+                padding: Dimens.edgeInsets16_12,
+                bgColor: Theme.of(context).dialogBackgroundColor,
                 title: Text(
-                  StringValues.messages,
+                  StringValues.messagePrivacy,
                   style: AppStyles.style14Bold,
+                ),
+                subtitle: Text(
+                  StringValues.commentPrivacyDesc,
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
                 ),
               ),
 
               Dimens.divider,
 
               /// Moments
-
               NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                padding: Dimens.edgeInsets16_12,
+                bgColor: Theme.of(context).dialogBackgroundColor,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(Dimens.eight),
                   bottomRight: Radius.circular(Dimens.eight),
                 ),
-                leading: Icon(
-                  Icons.history_outlined,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
                 title: Text(
-                  StringValues.moments,
+                  StringValues.storyPrivacy,
                   style: AppStyles.style14Bold,
+                ),
+                subtitle: Text(
+                  StringValues.storyPrivacyDesc,
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
                 ),
               ),
               Dimens.boxHeight16,

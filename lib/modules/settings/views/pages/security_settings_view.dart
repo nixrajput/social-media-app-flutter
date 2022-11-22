@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -26,7 +26,7 @@ class SecuritySettingsView extends StatelessWidget {
                 padding: Dimens.edgeInsets8_16,
               ),
               Dimens.boxHeight16,
-              _buildBody(),
+              _buildBody(context),
             ],
           ),
         ),
@@ -34,32 +34,34 @@ class SecuritySettingsView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         child: Padding(
           padding: Dimens.edgeInsets0_16,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               /// Change Password
-
               NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                padding: Dimens.edgeInsets16_12,
+                bgColor: Theme.of(context).dialogBackgroundColor,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(Dimens.eight),
                   topRight: Radius.circular(Dimens.eight),
                 ),
-                leading: Icon(
-                  Icons.key_outlined,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
                 title: Text(
                   StringValues.changePassword,
                   style: AppStyles.style14Bold,
+                ),
+                subtitle: Text(
+                  StringValues.changePasswordDesc,
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
                 ),
                 onTap: RouteManagement.goToChangePasswordView,
               ),
@@ -67,18 +69,18 @@ class SecuritySettingsView extends StatelessWidget {
               Dimens.divider,
 
               /// Login Activity
-
               NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                leading: Icon(
-                  Icons.location_on_outlined,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
+                padding: Dimens.edgeInsets16_12,
+                bgColor: Theme.of(context).dialogBackgroundColor,
                 title: Text(
-                  "${StringValues.login} ${StringValues.activity}",
+                  StringValues.loginActivity.toTitleCase(),
                   style: AppStyles.style14Bold,
+                ),
+                subtitle: Text(
+                  StringValues.loginActivityDesc,
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
                 ),
                 onTap: RouteManagement.goToLoginActivityView,
               ),
@@ -86,22 +88,22 @@ class SecuritySettingsView extends StatelessWidget {
               Dimens.divider,
 
               /// 2-FA
-
               NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                padding: Dimens.edgeInsets16_12,
+                bgColor: Theme.of(context).dialogBackgroundColor,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(Dimens.eight),
                   bottomRight: Radius.circular(Dimens.eight),
                 ),
-                leading: Icon(
-                  Icons.security_outlined,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
                 title: Text(
                   StringValues.twoFaAuth,
                   style: AppStyles.style14Bold,
+                ),
+                subtitle: Text(
+                  StringValues.no,
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
                 ),
               ),
               Dimens.boxHeight16,

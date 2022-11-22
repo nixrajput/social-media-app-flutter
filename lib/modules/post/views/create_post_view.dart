@@ -201,7 +201,7 @@ class CreatePostView extends StatelessWidget {
   }
 
   _showCreatePostOptions() => AppUtility.showBottomSheet(
-        [
+        children: [
           ListTile(
             onTap: () {
               AppUtility.closeBottomSheet();

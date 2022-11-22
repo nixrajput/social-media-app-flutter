@@ -345,7 +345,10 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text(
-                        logic.profileDetails!.user!.website ?? 'Add website',
+                        logic.profileDetails!.user!.website != null
+                            ? Uri.parse(logic.profileDetails!.user!.website!)
+                                .host
+                            : 'Add website',
                         style: AppStyles.style16Normal.copyWith(
                           color: logic.profileDetails!.user!.website == null
                               ? Theme.of(Get.context!)

@@ -20,6 +20,8 @@ abstract class ColorValues {
   static const Color primaryColor = Color(0xFF2878F0);
   static const Color primaryLightColor = Color.fromARGB(255, 130, 170, 240);
 
+  static const Color linkColor = Color(0xFF2878F0);
+
   static const Color lightChatBubbleColor = Color.fromARGB(255, 242, 242, 242);
   static const Color darkChatBubbleColor = Color.fromARGB(255, 18, 66, 148);
 

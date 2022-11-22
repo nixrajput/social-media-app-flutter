@@ -8,6 +8,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -16,22 +17,24 @@ class AboutSettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SizedBox(
-          width: Dimens.screenWidth,
-          height: Dimens.screenHeight,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              NxAppBar(
-                title: StringValues.about,
-                padding: Dimens.edgeInsets8_16,
-              ),
-              Dimens.boxHeight16,
-              _buildBody(),
-            ],
+    return UnFocusWidget(
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
+            width: Dimens.screenWidth,
+            height: Dimens.screenHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                NxAppBar(
+                  title: StringValues.about,
+                  padding: Dimens.edgeInsets8_16,
+                ),
+                Dimens.boxHeight16,
+                _buildBody(),
+              ],
+            ),
           ),
         ),
       ),

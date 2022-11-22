@@ -66,7 +66,7 @@ class PostThumbnailWidget extends StatelessWidget {
   }
 
   void _showHeaderOptionBottomSheet(Post post) => AppUtility.showBottomSheet(
-        [
+        children: [
           if (post.owner.id == ProfileController.find.profileDetails!.user!.id)
             ListTile(
               onTap: () async {

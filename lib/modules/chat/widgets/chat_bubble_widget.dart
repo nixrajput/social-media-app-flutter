@@ -325,7 +325,7 @@ class ChatBubble extends StatelessWidget {
     var currentUserId = controller.profile.profileDetails!.user!.id;
 
     AppUtility.showBottomSheet(
-      [
+      children: [
         Padding(
           padding: Dimens.edgeInsets8_16,
           child: Text(

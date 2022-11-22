@@ -411,7 +411,7 @@ class P2PChatView extends StatelessWidget {
 
   void _showAttachmentOptions(P2PChatController logic) =>
       AppUtility.showBottomSheet(
-        [
+        children: [
           ListTile(
             onTap: () async {
               AppUtility.closeBottomSheet();

@@ -12,4 +12,5 @@ abstract class HiveTypeId {
   static const notification = 12;
   static const auth = 13;
   static const follower = 14;
+  static const comment = 15;
 }

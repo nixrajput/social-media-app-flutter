@@ -16,6 +16,8 @@ abstract class StringValues {
   static const reactivateAccount = 'Reactivate Account';
   static const name = 'Name';
   static const next = 'Next';
+  static const back = 'Back';
+  static const change = 'Change';
   static const firstName = 'First Name';
   static const lastName = 'Last Name';
   static const email = 'Email';
@@ -105,6 +107,7 @@ abstract class StringValues {
   static const noMessages = 'No conversation yet';
   static const postDetailsNotFound = 'Post deleted or archived';
   static const changePassword = 'Change Password';
+  static const changePasswordDesc = 'Change your password.';
   static const about = 'About';
   static const checkForUpdates = 'Check for updates';
   static const userNotFoundError = 'User details not found';
@@ -128,6 +131,8 @@ abstract class StringValues {
   static const followUserLine =
       'Do follow some users to see their latest posts';
   static const loginActivity = 'Login Activity';
+  static const loginActivityDesc =
+      'You can see your login activity from different devices.';
   static const noPosts = 'No posts to show.';
   static const writeSomethingAboutYou = 'Write something about you...';
   static const dobFormat = 'dd mmm, yyyy';
@@ -173,6 +178,16 @@ abstract class StringValues {
   static const recordVideo = 'Record Video';
   static const yes = 'Yes';
   static const no = 'No';
+  static const on = 'On';
+  static const off = 'Off';
+  static const darkMode = 'Dark Mode';
+  static const lightMode = 'Light Mode';
+  static const systemDefault = 'System Default';
+  static const systemDefaultDesc = 'Use the system default theme';
+  static const darkModeDesc = 'Use dark theme';
+  static const lightModeDesc = 'Use light theme';
+  static const enable = 'Enable';
+  static const disable = 'Disable';
   static const exit = 'Exit';
   static const male = 'Male';
   static const female = 'Female';
@@ -184,7 +199,9 @@ abstract class StringValues {
   static const forward = 'Forward';
   static const posts = 'Posts';
   static const public = 'public';
+  static const publicPrivacyDesc = 'Anyone can see your posts';
   static const private = 'private';
+  static const privatePrivacyDesc = 'Only your followers can see your posts';
   static const display = 'Display';
   static const account = 'Account';
   static const accountPrivacy = 'Account Privacy';
@@ -208,14 +225,19 @@ abstract class StringValues {
   static const accept = 'Accept';
   static const remove = 'Remove';
   static const confirm = 'Confirm';
-  static const reportIssue = 'Report an issue';
-  static const sendUsSuggestions = 'Send us suggestions';
+  static const reportIssue = 'Report issue';
+  static const reportIssueDesc = 'Report an issue or a bug.';
+  static const sendUsSuggestions = 'Send suggestions';
+  static const sendUsSuggestionsDesc = 'Send us your suggestions.';
   static const sendSuggestions = 'Send Suggestions';
   static const privacyPolicy = 'Privacy Policy';
+  static const privacyPolicyDesc = 'Read our privacy policy.';
   static const termsOfUse = 'Terms of Use';
+  static const termsOfUseDesc = 'Read our terms of use.';
   static const website = 'Website';
   static const aboutUs = 'About Us';
   static const onlineStatus = 'Online Status';
+  static const addPhoneNumber = 'Add Phone Number';
   static const nameHelpText =
       "Either your full name, nickname, or business name.";
   static const accountSettingsHelp =
@@ -229,7 +251,31 @@ abstract class StringValues {
   static const aboutSettingsHelp = "See information about the application.";
   static const themeSettingsHelp = "Manage application theme modes.";
   static const deactivateAccount = 'Deactivate Account';
+  static const deactivate = 'Deactivate';
+  static const deactivateAccountHelp =
+      'Deactivate your account to temporarily disable your account.';
+  static const deactivateAccountWarning =
+      'Are you sure you want to deactivate?';
+  static const deactivateAccountWarningHelp =
+      'You can reactivate your account by logging in again.';
+  static const reactivate = 'Reactivate';
+  static const reactivateAccountHelp =
+      'Reactivate your account to enable your account again.';
   static const downloadArchiveOfData = 'Download an archive of your data';
+  static const download = 'Download';
+  static const postPrivacyDesc = 'Who can see your posts?';
+  static const messagePrivacyDesc = 'Who can send you messages?';
+  static const storyPrivacyDesc = 'Who can see your story?';
+  static const commentPrivacyDesc = 'Who can comment on your posts?';
+  static const followPrivacyDesc = 'Who can follow you?';
+  static const messageRequestPrivacyDesc = 'Who can send you message requests?';
+  static const storyPrivacy = 'Story Privacy';
+  static const commentPrivacy = 'Comment Privacy';
+  static const followPrivacy = 'Follow Privacy';
+  static const messageRequestPrivacy = 'Message Request Privacy';
+  static const postPrivacy = 'Post Privacy';
+  static const messagePrivacy = 'Message Privacy';
+
   static const changeEmailAddress = 'Change Email Address';
   static const changeEmail = 'Change Email';
   static const changePhoneNo = 'Change Phone Number';
@@ -243,6 +289,10 @@ abstract class StringValues {
   static const likes = 'Likes';
   static const verify = 'Verify';
   static const verified = 'Verified';
+  static const verifiedAccount = 'Verified Account';
+  static const verifiedAccountDesc = 'This account is verified.';
+  static const verifiedAccountHelp =
+      'This account is verified by Rippl. It means that this account is authentic.';
   static const blueTick = 'Blue Tick';
   static const blueTickVerified = 'Blue Tick Verified';
   static const blueTickVerification = 'Blue Tick Verification';

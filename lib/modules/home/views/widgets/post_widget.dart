@@ -371,7 +371,7 @@ class PostWidget extends StatelessWidget {
   }
 
   _showHeaderOptionBottomSheet() => AppUtility.showBottomSheet(
-        [
+        children: [
           if (post.owner.id == ProfileController.find.profileDetails!.user!.id)
             ListTile(
               onTap: () {

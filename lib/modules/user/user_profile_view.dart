@@ -12,7 +12,6 @@ import 'package:social_media_app/global_widgets/circular_progress_indicator.dart
 import 'package:social_media_app/global_widgets/count_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/custom_shape_painter.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
@@ -49,20 +48,12 @@ class UserProfileView extends StatelessWidget {
       physics: const BouncingScrollPhysics(
         parent: AlwaysScrollableScrollPhysics(),
       ),
-      child: Stack(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CustomPaint(
-            size: Size(Dimens.screenWidth, Dimens.screenHeight),
-            painter: CustomShapePainter(),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildProfileHeader(logic),
-              _buildProfileBody(logic),
-            ],
-          ),
+          _buildProfileHeader(logic),
+          _buildProfileBody(logic),
         ],
       ),
     );
@@ -245,7 +236,7 @@ class UserProfileView extends StatelessWidget {
           children: [
             Icon(
               Icons.calendar_today,
-              size: Dimens.twelve,
+              size: Dimens.sixTeen,
               color: Theme.of(Get.context!).textTheme.subtitle1!.color,
             ),
             Dimens.boxWidth8,

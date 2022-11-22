@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/login_info.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -32,8 +32,8 @@ class LoginInfoWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           NxListTile(
-            padding: Dimens.edgeInsets8,
-            bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+            padding: Dimens.edgeInsets16_12,
+            bgColor: Theme.of(context).dialogBackgroundColor,
             borderRadius: (index == 0 || index == totalLength - 1)
                 ? BorderRadius.only(
                     topLeft: Radius.circular(
@@ -46,17 +46,42 @@ class LoginInfoWidget extends StatelessWidget {
                         index == totalLength - 1 ? Dimens.eight : Dimens.zero),
                   )
                 : const BorderRadius.all(Radius.zero),
-            leading: Icon(
-              Icons.location_on_outlined,
-              size: Dimens.twenty,
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-            ),
+            leading: item.deviceType == 'android'
+                ? CircleAvatar(
+                    backgroundColor: ColorValues.grayColor,
+                    radius: Dimens.twentyFour,
+                    child: Icon(
+                      Icons.phone_android,
+                      size: Dimens.thirtyTwo,
+                      color: ColorValues.darkerGrayColor,
+                    ),
+                  )
+                : CircleAvatar(
+                    backgroundColor: ColorValues.grayColor,
+                    radius: Dimens.twentyFour,
+                    child: Icon(
+                      Icons.phone_iphone,
+                      size: Dimens.thirtyTwo,
+                      color: ColorValues.darkerGrayColor,
+                    ),
+                  ),
             title: RichText(
               text: TextSpan(
-                text: "${item.city!}, ${item.regionName!}, ${item.country!}",
-                style: AppStyles.style14Bold.copyWith(
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
+                children: [
+                  TextSpan(
+                    text: item.deviceModel!,
+                    style: AppStyles.style14Bold.copyWith(
+                      color: Theme.of(context).textTheme.bodyText1!.color,
+                    ),
+                  ),
+                  if (item.deviceId == AuthService.find.deviceId.toString())
+                    TextSpan(
+                      text: "  •",
+                      style: AppStyles.style14Bold.copyWith(
+                        color: ColorValues.successColor,
+                      ),
+                    ),
+                ],
               ),
             ),
             subtitle: Column(
@@ -66,39 +91,32 @@ class LoginInfoWidget extends StatelessWidget {
               children: [
                 RichText(
                   text: TextSpan(
-                    text: item.ip!,
+                    text:
+                        "${item.city!}, ${item.regionName!}, ${item.country!}",
                     style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      color: Theme.of(context).textTheme.subtitle1!.color,
                     ),
                   ),
                 ),
                 RichText(
                   text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: item.deviceModel!,
-                        style: AppStyles.style13Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
-                        ),
-                      ),
-                      if (item.deviceId == AuthService.find.deviceId.toString())
-                        TextSpan(
-                          text: "  •",
-                          style: AppStyles.style14Bold.copyWith(
-                            color: ColorValues.successColor,
-                          ),
-                        ),
-                    ],
+                    text: GetTimeAgo.parse(
+                      item.createdAt!,
+                      pattern: 'dd MMM yyyy hh:mm a',
+                    ),
+                    style: AppStyles.style13Normal.copyWith(
+                      color: Theme.of(context).textTheme.subtitle1!.color,
+                    ),
                   ),
                 ),
               ],
             ),
+            trailingFlex: 0,
             trailing: GestureDetector(
               onTap: () => _showDeleteDialog(item.deviceId!),
               child: Icon(
-                Icons.delete,
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                Icons.close,
+                color: Theme.of(context).textTheme.bodyText1!.color,
               ),
             ),
           ),

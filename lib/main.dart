@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
+import 'package:social_media_app/apis/models/entities/comment.dart';
 import 'package:social_media_app/apis/models/entities/follower.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/notification.dart';
@@ -62,6 +63,7 @@ Future<void> _initPreAppServices() async {
   Hive.registerAdapter(PostResponseAdapter());
   Hive.registerAdapter(NotificationModelAdapter());
   Hive.registerAdapter(FollowerAdapter());
+  Hive.registerAdapter(CommentAdapter());
 
   AppUtility.log('Opening Hive Boxes');
 
@@ -74,6 +76,7 @@ Future<void> _initPreAppServices() async {
   await Hive.openBox<Post>('profilePosts');
   await Hive.openBox<Follower>('followers');
   await Hive.openBox<Follower>('followings');
+  await Hive.openBox<Comment>('comments');
 
   await initializeFirebaseService();
 

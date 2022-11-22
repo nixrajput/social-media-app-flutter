@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -48,9 +49,8 @@ class SettingsView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 /// Account
-
                 NxListTile(
-                  padding: Dimens.edgeInsets12_8,
+                  padding: Dimens.edgeInsets16_12,
                   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(Dimens.eight),
@@ -71,9 +71,8 @@ class SettingsView extends StatelessWidget {
                 Dimens.divider,
 
                 /// Security
-
                 NxListTile(
-                  padding: Dimens.edgeInsets12_8,
+                  padding: Dimens.edgeInsets16_12,
                   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.verified_user_outlined,
@@ -90,9 +89,8 @@ class SettingsView extends StatelessWidget {
                 Dimens.divider,
 
                 /// Privacy
-
                 NxListTile(
-                  padding: Dimens.edgeInsets12_8,
+                  padding: Dimens.edgeInsets16_12,
                   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.lock_outline,
@@ -109,9 +107,8 @@ class SettingsView extends StatelessWidget {
                 Dimens.divider,
 
                 /// Help
-
                 NxListTile(
-                  padding: Dimens.edgeInsets12_8,
+                  padding: Dimens.edgeInsets16_12,
                   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.help_outline_outlined,
@@ -128,9 +125,8 @@ class SettingsView extends StatelessWidget {
                 Dimens.divider,
 
                 /// Theme
-
                 NxListTile(
-                  padding: Dimens.edgeInsets12_8,
+                  padding: Dimens.edgeInsets16_12,
                   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.palette_outlined,
@@ -147,9 +143,8 @@ class SettingsView extends StatelessWidget {
                 Dimens.divider,
 
                 /// About
-
                 NxListTile(
-                  padding: Dimens.edgeInsets12_8,
+                  padding: Dimens.edgeInsets16_12,
                   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.info_outline,
@@ -166,9 +161,8 @@ class SettingsView extends StatelessWidget {
                 Dimens.divider,
 
                 /// Check for update
-
                 NxListTile(
-                  padding: Dimens.edgeInsets12_8,
+                  padding: Dimens.edgeInsets16_12,
                   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   leading: Icon(
                     Icons.loop_outlined,
@@ -185,9 +179,8 @@ class SettingsView extends StatelessWidget {
                 Dimens.divider,
 
                 /// Logout
-
                 NxListTile(
-                  padding: Dimens.edgeInsets12_8,
+                  padding: Dimens.edgeInsets16_12,
                   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(Dimens.eight),
@@ -196,11 +189,13 @@ class SettingsView extends StatelessWidget {
                   leading: Icon(
                     Icons.logout_outlined,
                     size: Dimens.twentyFour,
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    color: ColorValues.errorColor,
                   ),
                   title: Text(
                     StringValues.logout,
-                    style: AppStyles.style16Bold,
+                    style: AppStyles.style16Bold.copyWith(
+                      color: ColorValues.errorColor,
+                    ),
                   ),
                   onTap: () async {
                     RouteManagement.goToWelcomeView();

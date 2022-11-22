@@ -237,14 +237,18 @@ abstract class AppUtility {
 
   /// Show BottomSheet
 
-  static void showBottomSheet(List<Widget> children, {double? borderRadius}) {
+  static void showBottomSheet(
+      {required List<Widget> children,
+      double? borderRadius,
+      MainAxisAlignment? mainAxisAlignment,
+      CrossAxisAlignment? crossAxisAlignment}) {
     closeBottomSheet();
     Get.bottomSheet(
       Padding(
         padding: Dimens.edgeInsets8_0,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
+          crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: children,
         ),

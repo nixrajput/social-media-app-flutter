@@ -157,7 +157,7 @@ class SendOtpToPhoneView extends StatelessWidget {
     var lastIndex = 20;
     var countryCodes = StaticData.countryCodes.sublist(0, lastIndex);
     AppUtility.showBottomSheet(
-      [
+      children: [
         Padding(
           padding: Dimens.edgeInsets8_16,
           child: Text(

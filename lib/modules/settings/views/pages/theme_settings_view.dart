@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:social_media_app/app_services/theme_controller.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_radio_tile.dart';
 
@@ -25,7 +27,7 @@ class ThemeSettingsView extends StatelessWidget {
                 padding: Dimens.edgeInsets8_16,
               ),
               Dimens.boxHeight16,
-              _buildBody(),
+              _buildBody(context),
             ],
           ),
         ),
@@ -33,19 +35,21 @@ class ThemeSettingsView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Expanded(
       child: Padding(
         padding: Dimens.edgeInsets0_16,
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
           child: GetBuilder<AppThemeController>(
             builder: (logic) => Column(
               children: [
                 /// System
-
                 NxRadioTile(
-                  padding: Dimens.edgeInsets8,
-                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                  padding: Dimens.edgeInsets16_12,
+                  bgColor: Theme.of(context).dialogBackgroundColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(Dimens.eight),
                     topRight: Radius.circular(Dimens.eight),
@@ -54,7 +58,16 @@ class ThemeSettingsView extends StatelessWidget {
                   onChanged: (value) {
                     logic.setThemeMode(value);
                   },
-                  title: StringValues.system.toString(),
+                  title: Text(
+                    StringValues.systemDefault.toTitleCase(),
+                    style: AppStyles.style14Bold,
+                  ),
+                  subtitle: Text(
+                    StringValues.systemDefaultDesc,
+                    style: AppStyles.style13Normal.copyWith(
+                      color: Theme.of(context).textTheme.subtitle1!.color,
+                    ),
+                  ),
                   value: AppThemeModes.system,
                   groupValue: logic.themeMode,
                 ),
@@ -62,15 +75,23 @@ class ThemeSettingsView extends StatelessWidget {
                 Dimens.divider,
 
                 /// Light
-
                 NxRadioTile(
-                  padding: Dimens.edgeInsets8,
-                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                  padding: Dimens.edgeInsets16_12,
+                  bgColor: Theme.of(context).dialogBackgroundColor,
                   onTap: () => logic.setThemeMode(AppThemeModes.light),
                   onChanged: (value) {
                     logic.setThemeMode(value);
                   },
-                  title: StringValues.light.toString(),
+                  title: Text(
+                    StringValues.light.toTitleCase(),
+                    style: AppStyles.style14Bold,
+                  ),
+                  subtitle: Text(
+                    StringValues.lightModeDesc,
+                    style: AppStyles.style13Normal.copyWith(
+                      color: Theme.of(context).textTheme.subtitle1!.color,
+                    ),
+                  ),
                   value: AppThemeModes.light,
                   groupValue: logic.themeMode,
                 ),
@@ -78,10 +99,9 @@ class ThemeSettingsView extends StatelessWidget {
                 Dimens.divider,
 
                 /// Dark
-
                 NxRadioTile(
-                  padding: Dimens.edgeInsets8,
-                  bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                  padding: Dimens.edgeInsets16_12,
+                  bgColor: Theme.of(context).dialogBackgroundColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(Dimens.eight),
                     bottomRight: Radius.circular(Dimens.eight),
@@ -90,7 +110,16 @@ class ThemeSettingsView extends StatelessWidget {
                   onChanged: (value) {
                     logic.setThemeMode(value);
                   },
-                  title: StringValues.dark.toString(),
+                  title: Text(
+                    StringValues.dark.toTitleCase(),
+                    style: AppStyles.style14Bold,
+                  ),
+                  subtitle: Text(
+                    StringValues.darkModeDesc,
+                    style: AppStyles.style13Normal.copyWith(
+                      color: Theme.of(context).textTheme.subtitle1!.color,
+                    ),
+                  ),
                   value: AppThemeModes.dark,
                   groupValue: logic.themeMode,
                 ),

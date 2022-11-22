@@ -1,3 +1,8 @@
+import 'package:copy_with_extension/copy_with_extension.dart';
+
+part 'country_code.g.dart';
+
+@CopyWith()
 class CountryCode {
   const CountryCode({
     required this.name,

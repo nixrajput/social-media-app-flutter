@@ -124,7 +124,7 @@ class EditProfessionView extends StatelessWidget {
     var lastIndex = 20;
     var occupationList = StaticData.occupationList.sublist(1, lastIndex);
     AppUtility.showBottomSheet(
-      [
+      children: [
         Padding(
           padding: Dimens.edgeInsets8_16,
           child: Text(

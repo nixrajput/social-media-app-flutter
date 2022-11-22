@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class AccountSettingsView extends StatelessWidget {
   const AccountSettingsView({Key? key}) : super(key: key);
@@ -27,7 +30,7 @@ class AccountSettingsView extends StatelessWidget {
                 title: StringValues.account,
               ),
               Dimens.boxHeight16,
-              _buildBody(),
+              _buildBody(context),
             ],
           ),
         ),
@@ -35,119 +38,162 @@ class AccountSettingsView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
+    var profile = ProfileController.find.profileDetails!.user!;
     return Expanded(
-      child: Padding(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         padding: Dimens.edgeInsets0_16,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              /// Change Email Address
-
-              NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(Dimens.eight),
-                  topRight: Radius.circular(Dimens.eight),
-                ),
-                leading: Icon(
-                  Icons.mail_outline,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
-                title: Text(
-                  StringValues.changeEmailAddress.toTitleCase(),
-                  style: AppStyles.style14Bold,
-                ),
-                onTap: () => RouteManagement.goToVerifyPasswordView(
-                  RouteManagement.goToChangeEmailSettingsView,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            /// Change Email Address
+            NxListTile(
+              padding: Dimens.edgeInsets16_12,
+              bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(Dimens.eight),
+                topRight: Radius.circular(Dimens.eight),
+              ),
+              title: Text(
+                StringValues.email.toTitleCase(),
+                style: AppStyles.style14Bold,
+              ),
+              subtitle: Text(
+                profile.email,
+                style: AppStyles.style13Normal.copyWith(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
               ),
+              onTap: () => RouteManagement.goToVerifyPasswordView(
+                RouteManagement.goToChangeEmailSettingsView,
+              ),
+            ),
 
-              Dimens.divider,
+            Dimens.divider,
 
-              /// Add or Change Phone Number
-
-              NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                leading: Icon(
-                  Icons.phone_outlined,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
-                title: Text(
-                  StringValues.changePhoneNo.toTitleCase(),
-                  style: AppStyles.style14Bold,
-                ),
-                onTap: () => RouteManagement.goToVerifyPasswordView(
-                  RouteManagement.goToChangePhoneSettingsView,
+            /// Add or Change Phone Number
+            NxListTile(
+              padding: Dimens.edgeInsets16_12,
+              bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+              title: Text(
+                StringValues.phone.toTitleCase(),
+                style: AppStyles.style14Bold,
+              ),
+              subtitle: Text(
+                profile.phone != null
+                    ? '${profile.countryCode} ${profile.phone}'
+                    : StringValues.addPhoneNumber,
+                style: AppStyles.style13Normal.copyWith(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
               ),
+              onTap: () => RouteManagement.goToVerifyPasswordView(
+                RouteManagement.goToChangePhoneSettingsView,
+              ),
+            ),
 
-              Dimens.divider,
+            Dimens.divider,
 
-              // /// Apply for Self Verification
-
-              // NxListTile(
-              //   padding: Dimens.edgeInsets12_8,
-              //   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-              //   leading: Icon(
-              //     Icons.verified_user_outlined,
-              //     size: Dimens.twenty,
-              //     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-              //   ),
-              //   title: Text(
-              //     StringValues.applyForSelfVerify.toTitleCase(),
-              //     style: AppStyles.style14Bold,
-              //   ),
-              // ),
-              // Dimens.divider,
-
-              /// Apply for Blue Tick
-
-              NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                leading: Icon(
-                  Icons.verified_outlined,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
-                title: Text(
-                  StringValues.applyForBlueTick.toTitleCase(),
-                  style: AppStyles.style14Bold,
+            /// Change Username
+            NxListTile(
+              padding: Dimens.edgeInsets16_12,
+              bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+              title: Text(
+                StringValues.username.toTitleCase(),
+                style: AppStyles.style14Bold,
+              ),
+              subtitle: Text(
+                profile.uname,
+                style: AppStyles.style13Normal.copyWith(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
               ),
-
-              Dimens.divider,
-
-              /// Deactivate Account
-
-              NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(Dimens.eight),
-                  bottomRight: Radius.circular(Dimens.eight),
-                ),
-                leading: Icon(
-                  Icons.heart_broken_outlined,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
-                title: Text(
-                  StringValues.deactivateAccount,
-                  style: AppStyles.style14Bold,
-                ),
-                onTap: RouteManagement.goToDeactivateAccountSettingsView,
+              onTap: () => RouteManagement.goToVerifyPasswordView(
+                RouteManagement.goToEditUsernameView,
               ),
-              Dimens.boxHeight16,
-            ],
-          ),
+            ),
+
+            Dimens.divider,
+
+            /// Apply for Blue Tick
+            NxListTile(
+              padding: Dimens.edgeInsets16_12,
+              bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+              title: Text(
+                StringValues.verified.toTitleCase(),
+                style: AppStyles.style14Bold,
+              ),
+              subtitle: Text(
+                profile.isVerified ? StringValues.yes : StringValues.no,
+                style: AppStyles.style13Normal.copyWith(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
+                ),
+              ),
+              onTap: () {
+                if (profile.isVerified) {
+                  AppUtility.showBottomSheet(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Dimens.boxHeight16,
+                      Icon(
+                        Icons.verified,
+                        color: ColorValues.primaryColor,
+                        size: Dimens.sixty,
+                      ),
+                      Dimens.boxHeight16,
+                      Text(
+                        StringValues.verifiedAccount,
+                        style: AppStyles.style16Bold,
+                      ),
+                      Dimens.boxHeight8,
+                      Text(
+                        StringValues.verifiedAccountDesc,
+                        style: AppStyles.style14Normal.copyWith(
+                          color: Theme.of(context).textTheme.subtitle1!.color,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Dimens.boxHeight16,
+                    ],
+                  );
+                  return;
+                } else {
+                  RouteManagement.goToBlueTickVerificationView();
+                }
+              },
+            ),
+
+            Dimens.divider,
+
+            /// Deactivate Account
+
+            NxListTile(
+              padding: Dimens.edgeInsets16_12,
+              bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(Dimens.eight),
+                bottomRight: Radius.circular(Dimens.eight),
+              ),
+              title: Text(
+                StringValues.deactivate.toTitleCase(),
+                style: AppStyles.style14Bold.copyWith(
+                  color: ColorValues.errorColor,
+                ),
+              ),
+              subtitle: Text(
+                StringValues.deactivateAccountHelp,
+                style: AppStyles.style13Normal.copyWith(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
+                ),
+              ),
+              onTap: RouteManagement.goToDeactivateAccountSettingsView,
+            ),
+            Dimens.boxHeight16,
+          ],
         ),
       ),
     );

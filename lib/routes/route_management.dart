@@ -218,6 +218,10 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.changePhoneSettings);
   }
 
+  static void goToBlueTickVerificationView() {
+    Get.toNamed(AppRoutes.blueTickVerification);
+  }
+
   static void goToDeactivateAccountSettingsView() {
     Get.toNamed(AppRoutes.deactivateAccountSettings);
   }
