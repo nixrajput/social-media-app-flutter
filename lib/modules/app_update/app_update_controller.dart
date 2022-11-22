@@ -199,8 +199,8 @@ class AppUpdateController extends GetxController {
     var id = await RUpgrade.upgrade(
       _apkDownloadLink.value,
       fileName: 'app-release.apk',
-      isAutoRequestInstall: true,
       notificationStyle: NotificationStyle.none,
+      installType: RUpgradeInstallType.normal,
       useDownloadManager: false,
     );
 

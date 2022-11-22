@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
+import 'package:social_media_app/app_services/network_controller.dart';
 import 'package:social_media_app/app_services/notification_service.dart';
 import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -32,7 +33,10 @@ int setNotificationId(String type) {
 @pragma('vm:entry-point')
 Future<void> initializeFirebaseService() async {
   await Firebase.initializeApp();
+  Get.put(NetworkController(), permanent: true);
   Get.put(AuthService(), permanent: true);
+
+  var _network = NetworkController.find;
 
   var messaging = FirebaseMessaging.instance;
 
@@ -61,48 +65,50 @@ Future<void> initializeFirebaseService() async {
 
   var authService = AuthService.find;
 
-  await authService.getToken().then((token) async {
-    authService.autoLogout();
+  if (_network.networkStatus == true) {
+    await authService.getToken().then((token) async {
+      authService.autoLogout();
 
-    if (token.isEmpty) {
-      return;
-    }
+      if (token.isEmpty) {
+        return;
+      }
 
-    var tokenValid = await authService.validateToken(token);
-    if (!tokenValid) {
-      notificationService.showNotification(
-        title: 'Invalid Token',
-        body: 'Token is invalid. Please login again.',
-        priority: true,
-        id: setNotificationId('General Notifications'),
-        channelId: 'General Notifications',
-        channelName: 'General notifications',
-      );
-      return;
-    }
-  });
-
-  if (authService.isLogin) {
-    var fcmToken = await authService.readFcmTokenFromLocalStorage();
-    AppUtility.log('fcmToken: $fcmToken');
-
-    if (fcmToken.isEmpty) {
-      await messaging.deleteToken();
-      var token = await messaging.getToken();
-      AppUtility.log('fcmToken: $token');
-      await authService.saveFcmTokenToLocalStorage(token!);
-    }
-
-    messaging.onTokenRefresh.listen((newToken) async {
-      AppUtility.log('fcmToken refreshed: $newToken');
-      await authService.saveFcmTokenToLocalStorage(newToken);
-      if (authService.token.isNotEmpty) {
-        await authService.saveFcmToken(newToken);
+      var tokenValid = await authService.validateToken(token);
+      if (!tokenValid) {
+        notificationService.showNotification(
+          title: 'Invalid Token',
+          body: 'Token is invalid. Please login again.',
+          priority: true,
+          id: setNotificationId('General Notifications'),
+          channelId: 'General Notifications',
+          channelName: 'General notifications',
+        );
+        return;
       }
     });
-  } else {
-    await StorageService.remove("fcmToken");
-    await messaging.deleteToken();
+
+    if (authService.isLogin) {
+      var fcmToken = await authService.readFcmTokenFromLocalStorage();
+      AppUtility.log('fcmToken: $fcmToken');
+
+      if (fcmToken.isEmpty) {
+        await messaging.deleteToken();
+        var token = await messaging.getToken();
+        AppUtility.log('fcmToken: $token');
+        await authService.saveFcmTokenToLocalStorage(token!);
+      }
+
+      messaging.onTokenRefresh.listen((newToken) async {
+        AppUtility.log('fcmToken refreshed: $newToken');
+        await authService.saveFcmTokenToLocalStorage(newToken);
+        if (authService.token.isNotEmpty) {
+          await authService.saveFcmToken(newToken);
+        }
+      });
+    } else {
+      await StorageService.remove("fcmToken");
+      await messaging.deleteToken();
+    }
   }
 
   FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);

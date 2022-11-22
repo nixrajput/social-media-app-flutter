@@ -39,13 +39,7 @@ class NotificationController extends GetxController {
   set setNotificationData(NotificationResponse value) =>
       _notificationData.value = value;
 
-  @override
-  void onInit() {
-    super.onInit();
-    _getData();
-  }
-
-  void _getData() async {
+  Future<void> _getData() async {
     var isExists =
         await HiveService.hasLength<NotificationModel>('notifications');
     if (isExists) {
@@ -215,4 +209,6 @@ class NotificationController extends GetxController {
 
   Future<void> loadMore() async =>
       await _loadMore(page: _notificationData.value.currentPage! + 1);
+
+  Future<void> getData() async => await _getData();
 }

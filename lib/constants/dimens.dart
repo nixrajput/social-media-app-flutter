@@ -69,6 +69,16 @@ abstract class Dimens {
     top: percentHeight(0.12),
   );
 
+  static EdgeInsets edgeInsets2_0 = EdgeInsets.symmetric(
+    vertical: two,
+    horizontal: zero,
+  );
+
+  static EdgeInsets edgeInsets0_2 = EdgeInsets.symmetric(
+    vertical: zero,
+    horizontal: two,
+  );
+
   static EdgeInsets edgeInsets4_0 = EdgeInsets.symmetric(
     vertical: four,
     horizontal: zero,

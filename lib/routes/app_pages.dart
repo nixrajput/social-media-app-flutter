@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:social_media_app/modules/app_error/app_error_view.dart';
 import 'package:social_media_app/modules/app_update/app_update_view.dart';
 import 'package:social_media_app/modules/auth/bindings/account_verification_binding.dart';
 import 'package:social_media_app/modules/auth/bindings/login_binding.dart';
@@ -22,6 +23,7 @@ import 'package:social_media_app/modules/follower/views/followers_list_view.dart
 import 'package:social_media_app/modules/follower/views/following_list_view.dart';
 import 'package:social_media_app/modules/home/bindings/initial_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
+import 'package:social_media_app/modules/no_network/no_network_view.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
 import 'package:social_media_app/modules/post/bindings/post_details_binding.dart';
 import 'package:social_media_app/modules/post/bindings/post_liked_users_binding.dart';
@@ -74,6 +76,10 @@ import 'package:social_media_app/modules/settings/views/pages/theme_settings_vie
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/user/user_details_binding.dart';
 import 'package:social_media_app/modules/user/user_profile_view.dart';
+import 'package:social_media_app/modules/verify-otp/bindings/verify_otp_binding.dart';
+import 'package:social_media_app/modules/verify-otp/views/send_otp_to_email_view.dart';
+import 'package:social_media_app/modules/verify-otp/views/send_otp_to_phone_view.dart';
+import 'package:social_media_app/modules/verify-otp/views/verify_otp_view.dart';
 import 'package:social_media_app/modules/verify_password/verify_password_bindings.dart';
 import 'package:social_media_app/modules/verify_password/verify_password_view.dart';
 import 'package:social_media_app/modules/welcome/welcome_view.dart';
@@ -100,6 +106,20 @@ abstract class AppPages {
     ),
 
     GetPage(
+      name: _Routes.error,
+      page: AppErrorView.new,
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.noNetwork,
+      page: NoNetworkView.new,
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    GetPage(
       name: _Routes.welcome,
       page: WelcomeView.new,
       transitionDuration: transitionDuration,
@@ -113,6 +133,7 @@ abstract class AppPages {
       binding: LoginBinding(),
       transition: defaultTransition,
     ),
+
     GetPage(
       name: _Routes.register,
       page: RegisterView.new,
@@ -120,6 +141,7 @@ abstract class AppPages {
       binding: RegisterBinding(),
       transition: defaultTransition,
     ),
+
     GetPage(
       name: _Routes.home,
       page: HomeView.new,
@@ -135,11 +157,39 @@ abstract class AppPages {
       binding: PasswordBinding(),
       transition: defaultTransition,
     ),
+
     GetPage(
       name: _Routes.resetPassword,
       page: ResetPasswordView.new,
       transitionDuration: transitionDuration,
       binding: PasswordBinding(),
+      transition: defaultTransition,
+    ),
+
+    /// Send OTP To Email Page
+    GetPage(
+      name: _Routes.sendOtpToEmail,
+      page: SendOtpToEmailView.new,
+      transitionDuration: transitionDuration,
+      binding: VerifyOtpBinding(),
+      transition: defaultTransition,
+    ),
+
+    /// Send OTP To Phone Page
+    GetPage(
+      name: _Routes.sendOtpToPhone,
+      page: SendOtpToPhoneView.new,
+      transitionDuration: transitionDuration,
+      binding: VerifyOtpBinding(),
+      transition: defaultTransition,
+    ),
+
+    /// Verify OTP Page
+    GetPage(
+      name: _Routes.verifyOtp,
+      page: VerifyOtpView.new,
+      transitionDuration: transitionDuration,
+      binding: VerifyOtpBinding(),
       transition: defaultTransition,
     ),
 

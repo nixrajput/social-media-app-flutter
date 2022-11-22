@@ -4,6 +4,7 @@ import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/media_file_message.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/constants/enums.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/date_extensions.dart';
@@ -19,7 +20,6 @@ import 'package:social_media_app/helpers/global_string_key.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/chat/controllers/p2p_chat_controller.dart';
 import 'package:social_media_app/modules/chat/views/preview_media_files_view.dart';
-import 'package:social_media_app/modules/chat/widgets/bubble_type.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_bubble_clipper.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_bubble_widget.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_reply_to_box.dart';
@@ -167,6 +167,8 @@ class P2PChatView extends StatelessWidget {
               ),
               minLines: 1,
               maxLines: 5,
+              keyboardType: TextInputType.multiline,
+              textCapitalization: TextCapitalization.sentences,
               style: AppStyles.style14Normal.copyWith(
                 color: Theme.of(Get.context!).textTheme.bodyText1!.color,
               ),

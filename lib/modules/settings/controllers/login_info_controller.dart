@@ -32,6 +32,12 @@ class LoginInfoController extends GetxController {
   set setLoginDeviceInfoData(LoginHistoryResponse value) =>
       _loginHistoryData.value = value;
 
+  @override
+  onInit() {
+    super.onInit();
+    _getLoginHistory();
+  }
+
   Future<void> _getLoginHistory() async {
     _isLoading.value = true;
     update();

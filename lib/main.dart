@@ -16,14 +16,16 @@ import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
+import 'package:social_media_app/app_services/network_controller.dart';
+import 'package:social_media_app/app_services/route_service.dart';
 import 'package:social_media_app/app_services/theme_controller.dart';
 import 'package:social_media_app/background_service/firebase_service.dart';
 import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/enums.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
-import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/translations/app_translations.dart';
@@ -32,16 +34,19 @@ import 'package:social_media_app/utils/utility.dart';
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
-    await initPreAppServices();
+    await _initPreAppServices();
     await checkAuthData();
-    runApp(const MyApp());
-    await Get.put(AppUpdateController(), permanent: true).init();
   } catch (err) {
     AppUtility.log('Error in main: $err', tag: 'error');
+    RouteService.set(RouteStatus.error);
+  }
+  runApp(const MyApp());
+  if (NetworkController.find.networkStatus == true) {
+    await Get.put(AppUpdateController(), permanent: true).init();
   }
 }
 
-Future<void> initPreAppServices() async {
+Future<void> _initPreAppServices() async {
   await GetStorage.init();
   await Hive.initFlutter();
 
@@ -70,31 +75,40 @@ Future<void> initPreAppServices() async {
   await Hive.openBox<Follower>('followers');
   await Hive.openBox<Follower>('followings');
 
-  // AppUtility.log('Deleting Hive Boxes');
-  // await HiveService.deleteAllBoxes();
-
   await initializeFirebaseService();
 
   Get.put(AppThemeController(), permanent: true);
   Get.put(ProfileController(), permanent: true);
-  Get.put(LoginInfoController(), permanent: true);
 }
 
-bool isLogin = false;
-String serverHealth = "offline";
-
 Future<void> checkAuthData() async {
-  serverHealth = await AuthService.find.checkServerHealth();
-  AppUtility.log("ServerHealth: $serverHealth");
+  var authService = AuthService.find;
 
-  /// If [serverHealth] is `offline` or `maintenance`,
-  /// then return
-  if (serverHealth.toLowerCase() == "offline" ||
-      serverHealth.toLowerCase() == "maintenance") {
+  var network = NetworkController.find;
+
+  if (network.networkStatus == false) {
+    RouteService.set(RouteStatus.noNetwork);
     return;
   }
 
-  var authService = AuthService.find;
+  var serverHealth = await authService.checkServerHealth();
+  AppUtility.log("ServerHealth: $serverHealth");
+
+  if (serverHealth == null) {
+    RouteService.set(RouteStatus.error);
+  } else {
+    /// If [serverHealth] is `offline` or `maintenance`,
+    /// then return
+    if (serverHealth.toLowerCase() == "offline") {
+      RouteService.set(RouteStatus.serverOffline);
+      return;
+    }
+
+    if (serverHealth.toLowerCase() == "maintenance") {
+      RouteService.set(RouteStatus.serverMaintenance);
+      return;
+    }
+  }
 
   /// If [serverHealth] is `online`
   await authService.getToken().then((token) async {
@@ -104,18 +118,25 @@ Future<void> checkAuthData() async {
       if (tokenValid) {
         var hasData = await ProfileController.find.loadProfileDetails();
         if (hasData) {
-          isLogin = true;
+          RouteService.set(RouteStatus.loggedIn);
         } else {
+          RouteService.set(RouteStatus.error);
           await StorageService.remove('profileData');
           return;
         }
       } else {
+        RouteService.set(RouteStatus.notLoggedIn);
         await authService.deleteAllLocalDataAndCache();
       }
     }
-    isLogin
-        ? AppUtility.log("User is logged in")
-        : AppUtility.log("User is not logged in", tag: 'error');
+
+    if (RouteService.routeStatus == RouteStatus.loggedIn) {
+      AppUtility.log("User is logged in");
+    }
+
+    if (RouteService.routeStatus == RouteStatus.notLoggedIn) {
+      AppUtility.log("User is not logged in", tag: 'error');
+    }
   });
 }
 
@@ -171,14 +192,22 @@ class MyApp extends StatelessWidget {
   }
 
   String _handleAppInitialRoute() {
-    if (serverHealth.toLowerCase() == "maintenance") {
-      return AppRoutes.maintenance;
-    } else if (serverHealth.toLowerCase() == "offline") {
-      return AppRoutes.offline;
-    } else if (isLogin) {
-      return AppRoutes.home;
-    } else {
-      return AppRoutes.welcome;
+    switch (RouteService.routeStatus) {
+      case RouteStatus.init:
+      case RouteStatus.notLoggedIn:
+        return AppRoutes.welcome;
+      case RouteStatus.error:
+        return AppRoutes.error;
+      case RouteStatus.noNetwork:
+        return AppRoutes.noNetwork;
+      case RouteStatus.serverOffline:
+        return AppRoutes.offline;
+      case RouteStatus.serverMaintenance:
+        return AppRoutes.maintenance;
+      case RouteStatus.loggedIn:
+        return AppRoutes.home;
+      default:
+        return AppRoutes.welcome;
     }
   }
 

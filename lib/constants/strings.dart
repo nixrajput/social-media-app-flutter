@@ -238,7 +238,19 @@ abstract class StringValues {
   static const applyForSelfVerify = 'Apply for self verification';
   static const applyForBlueTick = 'Apply for blue tick';
   static const request = 'Request';
+  static const zero = '0';
+  static const requestSent = 'Request Sent';
   static const likes = 'Likes';
+  static const verify = 'Verify';
+  static const verified = 'Verified';
+  static const blueTick = 'Blue Tick';
+  static const blueTickVerified = 'Blue Tick Verified';
+  static const blueTickVerification = 'Blue Tick Verification';
+  static const sendOtpToEmail = 'Send OTP to Email';
+  static const sendOtpToPhone = 'Send OTP to Phone';
+  static const sendOtpToEmailDesc = 'Enter your email address to send OTP';
+  static const sendOtpToPhoneDesc = 'Enter your phone number to send OTP';
+  static const verifyOtp = 'Verify OTP';
   static const twoFaAuthHelpText =
       'Help protect your account from unauthorised access by requiring a second authentication method in addition to your password.';
   static const moreDetails = 'More Details';

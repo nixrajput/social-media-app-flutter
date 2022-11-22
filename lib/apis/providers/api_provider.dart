@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:http/http.dart' as http;
+import 'package:social_media_app/app_services/network_controller.dart';
+import 'package:social_media_app/app_services/route_service.dart';
+import 'package:social_media_app/constants/enums.dart';
 import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/exceptions.dart';
@@ -27,6 +29,8 @@ class ApiProvider {
 
   String? baseUrl;
 
+  final _network = NetworkController.find;
+
   /// This is the method that is called from the service class.
   Future<dynamic> _catchAsyncApiError({
     String? baseUrl,
@@ -38,6 +42,12 @@ class ApiProvider {
     Map<String, dynamic>? queryParams,
   }) async {
     AppUtility.log('$feature Request');
+
+    if (_network.networkStatus == false) {
+      AppUtility.log('Error: No network connection', tag: 'error');
+      RouteService.set(RouteStatus.noNetwork);
+      return;
+    }
 
     var url = Uri.parse((baseUrl ?? this.baseUrl!) + endPoint);
 
@@ -229,6 +239,54 @@ class ApiProvider {
       endPoint: AppUrls.resetPasswordEndpoint,
       method: 'POST',
       feature: 'Reset Password',
+      body: body,
+    );
+
+    return response;
+  }
+
+  /// Send OTP To Email
+  Future<ResponseData> sendOtpToEmail(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.sendOtpToEmailEndpoint,
+      method: 'POST',
+      feature: 'Send OTP To Email',
+      body: body,
+    );
+
+    return response;
+  }
+
+  /// Verify OTP From Email
+  Future<ResponseData> verifyOtpFromEmail(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.verifyOtpFromEmailEndpoint,
+      method: 'POST',
+      feature: 'Verify OTP From Email',
+      body: body,
+    );
+
+    return response;
+  }
+
+  /// Send OTP To Phone
+  Future<ResponseData> sendOtpToPhone(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.sendOtpToPhoneEndpoint,
+      method: 'POST',
+      feature: 'Send OTP To Phone',
+      body: body,
+    );
+
+    return response;
+  }
+
+  /// Verify OTP From Phone
+  Future<ResponseData> verifyOtpFromPhone(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.verifyOtpFromPhoneEndpoint,
+      method: 'POST',
+      feature: 'Verify OTP From Phone',
       body: body,
     );
 
@@ -1172,12 +1230,17 @@ class ApiProvider {
   /// Add New Comment
   Future<ResponseData> addComment(
       String token, String postId, String comment) async {
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['postId'] = postId;
+
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.addCommentEndpoint,
       method: 'POST',
       feature: 'Add Comment',
       headers: {"authorization": "Bearer $token"},
-      body: {'postId': postId, 'text': comment},
+      body: {'comment': comment},
+      queryParams: queryParameters,
     );
 
     return response;

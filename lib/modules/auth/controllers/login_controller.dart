@@ -9,7 +9,6 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
-import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -103,7 +102,6 @@ class LoginController extends GetxController {
           }
 
           await _auth.saveLoginInfo();
-          await LoginInfoController.find.getLoginHisory();
           _clearLoginTextControllers();
 
           _isLoading.value = false;

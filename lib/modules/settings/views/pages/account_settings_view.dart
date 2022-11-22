@@ -90,22 +90,22 @@ class AccountSettingsView extends StatelessWidget {
 
               Dimens.divider,
 
-              /// Apply for Self Verification
+              // /// Apply for Self Verification
 
-              NxListTile(
-                padding: Dimens.edgeInsets12_8,
-                bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                leading: Icon(
-                  Icons.verified_user_outlined,
-                  size: Dimens.twenty,
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                ),
-                title: Text(
-                  StringValues.applyForSelfVerify.toTitleCase(),
-                  style: AppStyles.style14Bold,
-                ),
-              ),
-              Dimens.divider,
+              // NxListTile(
+              //   padding: Dimens.edgeInsets12_8,
+              //   bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+              //   leading: Icon(
+              //     Icons.verified_user_outlined,
+              //     size: Dimens.twenty,
+              //     color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              //   ),
+              //   title: Text(
+              //     StringValues.applyForSelfVerify.toTitleCase(),
+              //     style: AppStyles.style14Bold,
+              //   ),
+              // ),
+              // Dimens.divider,
 
               /// Apply for Blue Tick
 

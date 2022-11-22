@@ -27,8 +27,12 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.login);
   }
 
-  static void goToRegisterView() {
+  static void _goToRegisterView() {
     Get.toNamed(AppRoutes.register);
+  }
+
+  static void goToRegisterView() {
+    goToSendOtpToEmailView(callback: _goToRegisterView);
   }
 
   static void goToForgotPasswordView() {
@@ -50,6 +54,22 @@ abstract class RouteManagement {
   static void goToReactivateAccountView() {
     Get.toNamed(AppRoutes.reactivateAccount);
   }
+
+  /// OTP ----------------------------------------------------------------------
+
+  static void goToSendOtpToEmailView({VoidCallback? callback}) {
+    Get.toNamed(AppRoutes.sendOtpToEmail, arguments: {'callback': callback});
+  }
+
+  static void goToSendOtpToPhoneView({VoidCallback? callback}) {
+    Get.toNamed(AppRoutes.sendOtpToPhone, arguments: {'callback': callback});
+  }
+
+  static void goToVerifyOtpView() {
+    Get.toNamed(AppRoutes.verifyOtp);
+  }
+
+  /// --------------------------------------------------------------------------
 
   static void goToHomeView() {
     Get.offAllNamed(AppRoutes.home);

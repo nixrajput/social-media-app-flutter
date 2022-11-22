@@ -339,6 +339,36 @@ class ProfileController extends GetxController {
     }
   }
 
+  Future<void> _applyForBlueTick(Map<String, dynamic> details) async {
+    if (details.isEmpty) {
+      AppUtility.printLog("Please enter required details");
+      return;
+    }
+
+    final body = details;
+
+    try {
+      final response = await _apiProvider.updateProfile(_auth.token, body);
+
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+        );
+      } else {
+        final decodedData = response.data;
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } catch (exc) {
+      AppUtility.log('Error: $exc', tag: 'error');
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
+    }
+  }
+
   Future<void> followUnfollowUser(User user) async =>
       await _followUnfollowUser(user);
 
@@ -357,4 +387,7 @@ class ProfileController extends GetxController {
 
   Future<void> updateProfile(Map<String, dynamic> details) async =>
       await _updateProfile(details);
+
+  Future<void> applyForBlueTick(Map<String, dynamic> details) async =>
+      await _applyForBlueTick(details);
 }

@@ -93,7 +93,7 @@ class RecommendedUsersController extends GetxController {
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:social_media_app/modules/chat/widgets/bubble_type.dart';
+import 'package:social_media_app/constants/enums.dart';
 
 class ChatBubbleClipper extends CustomClipper<Path> {
   final BubbleType? type;

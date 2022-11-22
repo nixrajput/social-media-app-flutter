@@ -9,6 +9,7 @@ class NxTextButton extends StatelessWidget {
   final EdgeInsets? padding;
   final EdgeInsets? margin;
   final TextStyle? labelStyle;
+  final bool? enabled;
 
   const NxTextButton({
     Key? key,
@@ -17,12 +18,13 @@ class NxTextButton extends StatelessWidget {
     this.padding,
     this.margin,
     this.labelStyle,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: enabled == true ? onTap : () {},
       child: Container(
         padding: padding ?? Dimens.edgeInsets0,
         margin: margin ?? Dimens.edgeInsets0,
@@ -30,7 +32,9 @@ class NxTextButton extends StatelessWidget {
           label,
           style: labelStyle ??
               AppStyles.style16Bold.copyWith(
-                color: ColorValues.primaryLightColor,
+                color: enabled == true
+                    ? ColorValues.primaryLightColor
+                    : ColorValues.grayColor,
               ),
         ),
       ),

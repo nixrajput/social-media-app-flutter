@@ -12,6 +12,11 @@ abstract class AppUrls {
   static const resetPasswordEndpoint = '/reset-password';
   static const verifyAccountEndpoint = '/verify-account';
 
+  static const sendOtpToEmailEndpoint = '/send-otp-to-email';
+  static const verifyOtpFromEmailEndpoint = '/verify-email-otp';
+  static const sendOtpToPhoneEndpoint = '/send-otp-to-phone';
+  static const verifyOtpFromPhoneEndpoint = '/verify-phone-otp';
+
   static const getPostsEndpoint = '/get-posts';
   static const postEndpoint = '/post';
   static const searchPostsEndpoint = '/search-posts';

@@ -120,11 +120,6 @@ class LoginView extends StatelessWidget {
                       label: StringValues.forgotPassword,
                       onTap: RouteManagement.goToForgotPasswordView,
                     ),
-                    Dimens.boxHeight16,
-                    const NxTextButton(
-                      label: StringValues.verifyAccount,
-                      onTap: RouteManagement.goToSendVerifyAccountOtpView,
-                    ),
                     Dimens.boxHeight32,
                     NxFilledButton(
                       onTap: () => logic.login(),

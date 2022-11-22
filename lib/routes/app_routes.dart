@@ -6,12 +6,18 @@ abstract class AppRoutes {
   static const welcome = _Routes.welcome;
   static const offline = _Routes.offline;
   static const error = _Routes.error;
+  static const noNetwork = _Routes.noNetwork;
   static const home = _Routes.home;
+
   static const chats = _Routes.chats;
   static const chatDetails = _Routes.chatDetails;
 
   static const login = _Routes.login;
   static const register = _Routes.register;
+
+  static const sendOtpToEmail = _Routes.sendOtpToEmail;
+  static const sendOtpToPhone = _Routes.sendOtpToPhone;
+  static const verifyOtp = _Routes.verifyOtp;
 
   static const settings = _Routes.settings;
   static const accountSettings = _Routes.accountSettings;
@@ -79,12 +85,18 @@ abstract class _Routes {
   static const welcome = '/welcome';
   static const offline = '/offline';
   static const error = '/error';
+  static const noNetwork = '/no_network';
   static const home = '/home';
+
   static const chats = '/chats';
   static const chatDetails = '/chatDetails';
 
   static const login = '/login';
   static const register = '/register';
+
+  static const sendOtpToEmail = '/sendOtpToEmail';
+  static const sendOtpToPhone = '/sendOtpToPhone';
+  static const verifyOtp = '/verifyOtp';
 
   static const settings = '/settings';
   static const accountSettings = "/account_settings";

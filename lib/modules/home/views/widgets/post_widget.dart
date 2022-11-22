@@ -245,84 +245,21 @@ class PostWidget extends StatelessWidget {
               NxExpandableText(text: post.caption!),
             Dimens.dividerWithHeight,
             Padding(
-              padding: Dimens.edgeInsets0_4,
+              padding: Dimens.edgeInsets0_2,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () => RouteManagement.goToPostPostLikedUsersView(
-                            post.id!),
-                        child: Padding(
-                          padding: Dimens.edgeInsets4,
-                          child: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: '${post.likesCount}'.toCountingFormat(),
-                                  style: AppStyles.style13Bold.copyWith(
-                                    color: Theme.of(Get.context!)
-                                        .textTheme
-                                        .bodyText1!
-                                        .color,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: '  Likes',
-                                  style: AppStyles.style13Normal.copyWith(
-                                    color: Theme.of(Get.context!)
-                                        .textTheme
-                                        .subtitle1!
-                                        .color,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Dimens.boxWidth16,
-                      GestureDetector(
-                        onTap: () =>
-                            RouteManagement.goToPostCommentsView(post.id!),
-                        child: Padding(
-                          padding: Dimens.edgeInsets4,
-                          child: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: '${post.commentsCount}'
-                                      .toCountingFormat(),
-                                  style: AppStyles.style13Bold.copyWith(
-                                    color: Theme.of(Get.context!)
-                                        .textTheme
-                                        .bodyText1!
-                                        .color,
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: '  Comments',
-                                  style: AppStyles.style13Normal.copyWith(
-                                    color: Theme.of(Get.context!)
-                                        .textTheme
-                                        .subtitle1!
-                                        .color,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  _buildPostTime(),
+                  _buildLikeCount(),
+                  Dimens.boxWidth16,
+                  _buildCommentCount(),
                 ],
               ),
+            ),
+            Dimens.boxHeight8,
+            Padding(
+              padding: Dimens.edgeInsets0_2,
+              child: _buildPostTime(),
             ),
             Dimens.dividerWithHeight,
             Row(
@@ -371,6 +308,54 @@ class PostWidget extends StatelessWidget {
         ),
       );
 
+  GestureDetector _buildCommentCount() {
+    return GestureDetector(
+      onTap: () => RouteManagement.goToPostCommentsView(post.id!),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '${post.commentsCount}'.toCountingFormat(),
+              style: AppStyles.style13Bold.copyWith(
+                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              ),
+            ),
+            TextSpan(
+              text: '  Comments',
+              style: AppStyles.style13Normal.copyWith(
+                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GestureDetector _buildLikeCount() {
+    return GestureDetector(
+      onTap: () => RouteManagement.goToPostPostLikedUsersView(post.id!),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '${post.likesCount}'.toCountingFormat(),
+              style: AppStyles.style13Bold.copyWith(
+                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              ),
+            ),
+            TextSpan(
+              text: '  Likes',
+              style: AppStyles.style13Normal.copyWith(
+                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildPostTime() {
     GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
     return GetTimeAgoWidget(
@@ -378,7 +363,7 @@ class PostWidget extends StatelessWidget {
       pattern: 'dd MMM yyyy hh:mm a',
       builder: (BuildContext context, String value) => Text(
         value,
-        style: AppStyles.style13Normal.copyWith(
+        style: AppStyles.style12Normal.copyWith(
           color: Theme.of(Get.context!).textTheme.subtitle1!.color,
         ),
       ),

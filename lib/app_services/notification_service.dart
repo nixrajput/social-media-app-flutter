@@ -7,14 +7,9 @@ class NotificationService {
       const AndroidInitializationSettings('@mipmap/launcher_icon');
   final _iosInitSettings = const DarwinInitializationSettings();
 
-  String _fcmToken = '';
   bool _initialized = false;
 
   bool get isInitialized => _initialized;
-
-  String get fcmToken => _fcmToken;
-
-  set setFcmToken(String value) => _fcmToken = value;
 
   Future<void> initialize() async {
     AppUtility.log('Initializing Notification Service');

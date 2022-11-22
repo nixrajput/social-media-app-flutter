@@ -17,6 +17,7 @@ import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/modules/user/profile_picture_view.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -171,7 +172,17 @@ class UserProfileView extends StatelessWidget {
       children: [
         Column(
           children: [
-            AvatarWidget(avatar: user.avatar),
+            GestureDetector(
+              onTap: () {
+                if (user.avatar == null ||
+                    user.avatar!.url == null ||
+                    user.avatar!.url!.isEmpty) {
+                  return;
+                }
+                Get.to(() => ProfilePictureView(url: user.avatar!.url!));
+              },
+              child: AvatarWidget(avatar: user.avatar),
+            ),
             Dimens.boxHeight16,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

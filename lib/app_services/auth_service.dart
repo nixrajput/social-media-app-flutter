@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math' show Random;
 
-import 'package:connectivity/connectivity.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,7 +11,7 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
-import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
+import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -22,14 +21,13 @@ class AuthService extends GetxService {
 
   final _apiProvider = ApiProvider(http.Client());
 
-  StreamSubscription<dynamic>? _streamSubscription;
-
   String _token = '';
   int _expiresAt = 0;
   int _deviceId = 0;
   bool _isLogin = false;
   AuthResponse _loginData = AuthResponse();
 
+  /// Getters
   String get token => _token;
 
   int? get deviceId => _deviceId;
@@ -40,6 +38,7 @@ class AuthService extends GetxService {
 
   AuthResponse get loginData => _loginData;
 
+  /// Setters
   set setLoginData(AuthResponse value) => _loginData = value;
 
   set setToken(String value) => _token = value;
@@ -48,31 +47,12 @@ class AuthService extends GetxService {
 
   set setDeviceId(int value) => _deviceId = value;
 
-  void _checkForInternetConnectivity() {
-    _streamSubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) async {
-      if (result != ConnectivityResult.none) {
-        AppUtility.closeDialog();
-      } else {
-        AppUtility.showNoInternetDialog();
-      }
-    });
-  }
-
   @override
   void onInit() {
     AppUtility.log("AuthService Initializing");
     super.onInit();
-    _checkForInternetConnectivity();
     getDeviceId();
     AppUtility.log("AuthService Initialized");
-  }
-
-  @override
-  onClose() {
-    _streamSubscription?.cancel();
-    super.onClose();
   }
 
   Future<String> getToken() async {
@@ -87,22 +67,20 @@ class AuthService extends GetxService {
     return token;
   }
 
-  Future<String> _checkServerHealth() async {
-    AppUtility.log('Check Server Health Request');
-    var serverHealth = 'offline';
+  Future<String?> _checkServerHealth() async {
     try {
       final response = await _apiProvider.checkServerHealth();
 
       if (response.isSuccessful) {
-        serverHealth = response.data['server'];
+        return response.data['server'];
       } else {
-        serverHealth = response.data['server'];
+        return response.data['server'];
       }
     } catch (exc) {
       AppUtility.log('Error: $exc', tag: 'error');
     }
 
-    return serverHealth;
+    return null;
   }
 
   Future<bool> _validateToken(String token) async {
@@ -125,9 +103,31 @@ class AuthService extends GetxService {
     return isValid;
   }
 
+  Future<void> _validateDeviceSession() async {
+    try {
+      final response = await _apiProvider.verifyLoginInfo(
+        token,
+        deviceId.toString(),
+      );
+
+      if (response.isSuccessful) {
+        var data = response.data;
+        AppUtility.log(data[StringValues.message]);
+      } else {
+        var data = response.data;
+        AppUtility.log(data[StringValues.message]);
+        if (data['isValid'] == false) {
+          await _logout();
+          RouteManagement.goToWelcomeView();
+        }
+      }
+    } catch (exc) {
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+    }
+  }
+
   Future<void> _logout() async {
     AppUtility.log("Logout Request");
-    await LoginInfoController.find.deleteLoginDeviceInfo(_deviceId.toString());
     setToken = '';
     setExpiresAt = 0;
     _isLogin = false;
@@ -338,5 +338,7 @@ class AuthService extends GetxService {
 
   Future<bool> validateToken(String token) async => await _validateToken(token);
 
-  Future<String> checkServerHealth() async => await _checkServerHealth();
+  Future<String?> checkServerHealth() async => await _checkServerHealth();
+
+  Future<void> validateDeviceSession() async => await _validateDeviceSession();
 }

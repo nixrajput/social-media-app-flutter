@@ -128,7 +128,7 @@ class RegisterController extends GetxController {
           StringValues.success,
         );
         RouteManagement.goToBack();
-        RouteManagement.goToSendVerifyAccountOtpView();
+        RouteManagement.goToLoginView();
       } else {
         final decodedData = response.data;
         AppUtility.closeDialog();
