@@ -3,7 +3,6 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/unfocus_widget.dart';
@@ -25,7 +24,7 @@ class VerifiedAccountSettingView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 NxAppBar(
-                  title: StringValues.blueTickVerification,
+                  title: StringValues.verification,
                   padding: Dimens.edgeInsets8_16,
                 ),
                 Dimens.boxHeight16,
@@ -66,7 +65,7 @@ class VerifiedAccountSettingView extends StatelessWidget {
               ),
             ),
 
-            Dimens.boxHeight16,
+            Dimens.boxHeight8,
 
             /// Verification Description
 
@@ -90,7 +89,7 @@ class VerifiedAccountSettingView extends StatelessWidget {
               ),
             ),
 
-            Dimens.boxHeight32,
+            Dimens.boxHeight16,
 
             /// Verification Process
 
@@ -110,8 +109,6 @@ class VerifiedAccountSettingView extends StatelessWidget {
               ),
             ),
 
-            Dimens.boxHeight16,
-
             Column(
               children: StringValues.verificationProcess
                   .map(
@@ -127,7 +124,7 @@ class VerifiedAccountSettingView extends StatelessWidget {
             Dimens.boxHeight16,
 
             NxFilledButton(
-              label: StringValues.applyForBlueTick.toTitleCase(),
+              label: StringValues.apply.toUpperCase(),
               onTap: () {
                 RouteManagement.goToBack();
                 RouteManagement.goToBlueTickVerificationView();
@@ -156,32 +153,44 @@ class VerificationProcess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: Dimens.edgeInsets8_0,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: Dimens.edgeInsets16_0,
+      child: Stack(
         children: [
-          /// Verification Process Icon
-          CircleAvatar(
-            radius: Dimens.twentyFour,
-            backgroundColor: Theme.of(context).textTheme.bodyText1!.color,
-            child: Text(
-              index,
-              style: AppStyles.style16Bold.copyWith(
-                color: Theme.of(context).scaffoldBackgroundColor,
+          Positioned(
+            left: Dimens.zero,
+            top: Dimens.zero,
+            bottom: Dimens.zero,
+            child: Container(
+              width: Dimens.eight,
+              decoration: BoxDecoration(
+                color: Theme.of(context).textTheme.bodyText1!.color,
               ),
             ),
           ),
 
-          Dimens.boxWidth16,
-
           /// Verification Process Text
-          Expanded(
-            flex: 1,
+          Padding(
+            padding: Dimens.edgeInsetsOnlyLeft24,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
+                /// Verification Process Index
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    shape: BoxShape.circle,
+                  ),
+                  padding: Dimens.edgeInsets8,
+                  child: Text(
+                    index,
+                    style: AppStyles.style16Bold.copyWith(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                  ),
+                ),
+                Dimens.boxHeight8,
                 Text(
                   title,
                   style: AppStyles.style18Bold,

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/login_info.dart';
-import 'package:social_media_app/apis/models/responses/common_response.dart';
 import 'package:social_media_app/apis/models/responses/login_history_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
@@ -119,18 +118,16 @@ class LoginInfoController extends GetxController {
 
       if (response.isSuccessful) {
         final decodedData = response.data;
-        final apiResponse = CommonResponse.fromJson(decodedData);
         AppUtility.showSnackBar(
-          apiResponse.message!,
+          decodedData[StringValues.message],
           StringValues.success,
           duration: 1,
         );
       } else {
         final decodedData = response.data;
-        final apiResponse = CommonResponse.fromJson(decodedData);
         update();
         AppUtility.showSnackBar(
-          apiResponse.message!,
+          decodedData[StringValues.message],
           StringValues.error,
         );
       }
@@ -141,7 +138,39 @@ class LoginInfoController extends GetxController {
     }
   }
 
+  Future<void> _logoutAllOtherDevices(String deviceId) async {
+    _loginInfoList.removeWhere((element) => element.deviceId != deviceId);
+    update();
+
+    try {
+      final response =
+          await _apiProvider.logoutOtherDevices(_auth.token, deviceId);
+
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        await _getLoginHistory();
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+          duration: 1,
+        );
+      } else {
+        final decodedData = response.data;
+        update();
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } catch (exc) {
+      update();
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+    }
+  }
+
   Future<void> getLoginHisory() async => await _getLoginHistory();
+  Future<void> logoutAllOtherDevices(String deviceId) async =>
+      await _logoutAllOtherDevices(deviceId);
   Future<void> loadMore() async =>
       await _loadMore(page: _loginHistoryData.value.currentPage! + 1);
 

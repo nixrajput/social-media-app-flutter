@@ -127,6 +127,9 @@ abstract class StringValues {
   static const trending = 'Trending';
   static const refresh = 'Refresh';
   static const chats = 'Chats';
+  static const currentDevice = 'Current Device';
+  static const otherDevices = 'Other Devices';
+  static const logoutAllDevices = 'Logout All Other Devices';
   static const noConversation = 'No conversation yet';
   static const followUserLine =
       'Do follow some users to see their latest posts';
@@ -288,25 +291,25 @@ abstract class StringValues {
       'The verification process is simple and easy. You just need to follow the steps below:';
   static const verificationProcess = [
     {
-      'index': 1,
+      'index': '01',
       'title': 'Check your eligibility',
       'desc':
           'Your account must be active and you must have a valid email address or phone number. Your account must be adhering to our Community Guidelines and must not be in violation of our policies. Your account must have a profile photo and bio.',
     },
     {
-      'index': 2,
+      'index': '02',
       'title': 'Submit your request',
       'desc':
           'You will need to provide your full name, email address or phone number, and a photo of your government-issued ID or passport.',
     },
     {
-      'index': 3,
+      'index': '03',
       'title': 'Wait for our response',
       'desc':
           'We will review your request and get back to you within 30 days. If your request is approved, you will get the blue tick on your profile. You will also get a notification and email from us. If your request is denied, you will get a notification and email from us.',
     },
     {
-      'index': 4,
+      'index': '04',
       'title': 'Keep your account active',
       'desc':
           'You must keep your account active and adhere to our Community Guidelines and policies. If your account is inactive for 90 days, your verification badge will be removed.',
@@ -315,9 +318,11 @@ abstract class StringValues {
   static const verificationDescription =
       "Here's everything you need to know about verification on Rippl and how to get verified.";
   static const verificationDescription2 =
-      'The blue tick is a verification badge that appears next to your name on your profile. It means that you are an authentic person or business on Rippl. To get the blue tick, you need to meet the requirements and apply for verification.';
+      'A verified badge on Rippl means that an account of public interest is authentic. It lets people know that an account of public interest is the authentic presence of the public figure, celebrity, or global brand it represents. Verified accounts are marked by a badge on Rippl.';
   static const applyForSelfVerify = 'Apply for self verification';
   static const applyForBlueTick = 'Apply for blue tick';
+  static const applyForVerify = 'Apply for verification';
+  static const apply = 'Apply';
   static const verificationRequest = 'Verification Request';
   static const request = 'Request';
   static const zero = '0';
@@ -343,6 +348,22 @@ abstract class StringValues {
       'Enter your valid phone number with country code.';
   static const enterPhone = 'Enter your phone number';
   static const enterEmailHelp = 'Enter your valid email address.';
+  static const verifiedOnOtherPlatform = 'Are you verified on other platforms?';
+  static const otherPlatformLinks = 'Other Platform Links';
+  static const otherPlatformLinksHelp =
+      'If you are verified on other platforms, please provide the link to your verified profile. All links must be publicly accessible. Write comma (,) to separate multiple links.';
+  static const hasWikiPage = 'Do you have a Wikipedia page?';
+  static const wikiPageLink = 'Wikipedia Page Link';
+  static const wikiPageLinkHelp =
+      'If you have a Wikipedia page, please provide the link to your Wikipedia page.';
+  static const featuredInNewsArticle =
+      'Have you been featured in a news article?';
+  static const newsArticleLink = 'News Article Link';
+  static const newsArticleLinkHelp =
+      'If you have been featured in a news article, please provide the link to your news article. All links must be publicly accessible. Write comma (,) to separate multiple links.';
+  static const otherLinks = 'Other Links';
+  static const otherLinksHelp =
+      'If you have any other links that you want to provide, please provide the link. All links must be publicly accessible. Write comma (,) to separate multiple links.';
   static const requestSent = 'Request Sent';
   static const likes = 'Likes';
   static const send = 'Send';

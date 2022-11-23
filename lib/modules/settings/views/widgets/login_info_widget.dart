@@ -16,112 +16,95 @@ class LoginInfoWidget extends StatelessWidget {
   const LoginInfoWidget({
     Key? key,
     required this.item,
-    required this.totalLength,
-    required this.index,
+    this.margin,
   }) : super(key: key);
 
   final LoginInfo item;
-  final int totalLength;
-  final int index;
+  final EdgeInsets? margin;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () => _showDeleteDialog(item.deviceId!),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          NxListTile(
-            padding: Dimens.edgeInsets16_12,
-            bgColor: Theme.of(context).dialogBackgroundColor,
-            borderRadius: (index == 0 || index == totalLength - 1)
-                ? BorderRadius.only(
-                    topLeft: Radius.circular(
-                        index == 0 ? Dimens.eight : Dimens.zero),
-                    topRight: Radius.circular(
-                        index == 0 ? Dimens.eight : Dimens.zero),
-                    bottomLeft: Radius.circular(
-                        index == totalLength - 1 ? Dimens.eight : Dimens.zero),
-                    bottomRight: Radius.circular(
-                        index == totalLength - 1 ? Dimens.eight : Dimens.zero),
-                  )
-                : const BorderRadius.all(Radius.zero),
-            leading: item.deviceType == 'android'
-                ? CircleAvatar(
-                    backgroundColor: ColorValues.grayColor,
-                    radius: Dimens.twentyFour,
-                    child: Icon(
-                      Icons.phone_android,
-                      size: Dimens.thirtyTwo,
-                      color: ColorValues.darkerGrayColor,
-                    ),
-                  )
-                : CircleAvatar(
-                    backgroundColor: ColorValues.grayColor,
-                    radius: Dimens.twentyFour,
-                    child: Icon(
-                      Icons.phone_iphone,
-                      size: Dimens.thirtyTwo,
-                      color: ColorValues.darkerGrayColor,
-                    ),
+      child: Padding(
+        padding: margin ?? Dimens.edgeInsets8_0,
+        child: NxListTile(
+          padding: Dimens.edgeInsets12,
+          bgColor: Theme.of(context).dialogBackgroundColor,
+          borderRadius: BorderRadius.all(Radius.circular(Dimens.eight)),
+          leading: item.deviceType == 'android'
+              ? CircleAvatar(
+                  backgroundColor: ColorValues.grayColor,
+                  radius: Dimens.twentyFour,
+                  child: Icon(
+                    Icons.phone_android,
+                    size: Dimens.thirtyTwo,
+                    color: ColorValues.darkerGrayColor,
                   ),
-            title: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: item.deviceModel!,
-                    style: AppStyles.style14Bold.copyWith(
-                      color: Theme.of(context).textTheme.bodyText1!.color,
-                    ),
+                )
+              : CircleAvatar(
+                  backgroundColor: ColorValues.grayColor,
+                  radius: Dimens.twentyFour,
+                  child: Icon(
+                    Icons.phone_iphone,
+                    size: Dimens.thirtyTwo,
+                    color: ColorValues.darkerGrayColor,
                   ),
-                  if (item.deviceId == AuthService.find.deviceId.toString())
-                    TextSpan(
-                      text: "  •",
-                      style: AppStyles.style14Bold.copyWith(
-                        color: ColorValues.successColor,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            subtitle: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+                ),
+          title: RichText(
+            text: TextSpan(
               children: [
-                RichText(
-                  text: TextSpan(
-                    text:
-                        "${item.city!}, ${item.regionName!}, ${item.country!}",
-                    style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
-                    ),
+                TextSpan(
+                  text: item.deviceModel!,
+                  style: AppStyles.style14Bold.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
                   ),
                 ),
-                RichText(
-                  text: TextSpan(
-                    text: GetTimeAgo.parse(
-                      item.createdAt!,
-                      pattern: 'dd MMM yyyy hh:mm a',
-                    ),
-                    style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
+                if (item.deviceId == AuthService.find.deviceId.toString())
+                  TextSpan(
+                    text: "  •",
+                    style: AppStyles.style14Bold.copyWith(
+                      color: ColorValues.successColor,
                     ),
                   ),
-                ),
               ],
             ),
-            trailingFlex: 0,
-            trailing: GestureDetector(
-              onTap: () => _showDeleteDialog(item.deviceId!),
-              child: Icon(
-                Icons.close,
-                color: Theme.of(context).textTheme.bodyText1!.color,
+          ),
+          subtitle: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RichText(
+                text: TextSpan(
+                  text: "${item.city!}, ${item.regionName!}, ${item.country!}",
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
+                ),
               ),
+              RichText(
+                text: TextSpan(
+                  text: GetTimeAgo.parse(
+                    item.createdAt!,
+                    pattern: 'dd MMM yyyy hh:mm a',
+                  ),
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          trailingFlex: 0,
+          trailing: GestureDetector(
+            onTap: () => _showDeleteDialog(item.deviceId!),
+            child: Icon(
+              Icons.close,
+              color: Theme.of(context).textTheme.bodyText1!.color,
             ),
           ),
-          if (index != totalLength - 1) Dimens.divider,
-        ],
+        ),
       ),
     );
   }

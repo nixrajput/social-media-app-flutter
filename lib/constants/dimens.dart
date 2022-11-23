@@ -206,6 +206,16 @@ abstract class Dimens {
 
   static EdgeInsets edgeInsetsOnlyBottom16 = EdgeInsets.only(bottom: sixTeen);
 
+  static EdgeInsets edgeInsetsOnlyLeft8 = EdgeInsets.only(left: eight);
+
+  static EdgeInsets edgeInsetsOnlyLeft16 = EdgeInsets.only(left: sixTeen);
+
+  static EdgeInsets edgeInsetsOnlyLeft20 = EdgeInsets.only(left: twenty);
+
+  static EdgeInsets edgeInsetsOnlyLeft24 = EdgeInsets.only(left: twentyFour);
+
+  static EdgeInsets edgeInsetsOnlyLeft32 = EdgeInsets.only(left: thirtyTwo);
+
   //SizedBoxes
 
   static SizedBox boxHeight2 = SizedBox(height: two);

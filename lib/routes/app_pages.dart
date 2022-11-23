@@ -10,8 +10,6 @@ import 'package:social_media_app/modules/auth/views/login_view.dart';
 import 'package:social_media_app/modules/auth/views/reactivate_account_view.dart';
 import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
-import 'package:social_media_app/modules/blue_tick_verification/blue_tick_verification.dart';
-import 'package:social_media_app/modules/blue_tick_verification/blue_tick_verification_binding.dart';
 import 'package:social_media_app/modules/chat/bindings/single_chat_binding.dart';
 import 'package:social_media_app/modules/chat/views/p2p_chat_view.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_binding.dart';
@@ -76,6 +74,8 @@ import 'package:social_media_app/modules/settings/views/pages/theme_settings_vie
 import 'package:social_media_app/modules/settings/views/settings_view.dart';
 import 'package:social_media_app/modules/user/user_details_binding.dart';
 import 'package:social_media_app/modules/user/user_profile_view.dart';
+import 'package:social_media_app/modules/verification/verification_binding.dart';
+import 'package:social_media_app/modules/verification/verification_view.dart';
 import 'package:social_media_app/modules/verify-otp/bindings/verify_otp_binding.dart';
 import 'package:social_media_app/modules/verify-otp/views/send_otp_to_email_view.dart';
 import 'package:social_media_app/modules/verify-otp/views/send_otp_to_phone_view.dart';
@@ -462,8 +462,8 @@ abstract class AppPages {
 
     GetPage(
       name: _Routes.blueTickVerification,
-      page: BlueTickVerificationView.new,
-      binding: BlueTickVerificationBinding(),
+      page: VerificationView.new,
+      binding: VerificationBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),

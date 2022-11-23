@@ -13,8 +13,8 @@ import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/file_utility.dart';
 import 'package:social_media_app/utils/utility.dart';
 
-class BlueTickVerificationController extends GetxController {
-  static BlueTickVerificationController get find => Get.find();
+class VerificationController extends GetxController {
+  static VerificationController get find => Get.find();
 
   final _auth = AuthService.find;
 
@@ -34,9 +34,11 @@ class BlueTickVerificationController extends GetxController {
   final _category = ''.obs;
   final _document = Rxn<File>();
   final _isVerifiedOnOtherPlatform = false.obs;
-  final _isVerifiedOnOtherPlatformLinks = ''.obs;
+  final _otherPlatformLinks = ''.obs;
   final _hasWikipediaPage = false.obs;
   final _wikipediaPageLink = ''.obs;
+  final _featuredInNewsArticles = false.obs;
+  final _newsArticlesLinks = ''.obs;
   final _otherLinks = ''.obs;
 
   bool get isLoading => _isLoading.value;
@@ -46,10 +48,11 @@ class BlueTickVerificationController extends GetxController {
   String get category => _category.value;
   File? get document => _document.value;
   bool get isVerifiedOnOtherPlatform => _isVerifiedOnOtherPlatform.value;
-  String get isVerifiedOnOtherPlatformLinks =>
-      _isVerifiedOnOtherPlatformLinks.value;
+  String get otherPlatformLinks => _otherPlatformLinks.value;
   bool get hasWikipediaPage => _hasWikipediaPage.value;
   String get wikipediaPageLink => _wikipediaPageLink.value;
+  bool get featuredInNewsArticles => _featuredInNewsArticles.value;
+  String get newsArticlesLinks => _newsArticlesLinks.value;
   String get otherLinks => _otherLinks.value;
 
   set isLoading(bool value) => _isLoading.value = value;
@@ -60,10 +63,12 @@ class BlueTickVerificationController extends GetxController {
   set setDocument(File value) => _document.value = value;
   set isVerifiedOnOtherPlatform(bool value) =>
       _isVerifiedOnOtherPlatform.value = value;
-  set isVerifiedOnOtherPlatformLinks(String value) =>
-      _isVerifiedOnOtherPlatformLinks.value = value;
+  set otherPlatformLinks(String value) => _otherPlatformLinks.value = value;
   set hasWikipediaPage(bool value) => _hasWikipediaPage.value = value;
   set wikipediaPageLink(String value) => _wikipediaPageLink.value = value;
+  set featuredInNewsArticles(bool value) =>
+      _featuredInNewsArticles.value = value;
+  set newsArticlesLinks(String value) => _newsArticlesLinks.value = value;
   set otherLinks(String value) => _otherLinks.value = value;
 
   void onLegalNameChanged(String value) {
@@ -96,8 +101,8 @@ class BlueTickVerificationController extends GetxController {
     update();
   }
 
-  void onIsVerifiedOnOtherPlatformLinksChanged(String value) {
-    isVerifiedOnOtherPlatformLinks = value;
+  void onOtherPlatformLinksChanged(String value) {
+    otherPlatformLinks = value;
     update();
   }
 
@@ -108,6 +113,16 @@ class BlueTickVerificationController extends GetxController {
 
   void onWikipediaPageLinkChanged(String value) {
     wikipediaPageLink = value;
+    update();
+  }
+
+  void onFeaturedInNewsArticlesChanged(bool value) {
+    featuredInNewsArticles = value;
+    update();
+  }
+
+  void onNewsArticlesLinksChanged(String value) {
+    newsArticlesLinks = value;
     update();
   }
 
@@ -162,6 +177,30 @@ class BlueTickVerificationController extends GetxController {
       return;
     }
 
+    if (email.isEmpty) {
+      AppUtility.showSnackBar(
+        StringValues.enterEmail,
+        StringValues.warning,
+      );
+      return;
+    }
+
+    if (phone.isEmpty) {
+      AppUtility.showSnackBar(
+        StringValues.enterPhone,
+        StringValues.warning,
+      );
+      return;
+    }
+
+    if (category.isEmpty) {
+      AppUtility.showSnackBar(
+        StringValues.selectCategory,
+        StringValues.warning,
+      );
+      return;
+    }
+
     if (document == null) {
       AppUtility.showSnackBar(
         StringValues.selectDocument,
@@ -170,27 +209,34 @@ class BlueTickVerificationController extends GetxController {
       return;
     }
 
-    var urlResult = await _uploadDocument(document!);
-
-    final body = {
-      'legalName': legalName,
-      'email': email,
-      'phone': phone,
-      'category': category,
-      'document': urlResult,
-      'isVerifiedOnOtherPlatform': isVerifiedOnOtherPlatform,
-      'isVerifiedOnOtherPlatformLinks': isVerifiedOnOtherPlatformLinks,
-      'hasWikipediaPage': hasWikipediaPage,
-      'wikipediaPageLink': wikipediaPageLink,
-      'otherLinks': otherLinks,
-    };
-
     AppUtility.showLoadingDialog();
     isLoading = true;
     update();
 
+    var urlResult = await _uploadDocument(document!);
+
+    if (urlResult == null) {
+      return;
+    }
+
+    final body = {
+      'legalName': legalName.trim(),
+      'email': email.trim(),
+      'phone': phone.trim(),
+      'category': category.trim(),
+      'document': urlResult,
+      'isVerifiedOnOtherPlatform': isVerifiedOnOtherPlatform ? 'yes' : 'no',
+      'otherPlatformLinks': otherPlatformLinks.trim(),
+      'hasWikipediaPage': hasWikipediaPage ? 'yes' : 'no',
+      'wikipediaPageLink': wikipediaPageLink.trim(),
+      'featuredInArticles': featuredInNewsArticles ? 'yes' : 'no',
+      'articleLinks': newsArticlesLinks.trim(),
+      'otherLinks': otherLinks.trim(),
+    };
+
     try {
-      final response = await _apiProvider.requestBlueTick(_auth.token, body);
+      final response =
+          await _apiProvider.requestVerification(_auth.token, body);
 
       if (response.isSuccessful) {
         final decodedData = response.data;

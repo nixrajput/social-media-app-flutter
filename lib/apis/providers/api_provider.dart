@@ -411,6 +411,19 @@ class ApiProvider {
     return response;
   }
 
+  /// Logout Other Devices
+  Future<ResponseData> logoutOtherDevices(String token, String deviceId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.logoutFromOtherDevicesEndpoint,
+      method: 'DELETE',
+      feature: 'Logout Other Devices',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'deviceId': deviceId},
+    );
+
+    return response;
+  }
+
   /// Verify Login Info & Session
   Future<ResponseData> verifyLoginInfo(String token, String deviceId) async {
     final response = await _catchAsyncApiError(
@@ -672,11 +685,11 @@ class ApiProvider {
     return response;
   }
 
-  /// Request Blue Tick
-  Future<ResponseData> requestBlueTick(
+  /// Request Verification
+  Future<ResponseData> requestVerification(
       String token, Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
-      endPoint: AppUrls.reportUserEndpoint,
+      endPoint: AppUrls.requestVerificationEndpoint,
       method: 'POST',
       feature: 'Report User',
       headers: {"authorization": "Bearer $token"},

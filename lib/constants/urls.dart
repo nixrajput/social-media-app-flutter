@@ -50,6 +50,7 @@ abstract class AppUrls {
   static const loginInfoEndpoint = '/login-info';
   static const getLoginHistoryEndpoint = '/get-login-history';
   static const verifyLoginInfoEndpoint = '/verify-login-info';
+  static const logoutFromOtherDevicesEndpoint = '/logout-all-other-devices';
 
   static const preKeyBundleEndpoint = '/pre-key-bundle';
 
@@ -59,7 +60,7 @@ abstract class AppUrls {
   static const reportPostEndpoint = '/report-post';
   static const reportCommentEndpoint = '/report-comment';
 
-  static const requestBlueTickEndpoint = '/request-blue-tick';
+  static const requestVerificationEndpoint = '/request-verification';
 
   static const searchUserEndpoint = '/search-user';
   static const followUserEndpoint = '/follow-user';

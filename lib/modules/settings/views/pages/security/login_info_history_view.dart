@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -33,7 +34,7 @@ class LoginInfoHistoryView extends StatelessWidget {
                   padding: Dimens.edgeInsets8_16,
                 ),
                 Dimens.boxHeight8,
-                _buildBody(),
+                _buildBody(context),
               ],
             ),
           ),
@@ -42,7 +43,7 @@ class LoginInfoHistoryView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Expanded(
       child: Padding(
         padding: Dimens.edgeInsets0_16,
@@ -67,11 +68,41 @@ class LoginInfoHistoryView extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (ctx, index) {
                       var item = logic.loginInfoList.elementAt(index);
-                      return LoginInfoWidget(
-                        item: item,
-                        totalLength: logic.loginInfoList.length,
-                        index: index,
-                      );
+
+                      if (item.deviceId ==
+                          AuthService.find.deviceId.toString()) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(
+                              StringValues.currentDevice.toUpperCase(),
+                              style: AppStyles.style14Bold.copyWith(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .color,
+                              ),
+                            ),
+                            Dimens.boxHeight8,
+                            LoginInfoWidget(item: item),
+                            Dimens.boxHeight8,
+                            Text(
+                              StringValues.otherDevices.toUpperCase(),
+                              style: AppStyles.style14Bold.copyWith(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .color,
+                              ),
+                            ),
+                            Dimens.boxHeight8,
+                          ],
+                        );
+                      }
+
+                      return LoginInfoWidget(item: item);
                     },
                   ),
                   if (logic.isMoreLoading) Dimens.boxHeight8,
@@ -90,6 +121,15 @@ class LoginInfoHistoryView extends StatelessWidget {
                         padding: Dimens.edgeInsets8_0,
                       ),
                     ),
+                  Dimens.boxHeight16,
+                  NxTextButton(
+                    label: StringValues.logoutAllDevices,
+                    onTap: () => logic.logoutAllOtherDevices(
+                        AuthService.find.deviceId.toString()),
+                    labelStyle: AppStyles.style16Bold
+                        .copyWith(color: ColorValues.errorColor),
+                    padding: Dimens.edgeInsets8_0,
+                  ),
                   Dimens.boxHeight16,
                 ],
               ),

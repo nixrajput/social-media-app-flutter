@@ -109,6 +109,7 @@ class RegisterController extends GetxController {
       'uname': uname,
       'password': password,
       'confirmPassword': confPassword,
+      'isValidated': 'true',
     };
 
     AppUtility.showLoadingDialog();
