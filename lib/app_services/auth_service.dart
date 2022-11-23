@@ -83,24 +83,23 @@ class AuthService extends GetxService {
     return null;
   }
 
-  Future<bool> _validateToken(String token) async {
-    var isValid = false;
+  Future<bool?> _validateToken(String token) async {
     try {
       final response = await _apiProvider.validateToken(token);
 
       if (response.isSuccessful) {
         var data = response.data;
-        isValid = true;
         AppUtility.log(data[StringValues.message]);
+        return true;
       } else {
         var data = response.data;
         AppUtility.log(data[StringValues.message], tag: 'error');
+        return false;
       }
     } catch (exc) {
       AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      return null;
     }
-
-    return isValid;
   }
 
   Future<void> _validateDeviceSession() async {
@@ -327,16 +326,15 @@ class AuthService extends GetxService {
       var currentTimestamp =
           (DateTime.now().millisecondsSinceEpoch / 1000).round();
       if (_expiresAt < currentTimestamp) {
-        setToken = '';
-        setExpiresAt = 0;
-        await deleteAllLocalDataAndCache();
+        await _logout();
       }
     }
   }
 
   Future<void> logout() async => await _logout();
 
-  Future<bool> validateToken(String token) async => await _validateToken(token);
+  Future<bool?> validateToken(String token) async =>
+      await _validateToken(token);
 
   Future<String?> checkServerHealth() async => await _checkServerHealth();
 

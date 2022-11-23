@@ -281,12 +281,74 @@ abstract class StringValues {
   static const changePhoneNo = 'Change Phone Number';
   static const changePhone = 'Change Phone';
   static const verification = 'Verification';
+  static const process = 'Process';
+  static const verificationProcessQuestionHelp =
+      "What's the process of verification?";
+  static const verificationProcessQuestionHelp2 =
+      'The verification process is simple and easy. You just need to follow the steps below:';
+  static const verificationProcess = [
+    {
+      'index': 1,
+      'title': 'Check your eligibility',
+      'desc':
+          'Your account must be active and you must have a valid email address or phone number. Your account must be adhering to our Community Guidelines and must not be in violation of our policies. Your account must have a profile photo and bio.',
+    },
+    {
+      'index': 2,
+      'title': 'Submit your request',
+      'desc':
+          'You will need to provide your full name, email address or phone number, and a photo of your government-issued ID or passport.',
+    },
+    {
+      'index': 3,
+      'title': 'Wait for our response',
+      'desc':
+          'We will review your request and get back to you within 30 days. If your request is approved, you will get the blue tick on your profile. You will also get a notification and email from us. If your request is denied, you will get a notification and email from us.',
+    },
+    {
+      'index': 4,
+      'title': 'Keep your account active',
+      'desc':
+          'You must keep your account active and adhere to our Community Guidelines and policies. If your account is inactive for 90 days, your verification badge will be removed.',
+    }
+  ];
+  static const verificationDescription =
+      "Here's everything you need to know about verification on Rippl and how to get verified.";
+  static const verificationDescription2 =
+      'The blue tick is a verification badge that appears next to your name on your profile. It means that you are an authentic person or business on Rippl. To get the blue tick, you need to meet the requirements and apply for verification.';
   static const applyForSelfVerify = 'Apply for self verification';
   static const applyForBlueTick = 'Apply for blue tick';
+  static const verificationRequest = 'Verification Request';
   static const request = 'Request';
   static const zero = '0';
+  static const legalName = 'Legal Name';
+  static const enterLegalName = 'Enter your legal name';
+  static const enterLegalNameHelp =
+      'Enter your legal name as it appears on ID.';
+  static const selectCategory = 'Select Category';
+  static const categoriesList = [
+    'Activist, organizer, or influencer',
+    'Artist, entertainer, or public figure',
+    'Company, brand, or organization',
+    'Government official or affiliate',
+    'Media, news organization or journalist',
+    'Professional sports or gaming entity',
+  ];
+  static const selectCategoryHelp =
+      'Select the category that best describes you.';
+  static const selectDocument = 'Select Document';
+  static const selectDocumentHelp =
+      'Select the Government-issued ID or Passport that you want to upload.';
+  static const enterPhoneHelp =
+      'Enter your valid phone number with country code.';
+  static const enterPhone = 'Enter your phone number';
+  static const enterEmailHelp = 'Enter your valid email address.';
   static const requestSent = 'Request Sent';
   static const likes = 'Likes';
+  static const send = 'Send';
+  static const sent = 'Sent';
+  static const submit = 'Submit';
+  static const submitRequest = 'Submit Request';
   static const verify = 'Verify';
   static const verified = 'Verified';
   static const verifiedAccount = 'Verified Account';

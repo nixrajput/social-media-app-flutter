@@ -162,7 +162,7 @@ class AccountSettingsView extends StatelessWidget {
                   );
                   return;
                 } else {
-                  RouteManagement.goToBlueTickVerificationView();
+                  RouteManagement.goToVerificationSettingsView();
                 }
               },
             ),

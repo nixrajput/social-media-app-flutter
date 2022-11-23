@@ -43,6 +43,9 @@ class ChangePasswordView extends StatelessWidget {
         builder: (logic) {
           return Expanded(
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               child: Padding(
                 padding: Dimens.edgeInsets0_16,
                 child: FocusScope(

@@ -74,16 +74,20 @@ Future<void> initializeFirebaseService() async {
       }
 
       var tokenValid = await authService.validateToken(token);
-      if (!tokenValid) {
-        notificationService.showNotification(
-          title: 'Invalid Token',
-          body: 'Token is invalid. Please login again.',
-          priority: true,
-          id: setNotificationId('General Notifications'),
-          channelId: 'General Notifications',
-          channelName: 'General notifications',
-        );
+      if (tokenValid == null) {
         return;
+      } else {
+        if (tokenValid == false) {
+          notificationService.showNotification(
+            title: 'Invalid Token',
+            body: 'Token is invalid. Please login again.',
+            priority: true,
+            id: setNotificationId('General Notifications'),
+            channelId: 'General Notifications',
+            channelName: 'General notifications',
+          );
+          return;
+        }
       }
     });
 
@@ -96,6 +100,9 @@ Future<void> initializeFirebaseService() async {
         var token = await messaging.getToken();
         AppUtility.log('fcmToken: $token');
         await authService.saveFcmTokenToLocalStorage(token!);
+        if (authService.token.isNotEmpty) {
+          await authService.saveFcmToken(token);
+        }
       }
 
       messaging.onTokenRefresh.listen((newToken) async {

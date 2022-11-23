@@ -41,9 +41,9 @@ abstract class ColorValues {
   static const Color lightDividerColor = Color(0xffc2c2c2);
 
   static const Color lightBodyTextColor = Color(0xFF282828);
-  static const Color lightSubtitleTextColor = Color(0xFF737373);
+  static const Color lightSubtitleTextColor = Color.fromARGB(255, 92, 92, 92);
   static const Color darkBodyTextColor = Color(0xFFDCDCDC);
-  static const Color darkSubtitleTextColor = Color(0xFFA0A0A0);
+  static const Color darkSubtitleTextColor = Color.fromARGB(255, 180, 180, 180);
 
   static const Color lightBgColor = Color.fromRGBO(236, 236, 236, 1.0);
   static const Color lightDialogColor = Color.fromRGBO(250, 250, 250, 1.0);

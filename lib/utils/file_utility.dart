@@ -134,7 +134,7 @@ abstract class FileUtility {
 
     if (size > (5 * maxImageBytes)) {
       AppUtility.showSnackBar(
-        'Image size must be less than 5mb',
+        'Image size must be less than 5 mb',
         '',
       );
       return null;
@@ -160,7 +160,7 @@ abstract class FileUtility {
 
     if (size > (5 * maxImageBytes)) {
       AppUtility.showSnackBar(
-        'Image size must be less than 5mb',
+        'Image size must be less than 5 mb',
         '',
       );
       return null;
@@ -187,7 +187,7 @@ abstract class FileUtility {
 
       if (size > (5 * maxImageBytes)) {
         AppUtility.showSnackBar(
-          'Image size must be less than 5mb',
+          'Image size must be less than 5 mb',
           '',
         );
       } else {
@@ -217,7 +217,7 @@ abstract class FileUtility {
 
     if (size > (10 * maxVideoBytes)) {
       AppUtility.showSnackBar(
-        'Video size must be less than 100mb',
+        'Video size must be less than 100 mb',
         '',
       );
       return null;
@@ -248,7 +248,74 @@ abstract class FileUtility {
 
       if (size > (10 * maxVideoBytes)) {
         AppUtility.showSnackBar(
-          'Video size must be less than 100mb',
+          'Video size must be less than 100 mb',
+          '',
+        );
+      } else {
+        fileList.add(videoFile);
+      }
+    }
+
+    return fileList;
+  }
+
+  static Future<File?> selectDocument() async {
+    final filePicker = FilePicker.platform;
+
+    final pickedDocument = await filePicker.pickFiles(
+      allowMultiple: false,
+      withReadStream: true,
+      allowCompression: false,
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'png', 'jpg', 'jpeg'],
+    );
+
+    if (pickedDocument!.files.isEmpty) {
+      AppUtility.log('No document selected');
+      return null;
+    }
+
+    for (var doc in pickedDocument.files) {
+      var document = File(doc.path!);
+      var size = document.lengthSync();
+
+      if (size > (5 * maxImageBytes)) {
+        AppUtility.showSnackBar(
+          'Document size must be less than 5 mb',
+          '',
+        );
+      } else {
+        return document;
+      }
+    }
+
+    return null;
+  }
+
+  static Future<List<File>?> selectMultipleDocuments() async {
+    final filePicker = FilePicker.platform;
+    var fileList = <File>[];
+
+    final pickedDocuments = await filePicker.pickFiles(
+      allowMultiple: true,
+      withReadStream: true,
+      allowCompression: false,
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'png', 'jpg', 'jpeg'],
+    );
+
+    if (pickedDocuments!.files.isEmpty) {
+      AppUtility.log('No document selected');
+      return null;
+    }
+
+    for (var video in pickedDocuments.files) {
+      var videoFile = File(video.path!);
+      var size = videoFile.lengthSync();
+
+      if (size > (5 * maxImageBytes)) {
+        AppUtility.showSnackBar(
+          'Document size must be less than 5 mb',
           '',
         );
       } else {

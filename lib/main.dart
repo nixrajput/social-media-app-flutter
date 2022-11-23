@@ -118,7 +118,10 @@ Future<void> checkAuthData() async {
     authService.autoLogout();
     if (token.isNotEmpty) {
       var tokenValid = await authService.validateToken(token);
-      if (tokenValid) {
+      if (tokenValid == null) {
+        return;
+      }
+      if (tokenValid == true) {
         var hasData = await ProfileController.find.loadProfileDetails();
         if (hasData) {
           RouteService.set(RouteStatus.loggedIn);

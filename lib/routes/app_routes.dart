@@ -27,6 +27,8 @@ abstract class AppRoutes {
   static const aboutSettings = _Routes.aboutSettings;
   static const themeSettings = _Routes.themeSettings;
 
+  static const blueTickVerificationSettings =
+      _Routes.blueTickVerificationSettings;
   static const blueTickVerification = _Routes.blueTickVerification;
   static const loginActivitySettings = _Routes.loginActivitySettings;
   static const accountPrivacySettings = _Routes.accountPrivacySettings;
@@ -107,6 +109,8 @@ abstract class _Routes {
   static const aboutSettings = "/about_settings";
   static const themeSettings = "/theme_settings";
 
+  static const blueTickVerificationSettings =
+      "/blue_tick_verification_settings";
   static const blueTickVerification = "/blue_tick_verification";
   static const accountPrivacySettings = '/account_privacy_settings';
   static const twoFASettings = '/two_fa_settings';
