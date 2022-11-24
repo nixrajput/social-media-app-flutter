@@ -131,6 +131,16 @@ abstract class StringValues {
   static const otherDevices = 'Other Devices';
   static const logoutAllDevices = 'Logout All Other Devices';
   static const noConversation = 'No conversation yet';
+  static const version = 'Version';
+  static const update = 'Update';
+  static const current = 'Current';
+  static const newVersion = 'New';
+  static const updateAvailable = 'Update Available';
+  static const updateAvailableDesc =
+      'A new version of the app is available, please update to continue using the app.';
+  static const updateNow = 'Update Now';
+  static const resume = 'Resume';
+  static const pause = 'Pause';
   static const followUserLine =
       'Do follow some users to see their latest posts';
   static const loginActivity = 'Login Activity';

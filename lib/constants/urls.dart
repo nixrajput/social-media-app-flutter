@@ -1,7 +1,6 @@
 abstract class AppUrls {
   /// Base URLs
   static const baseUrl = 'https://api.nixlab.co.in/api/v1';
-  static const githubApiUrl = 'https://api.github.com';
   static const webSocketUrl = 'wss://api.nixlab.co.in/api/v1/ws';
 
   ///  Endpoints
@@ -85,6 +84,5 @@ abstract class AppUrls {
 
   static const fcmTokenEndpoint = '/fcm-token';
 
-  static const checkAppUpdateEndpoint =
-      '/repos/nixrajput/social-media-app-flutter/releases/latest';
+  static const checkAppUpdateEndpoint = '/check-update';
 }

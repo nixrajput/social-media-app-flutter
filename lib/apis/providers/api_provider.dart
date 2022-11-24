@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/app_services/network_controller.dart';
 import 'package:social_media_app/app_services/route_service.dart';
 import 'package:social_media_app/constants/enums.dart';
-import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/helpers/exceptions.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -1476,14 +1475,16 @@ class ApiProvider {
   /// App Update ---------------------------------------------------------------
 
   /// Get Latest App Release Info
-  Future<ResponseData> getLatestReleaseInfo() async {
+  Future<ResponseData> checkAppUpdate(String currentVersion) async {
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.checkAppUpdateEndpoint,
-      method: 'GET',
-      feature: 'App Update',
-      baseUrl: AppUrls.githubApiUrl,
-      headers: {
-        "authorization": "Bearer ${AppSecrets.githubToken}",
+      method: 'POST',
+      feature: 'Check App Update',
+      body: {
+        'repoName': 'social-media-app-flutter',
+        'currentVersion': currentVersion,
+        'fileName': "app-release",
+        'extension': "apk"
       },
     );
 
