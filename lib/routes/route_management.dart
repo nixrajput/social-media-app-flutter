@@ -55,6 +55,10 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.reactivateAccount);
   }
 
+  static void goToProfileView() {
+    Get.toNamed(AppRoutes.profile);
+  }
+
   /// OTP ----------------------------------------------------------------------
 
   static void goToSendOtpToEmailView({VoidCallback? callback}) {

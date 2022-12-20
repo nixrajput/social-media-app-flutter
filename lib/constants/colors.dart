@@ -42,11 +42,11 @@ abstract class ColorValues {
 
   static const Color lightBodyTextColor = Color(0xFF282828);
   static const Color lightSubtitleTextColor = Color.fromARGB(255, 92, 92, 92);
-  static const Color darkBodyTextColor = Color(0xFFDCDCDC);
+  static const Color darkBodyTextColor = Color.fromARGB(255, 228, 228, 228);
   static const Color darkSubtitleTextColor = Color.fromARGB(255, 180, 180, 180);
 
-  static const Color lightBgColor = Color.fromRGBO(236, 236, 236, 1.0);
-  static const Color lightDialogColor = Color.fromRGBO(250, 250, 250, 1.0);
+  static const Color lightBgColor = Color.fromARGB(255, 230, 230, 230);
+  static const Color lightDialogColor = Color.fromARGB(255, 252, 252, 252);
   static const Color darkBgColor = Color.fromRGBO(18, 18, 30, 1.0);
   static const Color darkDialogColor = Color.fromARGB(255, 41, 42, 56);
 

@@ -4,13 +4,14 @@ import 'package:social_media_app/constants/styles.dart';
 
 abstract class AppThemes {
   static final lightTheme = ThemeData(
+    useMaterial3: true,
     colorScheme: const ColorScheme.light().copyWith(
       primary: ColorValues.primarySwatch,
     ),
     iconTheme: const IconThemeData(color: ColorValues.darkGrayColor),
     scaffoldBackgroundColor: ColorValues.lightBgColor,
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.lightBgColor),
-    bottomAppBarColor: ColorValues.lightBgColor,
+    bottomAppBarColor: ColorValues.lightDialogColor,
     shadowColor: ColorValues.lightGrayColor,
     cardTheme: const CardTheme(color: ColorValues.lightDialogColor),
     dialogTheme:
@@ -57,6 +58,7 @@ abstract class AppThemes {
   );
 
   static final darkTheme = ThemeData(
+    useMaterial3: true,
     colorScheme: const ColorScheme.dark().copyWith(
       primary: ColorValues.primarySwatch,
     ),
@@ -64,7 +66,7 @@ abstract class AppThemes {
     scaffoldBackgroundColor: ColorValues.darkBgColor,
     shadowColor: ColorValues.lightGrayColor,
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.darkBgColor),
-    bottomAppBarColor: ColorValues.darkBgColor,
+    bottomAppBarColor: ColorValues.darkDialogColor,
     cardTheme: const CardTheme(color: ColorValues.darkDialogColor),
     dialogTheme:
         const DialogTheme(backgroundColor: ColorValues.darkDialogColor),

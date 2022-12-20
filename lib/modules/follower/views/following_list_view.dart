@@ -8,6 +8,7 @@ import 'package:social_media_app/global_widgets/circular_progress_indicator.dart
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/follower/controllers/following_list_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -17,8 +18,7 @@ class FollowingListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+    return UnFocusWidget(
       child: Scaffold(
         body: SafeArea(
           child: NxRefreshIndicator(
@@ -33,7 +33,7 @@ class FollowingListView extends StatelessWidget {
                 children: [
                   NxAppBar(
                     title: StringValues.following,
-                    padding: Dimens.edgeInsets8_16,
+                    padding: Dimens.edgeInsetsDefault,
                   ),
                   Dimens.boxHeight8,
                   _buildBody(),
@@ -55,7 +55,7 @@ class FollowingListView extends StatelessWidget {
               parent: AlwaysScrollableScrollPhysics(),
             ),
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.start,

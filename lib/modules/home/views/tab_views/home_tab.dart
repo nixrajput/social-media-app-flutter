@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/asset_image.dart';
+import 'package:social_media_app/global_widgets/circular_network_image.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/sliver_app_bar.dart';
-import 'package:social_media_app/modules/follow_request/follow_request_controller.dart';
 import 'package:social_media_app/modules/home/controllers/banner_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
 import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -35,54 +38,7 @@ class HomeTabView extends StatelessWidget {
               parent: AlwaysScrollableScrollPhysics(),
             ),
             slivers: [
-              NxSliverAppBar(
-                bgColor: Theme.of(context).scaffoldBackgroundColor,
-                leading: AppUtility.buildAppLogo(),
-                actions: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: _showCreatePostOptions,
-                      child: Icon(
-                        Icons.add_circle_outline_rounded,
-                        size: Dimens.twentyFour,
-                        color: Theme.of(context).textTheme.bodyText1!.color,
-                      ),
-                    ),
-                    Dimens.boxWidth12,
-                    GetBuilder<FollowRequestController>(
-                      builder: (logic) => Stack(
-                        children: [
-                          InkWell(
-                            onTap: RouteManagement.goToFollowRequestsView,
-                            child: Icon(
-                              Icons.person_add_alt_rounded,
-                              size: Dimens.twentyFour,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
-                            ),
-                          ),
-                          if (logic.followRequestData != null &&
-                              logic.followRequestList.isNotEmpty)
-                            Positioned(
-                              right: Dimens.zero,
-                              top: Dimens.two,
-                              child: Container(
-                                width: Dimens.six,
-                                height: Dimens.six,
-                                decoration: const BoxDecoration(
-                                  color: ColorValues.errorColor,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              _buildAppBar(context),
               _buildBody(),
             ],
           ),
@@ -91,54 +47,68 @@ class HomeTabView extends StatelessWidget {
     );
   }
 
-  _showCreatePostOptions() => AppUtility.showBottomSheet(
-        children: [
-          ListTile(
-            onTap: () {
-              AppUtility.closeBottomSheet();
-              CreatePostController.find.captureImage();
-            },
-            leading: const Icon(Icons.camera),
-            title: Text(
-              StringValues.captureImage,
-              style: AppStyles.style16Bold,
+  NxSliverAppBar _buildAppBar(BuildContext context) {
+    return NxSliverAppBar(
+      padding: Dimens.edgeInsetsDefault,
+      height: Dimens.fourtyEight,
+      leading: Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: Dimens.thirtySix,
+              height: Dimens.thirtySix,
+              padding: Dimens.edgeInsets2,
+              decoration: BoxDecoration(
+                color: Theme.of(context).bottomAppBarColor,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: NxAssetImage(
+                  imgAsset: AssetValues.appIcon,
+                  width: Dimens.twentyFour,
+                  height: Dimens.twentyFour,
+                ),
+              ),
             ),
-          ),
-          ListTile(
-            onTap: () {
-              AppUtility.closeBottomSheet();
-              CreatePostController.find.recordVideo();
-            },
-            leading: const Icon(Icons.videocam),
-            title: Text(
-              StringValues.recordVideo,
-              style: AppStyles.style16Bold,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: _showCreatePostOptions,
+                  child: Icon(
+                    Icons.add_circle_outline_rounded,
+                    size: Dimens.thirtyTwo,
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
+                ),
+                Dimens.boxWidth12,
+                GestureDetector(
+                  onTap: RouteManagement.goToProfileView,
+                  child: GetBuilder<ProfileController>(
+                    builder: (logic) {
+                      if (logic.profileDetails == null ||
+                          logic.profileDetails!.user == null ||
+                          logic.profileDetails!.user!.avatar == null ||
+                          logic.profileDetails!.user!.avatar!.url == null) {
+                        return const Icon(Icons.person_outlined);
+                      }
+                      return NxCircleNetworkImage(
+                        imageUrl: logic.profileDetails!.user!.avatar!.url!,
+                        radius: Dimens.sixTeen,
+                        borderWidth: Dimens.zero,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-          ListTile(
-            onTap: () {
-              AppUtility.closeBottomSheet();
-              CreatePostController.find.selectPostImages();
-            },
-            leading: const Icon(Icons.photo_album),
-            title: Text(
-              StringValues.chooseImages,
-              style: AppStyles.style16Bold,
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              AppUtility.closeBottomSheet();
-              CreatePostController.find.selectPosVideos();
-            },
-            leading: const Icon(Icons.video_collection),
-            title: Text(
-              StringValues.chooseVideos,
-              style: AppStyles.style16Bold,
-            ),
-          ),
-        ],
-      );
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildBody() {
     return GetBuilder<PostController>(
@@ -152,26 +122,29 @@ class HomeTabView extends StatelessWidget {
 
         if (logic.postData == null || logic.postList.isEmpty) {
           return SliverFillRemaining(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  StringValues.noPosts,
-                  style: AppStyles.style32Bold.copyWith(
-                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            child: Padding(
+              padding: Dimens.edgeInsetsHorizDefault,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    StringValues.noPosts,
+                    style: AppStyles.style32Bold.copyWith(
+                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-                Dimens.boxHeight16,
-              ],
+                  Dimens.boxHeight16,
+                ],
+              ),
             ),
           );
         }
 
         return SliverToBoxAdapter(
           child: Padding(
-            padding: Dimens.edgeInsets0_16,
+            padding: Dimens.edgeInsetsHorizDefault,
             child: ListView(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -223,6 +196,55 @@ class HomeTabView extends StatelessWidget {
       },
     );
   }
+
+  _showCreatePostOptions() => AppUtility.showBottomSheet(
+        children: [
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.captureImage();
+            },
+            leading: const Icon(Icons.camera),
+            title: Text(
+              StringValues.captureImage,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.recordVideo();
+            },
+            leading: const Icon(Icons.videocam),
+            title: Text(
+              StringValues.recordVideo,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.selectPostImages();
+            },
+            leading: const Icon(Icons.photo_album),
+            title: Text(
+              StringValues.chooseImages,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              CreatePostController.find.selectPosVideos();
+            },
+            leading: const Icon(Icons.video_collection),
+            title: Text(
+              StringValues.chooseVideos,
+              style: AppStyles.style16Bold,
+            ),
+          ),
+        ],
+      );
 
   Widget _buildBanner() {
     var currentItem = 0;

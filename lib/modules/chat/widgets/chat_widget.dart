@@ -42,115 +42,91 @@ class ChatWidget extends StatelessWidget {
     var isSender = chat.sender!.id == profile.profileDetails!.user!.id;
     return InkWell(
       onTap: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            margin: EdgeInsets.only(bottom: Dimens.zero),
-            padding: Dimens.edgeInsets8,
-            constraints: BoxConstraints(
-              maxWidth: Dimens.screenWidth,
-            ),
-            decoration: BoxDecoration(
-              color: chat.receiver!.id ==
-                          ProfileController.find.profileDetails!.user!.id &&
-                      chat.seen == false
-                  ? ColorValues.primaryColor.withOpacity(0.15)
-                  : Theme.of(Get.context!).dialogBackgroundColor,
-              borderRadius: (index == 0 || index == totalLength - 1)
-                  ? BorderRadius.only(
-                      topLeft: Radius.circular(
-                          index == 0 ? Dimens.eight : Dimens.zero),
-                      topRight: Radius.circular(
-                          index == 0 ? Dimens.eight : Dimens.zero),
-                      bottomLeft: Radius.circular(index == totalLength - 1
-                          ? Dimens.eight
-                          : Dimens.zero),
-                      bottomRight: Radius.circular(index == totalLength - 1
-                          ? Dimens.eight
-                          : Dimens.zero),
-                    )
-                  : const BorderRadius.all(Radius.zero),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+      child: Container(
+        margin: Dimens.edgeInsetsOnlyBottom16,
+        constraints: BoxConstraints(
+          maxWidth: Dimens.screenWidth,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Stack(
                         children: [
-                          Stack(
-                            children: [
-                              AvatarWidget(
-                                avatar: user.avatar,
-                                size: Dimens.twentyFour,
+                          AvatarWidget(
+                            avatar: user.avatar,
+                            size: Dimens.twentyFour,
+                          ),
+                          if (isOnline)
+                            Positioned(
+                              top: Dimens.two,
+                              right: Dimens.two,
+                              child: Container(
+                                width: Dimens.twelve,
+                                height: Dimens.twelve,
+                                decoration: const BoxDecoration(
+                                  color: ColorValues.successColor,
+                                  shape: BoxShape.circle,
+                                ),
                               ),
-                              if (isOnline)
-                                Positioned(
-                                  top: Dimens.two,
-                                  right: Dimens.two,
-                                  child: Container(
-                                    width: Dimens.twelve,
-                                    height: Dimens.twelve,
-                                    decoration: const BoxDecoration(
-                                      color: ColorValues.successColor,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          Dimens.boxWidth8,
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  user.uname,
-                                  style: AppStyles.style13Bold,
-                                ),
-                                if (chat.mediaFile != null &&
-                                    chat.mediaFile!.url != null)
-                                  Text(
-                                    chat.mediaFile!.mediaType!.toTitleCase(),
-                                    style: AppStyles.style13Normal.copyWith(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1!
-                                          .color!,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  )
-                                else
-                                  Text(
-                                    _decryptMessage(chat.message!),
-                                    style: AppStyles.style13Normal,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                              ],
                             ),
-                          ),
                         ],
                       ),
-                    ),
-                    Dimens.boxWidth8,
-                    Expanded(
-                      flex: 0,
-                      child: Column(
+                      Dimens.boxWidth8,
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user.uname,
+                              style: AppStyles.style13Bold,
+                            ),
+                            if (chat.mediaFile != null &&
+                                chat.mediaFile!.url != null)
+                              Text(
+                                chat.mediaFile!.mediaType!.toTitleCase(),
+                                style: AppStyles.style13Normal.copyWith(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1!
+                                      .color!,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              )
+                            else
+                              Text(
+                                _decryptMessage(chat.message!),
+                                style: AppStyles.style13Normal,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Dimens.boxWidth8,
+                Expanded(
+                  flex: 0,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -170,47 +146,57 @@ class ChatWidget extends StatelessWidget {
                             ),
                           ),
                           if (isSender) Dimens.boxHeight2,
-                          if (isSender)
-                            Text(
-                              _setMessageStatus(),
-                              style: AppStyles.style13Normal.copyWith(
-                                fontSize: Dimens.eleven,
-                                color: _setMessageStatusColor(),
-                              ),
-                            )
+                          if (isSender) _buildMessageStatus(),
                         ],
                       ),
-                    ),
-                  ],
+                      Dimens.boxWidth8,
+                      if (chat.receiver!.id ==
+                              ProfileController.find.profileDetails!.user!.id &&
+                          chat.seen == false)
+                        Container(
+                          width: Dimens.eight,
+                          height: Dimens.eight,
+                          decoration: const BoxDecoration(
+                            color: ColorValues.errorColor,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
-          if (index != totalLength - 1) Dimens.divider,
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  String _setMessageStatus() {
+  Widget _buildMessageStatus() {
     if (chat.seen == true) {
-      return 'Seen';
+      return Icon(
+        Icons.done_all,
+        size: Dimens.sixTeen,
+        color: ColorValues.successColor,
+      );
     } else if (chat.delivered == true) {
-      return 'Delivered';
+      return Icon(
+        Icons.done_all,
+        size: Dimens.sixTeen,
+        color: Theme.of(Get.context!).textTheme.subtitle1!.color!,
+      );
     } else if (chat.sent == true) {
-      return 'Sent';
+      return Icon(
+        Icons.done,
+        size: Dimens.sixTeen,
+        color: Theme.of(Get.context!).textTheme.subtitle1!.color!,
+      );
     }
 
-    return 'Pending';
-  }
-
-  Color _setMessageStatusColor() {
-    if (chat.seen == true) {
-      return ColorValues.successColor;
-    } else if (chat.delivered == true || chat.sent == true) {
-      return Theme.of(Get.context!).textTheme.subtitle1!.color!;
-    }
-
-    return ColorValues.darkGrayColor;
+    return Icon(
+      Icons.circle_outlined,
+      size: Dimens.sixTeen,
+      color: Theme.of(Get.context!).textTheme.subtitle1!.color!,
+    );
   }
 }

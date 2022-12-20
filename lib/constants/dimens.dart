@@ -176,6 +176,21 @@ abstract class Dimens {
     horizontal: twelve,
   );
 
+  static EdgeInsets edgeInsetsHorizDefault = EdgeInsets.symmetric(
+    vertical: zero,
+    horizontal: twelve,
+  );
+
+  static EdgeInsets edgeInsetsVertDefault = EdgeInsets.symmetric(
+    vertical: twelve,
+    horizontal: zero,
+  );
+
+  static EdgeInsets edgeInsetsDefault = EdgeInsets.symmetric(
+    vertical: eight,
+    horizontal: twelve,
+  );
+
   static EdgeInsets edgeInsets0 = EdgeInsets.zero;
 
   static EdgeInsets edgeInsets4 = EdgeInsets.all(four);
@@ -196,6 +211,8 @@ abstract class Dimens {
 
   static EdgeInsets edgeInsetsOnlyTop8 = EdgeInsets.only(top: eight);
 
+  static EdgeInsets edgeInsetsOnlyTop12 = EdgeInsets.only(top: twelve);
+
   static EdgeInsets edgeInsetsOnlyTop16 = EdgeInsets.only(top: sixTeen);
 
   static EdgeInsets edgeInsetsOnlyBottom2 = EdgeInsets.only(bottom: two);
@@ -204,9 +221,13 @@ abstract class Dimens {
 
   static EdgeInsets edgeInsetsOnlyBottom8 = EdgeInsets.only(bottom: eight);
 
+  static EdgeInsets edgeInsetsOnlyBottom12 = EdgeInsets.only(bottom: twelve);
+
   static EdgeInsets edgeInsetsOnlyBottom16 = EdgeInsets.only(bottom: sixTeen);
 
   static EdgeInsets edgeInsetsOnlyLeft8 = EdgeInsets.only(left: eight);
+
+  static EdgeInsets edgeInsetsOnlyLeft12 = EdgeInsets.only(left: twelve);
 
   static EdgeInsets edgeInsetsOnlyLeft16 = EdgeInsets.only(left: sixTeen);
 

@@ -45,6 +45,7 @@ import 'package:social_media_app/modules/profile/views/edit_views/edit_professio
 import 'package:social_media_app/modules/profile/views/edit_views/edit_username_view.dart';
 import 'package:social_media_app/modules/profile/views/edit_views/edit_website_view.dart';
 import 'package:social_media_app/modules/profile/views/profile_details_view.dart';
+import 'package:social_media_app/modules/profile/views/profile_view.dart';
 import 'package:social_media_app/modules/server_maintenance/server_maintenance_view.dart';
 import 'package:social_media_app/modules/server_offline/server_offline_view.dart';
 import 'package:social_media_app/modules/settings/bindings/change_email_binding.dart';
@@ -208,6 +209,14 @@ abstract class AppPages {
       name: _Routes.chatDetails,
       page: P2PChatView.new,
       binding: SingleChatBinding(),
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    /// Profile
+    GetPage(
+      name: _Routes.profile,
+      page: ProfileView.new,
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),

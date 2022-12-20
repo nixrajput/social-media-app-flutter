@@ -77,6 +77,7 @@ abstract class AppRoutes {
   static const comments = _Routes.comments;
   static const postLikedUsers = _Routes.postLikedUsers;
 
+  static const profile = _Routes.profile;
   static const userProfile = _Routes.userProfile;
 
   static const appUpdate = _Routes.appUpdate;
@@ -159,6 +160,7 @@ abstract class _Routes {
   static const comments = '/comments';
   static const postLikedUsers = '/post_liked_users';
 
+  static const profile = '/profile';
   static const userProfile = '/user_profile';
 
   static const appUpdate = '/app_update';

@@ -31,47 +31,47 @@ class P2PChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
-      child: Scaffold(
-        body: SafeArea(
-          child: GetBuilder<P2PChatController>(
-            builder: (logic) {
-              if (!logic.initialized) {
-                return const Center(child: NxCircularProgressIndicator());
-              }
-              return KeyboardVisibilityBuilder(
-                builder: (_, child, isKeyboardVisible) {
-                  if (isKeyboardVisible) {
-                    logic.sendTypingStatus('start');
-                  } else {
-                    logic.sendTypingStatus('end');
-                  }
+    return Scaffold(
+      body: SafeArea(
+        child: GetBuilder<P2PChatController>(
+          builder: (logic) {
+            if (!logic.initialized) {
+              return const Center(child: NxCircularProgressIndicator());
+            }
+            return KeyboardVisibilityBuilder(
+              builder: (_, child, isKeyboardVisible) {
+                if (isKeyboardVisible) {
+                  logic.sendTypingStatus('start');
+                  AppUtility.printLog('Keyboard is visible');
+                } else {
+                  logic.sendTypingStatus('end');
+                  AppUtility.printLog('Keyboard is not visible');
+                }
 
-                  return child;
-                },
-                child: SizedBox(
-                  width: Dimens.screenWidth,
-                  height: Dimens.screenHeight,
-                  child: Stack(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          _buildAppBar(logic),
-                          _buildBody(logic),
-                        ],
-                      ),
-                      _buildMessageTypingContainer(logic),
-                      if (logic.scrolledToBottom == false)
-                        _buildScrollToLast(logic),
-                    ],
-                  ),
+                return child;
+              },
+              child: SizedBox(
+                width: Dimens.screenWidth,
+                height: Dimens.screenHeight,
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildAppBar(context, logic),
+                        Dimens.divider,
+                        _buildBody(context, logic),
+                      ],
+                    ),
+                    _buildMessageTypingContainer(logic),
+                    if (logic.scrolledToBottom == false)
+                      _buildScrollToLast(logic),
+                  ],
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -94,10 +94,9 @@ class P2PChatView extends StatelessWidget {
     );
   }
 
-  NxAppBar _buildAppBar(P2PChatController logic) {
+  NxAppBar _buildAppBar(BuildContext context, P2PChatController logic) {
     return NxAppBar(
-      padding: Dimens.edgeInsets8_16,
-      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+      padding: Dimens.edgeInsetsDefault,
       leading: Expanded(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,14 +130,11 @@ class P2PChatView extends StatelessWidget {
               );
             }),
             const Spacer(),
-            // NxIconButton(
-            //   icon: Icons.more_vert,
-            //   iconColor: Theme.of(context)
-            //       .textTheme
-            //       .bodyText1!
-            //       .color,
-            //   onTap: () {},
-            // ),
+            NxIconButton(
+              icon: Icons.more_vert,
+              iconColor: Theme.of(context).textTheme.bodyText1!.color,
+              onTap: () {},
+            ),
           ],
         ),
       ),
@@ -231,7 +227,7 @@ class P2PChatView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(P2PChatController logic) {
+  Widget _buildBody(BuildContext context, P2PChatController logic) {
     if (logic.isLoading && logic.chatMessages.isEmpty) {
       return Center(
           child: Padding(

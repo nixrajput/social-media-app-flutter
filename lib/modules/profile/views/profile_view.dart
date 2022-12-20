@@ -1,0 +1,447 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
+import 'package:social_media_app/global_widgets/avatar_widget.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/global_widgets/count_widget.dart';
+import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
+import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
+import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
+import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
+import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
+import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
+
+class ProfileView extends StatelessWidget {
+  const ProfileView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SizedBox(
+          width: Dimens.screenWidth,
+          height: Dimens.screenHeight,
+          child: GetBuilder<ProfileController>(builder: (logic) {
+            return NxRefreshIndicator(
+              onRefresh: logic.fetchProfileDetails,
+              showProgress: false,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildProfileHeader(logic),
+                  _buildProfileBody(logic),
+                ],
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProfileHeader(ProfileController logic) {
+    return NxAppBar(
+      padding: Dimens.edgeInsetsDefault,
+      leading: Expanded(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              logic.profileDetails!.user != null
+                  ? logic.profileDetails!.user!.uname
+                  : StringValues.profile,
+              style: AppStyles.style20Bold,
+            ),
+            const Spacer(),
+            GestureDetector(
+              onTap: RouteManagement.goToSettingsView,
+              child: Icon(
+                Icons.menu,
+                size: Dimens.twentyFour,
+                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              ),
+            ),
+          ],
+        ),
+      ),
+      showBackBtn: true,
+    );
+  }
+
+  Widget _buildProfileBody(ProfileController logic) {
+    if (logic.isLoading) {
+      return const Expanded(
+        child: Center(child: NxCircularProgressIndicator()),
+      );
+    } else if (logic.profileDetails == null ||
+        logic.profileDetails!.user == null) {
+      return Expanded(
+        child: SizedBox(
+          width: Dimens.screenWidth,
+          height: Dimens.screenHeight,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                StringValues.userNotFoundError,
+                style: AppStyles.style32Bold.copyWith(
+                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Dimens.boxHeight16,
+            ],
+          ),
+        ),
+      );
+    }
+    return Expanded(
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Dimens.boxHeight16,
+            Padding(
+              padding: Dimens.edgeInsetsHorizDefault,
+              child: _buildUserDetails(logic),
+            ),
+            Dimens.boxHeight24,
+            Padding(
+              padding: Dimens.edgeInsetsHorizDefault,
+              child: _buildCountDetails(logic),
+            ),
+            Dimens.boxHeight8,
+            Dimens.dividerWithHeight,
+            Dimens.boxHeight8,
+            _buildPosts(logic),
+            Dimens.boxHeight16,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUserDetails(ProfileController logic) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () => _showProfilePictureDialog(logic),
+                child: Hero(
+                  tag: logic.profileDetails!.user!.id,
+                  child: AvatarWidget(
+                    avatar: logic.profileDetails!.user!.avatar,
+                  ),
+                ),
+              ),
+              Dimens.boxHeight16,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${logic.profileDetails!.user!.fname} ${logic.profileDetails!.user!.lname}',
+                    style: AppStyles.style18Bold,
+                  ),
+                  if (logic.profileDetails!.user!.isVerified) Dimens.boxWidth4,
+                  if (logic.profileDetails!.user!.isVerified)
+                    Icon(
+                      Icons.verified,
+                      color: ColorValues.primaryColor,
+                      size: Dimens.twenty,
+                    )
+                ],
+              ),
+              Dimens.boxHeight2,
+              Text(
+                "@${logic.profileDetails!.user!.uname}",
+                style: AppStyles.style14Normal.copyWith(
+                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                ),
+              ),
+            ],
+          ),
+          Dimens.boxHeight16,
+          if (logic.profileDetails!.user!.about != null)
+            NxExpandableText(text: logic.profileDetails!.user!.about!),
+          if (logic.profileDetails!.user!.website != null) Dimens.boxHeight8,
+          if (logic.profileDetails!.user!.website != null)
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.link,
+                  size: Dimens.sixTeen,
+                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                ),
+                Dimens.boxWidth8,
+                InkWell(
+                  onTap: () => AppUtility.openUrl(
+                      Uri.parse(logic.profileDetails!.user!.website!)),
+                  child: Text(
+                    logic.profileDetails!.user!.website!.contains('https://') ||
+                            logic.profileDetails!.user!.website!
+                                .contains('http://')
+                        ? Uri.parse(logic.profileDetails!.user!.website!).host
+                        : logic.profileDetails!.user!.website!,
+                    style: AppStyles.style13Normal.copyWith(
+                      color: ColorValues.primaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          Dimens.boxHeight8,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.calendar_today,
+                size: Dimens.sixTeen,
+                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              ),
+              Dimens.boxWidth8,
+              Expanded(
+                child: Text(
+                  'Joined - ${DateFormat.yMMMd().format(logic.profileDetails!.user!.createdAt)}',
+                  style: AppStyles.style12Bold.copyWith(
+                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Dimens.boxHeight24,
+          _buildActionBtn(),
+        ],
+      );
+
+  Widget _buildActionBtn() {
+    return NxOutlinedButton(
+      label: StringValues.editProfile.toTitleCase(),
+      width: Dimens.screenWidth,
+      height: Dimens.thirtySix,
+      padding: Dimens.edgeInsets0_8,
+      borderRadius: Dimens.eight,
+      borderColor: ColorValues.primaryColor,
+      labelStyle: AppStyles.style14Normal.copyWith(
+        color: ColorValues.primaryColor,
+      ),
+      onTap: RouteManagement.goToEditProfileView,
+    );
+  }
+
+  Container _buildCountDetails(ProfileController logic) {
+    return Container(
+      width: Dimens.screenWidth,
+      padding: Dimens.edgeInsets8_0,
+      decoration: BoxDecoration(
+        color: Theme.of(Get.context!).dialogTheme.backgroundColor!,
+        borderRadius: BorderRadius.circular(Dimens.eight),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(
+            child: NxCountWidget(
+              title: StringValues.posts,
+              valueStyle: AppStyles.style24Bold,
+              value: logic.profileDetails!.user!.postsCount
+                  .toString()
+                  .toCountingFormat(),
+            ),
+          ),
+          Expanded(
+            child: NxCountWidget(
+              title: StringValues.followers,
+              valueStyle: AppStyles.style24Bold,
+              value: logic.profileDetails!.user!.followersCount
+                  .toString()
+                  .toCountingFormat(),
+              onTap: () => RouteManagement.goToFollowersListView(
+                  logic.profileDetails!.user!.id),
+            ),
+          ),
+          Expanded(
+            child: NxCountWidget(
+              title: StringValues.following,
+              valueStyle: AppStyles.style24Bold,
+              value: logic.profileDetails!.user!.followingCount
+                  .toString()
+                  .toCountingFormat(),
+              onTap: () => RouteManagement.goToFollowingListView(
+                  logic.profileDetails!.user!.id),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPosts(ProfileController logic) {
+    if (logic.postList.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: Dimens.edgeInsetsDefault,
+          child: Text(
+            StringValues.noPosts,
+            style: AppStyles.style20Normal.copyWith(
+              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: Dimens.edgeInsetsHorizDefault,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (logic.isPostLoading)
+            const Center(child: NxCircularProgressIndicator())
+          else
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: logic.postList.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                crossAxisSpacing: Dimens.eight,
+                mainAxisSpacing: Dimens.eight,
+              ),
+              itemBuilder: (ctx, i) {
+                var post = logic.postList[i];
+                return PostThumbnailWidget(
+                  mediaFile: post.mediaFiles!.first,
+                  post: post,
+                );
+              },
+            ),
+          if (logic.isMorePostLoading || logic.postData!.hasNextPage!)
+            Dimens.boxHeight16,
+          if (logic.isMorePostLoading)
+            const Center(child: NxCircularProgressIndicator()),
+          if (!logic.isMorePostLoading && logic.postData!.hasNextPage!)
+            Center(
+              child: NxTextButton(
+                label: 'Load more posts',
+                onTap: logic.loadMore,
+                labelStyle: AppStyles.style14Bold.copyWith(
+                  color: ColorValues.primaryLightColor,
+                ),
+                padding: Dimens.edgeInsets8_0,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _showProfilePictureDialog(ProfileController logic) {
+    AppUtility.showSimpleDialog(
+      GetBuilder<EditProfilePictureController>(
+        builder: (con) => Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: Dimens.edgeInsets16.copyWith(
+                bottom: Dimens.zero,
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    'Profile Picture',
+                    style: AppStyles.style18Bold,
+                  ),
+                  const Spacer(),
+                  NxIconButton(
+                    icon: Icons.close,
+                    iconSize: Dimens.thirtyTwo,
+                    iconColor:
+                        Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    onTap: AppUtility.closeDialog,
+                  ),
+                ],
+              ),
+            ),
+            Dimens.dividerWithHeight,
+            Dimens.boxHeight8,
+            AvatarWidget(
+              avatar: logic.profileDetails!.user?.avatar,
+              size: Dimens.screenWidth * 0.4,
+            ),
+            Dimens.boxHeight16,
+            Dimens.dividerWithHeight,
+            Dimens.boxHeight16,
+            Padding(
+              padding: Dimens.edgeInsets0_16,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: NxOutlinedButton(
+                        width: Dimens.hundred,
+                        height: Dimens.thirtySix,
+                        label: 'Change',
+                        borderColor:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        labelStyle: AppStyles.style14Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
+                        onTap: () {
+                          AppUtility.closeDialog();
+                          con.chooseImage();
+                        }),
+                  ),
+                  Dimens.boxWidth16,
+                  Expanded(
+                    child: NxOutlinedButton(
+                      width: Dimens.hundred,
+                      height: Dimens.thirtySix,
+                      label: 'Remove',
+                      borderColor:
+                          Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      labelStyle: AppStyles.style14Normal.copyWith(
+                        color:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      ),
+                      onTap: () {
+                        AppUtility.closeDialog();
+                        con.removeProfilePicture();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Dimens.boxHeight24,
+          ],
+        ),
+      ),
+    );
+  }
+}

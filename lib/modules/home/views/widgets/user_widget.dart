@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
@@ -14,14 +13,14 @@ class UserWidget extends StatelessWidget {
   const UserWidget({
     Key? key,
     required this.user,
+    required this.totalLength,
+    required this.index,
     this.bottomMargin,
     this.onTap,
     this.bgColor,
     this.avatarSize,
     this.borderRadius,
     this.padding,
-    required this.totalLength,
-    required this.index,
     this.extraActions,
     this.onActionTap,
   }) : super(key: key);
@@ -43,69 +42,49 @@ class UserWidget extends StatelessWidget {
     final profile = ProfileController.find;
     return InkWell(
       onTap: onTap,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            margin: EdgeInsets.only(bottom: bottomMargin ?? Dimens.zero),
-            padding: padding ?? Dimens.edgeInsets8,
-            constraints: BoxConstraints(
-              maxWidth: Dimens.screenWidth,
-            ),
-            decoration: BoxDecoration(
-              color: bgColor ?? Theme.of(Get.context!).dialogBackgroundColor,
-              borderRadius: (index == 0 || index == totalLength - 1)
-                  ? BorderRadius.only(
-                      topLeft: Radius.circular(
-                          index == 0 ? Dimens.eight : Dimens.zero),
-                      topRight: Radius.circular(
-                          index == 0 ? Dimens.eight : Dimens.zero),
-                      bottomLeft: Radius.circular(index == totalLength - 1
-                          ? Dimens.eight
-                          : Dimens.zero),
-                      bottomRight: Radius.circular(index == totalLength - 1
-                          ? Dimens.eight
-                          : Dimens.zero),
-                    )
-                  : const BorderRadius.all(Radius.zero),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      AvatarWidget(
-                        avatar: user.avatar,
-                        size: avatarSize ?? Dimens.twentyFour,
-                      ),
-                      Dimens.boxWidth8,
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _buildUserUsername(),
-                            _buildUserFullName(),
-                          ],
-                        ),
-                      ),
-                    ],
+      child: Container(
+        margin: index != (totalLength - 1)
+            ? Dimens.edgeInsetsOnlyBottom16
+            : Dimens.edgeInsets0,
+        padding: padding ?? Dimens.edgeInsets0,
+        constraints: BoxConstraints(
+          maxWidth: Dimens.screenWidth,
+        ),
+        decoration: BoxDecoration(
+          color: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AvatarWidget(
+                    avatar: user.avatar,
+                    size: avatarSize ?? Dimens.twentyFour,
                   ),
-                ),
-                if (user.id != profile.profileDetails!.user!.id)
-                  _buildFollowAction(),
-              ],
+                  Dimens.boxWidth8,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildUserUsername(),
+                        _buildUserFullName(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          if (index != totalLength - 1) Dimens.divider,
-        ],
+            if (user.id != profile.profileDetails!.user!.id)
+              _buildFollowAction(),
+          ],
+        ),
       ),
     );
   }
@@ -117,8 +96,8 @@ class UserWidget extends StatelessWidget {
           Flexible(
             child: RichText(
               text: TextSpan(
-                text: user.uname,
-                style: AppStyles.style13Bold.copyWith(
+                text: user.uname.toLowerCase(),
+                style: AppStyles.style14Bold.copyWith(
                   color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                 ),
               ),
@@ -129,11 +108,9 @@ class UserWidget extends StatelessWidget {
           if (user.isVerified) Dimens.boxWidth4,
           if (user.isVerified)
             Icon(
-              CupertinoIcons.checkmark_seal_fill,
-              color: Theme.of(Get.context!).brightness == Brightness.dark
-                  ? Theme.of(Get.context!).textTheme.bodyText1?.color
-                  : ColorValues.primaryColor,
-              size: Dimens.fourteen,
+              Icons.verified,
+              color: ColorValues.primaryColor,
+              size: Dimens.twenty,
             )
         ],
       );

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/home/controllers/tab_controller.dart';
 
 class TrendingTabView extends StatelessWidget {
@@ -10,21 +11,20 @@ class TrendingTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+    return UnFocusWidget(
       child: SafeArea(
         child: SizedBox(
           width: Dimens.screenWidth,
           height: Dimens.screenHeight,
           child: GetBuilder<TrendingTabController>(
-            builder: (tab) {
+            builder: (logic) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TabBar(
-                    controller: tab.controller,
-                    tabs: tab.tabs,
+                    controller: logic.controller,
+                    tabs: logic.tabs,
                     indicatorWeight: Dimens.two,
                     indicatorSize: TabBarIndicatorSize.tab,
                     unselectedLabelColor:
@@ -37,17 +37,17 @@ class TrendingTabView extends StatelessWidget {
                       color: ColorValues.grayColor,
                     ),
                     labelPadding: Dimens.edgeInsets0,
-                    padding: Dimens.edgeInsets0_16,
+                    padding: Dimens.edgeInsetsHorizDefault,
                     indicatorPadding: Dimens.edgeInsets0,
                     indicatorColor: ColorValues.primaryColor,
                   ),
                   Dimens.boxHeight8,
                   Expanded(
                     child: Padding(
-                      padding: Dimens.edgeInsets0_16,
+                      padding: Dimens.edgeInsetsHorizDefault,
                       child: TabBarView(
-                        controller: tab.controller,
-                        children: tab.tabViews,
+                        controller: logic.controller,
+                        children: logic.tabViews,
                       ),
                     ),
                   ),

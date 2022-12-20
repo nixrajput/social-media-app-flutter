@@ -60,4 +60,8 @@ extension DateHelper on DateTime {
     final now = DateTime.now().toLocal();
     return now.difference(toLocal()).inDays;
   }
+
+  String getDateTime() {
+    return DateFormat('dd MMM yyyy hh:mm a').format(toLocal());
+  }
 }

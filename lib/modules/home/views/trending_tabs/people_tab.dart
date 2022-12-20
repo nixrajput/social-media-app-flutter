@@ -16,60 +16,61 @@ class PeopleTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
-      child: NxRefreshIndicator(
-        onRefresh: RecommendedUsersController.find.getUsers,
-        showProgress: false,
-        child: GetBuilder<RecommendedUsersController>(
-          builder: (logic) {
-            return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              child: Column(
-                children: [
-                  Dimens.boxHeight8,
-                  TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(Dimens.eight),
-                        gapPadding: Dimens.zero,
-                      ),
-                      contentPadding: Dimens.edgeInsets4_8,
-                      constraints: BoxConstraints(
-                        maxWidth: Dimens.screenWidth,
-                      ),
-                      hintStyle: AppStyles.style14Normal.copyWith(
-                        color: ColorValues.grayColor,
-                      ),
-                      hintText: StringValues.search,
-                      prefixIcon: const Icon(
-                        Icons.search,
-                        color: ColorValues.grayColor,
-                      ),
-                    ),
-                    keyboardType: TextInputType.text,
-                    maxLines: 1,
-                    style: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                    ),
-                    controller: logic.searchTextController,
-                    onChanged: (value) => logic.searchUsers(value),
-                  ),
-                  Dimens.boxHeight16,
-                  _buildUsers(logic),
-                  Dimens.boxHeight16,
-                ],
-              ),
-            );
-          },
-        ),
+    return NxRefreshIndicator(
+      onRefresh: RecommendedUsersController.find.getUsers,
+      showProgress: false,
+      child: GetBuilder<RecommendedUsersController>(
+        builder: (logic) {
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            child: Column(
+              children: [
+                Dimens.boxHeight8,
+                _buildSearchField(logic),
+                Dimens.boxHeight16,
+                _buildUserList(logic),
+                Dimens.boxHeight16,
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildUsers(RecommendedUsersController logic) {
+  TextFormField _buildSearchField(RecommendedUsersController logic) {
+    return TextFormField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(Dimens.eight),
+          gapPadding: Dimens.zero,
+        ),
+        contentPadding: Dimens.edgeInsets4_8,
+        constraints: BoxConstraints(
+          maxWidth: Dimens.screenWidth,
+        ),
+        hintStyle: AppStyles.style14Normal.copyWith(
+          color: ColorValues.grayColor,
+        ),
+        hintText: StringValues.search,
+        prefixIcon: const Icon(
+          Icons.search,
+          color: ColorValues.grayColor,
+        ),
+      ),
+      keyboardType: TextInputType.text,
+      maxLines: 1,
+      style: AppStyles.style14Normal.copyWith(
+        color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+      ),
+      controller: logic.searchTextController,
+      onChanged: (value) => logic.searchUsers(value),
+    );
+  }
+
+  Widget _buildUserList(RecommendedUsersController logic) {
     if (logic.isLoading &&
         (logic.recommendedUsersData == null ||
             logic.recommendedUsersList.isEmpty)) {

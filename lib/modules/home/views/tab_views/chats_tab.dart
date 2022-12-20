@@ -8,6 +8,7 @@ import 'package:social_media_app/global_widgets/circular_progress_indicator.dart
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -18,8 +19,7 @@ class ChatsTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+    return UnFocusWidget(
       child: SafeArea(
         child: SizedBox(
           width: Dimens.screenWidth,
@@ -33,10 +33,9 @@ class ChatsTabView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.chats,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                   showBackBtn: false,
                 ),
-                Dimens.boxHeight8,
                 _buildBody(),
               ],
             ),
@@ -63,11 +62,12 @@ class ChatsTabView extends StatelessWidget {
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
-            padding: Dimens.edgeInsets0_16,
+            padding: Dimens.edgeInsetsHorizDefault,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Dimens.boxHeight8,
                 if (logic.isLoading)
                   const Center(child: NxCircularProgressIndicator()),
                 if (logic.isLoading) Dimens.boxHeight16,

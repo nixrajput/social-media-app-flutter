@@ -163,6 +163,7 @@ class MyApp extends StatelessWidget {
           statusBarColor: ColorValues.lightBgColor,
           statusBarBrightness: Brightness.light,
           systemNavigationBarColor: ColorValues.lightBgColor,
+          systemNavigationBarDividerColor: Colors.transparent,
           systemNavigationBarIconBrightness: Brightness.dark,
         ),
       );
@@ -173,6 +174,7 @@ class MyApp extends StatelessWidget {
           statusBarColor: ColorValues.darkBgColor,
           statusBarBrightness: Brightness.dark,
           systemNavigationBarColor: ColorValues.darkBgColor,
+          systemNavigationBarDividerColor: Colors.transparent,
           systemNavigationBarIconBrightness: Brightness.light,
         ),
       );

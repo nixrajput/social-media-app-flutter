@@ -18,13 +18,11 @@ class NotificationWidget extends StatelessWidget {
     required this.notification,
     required this.totalLength,
     required this.index,
-    required this.isSameDay,
   }) : super(key: key);
 
   final NotificationModel notification;
   final int totalLength;
   final int index;
-  final bool isSameDay;
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +40,10 @@ class NotificationWidget extends StatelessWidget {
       },
       onLongPress: _showDeletePostOptions,
       child: Container(
-        padding: Dimens.edgeInsets8,
-        margin: Dimens.edgeInsetsOnlyBottom8,
-        decoration: BoxDecoration(
-          color: Theme.of(Get.context!).dialogBackgroundColor,
-          borderRadius: BorderRadius.circular(Dimens.eight),
-        ),
+        margin: index != (totalLength - 1)
+            ? Dimens.edgeInsetsOnlyBottom16
+            : Dimens.edgeInsets0,
+        padding: Dimens.edgeInsetsHorizDefault,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -73,22 +69,20 @@ class NotificationWidget extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: notification.from.uname,
-                          style: AppStyles.style13Bold.copyWith(
+                          style: AppStyles.style14Bold.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
                                 .bodyText1!
                                 .color,
-                            height: 1.25,
                           ),
                         ),
                         TextSpan(
                           text: " ${notification.body}",
-                          style: AppStyles.style13Normal.copyWith(
+                          style: AppStyles.style14Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
                                 .bodyText1!
                                 .color,
-                            height: 1.25,
                           ),
                         ),
                       ],
@@ -96,7 +90,7 @@ class NotificationWidget extends StatelessWidget {
                   ),
                   Dimens.boxHeight4,
                   Text(
-                    notification.createdAt.getTime(),
+                    notification.createdAt.getDateTime(),
                     style: AppStyles.style12Normal.copyWith(
                       color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                     ),

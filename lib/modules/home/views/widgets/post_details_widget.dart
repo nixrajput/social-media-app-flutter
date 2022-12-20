@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
@@ -24,8 +23,8 @@ import 'package:social_media_app/modules/home/views/widgets/post_view_widget.dar
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
 
-class PostWidget extends StatelessWidget {
-  const PostWidget({
+class PostDetailsWidget extends StatelessWidget {
+  const PostDetailsWidget({
     Key? key,
     required this.post,
     required this.controller,
@@ -43,144 +42,135 @@ class PostWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildPostHead(context),
-          _buildPostBody(context),
+          _buildPostHead(),
+          _buildPostBody(),
           Dimens.boxHeight4,
-          _buildPostFooter(context),
+          _buildPostFooter(),
         ],
       ),
     );
   }
 
-  Widget _buildPostHead(BuildContext context) => Padding(
+  Widget _buildPostHead() => Padding(
         padding: Dimens.edgeInsets8,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            GestureDetector(
-              onTap: () => RouteManagement.goToUserProfileView(
-                post.owner.id,
-              ),
-              child: AvatarWidget(
-                avatar: post.owner.avatar,
-                size: Dimens.twentyFour,
-              ),
-            ),
-            Dimens.boxWidth8,
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildFullName(context),
-                  _buildUsername(context),
-                ],
-              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () => RouteManagement.goToUserProfileView(
+                          post.owner.id,
+                        ),
+                        child: AvatarWidget(
+                          avatar: post.owner.avatar,
+                          size: Dimens.twentyFour,
+                        ),
+                      ),
+                      Dimens.boxWidth8,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildFullName(),
+                            _buildUsername(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Dimens.boxWidth16,
+                      NxIconButton(
+                        icon: CupertinoIcons.ellipsis_vertical,
+                        iconSize: Dimens.sixTeen,
+                        iconColor:
+                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        onTap: _showHeaderOptionBottomSheet,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       );
 
-  Widget _buildFullName(BuildContext context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Flexible(
-                  child: RichText(
-                    text: TextSpan(
-                      text: '${post.owner.fname} ${post.owner.lname}',
-                      //text: 'gdgdrhth hrthtry hjthtu jytkuyik kyiy7u',
-                      style: AppStyles.style14Bold.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () =>
-                            RouteManagement.goToUserProfileView(post.owner.id),
-                    ),
-                    overflow: TextOverflow.ellipsis,
+  Widget _buildFullName() => GestureDetector(
+        onTap: () => RouteManagement.goToUserProfileView(
+          post.owner.id,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(
+              child: RichText(
+                text: TextSpan(
+                  text: '${post.owner.fname} ${post.owner.lname}',
+                  style: AppStyles.style14Bold.copyWith(
+                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                   ),
                 ),
-                if (post.owner.isVerified)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Dimens.boxWidth4,
-                      Icon(
-                        Icons.verified,
-                        color: ColorValues.primaryColor,
-                        size: Dimens.sixTeen,
-                      ),
-                    ],
-                  ),
-              ],
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
-          ),
-          Flexible(
-            flex: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Dimens.boxWidth12,
-                _buildPostTime(context),
-                Dimens.boxWidth4,
-                NxIconButton(
-                  icon: Icons.more_vert,
-                  iconSize: Dimens.sixTeen,
-                  iconColor: Theme.of(context).textTheme.bodyText1!.color,
-                  onTap: _showHeaderOptionBottomSheet,
-                ),
-              ],
-            ),
-          ),
-        ],
+            if (post.owner.isVerified) Dimens.boxWidth4,
+            if (post.owner.isVerified)
+              Icon(
+                Icons.verified,
+                color: ColorValues.primaryColor,
+                size: Dimens.sixTeen,
+              )
+          ],
+        ),
       );
 
-  Widget _buildPostTime(BuildContext context) {
-    GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
-    return GetTimeAgoWidget(
-      date: post.createdAt,
-      pattern: 'dd MMM yy',
-      builder: (BuildContext context, String value) => Text(
-        value,
-        style: AppStyles.style12Normal.copyWith(
-          color: Theme.of(context).textTheme.subtitle1!.color,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUsername(BuildContext context) => RichText(
+  Widget _buildUsername() => RichText(
         text: TextSpan(
           text: post.owner.uname,
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(Get.context!).textTheme.subtitle1!.color,
           ),
         ),
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
       );
 
-  Widget _buildPostBody(BuildContext context) {
+  Widget _buildPostBody() {
     var currentItem = 0;
     return StatefulBuilder(
       builder: (context, setInnerState) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             if (post.caption != null && post.caption!.isNotEmpty)
-              _buildCaption(),
+              Padding(
+                padding: Dimens.edgeInsets8.copyWith(
+                  top: Dimens.zero,
+                ),
+                child: NxExpandableText(text: post.caption!),
+              ),
             GestureDetector(
               onDoubleTap: () => controller?.toggleLikePost(post),
               child: FlutterCarousel(
@@ -249,22 +239,32 @@ class PostWidget extends StatelessWidget {
     );
   }
 
-  Padding _buildCaption() {
-    return Padding(
-      padding: Dimens.edgeInsets8.copyWith(
-        top: Dimens.zero,
-      ),
-      child: NxExpandableText(text: post.caption!),
-    );
-  }
-
-  Widget _buildPostFooter(BuildContext context) => Padding(
-        padding: Dimens.edgeInsetsHorizDefault,
+  Widget _buildPostFooter() => Padding(
+        padding: Dimens.edgeInsets0_8,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            Dimens.dividerWithHeight,
+            Padding(
+              padding: Dimens.edgeInsets0_2,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _buildLikeCount(),
+                  Dimens.boxWidth16,
+                  _buildCommentCount(),
+                ],
+              ),
+            ),
+            Dimens.boxHeight8,
+            Padding(
+              padding: Dimens.edgeInsets0_2,
+              child: _buildPostTime(),
+            ),
+            Dimens.dividerWithHeight,
             Padding(
               padding: Dimens.edgeInsets8_0,
               child: Row(
@@ -359,6 +359,68 @@ class PostWidget extends StatelessWidget {
           ],
         ),
       );
+
+  GestureDetector _buildCommentCount() {
+    return GestureDetector(
+      onTap: () => RouteManagement.goToPostCommentsView(post.id!),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '${post.commentsCount}'.toCountingFormat(),
+              style: AppStyles.style13Bold.copyWith(
+                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              ),
+            ),
+            TextSpan(
+              text: '  Comments',
+              style: AppStyles.style13Normal.copyWith(
+                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GestureDetector _buildLikeCount() {
+    return GestureDetector(
+      onTap: () => RouteManagement.goToPostPostLikedUsersView(post.id!),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: '${post.likesCount}'.toCountingFormat(),
+              style: AppStyles.style13Bold.copyWith(
+                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              ),
+            ),
+            TextSpan(
+              text: '  Likes',
+              style: AppStyles.style13Normal.copyWith(
+                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPostTime() {
+    GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
+    return GetTimeAgoWidget(
+      date: post.createdAt,
+      pattern: 'dd MMM yyyy hh:mm a',
+      builder: (BuildContext context, String value) => Text(
+        value,
+        style: AppStyles.style12Normal.copyWith(
+          color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+        ),
+      ),
+    );
+  }
 
   _showHeaderOptionBottomSheet() => AppUtility.showBottomSheet(
         children: [

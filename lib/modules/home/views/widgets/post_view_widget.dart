@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
-import 'package:social_media_app/global_widgets/cached_network_image.dart';
+import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
 
@@ -27,13 +28,13 @@ class PostViewWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               NxAppBar(
-                padding: Dimens.edgeInsets8_16.copyWith(
+                padding: Dimens.edgeInsetsDefault.copyWith(
                   bottom: Dimens.zero,
                 ),
               ),
               Expanded(
                 child: Center(
-                  child: _buildBody(),
+                  child: _buildBody(context),
                 ),
               ),
             ],
@@ -43,7 +44,7 @@ class PostViewWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     var currentItem = 0;
     return StatefulBuilder(
       builder: (context, setInnerState) => Column(
@@ -63,11 +64,45 @@ class PostViewWidget extends StatelessWidget {
                       startVideoWithAudio: true,
                     );
                   }
-                  return NxNetworkImage(
-                    height: Dimens.screenWidth,
-                    imageUrl: media.url!,
-                    imageFit: BoxFit.cover,
-                    width: Dimens.screenWidth,
+                  return PhotoView(
+                    backgroundDecoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                    imageProvider: NetworkImage(media.url!),
+                    wantKeepAlive: true,
+                    enablePanAlways: true,
+                    basePosition: Alignment.center,
+                    initialScale: PhotoViewComputedScale.contained,
+                    minScale: PhotoViewComputedScale.contained * 0.8,
+                    maxScale: PhotoViewComputedScale.contained * 5,
+                    loadingBuilder: (ctx, chunkEvt) => Container(
+                      width: double.infinity,
+                      height: Dimens.screenWidth,
+                      decoration: BoxDecoration(
+                        color: ColorValues.grayColor.withOpacity(0.25),
+                      ),
+                      child: Center(
+                        child: NxCircularProgressIndicator(
+                          value: chunkEvt == null
+                              ? 0
+                              : chunkEvt.cumulativeBytesLoaded /
+                                  chunkEvt.expectedTotalBytes!,
+                        ),
+                      ),
+                    ),
+                    errorBuilder: (ctx, url, err) => Container(
+                      width: double.infinity,
+                      height: Dimens.screenWidth,
+                      decoration: BoxDecoration(
+                        color: ColorValues.grayColor.withOpacity(0.25),
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.info,
+                          color: ColorValues.errorColor,
+                        ),
+                      ),
+                    ),
                   );
                 },
               ).toList(),

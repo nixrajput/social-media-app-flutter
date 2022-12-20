@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -35,7 +34,14 @@ class UserProfileView extends StatelessWidget {
             return NxRefreshIndicator(
               onRefresh: logic.fetchUserDetailsById,
               showProgress: false,
-              child: _buildWidget(logic),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildProfileHeader(logic),
+                  _buildProfileBody(logic),
+                ],
+              ),
             );
           }),
         ),
@@ -43,26 +49,10 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildWidget(UserDetailsController logic) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(
-        parent: AlwaysScrollableScrollPhysics(),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _buildProfileHeader(logic),
-          _buildProfileBody(logic),
-        ],
-      ),
-    );
-  }
-
   Widget _buildProfileHeader(UserDetailsController logic) {
     final user = logic.userDetails!.user;
     return NxAppBar(
-      padding: Dimens.edgeInsets8_16,
+      padding: Dimens.edgeInsetsDefault,
       leading: Expanded(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,62 +77,66 @@ class UserProfileView extends StatelessWidget {
 
   Widget _buildProfileBody(UserDetailsController logic) {
     if (logic.isLoading) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Dimens.boxHeight8,
-          const NxCircularProgressIndicator(),
-          Dimens.boxHeight8,
-        ],
+      return const Expanded(
+        child: Center(child: NxCircularProgressIndicator()),
       );
     } else if (logic.userDetails == null || logic.userDetails!.user == null) {
-      return SizedBox(
-        width: Dimens.screenWidth,
-        height: Dimens.screenHeight,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              StringValues.userNotFoundError,
+      return Expanded(
+        child: SizedBox(
+          width: Dimens.screenWidth,
+          height: Dimens.screenHeight,
+          child: Padding(
+            padding: Dimens.edgeInsetsHorizDefault,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  StringValues.userNotFoundError,
+                  style: AppStyles.style32Bold.copyWith(
+                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Dimens.boxHeight16,
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    if (logic.userDetails!.user!.accountStatus == "deactivated") {
+      return Expanded(
+        child: Center(
+          child: Padding(
+            padding: Dimens.edgeInsetsDefault,
+            child: Text(
+              StringValues.deactivatedAccountWarning,
               style: AppStyles.style32Bold.copyWith(
                 color: Theme.of(Get.context!).textTheme.subtitle1!.color,
               ),
               textAlign: TextAlign.center,
             ),
-            Dimens.boxHeight16,
-          ],
+          ),
         ),
       );
-    }
-    return (logic.userDetails!.user!.accountStatus == "deactivated")
-        ? Center(
-            child: Padding(
-              padding: Dimens.edgeInsets16.copyWith(
-                top: Dimens.sixtyFour,
-              ),
-              child: Text(
-                StringValues.deactivatedAccountWarning,
-                style: AppStyles.style32Bold.copyWith(
-                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          )
-        : Column(
+    } else {
+      return Expanded(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Dimens.boxHeight16,
               Padding(
-                padding: Dimens.edgeInsets0_16,
+                padding: Dimens.edgeInsetsHorizDefault,
                 child: _buildUserDetails(logic),
               ),
               Dimens.boxHeight24,
               Padding(
-                padding: Dimens.edgeInsets0_16,
+                padding: Dimens.edgeInsetsHorizDefault,
                 child: _buildCountDetails(logic),
               ),
               Dimens.boxHeight8,
@@ -151,7 +145,10 @@ class UserProfileView extends StatelessWidget {
               _buildPosts(logic),
               Dimens.boxHeight16,
             ],
-          );
+          ),
+        ),
+      );
+    }
   }
 
   Widget _buildUserDetails(UserDetailsController logic) {
@@ -185,11 +182,9 @@ class UserProfileView extends StatelessWidget {
                 if (user.isVerified) Dimens.boxWidth4,
                 if (user.isVerified)
                   Icon(
-                    CupertinoIcons.checkmark_seal_fill,
-                    color: Theme.of(Get.context!).brightness == Brightness.dark
-                        ? Theme.of(Get.context!).textTheme.bodyText1?.color
-                        : ColorValues.primaryColor,
-                    size: Dimens.sixTeen,
+                    Icons.verified,
+                    color: ColorValues.primaryColor,
+                    size: Dimens.twenty,
                   )
               ],
             ),
@@ -417,7 +412,7 @@ class UserProfileView extends StatelessWidget {
             user.followingStatus != "self")) {
       return Center(
         child: Padding(
-          padding: Dimens.edgeInsets16,
+          padding: Dimens.edgeInsetsDefault,
           child: Text(
             StringValues.privateAccountWarning,
             style: AppStyles.style32Bold.copyWith(
@@ -430,7 +425,7 @@ class UserProfileView extends StatelessWidget {
     }
 
     return Padding(
-      padding: Dimens.edgeInsets0_16,
+      padding: Dimens.edgeInsetsHorizDefault,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,

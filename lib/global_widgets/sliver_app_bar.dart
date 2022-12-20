@@ -12,6 +12,7 @@ class NxSliverAppBar extends StatelessWidget {
     this.isPinned,
     this.centerTitle,
     this.height,
+    this.padding,
   }) : super(key: key);
 
   final Widget leading;
@@ -22,6 +23,7 @@ class NxSliverAppBar extends StatelessWidget {
   final bool? isFloating;
   final bool? isPinned;
   final double? height;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +33,9 @@ class NxSliverAppBar extends StatelessWidget {
       toolbarHeight: height ?? Dimens.fourty,
       elevation: Dimens.zero,
       backgroundColor: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
+      surfaceTintColor: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
       flexibleSpace: Padding(
-        padding: Dimens.edgeInsets8_16,
+        padding: padding ?? Dimens.edgeInsets8,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

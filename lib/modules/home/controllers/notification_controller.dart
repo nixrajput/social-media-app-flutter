@@ -21,15 +21,15 @@ class NotificationController extends GetxController {
   final profile = ProfileController.find;
   final _apiProvider = ApiProvider(http.Client());
 
-  final _isLoadingNotification = false.obs;
-  final _isMoreLoadingNotification = false.obs;
+  final _isLoading = false.obs;
+  final _isMoreLoading = false.obs;
   final _notificationData = const NotificationResponse().obs;
   final List<NotificationModel> _notificationList = [];
 
   /// Getters
-  bool get isLoading => _isLoadingNotification.value;
+  bool get isLoading => _isLoading.value;
 
-  bool get isMoreLoading => _isMoreLoadingNotification.value;
+  bool get isMoreLoading => _isMoreLoading.value;
 
   NotificationResponse? get notificationData => _notificationData.value;
 
@@ -55,7 +55,7 @@ class NotificationController extends GetxController {
   }
 
   Future<void> _fetchNotifications() async {
-    _isLoadingNotification.value = true;
+    _isLoading.value = true;
     update();
 
     try {
@@ -73,11 +73,11 @@ class NotificationController extends GetxController {
             item,
           );
         }
-        _isLoadingNotification.value = false;
+        _isLoading.value = false;
         update();
       } else {
         final decodedData = response.data;
-        _isLoadingNotification.value = false;
+        _isLoading.value = false;
         update();
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
@@ -85,14 +85,14 @@ class NotificationController extends GetxController {
         );
       }
     } catch (exc) {
-      _isLoadingNotification.value = false;
+      _isLoading.value = false;
       update();
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
   Future<void> _loadMore({int? page}) async {
-    _isMoreLoadingNotification.value = true;
+    _isMoreLoading.value = true;
     update();
 
     try {
@@ -110,11 +110,11 @@ class NotificationController extends GetxController {
             item,
           );
         }
-        _isMoreLoadingNotification.value = false;
+        _isMoreLoading.value = false;
         update();
       } else {
         final decodedData = response.data;
-        _isMoreLoadingNotification.value = false;
+        _isMoreLoading.value = false;
         update();
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
@@ -122,7 +122,7 @@ class NotificationController extends GetxController {
         );
       }
     } catch (exc) {
-      _isMoreLoadingNotification.value = false;
+      _isMoreLoading.value = false;
       update();
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
