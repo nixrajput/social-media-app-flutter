@@ -27,9 +27,8 @@ class DeactivateAccountView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.deactivateAccount,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                Dimens.boxHeight16,
                 _buildBody(),
               ],
             ),
@@ -50,16 +49,17 @@ class DeactivateAccountView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
-                      padding: Dimens.edgeInsets0_16,
+                      padding: Dimens.edgeInsetsHorizDefault,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Dimens.boxHeight8,
                           RichText(
                             text: TextSpan(
                               text: 'Your account will be deactivated.',
-                              style: AppStyles.style18Bold.copyWith(
+                              style: AppStyles.style20Bold.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
                                     .bodyText1!
@@ -119,7 +119,7 @@ class DeactivateAccountView extends StatelessWidget {
                     Dimens.dividerWithHeight,
                     Dimens.boxHeight16,
                     Padding(
-                      padding: Dimens.edgeInsets0_16,
+                      padding: Dimens.edgeInsetsHorizDefault,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.min,
@@ -147,7 +147,7 @@ class DeactivateAccountView extends StatelessWidget {
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius:
-                                      BorderRadius.circular(Dimens.eight),
+                                      BorderRadius.circular(Dimens.four),
                                 ),
                                 hintStyle: AppStyles.style14Normal.copyWith(
                                   color: ColorValues.grayColor,

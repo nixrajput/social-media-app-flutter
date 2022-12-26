@@ -11,6 +11,7 @@ abstract class AppRoutes {
 
   static const chats = _Routes.chats;
   static const chatDetails = _Routes.chatDetails;
+  static const chatSettings = _Routes.chatSettings;
 
   static const login = _Routes.login;
   static const register = _Routes.register;
@@ -19,7 +20,6 @@ abstract class AppRoutes {
   static const sendOtpToPhone = _Routes.sendOtpToPhone;
   static const verifyOtp = _Routes.verifyOtp;
 
-  static const settings = _Routes.settings;
   static const accountSettings = _Routes.accountSettings;
   static const securitySettings = _Routes.securitySettings;
   static const privacySettings = _Routes.privacySettings;
@@ -32,6 +32,7 @@ abstract class AppRoutes {
   static const blueTickVerification = _Routes.blueTickVerification;
   static const loginActivitySettings = _Routes.loginActivitySettings;
   static const accountPrivacySettings = _Routes.accountPrivacySettings;
+  static const onlineStatusSettings = _Routes.onlineStatusSettings;
   static const twoFASettings = _Routes.twoFASettings;
   static const postSettings = _Routes.postSettings;
   static const commentsSettings = _Routes.commentsSettings;
@@ -71,6 +72,9 @@ abstract class AppRoutes {
   static const followRequests = _Routes.followRequests;
 
   static const createPost = _Routes.createPost;
+  static const createPoll = _Routes.createPoll;
+  static const pollPreview = _Routes.pollPreview;
+  static const postPreview = _Routes.postPreview;
   static const addCaption = _Routes.addCaption;
   static const postDetails = _Routes.postDetails;
   static const postMediaView = _Routes.postMediaView;
@@ -94,6 +98,7 @@ abstract class _Routes {
 
   static const chats = '/chats';
   static const chatDetails = '/chatDetails';
+  static const chatSettings = '/chatSettings';
 
   static const login = '/login';
   static const register = '/register';
@@ -102,7 +107,6 @@ abstract class _Routes {
   static const sendOtpToPhone = '/sendOtpToPhone';
   static const verifyOtp = '/verifyOtp';
 
-  static const settings = '/settings';
   static const accountSettings = "/account_settings";
   static const securitySettings = "/security_settings";
   static const privacySettings = "/privacy_settings";
@@ -114,6 +118,7 @@ abstract class _Routes {
       "/blue_tick_verification_settings";
   static const blueTickVerification = "/blue_tick_verification";
   static const accountPrivacySettings = '/account_privacy_settings';
+  static const onlineStatusSettings = '/online_status_settings';
   static const twoFASettings = '/two_fa_settings';
   static const postSettings = '/post_settings';
   static const commentsSettings = '/comments_settings';
@@ -154,6 +159,9 @@ abstract class _Routes {
   static const followRequests = '/follow_requests';
 
   static const createPost = '/create_post';
+  static const createPoll = '/create_poll';
+  static const pollPreview = '/poll_preview';
+  static const postPreview = '/postPreview';
   static const addCaption = '/add-caption';
   static const postDetails = '/post_details';
   static const postMediaView = '/post_media_view';

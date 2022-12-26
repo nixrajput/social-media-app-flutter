@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -12,10 +13,10 @@ import 'package:social_media_app/global_widgets/count_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
+import 'package:social_media_app/global_widgets/image_viewer_widget.dart';
+import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/modules/user/profile_picture_view.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -38,8 +39,8 @@ class UserProfileView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _buildProfileHeader(logic),
-                  _buildProfileBody(logic),
+                  _buildProfileHeader(logic, context),
+                  _buildProfileBody(logic, context),
                 ],
               ),
             );
@@ -49,11 +50,12 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileHeader(UserDetailsController logic) {
+  Widget _buildProfileHeader(
+      UserDetailsController logic, BuildContext context) {
     final user = logic.userDetails!.user;
     return NxAppBar(
       padding: Dimens.edgeInsetsDefault,
-      leading: Expanded(
+      child: Expanded(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -63,10 +65,17 @@ class UserProfileView extends StatelessWidget {
             ),
             const Spacer(),
             GestureDetector(
-              child: Icon(
-                Icons.more_horiz,
-                size: Dimens.twentyFour,
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              child: Container(
+                padding: Dimens.edgeInsets6,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).bottomAppBarColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.more_vert,
+                  size: Dimens.twenty,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
+                ),
               ),
             ),
           ],
@@ -75,7 +84,7 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileBody(UserDetailsController logic) {
+  Widget _buildProfileBody(UserDetailsController logic, BuildContext context) {
     if (logic.isLoading) {
       return const Expanded(
         child: Center(child: NxCircularProgressIndicator()),
@@ -94,7 +103,7 @@ class UserProfileView extends StatelessWidget {
                 Text(
                   StringValues.userNotFoundError,
                   style: AppStyles.style32Bold.copyWith(
-                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.subtitle1!.color,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -113,7 +122,7 @@ class UserProfileView extends StatelessWidget {
             child: Text(
               StringValues.deactivatedAccountWarning,
               style: AppStyles.style32Bold.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(context).textTheme.subtitle1!.color,
               ),
               textAlign: TextAlign.center,
             ),
@@ -132,17 +141,15 @@ class UserProfileView extends StatelessWidget {
               Dimens.boxHeight16,
               Padding(
                 padding: Dimens.edgeInsetsHorizDefault,
-                child: _buildUserDetails(logic),
+                child: _buildUserDetails(logic, context),
               ),
-              Dimens.boxHeight24,
+              Dimens.boxHeight16,
               Padding(
                 padding: Dimens.edgeInsetsHorizDefault,
-                child: _buildCountDetails(logic),
+                child: _buildCountDetails(logic, context),
               ),
-              Dimens.boxHeight8,
-              Dimens.dividerWithHeight,
-              Dimens.boxHeight8,
-              _buildPosts(logic),
+              Dimens.boxHeight16,
+              _buildPosts(logic, context),
               Dimens.boxHeight16,
             ],
           ),
@@ -151,7 +158,7 @@ class UserProfileView extends StatelessWidget {
     }
   }
 
-  Widget _buildUserDetails(UserDetailsController logic) {
+  Widget _buildUserDetails(UserDetailsController logic, BuildContext context) {
     final user = logic.userDetails!.user!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,7 +174,7 @@ class UserProfileView extends StatelessWidget {
                     user.avatar!.url!.isEmpty) {
                   return;
                 }
-                Get.to(() => ProfilePictureView(url: user.avatar!.url!));
+                Get.to(() => ImageViewerWidget(url: user.avatar!.url!));
               },
               child: AvatarWidget(avatar: user.avatar),
             ),
@@ -192,7 +199,7 @@ class UserProfileView extends StatelessWidget {
             Text(
               "@${user.uname}",
               style: AppStyles.style14Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(context).textTheme.subtitle1!.color,
               ),
             ),
           ],
@@ -206,9 +213,9 @@ class UserProfileView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
-                Icons.link,
+                Icons.link_outlined,
                 size: Dimens.sixTeen,
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(context).textTheme.subtitle1!.color,
               ),
               Dimens.boxWidth8,
               InkWell(
@@ -218,7 +225,7 @@ class UserProfileView extends StatelessWidget {
                           user.website!.contains('http://')
                       ? Uri.parse(user.website!).host
                       : user.website!,
-                  style: AppStyles.style13Normal.copyWith(
+                  style: AppStyles.style13Bold.copyWith(
                     color: ColorValues.primaryColor,
                   ),
                 ),
@@ -232,26 +239,26 @@ class UserProfileView extends StatelessWidget {
             Icon(
               Icons.calendar_today,
               size: Dimens.sixTeen,
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              color: Theme.of(context).textTheme.subtitle1!.color,
             ),
             Dimens.boxWidth8,
             Expanded(
               child: Text(
                 'Joined - ${DateFormat.yMMMd().format(user.createdAt)}',
                 style: AppStyles.style12Bold.copyWith(
-                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
               ),
             ),
           ],
         ),
-        Dimens.boxHeight24,
-        _buildActionBtn(logic),
+        Dimens.boxHeight16,
+        _buildActionBtn(logic, context),
       ],
     );
   }
 
-  String getFollowStatus(String status) {
+  String getFollowStatus(String status, BuildContext context) {
     if (status == "following") {
       return StringValues.following;
     }
@@ -263,31 +270,31 @@ class UserProfileView extends StatelessWidget {
     return StringValues.follow;
   }
 
-  Color getButtonColor(String status) {
+  Color getButtonColor(String status, BuildContext context) {
     if (status == "following" || status == "requested") {
-      return Colors.transparent;
+      return Theme.of(context).bottomAppBarColor;
     }
 
     return ColorValues.primaryColor;
   }
 
-  BorderStyle getBorderStyle(String status) {
+  Color getBorderColor(String status, BuildContext context) {
     if (status == "following" || status == "requested") {
-      return BorderStyle.solid;
+      return Theme.of(context).bottomAppBarColor;
     }
 
-    return BorderStyle.none;
+    return ColorValues.primaryColor;
   }
 
-  Color getLabelColor(String status) {
+  Color getLabelColor(String status, BuildContext context) {
     if (status == "following" || status == "requested") {
-      return ColorValues.primaryColor;
+      return Theme.of(context).textTheme.bodyText1!.color!;
     }
 
     return ColorValues.whiteColor;
   }
 
-  Widget _buildActionBtn(UserDetailsController logic) {
+  Widget _buildActionBtn(UserDetailsController logic, BuildContext context) {
     final user = logic.userDetails!.user!;
     if (user.followingStatus == "self") {
       return NxOutlinedButton(
@@ -295,10 +302,9 @@ class UserProfileView extends StatelessWidget {
         width: Dimens.screenWidth,
         height: Dimens.thirtySix,
         padding: Dimens.edgeInsets0_8,
-        borderRadius: Dimens.eight,
-        borderColor: ColorValues.primaryColor,
+        borderRadius: Dimens.four,
         labelStyle: AppStyles.style14Normal.copyWith(
-          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyText1!.color,
         ),
         onTap: RouteManagement.goToEditProfileView,
       );
@@ -308,10 +314,9 @@ class UserProfileView extends StatelessWidget {
       children: [
         Expanded(
           child: NxOutlinedButton(
-            label: getFollowStatus(user.followingStatus),
-            bgColor: getButtonColor(user.followingStatus),
-            borderColor: ColorValues.primaryColor,
-            borderStyle: getBorderStyle(user.followingStatus),
+            label: getFollowStatus(user.followingStatus, context),
+            bgColor: getButtonColor(user.followingStatus, context),
+            borderColor: getBorderColor(user.followingStatus, context),
             onTap: () {
               if (user.followingStatus == "requested") {
                 logic.cancelFollowRequest(user);
@@ -321,9 +326,10 @@ class UserProfileView extends StatelessWidget {
             },
             padding: Dimens.edgeInsets0_8,
             width: Dimens.screenWidth,
+            borderRadius: Dimens.four,
             height: Dimens.thirtySix,
             labelStyle: AppStyles.style14Normal.copyWith(
-              color: getLabelColor(user.followingStatus),
+              color: getLabelColor(user.followingStatus, context),
             ),
           ),
         ),
@@ -334,15 +340,25 @@ class UserProfileView extends StatelessWidget {
             width: Dimens.screenWidth,
             height: Dimens.thirtySix,
             padding: Dimens.edgeInsets0_8,
-            borderRadius: Dimens.eight,
-            borderColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+            borderRadius: Dimens.four,
             labelStyle: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyText1!.color,
             ),
             onTap: () => RouteManagement.goToChatDetailsView(
-              user.id,
-              user.uname,
-              user.avatar!,
+              User(
+                id: user.id,
+                fname: user.fname,
+                lname: user.lname,
+                email: user.email,
+                uname: user.uname,
+                avatar: user.avatar,
+                isPrivate: user.isPrivate,
+                followingStatus: user.followingStatus,
+                accountStatus: user.accountStatus,
+                isVerified: user.isVerified,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt,
+              ),
             ),
           ),
         )
@@ -350,14 +366,15 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Container _buildCountDetails(UserDetailsController logic) {
+  Container _buildCountDetails(
+      UserDetailsController logic, BuildContext context) {
     final user = logic.userDetails!.user!;
     return Container(
       width: Dimens.screenWidth,
       padding: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
-        color: Theme.of(Get.context!).dialogTheme.backgroundColor!,
-        borderRadius: BorderRadius.circular(Dimens.eight),
+        color: Theme.of(context).bottomAppBarColor,
+        borderRadius: BorderRadius.circular(Dimens.four),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -404,7 +421,7 @@ class UserProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildPosts(UserDetailsController logic) {
+  Widget _buildPosts(UserDetailsController logic, BuildContext context) {
     final user = logic.userDetails!.user!;
 
     if (user.isPrivate &&
@@ -416,7 +433,7 @@ class UserProfileView extends StatelessWidget {
           child: Text(
             StringValues.privateAccountWarning,
             style: AppStyles.style32Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              color: Theme.of(context).textTheme.subtitle1!.color,
             ),
             textAlign: TextAlign.center,
           ),
@@ -440,7 +457,7 @@ class UserProfileView extends StatelessWidget {
                 child: Text(
                   StringValues.noPosts,
                   style: AppStyles.style32Bold.copyWith(
-                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.subtitle1!.color,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -463,27 +480,15 @@ class UserProfileView extends StatelessWidget {
                   ),
                   itemBuilder: (ctx, i) {
                     var post = logic.postList[i];
-                    return PostThumbnailWidget(
-                      mediaFile: post.mediaFiles!.first,
-                      post: post,
-                    );
+                    return PostThumbnailWidget(post: post);
                   },
                 ),
-                if (logic.isMorePostLoading || logic.postData!.hasNextPage!)
-                  Dimens.boxHeight16,
-                if (logic.isMorePostLoading)
-                  const Center(child: NxCircularProgressIndicator()),
-                if (!logic.isMorePostLoading && logic.postData!.hasNextPage!)
-                  Center(
-                    child: NxTextButton(
-                      label: 'Load more posts',
-                      onTap: logic.loadMoreUserPosts,
-                      labelStyle: AppStyles.style14Bold.copyWith(
-                        color: ColorValues.primaryLightColor,
-                      ),
-                      padding: Dimens.edgeInsets8_0,
-                    ),
-                  ),
+                LoadMoreWidget(
+                  loadingCondition: logic.isMorePostLoading,
+                  hasMoreCondition: logic.postData!.results != null &&
+                      logic.postData!.hasNextPage!,
+                  loadMore: logic.loadMoreUserPosts,
+                ),
               ],
             ),
         ],

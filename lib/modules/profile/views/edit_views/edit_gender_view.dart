@@ -27,10 +27,9 @@ class EditGenderView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.gender,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                Dimens.boxHeight8,
-                _buildBody(),
+                _buildBody(context),
               ],
             ),
           ),
@@ -39,26 +38,25 @@ class EditGenderView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() => GetBuilder<EditGenderController>(
+  Widget _buildBody(BuildContext context) => GetBuilder<EditGenderController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Dimens.boxHeight8,
+
                   /// Male
                   NxRadioTile(
-                    padding: Dimens.edgeInsets16_12,
-                    bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(Dimens.eight),
-                      topRight: Radius.circular(Dimens.eight),
-                    ),
+                    padding: Dimens.edgeInsets12,
+                    bgColor: Theme.of(context).bottomAppBarColor,
+                    borderRadius: BorderRadius.circular(Dimens.four),
                     onTap: () => logic.setGender = StringValues.male,
                     onChanged: (value) {
                       logic.setGender = value.toString();
@@ -71,13 +69,13 @@ class EditGenderView extends StatelessWidget {
                     groupValue: logic.gender,
                   ),
 
-                  Dimens.divider,
+                  Dimens.boxHeight8,
 
                   /// Female
-
                   NxRadioTile(
-                    padding: Dimens.edgeInsets16_12,
-                    bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                    padding: Dimens.edgeInsets12,
+                    bgColor: Theme.of(context).bottomAppBarColor,
+                    borderRadius: BorderRadius.circular(Dimens.four),
                     onTap: () => logic.setGender = StringValues.female,
                     onChanged: (value) {
                       logic.setGender = value.toString();
@@ -90,16 +88,13 @@ class EditGenderView extends StatelessWidget {
                     groupValue: logic.gender,
                   ),
 
-                  Dimens.divider,
+                  Dimens.boxHeight8,
 
                   /// Others
                   NxRadioTile(
-                    padding: Dimens.edgeInsets16_12,
-                    bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(Dimens.eight),
-                      bottomRight: Radius.circular(Dimens.eight),
-                    ),
+                    padding: Dimens.edgeInsets12,
+                    bgColor: Theme.of(context).bottomAppBarColor,
+                    borderRadius: BorderRadius.circular(Dimens.four),
                     onTap: () => logic.setGender = StringValues.others,
                     onChanged: (value) {
                       logic.setGender = value.toString();
@@ -116,6 +111,7 @@ class EditGenderView extends StatelessWidget {
                     onTap: logic.updateGender,
                     label: StringValues.save.toUpperCase(),
                   ),
+
                   Dimens.boxHeight16,
                 ],
               ),

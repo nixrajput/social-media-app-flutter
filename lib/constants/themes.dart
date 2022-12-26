@@ -12,7 +12,7 @@ abstract class AppThemes {
     scaffoldBackgroundColor: ColorValues.lightBgColor,
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.lightBgColor),
     bottomAppBarColor: ColorValues.lightDialogColor,
-    shadowColor: ColorValues.lightGrayColor,
+    shadowColor: ColorValues.blackColor.withOpacity(0.1),
     cardTheme: const CardTheme(color: ColorValues.lightDialogColor),
     dialogTheme:
         const DialogTheme(backgroundColor: ColorValues.lightDialogColor),
@@ -49,7 +49,7 @@ abstract class AppThemes {
         fontFamily: 'Lato',
       ),
       subtitle2: const TextStyle(
-        color: ColorValues.lightSubtitleTextColor,
+        color: ColorValues.lightSubtitle2TextColor,
         fontFamily: 'Lato',
       ),
     ),
@@ -64,7 +64,7 @@ abstract class AppThemes {
     ),
     iconTheme: const IconThemeData(color: ColorValues.darkGrayColor),
     scaffoldBackgroundColor: ColorValues.darkBgColor,
-    shadowColor: ColorValues.lightGrayColor,
+    shadowColor: ColorValues.blackColor.withOpacity(0.1),
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.darkBgColor),
     bottomAppBarColor: ColorValues.darkDialogColor,
     cardTheme: const CardTheme(color: ColorValues.darkDialogColor),
@@ -103,7 +103,7 @@ abstract class AppThemes {
         fontFamily: 'Lato',
       ),
       subtitle2: const TextStyle(
-        color: ColorValues.darkSubtitleTextColor,
+        color: ColorValues.darkSubtitle2TextColor,
         fontFamily: 'Lato',
       ),
     ),

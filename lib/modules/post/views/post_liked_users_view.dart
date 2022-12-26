@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
 import 'package:social_media_app/modules/post/controllers/post_liked_users_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -28,7 +26,7 @@ class PostLikedUsersView extends StatelessWidget {
             children: [
               NxAppBar(
                 title: StringValues.likes,
-                padding: Dimens.edgeInsets8_16,
+                padding: Dimens.edgeInsetsDefault,
               ),
               Dimens.boxHeight16,
               _buildBody(),
@@ -46,7 +44,7 @@ class PostLikedUsersView extends StatelessWidget {
           parent: AlwaysScrollableScrollPhysics(),
         ),
         child: Padding(
-          padding: Dimens.edgeInsets0_16,
+          padding: Dimens.edgeInsetsHorizDefault,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,19 +87,13 @@ class PostLikedUsersView extends StatelessWidget {
                           );
                         },
                       ),
-                      if (logic.isMoreLoading) Dimens.boxHeight8,
-                      if (logic.isMoreLoading)
-                        const Center(child: NxCircularProgressIndicator()),
-                      if (!logic.isMoreLoading &&
-                          logic.postLikedUsersData.hasNextPage!)
-                        NxTextButton(
-                          label: 'View more',
-                          onTap: logic.loadMore,
-                          labelStyle: AppStyles.style14Bold.copyWith(
-                            color: ColorValues.primaryLightColor,
-                          ),
-                          padding: Dimens.edgeInsets8_0,
-                        ),
+                      LoadMoreWidget(
+                        loadingCondition: logic.isMoreLoading,
+                        hasMoreCondition:
+                            logic.postLikedUsersData.results != null &&
+                                logic.postLikedUsersData.hasNextPage!,
+                        loadMore: logic.loadMore,
+                      ),
                       Dimens.boxHeight16,
                     ],
                   );

@@ -59,6 +59,9 @@ dependencies:
   path_provider: ^2.0.11
   flutter_markdown: ^0.6.13
 
+  flutter_storage_path: ^1.0.4
+  photo_manager: ^2.5.2
+
   flutter_screenutil: ^5.6.0
   permission_handler: ^10.2.0
   flutter_datetime_picker: ^1.5.1

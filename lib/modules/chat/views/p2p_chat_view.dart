@@ -23,6 +23,7 @@ import 'package:social_media_app/modules/chat/views/preview_media_files_view.dar
 import 'package:social_media_app/modules/chat/widgets/chat_bubble_clipper.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_bubble_widget.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_reply_to_box.dart';
+import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/file_utility.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -41,11 +42,17 @@ class P2PChatView extends StatelessWidget {
             return KeyboardVisibilityBuilder(
               builder: (_, child, isKeyboardVisible) {
                 if (isKeyboardVisible) {
-                  logic.sendTypingStatus('start');
-                  AppUtility.printLog('Keyboard is visible');
+                  if (logic.isTyping == false) {
+                    logic.setIsTyping(true);
+                    logic.sendTypingStatus('start');
+                    AppUtility.log('Keyboard is visible');
+                  }
                 } else {
-                  logic.sendTypingStatus('end');
-                  AppUtility.printLog('Keyboard is not visible');
+                  if (logic.isTyping == true) {
+                    logic.setIsTyping(false);
+                    logic.sendTypingStatus('end');
+                    AppUtility.log('Keyboard is not visible');
+                  }
                 }
 
                 return child;
@@ -60,13 +67,12 @@ class P2PChatView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         _buildAppBar(context, logic),
-                        Dimens.divider,
                         _buildBody(context, logic),
                       ],
                     ),
                     _buildMessageTypingContainer(logic),
                     if (logic.scrolledToBottom == false)
-                      _buildScrollToLast(logic),
+                      _buildScrollToLast(logic, context),
                   ],
                 ),
               ),
@@ -97,43 +103,44 @@ class P2PChatView extends StatelessWidget {
   NxAppBar _buildAppBar(BuildContext context, P2PChatController logic) {
     return NxAppBar(
       padding: Dimens.edgeInsetsDefault,
-      leading: Expanded(
+      child: Expanded(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AvatarWidget(
-              avatar: logic.profileImage,
-              size: Dimens.twenty,
+              avatar: logic.user!.avatar,
+              size: Dimens.eighteen,
             ),
             Dimens.boxWidth8,
             GetBuilder<ChatController>(builder: (con) {
-              final isUserOnline = con.isUserOnline(logic.userId!);
+              final isUserOnline = con.isUserOnline(logic.user!.id);
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    logic.username ?? '',
-                    style: AppStyles.style18Bold.copyWith(
-                      fontSize: isUserOnline ? Dimens.sixTeen : Dimens.eighteen,
+                    logic.user != null ? logic.user!.uname : '',
+                    style: AppStyles.style16Bold.copyWith(
+                      color: Theme.of(context).textTheme.bodyText1!.color,
                     ),
                   ),
                   if (isUserOnline)
                     Text(
-                      'Online',
+                      StringValues.activeNow,
                       style: AppStyles.style12Normal.copyWith(
-                        color: ColorValues.successColor,
+                        color: Theme.of(context).textTheme.subtitle1!.color,
                       ),
                     ),
                 ],
               );
             }),
             const Spacer(),
-            NxIconButton(
-              icon: Icons.more_vert,
-              iconColor: Theme.of(context).textTheme.bodyText1!.color,
-              onTap: () {},
+            const NxIconButton(
+              icon: Icons.info,
+              iconColor: ColorValues.primaryColor,
+              onTap: RouteManagement.goToChatSettingsView,
             ),
           ],
         ),
@@ -146,7 +153,7 @@ class P2PChatView extends StatelessWidget {
       color: Theme.of(Get.context!).dialogTheme.backgroundColor,
       width: Dimens.screenWidth,
       height: Dimens.fourtyEight,
-      padding: Dimens.edgeInsets0_8,
+      padding: Dimens.edgeInsets0_12,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -195,20 +202,29 @@ class P2PChatView extends StatelessWidget {
     );
   }
 
-  Positioned _buildScrollToLast(P2PChatController logic) {
+  Positioned _buildScrollToLast(P2PChatController logic, BuildContext context) {
     return Positioned(
-      bottom: Dimens.hundred * 1.6,
-      right: Dimens.sixTeen,
+      bottom: Dimens.eighty,
+      left: Dimens.zero,
+      right: Dimens.zero,
       child: Container(
-        padding: Dimens.edgeInsets8,
-        decoration: const BoxDecoration(
-          color: ColorValues.primaryLightColor,
+        padding: Dimens.edgeInsets12,
+        decoration: BoxDecoration(
+          color: Theme.of(context).bottomAppBarColor,
           shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(Get.context!).shadowColor,
+              offset: Offset(Dimens.zero, Dimens.two),
+              blurRadius: Dimens.four,
+              spreadRadius: Dimens.two,
+            ),
+          ],
         ),
         child: NxIconButton(
-          icon: Icons.keyboard_double_arrow_down,
-          iconSize: Dimens.twentyFour,
-          iconColor: ColorValues.whiteColor,
+          icon: Icons.arrow_downward,
+          iconSize: Dimens.twenty,
+          iconColor: Theme.of(context).textTheme.bodyText1!.color,
           onTap: logic.scrollToLast,
         ),
       ),
@@ -217,7 +233,7 @@ class P2PChatView extends StatelessWidget {
 
   Widget _buildReplyTo(P2PChatController logic) {
     return Container(
-      color: Theme.of(Get.context!).dialogTheme.backgroundColor,
+      color: Theme.of(Get.context!).scaffoldBackgroundColor,
       width: Dimens.screenWidth,
       padding: Dimens.edgeInsets8,
       child: ChatReplyToBox(
@@ -239,12 +255,15 @@ class P2PChatView extends StatelessWidget {
     if (!logic.isLoading && logic.chatMessages.isEmpty) {
       return Expanded(
         child: Center(
-          child: Text(
-            StringValues.noMessages,
-            style: AppStyles.style32Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+          child: Padding(
+            padding: Dimens.edgeInsetsHorizDefault,
+            child: Text(
+              StringValues.noMessages,
+              style: AppStyles.style32Bold.copyWith(
+                color: Theme.of(context).textTheme.subtitle1!.color,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
         ),
       );
@@ -263,7 +282,7 @@ class P2PChatView extends StatelessWidget {
         ),
         reverse: true,
         controller: logic.scrollController,
-        padding: Dimens.edgeInsets0_8,
+        padding: Dimens.edgeInsetsHorizDefault,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -287,9 +306,9 @@ class P2PChatView extends StatelessWidget {
                     ),
                   ),
                 _buildChatMessages(logic.chatMessages, logic),
-                if (logic.chatController.isUserTyping(logic.userId!))
+                if (logic.chatController.isUserTyping(logic.user!.id))
                   Dimens.boxHeight8,
-                if (logic.chatController.isUserTyping(logic.userId!))
+                if (logic.chatController.isUserTyping(logic.user!.id))
                   _buildTypingBubble(logic, logic.chatController),
               ],
             ),
@@ -309,13 +328,14 @@ class P2PChatView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         AvatarWidget(
-          avatar: logic.profileImage,
+          avatar: logic.user!.avatar,
           size: Dimens.sixTeen,
         ),
         PhysicalShape(
-          elevation: Dimens.two,
+          elevation: Dimens.zero,
           clipper: ChatBubbleClipper(
-            radius: Dimens.eight,
+            radius: Dimens.sixTeen,
+            nipSize: Dimens.six,
             type: BubbleType.receiverBubble,
           ),
           color: Theme.of(Get.context!).dialogBackgroundColor,
@@ -327,7 +347,7 @@ class P2PChatView extends StatelessWidget {
               right: Dimens.eight,
             ),
             child: TypingIndicator(
-              showIndicator: chatsLogic.isUserTyping(logic.userId!),
+              showIndicator: chatsLogic.isUserTyping(logic.user!.id),
             ),
           ),
         )
@@ -373,9 +393,9 @@ class P2PChatView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            date.formatDate(),
+            date.formatDate().toUpperCase(),
             style: AppStyles.style12Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              color: Theme.of(Get.context!).textTheme.subtitle2!.color,
             ),
           ),
           Dimens.boxHeight8,

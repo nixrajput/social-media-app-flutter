@@ -7,21 +7,21 @@ part of 'notification.dart';
 // **************************************************************************
 
 abstract class _$NotificationModelCWProxy {
-  NotificationModel body(String body);
-
-  NotificationModel createdAt(DateTime createdAt);
-
-  NotificationModel from(User from);
-
   NotificationModel id(String id);
-
-  NotificationModel isRead(bool isRead);
-
-  NotificationModel refId(String? refId);
 
   NotificationModel to(User to);
 
+  NotificationModel from(User from);
+
+  NotificationModel body(String body);
+
+  NotificationModel refId(String? refId);
+
   NotificationModel type(String type);
+
+  NotificationModel isRead(bool isRead);
+
+  NotificationModel createdAt(DateTime createdAt);
 
   NotificationModel updatedAt(DateTime updatedAt);
 
@@ -32,47 +32,47 @@ abstract class _$NotificationModelCWProxy {
   /// NotificationModel(...).copyWith(id: 12, name: "My name")
   /// ````
   NotificationModel call({
-    String? body,
-    DateTime? createdAt,
-    User? from,
     String? id,
-    bool? isRead,
-    String? refId,
     User? to,
+    User? from,
+    String? body,
+    String? refId,
     String? type,
+    bool? isRead,
+    DateTime? createdAt,
     DateTime? updatedAt,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfNotificationModel.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfNotificationModel.copyWith.fieldName(...)`
 class _$NotificationModelCWProxyImpl implements _$NotificationModelCWProxy {
-  final NotificationModel _value;
-
   const _$NotificationModelCWProxyImpl(this._value);
 
-  @override
-  NotificationModel body(String body) => this(body: body);
-
-  @override
-  NotificationModel createdAt(DateTime createdAt) => this(createdAt: createdAt);
-
-  @override
-  NotificationModel from(User from) => this(from: from);
+  final NotificationModel _value;
 
   @override
   NotificationModel id(String id) => this(id: id);
 
   @override
-  NotificationModel isRead(bool isRead) => this(isRead: isRead);
+  NotificationModel to(User to) => this(to: to);
+
+  @override
+  NotificationModel from(User from) => this(from: from);
+
+  @override
+  NotificationModel body(String body) => this(body: body);
 
   @override
   NotificationModel refId(String? refId) => this(refId: refId);
 
   @override
-  NotificationModel to(User to) => this(to: to);
+  NotificationModel type(String type) => this(type: type);
 
   @override
-  NotificationModel type(String type) => this(type: type);
+  NotificationModel isRead(bool isRead) => this(isRead: isRead);
+
+  @override
+  NotificationModel createdAt(DateTime createdAt) => this(createdAt: createdAt);
 
   @override
   NotificationModel updatedAt(DateTime updatedAt) => this(updatedAt: updatedAt);
@@ -86,51 +86,59 @@ class _$NotificationModelCWProxyImpl implements _$NotificationModelCWProxy {
   /// NotificationModel(...).copyWith(id: 12, name: "My name")
   /// ````
   NotificationModel call({
-    Object? body = const $CopyWithPlaceholder(),
-    Object? createdAt = const $CopyWithPlaceholder(),
-    Object? from = const $CopyWithPlaceholder(),
     Object? id = const $CopyWithPlaceholder(),
-    Object? isRead = const $CopyWithPlaceholder(),
-    Object? refId = const $CopyWithPlaceholder(),
     Object? to = const $CopyWithPlaceholder(),
+    Object? from = const $CopyWithPlaceholder(),
+    Object? body = const $CopyWithPlaceholder(),
+    Object? refId = const $CopyWithPlaceholder(),
     Object? type = const $CopyWithPlaceholder(),
+    Object? isRead = const $CopyWithPlaceholder(),
+    Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
     return NotificationModel(
-      body: body == const $CopyWithPlaceholder() || body == null
-          ? _value.body
-          // ignore: cast_nullable_to_non_nullable
-          : body as String,
-      createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
-          ? _value.createdAt
-          // ignore: cast_nullable_to_non_nullable
-          : createdAt as DateTime,
-      from: from == const $CopyWithPlaceholder() || from == null
-          ? _value.from
-          // ignore: cast_nullable_to_non_nullable
-          : from as User,
       id: id == const $CopyWithPlaceholder() || id == null
-          ? _value.id
+          // ignore: unnecessary_non_null_assertion
+          ? _value.id!
           // ignore: cast_nullable_to_non_nullable
           : id as String,
-      isRead: isRead == const $CopyWithPlaceholder() || isRead == null
-          ? _value.isRead
+      to: to == const $CopyWithPlaceholder() || to == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.to!
           // ignore: cast_nullable_to_non_nullable
-          : isRead as bool,
+          : to as User,
+      from: from == const $CopyWithPlaceholder() || from == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.from!
+          // ignore: cast_nullable_to_non_nullable
+          : from as User,
+      body: body == const $CopyWithPlaceholder() || body == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.body!
+          // ignore: cast_nullable_to_non_nullable
+          : body as String,
       refId: refId == const $CopyWithPlaceholder()
           ? _value.refId
           // ignore: cast_nullable_to_non_nullable
           : refId as String?,
-      to: to == const $CopyWithPlaceholder() || to == null
-          ? _value.to
-          // ignore: cast_nullable_to_non_nullable
-          : to as User,
       type: type == const $CopyWithPlaceholder() || type == null
-          ? _value.type
+          // ignore: unnecessary_non_null_assertion
+          ? _value.type!
           // ignore: cast_nullable_to_non_nullable
           : type as String,
+      isRead: isRead == const $CopyWithPlaceholder() || isRead == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.isRead!
+          // ignore: cast_nullable_to_non_nullable
+          : isRead as bool,
+      createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.createdAt!
+          // ignore: cast_nullable_to_non_nullable
+          : createdAt as DateTime,
       updatedAt: updatedAt == const $CopyWithPlaceholder() || updatedAt == null
-          ? _value.updatedAt
+          // ignore: unnecessary_non_null_assertion
+          ? _value.updatedAt!
           // ignore: cast_nullable_to_non_nullable
           : updatedAt as DateTime,
     );

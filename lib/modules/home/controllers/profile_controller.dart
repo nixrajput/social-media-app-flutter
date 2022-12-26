@@ -86,12 +86,15 @@ class ProfileController extends GetxController {
   }
 
   static Future<List<Post>?> _readProfilePostsFromLocalStorage() async {
+    AppUtility.log('Loading User Posts From Local Storage');
     var isExists = await HiveService.hasLength<Post>('profilePosts');
     if (isExists) {
       var data = await HiveService.getAll<Post>('profilePosts');
-      data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      data.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      AppUtility.log('User Posts From Local Storage Loaded');
       return data;
     }
+    AppUtility.log('User Posts From Local Storage Loaded');
     return null;
   }
 
@@ -108,8 +111,7 @@ class ProfileController extends GetxController {
       if (profilePosts != null) {
         _postList.clear();
         _postList.addAll(profilePosts);
-        await _fetchPosts();
-        AppUtility.log("Profile Posts Loaded From Local Storage");
+        // await _fetchPosts();
         return true;
       } else {
         AppUtility.log("Failed To Load Profile Posts From Local Storage",
@@ -138,7 +140,7 @@ class ProfileController extends GetxController {
         await _saveProfileDataToLocalStorage(_profileDetails.value);
         _isLoading = false;
         update();
-        if (fetchPost) await _fetchPosts();
+        if (fetchPost) await _fetchProfilePosts();
       } else {
         final decodedData = response.data;
         _isLoading = false;
@@ -238,7 +240,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> _fetchPosts() async {
+  Future<void> _fetchProfilePosts() async {
     _isPostLoading.value = true;
     update();
 
@@ -308,7 +310,8 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> _updateProfile(Map<String, dynamic> details) async {
+  Future<void> _updateProfile(Map<String, dynamic> details,
+      {bool? showLoading = false}) async {
     if (details.isEmpty) {
       AppUtility.printLog("No Data To Update");
       return;
@@ -316,24 +319,37 @@ class ProfileController extends GetxController {
 
     final body = details;
 
+    if (showLoading == true) {
+      AppUtility.showLoadingDialog();
+    }
+
     try {
       final response = await _apiProvider.updateProfile(_auth.token, body);
 
       if (response.isSuccessful) {
         final decodedData = response.data;
         await _fetchProfileDetails(fetchPost: false);
+        if (showLoading == true) {
+          AppUtility.closeDialog();
+        }
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.success,
         );
       } else {
         final decodedData = response.data;
+        if (showLoading == true) {
+          AppUtility.closeDialog();
+        }
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } catch (exc) {
+      if (showLoading == true) {
+        AppUtility.closeDialog();
+      }
       AppUtility.log('Error: $exc', tag: 'error');
       AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
@@ -380,13 +396,14 @@ class ProfileController extends GetxController {
 
   Future<bool> loadProfileDetails() async => await _loadProfileDetails();
 
-  Future<void> fetchPosts() async => await _fetchPosts();
+  Future<void> fetchProfilePosts() async => await _fetchProfilePosts();
 
   Future<void> loadMore() async =>
       await _loadMoreProfilePosts(page: _postData.value.currentPage! + 1);
 
-  Future<void> updateProfile(Map<String, dynamic> details) async =>
-      await _updateProfile(details);
+  Future<void> updateProfile(Map<String, dynamic> details,
+          {bool? showLoading}) async =>
+      await _updateProfile(details, showLoading: showLoading);
 
   Future<void> applyForBlueTick(Map<String, dynamic> details) async =>
       await _applyForBlueTick(details);

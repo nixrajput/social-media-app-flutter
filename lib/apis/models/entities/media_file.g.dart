@@ -25,9 +25,9 @@ abstract class _$MediaFileCWProxy {
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfMediaFile.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfMediaFile.copyWith.fieldName(...)`
 class _$MediaFileCWProxyImpl implements _$MediaFileCWProxy {
-  final MediaFile _value;
-
   const _$MediaFileCWProxyImpl(this._value);
+
+  final MediaFile _value;
 
   @override
   MediaFile publicId(String? publicId) => this(publicId: publicId);

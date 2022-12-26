@@ -9,7 +9,7 @@ class NxAppBar extends StatelessWidget {
     Key? key,
     this.title,
     this.showDivider = false,
-    this.leading,
+    this.child,
     this.showBackBtn = true,
     this.padding,
     this.titleStyle,
@@ -20,7 +20,7 @@ class NxAppBar extends StatelessWidget {
   final String? title;
   final TextStyle? titleStyle;
   final bool? showDivider;
-  final Widget? leading;
+  final Widget? child;
   final Color? backBtnColor;
   final bool? showBackBtn;
   final EdgeInsets? padding;
@@ -49,13 +49,12 @@ class NxAppBar extends StatelessWidget {
               ),
             if (showBackBtn == true) Dimens.boxWidth16,
             Expanded(
-              flex: 1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  if (leading != null) leading!,
-                  if (leading != null && title != null) Dimens.boxWidth16,
+                  if (child != null) child!,
+                  if (child != null && title != null) Dimens.boxWidth16,
                   if (title != null && title!.isNotEmpty)
                     Text(
                       title!,

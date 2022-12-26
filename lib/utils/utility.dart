@@ -123,12 +123,15 @@ abstract class AppUtility {
 
   /// Text Logo
 
-  static buildAppLogo({double? fontSize, bool? isCentered = false}) => Text(
+  static buildAppLogo(BuildContext context,
+          {double? fontSize, bool? isCentered = false}) =>
+      Text(
         StringValues.appName.toUpperCase(),
         style: AppStyles.style24Bold.copyWith(
           fontFamily: "Muge",
           fontSize: fontSize,
           letterSpacing: Dimens.four,
+          color: Theme.of(context).textTheme.bodyText1!.color,
         ),
         textAlign: isCentered == true ? TextAlign.center : TextAlign.start,
       );
@@ -159,7 +162,7 @@ abstract class AppUtility {
                 type: MaterialType.card,
                 color: Theme.of(Get.context!).dialogBackgroundColor,
                 borderRadius: BorderRadius.all(
-                  Radius.circular(Dimens.eight),
+                  Radius.circular(Dimens.four),
                 ),
                 child: child,
               ),
@@ -236,12 +239,12 @@ abstract class AppUtility {
   }
 
   /// Show BottomSheet
-
   static void showBottomSheet(
       {required List<Widget> children,
       double? borderRadius,
       MainAxisAlignment? mainAxisAlignment,
-      CrossAxisAlignment? crossAxisAlignment}) {
+      CrossAxisAlignment? crossAxisAlignment,
+      bool? isScrollControlled}) {
     closeBottomSheet();
     Get.bottomSheet(
       Padding(
@@ -259,6 +262,7 @@ abstract class AppUtility {
           topRight: Radius.circular(borderRadius ?? Dimens.zero),
         ),
       ),
+      isScrollControlled: isScrollControlled ?? false,
       barrierColor: ColorValues.blackColor.withOpacity(0.75),
       backgroundColor: Theme.of(Get.context!).bottomSheetTheme.backgroundColor,
     );
@@ -283,14 +287,15 @@ abstract class AppUtility {
     Get.showSnackbar(
       GetSnackBar(
         margin: EdgeInsets.only(
-          left: Dimens.sixTeen,
-          right: Dimens.sixTeen,
-          top: Dimens.eight,
+          left: Dimens.zero,
+          right: Dimens.zero,
+          top: Dimens.zero,
+          bottom: Dimens.zero,
         ),
-        borderRadius: Dimens.eight,
-        padding: Dimens.edgeInsets16,
+        borderRadius: Dimens.zero,
+        padding: Dimens.edgeInsets16_12,
         snackStyle: SnackStyle.FLOATING,
-        snackPosition: SnackPosition.TOP,
+        snackPosition: SnackPosition.BOTTOM,
         borderWidth: Dimens.zero,
         messageText: Text(
           message.toCapitalized(),
@@ -308,17 +313,13 @@ abstract class AppUtility {
           child: NxTextButton(
             label: 'DISMISS',
             labelStyle: AppStyles.style13Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color!,
+              color: ColorValues.primaryColor,
             ),
             onTap: closeSnackBar,
           ),
         ),
         shouldIconPulse: false,
-        backgroundColor: Theme.of(Get.context!)
-            .snackBarTheme
-            .backgroundColor!
-            .withOpacity(0.25),
-        barBlur: Dimens.twentyFour,
+        backgroundColor: Theme.of(Get.context!).snackBarTheme.backgroundColor!,
         dismissDirection: DismissDirection.horizontal,
         duration: Duration(seconds: duration ?? 3),
       ),
@@ -327,12 +328,15 @@ abstract class AppUtility {
 
   /// Render Text Color
   static Color renderTextColor(String type) {
-    return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    return Theme.of(Get.context!).snackBarTheme.contentTextStyle!.color!;
   }
 
   /// Render Icon Color
   static Color renderIconColor(String type) {
-    return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+    if (type == StringValues.success) {
+      return ColorValues.successColor;
+    }
+    return Theme.of(Get.context!).snackBarTheme.contentTextStyle!.color!;
   }
 
   /// Render Icon

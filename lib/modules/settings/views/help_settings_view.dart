@@ -5,7 +5,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
-import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class HelpSettingsView extends StatelessWidget {
   const HelpSettingsView({Key? key}) : super(key: key);
@@ -23,9 +23,8 @@ class HelpSettingsView extends StatelessWidget {
             children: [
               NxAppBar(
                 title: StringValues.help,
-                padding: Dimens.edgeInsets8_16,
+                padding: Dimens.edgeInsetsDefault,
               ),
-              Dimens.boxHeight16,
               _buildBody(context),
             ],
           ),
@@ -37,7 +36,7 @@ class HelpSettingsView extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: Dimens.edgeInsets0_16,
+        padding: Dimens.edgeInsetsHorizDefault,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics(),
@@ -45,14 +44,13 @@ class HelpSettingsView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Dimens.boxHeight8,
+
               /// Report an issue
               NxListTile(
-                padding: Dimens.edgeInsets16_12,
-                bgColor: Theme.of(context).dialogBackgroundColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(Dimens.eight),
-                  topRight: Radius.circular(Dimens.eight),
-                ),
+                padding: Dimens.edgeInsets12,
+                bgColor: Theme.of(context).bottomAppBarColor,
+                borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.reportIssue.toTitleCase(),
                   style: AppStyles.style14Bold,
@@ -63,15 +61,17 @@ class HelpSettingsView extends StatelessWidget {
                     color: Theme.of(context).textTheme.subtitle1!.color,
                   ),
                 ),
-                onTap: RouteManagement.goToReportIssueSettingsView,
+                onTap: () =>
+                    AppUtility.openUrl(Uri.parse(StringValues.telegramUrl)),
               ),
 
-              Dimens.divider,
+              Dimens.boxHeight8,
 
               /// Send us suggestions
               NxListTile(
-                padding: Dimens.edgeInsets16_12,
-                bgColor: Theme.of(context).dialogBackgroundColor,
+                padding: Dimens.edgeInsets12,
+                bgColor: Theme.of(context).bottomAppBarColor,
+                borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.sendUsSuggestions.toTitleCase(),
                   style: AppStyles.style14Bold,
@@ -82,15 +82,17 @@ class HelpSettingsView extends StatelessWidget {
                     color: Theme.of(context).textTheme.subtitle1!.color,
                   ),
                 ),
-                onTap: RouteManagement.goToSendSuggestionsSettingsView,
+                onTap: () =>
+                    AppUtility.openUrl(Uri.parse(StringValues.telegramUrl)),
               ),
 
-              Dimens.divider,
+              Dimens.boxHeight8,
 
               /// Privacy Policy
               NxListTile(
-                padding: Dimens.edgeInsets16_12,
-                bgColor: Theme.of(context).dialogBackgroundColor,
+                padding: Dimens.edgeInsets12,
+                bgColor: Theme.of(context).bottomAppBarColor,
+                borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.privacyPolicy.toTitleCase(),
                   style: AppStyles.style14Bold,
@@ -101,18 +103,17 @@ class HelpSettingsView extends StatelessWidget {
                     color: Theme.of(context).textTheme.subtitle1!.color,
                   ),
                 ),
+                onTap: () =>
+                    AppUtility.openUrl(Uri.parse(StringValues.privacyPolicy)),
               ),
 
-              Dimens.divider,
+              Dimens.boxHeight8,
 
               /// Terms of Use
               NxListTile(
-                padding: Dimens.edgeInsets16_12,
-                bgColor: Theme.of(context).dialogBackgroundColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(Dimens.eight),
-                  bottomRight: Radius.circular(Dimens.eight),
-                ),
+                padding: Dimens.edgeInsets12,
+                bgColor: Theme.of(context).bottomAppBarColor,
+                borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.termsOfUse.toTitleCase(),
                   style: AppStyles.style14Bold,
@@ -123,6 +124,29 @@ class HelpSettingsView extends StatelessWidget {
                     color: Theme.of(context).textTheme.subtitle1!.color,
                   ),
                 ),
+                onTap: () => AppUtility.openUrl(
+                    Uri.parse(StringValues.termsOfServiceUrl)),
+              ),
+
+              Dimens.boxHeight8,
+
+              /// Community Guidelines
+              NxListTile(
+                padding: Dimens.edgeInsets12,
+                bgColor: Theme.of(context).bottomAppBarColor,
+                borderRadius: BorderRadius.circular(Dimens.four),
+                title: Text(
+                  StringValues.termsOfUse.toTitleCase(),
+                  style: AppStyles.style14Bold,
+                ),
+                subtitle: Text(
+                  StringValues.communityGuidelines,
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
+                ),
+                onTap: () => AppUtility.openUrl(
+                    Uri.parse(StringValues.communityGuidelinesUrl)),
               ),
               Dimens.boxHeight16,
             ],

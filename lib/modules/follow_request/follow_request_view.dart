@@ -9,6 +9,7 @@ import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_controller.dart';
 import 'package:social_media_app/modules/follow_request/widgets/follow_request_widget.dart';
 
@@ -17,8 +18,7 @@ class FollowRequestView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+    return UnFocusWidget(
       child: Scaffold(
         body: SafeArea(
           child: NxRefreshIndicator(
@@ -33,9 +33,8 @@ class FollowRequestView extends StatelessWidget {
                 children: [
                   NxAppBar(
                     title: StringValues.followRequests,
-                    padding: Dimens.edgeInsets8_16,
+                    padding: Dimens.edgeInsetsDefault,
                   ),
-                  Dimens.boxHeight8,
                   _buildBody(),
                 ],
               ),
@@ -57,7 +56,7 @@ class FollowRequestView extends StatelessWidget {
           if (logic.followRequestData == null ||
               logic.followRequestList.isEmpty) {
             return Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,11 +85,12 @@ class FollowRequestView extends StatelessWidget {
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
-            padding: Dimens.edgeInsets0_16,
+            padding: Dimens.edgeInsetsHorizDefault,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Dimens.boxHeight8,
                 ListView.builder(
                   itemCount: logic.followRequestList.length,
                   shrinkWrap: true,

@@ -31,9 +31,8 @@ class EditProfessionView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.profession,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                Dimens.boxHeight24,
                 _buildBody(),
               ],
             ),
@@ -47,41 +46,15 @@ class EditProfessionView extends StatelessWidget {
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Container(
-                    //   height: Dimens.fiftySix,
-                    //   constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                    //   child: DropdownButton(
-                    //     elevation: 0,
-                    //     dropdownColor:
-                    //         Theme.of(Get.context!).dialogBackgroundColor,
-                    //     hint: const Text(StringValues.profession),
-                    //     isExpanded: true,
-                    //     style: AppStyles.style14Normal.copyWith(
-                    //       color:
-                    //           Theme.of(Get.context!).textTheme.bodyText1!.color,
-                    //     ),
-                    //     value: logic.profession,
-                    //     borderRadius: BorderRadius.circular(Dimens.eight),
-                    //     items: StaticData.occupationList
-                    //         .map(
-                    //           (String e) => DropdownMenuItem(
-                    //             value: e,
-                    //             child: Text(e.toTitleCase()),
-                    //           ),
-                    //         )
-                    //         .toList(),
-                    //     onChanged: (String? value) =>
-                    //         logic.onProfessionChanged(value),
-                    //   ),
-                    // ),
-                    InkWell(
+                    Dimens.boxHeight8,
+                    GestureDetector(
                       onTap: _showProfessionBottomSheet,
                       child: Container(
                         height: Dimens.fiftySix,
@@ -93,7 +66,7 @@ class EditProfessionView extends StatelessWidget {
                             color: ColorValues.grayColor,
                             width: Dimens.one,
                           ),
-                          borderRadius: BorderRadius.circular(Dimens.eight),
+                          borderRadius: BorderRadius.circular(Dimens.four),
                         ),
                         child: Text(
                           logic.profession.toTitleCase(),

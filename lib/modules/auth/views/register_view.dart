@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -10,6 +11,7 @@ import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/auth/controllers/register_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class RegisterView extends StatelessWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -30,9 +32,9 @@ class RegisterView extends StatelessWidget {
                 NxAppBar(
                   title: StringValues.register,
                   showBackBtn: true,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                _buildRegistrationFields(),
+                _buildRegistrationFields(context),
               ],
             ),
           ),
@@ -41,11 +43,12 @@ class RegisterView extends StatelessWidget {
     );
   }
 
-  Widget _buildRegistrationFields() => GetBuilder<RegisterController>(
+  Widget _buildRegistrationFields(BuildContext context) =>
+      GetBuilder<RegisterController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
@@ -73,7 +76,7 @@ class RegisterView extends StatelessWidget {
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius:
-                                      BorderRadius.circular(Dimens.eight),
+                                      BorderRadius.circular(Dimens.four),
                                 ),
                                 hintStyle: AppStyles.style14Normal.copyWith(
                                   color: ColorValues.grayColor,
@@ -103,7 +106,7 @@ class RegisterView extends StatelessWidget {
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius:
-                                      BorderRadius.circular(Dimens.eight),
+                                      BorderRadius.circular(Dimens.four),
                                 ),
                                 hintStyle: AppStyles.style14Normal.copyWith(
                                   color: ColorValues.grayColor,
@@ -132,7 +135,7 @@ class RegisterView extends StatelessWidget {
                       child: TextFormField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintText: StringValues.email,
                           hintStyle: AppStyles.style14Normal.copyWith(
@@ -156,7 +159,7 @@ class RegisterView extends StatelessWidget {
                       child: TextFormField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
@@ -181,7 +184,7 @@ class RegisterView extends StatelessWidget {
                         obscureText: logic.showPassword,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
@@ -214,7 +217,7 @@ class RegisterView extends StatelessWidget {
                         obscureText: logic.showConfirmPassword,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
@@ -244,6 +247,8 @@ class RegisterView extends StatelessWidget {
                       onTap: () => logic.register(),
                       label: StringValues.register.toUpperCase(),
                     ),
+                    Dimens.boxHeight16,
+                    _buildAgreeTerms(context),
                     Dimens.boxHeight48,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -271,4 +276,55 @@ class RegisterView extends StatelessWidget {
           ),
         ),
       );
+
+  RichText _buildAgreeTerms(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        children: [
+          const TextSpan(
+            text: StringValues.agreeToPrivacyAndTerms1,
+          ),
+          TextSpan(
+            text: StringValues.termsOfUse,
+            style: AppStyles.style13Normal.copyWith(
+              color: ColorValues.primaryColor,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () =>
+                  AppUtility.openUrl(Uri.parse(StringValues.termsOfServiceUrl)),
+          ),
+          const TextSpan(
+            text: ', ',
+          ),
+          TextSpan(
+            text: StringValues.privacyPolicy,
+            style: AppStyles.style13Normal.copyWith(
+              color: ColorValues.primaryColor,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () =>
+                  AppUtility.openUrl(Uri.parse(StringValues.privacyPolicyUrl)),
+          ),
+          const TextSpan(
+            text: ' ${StringValues.and} ',
+          ),
+          TextSpan(
+            text: StringValues.communityGuidelines,
+            style: AppStyles.style13Normal.copyWith(
+              color: ColorValues.primaryColor,
+            ),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => AppUtility.openUrl(
+                  Uri.parse(StringValues.communityGuidelinesUrl)),
+          ),
+          const TextSpan(
+            text: '.',
+          ),
+        ],
+        style: AppStyles.style13Normal.copyWith(
+          color: Theme.of(context).textTheme.subtitle1!.color,
+        ),
+      ),
+    );
+  }
 }

@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/extensions/file_extensions.dart';
 import 'package:social_media_app/utils/utility.dart';
 import 'package:video_compress_ds/video_compress_ds.dart';
@@ -324,5 +327,47 @@ abstract class FileUtility {
     }
 
     return fileList;
+  }
+
+  static Future<File?> cropImage(File imageFile, BuildContext context,
+      {List<CropAspectRatioPreset>? aspectRatioPresets,
+      int? maxWidth,
+      int? maxHeight,
+      CropAspectRatio? aspectRatio}) async {
+    final imageCropper = ImageCropper();
+
+    final croppedImage = await imageCropper.cropImage(
+      sourcePath: imageFile.path,
+      maxWidth: maxWidth ?? 1080,
+      maxHeight: maxHeight ?? 1080,
+      compressFormat: ImageCompressFormat.jpg,
+      aspectRatio:
+          aspectRatio ?? const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      compressQuality: 100,
+      aspectRatioPresets: aspectRatioPresets ??
+          [
+            CropAspectRatioPreset.square,
+          ],
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarColor: Theme.of(context).scaffoldBackgroundColor,
+          toolbarTitle: StringValues.cropImage,
+          toolbarWidgetColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        IOSUiSettings(
+          title: StringValues.cropImage,
+          minimumAspectRatio: 1.0,
+        ),
+      ],
+    );
+
+    if (croppedImage == null) {
+      AppUtility.log('No image selected');
+      return null;
+    }
+
+    var image = File(croppedImage.path);
+    return image;
   }
 }

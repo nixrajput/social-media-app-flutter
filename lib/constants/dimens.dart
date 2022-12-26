@@ -69,8 +69,6 @@ abstract class Dimens {
     top: percentHeight(0.12),
   );
 
-  static EdgeInsets edgeInsets2 = EdgeInsets.all(two);
-
   static EdgeInsets edgeInsets2_0 = EdgeInsets.symmetric(
     vertical: two,
     horizontal: zero,
@@ -156,6 +154,11 @@ abstract class Dimens {
     horizontal: sixTeen,
   );
 
+  static EdgeInsets edgeInsets4_12 = EdgeInsets.symmetric(
+    vertical: four,
+    horizontal: twelve,
+  );
+
   static EdgeInsets edgeInsets16_8 = EdgeInsets.symmetric(
     vertical: sixTeen,
     horizontal: eight,
@@ -193,7 +196,11 @@ abstract class Dimens {
 
   static EdgeInsets edgeInsets0 = EdgeInsets.zero;
 
+  static EdgeInsets edgeInsets2 = EdgeInsets.all(two);
+
   static EdgeInsets edgeInsets4 = EdgeInsets.all(four);
+
+  static EdgeInsets edgeInsets6 = EdgeInsets.all(six);
 
   static EdgeInsets edgeInsets8 = EdgeInsets.all(eight);
 
@@ -299,5 +306,8 @@ abstract class Dimens {
 
   static Divider divider = const Divider(height: 0.0, thickness: 0.4);
 
-  static Divider dividerWithHeight = const Divider(thickness: 0.5);
+  static Divider dividerWithHeight = Divider(
+    thickness: 0.5,
+    height: Dimens.one,
+  );
 }

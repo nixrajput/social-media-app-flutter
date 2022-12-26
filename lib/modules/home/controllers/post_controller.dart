@@ -11,6 +11,7 @@ import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -19,6 +20,8 @@ class PostController extends GetxController {
 
   final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
+  final _notificationController = NotificationController.find;
+  final _chatController = ChatController.find;
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
@@ -36,29 +39,27 @@ class PostController extends GetxController {
 
   set setPostData(PostResponse value) => _postData.value = value;
 
-  @override
-  void onInit() {
-    super.onInit();
-    _getData();
-  }
-
-  _getData() async {
-    _isLoading.value = true;
-    update();
+  Future<void> _init() async {
     var isExists = await HiveService.hasLength<Post>('posts');
     if (isExists) {
       var data = await HiveService.getAll<Post>('posts');
-      data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      data.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       _postList.clear();
       _postList.addAll(data.toList());
     }
-    _isLoading.value = false;
-    update();
+  }
+
+  Future<void> getData() async {
     await SocketApiProvider().init(_auth.token);
-    await ChatController.find.initialize();
+    await _chatController.initialize();
+
     await _fetchPosts();
-    await NotificationController.find.getData();
-    await Future.delayed(const Duration(seconds: 3), () async {
+
+    Future.delayed(const Duration(seconds: 1), () async {
+      await _notificationController.getData();
+    });
+
+    await Future.delayed(const Duration(seconds: 1), () async {
       await _auth.validateDeviceSession();
     });
   }
@@ -154,6 +155,8 @@ class PostController extends GetxController {
         final decodedData = response.data;
         final apiResponse = CommonResponse.fromJson(decodedData);
         await HiveService.delete<Post>('posts', postId);
+        await HiveService.delete<Post>('profilePosts', postId);
+        await ProfileController.find.fetchProfileDetails(fetchPost: true);
         AppUtility.showSnackBar(
           apiResponse.message!,
           StringValues.success,
@@ -176,16 +179,71 @@ class PostController extends GetxController {
   }
 
   void _toggleLike(Post post) {
-    if (post.isLiked) {
+    if (post.isLiked == true) {
       post.isLiked = false;
-      post.likesCount--;
+      post.likesCount = post.likesCount! - 1;
       update();
       return;
     } else {
       post.isLiked = true;
-      post.likesCount++;
+      post.likesCount = post.likesCount! + 1;
       update();
       return;
+    }
+  }
+
+  void _castVote(Post post, String optionId) {
+    if (post.isVoted == true) {
+      post.votedOption = null;
+      post.isVoted = false;
+      post.totalVotes = post.totalVotes! - 1;
+      for (var element in post.pollOptions!) {
+        if (element.id == post.votedOption) {
+          element.votes = element.votes! - 1;
+        }
+      }
+      update();
+      return;
+    }
+
+    post.votedOption = optionId;
+    post.isVoted = true;
+    post.totalVotes = post.totalVotes! + 1;
+    for (var element in post.pollOptions!) {
+      if (element.id == optionId) {
+        element.votes = element.votes! + 1;
+      }
+    }
+    update();
+  }
+
+  Future<void> _voteToPoll(Post post, String optionId) async {
+    _castVote(post, optionId);
+
+    var body = {
+      'pollId': post.id!,
+      'optionId': optionId,
+    };
+
+    try {
+      final response = await _apiProvider.voteToPoll(_auth.token, body);
+
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
+        AppUtility.log(apiResponse.message!);
+      } else {
+        _castVote(post, optionId);
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
+        AppUtility.showSnackBar(
+          apiResponse.message!,
+          StringValues.error,
+        );
+      }
+    } catch (exc) {
+      _castVote(post, optionId);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
 
@@ -214,6 +272,8 @@ class PostController extends GetxController {
     }
   }
 
+  Future<void> init() async => await _init();
+
   Future<void> fetchPosts() async => await _fetchPosts();
 
   Future<void> loadMore() async =>
@@ -222,4 +282,7 @@ class PostController extends GetxController {
   Future<void> deletePost(String postId) async => await _deletePost(postId);
 
   Future<void> toggleLikePost(Post post) async => await _toggleLikePost(post);
+
+  Future<void> voteToPoll(Post post, String optionId) async =>
+      await _voteToPoll(post, optionId);
 }

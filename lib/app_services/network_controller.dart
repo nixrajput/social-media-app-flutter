@@ -7,9 +7,9 @@ import 'package:social_media_app/utils/utility.dart';
 class NetworkController extends GetxController {
   static NetworkController get find => Get.find();
 
-  final _networkStatus = false.obs;
-  bool get networkStatus => _networkStatus.value;
-  set networkStatus(bool value) => _networkStatus.value = value;
+  final _isConnected = false.obs;
+  bool get isConnected => _isConnected.value;
+  set isConnected(bool value) => _isConnected.value = value;
 
   StreamSubscription<dynamic>? _streamSubscription;
 
@@ -32,10 +32,10 @@ class NetworkController extends GetxController {
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
       if (result == ConnectivityResult.none) {
-        networkStatus = false;
+        isConnected = false;
         AppUtility.log('No Internet Connection');
       } else {
-        networkStatus = true;
+        isConnected = true;
         AppUtility.log('Internet Connection Available');
       }
     });

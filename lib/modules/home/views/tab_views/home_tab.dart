@@ -10,14 +10,13 @@ import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_network_image.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
+import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/sliver_app_bar.dart';
 import 'package:social_media_app/modules/home/controllers/banner_controller.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
-import 'package:social_media_app/modules/post/controllers/create_post_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -56,21 +55,10 @@ class HomeTabView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: Dimens.thirtySix,
-              height: Dimens.thirtySix,
-              padding: Dimens.edgeInsets2,
-              decoration: BoxDecoration(
-                color: Theme.of(context).bottomAppBarColor,
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: NxAssetImage(
-                  imgAsset: AssetValues.appIcon,
-                  width: Dimens.twentyFour,
-                  height: Dimens.twentyFour,
-                ),
-              ),
+            NxAssetImage(
+              imgAsset: AssetValues.appIcon,
+              width: Dimens.twentyFour,
+              height: Dimens.twentyFour,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -172,22 +160,12 @@ class HomeTabView extends StatelessWidget {
                     );
                   },
                 ),
-                if (logic.isMoreLoading) Dimens.boxHeight8,
-                if (logic.isMoreLoading)
-                  const Center(child: NxCircularProgressIndicator()),
-                if (!logic.isMoreLoading &&
-                    logic.postData!.results != null &&
-                    logic.postData!.hasNextPage!)
-                  Center(
-                    child: NxTextButton(
-                      label: 'Load more posts',
-                      onTap: logic.loadMore,
-                      labelStyle: AppStyles.style14Bold.copyWith(
-                        color: ColorValues.primaryLightColor,
-                      ),
-                      padding: Dimens.edgeInsets8_0,
-                    ),
-                  ),
+                LoadMoreWidget(
+                  loadingCondition: logic.isMoreLoading,
+                  hasMoreCondition: logic.postData!.results != null &&
+                      logic.postData!.hasNextPage!,
+                  loadMore: logic.loadMore,
+                ),
                 Dimens.boxHeight16,
               ],
             ),
@@ -199,50 +177,110 @@ class HomeTabView extends StatelessWidget {
 
   _showCreatePostOptions() => AppUtility.showBottomSheet(
         children: [
+          /// Post
           ListTile(
             onTap: () {
               AppUtility.closeBottomSheet();
-              CreatePostController.find.captureImage();
+              RouteManagement.goToCreatePostView();
             },
-            leading: const Icon(Icons.camera),
+            leading: Icon(
+              Icons.post_add_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+            ),
+            minLeadingWidth: Dimens.twentyFour,
             title: Text(
-              StringValues.captureImage,
-              style: AppStyles.style16Bold,
+              StringValues.post,
+              style: AppStyles.style16Normal.copyWith(
+                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              ),
             ),
           ),
+
+          /// Poll
           ListTile(
             onTap: () {
               AppUtility.closeBottomSheet();
-              CreatePostController.find.recordVideo();
+              RouteManagement.toCreatePollView();
             },
-            leading: const Icon(Icons.videocam),
+            leading: Icon(
+              Icons.poll_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+            ),
+            minLeadingWidth: Dimens.twentyFour,
             title: Text(
-              StringValues.recordVideo,
-              style: AppStyles.style16Bold,
+              StringValues.poll,
+              style: AppStyles.style16Normal.copyWith(
+                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              ),
             ),
           ),
+
+          /// Story
           ListTile(
             onTap: () {
               AppUtility.closeBottomSheet();
-              CreatePostController.find.selectPostImages();
+              AppUtility.printLog('Go to create story page');
             },
-            leading: const Icon(Icons.photo_album),
+            leading: Icon(
+              Icons.photo_library_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+            ),
+            minLeadingWidth: Dimens.twentyFour,
             title: Text(
-              StringValues.chooseImages,
-              style: AppStyles.style16Bold,
+              StringValues.story,
+              style: AppStyles.style16Normal.copyWith(
+                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              ),
             ),
           ),
-          ListTile(
-            onTap: () {
-              AppUtility.closeBottomSheet();
-              CreatePostController.find.selectPosVideos();
-            },
-            leading: const Icon(Icons.video_collection),
-            title: Text(
-              StringValues.chooseVideos,
-              style: AppStyles.style16Bold,
-            ),
-          ),
+
+          // ListTile(
+          //   onTap: () {
+          //     AppUtility.closeBottomSheet();
+          //     CreatePostController.find.captureImage();
+          //   },
+          //   leading: const Icon(Icons.camera),
+          //   title: Text(
+          //     StringValues.captureImage,
+          //     style: AppStyles.style16Bold,
+          //   ),
+          // ),
+          // ListTile(
+          //   onTap: () {
+          //     AppUtility.closeBottomSheet();
+          //     CreatePostController.find.recordVideo();
+          //   },
+          //   leading: const Icon(Icons.videocam),
+          //   title: Text(
+          //     StringValues.recordVideo,
+          //     style: AppStyles.style16Bold,
+          //   ),
+          // ),
+          // ListTile(
+          //   onTap: () {
+          //     AppUtility.closeBottomSheet();
+          //     CreatePostController.find.selectPostImages();
+          //   },
+          //   leading: const Icon(Icons.photo_album),
+          //   title: Text(
+          //     StringValues.chooseImages,
+          //     style: AppStyles.style16Bold,
+          //   ),
+          // ),
+          // ListTile(
+          //   onTap: () {
+          //     AppUtility.closeBottomSheet();
+          //     CreatePostController.find.selectPosVideos();
+          //   },
+          //   leading: const Icon(Icons.video_collection),
+          //   title: Text(
+          //     StringValues.chooseVideos,
+          //     style: AppStyles.style16Bold,
+          //   ),
+          // ),
         ],
       );
 

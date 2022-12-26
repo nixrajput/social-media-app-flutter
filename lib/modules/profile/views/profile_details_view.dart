@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/data.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -10,17 +9,19 @@ import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
+import 'package:social_media_app/global_widgets/image_viewer_widget.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 class ProfileDetailsView extends StatelessWidget {
   const ProfileDetailsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return UnFocusWidget(
       child: Scaffold(
         body: SafeArea(
           child: SizedBox(
@@ -36,10 +37,9 @@ class ProfileDetailsView extends StatelessWidget {
                 children: [
                   NxAppBar(
                     title: StringValues.editProfile,
-                    padding: Dimens.edgeInsets8_16,
+                    padding: Dimens.edgeInsetsDefault,
                   ),
-                  Dimens.boxHeight16,
-                  _buildEditProfileBody(),
+                  _buildBody(context),
                 ],
               ),
             ),
@@ -49,7 +49,7 @@ class ProfileDetailsView extends StatelessWidget {
     );
   }
 
-  Widget _buildEditProfileBody() => GetBuilder<ProfileController>(
+  Widget _buildBody(BuildContext context) => GetBuilder<ProfileController>(
         builder: (logic) {
           return Expanded(
             child: SingleChildScrollView(
@@ -57,15 +57,19 @@ class ProfileDetailsView extends StatelessWidget {
                 parent: AlwaysScrollableScrollPhysics(),
               ),
               child: Padding(
-                padding: Dimens.edgeInsets0_16,
+                padding: Dimens.edgeInsetsHorizDefault,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Dimens.boxHeight8,
+
+                    /// Profile Picture
+
                     Center(
                       child: GetBuilder<EditProfilePictureController>(
                         builder: (con) => GestureDetector(
-                          onTap: con.chooseImage,
+                          onTap: () => _showProfilePictureBottomSheet(context),
                           child: Hero(
                             tag: logic.profileDetails!.user!.id,
                             child: AvatarWidget(
@@ -77,17 +81,14 @@ class ProfileDetailsView extends StatelessWidget {
                       ),
                     ),
 
-                    Dimens.boxHeight24,
+                    Dimens.boxHeight16,
 
                     /// Name
 
                     NxListTile(
-                      padding: Dimens.edgeInsets12_8,
-                      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(Dimens.eight),
-                        topRight: Radius.circular(Dimens.eight),
-                      ),
+                      padding: Dimens.edgeInsets12,
+                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.person_outline),
                       title: Text(
                         StringValues.name,
@@ -103,13 +104,14 @@ class ProfileDetailsView extends StatelessWidget {
                       onTap: RouteManagement.goToEditNameView,
                     ),
 
-                    Dimens.divider,
+                    Dimens.boxHeight8,
 
                     /// Username
 
                     NxListTile(
-                      padding: Dimens.edgeInsets12_8,
-                      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                      padding: Dimens.edgeInsets12,
+                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.alternate_email_outlined),
                       title: Text(
                         StringValues.username,
@@ -125,13 +127,14 @@ class ProfileDetailsView extends StatelessWidget {
                       onTap: RouteManagement.goToEditUsernameView,
                     ),
 
-                    Dimens.divider,
+                    Dimens.boxHeight8,
 
                     /// About
 
                     NxListTile(
-                      padding: Dimens.edgeInsets12_8,
-                      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                      padding: Dimens.edgeInsets12,
+                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.note_add_outlined),
                       title: Text(
                         StringValues.about,
@@ -159,13 +162,14 @@ class ProfileDetailsView extends StatelessWidget {
                       onTap: RouteManagement.goToEditAboutView,
                     ),
 
-                    Dimens.divider,
+                    Dimens.boxHeight8,
 
                     /// Profession
 
                     NxListTile(
-                      padding: Dimens.edgeInsets12_8,
-                      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                      padding: Dimens.edgeInsets12,
+                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.work_outline),
                       title: Text(
                         StringValues.profession,
@@ -200,13 +204,14 @@ class ProfileDetailsView extends StatelessWidget {
                       onTap: RouteManagement.goToEditProfessionView,
                     ),
 
-                    Dimens.divider,
+                    Dimens.boxHeight8,
 
                     /// DOB
 
                     NxListTile(
-                      padding: Dimens.edgeInsets12_8,
-                      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                      padding: Dimens.edgeInsets12,
+                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.cake_outlined),
                       title: Text(
                         StringValues.birthDate,
@@ -233,13 +238,14 @@ class ProfileDetailsView extends StatelessWidget {
                       onTap: RouteManagement.goToEditDOBView,
                     ),
 
-                    Dimens.divider,
+                    Dimens.boxHeight8,
 
                     /// Gender
 
                     NxListTile(
-                      padding: Dimens.edgeInsets12_8,
-                      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                      padding: Dimens.edgeInsets12,
+                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.male_outlined),
                       title: Text(
                         StringValues.gender,
@@ -266,13 +272,14 @@ class ProfileDetailsView extends StatelessWidget {
                       onTap: RouteManagement.goToEditGenderView,
                     ),
 
-                    Dimens.divider,
+                    Dimens.boxHeight8,
 
                     /// Email
 
                     NxListTile(
-                      padding: Dimens.edgeInsets12_8,
-                      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                      padding: Dimens.edgeInsets12,
+                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.email_outlined),
                       title: Text(
                         StringValues.email,
@@ -293,14 +300,15 @@ class ProfileDetailsView extends StatelessWidget {
                       ),
                     ),
 
-                    Dimens.divider,
+                    Dimens.boxHeight8,
 
                     /// Phone
 
                     if (logic.profileDetails!.user!.phone != null)
                       NxListTile(
-                        padding: Dimens.edgeInsets12_8,
-                        bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+                        padding: Dimens.edgeInsets12,
+                        bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                        borderRadius: BorderRadius.circular(Dimens.four),
                         leading: const Icon(Icons.phone_android),
                         title: Text(
                           StringValues.phone,
@@ -325,17 +333,14 @@ class ProfileDetailsView extends StatelessWidget {
                         ),
                       ),
 
-                    Dimens.divider,
+                    Dimens.boxHeight8,
 
                     /// Website
 
                     NxListTile(
-                      padding: Dimens.edgeInsets12_8,
-                      bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(Dimens.eight),
-                        bottomRight: Radius.circular(Dimens.eight),
-                      ),
+                      padding: Dimens.edgeInsets12,
+                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.link),
                       title: Text(
                         StringValues.website,
@@ -355,11 +360,15 @@ class ProfileDetailsView extends StatelessWidget {
                                   .textTheme
                                   .subtitle1
                                   ?.color
-                              : ColorValues.primaryColor,
+                              : Theme.of(Get.context!)
+                                  .textTheme
+                                  .bodyText1!
+                                  .color,
                         ),
                       ),
                       onTap: RouteManagement.goToEditWebsiteView,
                     ),
+
                     Dimens.boxHeight16,
                   ],
                 ),
@@ -367,5 +376,68 @@ class ProfileDetailsView extends StatelessWidget {
             ),
           );
         },
+      );
+
+  _showProfilePictureBottomSheet(BuildContext context) =>
+      AppUtility.showBottomSheet(
+        children: [
+          /// View Profile Picture
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.image_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.view,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              Get.to(
+                () => ImageViewerWidget(
+                    url: ProfileController
+                        .find.profileDetails!.user!.avatar!.url!),
+              );
+            },
+          ),
+
+          /// Change Profile Picture
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.camera_alt_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.change,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              EditProfilePictureController.find.chooseImage();
+            },
+          ),
+
+          /// Remove Profile Picture
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.delete_outline,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.remove,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              EditProfilePictureController.find.removeProfilePicture();
+            },
+          ),
+        ],
       );
 }

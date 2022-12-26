@@ -102,6 +102,13 @@ abstract class StringValues {
   static const follow = 'Follow';
   static const unfollow = 'Unfollow';
   static const followRequests = 'Follow Requests';
+  static const followRequestsDesc = 'People who want to follow you';
+  static const followBack = 'Follow Back';
+  static const maxImageVideoLimitWarning =
+      'You can select maximum 10 images and videos';
+  static const maxImageLimitWarning = 'You can select maximum 10 images';
+  static const maxVideoLimitWarning = 'You can select maximum 10 videos';
+
   static const noFollowRequests = "No follow requests yet";
   static const noComments = 'No comments yet';
   static const noMessages = 'No conversation yet';
@@ -193,6 +200,8 @@ abstract class StringValues {
   static const no = 'No';
   static const on = 'On';
   static const off = 'Off';
+  static const onlineStatusOnDesc = 'People can see your online status';
+  static const onlineStatusOffDesc = 'People can\'t see your online status';
   static const darkMode = 'Dark Mode';
   static const lightMode = 'Light Mode';
   static const systemDefault = 'System Default';
@@ -394,15 +403,181 @@ abstract class StringValues {
   static const sendOtpToEmailDesc = 'Enter your email address to send OTP';
   static const sendOtpToPhoneDesc = 'Enter your phone number to send OTP';
   static const verifyOtp = 'Verify OTP';
+  static const communityGuidelines = 'Community Guidelines';
   static const twoFaAuthHelpText =
       'Help protect your account from unauthorised access by requiring a second authentication method in addition to your password.';
   static const moreDetails = 'More Details';
   static const websiteUrl = 'https://nixlab.co.in';
+  static const privacyPolicyUrl = 'https://nixlab.co.in/privacy-policy';
+  static const termsOfServiceUrl = 'https://nixlab.co.in/terms-of-service';
+  static const communityGuidelinesUrl =
+      'https://nixlab.co.in/community-guidelines';
   static const portfolioUrl = 'https://nixrajput.nixlab.co.in';
+  static const downloadLatestApp = 'Download Latest App';
+  static const githubRepo = 'Github Repo';
+  static const telegramChannel = 'Telegram Channel';
+  static const appVersion = 'App Version';
+  static const ourWebsite = 'Our Website';
+  static const joinTelegramChannel = 'Join Telegram Channel';
+  static const madeWithLove = 'Made with ❤️ in India 🇮🇳';
+  static const developerName = 'Nikhil Rajput (nixrajput)';
+  static const by = 'By';
+  static const developedBy = 'Developed By';
   static const appDownloadUrl =
-      'https://github.com/nixrajput/social-media-app-flutter/releases';
+      'https://github.com/nixrajput/social-media-app-flutter/releases/latest';
   static const appGithubUrl =
       'https://github.com/nixrajput/social-media-app-flutter';
+  static const telegramUrl = 'https://telegram.me/nixlab_in';
   static const appUpdateAvailable = 'App update available';
-  static const appVersion = '1.0.1+01';
+  static const poll = 'Poll';
+  static const addQuestion = 'Ask a question...';
+  static const option = 'Option';
+  static const addOption = 'Add Option';
+  static const addOptionHelp = 'Add option for your poll';
+  static const pollLength = 'Poll Length';
+  static const pollLengthHelp = 'Select the length of your poll';
+  static const pollLengthDays = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+  ];
+  static const pollLengthHours = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+  ];
+  static const pollLengthMinutes = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+  ];
+  static const activeNow = 'Active Now';
+  static const loadMore = 'Load More';
+  static const reposts = 'Reposts';
+  static const shares = 'Shares';
+  static const views = 'Views';
+  static const view = 'View';
+  static const viewAll = 'View All';
+  static const oneDay = '1 Day';
+  static const day = 'Day';
+  static const days = 'Days';
+  static const hour = 'Hour';
+  static const hours = 'Hours';
+  static const minute = 'Minute';
+  static const minutes = 'Minutes';
+  static const done = 'Done';
+  static const enterPollQuestion = 'Enter Poll Question';
+  static const enterAtleastTwoOptions = 'Enter atleast two options';
+  static const pollLengthError = 'Select poll length';
+  static const pollOptionEmptyError = 'Option cannot be empty';
+  static const pollEnded = 'Poll Ended';
+  static const left = 'Left';
+  static const right = 'Right';
+  static const whatsOnYourMind = 'What\'s on your mind?';
+  static const yourCurrentEmail = 'Your current email is';
+  static const yourCurrentEmailDesc =
+      'Enter the email you want to change with it.';
+  static const yourCurrentPhone = 'Your current phone number is';
+  static const enterPhoneToAdd = 'Enter a phone number you want to add.';
+  static const yourCurrentPhoneDesc =
+      'Enter the new phone number you want to change with it.';
+  static const postVisibilityList = [
+    'public',
+    'private',
+    'followers',
+    'mututal',
+    'close_friends'
+  ];
+  static const postVisibilityList2 = [
+    {'id': 'public', 'title': 'Public'},
+    {'id': 'followers', 'title': 'Followers'},
+    {'id': 'mututal', 'title': 'Mututal'},
+    {'id': 'close_friends', 'title': 'Close Friends'},
+    {'id': 'private', 'title': 'Only Me'},
+  ];
+  static const agreeToPrivacyAndTerms1 = 'By registering, you agree to the ';
+  static const and = 'and';
 }

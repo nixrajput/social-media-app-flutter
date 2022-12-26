@@ -7,31 +7,21 @@ part of 'login_info.dart';
 // **************************************************************************
 
 abstract class _$LoginInfoCWProxy {
-  LoginInfo asname(String? asname);
+  LoginInfo id(String? id);
 
-  LoginInfo city(String? city);
-
-  LoginInfo continent(String? continent);
-
-  LoginInfo continentCode(String? continentCode);
-
-  LoginInfo country(String? country);
-
-  LoginInfo countryCode(String? countryCode);
-
-  LoginInfo createdAt(DateTime? createdAt);
-
-  LoginInfo currency(String? currency);
-
-  LoginInfo deviceBrand(String? deviceBrand);
+  LoginInfo user(String? user);
 
   LoginInfo deviceId(String? deviceId);
 
-  LoginInfo deviceManufacturer(String? deviceManufacturer);
+  LoginInfo ip(String? ip);
+
+  LoginInfo deviceName(String? deviceName);
 
   LoginInfo deviceModel(String? deviceModel);
 
-  LoginInfo deviceName(String? deviceName);
+  LoginInfo deviceBrand(String? deviceBrand);
+
+  LoginInfo deviceManufacturer(String? deviceManufacturer);
 
   LoginInfo deviceOs(String? deviceOs);
 
@@ -39,35 +29,45 @@ abstract class _$LoginInfoCWProxy {
 
   LoginInfo deviceType(String? deviceType);
 
-  LoginInfo id(String? id);
-
-  LoginInfo ip(String? ip);
-
-  LoginInfo isActive(bool? isActive);
-
-  LoginInfo isp(String? isp);
-
-  LoginInfo lat(double? lat);
-
-  LoginInfo lon(double? lon);
-
-  LoginInfo org(String? org);
+  LoginInfo city(String? city);
 
   LoginInfo region(String? region);
 
   LoginInfo regionName(String? regionName);
 
-  LoginInfo resultAs(String? resultAs);
+  LoginInfo country(String? country);
 
-  LoginInfo reverse(String? reverse);
+  LoginInfo countryCode(String? countryCode);
+
+  LoginInfo continent(String? continent);
+
+  LoginInfo continentCode(String? continentCode);
+
+  LoginInfo lat(double? lat);
+
+  LoginInfo lon(double? lon);
+
+  LoginInfo zip(String? zip);
 
   LoginInfo timezone(String? timezone);
 
+  LoginInfo currency(String? currency);
+
+  LoginInfo isp(String? isp);
+
+  LoginInfo org(String? org);
+
+  LoginInfo resultAs(String? resultAs);
+
+  LoginInfo asname(String? asname);
+
+  LoginInfo reverse(String? reverse);
+
+  LoginInfo isActive(bool? isActive);
+
+  LoginInfo createdAt(DateTime? createdAt);
+
   LoginInfo updatedAt(DateTime? updatedAt);
-
-  LoginInfo user(String? user);
-
-  LoginInfo zip(String? zip);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `LoginInfo(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -76,86 +76,70 @@ abstract class _$LoginInfoCWProxy {
   /// LoginInfo(...).copyWith(id: 12, name: "My name")
   /// ````
   LoginInfo call({
-    String? asname,
-    String? city,
-    String? continent,
-    String? continentCode,
-    String? country,
-    String? countryCode,
-    DateTime? createdAt,
-    String? currency,
-    String? deviceBrand,
+    String? id,
+    String? user,
     String? deviceId,
-    String? deviceManufacturer,
-    String? deviceModel,
+    String? ip,
     String? deviceName,
+    String? deviceModel,
+    String? deviceBrand,
+    String? deviceManufacturer,
     String? deviceOs,
     String? deviceOsVersion,
     String? deviceType,
-    String? id,
-    String? ip,
-    bool? isActive,
-    String? isp,
-    double? lat,
-    double? lon,
-    String? org,
+    String? city,
     String? region,
     String? regionName,
-    String? resultAs,
-    String? reverse,
-    String? timezone,
-    DateTime? updatedAt,
-    String? user,
+    String? country,
+    String? countryCode,
+    String? continent,
+    String? continentCode,
+    double? lat,
+    double? lon,
     String? zip,
+    String? timezone,
+    String? currency,
+    String? isp,
+    String? org,
+    String? resultAs,
+    String? asname,
+    String? reverse,
+    bool? isActive,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfLoginInfo.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfLoginInfo.copyWith.fieldName(...)`
 class _$LoginInfoCWProxyImpl implements _$LoginInfoCWProxy {
-  final LoginInfo _value;
-
   const _$LoginInfoCWProxyImpl(this._value);
 
-  @override
-  LoginInfo asname(String? asname) => this(asname: asname);
+  final LoginInfo _value;
 
   @override
-  LoginInfo city(String? city) => this(city: city);
+  LoginInfo id(String? id) => this(id: id);
 
   @override
-  LoginInfo continent(String? continent) => this(continent: continent);
-
-  @override
-  LoginInfo continentCode(String? continentCode) =>
-      this(continentCode: continentCode);
-
-  @override
-  LoginInfo country(String? country) => this(country: country);
-
-  @override
-  LoginInfo countryCode(String? countryCode) => this(countryCode: countryCode);
-
-  @override
-  LoginInfo createdAt(DateTime? createdAt) => this(createdAt: createdAt);
-
-  @override
-  LoginInfo currency(String? currency) => this(currency: currency);
-
-  @override
-  LoginInfo deviceBrand(String? deviceBrand) => this(deviceBrand: deviceBrand);
+  LoginInfo user(String? user) => this(user: user);
 
   @override
   LoginInfo deviceId(String? deviceId) => this(deviceId: deviceId);
 
   @override
-  LoginInfo deviceManufacturer(String? deviceManufacturer) =>
-      this(deviceManufacturer: deviceManufacturer);
+  LoginInfo ip(String? ip) => this(ip: ip);
+
+  @override
+  LoginInfo deviceName(String? deviceName) => this(deviceName: deviceName);
 
   @override
   LoginInfo deviceModel(String? deviceModel) => this(deviceModel: deviceModel);
 
   @override
-  LoginInfo deviceName(String? deviceName) => this(deviceName: deviceName);
+  LoginInfo deviceBrand(String? deviceBrand) => this(deviceBrand: deviceBrand);
+
+  @override
+  LoginInfo deviceManufacturer(String? deviceManufacturer) =>
+      this(deviceManufacturer: deviceManufacturer);
 
   @override
   LoginInfo deviceOs(String? deviceOs) => this(deviceOs: deviceOs);
@@ -168,25 +152,7 @@ class _$LoginInfoCWProxyImpl implements _$LoginInfoCWProxy {
   LoginInfo deviceType(String? deviceType) => this(deviceType: deviceType);
 
   @override
-  LoginInfo id(String? id) => this(id: id);
-
-  @override
-  LoginInfo ip(String? ip) => this(ip: ip);
-
-  @override
-  LoginInfo isActive(bool? isActive) => this(isActive: isActive);
-
-  @override
-  LoginInfo isp(String? isp) => this(isp: isp);
-
-  @override
-  LoginInfo lat(double? lat) => this(lat: lat);
-
-  @override
-  LoginInfo lon(double? lon) => this(lon: lon);
-
-  @override
-  LoginInfo org(String? org) => this(org: org);
+  LoginInfo city(String? city) => this(city: city);
 
   @override
   LoginInfo region(String? region) => this(region: region);
@@ -195,22 +161,56 @@ class _$LoginInfoCWProxyImpl implements _$LoginInfoCWProxy {
   LoginInfo regionName(String? regionName) => this(regionName: regionName);
 
   @override
-  LoginInfo resultAs(String? resultAs) => this(resultAs: resultAs);
+  LoginInfo country(String? country) => this(country: country);
 
   @override
-  LoginInfo reverse(String? reverse) => this(reverse: reverse);
+  LoginInfo countryCode(String? countryCode) => this(countryCode: countryCode);
+
+  @override
+  LoginInfo continent(String? continent) => this(continent: continent);
+
+  @override
+  LoginInfo continentCode(String? continentCode) =>
+      this(continentCode: continentCode);
+
+  @override
+  LoginInfo lat(double? lat) => this(lat: lat);
+
+  @override
+  LoginInfo lon(double? lon) => this(lon: lon);
+
+  @override
+  LoginInfo zip(String? zip) => this(zip: zip);
 
   @override
   LoginInfo timezone(String? timezone) => this(timezone: timezone);
 
   @override
+  LoginInfo currency(String? currency) => this(currency: currency);
+
+  @override
+  LoginInfo isp(String? isp) => this(isp: isp);
+
+  @override
+  LoginInfo org(String? org) => this(org: org);
+
+  @override
+  LoginInfo resultAs(String? resultAs) => this(resultAs: resultAs);
+
+  @override
+  LoginInfo asname(String? asname) => this(asname: asname);
+
+  @override
+  LoginInfo reverse(String? reverse) => this(reverse: reverse);
+
+  @override
+  LoginInfo isActive(bool? isActive) => this(isActive: isActive);
+
+  @override
+  LoginInfo createdAt(DateTime? createdAt) => this(createdAt: createdAt);
+
+  @override
   LoginInfo updatedAt(DateTime? updatedAt) => this(updatedAt: updatedAt);
-
-  @override
-  LoginInfo user(String? user) => this(user: user);
-
-  @override
-  LoginInfo zip(String? zip) => this(zip: zip);
 
   @override
 
@@ -221,91 +221,71 @@ class _$LoginInfoCWProxyImpl implements _$LoginInfoCWProxy {
   /// LoginInfo(...).copyWith(id: 12, name: "My name")
   /// ````
   LoginInfo call({
-    Object? asname = const $CopyWithPlaceholder(),
-    Object? city = const $CopyWithPlaceholder(),
-    Object? continent = const $CopyWithPlaceholder(),
-    Object? continentCode = const $CopyWithPlaceholder(),
-    Object? country = const $CopyWithPlaceholder(),
-    Object? countryCode = const $CopyWithPlaceholder(),
-    Object? createdAt = const $CopyWithPlaceholder(),
-    Object? currency = const $CopyWithPlaceholder(),
-    Object? deviceBrand = const $CopyWithPlaceholder(),
+    Object? id = const $CopyWithPlaceholder(),
+    Object? user = const $CopyWithPlaceholder(),
     Object? deviceId = const $CopyWithPlaceholder(),
-    Object? deviceManufacturer = const $CopyWithPlaceholder(),
-    Object? deviceModel = const $CopyWithPlaceholder(),
+    Object? ip = const $CopyWithPlaceholder(),
     Object? deviceName = const $CopyWithPlaceholder(),
+    Object? deviceModel = const $CopyWithPlaceholder(),
+    Object? deviceBrand = const $CopyWithPlaceholder(),
+    Object? deviceManufacturer = const $CopyWithPlaceholder(),
     Object? deviceOs = const $CopyWithPlaceholder(),
     Object? deviceOsVersion = const $CopyWithPlaceholder(),
     Object? deviceType = const $CopyWithPlaceholder(),
-    Object? id = const $CopyWithPlaceholder(),
-    Object? ip = const $CopyWithPlaceholder(),
-    Object? isActive = const $CopyWithPlaceholder(),
-    Object? isp = const $CopyWithPlaceholder(),
-    Object? lat = const $CopyWithPlaceholder(),
-    Object? lon = const $CopyWithPlaceholder(),
-    Object? org = const $CopyWithPlaceholder(),
+    Object? city = const $CopyWithPlaceholder(),
     Object? region = const $CopyWithPlaceholder(),
     Object? regionName = const $CopyWithPlaceholder(),
-    Object? resultAs = const $CopyWithPlaceholder(),
-    Object? reverse = const $CopyWithPlaceholder(),
-    Object? timezone = const $CopyWithPlaceholder(),
-    Object? updatedAt = const $CopyWithPlaceholder(),
-    Object? user = const $CopyWithPlaceholder(),
+    Object? country = const $CopyWithPlaceholder(),
+    Object? countryCode = const $CopyWithPlaceholder(),
+    Object? continent = const $CopyWithPlaceholder(),
+    Object? continentCode = const $CopyWithPlaceholder(),
+    Object? lat = const $CopyWithPlaceholder(),
+    Object? lon = const $CopyWithPlaceholder(),
     Object? zip = const $CopyWithPlaceholder(),
+    Object? timezone = const $CopyWithPlaceholder(),
+    Object? currency = const $CopyWithPlaceholder(),
+    Object? isp = const $CopyWithPlaceholder(),
+    Object? org = const $CopyWithPlaceholder(),
+    Object? resultAs = const $CopyWithPlaceholder(),
+    Object? asname = const $CopyWithPlaceholder(),
+    Object? reverse = const $CopyWithPlaceholder(),
+    Object? isActive = const $CopyWithPlaceholder(),
+    Object? createdAt = const $CopyWithPlaceholder(),
+    Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
     return LoginInfo(
-      asname: asname == const $CopyWithPlaceholder()
-          ? _value.asname
+      id: id == const $CopyWithPlaceholder()
+          ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : asname as String?,
-      city: city == const $CopyWithPlaceholder()
-          ? _value.city
+          : id as String?,
+      user: user == const $CopyWithPlaceholder()
+          ? _value.user
           // ignore: cast_nullable_to_non_nullable
-          : city as String?,
-      continent: continent == const $CopyWithPlaceholder()
-          ? _value.continent
-          // ignore: cast_nullable_to_non_nullable
-          : continent as String?,
-      continentCode: continentCode == const $CopyWithPlaceholder()
-          ? _value.continentCode
-          // ignore: cast_nullable_to_non_nullable
-          : continentCode as String?,
-      country: country == const $CopyWithPlaceholder()
-          ? _value.country
-          // ignore: cast_nullable_to_non_nullable
-          : country as String?,
-      countryCode: countryCode == const $CopyWithPlaceholder()
-          ? _value.countryCode
-          // ignore: cast_nullable_to_non_nullable
-          : countryCode as String?,
-      createdAt: createdAt == const $CopyWithPlaceholder()
-          ? _value.createdAt
-          // ignore: cast_nullable_to_non_nullable
-          : createdAt as DateTime?,
-      currency: currency == const $CopyWithPlaceholder()
-          ? _value.currency
-          // ignore: cast_nullable_to_non_nullable
-          : currency as String?,
-      deviceBrand: deviceBrand == const $CopyWithPlaceholder()
-          ? _value.deviceBrand
-          // ignore: cast_nullable_to_non_nullable
-          : deviceBrand as String?,
+          : user as String?,
       deviceId: deviceId == const $CopyWithPlaceholder()
           ? _value.deviceId
           // ignore: cast_nullable_to_non_nullable
           : deviceId as String?,
-      deviceManufacturer: deviceManufacturer == const $CopyWithPlaceholder()
-          ? _value.deviceManufacturer
+      ip: ip == const $CopyWithPlaceholder()
+          ? _value.ip
           // ignore: cast_nullable_to_non_nullable
-          : deviceManufacturer as String?,
-      deviceModel: deviceModel == const $CopyWithPlaceholder()
-          ? _value.deviceModel
-          // ignore: cast_nullable_to_non_nullable
-          : deviceModel as String?,
+          : ip as String?,
       deviceName: deviceName == const $CopyWithPlaceholder()
           ? _value.deviceName
           // ignore: cast_nullable_to_non_nullable
           : deviceName as String?,
+      deviceModel: deviceModel == const $CopyWithPlaceholder()
+          ? _value.deviceModel
+          // ignore: cast_nullable_to_non_nullable
+          : deviceModel as String?,
+      deviceBrand: deviceBrand == const $CopyWithPlaceholder()
+          ? _value.deviceBrand
+          // ignore: cast_nullable_to_non_nullable
+          : deviceBrand as String?,
+      deviceManufacturer: deviceManufacturer == const $CopyWithPlaceholder()
+          ? _value.deviceManufacturer
+          // ignore: cast_nullable_to_non_nullable
+          : deviceManufacturer as String?,
       deviceOs: deviceOs == const $CopyWithPlaceholder()
           ? _value.deviceOs
           // ignore: cast_nullable_to_non_nullable
@@ -318,34 +298,10 @@ class _$LoginInfoCWProxyImpl implements _$LoginInfoCWProxy {
           ? _value.deviceType
           // ignore: cast_nullable_to_non_nullable
           : deviceType as String?,
-      id: id == const $CopyWithPlaceholder()
-          ? _value.id
+      city: city == const $CopyWithPlaceholder()
+          ? _value.city
           // ignore: cast_nullable_to_non_nullable
-          : id as String?,
-      ip: ip == const $CopyWithPlaceholder()
-          ? _value.ip
-          // ignore: cast_nullable_to_non_nullable
-          : ip as String?,
-      isActive: isActive == const $CopyWithPlaceholder()
-          ? _value.isActive
-          // ignore: cast_nullable_to_non_nullable
-          : isActive as bool?,
-      isp: isp == const $CopyWithPlaceholder()
-          ? _value.isp
-          // ignore: cast_nullable_to_non_nullable
-          : isp as String?,
-      lat: lat == const $CopyWithPlaceholder()
-          ? _value.lat
-          // ignore: cast_nullable_to_non_nullable
-          : lat as double?,
-      lon: lon == const $CopyWithPlaceholder()
-          ? _value.lon
-          // ignore: cast_nullable_to_non_nullable
-          : lon as double?,
-      org: org == const $CopyWithPlaceholder()
-          ? _value.org
-          // ignore: cast_nullable_to_non_nullable
-          : org as String?,
+          : city as String?,
       region: region == const $CopyWithPlaceholder()
           ? _value.region
           // ignore: cast_nullable_to_non_nullable
@@ -354,30 +310,74 @@ class _$LoginInfoCWProxyImpl implements _$LoginInfoCWProxy {
           ? _value.regionName
           // ignore: cast_nullable_to_non_nullable
           : regionName as String?,
-      resultAs: resultAs == const $CopyWithPlaceholder()
-          ? _value.resultAs
+      country: country == const $CopyWithPlaceholder()
+          ? _value.country
           // ignore: cast_nullable_to_non_nullable
-          : resultAs as String?,
-      reverse: reverse == const $CopyWithPlaceholder()
-          ? _value.reverse
+          : country as String?,
+      countryCode: countryCode == const $CopyWithPlaceholder()
+          ? _value.countryCode
           // ignore: cast_nullable_to_non_nullable
-          : reverse as String?,
-      timezone: timezone == const $CopyWithPlaceholder()
-          ? _value.timezone
+          : countryCode as String?,
+      continent: continent == const $CopyWithPlaceholder()
+          ? _value.continent
           // ignore: cast_nullable_to_non_nullable
-          : timezone as String?,
-      updatedAt: updatedAt == const $CopyWithPlaceholder()
-          ? _value.updatedAt
+          : continent as String?,
+      continentCode: continentCode == const $CopyWithPlaceholder()
+          ? _value.continentCode
           // ignore: cast_nullable_to_non_nullable
-          : updatedAt as DateTime?,
-      user: user == const $CopyWithPlaceholder()
-          ? _value.user
+          : continentCode as String?,
+      lat: lat == const $CopyWithPlaceholder()
+          ? _value.lat
           // ignore: cast_nullable_to_non_nullable
-          : user as String?,
+          : lat as double?,
+      lon: lon == const $CopyWithPlaceholder()
+          ? _value.lon
+          // ignore: cast_nullable_to_non_nullable
+          : lon as double?,
       zip: zip == const $CopyWithPlaceholder()
           ? _value.zip
           // ignore: cast_nullable_to_non_nullable
           : zip as String?,
+      timezone: timezone == const $CopyWithPlaceholder()
+          ? _value.timezone
+          // ignore: cast_nullable_to_non_nullable
+          : timezone as String?,
+      currency: currency == const $CopyWithPlaceholder()
+          ? _value.currency
+          // ignore: cast_nullable_to_non_nullable
+          : currency as String?,
+      isp: isp == const $CopyWithPlaceholder()
+          ? _value.isp
+          // ignore: cast_nullable_to_non_nullable
+          : isp as String?,
+      org: org == const $CopyWithPlaceholder()
+          ? _value.org
+          // ignore: cast_nullable_to_non_nullable
+          : org as String?,
+      resultAs: resultAs == const $CopyWithPlaceholder()
+          ? _value.resultAs
+          // ignore: cast_nullable_to_non_nullable
+          : resultAs as String?,
+      asname: asname == const $CopyWithPlaceholder()
+          ? _value.asname
+          // ignore: cast_nullable_to_non_nullable
+          : asname as String?,
+      reverse: reverse == const $CopyWithPlaceholder()
+          ? _value.reverse
+          // ignore: cast_nullable_to_non_nullable
+          : reverse as String?,
+      isActive: isActive == const $CopyWithPlaceholder()
+          ? _value.isActive
+          // ignore: cast_nullable_to_non_nullable
+          : isActive as bool?,
+      createdAt: createdAt == const $CopyWithPlaceholder()
+          ? _value.createdAt
+          // ignore: cast_nullable_to_non_nullable
+          : createdAt as DateTime?,
+      updatedAt: updatedAt == const $CopyWithPlaceholder()
+          ? _value.updatedAt
+          // ignore: cast_nullable_to_non_nullable
+          : updatedAt as DateTime?,
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/modules/home/controllers/recommended_user_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -139,25 +139,13 @@ class PeopleTab extends StatelessWidget {
             );
           },
         ),
-        if (logic.isMoreLoading ||
-            (logic.recommendedUsersData!.results != null &&
-                logic.recommendedUsersData!.hasNextPage!))
-          Dimens.boxHeight8,
-        if (logic.isMoreLoading)
-          const Center(child: NxCircularProgressIndicator()),
-        if (!logic.isMoreLoading &&
-            logic.recommendedUsersData!.results != null &&
-            logic.recommendedUsersData!.hasNextPage!)
-          Center(
-            child: NxTextButton(
-              label: 'Load more people',
-              onTap: logic.loadMore,
-              labelStyle: AppStyles.style14Bold.copyWith(
-                color: ColorValues.primaryLightColor,
-              ),
-              padding: Dimens.edgeInsets8_0,
-            ),
-          ),
+        LoadMoreWidget(
+          loadingCondition: logic.isMoreLoading,
+          hasMoreCondition: logic.recommendedUsersData!.results != null &&
+              logic.recommendedUsersData!.hasNextPage!,
+          loadMore: logic.loadMore,
+        ),
+        Dimens.boxHeight16,
       ],
     );
   }

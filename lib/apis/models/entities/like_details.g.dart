@@ -9,9 +9,9 @@ part of 'like_details.dart';
 abstract class _$LikeDetailsCWProxy {
   LikeDetails id(String? id);
 
-  LikeDetails likedAt(DateTime? likedAt);
-
   LikeDetails likedBy(User? likedBy);
+
+  LikeDetails likedAt(DateTime? likedAt);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `LikeDetails(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -21,25 +21,25 @@ abstract class _$LikeDetailsCWProxy {
   /// ````
   LikeDetails call({
     String? id,
-    DateTime? likedAt,
     User? likedBy,
+    DateTime? likedAt,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfLikeDetails.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfLikeDetails.copyWith.fieldName(...)`
 class _$LikeDetailsCWProxyImpl implements _$LikeDetailsCWProxy {
-  final LikeDetails _value;
-
   const _$LikeDetailsCWProxyImpl(this._value);
+
+  final LikeDetails _value;
 
   @override
   LikeDetails id(String? id) => this(id: id);
 
   @override
-  LikeDetails likedAt(DateTime? likedAt) => this(likedAt: likedAt);
+  LikeDetails likedBy(User? likedBy) => this(likedBy: likedBy);
 
   @override
-  LikeDetails likedBy(User? likedBy) => this(likedBy: likedBy);
+  LikeDetails likedAt(DateTime? likedAt) => this(likedAt: likedAt);
 
   @override
 
@@ -51,22 +51,22 @@ class _$LikeDetailsCWProxyImpl implements _$LikeDetailsCWProxy {
   /// ````
   LikeDetails call({
     Object? id = const $CopyWithPlaceholder(),
-    Object? likedAt = const $CopyWithPlaceholder(),
     Object? likedBy = const $CopyWithPlaceholder(),
+    Object? likedAt = const $CopyWithPlaceholder(),
   }) {
     return LikeDetails(
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
           : id as String?,
-      likedAt: likedAt == const $CopyWithPlaceholder()
-          ? _value.likedAt
-          // ignore: cast_nullable_to_non_nullable
-          : likedAt as DateTime?,
       likedBy: likedBy == const $CopyWithPlaceholder()
           ? _value.likedBy
           // ignore: cast_nullable_to_non_nullable
           : likedBy as User?,
+      likedAt: likedAt == const $CopyWithPlaceholder()
+          ? _value.likedAt
+          // ignore: cast_nullable_to_non_nullable
+          : likedAt as DateTime?,
     );
   }
 }

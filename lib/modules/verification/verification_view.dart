@@ -29,7 +29,7 @@ class VerificationView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.verificationRequest,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
                 Dimens.boxHeight16,
                 _buildBody(context),
@@ -50,7 +50,7 @@ class VerificationView extends StatelessWidget {
               parent: AlwaysScrollableScrollPhysics(),
             ),
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
@@ -107,7 +107,7 @@ class VerificationView extends StatelessWidget {
           child: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Dimens.eight),
+                borderRadius: BorderRadius.circular(Dimens.four),
               ),
               hintStyle: AppStyles.style14Normal.copyWith(
                 color: ColorValues.grayColor,
@@ -150,7 +150,7 @@ class VerificationView extends StatelessWidget {
           child: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Dimens.eight),
+                borderRadius: BorderRadius.circular(Dimens.four),
               ),
               hintStyle: AppStyles.style14Normal.copyWith(
                 color: ColorValues.grayColor,
@@ -223,7 +223,7 @@ class VerificationView extends StatelessWidget {
           child: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Dimens.eight),
+                borderRadius: BorderRadius.circular(Dimens.four),
               ),
               hintStyle: AppStyles.style14Normal.copyWith(
                 color: ColorValues.grayColor,
@@ -296,7 +296,7 @@ class VerificationView extends StatelessWidget {
           child: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Dimens.eight),
+                borderRadius: BorderRadius.circular(Dimens.four),
               ),
               hintStyle: AppStyles.style14Normal.copyWith(
                 color: ColorValues.grayColor,
@@ -373,7 +373,7 @@ class VerificationView extends StatelessWidget {
               border: Border.all(
                 color: Theme.of(Get.context!).dividerColor,
               ),
-              borderRadius: BorderRadius.circular(Dimens.eight),
+              borderRadius: BorderRadius.circular(Dimens.four),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -439,7 +439,7 @@ class VerificationView extends StatelessWidget {
               border: Border.all(
                 color: Theme.of(Get.context!).dividerColor,
               ),
-              borderRadius: BorderRadius.circular(Dimens.eight),
+              borderRadius: BorderRadius.circular(Dimens.four),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -498,7 +498,7 @@ class VerificationView extends StatelessWidget {
           child: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Dimens.eight),
+                borderRadius: BorderRadius.circular(Dimens.four),
               ),
               hintStyle: AppStyles.style14Normal.copyWith(
                 color: ColorValues.grayColor,
@@ -551,7 +551,7 @@ class VerificationView extends StatelessWidget {
           child: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Dimens.eight),
+                borderRadius: BorderRadius.circular(Dimens.four),
               ),
               hintStyle: AppStyles.style14Normal.copyWith(
                 color: ColorValues.grayColor,
@@ -601,7 +601,7 @@ class VerificationView extends StatelessWidget {
           child: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Dimens.eight),
+                borderRadius: BorderRadius.circular(Dimens.four),
               ),
               hintStyle: AppStyles.style14Normal.copyWith(
                 color: ColorValues.grayColor,

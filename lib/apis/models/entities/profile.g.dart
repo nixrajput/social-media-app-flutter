@@ -7,61 +7,61 @@ part of 'profile.dart';
 // **************************************************************************
 
 abstract class _$ProfileCWProxy {
-  Profile about(String? about);
+  Profile id(String id);
 
-  Profile accountStatus(String accountStatus);
+  Profile fname(String fname);
 
-  Profile avatar(MediaFile? avatar);
-
-  Profile countryCode(String? countryCode);
-
-  Profile createdAt(DateTime createdAt);
-
-  Profile dob(String? dob);
+  Profile lname(String lname);
 
   Profile email(String email);
 
   Profile emailVerified(bool emailVerified);
 
-  Profile fname(String fname);
+  Profile uname(String uname);
+
+  Profile avatar(MediaFile? avatar);
+
+  Profile phone(String? phone);
+
+  Profile countryCode(String? countryCode);
+
+  Profile phoneVerified(bool? phoneVerified);
+
+  Profile gender(String? gender);
+
+  Profile dob(String? dob);
+
+  Profile about(String? about);
+
+  Profile profession(String? profession);
+
+  Profile location(String? location);
+
+  Profile website(String? website);
+
+  Profile postsCount(int postsCount);
 
   Profile followersCount(int followersCount);
 
   Profile followingCount(int followingCount);
 
-  Profile gender(String? gender);
-
-  Profile id(String id);
+  Profile role(String role);
 
   Profile isPrivate(bool isPrivate);
+
+  Profile accountStatus(String accountStatus);
 
   Profile isValid(bool isValid);
 
   Profile isVerified(bool isVerified);
 
-  Profile lastSeen(DateTime? lastSeen);
-
-  Profile lname(String lname);
-
-  Profile location(String? location);
-
-  Profile phone(String? phone);
-
-  Profile phoneVerified(bool? phoneVerified);
-
-  Profile postsCount(int postsCount);
-
-  Profile profession(String? profession);
-
-  Profile role(String role);
-
   Profile showOnlineStatus(bool? showOnlineStatus);
 
-  Profile uname(String uname);
+  Profile lastSeen(DateTime? lastSeen);
+
+  Profile createdAt(DateTime createdAt);
 
   Profile updatedAt(DateTime updatedAt);
-
-  Profile website(String? website);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Profile(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -70,61 +70,51 @@ abstract class _$ProfileCWProxy {
   /// Profile(...).copyWith(id: 12, name: "My name")
   /// ````
   Profile call({
-    String? about,
-    String? accountStatus,
-    MediaFile? avatar,
-    String? countryCode,
-    DateTime? createdAt,
-    String? dob,
+    String? id,
+    String? fname,
+    String? lname,
     String? email,
     bool? emailVerified,
-    String? fname,
+    String? uname,
+    MediaFile? avatar,
+    String? phone,
+    String? countryCode,
+    bool? phoneVerified,
+    String? gender,
+    String? dob,
+    String? about,
+    String? profession,
+    String? location,
+    String? website,
+    int? postsCount,
     int? followersCount,
     int? followingCount,
-    String? gender,
-    String? id,
+    String? role,
     bool? isPrivate,
+    String? accountStatus,
     bool? isValid,
     bool? isVerified,
-    DateTime? lastSeen,
-    String? lname,
-    String? location,
-    String? phone,
-    bool? phoneVerified,
-    int? postsCount,
-    String? profession,
-    String? role,
     bool? showOnlineStatus,
-    String? uname,
+    DateTime? lastSeen,
+    DateTime? createdAt,
     DateTime? updatedAt,
-    String? website,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfProfile.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfProfile.copyWith.fieldName(...)`
 class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
-  final Profile _value;
-
   const _$ProfileCWProxyImpl(this._value);
 
-  @override
-  Profile about(String? about) => this(about: about);
+  final Profile _value;
 
   @override
-  Profile accountStatus(String accountStatus) =>
-      this(accountStatus: accountStatus);
+  Profile id(String id) => this(id: id);
 
   @override
-  Profile avatar(MediaFile? avatar) => this(avatar: avatar);
+  Profile fname(String fname) => this(fname: fname);
 
   @override
-  Profile countryCode(String? countryCode) => this(countryCode: countryCode);
-
-  @override
-  Profile createdAt(DateTime createdAt) => this(createdAt: createdAt);
-
-  @override
-  Profile dob(String? dob) => this(dob: dob);
+  Profile lname(String lname) => this(lname: lname);
 
   @override
   Profile email(String email) => this(email: email);
@@ -134,7 +124,41 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
       this(emailVerified: emailVerified);
 
   @override
-  Profile fname(String fname) => this(fname: fname);
+  Profile uname(String uname) => this(uname: uname);
+
+  @override
+  Profile avatar(MediaFile? avatar) => this(avatar: avatar);
+
+  @override
+  Profile phone(String? phone) => this(phone: phone);
+
+  @override
+  Profile countryCode(String? countryCode) => this(countryCode: countryCode);
+
+  @override
+  Profile phoneVerified(bool? phoneVerified) =>
+      this(phoneVerified: phoneVerified);
+
+  @override
+  Profile gender(String? gender) => this(gender: gender);
+
+  @override
+  Profile dob(String? dob) => this(dob: dob);
+
+  @override
+  Profile about(String? about) => this(about: about);
+
+  @override
+  Profile profession(String? profession) => this(profession: profession);
+
+  @override
+  Profile location(String? location) => this(location: location);
+
+  @override
+  Profile website(String? website) => this(website: website);
+
+  @override
+  Profile postsCount(int postsCount) => this(postsCount: postsCount);
 
   @override
   Profile followersCount(int followersCount) =>
@@ -145,13 +169,14 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
       this(followingCount: followingCount);
 
   @override
-  Profile gender(String? gender) => this(gender: gender);
-
-  @override
-  Profile id(String id) => this(id: id);
+  Profile role(String role) => this(role: role);
 
   @override
   Profile isPrivate(bool isPrivate) => this(isPrivate: isPrivate);
+
+  @override
+  Profile accountStatus(String accountStatus) =>
+      this(accountStatus: accountStatus);
 
   @override
   Profile isValid(bool isValid) => this(isValid: isValid);
@@ -160,42 +185,17 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
   Profile isVerified(bool isVerified) => this(isVerified: isVerified);
 
   @override
-  Profile lastSeen(DateTime? lastSeen) => this(lastSeen: lastSeen);
-
-  @override
-  Profile lname(String lname) => this(lname: lname);
-
-  @override
-  Profile location(String? location) => this(location: location);
-
-  @override
-  Profile phone(String? phone) => this(phone: phone);
-
-  @override
-  Profile phoneVerified(bool? phoneVerified) =>
-      this(phoneVerified: phoneVerified);
-
-  @override
-  Profile postsCount(int postsCount) => this(postsCount: postsCount);
-
-  @override
-  Profile profession(String? profession) => this(profession: profession);
-
-  @override
-  Profile role(String role) => this(role: role);
-
-  @override
   Profile showOnlineStatus(bool? showOnlineStatus) =>
       this(showOnlineStatus: showOnlineStatus);
 
   @override
-  Profile uname(String uname) => this(uname: uname);
+  Profile lastSeen(DateTime? lastSeen) => this(lastSeen: lastSeen);
+
+  @override
+  Profile createdAt(DateTime createdAt) => this(createdAt: createdAt);
 
   @override
   Profile updatedAt(DateTime updatedAt) => this(updatedAt: updatedAt);
-
-  @override
-  Profile website(String? website) => this(website: website);
 
   @override
 
@@ -206,154 +206,170 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
   /// Profile(...).copyWith(id: 12, name: "My name")
   /// ````
   Profile call({
-    Object? about = const $CopyWithPlaceholder(),
-    Object? accountStatus = const $CopyWithPlaceholder(),
-    Object? avatar = const $CopyWithPlaceholder(),
-    Object? countryCode = const $CopyWithPlaceholder(),
-    Object? createdAt = const $CopyWithPlaceholder(),
-    Object? dob = const $CopyWithPlaceholder(),
+    Object? id = const $CopyWithPlaceholder(),
+    Object? fname = const $CopyWithPlaceholder(),
+    Object? lname = const $CopyWithPlaceholder(),
     Object? email = const $CopyWithPlaceholder(),
     Object? emailVerified = const $CopyWithPlaceholder(),
-    Object? fname = const $CopyWithPlaceholder(),
+    Object? uname = const $CopyWithPlaceholder(),
+    Object? avatar = const $CopyWithPlaceholder(),
+    Object? phone = const $CopyWithPlaceholder(),
+    Object? countryCode = const $CopyWithPlaceholder(),
+    Object? phoneVerified = const $CopyWithPlaceholder(),
+    Object? gender = const $CopyWithPlaceholder(),
+    Object? dob = const $CopyWithPlaceholder(),
+    Object? about = const $CopyWithPlaceholder(),
+    Object? profession = const $CopyWithPlaceholder(),
+    Object? location = const $CopyWithPlaceholder(),
+    Object? website = const $CopyWithPlaceholder(),
+    Object? postsCount = const $CopyWithPlaceholder(),
     Object? followersCount = const $CopyWithPlaceholder(),
     Object? followingCount = const $CopyWithPlaceholder(),
-    Object? gender = const $CopyWithPlaceholder(),
-    Object? id = const $CopyWithPlaceholder(),
+    Object? role = const $CopyWithPlaceholder(),
     Object? isPrivate = const $CopyWithPlaceholder(),
+    Object? accountStatus = const $CopyWithPlaceholder(),
     Object? isValid = const $CopyWithPlaceholder(),
     Object? isVerified = const $CopyWithPlaceholder(),
-    Object? lastSeen = const $CopyWithPlaceholder(),
-    Object? lname = const $CopyWithPlaceholder(),
-    Object? location = const $CopyWithPlaceholder(),
-    Object? phone = const $CopyWithPlaceholder(),
-    Object? phoneVerified = const $CopyWithPlaceholder(),
-    Object? postsCount = const $CopyWithPlaceholder(),
-    Object? profession = const $CopyWithPlaceholder(),
-    Object? role = const $CopyWithPlaceholder(),
     Object? showOnlineStatus = const $CopyWithPlaceholder(),
-    Object? uname = const $CopyWithPlaceholder(),
+    Object? lastSeen = const $CopyWithPlaceholder(),
+    Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
-    Object? website = const $CopyWithPlaceholder(),
   }) {
     return Profile(
-      about: about == const $CopyWithPlaceholder()
-          ? _value.about
+      id: id == const $CopyWithPlaceholder() || id == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.id!
           // ignore: cast_nullable_to_non_nullable
-          : about as String?,
-      accountStatus:
-          accountStatus == const $CopyWithPlaceholder() || accountStatus == null
-              ? _value.accountStatus
-              // ignore: cast_nullable_to_non_nullable
-              : accountStatus as String,
-      avatar: avatar == const $CopyWithPlaceholder()
-          ? _value.avatar
+          : id as String,
+      fname: fname == const $CopyWithPlaceholder() || fname == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.fname!
           // ignore: cast_nullable_to_non_nullable
-          : avatar as MediaFile?,
-      countryCode: countryCode == const $CopyWithPlaceholder()
-          ? _value.countryCode
+          : fname as String,
+      lname: lname == const $CopyWithPlaceholder() || lname == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.lname!
           // ignore: cast_nullable_to_non_nullable
-          : countryCode as String?,
-      createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
-          ? _value.createdAt
-          // ignore: cast_nullable_to_non_nullable
-          : createdAt as DateTime,
-      dob: dob == const $CopyWithPlaceholder()
-          ? _value.dob
-          // ignore: cast_nullable_to_non_nullable
-          : dob as String?,
+          : lname as String,
       email: email == const $CopyWithPlaceholder() || email == null
-          ? _value.email
+          // ignore: unnecessary_non_null_assertion
+          ? _value.email!
           // ignore: cast_nullable_to_non_nullable
           : email as String,
       emailVerified:
           emailVerified == const $CopyWithPlaceholder() || emailVerified == null
-              ? _value.emailVerified
+              // ignore: unnecessary_non_null_assertion
+              ? _value.emailVerified!
               // ignore: cast_nullable_to_non_nullable
               : emailVerified as bool,
-      fname: fname == const $CopyWithPlaceholder() || fname == null
-          ? _value.fname
+      uname: uname == const $CopyWithPlaceholder() || uname == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.uname!
           // ignore: cast_nullable_to_non_nullable
-          : fname as String,
-      followersCount: followersCount == const $CopyWithPlaceholder() ||
-              followersCount == null
-          ? _value.followersCount
+          : uname as String,
+      avatar: avatar == const $CopyWithPlaceholder()
+          ? _value.avatar
           // ignore: cast_nullable_to_non_nullable
-          : followersCount as int,
-      followingCount: followingCount == const $CopyWithPlaceholder() ||
-              followingCount == null
-          ? _value.followingCount
-          // ignore: cast_nullable_to_non_nullable
-          : followingCount as int,
-      gender: gender == const $CopyWithPlaceholder()
-          ? _value.gender
-          // ignore: cast_nullable_to_non_nullable
-          : gender as String?,
-      id: id == const $CopyWithPlaceholder() || id == null
-          ? _value.id
-          // ignore: cast_nullable_to_non_nullable
-          : id as String,
-      isPrivate: isPrivate == const $CopyWithPlaceholder() || isPrivate == null
-          ? _value.isPrivate
-          // ignore: cast_nullable_to_non_nullable
-          : isPrivate as bool,
-      isValid: isValid == const $CopyWithPlaceholder() || isValid == null
-          ? _value.isValid
-          // ignore: cast_nullable_to_non_nullable
-          : isValid as bool,
-      isVerified:
-          isVerified == const $CopyWithPlaceholder() || isVerified == null
-              ? _value.isVerified
-              // ignore: cast_nullable_to_non_nullable
-              : isVerified as bool,
-      lastSeen: lastSeen == const $CopyWithPlaceholder()
-          ? _value.lastSeen
-          // ignore: cast_nullable_to_non_nullable
-          : lastSeen as DateTime?,
-      lname: lname == const $CopyWithPlaceholder() || lname == null
-          ? _value.lname
-          // ignore: cast_nullable_to_non_nullable
-          : lname as String,
-      location: location == const $CopyWithPlaceholder()
-          ? _value.location
-          // ignore: cast_nullable_to_non_nullable
-          : location as String?,
+          : avatar as MediaFile?,
       phone: phone == const $CopyWithPlaceholder()
           ? _value.phone
           // ignore: cast_nullable_to_non_nullable
           : phone as String?,
+      countryCode: countryCode == const $CopyWithPlaceholder()
+          ? _value.countryCode
+          // ignore: cast_nullable_to_non_nullable
+          : countryCode as String?,
       phoneVerified: phoneVerified == const $CopyWithPlaceholder()
           ? _value.phoneVerified
           // ignore: cast_nullable_to_non_nullable
           : phoneVerified as bool?,
-      postsCount:
-          postsCount == const $CopyWithPlaceholder() || postsCount == null
-              ? _value.postsCount
-              // ignore: cast_nullable_to_non_nullable
-              : postsCount as int,
+      gender: gender == const $CopyWithPlaceholder()
+          ? _value.gender
+          // ignore: cast_nullable_to_non_nullable
+          : gender as String?,
+      dob: dob == const $CopyWithPlaceholder()
+          ? _value.dob
+          // ignore: cast_nullable_to_non_nullable
+          : dob as String?,
+      about: about == const $CopyWithPlaceholder()
+          ? _value.about
+          // ignore: cast_nullable_to_non_nullable
+          : about as String?,
       profession: profession == const $CopyWithPlaceholder()
           ? _value.profession
           // ignore: cast_nullable_to_non_nullable
           : profession as String?,
-      role: role == const $CopyWithPlaceholder() || role == null
-          ? _value.role
+      location: location == const $CopyWithPlaceholder()
+          ? _value.location
           // ignore: cast_nullable_to_non_nullable
-          : role as String,
-      showOnlineStatus: showOnlineStatus == const $CopyWithPlaceholder()
-          ? _value.showOnlineStatus
-          // ignore: cast_nullable_to_non_nullable
-          : showOnlineStatus as bool?,
-      uname: uname == const $CopyWithPlaceholder() || uname == null
-          ? _value.uname
-          // ignore: cast_nullable_to_non_nullable
-          : uname as String,
-      updatedAt: updatedAt == const $CopyWithPlaceholder() || updatedAt == null
-          ? _value.updatedAt
-          // ignore: cast_nullable_to_non_nullable
-          : updatedAt as DateTime,
+          : location as String?,
       website: website == const $CopyWithPlaceholder()
           ? _value.website
           // ignore: cast_nullable_to_non_nullable
           : website as String?,
+      postsCount:
+          postsCount == const $CopyWithPlaceholder() || postsCount == null
+              // ignore: unnecessary_non_null_assertion
+              ? _value.postsCount!
+              // ignore: cast_nullable_to_non_nullable
+              : postsCount as int,
+      followersCount: followersCount == const $CopyWithPlaceholder() ||
+              followersCount == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.followersCount!
+          // ignore: cast_nullable_to_non_nullable
+          : followersCount as int,
+      followingCount: followingCount == const $CopyWithPlaceholder() ||
+              followingCount == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.followingCount!
+          // ignore: cast_nullable_to_non_nullable
+          : followingCount as int,
+      role: role == const $CopyWithPlaceholder() || role == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.role!
+          // ignore: cast_nullable_to_non_nullable
+          : role as String,
+      isPrivate: isPrivate == const $CopyWithPlaceholder() || isPrivate == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.isPrivate!
+          // ignore: cast_nullable_to_non_nullable
+          : isPrivate as bool,
+      accountStatus:
+          accountStatus == const $CopyWithPlaceholder() || accountStatus == null
+              // ignore: unnecessary_non_null_assertion
+              ? _value.accountStatus!
+              // ignore: cast_nullable_to_non_nullable
+              : accountStatus as String,
+      isValid: isValid == const $CopyWithPlaceholder() || isValid == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.isValid!
+          // ignore: cast_nullable_to_non_nullable
+          : isValid as bool,
+      isVerified:
+          isVerified == const $CopyWithPlaceholder() || isVerified == null
+              // ignore: unnecessary_non_null_assertion
+              ? _value.isVerified!
+              // ignore: cast_nullable_to_non_nullable
+              : isVerified as bool,
+      showOnlineStatus: showOnlineStatus == const $CopyWithPlaceholder()
+          ? _value.showOnlineStatus
+          // ignore: cast_nullable_to_non_nullable
+          : showOnlineStatus as bool?,
+      lastSeen: lastSeen == const $CopyWithPlaceholder()
+          ? _value.lastSeen
+          // ignore: cast_nullable_to_non_nullable
+          : lastSeen as DateTime?,
+      createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.createdAt!
+          // ignore: cast_nullable_to_non_nullable
+          : createdAt as DateTime,
+      updatedAt: updatedAt == const $CopyWithPlaceholder() || updatedAt == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.updatedAt!
+          // ignore: cast_nullable_to_non_nullable
+          : updatedAt as DateTime,
     );
   }
 }

@@ -26,7 +26,7 @@ class TrendingTabView extends StatelessWidget {
                     controller: logic.controller,
                     tabs: logic.tabs,
                     indicatorWeight: Dimens.two,
-                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicatorSize: TabBarIndicatorSize.label,
                     unselectedLabelColor:
                         Theme.of(context).textTheme.subtitle1!.color,
                     labelColor: ColorValues.primaryColor,

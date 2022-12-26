@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/app_services/network_controller.dart';
 import 'package:social_media_app/app_services/notification_service.dart';
@@ -31,12 +30,44 @@ int setNotificationId(String type) {
 }
 
 @pragma('vm:entry-point')
+bool setNotificationPriority(String type) {
+  switch (type) {
+    case 'Chats':
+      return true;
+    case 'Followers':
+      return false;
+    case 'Likes':
+      return false;
+    case 'Comments':
+      return false;
+    case 'Follow Requests':
+      return false;
+    case 'General Notifications':
+      return false;
+    default:
+      return false;
+  }
+}
+
+@pragma('vm:entry-point')
+var isInitialized = false;
+
+@pragma('vm:entry-point')
 Future<void> initializeFirebaseService() async {
+  AppUtility.log('Initializing Firebase Service');
+
+  if (isInitialized) {
+    AppUtility.log('Firebase Service already initialized');
+    return;
+  }
+
   await Firebase.initializeApp();
-  Get.put(NetworkController(), permanent: true);
-  Get.put(AuthService(), permanent: true);
 
   var _network = NetworkController.find;
+
+  if (_network.isConnected == true) {
+    AppUtility.log('Connected');
+  }
 
   var messaging = FirebaseMessaging.instance;
 
@@ -65,11 +96,15 @@ Future<void> initializeFirebaseService() async {
 
   var authService = AuthService.find;
 
-  if (_network.networkStatus == true) {
+  if (_network.isConnected == true) {
     await authService.getToken().then((token) async {
-      authService.autoLogout();
-
       if (token.isEmpty) {
+        return;
+      }
+
+      var isValid = await authService.validateLocalAuthToken();
+
+      if (isValid == false) {
         return;
       }
 
@@ -81,7 +116,7 @@ Future<void> initializeFirebaseService() async {
           notificationService.showNotification(
             title: 'Invalid Token',
             body: 'Token is invalid. Please login again.',
-            priority: true,
+            priority: setNotificationPriority('General Notifications'),
             id: setNotificationId('General Notifications'),
             channelId: 'General Notifications',
             channelName: 'General notifications',
@@ -91,7 +126,7 @@ Future<void> initializeFirebaseService() async {
       }
     });
 
-    if (authService.isLogin) {
+    if (authService.isLoggedIn) {
       var fcmToken = await authService.readFcmTokenFromLocalStorage();
       AppUtility.log('fcmToken: $fcmToken');
 
@@ -120,34 +155,41 @@ Future<void> initializeFirebaseService() async {
 
   FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
 
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    AppUtility.log('Got a message whilst in the foreground!');
-    AppUtility.log('Message data: ${message.data}');
+  FirebaseMessaging.onMessage
+      .listen((message) => onMessage(message, notificationService));
 
-    if (message.data.isNotEmpty) {
-      var messageData = message.data;
+  AppUtility.log('Firebase Service Initialized');
+}
 
-      var title = messageData['title'];
-      var body = messageData['body'];
-      var imageUrl = messageData['image'];
-      var type = messageData['type'];
+@pragma('vm:entry-point')
+Future<void> onMessage(
+    RemoteMessage message, NotificationService notificationService) async {
+  AppUtility.log('Got a message whilst in the foreground!');
+  AppUtility.log('Message data: ${message.data}');
 
-      notificationService.showNotification(
-        title: title ?? '',
-        body: body ?? '',
-        priority: true,
-        id: setNotificationId(type),
-        largeIcon: imageUrl,
-        channelId: type ?? 'General Notifications',
-        channelName: type ?? 'General notifications',
-      );
-    }
+  if (message.data.isNotEmpty) {
+    var messageData = message.data;
 
-    if (message.notification != null) {
-      AppUtility.log(
-          'Message also contained a notification: ${message.notification}');
-    }
-  });
+    var title = messageData['title'];
+    var body = messageData['body'];
+    var imageUrl = messageData['image'];
+    var type = messageData['type'];
+
+    notificationService.showNotification(
+      title: title ?? '',
+      body: body ?? '',
+      priority: setNotificationPriority(type),
+      id: setNotificationId(type),
+      largeIcon: imageUrl,
+      channelId: type ?? 'General Notifications',
+      channelName: type ?? 'General notifications',
+    );
+  }
+
+  if (message.notification != null) {
+    AppUtility.log(
+        'Message also contained a notification: ${message.notification}');
+  }
 }
 
 @pragma('vm:entry-point')
@@ -172,7 +214,7 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
     notificationService.showNotification(
       title: title ?? '',
       body: body ?? '',
-      priority: true,
+      priority: setNotificationPriority(type),
       id: setNotificationId(type),
       largeIcon: imageUrl,
       channelId: type ?? 'General Notifications',

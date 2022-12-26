@@ -37,16 +37,18 @@ class CommentController extends GetxController {
     _commentsData.value = response;
   }
 
-  Future<void> _fetchComments() async {
-    var postId = Get.arguments;
+  Future<void> _fetchComments({String? id}) async {
+    var postId = Get.arguments[0];
 
-    if (postId == '' || postId == null) return;
+    var tempId = id ?? postId;
+
+    if (tempId == null || tempId.isEmpty) return;
 
     _isLoading.value = true;
     update();
 
     try {
-      final response = await _apiProvider.getComments(_auth.token, postId);
+      final response = await _apiProvider.getComments(_auth.token, tempId);
 
       if (response.isSuccessful) {
         final decodedData = response.data;
@@ -148,7 +150,7 @@ class CommentController extends GetxController {
     }
   }
 
-  Future<void> fetchComments() async => await _fetchComments();
+  Future<void> fetchComments({String? postId}) async => await _fetchComments();
 
   Future<void> loadMore() async =>
       await _loadMore(page: _commentsData.value.currentPage! + 1);

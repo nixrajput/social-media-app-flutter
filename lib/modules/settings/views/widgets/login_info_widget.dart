@@ -31,7 +31,7 @@ class LoginInfoWidget extends StatelessWidget {
         child: NxListTile(
           padding: Dimens.edgeInsets12,
           bgColor: Theme.of(context).dialogBackgroundColor,
-          borderRadius: BorderRadius.all(Radius.circular(Dimens.eight)),
+          borderRadius: BorderRadius.all(Radius.circular(Dimens.four)),
           leading: item.deviceType == 'android'
               ? CircleAvatar(
                   backgroundColor: ColorValues.grayColor,
@@ -86,7 +86,7 @@ class LoginInfoWidget extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   text: GetTimeAgo.parse(
-                    item.createdAt!,
+                    item.createdAt!.toLocal(),
                     pattern: 'dd MMM yyyy hh:mm a',
                   ),
                   style: AppStyles.style13Normal.copyWith(

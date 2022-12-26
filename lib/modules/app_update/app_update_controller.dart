@@ -54,8 +54,6 @@ class AppUpdateController extends GetxController {
     var packageInfo = await PackageInfo.fromPlatform();
     version = packageInfo.version;
     buildNumber = packageInfo.buildNumber;
-    AppUtility.log('version: $version');
-    AppUtility.log('buildNumber: $buildNumber');
   }
 
   Future<void> _checkAppUpdate(bool showLoading, bool showAlert) async {
@@ -77,35 +75,31 @@ class AppUpdateController extends GetxController {
         var decodedData = response.data;
         AppUtility.log(decodedData[StringValues.message]);
 
-        if (decodedData['isUpdateAvailable']) {
+        var isUpdateAvailable = decodedData['isUpdateAvailable'];
+
+        if (showLoading) {
+          AppUtility.closeDialog();
+        }
+
+        if (showAlert) {
+          AppUtility.showSnackBar(
+            decodedData[StringValues.message],
+            StringValues.success,
+          );
+        }
+
+        if (isUpdateAvailable == true) {
           _hasUpdate.value = true;
 
-          if (_hasUpdate.value == true) {
-            if (_authService.token.isNotEmpty) {
-              await _authService.logout();
-            }
-            updateInfo = UpdateInfo.fromJson(decodedData['data']);
-
-            _isLoading.value = false;
-            update();
-            if (showLoading) {
-              AppUtility.closeDialog();
-            }
-            RouteManagement.goToAppUpdateView();
-          } else {
-            if (showLoading) {
-              AppUtility.closeDialog();
-            }
-            _isLoading.value = false;
-            update();
-            if (showAlert) {
-              AppUtility.showSnackBar(
-                decodedData[StringValues.message],
-                StringValues.success,
-              );
-            }
-            AppUtility.log(decodedData[StringValues.message]);
+          if (_authService.token.isNotEmpty) {
+            await _authService.logout();
           }
+          updateInfo = UpdateInfo.fromJson(decodedData['data']);
+
+          _isLoading.value = false;
+          update();
+
+          RouteManagement.goToAppUpdateView();
         }
       } else {
         var decodedData = response.data;
@@ -117,7 +111,7 @@ class AppUpdateController extends GetxController {
         if (showAlert) {
           AppUtility.showSnackBar(
             decodedData[StringValues.message],
-            StringValues.success,
+            StringValues.error,
           );
         }
         AppUtility.log(decodedData[StringValues.message]);

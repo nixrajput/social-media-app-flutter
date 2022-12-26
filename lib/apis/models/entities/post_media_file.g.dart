@@ -9,13 +9,13 @@ part of 'post_media_file.dart';
 abstract class _$PostMediaFileCWProxy {
   PostMediaFile id(String? id);
 
-  PostMediaFile mediaType(String? mediaType);
-
   PostMediaFile publicId(String? publicId);
 
-  PostMediaFile thumbnail(MediaFile? thumbnail);
-
   PostMediaFile url(String? url);
+
+  PostMediaFile mediaType(String? mediaType);
+
+  PostMediaFile thumbnail(MediaFile? thumbnail);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `PostMediaFile(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -25,33 +25,33 @@ abstract class _$PostMediaFileCWProxy {
   /// ````
   PostMediaFile call({
     String? id,
-    String? mediaType,
     String? publicId,
-    MediaFile? thumbnail,
     String? url,
+    String? mediaType,
+    MediaFile? thumbnail,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfPostMediaFile.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfPostMediaFile.copyWith.fieldName(...)`
 class _$PostMediaFileCWProxyImpl implements _$PostMediaFileCWProxy {
-  final PostMediaFile _value;
-
   const _$PostMediaFileCWProxyImpl(this._value);
+
+  final PostMediaFile _value;
 
   @override
   PostMediaFile id(String? id) => this(id: id);
 
   @override
-  PostMediaFile mediaType(String? mediaType) => this(mediaType: mediaType);
-
-  @override
   PostMediaFile publicId(String? publicId) => this(publicId: publicId);
 
   @override
-  PostMediaFile thumbnail(MediaFile? thumbnail) => this(thumbnail: thumbnail);
+  PostMediaFile url(String? url) => this(url: url);
 
   @override
-  PostMediaFile url(String? url) => this(url: url);
+  PostMediaFile mediaType(String? mediaType) => this(mediaType: mediaType);
+
+  @override
+  PostMediaFile thumbnail(MediaFile? thumbnail) => this(thumbnail: thumbnail);
 
   @override
 
@@ -63,32 +63,32 @@ class _$PostMediaFileCWProxyImpl implements _$PostMediaFileCWProxy {
   /// ````
   PostMediaFile call({
     Object? id = const $CopyWithPlaceholder(),
-    Object? mediaType = const $CopyWithPlaceholder(),
     Object? publicId = const $CopyWithPlaceholder(),
-    Object? thumbnail = const $CopyWithPlaceholder(),
     Object? url = const $CopyWithPlaceholder(),
+    Object? mediaType = const $CopyWithPlaceholder(),
+    Object? thumbnail = const $CopyWithPlaceholder(),
   }) {
     return PostMediaFile(
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
           : id as String?,
-      mediaType: mediaType == const $CopyWithPlaceholder()
-          ? _value.mediaType
-          // ignore: cast_nullable_to_non_nullable
-          : mediaType as String?,
       publicId: publicId == const $CopyWithPlaceholder()
           ? _value.publicId
           // ignore: cast_nullable_to_non_nullable
           : publicId as String?,
-      thumbnail: thumbnail == const $CopyWithPlaceholder()
-          ? _value.thumbnail
-          // ignore: cast_nullable_to_non_nullable
-          : thumbnail as MediaFile?,
       url: url == const $CopyWithPlaceholder()
           ? _value.url
           // ignore: cast_nullable_to_non_nullable
           : url as String?,
+      mediaType: mediaType == const $CopyWithPlaceholder()
+          ? _value.mediaType
+          // ignore: cast_nullable_to_non_nullable
+          : mediaType as String?,
+      thumbnail: thumbnail == const $CopyWithPlaceholder()
+          ? _value.thumbnail
+          // ignore: cast_nullable_to_non_nullable
+          : thumbnail as MediaFile?,
     );
   }
 }

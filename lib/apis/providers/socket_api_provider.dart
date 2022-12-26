@@ -57,9 +57,11 @@ class SocketApiProvider {
         _socketEventHandler,
         onError: (error) {
           AppUtility.log("Socket error: $error", tag: 'error');
+          reconnect(token);
         },
         onDone: () {
           AppUtility.log("Socket done");
+          reconnect(token);
         },
         cancelOnError: true,
       );
@@ -81,6 +83,11 @@ class SocketApiProvider {
     _socketApi._socketEventStream = null;
     _socket = null;
     AppUtility.log("Socket closed");
+  }
+
+  void reconnect(String token) {
+    close();
+    init(token);
   }
 
   void send(String message) {

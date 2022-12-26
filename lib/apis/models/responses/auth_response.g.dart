@@ -7,13 +7,13 @@ part of 'auth_response.dart';
 // **************************************************************************
 
 abstract class _$AuthResponseCWProxy {
-  AuthResponse expiresAt(int? expiresAt);
+  AuthResponse success(bool? success);
 
   AuthResponse message(String? message);
 
-  AuthResponse success(bool? success);
-
   AuthResponse token(String? token);
+
+  AuthResponse expiresAt(int? expiresAt);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `AuthResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -22,30 +22,30 @@ abstract class _$AuthResponseCWProxy {
   /// AuthResponse(...).copyWith(id: 12, name: "My name")
   /// ````
   AuthResponse call({
-    int? expiresAt,
-    String? message,
     bool? success,
+    String? message,
     String? token,
+    int? expiresAt,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfAuthResponse.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfAuthResponse.copyWith.fieldName(...)`
 class _$AuthResponseCWProxyImpl implements _$AuthResponseCWProxy {
-  final AuthResponse _value;
-
   const _$AuthResponseCWProxyImpl(this._value);
 
-  @override
-  AuthResponse expiresAt(int? expiresAt) => this(expiresAt: expiresAt);
-
-  @override
-  AuthResponse message(String? message) => this(message: message);
+  final AuthResponse _value;
 
   @override
   AuthResponse success(bool? success) => this(success: success);
 
   @override
+  AuthResponse message(String? message) => this(message: message);
+
+  @override
   AuthResponse token(String? token) => this(token: token);
+
+  @override
+  AuthResponse expiresAt(int? expiresAt) => this(expiresAt: expiresAt);
 
   @override
 
@@ -56,28 +56,28 @@ class _$AuthResponseCWProxyImpl implements _$AuthResponseCWProxy {
   /// AuthResponse(...).copyWith(id: 12, name: "My name")
   /// ````
   AuthResponse call({
-    Object? expiresAt = const $CopyWithPlaceholder(),
-    Object? message = const $CopyWithPlaceholder(),
     Object? success = const $CopyWithPlaceholder(),
+    Object? message = const $CopyWithPlaceholder(),
     Object? token = const $CopyWithPlaceholder(),
+    Object? expiresAt = const $CopyWithPlaceholder(),
   }) {
     return AuthResponse(
-      expiresAt: expiresAt == const $CopyWithPlaceholder()
-          ? _value.expiresAt
-          // ignore: cast_nullable_to_non_nullable
-          : expiresAt as int?,
-      message: message == const $CopyWithPlaceholder()
-          ? _value.message
-          // ignore: cast_nullable_to_non_nullable
-          : message as String?,
       success: success == const $CopyWithPlaceholder()
           ? _value.success
           // ignore: cast_nullable_to_non_nullable
           : success as bool?,
+      message: message == const $CopyWithPlaceholder()
+          ? _value.message
+          // ignore: cast_nullable_to_non_nullable
+          : message as String?,
       token: token == const $CopyWithPlaceholder()
           ? _value.token
           // ignore: cast_nullable_to_non_nullable
           : token as String?,
+      expiresAt: expiresAt == const $CopyWithPlaceholder()
+          ? _value.expiresAt
+          // ignore: cast_nullable_to_non_nullable
+          : expiresAt as int?,
     );
   }
 }

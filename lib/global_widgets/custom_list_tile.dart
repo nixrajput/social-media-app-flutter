@@ -68,7 +68,7 @@ class NxListTile extends StatelessWidget {
                       children: [
                         if (title != null) title!,
                         if (title != null && subtitle != null)
-                          Dimens.boxHeight2,
+                          Dimens.boxHeight4,
                         if (subtitle != null) subtitle!
                       ],
                     ),

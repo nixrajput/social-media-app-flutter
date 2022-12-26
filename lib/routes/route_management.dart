@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/modules/chat/controllers/p2p_chat_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/following_list_controller.dart';
+import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/post_details_controller.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
@@ -22,6 +23,20 @@ abstract class RouteManagement {
   static void goToServerOfflineView() {
     Get.offAllNamed(AppRoutes.offline);
   }
+
+  static void gotToErrorView() {
+    Get.offAllNamed(AppRoutes.error);
+  }
+
+  static void goToNetworkErrorView() {
+    Get.offAllNamed(AppRoutes.noNetwork);
+  }
+
+  static void goToHomeView() {
+    Get.offAllNamed(AppRoutes.home);
+  }
+
+  /// Auth ---------------------------------------------------------------------
 
   static void goToLoginView() {
     Get.toNamed(AppRoutes.login);
@@ -55,10 +70,6 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.reactivateAccount);
   }
 
-  static void goToProfileView() {
-    Get.toNamed(AppRoutes.profile);
-  }
-
   /// OTP ----------------------------------------------------------------------
 
   static void goToSendOtpToEmailView({VoidCallback? callback}) {
@@ -75,10 +86,6 @@ abstract class RouteManagement {
 
   /// --------------------------------------------------------------------------
 
-  static void goToHomeView() {
-    Get.offAllNamed(AppRoutes.home);
-  }
-
   static void goToFollowRequestsView() {
     Get.toNamed(AppRoutes.followRequests);
   }
@@ -87,15 +94,22 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.chats);
   }
 
-  static void goToChatDetailsView(
-      String userId, String username, MediaFile avatar) {
+  static void goToChatDetailsView(User user) {
     Get.delete<P2PChatController>();
-    Get.toNamed(AppRoutes.chatDetails, arguments: [userId, username, avatar]);
+    Get.toNamed(AppRoutes.chatDetails, arguments: [user]);
+  }
+
+  static void goToChatSettingsView() {
+    Get.toNamed(AppRoutes.chatSettings);
   }
 
   /// --------------------------------------------------------------------------
 
   /// Edit Profile -------------------------------------------------------------
+
+  static void goToProfileView() {
+    Get.toNamed(AppRoutes.profile);
+  }
 
   static void goToEditProfileView() {
     Get.toNamed(AppRoutes.editProfile);
@@ -135,10 +149,22 @@ abstract class RouteManagement {
 
   /// --------------------------------------------------------------------------
 
-  /// Profile & User -----------------------------------------------------------
+  /// Post & Comment -----------------------------------------------------------
 
   static void goToCreatePostView() {
     Get.toNamed(AppRoutes.createPost);
+  }
+
+  static void toCreatePollView() {
+    Get.toNamed(AppRoutes.createPoll);
+  }
+
+  static void goToPollPreviewView() {
+    Get.toNamed(AppRoutes.pollPreview);
+  }
+
+  static void goToPostPreviewView() {
+    Get.toNamed(AppRoutes.postPreview);
   }
 
   static void goToAddCaptionView() {
@@ -146,7 +172,7 @@ abstract class RouteManagement {
   }
 
   static void goToPostCommentsView(String postId) {
-    Get.toNamed(AppRoutes.comments, arguments: postId);
+    Get.toNamed(AppRoutes.comments, arguments: [postId]);
   }
 
   static void goToPostPostLikedUsersView(String postId) {
@@ -175,16 +201,13 @@ abstract class RouteManagement {
 
   static void goToPostDetailsView(String postId, Post? post) {
     Get.delete<PostDetailsController>();
+    Get.delete<CommentController>();
     Get.toNamed(AppRoutes.postDetails, arguments: [postId, post]);
   }
 
   /// --------------------------------------------------------------------------
 
   /// Settings Pages -----------------------------------------------------------
-
-  static void goToSettingsView() {
-    Get.toNamed(AppRoutes.settings);
-  }
 
   static void goToAccountSettingsView() {
     Get.toNamed(AppRoutes.accountSettings);
@@ -264,6 +287,10 @@ abstract class RouteManagement {
 
   static void goToChangeAccountPrivacyView() {
     Get.toNamed(AppRoutes.accountPrivacySettings);
+  }
+
+  static void goToChangeOnlineStatusView() {
+    Get.toNamed(AppRoutes.onlineStatusSettings);
   }
 
   /// --------------------------------------------------------------------------

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/comment.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -18,67 +17,56 @@ class CommentWidget extends StatelessWidget {
     return Container(
       padding: Dimens.edgeInsets0,
       margin: Dimens.edgeInsetsOnlyBottom16,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: () =>
-                    RouteManagement.goToUserProfileView(comment.user.id),
-                child: AvatarWidget(
-                  avatar: comment.user.avatar,
-                  size: Dimens.twentyFour,
-                ),
-              ),
-              Dimens.boxWidth8,
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          GestureDetector(
+            onTap: () => RouteManagement.goToUserProfileView(comment.user.id),
+            child: AvatarWidget(
+              avatar: comment.user.avatar,
+              size: Dimens.twenty,
+            ),
+          ),
+          Dimens.boxWidth8,
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () => RouteManagement.goToUserProfileView(
-                              comment.user.id),
-                          child: Text(
-                            comment.user.uname,
-                            style: AppStyles.style13Bold,
-                          ),
-                        ),
-                        Dimens.boxWidth4,
-                        Container(
-                          width: Dimens.four,
-                          height: Dimens.four,
-                          decoration: BoxDecoration(
-                            color: Theme.of(Get.context!).dividerColor,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Dimens.boxWidth4,
-                        Text(
-                          GetTimeAgo.parse(comment.createdAt),
-                          style: AppStyles.style12Normal.copyWith(
-                            color: Theme.of(Get.context!)
-                                .textTheme
-                                .subtitle1!
-                                .color,
-                          ),
-                        ),
-                      ],
+                    GestureDetector(
+                      onTap: () =>
+                          RouteManagement.goToUserProfileView(comment.user.id),
+                      child: Text(
+                        comment.user.uname,
+                        style: AppStyles.style13Bold,
+                      ),
                     ),
-                    NxExpandableText(text: comment.comment),
+                    Dimens.boxWidth4,
+                    Container(
+                      width: Dimens.four,
+                      height: Dimens.four,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).dividerColor,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    Dimens.boxWidth4,
+                    Text(
+                      GetTimeAgo.parse(comment.createdAt.toLocal()),
+                      style: AppStyles.style12Normal.copyWith(
+                        color: Theme.of(context).textTheme.subtitle1!.color,
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
+                NxExpandableText(text: comment.comment),
+              ],
+            ),
           ),
         ],
       ),

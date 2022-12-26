@@ -27,9 +27,8 @@ class ChangeEmailView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.changeEmail,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                Dimens.boxHeight16,
                 _buildBody(),
               ],
             ),
@@ -44,26 +43,29 @@ class ChangeEmailView extends StatelessWidget {
           return Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: Dimens.edgeInsets0_16,
+                padding: Dimens.edgeInsetsHorizDefault,
                 child: FocusScope(
                   node: logic.focusNode,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Dimens.boxHeight8,
                       RichText(
                         text: TextSpan(
                           children: [
-                            const TextSpan(
-                              text: 'Your current email is ',
-                            ),
+                            TextSpan(
+                                text: '${StringValues.yourCurrentEmail} ',
+                                style: AppStyles.style13Normal.copyWith(
+                                  color: Theme.of(Get.context!)
+                                      .textTheme
+                                      .bodyText1!
+                                      .color,
+                                )),
                             TextSpan(
                               text: logic.profile.profileDetails!.user!.email,
-                              style: AppStyles.style14Bold,
+                              style: AppStyles.style16Bold,
                             ),
-                            const TextSpan(
-                                text:
-                                    '. Enter the email you want to change with it.'),
                           ],
                           style: AppStyles.style14Normal.copyWith(
                             color: Theme.of(Get.context!)
@@ -71,6 +73,14 @@ class ChangeEmailView extends StatelessWidget {
                                 .bodyText1!
                                 .color,
                           ),
+                        ),
+                      ),
+                      Dimens.boxHeight4,
+                      Text(
+                        StringValues.yourCurrentEmailDesc,
+                        style: AppStyles.style13Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
                         ),
                       ),
                       Dimens.boxHeight32,
@@ -81,7 +91,7 @@ class ChangeEmailView extends StatelessWidget {
                         child: TextFormField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Dimens.eight),
+                              borderRadius: BorderRadius.circular(Dimens.four),
                             ),
                             hintStyle: AppStyles.style14Normal.copyWith(
                               color: ColorValues.grayColor,
@@ -110,7 +120,7 @@ class ChangeEmailView extends StatelessWidget {
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.circular(Dimens.eight),
+                                    BorderRadius.circular(Dimens.four),
                               ),
                               hintStyle: AppStyles.style14Normal.copyWith(
                                 color: ColorValues.grayColor,

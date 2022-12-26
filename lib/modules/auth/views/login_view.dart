@@ -29,7 +29,7 @@ class LoginView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.login,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
                 _buildLoginFields(),
               ],
@@ -44,7 +44,7 @@ class LoginView extends StatelessWidget {
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
@@ -65,7 +65,7 @@ class LoginView extends StatelessWidget {
                       child: TextFormField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintText: StringValues.emailOrUsername,
                           hintStyle: AppStyles.style14Normal.copyWith(
@@ -90,7 +90,7 @@ class LoginView extends StatelessWidget {
                         obscureText: logic.showPassword,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           suffixIcon: InkWell(
                             onTap: logic.toggleViewPassword,

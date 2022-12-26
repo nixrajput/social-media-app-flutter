@@ -7,11 +7,11 @@ part of 'online_user.dart';
 // **************************************************************************
 
 abstract class _$OnlineUserCWProxy {
-  OnlineUser lastSeen(String? lastSeen);
+  OnlineUser userId(String? userId);
 
   OnlineUser status(String? status);
 
-  OnlineUser userId(String? userId);
+  OnlineUser lastSeen(String? lastSeen);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `OnlineUser(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -20,26 +20,26 @@ abstract class _$OnlineUserCWProxy {
   /// OnlineUser(...).copyWith(id: 12, name: "My name")
   /// ````
   OnlineUser call({
-    String? lastSeen,
-    String? status,
     String? userId,
+    String? status,
+    String? lastSeen,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfOnlineUser.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfOnlineUser.copyWith.fieldName(...)`
 class _$OnlineUserCWProxyImpl implements _$OnlineUserCWProxy {
-  final OnlineUser _value;
-
   const _$OnlineUserCWProxyImpl(this._value);
 
+  final OnlineUser _value;
+
   @override
-  OnlineUser lastSeen(String? lastSeen) => this(lastSeen: lastSeen);
+  OnlineUser userId(String? userId) => this(userId: userId);
 
   @override
   OnlineUser status(String? status) => this(status: status);
 
   @override
-  OnlineUser userId(String? userId) => this(userId: userId);
+  OnlineUser lastSeen(String? lastSeen) => this(lastSeen: lastSeen);
 
   @override
 
@@ -50,23 +50,23 @@ class _$OnlineUserCWProxyImpl implements _$OnlineUserCWProxy {
   /// OnlineUser(...).copyWith(id: 12, name: "My name")
   /// ````
   OnlineUser call({
-    Object? lastSeen = const $CopyWithPlaceholder(),
-    Object? status = const $CopyWithPlaceholder(),
     Object? userId = const $CopyWithPlaceholder(),
+    Object? status = const $CopyWithPlaceholder(),
+    Object? lastSeen = const $CopyWithPlaceholder(),
   }) {
     return OnlineUser(
-      lastSeen: lastSeen == const $CopyWithPlaceholder()
-          ? _value.lastSeen
-          // ignore: cast_nullable_to_non_nullable
-          : lastSeen as String?,
-      status: status == const $CopyWithPlaceholder()
-          ? _value.status
-          // ignore: cast_nullable_to_non_nullable
-          : status as String?,
       userId: userId == const $CopyWithPlaceholder()
           ? _value.userId
           // ignore: cast_nullable_to_non_nullable
           : userId as String?,
+      status: status == const $CopyWithPlaceholder()
+          ? _value.status
+          // ignore: cast_nullable_to_non_nullable
+          : status as String?,
+      lastSeen: lastSeen == const $CopyWithPlaceholder()
+          ? _value.lastSeen
+          // ignore: cast_nullable_to_non_nullable
+          : lastSeen as String?,
     );
   }
 }

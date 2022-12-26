@@ -43,7 +43,6 @@ class NotificationWidget extends StatelessWidget {
         margin: index != (totalLength - 1)
             ? Dimens.edgeInsetsOnlyBottom16
             : Dimens.edgeInsets0,
-        padding: Dimens.edgeInsetsHorizDefault,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

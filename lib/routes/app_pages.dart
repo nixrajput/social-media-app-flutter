@@ -11,6 +11,7 @@ import 'package:social_media_app/modules/auth/views/reactivate_account_view.dart
 import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
 import 'package:social_media_app/modules/chat/bindings/single_chat_binding.dart';
+import 'package:social_media_app/modules/chat/views/p2p_chat_settings_view.dart';
 import 'package:social_media_app/modules/chat/views/p2p_chat_view.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_binding.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_view.dart';
@@ -21,14 +22,17 @@ import 'package:social_media_app/modules/follower/views/following_list_view.dart
 import 'package:social_media_app/modules/home/bindings/initial_binding.dart';
 import 'package:social_media_app/modules/home/views/home_view.dart';
 import 'package:social_media_app/modules/no_network/no_network_view.dart';
+import 'package:social_media_app/modules/post/bindings/create_poll_binding.dart';
 import 'package:social_media_app/modules/post/bindings/create_post_binding.dart';
 import 'package:social_media_app/modules/post/bindings/post_details_binding.dart';
 import 'package:social_media_app/modules/post/bindings/post_liked_users_binding.dart';
-import 'package:social_media_app/modules/post/views/add_caption_view.dart';
+import 'package:social_media_app/modules/post/views/create_poll_view.dart';
 import 'package:social_media_app/modules/post/views/create_post_view.dart';
+import 'package:social_media_app/modules/post/views/poll_preview_view.dart';
 import 'package:social_media_app/modules/post/views/post_comment_view.dart';
 import 'package:social_media_app/modules/post/views/post_details_view.dart';
 import 'package:social_media_app/modules/post/views/post_liked_users_view.dart';
+import 'package:social_media_app/modules/post/views/post_preview_view.dart';
 import 'package:social_media_app/modules/profile/bindings/edit_about_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/edit_dob_binding.dart';
 import 'package:social_media_app/modules/profile/bindings/edit_gender_binding.dart';
@@ -56,23 +60,22 @@ import 'package:social_media_app/modules/settings/bindings/login_info_binding.da
 import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/report_issue_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/send_suggestions_binding.dart';
-import 'package:social_media_app/modules/settings/bindings/setting_bindings.dart';
-import 'package:social_media_app/modules/settings/views/pages/about_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/about_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/account_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/help_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/change_email_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/change_phone_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/deactivate_account_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/verified_account_setting_view.dart';
-import 'package:social_media_app/modules/settings/views/pages/account_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/help/report_issue_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/help/send_suggestions_view.dart';
-import 'package:social_media_app/modules/settings/views/pages/help_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy/account_privacy_view.dart';
-import 'package:social_media_app/modules/settings/views/pages/privacy_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/privacy/online_status_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/security/change_password_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/security/login_info_history_view.dart';
-import 'package:social_media_app/modules/settings/views/pages/security_settings_view.dart';
-import 'package:social_media_app/modules/settings/views/pages/theme_settings_view.dart';
-import 'package:social_media_app/modules/settings/views/settings_view.dart';
+import 'package:social_media_app/modules/settings/views/privacy_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/security_settings_view.dart';
+import 'package:social_media_app/modules/settings/views/theme_settings_view.dart';
 import 'package:social_media_app/modules/user/user_details_binding.dart';
 import 'package:social_media_app/modules/user/user_profile_view.dart';
 import 'package:social_media_app/modules/verification/verification_binding.dart';
@@ -204,11 +207,17 @@ abstract class AppPages {
     ),
 
     /// Chats
-
     GetPage(
       name: _Routes.chatDetails,
       page: P2PChatView.new,
       binding: SingleChatBinding(),
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.chatSettings,
+      page: P2PChatSettingsView.new,
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
@@ -302,9 +311,26 @@ abstract class AppPages {
     ),
 
     GetPage(
-      name: _Routes.addCaption,
-      page: AddCaptionView.new,
+      name: _Routes.createPoll,
+      page: CreatePollView.new,
       transitionDuration: transitionDuration,
+      binding: CreatePollBinding(),
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.pollPreview,
+      page: PollPreviewView.new,
+      transitionDuration: transitionDuration,
+      binding: CreatePollBinding(),
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.postPreview,
+      page: PostPreviewView.new,
+      transitionDuration: transitionDuration,
+      binding: CreatePostBinding(),
       transition: defaultTransition,
     ),
 
@@ -369,14 +395,6 @@ abstract class AppPages {
     /// ------------------------------------------------------------------------
 
     ///  Settings Pages --------------------------------------------------------
-
-    GetPage(
-      name: _Routes.settings,
-      page: SettingsView.new,
-      binding: SettingBinding(),
-      transitionDuration: transitionDuration,
-      transition: defaultTransition,
-    ),
 
     GetPage(
       name: _Routes.accountSettings,
@@ -513,6 +531,13 @@ abstract class AppPages {
       name: _Routes.accountPrivacySettings,
       page: AccountPrivacyView.new,
       binding: PrivacySettingBinding(),
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.onlineStatusSettings,
+      page: OnlineStatusView.new,
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),

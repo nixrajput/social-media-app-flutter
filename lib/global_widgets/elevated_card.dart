@@ -30,7 +30,7 @@ class NxElevatedCard extends StatelessWidget {
       shadowColor: shadowColor ?? Theme.of(context).cardTheme.shadowColor,
       clipBehavior: Clip.none,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius ?? Dimens.eight),
+        borderRadius: BorderRadius.circular(borderRadius ?? Dimens.four),
       ),
       child: Padding(
         padding: padding ?? Dimens.edgeInsets0,

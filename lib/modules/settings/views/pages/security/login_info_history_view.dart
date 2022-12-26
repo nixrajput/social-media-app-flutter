@@ -8,6 +8,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
+import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
 import 'package:social_media_app/modules/settings/views/widgets/login_info_widget.dart';
@@ -31,9 +32,8 @@ class LoginInfoHistoryView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.loginActivity,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                Dimens.boxHeight8,
                 _buildBody(context),
               ],
             ),
@@ -46,7 +46,7 @@ class LoginInfoHistoryView extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: Dimens.edgeInsets0_16,
+        padding: Dimens.edgeInsetsHorizDefault,
         child: GetBuilder<LoginInfoController>(
           builder: (logic) {
             if (logic.isLoading) {
@@ -62,6 +62,7 @@ class LoginInfoHistoryView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Dimens.boxHeight8,
                   ListView.builder(
                     shrinkWrap: true,
                     itemCount: logic.loginInfoList.length,
@@ -105,22 +106,12 @@ class LoginInfoHistoryView extends StatelessWidget {
                       return LoginInfoWidget(item: item);
                     },
                   ),
-                  if (logic.isMoreLoading) Dimens.boxHeight8,
-                  if (logic.isMoreLoading)
-                    const Center(child: NxCircularProgressIndicator()),
-                  if (!logic.isMoreLoading &&
-                      logic.loginHistoryData!.results != null &&
-                      logic.loginHistoryData!.hasNextPage!)
-                    Center(
-                      child: NxTextButton(
-                        label: 'Load more',
-                        onTap: logic.loadMore,
-                        labelStyle: AppStyles.style14Bold.copyWith(
-                          color: ColorValues.primaryLightColor,
-                        ),
-                        padding: Dimens.edgeInsets8_0,
-                      ),
-                    ),
+                  LoadMoreWidget(
+                    loadingCondition: logic.isMoreLoading,
+                    hasMoreCondition: logic.loginHistoryData!.results != null &&
+                        logic.loginHistoryData!.hasNextPage!,
+                    loadMore: logic.loadMore,
+                  ),
                   Dimens.boxHeight16,
                   NxTextButton(
                     label: StringValues.logoutAllDevices,

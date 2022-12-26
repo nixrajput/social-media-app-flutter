@@ -25,7 +25,7 @@ class VerifiedAccountSettingView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.verification,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
                 Dimens.boxHeight16,
                 _buildBody(context),
@@ -40,7 +40,7 @@ class VerifiedAccountSettingView extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
-        padding: Dimens.edgeInsets0_16,
+        padding: Dimens.edgeInsetsHorizDefault,
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -40,7 +39,7 @@ class UserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profile = ProfileController.find;
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: index != (totalLength - 1)
@@ -73,8 +72,8 @@ class UserWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        _buildUserUsername(),
-                        _buildUserFullName(),
+                        _buildUserUsername(context),
+                        _buildUserFullName(context),
                       ],
                     ),
                   ),
@@ -82,14 +81,14 @@ class UserWidget extends StatelessWidget {
               ),
             ),
             if (user.id != profile.profileDetails!.user!.id)
-              _buildFollowAction(),
+              _buildFollowAction(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildUserUsername() => Row(
+  Widget _buildUserUsername(BuildContext context) => Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -98,7 +97,7 @@ class UserWidget extends StatelessWidget {
               text: TextSpan(
                 text: user.uname.toLowerCase(),
                 style: AppStyles.style14Bold.copyWith(
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
                 ),
               ),
               overflow: TextOverflow.ellipsis,
@@ -115,18 +114,18 @@ class UserWidget extends StatelessWidget {
         ],
       );
 
-  Widget _buildUserFullName() => RichText(
+  Widget _buildUserFullName(BuildContext context) => RichText(
         text: TextSpan(
           text: '${user.fname} ${user.lname}',
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.subtitle1!.color,
           ),
         ),
         overflow: TextOverflow.ellipsis,
         maxLines: 1,
       );
 
-  Widget _buildFollowAction() => Expanded(
+  Widget _buildFollowAction(BuildContext context) => Expanded(
         flex: 0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -134,16 +133,16 @@ class UserWidget extends StatelessWidget {
           children: [
             Dimens.boxWidth16,
             NxOutlinedButton(
-              label: getFollowStatus(user.followingStatus),
-              bgColor: getButtonColor(user.followingStatus),
+              label: getFollowStatus(user.followingStatus, context),
+              bgColor: getButtonColor(user.followingStatus, context),
               borderColor: ColorValues.primaryColor,
-              borderStyle: getBorderStyle(user.followingStatus),
+              borderStyle: getBorderStyle(user.followingStatus, context),
               onTap: onActionTap,
               padding: Dimens.edgeInsets6_12,
               borderWidth: Dimens.one,
-              borderRadius: Dimens.eight,
+              borderRadius: Dimens.four,
               labelStyle: AppStyles.style13Normal.copyWith(
-                color: getLabelColor(user.followingStatus),
+                color: getLabelColor(user.followingStatus, context),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -152,7 +151,7 @@ class UserWidget extends StatelessWidget {
         ),
       );
 
-  String getFollowStatus(String status) {
+  String getFollowStatus(String status, BuildContext context) {
     if (status == "following") {
       return StringValues.following;
     }
@@ -164,25 +163,21 @@ class UserWidget extends StatelessWidget {
     return StringValues.follow;
   }
 
-  Color getButtonColor(String status) {
+  Color getButtonColor(String status, BuildContext context) {
     if (status == "following" || status == "requested") {
-      return Colors.transparent;
+      return Theme.of(context).bottomAppBarColor;
     }
 
     return ColorValues.primaryColor;
   }
 
-  BorderStyle getBorderStyle(String status) {
-    if (status == "following" || status == "requested") {
-      return BorderStyle.solid;
-    }
-
+  BorderStyle getBorderStyle(String status, BuildContext context) {
     return BorderStyle.none;
   }
 
-  Color getLabelColor(String status) {
+  Color getLabelColor(String status, BuildContext context) {
     if (status == "following" || status == "requested") {
-      return ColorValues.primaryColor;
+      return Theme.of(context).textTheme.bodyText1!.color!;
     }
 
     return ColorValues.whiteColor;

@@ -33,7 +33,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  _buildPageView() => GetBuilder<HomeController>(
+  Widget _buildPageView() => GetBuilder<HomeController>(
         builder: (controller) => PageView(
           key: const PageStorageKey('posts'),
           physics: const NeverScrollableScrollPhysics(),

@@ -5,6 +5,7 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 
 class ImageViewerScreen extends StatelessWidget {
   const ImageViewerScreen({super.key, required this.url});
@@ -13,17 +14,13 @@ class ImageViewerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return UnFocusWidget(
       child: Scaffold(
         body: SafeArea(
           child: SizedBox(
             width: Dimens.screenWidth,
             height: Dimens.screenHeight,
             child: Stack(
-              // mainAxisAlignment: MainAxisAlignment.start,
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              // mainAxisSize: MainAxisSize.min,
               children: [
                 _buildBody(),
                 Positioned(

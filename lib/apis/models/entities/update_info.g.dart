@@ -7,15 +7,15 @@ part of 'update_info.dart';
 // **************************************************************************
 
 abstract class _$UpdateInfoCWProxy {
-  UpdateInfo changelog(String? changelog);
-
   UpdateInfo currentVersion(String? currentVersion);
 
-  UpdateInfo downloadUrl(String? downloadUrl);
+  UpdateInfo latestVersion(String? latestVersion);
+
+  UpdateInfo changelog(String? changelog);
 
   UpdateInfo fileName(String? fileName);
 
-  UpdateInfo latestVersion(String? latestVersion);
+  UpdateInfo downloadUrl(String? downloadUrl);
 
   UpdateInfo publishedAt(DateTime? publishedAt);
 
@@ -26,37 +26,37 @@ abstract class _$UpdateInfoCWProxy {
   /// UpdateInfo(...).copyWith(id: 12, name: "My name")
   /// ````
   UpdateInfo call({
-    String? changelog,
     String? currentVersion,
-    String? downloadUrl,
-    String? fileName,
     String? latestVersion,
+    String? changelog,
+    String? fileName,
+    String? downloadUrl,
     DateTime? publishedAt,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfUpdateInfo.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfUpdateInfo.copyWith.fieldName(...)`
 class _$UpdateInfoCWProxyImpl implements _$UpdateInfoCWProxy {
-  final UpdateInfo _value;
-
   const _$UpdateInfoCWProxyImpl(this._value);
 
-  @override
-  UpdateInfo changelog(String? changelog) => this(changelog: changelog);
+  final UpdateInfo _value;
 
   @override
   UpdateInfo currentVersion(String? currentVersion) =>
       this(currentVersion: currentVersion);
 
   @override
-  UpdateInfo downloadUrl(String? downloadUrl) => this(downloadUrl: downloadUrl);
+  UpdateInfo latestVersion(String? latestVersion) =>
+      this(latestVersion: latestVersion);
+
+  @override
+  UpdateInfo changelog(String? changelog) => this(changelog: changelog);
 
   @override
   UpdateInfo fileName(String? fileName) => this(fileName: fileName);
 
   @override
-  UpdateInfo latestVersion(String? latestVersion) =>
-      this(latestVersion: latestVersion);
+  UpdateInfo downloadUrl(String? downloadUrl) => this(downloadUrl: downloadUrl);
 
   @override
   UpdateInfo publishedAt(DateTime? publishedAt) =>
@@ -71,34 +71,34 @@ class _$UpdateInfoCWProxyImpl implements _$UpdateInfoCWProxy {
   /// UpdateInfo(...).copyWith(id: 12, name: "My name")
   /// ````
   UpdateInfo call({
-    Object? changelog = const $CopyWithPlaceholder(),
     Object? currentVersion = const $CopyWithPlaceholder(),
-    Object? downloadUrl = const $CopyWithPlaceholder(),
-    Object? fileName = const $CopyWithPlaceholder(),
     Object? latestVersion = const $CopyWithPlaceholder(),
+    Object? changelog = const $CopyWithPlaceholder(),
+    Object? fileName = const $CopyWithPlaceholder(),
+    Object? downloadUrl = const $CopyWithPlaceholder(),
     Object? publishedAt = const $CopyWithPlaceholder(),
   }) {
     return UpdateInfo(
-      changelog: changelog == const $CopyWithPlaceholder()
-          ? _value.changelog
-          // ignore: cast_nullable_to_non_nullable
-          : changelog as String?,
       currentVersion: currentVersion == const $CopyWithPlaceholder()
           ? _value.currentVersion
           // ignore: cast_nullable_to_non_nullable
           : currentVersion as String?,
-      downloadUrl: downloadUrl == const $CopyWithPlaceholder()
-          ? _value.downloadUrl
-          // ignore: cast_nullable_to_non_nullable
-          : downloadUrl as String?,
-      fileName: fileName == const $CopyWithPlaceholder()
-          ? _value.fileName
-          // ignore: cast_nullable_to_non_nullable
-          : fileName as String?,
       latestVersion: latestVersion == const $CopyWithPlaceholder()
           ? _value.latestVersion
           // ignore: cast_nullable_to_non_nullable
           : latestVersion as String?,
+      changelog: changelog == const $CopyWithPlaceholder()
+          ? _value.changelog
+          // ignore: cast_nullable_to_non_nullable
+          : changelog as String?,
+      fileName: fileName == const $CopyWithPlaceholder()
+          ? _value.fileName
+          // ignore: cast_nullable_to_non_nullable
+          : fileName as String?,
+      downloadUrl: downloadUrl == const $CopyWithPlaceholder()
+          ? _value.downloadUrl
+          // ignore: cast_nullable_to_non_nullable
+          : downloadUrl as String?,
       publishedAt: publishedAt == const $CopyWithPlaceholder()
           ? _value.publishedAt
           // ignore: cast_nullable_to_non_nullable

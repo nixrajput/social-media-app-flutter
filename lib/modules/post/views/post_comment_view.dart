@@ -6,8 +6,9 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
+import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/create_comment_controller.dart';
@@ -18,8 +19,7 @@ class PostCommentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+    return UnFocusWidget(
       child: Scaffold(
         body: SafeArea(
           child: NxRefreshIndicator(
@@ -34,62 +34,12 @@ class PostCommentView extends StatelessWidget {
                   children: [
                     NxAppBar(
                       title: StringValues.comments,
-                      padding: Dimens.edgeInsets8_16,
+                      padding: Dimens.edgeInsetsDefault,
                     ),
-                    Dimens.boxHeight8,
-                    _buildBody(),
+                    _buildBody(context),
                   ],
                 ),
-                Positioned(
-                  bottom: Dimens.zero,
-                  left: Dimens.zero,
-                  right: Dimens.zero,
-                  child: GetBuilder<CreateCommentController>(
-                    builder: (con) => Container(
-                      color: Theme.of(Get.context!).dialogTheme.backgroundColor,
-                      width: Dimens.screenWidth,
-                      height: Dimens.fourtyEight,
-                      padding: Dimens.edgeInsets0_8,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          NxIconButton(
-                            icon: Icons.emoji_emotions_outlined,
-                            iconSize: Dimens.twentyFour,
-                            onTap: () {},
-                          ),
-                          Dimens.boxWidth8,
-                          Expanded(
-                            child: TextFormField(
-                              controller: con.commentTextController,
-                              onChanged: (value) => con.onChangedText(value),
-                              decoration: const InputDecoration(
-                                hintText: StringValues.addComment,
-                                border: InputBorder.none,
-                              ),
-                              minLines: 1,
-                              maxLines: 1,
-                              style: AppStyles.style14Normal.copyWith(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .color,
-                              ),
-                            ),
-                          ),
-                          Dimens.boxWidth4,
-                          if (con.comment.isNotEmpty)
-                            NxIconButton(
-                              icon: Icons.send,
-                              iconColor: ColorValues.primaryColor,
-                              iconSize: Dimens.twentyFour,
-                              onTap: con.createNewComment,
-                            )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                _buildCommentTextField(context),
               ],
             ),
           ),
@@ -98,20 +48,63 @@ class PostCommentView extends StatelessWidget {
     );
   }
 
-  _buildBody() {
+  Positioned _buildCommentTextField(BuildContext context) {
+    return Positioned(
+      bottom: Dimens.zero,
+      left: Dimens.zero,
+      right: Dimens.zero,
+      child: GetBuilder<CreateCommentController>(
+        builder: (con) => Container(
+          color: Theme.of(Get.context!).dialogTheme.backgroundColor,
+          width: Dimens.screenWidth,
+          height: Dimens.fourtyEight,
+          padding: Dimens.edgeInsetsHorizDefault,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: con.commentTextController,
+                  onChanged: (value) => con.onChangedText(value),
+                  decoration: const InputDecoration(
+                    hintText: StringValues.addComment,
+                    border: InputBorder.none,
+                  ),
+                  minLines: 1,
+                  maxLines: 1,
+                  style: AppStyles.style14Normal.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
+                ),
+              ),
+              Dimens.boxWidth4,
+              if (con.comment.isNotEmpty)
+                NxIconButton(
+                  icon: Icons.send,
+                  iconColor: ColorValues.primaryColor,
+                  iconSize: Dimens.twentyFour,
+                  onTap: con.createNewComment,
+                )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: Dimens.edgeInsets0_16,
+        padding: Dimens.edgeInsetsHorizDefault,
         child: GetBuilder<CommentController>(
-          builder: (commentsLogic) {
-            if (commentsLogic.isLoading) {
+          builder: (logic) {
+            if (logic.isLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
 
-            if (commentsLogic.commentsData == null ||
-                commentsLogic.commentList.isEmpty) {
+            if (logic.commentsData == null || logic.commentList.isEmpty) {
               return Padding(
                 padding: Dimens.edgeInsets0_16,
                 child: Column(
@@ -143,37 +136,14 @@ class PostCommentView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ListView.builder(
-                    itemBuilder: (context, index) {
-                      var comment = commentsLogic.commentList[index];
-                      return InkWell(
-                        child: CommentWidget(comment: comment),
-                        onLongPress: () {
-                          if (comment.user.id !=
-                              ProfileController.find.profileDetails!.user!.id) {
-                            return;
-                          }
-                          commentsLogic.showDeleteCommentOptions(comment.id);
-                        },
-                      );
-                    },
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: commentsLogic.commentList.length,
+                  Dimens.boxHeight8,
+                  _buildComments(logic),
+                  LoadMoreWidget(
+                    loadingCondition: logic.isMoreLoading,
+                    hasMoreCondition: logic.commentsData!.results != null &&
+                        logic.commentsData!.hasNextPage!,
+                    loadMore: logic.loadMore,
                   ),
-                  if (commentsLogic.isMoreLoading) Dimens.boxHeight8,
-                  if (commentsLogic.isMoreLoading)
-                    const Center(child: CircularProgressIndicator()),
-                  if (!commentsLogic.isMoreLoading &&
-                      commentsLogic.commentsData!.hasNextPage!)
-                    NxTextButton(
-                      label: 'View more comments',
-                      onTap: commentsLogic.loadMore,
-                      labelStyle: AppStyles.style14Bold.copyWith(
-                        color: ColorValues.primaryLightColor,
-                      ),
-                      padding: Dimens.edgeInsets8_0,
-                    ),
                   Dimens.boxHeight64,
                 ],
               ),
@@ -181,6 +151,28 @@ class PostCommentView extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  ListView _buildComments(CommentController commentsLogic) {
+    final profile = ProfileController.find.profileDetails!.user!;
+
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        var comment = commentsLogic.commentList[index];
+        return InkWell(
+          child: CommentWidget(comment: comment),
+          onLongPress: () {
+            if (comment.user.id != profile.id) {
+              return;
+            }
+            commentsLogic.showDeleteCommentOptions(comment.id);
+          },
+        );
+      },
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: commentsLogic.commentList.length,
     );
   }
 }

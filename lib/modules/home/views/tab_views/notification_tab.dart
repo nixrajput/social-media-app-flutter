@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_controller.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/notification_widget.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -47,6 +47,8 @@ class NotificationTabView extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context) {
+    final profile = ProfileController.find.profileDetails!.user!;
+
     return GetBuilder<NotificationController>(
       builder: (logic) {
         if (logic.isLoading &&
@@ -88,7 +90,7 @@ class NotificationTabView extends StatelessWidget {
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
-            //padding: Dimens.edgeInsetsHorizDefault,
+            padding: Dimens.edgeInsetsHorizDefault,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -97,10 +99,17 @@ class NotificationTabView extends StatelessWidget {
                 if (logic.isLoading &&
                     (logic.notificationData != null ||
                         logic.notificationList.isNotEmpty))
-                  const Center(child: NxCircularProgressIndicator()),
-                Dimens.boxHeight8,
-                _buildFollowRequestBtn(context),
-                Dimens.boxHeight16,
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Dimens.boxHeight8,
+                      const NxCircularProgressIndicator(),
+                    ],
+                  ),
+                if (profile.isPrivate) _buildFollowRequestBtn(context),
+                if (!profile.isPrivate) Dimens.boxHeight8,
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: logic.notificationList.length,
@@ -115,25 +124,12 @@ class NotificationTabView extends StatelessWidget {
                     );
                   },
                 ),
-                if (logic.isMoreLoading ||
-                    (logic.notificationData!.results != null &&
-                        logic.notificationData!.hasNextPage!))
-                  Dimens.boxHeight8,
-                if (logic.isMoreLoading)
-                  const Center(child: NxCircularProgressIndicator()),
-                if (!logic.isMoreLoading &&
-                    logic.notificationData!.results != null &&
-                    logic.notificationData!.hasNextPage!)
-                  Center(
-                    child: NxTextButton(
-                      label: 'Load more notifications',
-                      onTap: logic.loadMore,
-                      labelStyle: AppStyles.style14Bold.copyWith(
-                        color: ColorValues.primaryLightColor,
-                      ),
-                      padding: Dimens.edgeInsets8_0,
-                    ),
-                  ),
+                LoadMoreWidget(
+                  loadingCondition: logic.isMoreLoading,
+                  hasMoreCondition: logic.notificationData!.results != null &&
+                      logic.notificationData!.hasNextPage!,
+                  loadMore: logic.loadMore,
+                ),
                 Dimens.boxHeight16,
               ],
             ),
@@ -146,59 +142,79 @@ class NotificationTabView extends StatelessWidget {
   GetBuilder<FollowRequestController> _buildFollowRequestBtn(
       BuildContext context) {
     return GetBuilder<FollowRequestController>(
-      builder: (logic) => InkWell(
-        onTap: RouteManagement.goToFollowRequestsView,
-        child: Container(
-          padding: Dimens.edgeInsetsDefault,
-          margin: Dimens.edgeInsetsHorizDefault,
-          decoration: BoxDecoration(
-            color: Theme.of(context).bottomAppBarColor,
-            borderRadius: BorderRadius.circular(Dimens.four),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      builder: (logic) => Padding(
+        padding: Dimens.edgeInsetsVertDefault,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: RouteManagement.goToFollowRequestsView,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(
-                        Icons.person_add_alt_rounded,
-                        size: Dimens.twenty,
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                      Row(
+                        children: [
+                          Container(
+                            padding: Dimens.edgeInsets12,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).bottomAppBarColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.person_add_alt,
+                              size: Dimens.twentyFour,
+                              color:
+                                  Theme.of(context).textTheme.bodyText1!.color,
+                            ),
+                          ),
+                          Dimens.boxWidth8,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                StringValues.followRequests,
+                                style: AppStyles.style14Bold.copyWith(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyText1!
+                                      .color,
+                                ),
+                              ),
+                              Dimens.boxHeight2,
+                              Text(StringValues.followRequestsDesc,
+                                  style: AppStyles.style13Normal.copyWith(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1!
+                                        .color,
+                                  )),
+                            ],
+                          ),
+                        ],
                       ),
-                      Dimens.boxWidth8,
                       Text(
-                        StringValues.followRequests,
-                        style: AppStyles.style14Bold.copyWith(
+                        logic.followRequestList.length.toString(),
+                        style: AppStyles.style13Bold.copyWith(
                           color: Theme.of(context).textTheme.bodyText1!.color,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
-                  Container(
-                      width: Dimens.thirtyTwo,
-                      height: Dimens.thirtyTwo,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Text(
-                          logic.followRequestList.length.toString(),
-                          style: AppStyles.style12Bold.copyWith(
-                            color: Theme.of(context).textTheme.bodyText1!.color,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      )),
                 ],
               ),
-            ],
-          ),
+            ),
+            Dimens.boxHeight8,
+          ],
         ),
       ),
     );

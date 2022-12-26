@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 
-class ProfilePictureView extends StatelessWidget {
-  const ProfilePictureView({super.key, required this.url});
+class ImageViewerWidget extends StatelessWidget {
+  const ImageViewerWidget({super.key, required this.url});
 
   final String url;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return UnFocusWidget(
       child: Scaffold(
         body: SafeArea(
           child: SizedBox(
@@ -22,13 +21,13 @@ class ProfilePictureView extends StatelessWidget {
             height: Dimens.screenHeight,
             child: Stack(
               children: [
-                _buildBody(),
+                _buildBody(context),
                 Positioned(
                   top: Dimens.zero,
                   left: Dimens.zero,
                   right: Dimens.zero,
                   child: NxAppBar(
-                    padding: Dimens.edgeInsets8_16,
+                    padding: Dimens.edgeInsetsDefault,
                     bgColor: Theme.of(context).scaffoldBackgroundColor,
                   ),
                 ),
@@ -40,11 +39,11 @@ class ProfilePictureView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     return Center(
       child: PhotoView(
-        backgroundDecoration: BoxDecoration(
-          color: Theme.of(Get.context!).scaffoldBackgroundColor,
+        backgroundDecoration: const BoxDecoration(
+          color: ColorValues.transparent,
         ),
         imageProvider: NetworkImage(url),
         wantKeepAlive: true,

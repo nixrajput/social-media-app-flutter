@@ -8,7 +8,9 @@ import 'package:social_media_app/apis/models/responses/post_details_response.dar
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
+import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class PostDetailsController extends GetxController {
@@ -97,6 +99,8 @@ class PostDetailsController extends GetxController {
       } else {
         final decodedData = response.data;
         final apiResponse = CommonResponse.fromJson(decodedData);
+        await HiveService.delete<Post>('profilePosts', postId);
+        await ProfileController.find.fetchProfileDetails(fetchPost: true);
         update();
         AppUtility.showSnackBar(
           apiResponse.message!,
@@ -111,14 +115,14 @@ class PostDetailsController extends GetxController {
   }
 
   void _toggleLike(Post post) {
-    if (post.isLiked) {
+    if (post.isLiked == true) {
       post.isLiked = false;
-      post.likesCount--;
+      post.likesCount = post.likesCount! - 1;
       update();
       return;
     } else {
       post.isLiked = true;
-      post.likesCount++;
+      post.likesCount = post.likesCount! + 1;
       update();
       return;
     }
@@ -150,9 +154,67 @@ class PostDetailsController extends GetxController {
     }
   }
 
+  void _castVote(Post post, String optionId) {
+    if (post.isVoted == true) {
+      post.votedOption = null;
+      post.isVoted = false;
+      post.totalVotes = post.totalVotes! - 1;
+      for (var element in post.pollOptions!) {
+        if (element.id == post.votedOption) {
+          element.votes = element.votes! - 1;
+        }
+      }
+      update();
+      return;
+    }
+
+    post.votedOption = optionId;
+    post.isVoted = true;
+    post.totalVotes = post.totalVotes! + 1;
+    for (var element in post.pollOptions!) {
+      if (element.id == optionId) {
+        element.votes = element.votes! + 1;
+      }
+    }
+    update();
+  }
+
+  Future<void> _voteToPoll(Post post, String optionId) async {
+    _castVote(post, optionId);
+
+    var body = {
+      'pollId': post.id!,
+      'optionId': optionId,
+    };
+
+    try {
+      final response = await _apiProvider.voteToPoll(_auth.token, body);
+
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
+        AppUtility.log(apiResponse.message!);
+      } else {
+        _castVote(post, optionId);
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
+        AppUtility.showSnackBar(
+          apiResponse.message!,
+          StringValues.error,
+        );
+      }
+    } catch (exc) {
+      _castVote(post, optionId);
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+    }
+  }
+
   Future<void> deletePost(String postId) async => await _deletePost(postId);
 
   Future<void> toggleLikePost(Post post) async => await _toggleLikePost(post);
 
   Future<void> fetchPostDetails() async => await _fetchPostDetails();
+
+  Future<void> voteToPoll(Post post, String optionId) async =>
+      await _voteToPoll(post, optionId);
 }

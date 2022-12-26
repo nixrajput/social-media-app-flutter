@@ -6,7 +6,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/modules/home/controllers/trending_post_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
 
@@ -124,22 +124,13 @@ class TrendingPostsTab extends StatelessWidget {
             );
           },
         ),
-        if (logic.isMoreLoading) Dimens.boxHeight8,
-        if (logic.isMoreLoading)
-          const Center(child: NxCircularProgressIndicator()),
-        if (!logic.isMoreLoading &&
-            logic.postData!.results != null &&
-            logic.postData!.hasNextPage!)
-          Center(
-            child: NxTextButton(
-              label: 'Load more posts',
-              onTap: logic.loadMore,
-              labelStyle: AppStyles.style14Bold.copyWith(
-                color: ColorValues.primaryLightColor,
-              ),
-              padding: Dimens.edgeInsets8_0,
-            ),
-          ),
+        LoadMoreWidget(
+          loadingCondition: logic.isMoreLoading,
+          hasMoreCondition:
+              logic.postData!.results != null && logic.postData!.hasNextPage!,
+          loadMore: logic.loadMore,
+        ),
+        Dimens.boxHeight16,
       ],
     );
   }

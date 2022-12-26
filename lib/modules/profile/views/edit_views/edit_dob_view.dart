@@ -27,9 +27,8 @@ class EditDOBView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.birthDate,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                Dimens.boxHeight24,
                 _buildBody(),
               ],
             ),
@@ -43,46 +42,16 @@ class EditDOBView extends StatelessWidget {
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Dimens.boxHeight8,
                     GestureDetector(
-                      onTap: () {
-                        DatePicker.showDatePicker(
-                          Get.context!,
-                          theme: DatePickerTheme(
-                            backgroundColor: Theme.of(Get.context!)
-                                .bottomSheetTheme
-                                .backgroundColor!,
-                            itemStyle: TextStyle(
-                              color: Theme.of(Get.context!)
-                                  .textTheme
-                                  .bodyText1!
-                                  .color,
-                            ),
-                            cancelStyle: const TextStyle(
-                              color: ColorValues.errorColor,
-                            ),
-                            doneStyle: const TextStyle(
-                              color: ColorValues.successColor,
-                            ),
-                          ),
-                          showTitleActions: true,
-                          minTime: DateTime(1900),
-                          maxTime: DateTime.now(),
-                          currentTime: logic.dobTextController.text.isNotEmpty
-                              ? DateTime.parse(logic.dobTextController.text)
-                              : DateTime.now(),
-                          onConfirm: (dt) {
-                            logic.dobTextController.text =
-                                dt.toString().substring(0, 10);
-                          },
-                        );
-                      },
+                      onTap: () => _showDatePicker(logic),
                       child: Container(
                         height: Dimens.fiftySix,
                         constraints:
@@ -91,7 +60,7 @@ class EditDOBView extends StatelessWidget {
                           decoration: InputDecoration(
                             hintText: StringValues.dob,
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Dimens.eight),
+                              borderRadius: BorderRadius.circular(Dimens.four),
                             ),
                             hintStyle: AppStyles.style14Normal.copyWith(
                               color: ColorValues.grayColor,
@@ -124,4 +93,32 @@ class EditDOBView extends StatelessWidget {
           ),
         ),
       );
+
+  _showDatePicker(EditDOBController logic) {
+    DatePicker.showDatePicker(
+      Get.context!,
+      theme: DatePickerTheme(
+        backgroundColor:
+            Theme.of(Get.context!).bottomSheetTheme.backgroundColor!,
+        itemStyle: TextStyle(
+          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+        ),
+        cancelStyle: const TextStyle(
+          color: ColorValues.errorColor,
+        ),
+        doneStyle: const TextStyle(
+          color: ColorValues.successColor,
+        ),
+      ),
+      showTitleActions: true,
+      minTime: DateTime(1900),
+      maxTime: DateTime.now(),
+      currentTime: logic.dobTextController.text.isNotEmpty
+          ? DateTime.parse(logic.dobTextController.text)
+          : DateTime.now(),
+      onConfirm: (dt) {
+        logic.dobTextController.text = dt.toString().substring(0, 10);
+      },
+    );
+  }
 }

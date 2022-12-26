@@ -26,9 +26,8 @@ class EditNameView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.name,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                Dimens.boxHeight24,
                 _buildBody(),
               ],
             ),
@@ -42,13 +41,14 @@ class EditNameView extends StatelessWidget {
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Dimens.boxHeight8,
                     Container(
                       height: Dimens.fiftySix,
                       constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
@@ -56,7 +56,7 @@ class EditNameView extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: StringValues.firstName,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
@@ -81,7 +81,7 @@ class EditNameView extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: StringValues.lastName,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
@@ -102,16 +102,6 @@ class EditNameView extends StatelessWidget {
                     NxFilledButton(
                       onTap: logic.updateName,
                       label: StringValues.save.toUpperCase(),
-                    ),
-                    Dimens.boxHeight32,
-                    RichText(
-                      text: TextSpan(
-                        text: StringValues.nameHelpText,
-                        style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
-                        ),
-                      ),
                     ),
                     Dimens.boxHeight16,
                   ],

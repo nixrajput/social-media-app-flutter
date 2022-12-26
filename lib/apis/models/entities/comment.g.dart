@@ -7,21 +7,21 @@ part of 'comment.dart';
 // **************************************************************************
 
 abstract class _$CommentCWProxy {
+  Comment id(String id);
+
   Comment comment(String comment);
+
+  Comment user(User user);
+
+  Comment post(String post);
+
+  Comment likesCount(int likesCount);
 
   Comment commentStatus(String commentStatus);
 
   Comment createdAt(DateTime createdAt);
 
-  Comment id(String id);
-
-  Comment likesCount(int likesCount);
-
-  Comment post(String post);
-
   Comment updatedAt(DateTime updatedAt);
-
-  Comment user(User user);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Comment(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -30,25 +30,37 @@ abstract class _$CommentCWProxy {
   /// Comment(...).copyWith(id: 12, name: "My name")
   /// ````
   Comment call({
+    String? id,
     String? comment,
+    User? user,
+    String? post,
+    int? likesCount,
     String? commentStatus,
     DateTime? createdAt,
-    String? id,
-    int? likesCount,
-    String? post,
     DateTime? updatedAt,
-    User? user,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfComment.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfComment.copyWith.fieldName(...)`
 class _$CommentCWProxyImpl implements _$CommentCWProxy {
+  const _$CommentCWProxyImpl(this._value);
+
   final Comment _value;
 
-  const _$CommentCWProxyImpl(this._value);
+  @override
+  Comment id(String id) => this(id: id);
 
   @override
   Comment comment(String comment) => this(comment: comment);
+
+  @override
+  Comment user(User user) => this(user: user);
+
+  @override
+  Comment post(String post) => this(post: post);
+
+  @override
+  Comment likesCount(int likesCount) => this(likesCount: likesCount);
 
   @override
   Comment commentStatus(String commentStatus) =>
@@ -58,19 +70,7 @@ class _$CommentCWProxyImpl implements _$CommentCWProxy {
   Comment createdAt(DateTime createdAt) => this(createdAt: createdAt);
 
   @override
-  Comment id(String id) => this(id: id);
-
-  @override
-  Comment likesCount(int likesCount) => this(likesCount: likesCount);
-
-  @override
-  Comment post(String post) => this(post: post);
-
-  @override
   Comment updatedAt(DateTime updatedAt) => this(updatedAt: updatedAt);
-
-  @override
-  Comment user(User user) => this(user: user);
 
   @override
 
@@ -81,50 +81,58 @@ class _$CommentCWProxyImpl implements _$CommentCWProxy {
   /// Comment(...).copyWith(id: 12, name: "My name")
   /// ````
   Comment call({
+    Object? id = const $CopyWithPlaceholder(),
     Object? comment = const $CopyWithPlaceholder(),
+    Object? user = const $CopyWithPlaceholder(),
+    Object? post = const $CopyWithPlaceholder(),
+    Object? likesCount = const $CopyWithPlaceholder(),
     Object? commentStatus = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
-    Object? id = const $CopyWithPlaceholder(),
-    Object? likesCount = const $CopyWithPlaceholder(),
-    Object? post = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
-    Object? user = const $CopyWithPlaceholder(),
   }) {
     return Comment(
+      id: id == const $CopyWithPlaceholder() || id == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.id!
+          // ignore: cast_nullable_to_non_nullable
+          : id as String,
       comment: comment == const $CopyWithPlaceholder() || comment == null
-          ? _value.comment
+          // ignore: unnecessary_non_null_assertion
+          ? _value.comment!
           // ignore: cast_nullable_to_non_nullable
           : comment as String,
+      user: user == const $CopyWithPlaceholder() || user == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.user!
+          // ignore: cast_nullable_to_non_nullable
+          : user as User,
+      post: post == const $CopyWithPlaceholder() || post == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.post!
+          // ignore: cast_nullable_to_non_nullable
+          : post as String,
+      likesCount:
+          likesCount == const $CopyWithPlaceholder() || likesCount == null
+              // ignore: unnecessary_non_null_assertion
+              ? _value.likesCount!
+              // ignore: cast_nullable_to_non_nullable
+              : likesCount as int,
       commentStatus:
           commentStatus == const $CopyWithPlaceholder() || commentStatus == null
-              ? _value.commentStatus
+              // ignore: unnecessary_non_null_assertion
+              ? _value.commentStatus!
               // ignore: cast_nullable_to_non_nullable
               : commentStatus as String,
       createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
-          ? _value.createdAt
+          // ignore: unnecessary_non_null_assertion
+          ? _value.createdAt!
           // ignore: cast_nullable_to_non_nullable
           : createdAt as DateTime,
-      id: id == const $CopyWithPlaceholder() || id == null
-          ? _value.id
-          // ignore: cast_nullable_to_non_nullable
-          : id as String,
-      likesCount:
-          likesCount == const $CopyWithPlaceholder() || likesCount == null
-              ? _value.likesCount
-              // ignore: cast_nullable_to_non_nullable
-              : likesCount as int,
-      post: post == const $CopyWithPlaceholder() || post == null
-          ? _value.post
-          // ignore: cast_nullable_to_non_nullable
-          : post as String,
       updatedAt: updatedAt == const $CopyWithPlaceholder() || updatedAt == null
-          ? _value.updatedAt
+          // ignore: unnecessary_non_null_assertion
+          ? _value.updatedAt!
           // ignore: cast_nullable_to_non_nullable
           : updatedAt as DateTime,
-      user: user == const $CopyWithPlaceholder() || user == null
-          ? _value.user
-          // ignore: cast_nullable_to_non_nullable
-          : user as User,
     );
   }
 }

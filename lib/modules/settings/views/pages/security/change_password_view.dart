@@ -27,9 +27,8 @@ class ChangePasswordView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.changePassword,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                Dimens.boxHeight16,
                 _buildBody(),
               ],
             ),
@@ -47,13 +46,14 @@ class ChangePasswordView extends StatelessWidget {
                 parent: AlwaysScrollableScrollPhysics(),
               ),
               child: Padding(
-                padding: Dimens.edgeInsets0_16,
+                padding: Dimens.edgeInsetsHorizDefault,
                 child: FocusScope(
                   node: logic.focusNode,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Dimens.boxHeight8,
                       Container(
                         height: Dimens.fiftySix,
                         constraints:
@@ -62,7 +62,7 @@ class ChangePasswordView extends StatelessWidget {
                           obscureText: logic.showPassword,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Dimens.eight),
+                              borderRadius: BorderRadius.circular(Dimens.four),
                             ),
                             hintStyle: AppStyles.style14Normal.copyWith(
                               color: ColorValues.grayColor,
@@ -98,7 +98,7 @@ class ChangePasswordView extends StatelessWidget {
                           obscureText: logic.showNewPassword,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Dimens.eight),
+                              borderRadius: BorderRadius.circular(Dimens.four),
                             ),
                             hintStyle: AppStyles.style14Normal.copyWith(
                               color: ColorValues.grayColor,
@@ -134,7 +134,7 @@ class ChangePasswordView extends StatelessWidget {
                           obscureText: logic.showNewPassword,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Dimens.eight),
+                              borderRadius: BorderRadius.circular(Dimens.four),
                             ),
                             hintStyle: AppStyles.style14Normal.copyWith(
                               color: ColorValues.grayColor,
@@ -181,7 +181,7 @@ class ChangePasswordView extends StatelessWidget {
                               style: AppStyles.style12Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .bodyText1!
+                                    .subtitle1!
                                     .color,
                               ),
                             ),
@@ -203,7 +203,7 @@ class ChangePasswordView extends StatelessWidget {
                               style: AppStyles.style12Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .bodyText1!
+                                    .subtitle1!
                                     .color,
                               ),
                             ),
@@ -225,7 +225,7 @@ class ChangePasswordView extends StatelessWidget {
                               style: AppStyles.style12Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .bodyText1!
+                                    .subtitle1!
                                     .color,
                               ),
                             ),
@@ -248,7 +248,7 @@ class ChangePasswordView extends StatelessWidget {
                               style: AppStyles.style12Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .bodyText1!
+                                    .subtitle1!
                                     .color,
                               ),
                             ),

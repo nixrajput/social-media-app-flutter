@@ -31,6 +31,7 @@ abstract class ColorValues {
 
   static const Color whiteColor = Color(0xFFFFFFFF);
   static const Color blackColor = Color(0xFF000000);
+  static const Color transparent = Color(0x00000000);
 
   static const Color grayColor = Color(0xFFb4b4b4);
   static const Color darkGrayColor = Color(0xff787878);
@@ -38,12 +39,16 @@ abstract class ColorValues {
   static const Color lightGrayColor = Color(0xffd2d2d2);
 
   static const Color darkDividerColor = Color(0xff707070);
-  static const Color lightDividerColor = Color(0xffc2c2c2);
+  static const Color lightDividerColor = Color.fromARGB(255, 192, 192, 192);
 
   static const Color lightBodyTextColor = Color(0xFF282828);
   static const Color lightSubtitleTextColor = Color.fromARGB(255, 92, 92, 92);
+  static const Color lightSubtitle2TextColor =
+      Color.fromARGB(255, 141, 141, 141);
   static const Color darkBodyTextColor = Color.fromARGB(255, 228, 228, 228);
   static const Color darkSubtitleTextColor = Color.fromARGB(255, 180, 180, 180);
+  static const Color darkSubtitle2TextColor =
+      Color.fromARGB(255, 124, 124, 124);
 
   static const Color lightBgColor = Color.fromARGB(255, 230, 230, 230);
   static const Color lightDialogColor = Color.fromARGB(255, 252, 252, 252);

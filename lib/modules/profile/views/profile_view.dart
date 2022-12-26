@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -10,12 +11,14 @@ import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/count_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
+import 'package:social_media_app/global_widgets/image_viewer_widget.dart';
+import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
-import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -31,29 +34,31 @@ class ProfileView extends StatelessWidget {
         child: SizedBox(
           width: Dimens.screenWidth,
           height: Dimens.screenHeight,
-          child: GetBuilder<ProfileController>(builder: (logic) {
-            return NxRefreshIndicator(
-              onRefresh: logic.fetchProfileDetails,
-              showProgress: false,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildProfileHeader(logic),
-                  _buildProfileBody(logic),
-                ],
-              ),
-            );
-          }),
+          child: GetBuilder<ProfileController>(
+            builder: (logic) {
+              return NxRefreshIndicator(
+                onRefresh: logic.fetchProfileDetails,
+                showProgress: false,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildProfileHeader(logic, context),
+                    _buildProfileBody(logic, context),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildProfileHeader(ProfileController logic) {
+  Widget _buildProfileHeader(ProfileController logic, BuildContext context) {
     return NxAppBar(
       padding: Dimens.edgeInsetsDefault,
-      leading: Expanded(
+      child: Expanded(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -65,11 +70,18 @@ class ProfileView extends StatelessWidget {
             ),
             const Spacer(),
             GestureDetector(
-              onTap: RouteManagement.goToSettingsView,
-              child: Icon(
-                Icons.menu,
-                size: Dimens.twentyFour,
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              onTap: () => _showSettingsBottomSheet(context),
+              child: Container(
+                padding: Dimens.edgeInsets6,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).bottomAppBarColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.menu,
+                  size: Dimens.twenty,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
+                ),
               ),
             ),
           ],
@@ -79,7 +91,158 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileBody(ProfileController logic) {
+  _showSettingsBottomSheet(BuildContext context) => AppUtility.showBottomSheet(
+        children: [
+          /// Account
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.account_circle_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.account,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              RouteManagement.goToAccountSettingsView();
+            },
+          ),
+
+          /// Security
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.verified_user_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.security,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              RouteManagement.goToSecuritySettingsView();
+            },
+          ),
+
+          /// Privacy
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.lock_outline,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.privacy,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              RouteManagement.goToPrivacySettingsView();
+            },
+          ),
+
+          /// Help
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.help_outline_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.help,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              RouteManagement.goToHelpSettingsView();
+            },
+          ),
+
+          /// Theme
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.palette_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.theme,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              RouteManagement.goToThemeSettingsView();
+            },
+          ),
+
+          /// About
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.info_outline,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.about,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              RouteManagement.goToAboutSettingsView();
+            },
+          ),
+
+          /// Check for update
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.loop_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.checkForUpdates.toTitleCase(),
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              AppUpdateController.find.checkAppUpdate();
+            },
+          ),
+
+          /// Logout
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.logout_outlined,
+              size: Dimens.twentyFour,
+              color: ColorValues.errorColor,
+            ),
+            title: Text(
+              StringValues.logout,
+              style: AppStyles.style16Bold.copyWith(
+                color: ColorValues.errorColor,
+              ),
+            ),
+            onTap: () async {
+              AppUtility.closeBottomSheet();
+              RouteManagement.goToWelcomeView();
+              await AuthService.find.logout();
+            },
+          ),
+        ],
+      );
+
+  Widget _buildProfileBody(ProfileController logic, BuildContext context) {
     if (logic.isLoading) {
       return const Expanded(
         child: Center(child: NxCircularProgressIndicator()),
@@ -97,7 +260,7 @@ class ProfileView extends StatelessWidget {
               Text(
                 StringValues.userNotFoundError,
                 style: AppStyles.style32Bold.copyWith(
-                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -118,17 +281,15 @@ class ProfileView extends StatelessWidget {
             Dimens.boxHeight16,
             Padding(
               padding: Dimens.edgeInsetsHorizDefault,
-              child: _buildUserDetails(logic),
+              child: _buildUserDetails(logic, context),
             ),
-            Dimens.boxHeight24,
+            Dimens.boxHeight16,
             Padding(
               padding: Dimens.edgeInsetsHorizDefault,
-              child: _buildCountDetails(logic),
+              child: _buildCountDetails(logic, context),
             ),
-            Dimens.boxHeight8,
-            Dimens.dividerWithHeight,
-            Dimens.boxHeight8,
-            _buildPosts(logic),
+            Dimens.boxHeight16,
+            _buildPosts(logic, context),
             Dimens.boxHeight16,
           ],
         ),
@@ -136,7 +297,8 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildUserDetails(ProfileController logic) => Column(
+  Widget _buildUserDetails(ProfileController logic, BuildContext context) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -144,7 +306,7 @@ class ProfileView extends StatelessWidget {
           Column(
             children: [
               GestureDetector(
-                onTap: () => _showProfilePictureDialog(logic),
+                onTap: () => _showProfilePictureBottomSheet(context),
                 child: Hero(
                   tag: logic.profileDetails!.user!.id,
                   child: AvatarWidget(
@@ -173,7 +335,7 @@ class ProfileView extends StatelessWidget {
               Text(
                 "@${logic.profileDetails!.user!.uname}",
                 style: AppStyles.style14Normal.copyWith(
-                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
               ),
             ],
@@ -187,7 +349,7 @@ class ProfileView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.link,
+                  Icons.link_outlined,
                   size: Dimens.sixTeen,
                   color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                 ),
@@ -201,7 +363,7 @@ class ProfileView extends StatelessWidget {
                                 .contains('http://')
                         ? Uri.parse(logic.profileDetails!.user!.website!).host
                         : logic.profileDetails!.user!.website!,
-                    style: AppStyles.style13Normal.copyWith(
+                    style: AppStyles.style13Bold.copyWith(
                       color: ColorValues.primaryColor,
                     ),
                   ),
@@ -215,46 +377,45 @@ class ProfileView extends StatelessWidget {
               Icon(
                 Icons.calendar_today,
                 size: Dimens.sixTeen,
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(context).textTheme.subtitle1!.color,
               ),
               Dimens.boxWidth8,
               Expanded(
                 child: Text(
                   'Joined - ${DateFormat.yMMMd().format(logic.profileDetails!.user!.createdAt)}',
                   style: AppStyles.style12Bold.copyWith(
-                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.subtitle1!.color,
                   ),
                 ),
               ),
             ],
           ),
-          Dimens.boxHeight24,
-          _buildActionBtn(),
+          Dimens.boxHeight16,
+          _buildActionBtn(context),
         ],
       );
 
-  Widget _buildActionBtn() {
+  Widget _buildActionBtn(BuildContext context) {
     return NxOutlinedButton(
       label: StringValues.editProfile.toTitleCase(),
       width: Dimens.screenWidth,
       height: Dimens.thirtySix,
       padding: Dimens.edgeInsets0_8,
-      borderRadius: Dimens.eight,
-      borderColor: ColorValues.primaryColor,
+      borderRadius: Dimens.four,
       labelStyle: AppStyles.style14Normal.copyWith(
-        color: ColorValues.primaryColor,
+        color: Theme.of(context).textTheme.bodyText1!.color,
       ),
       onTap: RouteManagement.goToEditProfileView,
     );
   }
 
-  Container _buildCountDetails(ProfileController logic) {
+  Container _buildCountDetails(ProfileController logic, BuildContext context) {
     return Container(
       width: Dimens.screenWidth,
       padding: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
-        color: Theme.of(Get.context!).dialogTheme.backgroundColor!,
-        borderRadius: BorderRadius.circular(Dimens.eight),
+        color: Theme.of(context).bottomAppBarColor,
+        borderRadius: BorderRadius.circular(Dimens.four),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -295,7 +456,7 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildPosts(ProfileController logic) {
+  Widget _buildPosts(ProfileController logic, BuildContext context) {
     if (logic.postList.isEmpty) {
       return Center(
         child: Padding(
@@ -303,7 +464,7 @@ class ProfileView extends StatelessWidget {
           child: Text(
             StringValues.noPosts,
             style: AppStyles.style20Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              color: Theme.of(context).textTheme.subtitle1!.color,
             ),
             textAlign: TextAlign.center,
           ),
@@ -332,116 +493,80 @@ class ProfileView extends StatelessWidget {
               ),
               itemBuilder: (ctx, i) {
                 var post = logic.postList[i];
-                return PostThumbnailWidget(
-                  mediaFile: post.mediaFiles!.first,
-                  post: post,
-                );
+                return PostThumbnailWidget(post: post);
               },
             ),
-          if (logic.isMorePostLoading || logic.postData!.hasNextPage!)
-            Dimens.boxHeight16,
-          if (logic.isMorePostLoading)
-            const Center(child: NxCircularProgressIndicator()),
-          if (!logic.isMorePostLoading && logic.postData!.hasNextPage!)
-            Center(
-              child: NxTextButton(
-                label: 'Load more posts',
-                onTap: logic.loadMore,
-                labelStyle: AppStyles.style14Bold.copyWith(
-                  color: ColorValues.primaryLightColor,
-                ),
-                padding: Dimens.edgeInsets8_0,
-              ),
-            ),
+          LoadMoreWidget(
+            loadingCondition: logic.isMorePostLoading,
+            hasMoreCondition:
+                logic.postData!.results != null && logic.postData!.hasNextPage!,
+            loadMore: logic.loadMore,
+          ),
         ],
       ),
     );
   }
 
-  void _showProfilePictureDialog(ProfileController logic) {
-    AppUtility.showSimpleDialog(
-      GetBuilder<EditProfilePictureController>(
-        builder: (con) => Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: Dimens.edgeInsets16.copyWith(
-                bottom: Dimens.zero,
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    'Profile Picture',
-                    style: AppStyles.style18Bold,
-                  ),
-                  const Spacer(),
-                  NxIconButton(
-                    icon: Icons.close,
-                    iconSize: Dimens.thirtyTwo,
-                    iconColor:
-                        Theme.of(Get.context!).textTheme.bodyText1!.color,
-                    onTap: AppUtility.closeDialog,
-                  ),
-                ],
-              ),
+  _showProfilePictureBottomSheet(BuildContext context) =>
+      AppUtility.showBottomSheet(
+        children: [
+          /// View Profile Picture
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.image_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
             ),
-            Dimens.dividerWithHeight,
-            Dimens.boxHeight8,
-            AvatarWidget(
-              avatar: logic.profileDetails!.user?.avatar,
-              size: Dimens.screenWidth * 0.4,
+            title: Text(
+              StringValues.view,
+              style: AppStyles.style16Bold,
             ),
-            Dimens.boxHeight16,
-            Dimens.dividerWithHeight,
-            Dimens.boxHeight16,
-            Padding(
-              padding: Dimens.edgeInsets0_16,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: NxOutlinedButton(
-                        width: Dimens.hundred,
-                        height: Dimens.thirtySix,
-                        label: 'Change',
-                        borderColor:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        labelStyle: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        onTap: () {
-                          AppUtility.closeDialog();
-                          con.chooseImage();
-                        }),
-                  ),
-                  Dimens.boxWidth16,
-                  Expanded(
-                    child: NxOutlinedButton(
-                      width: Dimens.hundred,
-                      height: Dimens.thirtySix,
-                      label: 'Remove',
-                      borderColor:
-                          Theme.of(Get.context!).textTheme.bodyText1!.color,
-                      labelStyle: AppStyles.style14Normal.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
-                      ),
-                      onTap: () {
-                        AppUtility.closeDialog();
-                        con.removeProfilePicture();
-                      },
-                    ),
-                  ),
-                ],
-              ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              Get.to(
+                () => ImageViewerWidget(
+                    url: ProfileController
+                        .find.profileDetails!.user!.avatar!.url!),
+              );
+            },
+          ),
+
+          /// Change Profile Picture
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.camera_alt_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
             ),
-            Dimens.boxHeight24,
-          ],
-        ),
-      ),
-    );
-  }
+            title: Text(
+              StringValues.change,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              EditProfilePictureController.find.chooseImage();
+            },
+          ),
+
+          /// Remove Profile Picture
+          NxListTile(
+            padding: Dimens.edgeInsets12,
+            leading: Icon(
+              Icons.delete_outline,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.remove,
+              style: AppStyles.style16Bold,
+            ),
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              EditProfilePictureController.find.removeProfilePicture();
+            },
+          ),
+        ],
+      );
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -26,10 +25,9 @@ class AccountSettingsView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               NxAppBar(
-                padding: Dimens.edgeInsets8_16,
+                padding: Dimens.edgeInsetsDefault,
                 title: StringValues.account,
               ),
-              Dimens.boxHeight16,
               _buildBody(context),
             ],
           ),
@@ -45,18 +43,17 @@ class AccountSettingsView extends StatelessWidget {
         physics: const BouncingScrollPhysics(
           parent: AlwaysScrollableScrollPhysics(),
         ),
-        padding: Dimens.edgeInsets0_16,
+        padding: Dimens.edgeInsetsHorizDefault,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Dimens.boxHeight8,
+
             /// Change Email Address
             NxListTile(
-              padding: Dimens.edgeInsets16_12,
-              bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(Dimens.eight),
-                topRight: Radius.circular(Dimens.eight),
-              ),
+              padding: Dimens.edgeInsets12,
+              bgColor: Theme.of(context).bottomAppBarColor,
+              borderRadius: BorderRadius.circular(Dimens.four),
               title: Text(
                 StringValues.email.toTitleCase(),
                 style: AppStyles.style14Bold,
@@ -72,12 +69,13 @@ class AccountSettingsView extends StatelessWidget {
               ),
             ),
 
-            Dimens.divider,
+            Dimens.boxHeight8,
 
             /// Add or Change Phone Number
             NxListTile(
-              padding: Dimens.edgeInsets16_12,
-              bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+              padding: Dimens.edgeInsets12,
+              bgColor: Theme.of(context).bottomAppBarColor,
+              borderRadius: BorderRadius.circular(Dimens.four),
               title: Text(
                 StringValues.phone.toTitleCase(),
                 style: AppStyles.style14Bold,
@@ -95,12 +93,13 @@ class AccountSettingsView extends StatelessWidget {
               ),
             ),
 
-            Dimens.divider,
+            Dimens.boxHeight8,
 
             /// Change Username
             NxListTile(
-              padding: Dimens.edgeInsets16_12,
-              bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+              padding: Dimens.edgeInsets12,
+              bgColor: Theme.of(context).bottomAppBarColor,
+              borderRadius: BorderRadius.circular(Dimens.four),
               title: Text(
                 StringValues.username.toTitleCase(),
                 style: AppStyles.style14Bold,
@@ -116,12 +115,13 @@ class AccountSettingsView extends StatelessWidget {
               ),
             ),
 
-            Dimens.divider,
+            Dimens.boxHeight8,
 
             /// Apply for Blue Tick
             NxListTile(
-              padding: Dimens.edgeInsets16_12,
-              bgColor: Theme.of(Get.context!).dialogBackgroundColor,
+              padding: Dimens.edgeInsets12,
+              bgColor: Theme.of(context).bottomAppBarColor,
+              borderRadius: BorderRadius.circular(Dimens.four),
               title: Text(
                 StringValues.verified.toTitleCase(),
                 style: AppStyles.style14Bold,
@@ -129,7 +129,9 @@ class AccountSettingsView extends StatelessWidget {
               subtitle: Text(
                 profile.isVerified ? StringValues.yes : StringValues.no,
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: profile.isVerified
+                      ? ColorValues.primaryColor
+                      : Theme.of(context).textTheme.subtitle1!.color,
                 ),
               ),
               onTap: () {
@@ -167,17 +169,14 @@ class AccountSettingsView extends StatelessWidget {
               },
             ),
 
-            Dimens.divider,
+            Dimens.boxHeight8,
 
             /// Deactivate Account
 
             NxListTile(
-              padding: Dimens.edgeInsets16_12,
-              bgColor: Theme.of(Get.context!).dialogBackgroundColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(Dimens.eight),
-                bottomRight: Radius.circular(Dimens.eight),
-              ),
+              padding: Dimens.edgeInsets12,
+              bgColor: Theme.of(context).bottomAppBarColor,
+              borderRadius: BorderRadius.circular(Dimens.four),
               title: Text(
                 StringValues.deactivate.toTitleCase(),
                 style: AppStyles.style14Bold.copyWith(
@@ -192,6 +191,7 @@ class AccountSettingsView extends StatelessWidget {
               ),
               onTap: RouteManagement.goToDeactivateAccountSettingsView,
             ),
+
             Dimens.boxHeight16,
           ],
         ),

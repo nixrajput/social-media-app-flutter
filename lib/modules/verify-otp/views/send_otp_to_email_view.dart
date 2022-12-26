@@ -26,7 +26,7 @@ class SendOtpToEmailView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.sendOtp,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
                 _buildBody(context),
               ],
@@ -41,7 +41,7 @@ class SendOtpToEmailView extends StatelessWidget {
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
@@ -91,7 +91,7 @@ class SendOtpToEmailView extends StatelessWidget {
       child: TextFormField(
         decoration: InputDecoration(
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(Dimens.eight),
+            borderRadius: BorderRadius.circular(Dimens.four),
           ),
           hintText: StringValues.email,
           hintStyle: AppStyles.style14Normal.copyWith(

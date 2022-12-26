@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloudinary/cloudinary.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
@@ -35,6 +37,7 @@ class EditProfilePictureController extends GetxController {
       defaultValue: AppSecrets.cloudinaryUploadPreset);
 
   Future<void> selectProfileImage({ImageSource? imageSource}) async {
+    final imageCropper = ImageCropper();
     var imageFile = await FileUtility.selectImage(source: imageSource);
 
     if (imageFile == null) {
@@ -42,7 +45,28 @@ class EditProfilePictureController extends GetxController {
       return;
     }
 
-    var compressdFile = await FileUtility.compressImage(imageFile.path);
+    var croppedFile = await imageCropper.cropImage(
+      maxWidth: 1080,
+      maxHeight: 1080,
+      sourcePath: imageFile.path,
+      compressFormat: ImageCompressFormat.jpg,
+      aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+          toolbarTitle: StringValues.cropImage,
+          toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
+          backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
+        ),
+        IOSUiSettings(
+          title: StringValues.cropImage,
+          minimumAspectRatio: 1.0,
+        ),
+      ],
+      compressQuality: 100,
+    );
+
+    var compressdFile = await FileUtility.compressImage(croppedFile!.path);
 
     if (compressdFile == null) {
       AppUtility.log('Compressed file is null', tag: 'error');

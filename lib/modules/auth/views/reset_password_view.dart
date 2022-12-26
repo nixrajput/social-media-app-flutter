@@ -30,7 +30,7 @@ class ResetPasswordView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.resetPassword,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
                 _buildResetPasswordFields(),
               ],
@@ -45,7 +45,7 @@ class ResetPasswordView extends StatelessWidget {
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
@@ -71,7 +71,7 @@ class ResetPasswordView extends StatelessWidget {
                       child: TextFormField(
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
@@ -100,7 +100,7 @@ class ResetPasswordView extends StatelessWidget {
                         obscureText: logic.showPassword,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,
@@ -133,7 +133,7 @@ class ResetPasswordView extends StatelessWidget {
                         obscureText: logic.showPassword,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,

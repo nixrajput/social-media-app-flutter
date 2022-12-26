@@ -11,6 +11,7 @@ import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/media_file_message.dart';
 import 'package:social_media_app/apis/models/entities/post_media_file.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/apis/models/responses/chat_message_list_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/providers/socket_api_provider.dart';
@@ -45,6 +46,7 @@ class P2PChatController extends GetxController {
   final _chatMessages = <ChatMessage>[].obs;
   final _messageData = const ChatMessageListResponse().obs;
   final _mediaFileMessages = RxList<MediaFileMessage>();
+  final _isTyping = false.obs;
 
   bool get isLoading => _isLoading.value;
 
@@ -62,13 +64,20 @@ class P2PChatController extends GetxController {
 
   List<ChatMessage> get chatMessages => _chatMessages;
 
+  bool get isTyping => _isTyping.value;
+
+  void setIsTyping(bool value) {
+    _isTyping.value = value;
+  }
+
   /// Setters
   set setMessageData(ChatMessageListResponse response) =>
       _messageData.value = response;
 
-  String? userId;
-  String? username;
-  MediaFile? profileImage;
+  // String? userId;
+  // String? username;
+  // MediaFile? profileImage;
+  User? user;
 
   var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME',
       defaultValue: AppSecrets.cloudinaryCloudName);
@@ -243,7 +252,7 @@ class P2PChatController extends GetxController {
             var tempMessage = ChatMessage(
               tempId: tempId,
               senderId: profile.profileDetails!.user!.id,
-              receiverId: userId!,
+              receiverId: user!.id,
               message: encryptedMessage,
               mediaFile: PostMediaFile(
                 mediaType: 'video',
@@ -262,11 +271,12 @@ class P2PChatController extends GetxController {
             var urlResult = await _uploadVideo(compressdFile, thumbnailFile);
 
             if (urlResult != null) {
+              AppUtility.log('Sending message');
               _socketApiProvider.sendJson({
                 "type": "send-message",
                 "payload": {
                   "message": encryptedMessage,
-                  "receiverId": userId,
+                  "receiverId": user!.id,
                   "tempId": tempId,
                   "mediaFile": urlResult,
                   "replyTo": _replyTo.value.id,
@@ -283,7 +293,7 @@ class P2PChatController extends GetxController {
             var tempMessage = ChatMessage(
               tempId: tempId,
               senderId: profile.profileDetails!.user!.id,
-              receiverId: userId!,
+              receiverId: user!.id,
               message: encryptedMessage,
               mediaFile: PostMediaFile(
                 mediaType: 'image',
@@ -301,11 +311,12 @@ class P2PChatController extends GetxController {
             var urlResult = await _uploadImage(compressdFile);
 
             if (urlResult != null) {
+              AppUtility.log('Sending message');
               _socketApiProvider.sendJson({
                 "type": "send-message",
                 "payload": {
                   "message": encryptedMessage,
-                  "receiverId": userId,
+                  "receiverId": user!.id,
                   "tempId": tempId,
                   "mediaFile": urlResult,
                   "replyTo": _replyTo.value.id,
@@ -331,7 +342,7 @@ class P2PChatController extends GetxController {
     var tempMessage = ChatMessage(
       tempId: tempId,
       senderId: profile.profileDetails!.user!.id,
-      receiverId: userId!,
+      receiverId: user!.id,
       message: encryptedMessage,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -342,11 +353,12 @@ class P2PChatController extends GetxController {
 
     addTempMessage(tempMessage);
 
+    AppUtility.log('Sending message');
     _socketApiProvider.sendJson({
       "type": "send-message",
       "payload": {
         "message": encryptedMessage,
-        "receiverId": userId,
+        "receiverId": user!.id,
         "tempId": tempId,
         "replyTo": _replyTo.value.id,
       },
@@ -361,10 +373,8 @@ class P2PChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    userId = Get.arguments[0];
-    username = Get.arguments[1];
-    profileImage = Get.arguments[2];
-    if (userId != null) {
+    user = Get.arguments[0];
+    if (user != null) {
       _getData();
     }
     material.WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -392,8 +402,8 @@ class P2PChatController extends GetxController {
       var messages = data
           .where((element) =>
               (element.senderId == currentUserId &&
-                  element.receiverId == userId) ||
-              (element.senderId == userId &&
+                  element.receiverId == user!.id) ||
+              (element.senderId == user!.id &&
                   element.receiverId == currentUserId))
           .toList();
 
@@ -464,7 +474,7 @@ class P2PChatController extends GetxController {
     _socketApiProvider.sendJson({
       'type': 'message-typing',
       'payload': {
-        'receiverId': userId,
+        'receiverId': user!.id,
         'status': status,
       }
     });
@@ -474,7 +484,7 @@ class P2PChatController extends GetxController {
     if (_chatMessages.isNotEmpty) {
       var unreadMessages = _chatMessages
           .where((element) =>
-              (element.senderId == userId &&
+              (element.senderId == user!.id &&
                   element.receiverId == profile.profileDetails!.user!.id) &&
               element.seen == false)
           .toList();
@@ -574,7 +584,8 @@ class P2PChatController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.getMessagesById(_auth.token, userId!);
+      final response =
+          await _apiProvider.getMessagesById(_auth.token, user!.id);
 
       if (response.isSuccessful) {
         final decodedData = response.data;
@@ -618,7 +629,7 @@ class P2PChatController extends GetxController {
 
     try {
       final response =
-          await _apiProvider.getMessagesById(_auth.token, userId!, page: page);
+          await _apiProvider.getMessagesById(_auth.token, user!.id, page: page);
 
       if (response.isSuccessful) {
         final decodedData = response.data;

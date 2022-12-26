@@ -7,37 +7,37 @@ part of 'chat_message.dart';
 // **************************************************************************
 
 abstract class _$ChatMessageCWProxy {
-  ChatMessage createdAt(DateTime? createdAt);
-
-  ChatMessage delivered(bool? delivered);
-
-  ChatMessage deliveredAt(DateTime? deliveredAt);
-
   ChatMessage id(String? id);
 
-  ChatMessage mediaFile(PostMediaFile? mediaFile);
+  ChatMessage tempId(String? tempId);
 
-  ChatMessage message(String? message);
-
-  ChatMessage receiver(User? receiver);
+  ChatMessage senderId(String? senderId);
 
   ChatMessage receiverId(String? receiverId);
 
+  ChatMessage message(String? message);
+
+  ChatMessage mediaFile(PostMediaFile? mediaFile);
+
   ChatMessage replyTo(ChatMessage? replyTo);
-
-  ChatMessage seen(bool? seen);
-
-  ChatMessage seenAt(DateTime? seenAt);
 
   ChatMessage sender(User? sender);
 
-  ChatMessage senderId(String? senderId);
+  ChatMessage receiver(User? receiver);
 
   ChatMessage sent(bool? sent);
 
   ChatMessage sentAt(DateTime? sentAt);
 
-  ChatMessage tempId(String? tempId);
+  ChatMessage delivered(bool? delivered);
+
+  ChatMessage deliveredAt(DateTime? deliveredAt);
+
+  ChatMessage seen(bool? seen);
+
+  ChatMessage seenAt(DateTime? seenAt);
+
+  ChatMessage createdAt(DateTime? createdAt);
 
   ChatMessage updatedAt(DateTime? updatedAt);
 
@@ -48,34 +48,64 @@ abstract class _$ChatMessageCWProxy {
   /// ChatMessage(...).copyWith(id: 12, name: "My name")
   /// ````
   ChatMessage call({
-    DateTime? createdAt,
-    bool? delivered,
-    DateTime? deliveredAt,
     String? id,
-    PostMediaFile? mediaFile,
-    String? message,
-    User? receiver,
-    String? receiverId,
-    ChatMessage? replyTo,
-    bool? seen,
-    DateTime? seenAt,
-    User? sender,
+    String? tempId,
     String? senderId,
+    String? receiverId,
+    String? message,
+    PostMediaFile? mediaFile,
+    ChatMessage? replyTo,
+    User? sender,
+    User? receiver,
     bool? sent,
     DateTime? sentAt,
-    String? tempId,
+    bool? delivered,
+    DateTime? deliveredAt,
+    bool? seen,
+    DateTime? seenAt,
+    DateTime? createdAt,
     DateTime? updatedAt,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfChatMessage.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfChatMessage.copyWith.fieldName(...)`
 class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
-  final ChatMessage _value;
-
   const _$ChatMessageCWProxyImpl(this._value);
 
+  final ChatMessage _value;
+
   @override
-  ChatMessage createdAt(DateTime? createdAt) => this(createdAt: createdAt);
+  ChatMessage id(String? id) => this(id: id);
+
+  @override
+  ChatMessage tempId(String? tempId) => this(tempId: tempId);
+
+  @override
+  ChatMessage senderId(String? senderId) => this(senderId: senderId);
+
+  @override
+  ChatMessage receiverId(String? receiverId) => this(receiverId: receiverId);
+
+  @override
+  ChatMessage message(String? message) => this(message: message);
+
+  @override
+  ChatMessage mediaFile(PostMediaFile? mediaFile) => this(mediaFile: mediaFile);
+
+  @override
+  ChatMessage replyTo(ChatMessage? replyTo) => this(replyTo: replyTo);
+
+  @override
+  ChatMessage sender(User? sender) => this(sender: sender);
+
+  @override
+  ChatMessage receiver(User? receiver) => this(receiver: receiver);
+
+  @override
+  ChatMessage sent(bool? sent) => this(sent: sent);
+
+  @override
+  ChatMessage sentAt(DateTime? sentAt) => this(sentAt: sentAt);
 
   @override
   ChatMessage delivered(bool? delivered) => this(delivered: delivered);
@@ -85,43 +115,13 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
       this(deliveredAt: deliveredAt);
 
   @override
-  ChatMessage id(String? id) => this(id: id);
-
-  @override
-  ChatMessage mediaFile(PostMediaFile? mediaFile) => this(mediaFile: mediaFile);
-
-  @override
-  ChatMessage message(String? message) => this(message: message);
-
-  @override
-  ChatMessage receiver(User? receiver) => this(receiver: receiver);
-
-  @override
-  ChatMessage receiverId(String? receiverId) => this(receiverId: receiverId);
-
-  @override
-  ChatMessage replyTo(ChatMessage? replyTo) => this(replyTo: replyTo);
-
-  @override
   ChatMessage seen(bool? seen) => this(seen: seen);
 
   @override
   ChatMessage seenAt(DateTime? seenAt) => this(seenAt: seenAt);
 
   @override
-  ChatMessage sender(User? sender) => this(sender: sender);
-
-  @override
-  ChatMessage senderId(String? senderId) => this(senderId: senderId);
-
-  @override
-  ChatMessage sent(bool? sent) => this(sent: sent);
-
-  @override
-  ChatMessage sentAt(DateTime? sentAt) => this(sentAt: sentAt);
-
-  @override
-  ChatMessage tempId(String? tempId) => this(tempId: tempId);
+  ChatMessage createdAt(DateTime? createdAt) => this(createdAt: createdAt);
 
   @override
   ChatMessage updatedAt(DateTime? updatedAt) => this(updatedAt: updatedAt);
@@ -135,77 +135,61 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
   /// ChatMessage(...).copyWith(id: 12, name: "My name")
   /// ````
   ChatMessage call({
-    Object? createdAt = const $CopyWithPlaceholder(),
-    Object? delivered = const $CopyWithPlaceholder(),
-    Object? deliveredAt = const $CopyWithPlaceholder(),
     Object? id = const $CopyWithPlaceholder(),
-    Object? mediaFile = const $CopyWithPlaceholder(),
-    Object? message = const $CopyWithPlaceholder(),
-    Object? receiver = const $CopyWithPlaceholder(),
-    Object? receiverId = const $CopyWithPlaceholder(),
-    Object? replyTo = const $CopyWithPlaceholder(),
-    Object? seen = const $CopyWithPlaceholder(),
-    Object? seenAt = const $CopyWithPlaceholder(),
-    Object? sender = const $CopyWithPlaceholder(),
+    Object? tempId = const $CopyWithPlaceholder(),
     Object? senderId = const $CopyWithPlaceholder(),
+    Object? receiverId = const $CopyWithPlaceholder(),
+    Object? message = const $CopyWithPlaceholder(),
+    Object? mediaFile = const $CopyWithPlaceholder(),
+    Object? replyTo = const $CopyWithPlaceholder(),
+    Object? sender = const $CopyWithPlaceholder(),
+    Object? receiver = const $CopyWithPlaceholder(),
     Object? sent = const $CopyWithPlaceholder(),
     Object? sentAt = const $CopyWithPlaceholder(),
-    Object? tempId = const $CopyWithPlaceholder(),
+    Object? delivered = const $CopyWithPlaceholder(),
+    Object? deliveredAt = const $CopyWithPlaceholder(),
+    Object? seen = const $CopyWithPlaceholder(),
+    Object? seenAt = const $CopyWithPlaceholder(),
+    Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
     return ChatMessage(
-      createdAt: createdAt == const $CopyWithPlaceholder()
-          ? _value.createdAt
-          // ignore: cast_nullable_to_non_nullable
-          : createdAt as DateTime?,
-      delivered: delivered == const $CopyWithPlaceholder()
-          ? _value.delivered
-          // ignore: cast_nullable_to_non_nullable
-          : delivered as bool?,
-      deliveredAt: deliveredAt == const $CopyWithPlaceholder()
-          ? _value.deliveredAt
-          // ignore: cast_nullable_to_non_nullable
-          : deliveredAt as DateTime?,
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
           : id as String?,
-      mediaFile: mediaFile == const $CopyWithPlaceholder()
-          ? _value.mediaFile
+      tempId: tempId == const $CopyWithPlaceholder()
+          ? _value.tempId
           // ignore: cast_nullable_to_non_nullable
-          : mediaFile as PostMediaFile?,
-      message: message == const $CopyWithPlaceholder()
-          ? _value.message
-          // ignore: cast_nullable_to_non_nullable
-          : message as String?,
-      receiver: receiver == const $CopyWithPlaceholder()
-          ? _value.receiver
-          // ignore: cast_nullable_to_non_nullable
-          : receiver as User?,
-      receiverId: receiverId == const $CopyWithPlaceholder()
-          ? _value.receiverId
-          // ignore: cast_nullable_to_non_nullable
-          : receiverId as String?,
-      replyTo: replyTo == const $CopyWithPlaceholder()
-          ? _value.replyTo
-          // ignore: cast_nullable_to_non_nullable
-          : replyTo as ChatMessage?,
-      seen: seen == const $CopyWithPlaceholder()
-          ? _value.seen
-          // ignore: cast_nullable_to_non_nullable
-          : seen as bool?,
-      seenAt: seenAt == const $CopyWithPlaceholder()
-          ? _value.seenAt
-          // ignore: cast_nullable_to_non_nullable
-          : seenAt as DateTime?,
-      sender: sender == const $CopyWithPlaceholder()
-          ? _value.sender
-          // ignore: cast_nullable_to_non_nullable
-          : sender as User?,
+          : tempId as String?,
       senderId: senderId == const $CopyWithPlaceholder()
           ? _value.senderId
           // ignore: cast_nullable_to_non_nullable
           : senderId as String?,
+      receiverId: receiverId == const $CopyWithPlaceholder()
+          ? _value.receiverId
+          // ignore: cast_nullable_to_non_nullable
+          : receiverId as String?,
+      message: message == const $CopyWithPlaceholder()
+          ? _value.message
+          // ignore: cast_nullable_to_non_nullable
+          : message as String?,
+      mediaFile: mediaFile == const $CopyWithPlaceholder()
+          ? _value.mediaFile
+          // ignore: cast_nullable_to_non_nullable
+          : mediaFile as PostMediaFile?,
+      replyTo: replyTo == const $CopyWithPlaceholder()
+          ? _value.replyTo
+          // ignore: cast_nullable_to_non_nullable
+          : replyTo as ChatMessage?,
+      sender: sender == const $CopyWithPlaceholder()
+          ? _value.sender
+          // ignore: cast_nullable_to_non_nullable
+          : sender as User?,
+      receiver: receiver == const $CopyWithPlaceholder()
+          ? _value.receiver
+          // ignore: cast_nullable_to_non_nullable
+          : receiver as User?,
       sent: sent == const $CopyWithPlaceholder()
           ? _value.sent
           // ignore: cast_nullable_to_non_nullable
@@ -214,10 +198,26 @@ class _$ChatMessageCWProxyImpl implements _$ChatMessageCWProxy {
           ? _value.sentAt
           // ignore: cast_nullable_to_non_nullable
           : sentAt as DateTime?,
-      tempId: tempId == const $CopyWithPlaceholder()
-          ? _value.tempId
+      delivered: delivered == const $CopyWithPlaceholder()
+          ? _value.delivered
           // ignore: cast_nullable_to_non_nullable
-          : tempId as String?,
+          : delivered as bool?,
+      deliveredAt: deliveredAt == const $CopyWithPlaceholder()
+          ? _value.deliveredAt
+          // ignore: cast_nullable_to_non_nullable
+          : deliveredAt as DateTime?,
+      seen: seen == const $CopyWithPlaceholder()
+          ? _value.seen
+          // ignore: cast_nullable_to_non_nullable
+          : seen as bool?,
+      seenAt: seenAt == const $CopyWithPlaceholder()
+          ? _value.seenAt
+          // ignore: cast_nullable_to_non_nullable
+          : seenAt as DateTime?,
+      createdAt: createdAt == const $CopyWithPlaceholder()
+          ? _value.createdAt
+          // ignore: cast_nullable_to_non_nullable
+          : createdAt as DateTime?,
       updatedAt: updatedAt == const $CopyWithPlaceholder()
           ? _value.updatedAt
           // ignore: cast_nullable_to_non_nullable

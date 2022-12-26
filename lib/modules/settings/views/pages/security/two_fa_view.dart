@@ -19,9 +19,8 @@ class TwoFAView extends StatelessWidget {
             children: [
               NxAppBar(
                 title: StringValues.twoFaAuth,
-                padding: Dimens.edgeInsets8_16,
+                padding: Dimens.edgeInsetsDefault,
               ),
-              Dimens.boxHeight16,
               //_buildBody(),
             ],
           ),

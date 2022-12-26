@@ -7,11 +7,11 @@ part of 'country_code.dart';
 // **************************************************************************
 
 abstract class _$CountryCodeCWProxy {
+  CountryCode name(String name);
+
   CountryCode code(String code);
 
   CountryCode dialCode(String dialCode);
-
-  CountryCode name(String name);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CountryCode(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -20,17 +20,20 @@ abstract class _$CountryCodeCWProxy {
   /// CountryCode(...).copyWith(id: 12, name: "My name")
   /// ````
   CountryCode call({
+    String? name,
     String? code,
     String? dialCode,
-    String? name,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfCountryCode.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfCountryCode.copyWith.fieldName(...)`
 class _$CountryCodeCWProxyImpl implements _$CountryCodeCWProxy {
+  const _$CountryCodeCWProxyImpl(this._value);
+
   final CountryCode _value;
 
-  const _$CountryCodeCWProxyImpl(this._value);
+  @override
+  CountryCode name(String name) => this(name: name);
 
   @override
   CountryCode code(String code) => this(code: code);
@@ -39,9 +42,6 @@ class _$CountryCodeCWProxyImpl implements _$CountryCodeCWProxy {
   CountryCode dialCode(String dialCode) => this(dialCode: dialCode);
 
   @override
-  CountryCode name(String name) => this(name: name);
-
-  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CountryCode(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -50,23 +50,26 @@ class _$CountryCodeCWProxyImpl implements _$CountryCodeCWProxy {
   /// CountryCode(...).copyWith(id: 12, name: "My name")
   /// ````
   CountryCode call({
+    Object? name = const $CopyWithPlaceholder(),
     Object? code = const $CopyWithPlaceholder(),
     Object? dialCode = const $CopyWithPlaceholder(),
-    Object? name = const $CopyWithPlaceholder(),
   }) {
     return CountryCode(
+      name: name == const $CopyWithPlaceholder() || name == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.name!
+          // ignore: cast_nullable_to_non_nullable
+          : name as String,
       code: code == const $CopyWithPlaceholder() || code == null
-          ? _value.code
+          // ignore: unnecessary_non_null_assertion
+          ? _value.code!
           // ignore: cast_nullable_to_non_nullable
           : code as String,
       dialCode: dialCode == const $CopyWithPlaceholder() || dialCode == null
-          ? _value.dialCode
+          // ignore: unnecessary_non_null_assertion
+          ? _value.dialCode!
           // ignore: cast_nullable_to_non_nullable
           : dialCode as String,
-      name: name == const $CopyWithPlaceholder() || name == null
-          ? _value.name
-          // ignore: cast_nullable_to_non_nullable
-          : name as String,
     );
   }
 }

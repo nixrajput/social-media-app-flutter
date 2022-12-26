@@ -25,9 +25,8 @@ class AccountPrivacyView extends StatelessWidget {
             children: [
               NxAppBar(
                 title: StringValues.accountPrivacy,
-                padding: Dimens.edgeInsets8_16,
+                padding: Dimens.edgeInsetsDefault,
               ),
-              Dimens.boxHeight16,
               _buildBody(context),
             ],
           ),
@@ -39,19 +38,18 @@ class AccountPrivacyView extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: Dimens.edgeInsets0_16,
+        padding: Dimens.edgeInsetsHorizDefault,
         child: SingleChildScrollView(
           child: GetBuilder<AccountPrivacyController>(
             builder: (logic) => Column(
               children: [
+                Dimens.boxHeight8,
+
                 /// Public
                 NxRadioTile(
-                  padding: Dimens.edgeInsets16_12,
-                  bgColor: Theme.of(context).dialogBackgroundColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(Dimens.eight),
-                    topRight: Radius.circular(Dimens.eight),
-                  ),
+                  padding: Dimens.edgeInsets12,
+                  bgColor: Theme.of(context).bottomAppBarColor,
+                  borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () => logic.changeAccountPrivacy(false),
                   onChanged: (v) => logic.changeAccountPrivacy(false),
                   title: Text(
@@ -69,16 +67,13 @@ class AccountPrivacyView extends StatelessWidget {
                       ProfileController.find.profileDetails!.user!.isPrivate,
                 ),
 
-                Dimens.divider,
+                Dimens.boxHeight8,
 
                 /// Private
                 NxRadioTile(
-                  padding: Dimens.edgeInsets16_12,
-                  bgColor: Theme.of(context).dialogBackgroundColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(Dimens.eight),
-                    bottomRight: Radius.circular(Dimens.eight),
-                  ),
+                  padding: Dimens.edgeInsets12,
+                  bgColor: Theme.of(context).bottomAppBarColor,
+                  borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () => logic.changeAccountPrivacy(true),
                   onChanged: (v) => logic.changeAccountPrivacy(true),
                   title: Text(

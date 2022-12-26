@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,7 @@ import 'package:social_media_app/apis/models/entities/comment.dart';
 import 'package:social_media_app/apis/models/entities/follower.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/notification.dart';
+import 'package:social_media_app/apis/models/entities/poll_option.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/apis/models/entities/profile.dart';
@@ -26,8 +29,13 @@ import 'package:social_media_app/constants/enums.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/themes.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
+import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
+import 'package:social_media_app/modules/follow_request/follow_request_controller.dart';
+import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
+import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
+import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/translations/app_translations.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -36,18 +44,20 @@ void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     await _initPreAppServices();
-    await checkAuthData();
+    runApp(const MyApp());
+    await initializeFirebaseService();
+    if (NetworkController.find.isConnected == true) {
+      await AppUpdateController.find.init();
+      await validateSessionAndGetData();
+    }
   } catch (err) {
     AppUtility.log('Error in main: $err', tag: 'error');
     RouteService.set(RouteStatus.error);
   }
-  runApp(const MyApp());
-  if (NetworkController.find.networkStatus == true) {
-    await Get.put(AppUpdateController(), permanent: true).init();
-  }
 }
 
 Future<void> _initPreAppServices() async {
+  AppUtility.log('Initializing PreApp Services');
   await GetStorage.init();
   await Hive.initFlutter();
 
@@ -55,6 +65,7 @@ Future<void> _initPreAppServices() async {
 
   Hive.registerAdapter(AuthResponseAdapter());
   Hive.registerAdapter(ProfileAdapter());
+  Hive.registerAdapter(PollOptionAdapter());
   Hive.registerAdapter(PostAdapter());
   Hive.registerAdapter(MediaFileAdapter());
   Hive.registerAdapter(PostMediaFileAdapter());
@@ -64,6 +75,8 @@ Future<void> _initPreAppServices() async {
   Hive.registerAdapter(NotificationModelAdapter());
   Hive.registerAdapter(FollowerAdapter());
   Hive.registerAdapter(CommentAdapter());
+
+  AppUtility.log('Hive Adapters Registered');
 
   AppUtility.log('Opening Hive Boxes');
 
@@ -78,19 +91,63 @@ Future<void> _initPreAppServices() async {
   await Hive.openBox<Follower>('followings');
   await Hive.openBox<Comment>('comments');
 
-  await initializeFirebaseService();
+  AppUtility.log('Hive Boxes Opened');
+
+  AppUtility.log('Initializing Get Services');
 
   Get.put(AppThemeController(), permanent: true);
+  Get.put(NetworkController(), permanent: true);
+  Get.put(AuthService(), permanent: true);
   Get.put(ProfileController(), permanent: true);
+  Get.put(FollowRequestController(), permanent: true);
+  Get.put(NotificationController(), permanent: true);
+  Get.put(ChatController(), permanent: true);
+  Get.put(AppUpdateController(), permanent: true);
+  Get.put(PostController(), permanent: true);
+
+  AppUtility.log('Get Services Initialized');
+
+  AppUtility.log('Checking Token');
+
+  var authService = AuthService.find;
+
+  await authService.getToken().then((token) async {
+    if (token.isNotEmpty) {
+      var isValid = await authService.validateLocalAuthToken();
+
+      if (isValid == false) {
+        await authService.deleteAllLocalDataAndCache();
+        RouteService.set(RouteStatus.notLoggedIn);
+      }
+
+      var hasData = await ProfileController.find.loadProfileDetails();
+      if (hasData) {
+        await PostController.find.init();
+        RouteService.set(RouteStatus.loggedIn);
+        AppUtility.log("User is logged in");
+      } else {
+        RouteService.set(RouteStatus.error);
+        await StorageService.remove('profileData');
+      }
+    } else {
+      RouteService.set(RouteStatus.notLoggedIn);
+      AppUtility.log("User is not logged in", tag: 'error');
+    }
+  });
+
+  AppUtility.log('Token Checked');
+
+  AppUtility.log('PreApp Services Initialized');
 }
 
-Future<void> checkAuthData() async {
+Future<void> validateSessionAndGetData() async {
+  AppUtility.log('Validating Session and Getting Data');
   var authService = AuthService.find;
 
   var network = NetworkController.find;
 
-  if (network.networkStatus == false) {
-    RouteService.set(RouteStatus.noNetwork);
+  if (network.isConnected == false) {
+    RouteManagement.goToNetworkErrorView();
     return;
   }
 
@@ -100,50 +157,42 @@ Future<void> checkAuthData() async {
   if (serverHealth == null) {
     RouteService.set(RouteStatus.error);
   } else {
-    /// If [serverHealth] is `offline` or `maintenance`,
-    /// then return
     if (serverHealth.toLowerCase() == "offline") {
-      RouteService.set(RouteStatus.serverOffline);
+      RouteManagement.goToServerOfflineView();
       return;
     }
 
     if (serverHealth.toLowerCase() == "maintenance") {
-      RouteService.set(RouteStatus.serverMaintenance);
+      RouteManagement.goToServerMaintenanceView();
       return;
     }
   }
 
-  /// If [serverHealth] is `online`
-  await authService.getToken().then((token) async {
-    authService.autoLogout();
-    if (token.isNotEmpty) {
-      var tokenValid = await authService.validateToken(token);
-      if (tokenValid == null) {
-        return;
-      }
-      if (tokenValid == true) {
-        var hasData = await ProfileController.find.loadProfileDetails();
-        if (hasData) {
-          RouteService.set(RouteStatus.loggedIn);
-        } else {
-          RouteService.set(RouteStatus.error);
-          await StorageService.remove('profileData');
-          return;
-        }
-      } else {
-        RouteService.set(RouteStatus.notLoggedIn);
-        await authService.deleteAllLocalDataAndCache();
-      }
-    }
+  var token = authService.token;
 
-    if (RouteService.routeStatus == RouteStatus.loggedIn) {
-      AppUtility.log("User is logged in");
-    }
+  if (token.isEmpty) {
+    RouteManagement.goToWelcomeView();
+    return;
+  }
 
-    if (RouteService.routeStatus == RouteStatus.notLoggedIn) {
-      AppUtility.log("User is not logged in", tag: 'error');
-    }
-  });
+  var tokenValid = await authService.validateToken(token);
+
+  if (tokenValid == null) {
+    RouteManagement.gotToErrorView();
+    return;
+  }
+
+  if (tokenValid == false) {
+    await authService.deleteAllLocalDataAndCache();
+    RouteManagement.goToWelcomeView();
+    return;
+  }
+
+  if (tokenValid == true) {
+    await PostController.find.getData();
+  }
+
+  AppUtility.log('Session Validated and Data Fetched');
 }
 
 class MyApp extends StatelessWidget {

@@ -30,7 +30,7 @@ class WelcomeView extends StatelessWidget {
               ),
               Positioned.fill(
                 child: Padding(
-                  padding: Dimens.edgeInsets0_16,
+                  padding: Dimens.edgeInsetsHorizDefault,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -50,6 +50,7 @@ class WelcomeView extends StatelessWidget {
                             ),
                             Dimens.boxHeight8,
                             AppUtility.buildAppLogo(
+                              context,
                               fontSize: Dimens.fourty,
                               isCentered: true,
                             ),

@@ -23,9 +23,8 @@ class SecuritySettingsView extends StatelessWidget {
             children: [
               NxAppBar(
                 title: StringValues.security,
-                padding: Dimens.edgeInsets8_16,
+                padding: Dimens.edgeInsetsDefault,
               ),
-              Dimens.boxHeight16,
               _buildBody(context),
             ],
           ),
@@ -41,18 +40,17 @@ class SecuritySettingsView extends StatelessWidget {
           parent: AlwaysScrollableScrollPhysics(),
         ),
         child: Padding(
-          padding: Dimens.edgeInsets0_16,
+          padding: Dimens.edgeInsetsHorizDefault,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Dimens.boxHeight8,
+
               /// Change Password
               NxListTile(
-                padding: Dimens.edgeInsets16_12,
-                bgColor: Theme.of(context).dialogBackgroundColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(Dimens.eight),
-                  topRight: Radius.circular(Dimens.eight),
-                ),
+                padding: Dimens.edgeInsets12,
+                bgColor: Theme.of(context).bottomAppBarColor,
+                borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.changePassword,
                   style: AppStyles.style14Bold,
@@ -66,12 +64,13 @@ class SecuritySettingsView extends StatelessWidget {
                 onTap: RouteManagement.goToChangePasswordView,
               ),
 
-              Dimens.divider,
+              Dimens.boxHeight8,
 
               /// Login Activity
               NxListTile(
-                padding: Dimens.edgeInsets16_12,
-                bgColor: Theme.of(context).dialogBackgroundColor,
+                padding: Dimens.edgeInsets12,
+                bgColor: Theme.of(context).bottomAppBarColor,
+                borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.loginActivity.toTitleCase(),
                   style: AppStyles.style14Bold,
@@ -85,16 +84,13 @@ class SecuritySettingsView extends StatelessWidget {
                 onTap: RouteManagement.goToLoginActivityView,
               ),
 
-              Dimens.divider,
+              Dimens.boxHeight8,
 
               /// 2-FA
               NxListTile(
-                padding: Dimens.edgeInsets16_12,
-                bgColor: Theme.of(context).dialogBackgroundColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(Dimens.eight),
-                  bottomRight: Radius.circular(Dimens.eight),
-                ),
+                padding: Dimens.edgeInsets12,
+                bgColor: Theme.of(context).bottomAppBarColor,
+                borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.twoFaAuth,
                   style: AppStyles.style14Bold,
@@ -106,6 +102,7 @@ class SecuritySettingsView extends StatelessWidget {
                   ),
                 ),
               ),
+
               Dimens.boxHeight16,
             ],
           ),

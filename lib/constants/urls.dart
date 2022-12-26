@@ -20,6 +20,10 @@ abstract class AppUrls {
   static const postEndpoint = '/post';
   static const searchPostsEndpoint = '/search-posts';
   static const createPostEndpoint = '/create-post';
+
+  static const createPollEndpoint = '/create-poll';
+  static const voteToPollEndpoint = '/vote-to-poll';
+
   static const likePostEndpoint = '/like-post';
   static const getPostLikedUsersEndpoint = '/get-post-liked-users';
   static const searchTagEndpoint = '/search-tag';

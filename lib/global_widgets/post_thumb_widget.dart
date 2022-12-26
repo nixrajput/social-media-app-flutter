@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
-import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -17,11 +16,9 @@ import 'package:social_media_app/utils/utility.dart';
 class PostThumbnailWidget extends StatelessWidget {
   const PostThumbnailWidget({
     Key? key,
-    required this.mediaFile,
     required this.post,
   }) : super(key: key);
 
-  final PostMediaFile mediaFile;
   final Post post;
 
   @override
@@ -30,23 +27,32 @@ class PostThumbnailWidget extends StatelessWidget {
       onTap: () => RouteManagement.goToPostDetailsView(post.id!, post),
       onLongPress: () => _showHeaderOptionBottomSheet(post),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(Dimens.eight),
+        borderRadius: BorderRadius.circular(Dimens.four),
         child: Container(
-          color: ColorValues.blackColor,
-          child: _buildBody(),
+          color: Theme.of(context).dividerColor,
+          child: _buildBody(context),
         ),
       ),
     );
   }
 
-  Widget _buildBody() {
-    if (mediaFile.mediaType == "video") {
+  Widget _buildBody(BuildContext context) {
+    if (post.postType! == "poll") {
+      return Center(
+        child: Text(
+          StringValues.poll,
+          style: AppStyles.style16Bold,
+        ),
+      );
+    }
+
+    if (post.mediaFiles!.first.mediaType == "video") {
       return Stack(
         children: [
-          if (mediaFile.thumbnail != null)
-            NxNetworkImage(imageUrl: mediaFile.thumbnail!.url!)
+          if (post.mediaFiles!.first.thumbnail != null)
+            NxNetworkImage(imageUrl: post.mediaFiles!.first.thumbnail!.url!)
           else
-            Container(color: ColorValues.blackColor),
+            Container(color: Theme.of(context).dividerColor),
           Positioned(
             bottom: Dimens.four,
             right: Dimens.four,
@@ -61,13 +67,13 @@ class PostThumbnailWidget extends StatelessWidget {
     }
 
     return NxNetworkImage(
-      imageUrl: mediaFile.url!,
+      imageUrl: post.mediaFiles!.first.url!,
     );
   }
 
   void _showHeaderOptionBottomSheet(Post post) => AppUtility.showBottomSheet(
         children: [
-          if (post.owner.id == ProfileController.find.profileDetails!.user!.id)
+          if (post.owner!.id == ProfileController.find.profileDetails!.user!.id)
             ListTile(
               onTap: () async {
                 AppUtility.closeBottomSheet();

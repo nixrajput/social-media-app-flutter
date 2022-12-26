@@ -7,13 +7,13 @@ part of 'follower.dart';
 // **************************************************************************
 
 abstract class _$FollowerCWProxy {
-  Follower createdAt(DateTime createdAt);
-
   Follower id(String id);
 
-  Follower updatedAt(DateTime updatedAt);
-
   Follower user(User user);
+
+  Follower createdAt(DateTime createdAt);
+
+  Follower updatedAt(DateTime updatedAt);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Follower(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -22,30 +22,30 @@ abstract class _$FollowerCWProxy {
   /// Follower(...).copyWith(id: 12, name: "My name")
   /// ````
   Follower call({
-    DateTime? createdAt,
     String? id,
-    DateTime? updatedAt,
     User? user,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfFollower.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfFollower.copyWith.fieldName(...)`
 class _$FollowerCWProxyImpl implements _$FollowerCWProxy {
-  final Follower _value;
-
   const _$FollowerCWProxyImpl(this._value);
 
-  @override
-  Follower createdAt(DateTime createdAt) => this(createdAt: createdAt);
+  final Follower _value;
 
   @override
   Follower id(String id) => this(id: id);
 
   @override
-  Follower updatedAt(DateTime updatedAt) => this(updatedAt: updatedAt);
+  Follower user(User user) => this(user: user);
 
   @override
-  Follower user(User user) => this(user: user);
+  Follower createdAt(DateTime createdAt) => this(createdAt: createdAt);
+
+  @override
+  Follower updatedAt(DateTime updatedAt) => this(updatedAt: updatedAt);
 
   @override
 
@@ -56,28 +56,32 @@ class _$FollowerCWProxyImpl implements _$FollowerCWProxy {
   /// Follower(...).copyWith(id: 12, name: "My name")
   /// ````
   Follower call({
-    Object? createdAt = const $CopyWithPlaceholder(),
     Object? id = const $CopyWithPlaceholder(),
-    Object? updatedAt = const $CopyWithPlaceholder(),
     Object? user = const $CopyWithPlaceholder(),
+    Object? createdAt = const $CopyWithPlaceholder(),
+    Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
     return Follower(
-      createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
-          ? _value.createdAt
-          // ignore: cast_nullable_to_non_nullable
-          : createdAt as DateTime,
       id: id == const $CopyWithPlaceholder() || id == null
-          ? _value.id
+          // ignore: unnecessary_non_null_assertion
+          ? _value.id!
           // ignore: cast_nullable_to_non_nullable
           : id as String,
-      updatedAt: updatedAt == const $CopyWithPlaceholder() || updatedAt == null
-          ? _value.updatedAt
-          // ignore: cast_nullable_to_non_nullable
-          : updatedAt as DateTime,
       user: user == const $CopyWithPlaceholder() || user == null
-          ? _value.user
+          // ignore: unnecessary_non_null_assertion
+          ? _value.user!
           // ignore: cast_nullable_to_non_nullable
           : user as User,
+      createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.createdAt!
+          // ignore: cast_nullable_to_non_nullable
+          : createdAt as DateTime,
+      updatedAt: updatedAt == const $CopyWithPlaceholder() || updatedAt == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.updatedAt!
+          // ignore: cast_nullable_to_non_nullable
+          : updatedAt as DateTime,
     );
   }
 }

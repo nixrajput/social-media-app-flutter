@@ -32,7 +32,7 @@ class SendOtpToPhoneView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.sendOtp,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
                 _buildBody(context),
               ],
@@ -47,7 +47,7 @@ class SendOtpToPhoneView extends StatelessWidget {
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
@@ -104,7 +104,7 @@ class SendOtpToPhoneView extends StatelessWidget {
               border: Border.all(
                 color: Theme.of(Get.context!).dividerColor,
               ),
-              borderRadius: BorderRadius.circular(Dimens.eight),
+              borderRadius: BorderRadius.circular(Dimens.four),
             ),
             child: Center(
               child: Text(
@@ -121,7 +121,7 @@ class SendOtpToPhoneView extends StatelessWidget {
           child: TextFormField(
             decoration: InputDecoration(
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Dimens.eight),
+                borderRadius: BorderRadius.circular(Dimens.four),
               ),
               hintStyle: AppStyles.style14Normal.copyWith(
                 color: ColorValues.grayColor,
@@ -180,7 +180,7 @@ class SendOtpToPhoneView extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: StringValues.search,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(Dimens.eight),
+                        borderRadius: BorderRadius.circular(Dimens.four),
                       ),
                       hintStyle: AppStyles.style14Normal.copyWith(
                         color: ColorValues.grayColor,

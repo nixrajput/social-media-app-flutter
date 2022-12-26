@@ -54,11 +54,11 @@ class NxOutlinedButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: borderColor ?? Theme.of(context).textTheme.bodyText1!.color!,
-            width: borderWidth ?? Dimens.one * 1.5,
+            color: borderColor ?? Theme.of(context).textTheme.subtitle1!.color!,
+            width: borderWidth ?? Dimens.one,
             style: borderStyle ?? BorderStyle.solid,
           ),
-          borderRadius: BorderRadius.circular(borderRadius ?? Dimens.eight),
+          borderRadius: BorderRadius.circular(borderRadius ?? Dimens.four),
           color: bgColor ?? Colors.transparent,
         ),
         child: Row(

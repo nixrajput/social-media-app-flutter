@@ -24,7 +24,7 @@ class AuthService extends GetxService {
   String _token = '';
   int _expiresAt = 0;
   int _deviceId = 0;
-  bool _isLogin = false;
+  bool _isLoggedIn = false;
   AuthResponse _loginData = AuthResponse();
 
   /// Getters
@@ -34,7 +34,7 @@ class AuthService extends GetxService {
 
   int get expiresAt => _expiresAt;
 
-  bool get isLogin => _isLogin;
+  bool get isLoggedIn => _isLoggedIn;
 
   AuthResponse get loginData => _loginData;
 
@@ -56,15 +56,15 @@ class AuthService extends GetxService {
   }
 
   Future<String> getToken() async {
-    var token = '';
+    var authToken = '';
     final decodedData = await readLoginDataFromLocalStorage();
     if (decodedData != null) {
-      _expiresAt = decodedData[StringValues.expiresAt];
+      setExpiresAt = decodedData[StringValues.expiresAt];
       setToken = decodedData[StringValues.token];
-      token = decodedData[StringValues.token];
-      _isLogin = true;
+      authToken = decodedData[StringValues.token];
+      _isLoggedIn = true;
     }
-    return token;
+    return authToken;
   }
 
   Future<String?> _checkServerHealth() async {
@@ -129,7 +129,7 @@ class AuthService extends GetxService {
     AppUtility.log("Logout Request");
     setToken = '';
     setExpiresAt = 0;
-    _isLogin = false;
+    _isLoggedIn = false;
     SocketApiProvider().close();
     await ChatController.find.close();
     await deleteAllLocalDataAndCache();
@@ -226,8 +226,6 @@ class AuthService extends GetxService {
       var savedDevId = devData.read('deviceId');
       setDeviceId = int.parse(savedDevId);
     }
-
-    AppUtility.log("deviceId: $_deviceId");
   }
 
   Future<void> savePreKeyBundle(Map<String, dynamic> preKeyBundle) async {
@@ -321,14 +319,16 @@ class AuthService extends GetxService {
     }
   }
 
-  void autoLogout() async {
-    if (_expiresAt > 0) {
-      var currentTimestamp =
-          (DateTime.now().millisecondsSinceEpoch / 1000).round();
-      if (_expiresAt < currentTimestamp) {
-        await _logout();
-      }
+  Future<bool> validateLocalAuthToken() async {
+    AppUtility.log('Validating Local Auth Token');
+    var currentTimestamp =
+        (DateTime.now().millisecondsSinceEpoch / 1000).round();
+
+    if (_expiresAt > currentTimestamp) {
+      return true;
     }
+
+    return false;
   }
 
   Future<void> logout() async => await _logout();

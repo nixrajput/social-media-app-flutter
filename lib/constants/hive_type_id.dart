@@ -13,4 +13,5 @@ abstract class HiveTypeId {
   static const auth = 13;
   static const follower = 14;
   static const comment = 15;
+  static const pollOption = 16;
 }

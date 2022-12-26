@@ -68,7 +68,8 @@ class BottomNavBar extends StatelessWidget {
   Widget _buildNotificationBadge() {
     return GetBuilder<NotificationController>(
       builder: (logic) =>
-          logic.notificationList.map((e) => e.isRead).contains(false)
+          (logic.notificationList.map((e) => e.isRead).contains(false) ||
+                  logic.followRequestController.followRequestList.isNotEmpty)
               ? Container(
                   width: Dimens.eight,
                   height: Dimens.eight,

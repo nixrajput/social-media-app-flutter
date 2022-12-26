@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:social_media_app/apis/models/entities/hashtag.dart';
@@ -17,8 +16,8 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/extensions/file_extensions.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/file_utility.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -36,23 +35,27 @@ class CreatePostController extends GetxController {
 
   final FocusScopeNode focusNode = FocusScopeNode();
 
-  final _pickedFileList = RxList<File>();
+  final _pickedFileList = <File>[];
   final _isLoading = false.obs;
   final List<HashTag> _hashtagList = [];
+  final _currentFileIndex = 0.obs;
+  final _postVisibility = <String, dynamic>{}.obs;
+
+  Worker? _hashtagWorker;
 
   HashTagResponse get hashtagData => _hashtagData.value;
 
   List<HashTag> get postList => _hashtagList;
 
-  List<File>? get pickedFileList => _pickedFileList;
+  List<File> get pickedFileList => _pickedFileList;
 
   String get caption => _caption.value;
 
   bool get isLoading => _isLoading.value;
 
-  final captionTextController = TextEditingController();
+  int get currentFileIndex => _currentFileIndex.value;
 
-  Worker? _hashtagWorker;
+  Map<String, dynamic> get postVisibility => _postVisibility;
 
   /// Setters
   set setCaption(String value) => _caption.value = value;
@@ -64,16 +67,37 @@ class CreatePostController extends GetxController {
     update();
   }
 
+  void onPostVisibilityChange(Map<String, dynamic> value) {
+    _postVisibility.value = value;
+    update();
+  }
+
+  void onChangeFile(int index) {
+    _currentFileIndex.value = index;
+    update();
+  }
+
+  Future<void> removePostFile(int index) async {
+    if (_pickedFileList.isEmpty) {
+      return;
+    }
+    _pickedFileList.removeAt(index);
+    if (_currentFileIndex.value > 0) {
+      _currentFileIndex.value--;
+    }
+    update();
+  }
+
   var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME',
       defaultValue: AppSecrets.cloudinaryCloudName);
   var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
       defaultValue: AppSecrets.cloudinaryUploadPreset);
 
-  // @override
-  // onInit() {
-  //   //_hashtagWorker = ever(_caption, _checkHashtag);
-  //   super.onInit();
-  // }
+  @override
+  onInit() {
+    super.onInit();
+    _postVisibility.value = {'id': 'public', 'title': 'Public'};
+  }
 
   @override
   onClose() {
@@ -150,12 +174,27 @@ class CreatePostController extends GetxController {
     final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
     var mediaFiles = <Object>[];
 
-    AppUtility.showLoadingDialog(message: "Uploading...");
-    _isLoading.value = true;
-    update();
+    AppUtility.showLoadingDialog(message: "Compressing...");
 
-    for (var file in _pickedFileList) {
-      if (FileUtility.isVideoFile(file.path)) {
+    for (var i = 0; i < _pickedFileList.length; i++) {
+      var file = _pickedFileList[i];
+      var isVideoFile = FileUtility.isVideoFile(file.path);
+
+      if (isVideoFile) {
+        await compressVideo(i);
+      } else {
+        await compressImage(i);
+      }
+    }
+
+    AppUtility.closeDialog();
+    AppUtility.showLoadingDialog(message: "Uploading...");
+
+    for (var i = 0; i < _pickedFileList.length; i++) {
+      var file = _pickedFileList[i];
+      var isVideoFile = FileUtility.isVideoFile(file.path);
+
+      if (isVideoFile) {
         var thumbnailFile = await VideoCompress.getFileThumbnail(
           file.path,
           quality: 60,
@@ -242,6 +281,7 @@ class CreatePostController extends GetxController {
       final body = {
         "caption": _caption.value,
         "mediaFiles": mediaFiles,
+        "visibility": _postVisibility['id']!,
       };
 
       final response = await _apiProvider.createPost(_auth.token, body);
@@ -252,6 +292,7 @@ class CreatePostController extends GetxController {
         _pickedFileList.clear();
         _postController.postList.insert(0, Post.fromJson(decodedData['post']));
         _postController.update();
+        await ProfileController.find.fetchProfileDetails(fetchPost: true);
         _isLoading.value = false;
         update();
         AppUtility.closeDialog();
@@ -279,85 +320,10 @@ class CreatePostController extends GetxController {
     }
   }
 
-  Future<void> _captureImage() async {
-    final imagePicker = ImagePicker();
-    final imageCropper = ImageCropper();
-    const maxImageBytes = 1048576;
-
-    /// Capture Image ----------------------------------------------------------
-    final pickedImage = await imagePicker.pickImage(
-      maxWidth: 1080.0,
-      maxHeight: 1080.0,
-      imageQuality: 100,
-      source: ImageSource.camera,
-    );
-
-    if (pickedImage != null) {
-      var croppedFile = await imageCropper.cropImage(
-        maxWidth: 1080,
-        maxHeight: 1080,
-        sourcePath: pickedImage.path,
-        compressFormat: ImageCompressFormat.jpg,
-        aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-            toolbarTitle: StringValues.cropImage,
-            toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
-            backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-          ),
-          IOSUiSettings(
-            title: StringValues.cropImage,
-            minimumAspectRatio: 1.0,
-          ),
-        ],
-        compressQuality: 100,
-      );
-
-      var croppedImage = File(croppedFile!.path);
-      File? resultFile = croppedImage;
-      var size = croppedImage.lengthSync();
-      AppUtility.log('Original file size: ${resultFile.sizeToKb()} KB');
-
-      if (size > (5 * maxImageBytes)) {
-        AppUtility.showSnackBar(
-          'Image size must be less than 5mb',
-          '',
-        );
-      } else if (size < (maxImageBytes / 2)) {
-        AppUtility.log('Result $resultFile');
-        AppUtility.log('Result file size: ${resultFile.sizeToKb()} KB');
-        _pickedFileList.add(resultFile);
-        update();
-      } else {
-        var tempDir = await getTemporaryDirectory();
-
-        /// --------- Compressing Image ------------------------------------
-
-        AppUtility.showLoadingDialog(message: 'Compressing...');
-        var timestamp = DateTime.now().millisecondsSinceEpoch;
-        AppUtility.log('Compressing...');
-        resultFile = await FlutterImageCompress.compressAndGetFile(
-          resultFile.path,
-          '${tempDir.absolute.path}/temp$timestamp.jpg',
-          quality: 60,
-          format: CompressFormat.jpeg,
-        );
-        size = resultFile!.lengthSync();
-        AppUtility.closeDialog();
-
-        /// ----------------------------------------------------------------
-        AppUtility.log('Result $resultFile');
-        AppUtility.log('Result file size: ${resultFile.sizeToKb()} KB');
-        _pickedFileList.add(resultFile);
-        update();
-      }
-    }
-  }
+  /// Pick Image
 
   Future<void> _selectMultipleImages() async {
     final filePicker = FilePicker.platform;
-    final imageCropper = ImageCropper();
     var fileList = <PlatformFile>[];
     const maxImageBytes = 1048576;
 
@@ -370,131 +336,114 @@ class CreatePostController extends GetxController {
       allowedExtensions: ['png', 'jpg', 'jpeg'],
     );
 
-    if (pickedFiles != null) {
-      fileList = pickedFiles.files;
-      for (var file in fileList) {
-        var croppedFile = await imageCropper.cropImage(
-          maxWidth: 1080,
-          maxHeight: 1080,
-          sourcePath: file.path!,
-          compressFormat: ImageCompressFormat.jpg,
-          aspectRatio: const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-          uiSettings: [
-            AndroidUiSettings(
-              toolbarColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-              toolbarTitle: StringValues.cropImage,
-              toolbarWidgetColor: Theme.of(Get.context!).colorScheme.primary,
-              backgroundColor: Theme.of(Get.context!).scaffoldBackgroundColor,
-            ),
-            IOSUiSettings(
-              title: StringValues.cropImage,
-              minimumAspectRatio: 1.0,
-            ),
-          ],
-          compressQuality: 100,
-        );
-
-        var croppedImage = File(croppedFile!.path);
-        File? resultFile = croppedImage;
-        var size = croppedImage.lengthSync();
-        AppUtility.log('Original file size: ${resultFile.sizeToKb()} KB');
-
-        if (size > (5 * maxImageBytes)) {
-          AppUtility.showSnackBar(
-            'Image size must be less than 5mb',
-            '',
-          );
-        } else if (size < (maxImageBytes / 2)) {
-          AppUtility.log('Result $resultFile');
-          AppUtility.log('Result file size: ${resultFile.sizeToKb()} KB');
-          _pickedFileList.add(resultFile);
-          update();
-        } else {
-          var tempDir = await getTemporaryDirectory();
-
-          /// --------- Compressing Image ------------------------------------
-
-          AppUtility.showLoadingDialog(message: 'Compressing...');
-          var timestamp = DateTime.now().millisecondsSinceEpoch;
-          AppUtility.log('Compressing...');
-          resultFile = await FlutterImageCompress.compressAndGetFile(
-            resultFile.path,
-            '${tempDir.absolute.path}/temp$timestamp.jpg',
-            quality: 60,
-            format: CompressFormat.jpeg,
-          );
-          size = resultFile!.lengthSync();
-          AppUtility.closeDialog();
-
-          /// ----------------------------------------------------------------
-          AppUtility.log('Result $resultFile');
-          AppUtility.log('Result file size: ${resultFile.sizeToKb()} KB');
-          _pickedFileList.add(resultFile);
-          update();
-        }
-      }
+    if (pickedFiles == null) {
+      return;
     }
-  }
 
-  Future<void> _recordVideo() async {
-    final imagePicker = ImagePicker();
-    const maxVideoBytes = 10485760;
+    fileList = pickedFiles.files;
+    for (var file in fileList) {
+      var imageFile = File(file.path!);
+      File? resultFile = imageFile;
+      var size = imageFile.lengthSync();
 
-    /// Capture Image ----------------------------------------------------------
-    final pickedVideo = await imagePicker.pickVideo(
-      source: ImageSource.camera,
-      maxDuration: const Duration(seconds: 30),
-    );
-
-    if (pickedVideo != null) {
-      /// If File is Video ---------------------------------------------------
-      /// --------------------------------------------------------------------
-
-      var videoFile = File(pickedVideo.path);
-      var videoSize = videoFile.lengthSync();
-      AppUtility.log('Original video size: ${videoFile.sizeToMb()} MB');
-
-      if (videoSize > (10 * maxVideoBytes)) {
+      if (size > (5 * maxImageBytes)) {
         AppUtility.showSnackBar(
-          'Video size must be less than 100mb',
+          'Image size must be less than 5mb',
           '',
         );
-      } else if (videoSize < maxVideoBytes) {
-        AppUtility.log('Result $videoFile');
-        AppUtility.log('Result video size: ${videoFile.sizeToMb()} MB');
-
-        _pickedFileList.add(videoFile);
-        update();
       } else {
-        /// ----------- Compress Video ---------------------------------------
-
-        AppUtility.showLoadingDialog(message: 'Compressing...');
-        var info = await VideoCompress.compressVideo(
-          videoFile.path,
-          quality: VideoQuality.DefaultQuality,
-        );
-        AppUtility.closeDialog();
-        AppUtility.log('Result ${info!.toJson()}');
-        videoFile = info.file!;
-        videoSize = info.filesize!;
-
-        /// ------------------------------------------------------------------
-
-        AppUtility.log('Result $videoFile');
-        AppUtility.log('Result video size: ${videoFile.sizeToMb()} MB');
-
-        if (videoSize > (2 * maxVideoBytes)) {
-          AppUtility.showSnackBar(
-            'Video size is too large',
-            '',
-          );
-        } else {
-          _pickedFileList.add(videoFile);
-          update();
-        }
+        _pickedFileList.add(resultFile);
+        update();
       }
     }
   }
+
+  /// Capture Image
+
+  Future<void> _captureImage() async {
+    final imagePicker = ImagePicker();
+    const maxImageBytes = 1048576;
+
+    /// Capture Image ----------------------------------------------------------
+    final pickedImage = await imagePicker.pickImage(
+      maxWidth: 1080.0,
+      maxHeight: 1080.0,
+      imageQuality: 100,
+      source: ImageSource.camera,
+    );
+
+    if (pickedImage != null) {
+      var imageFile = File(pickedImage.path);
+      File? resultFile = imageFile;
+      var size = imageFile.lengthSync();
+
+      if (size > (5 * maxImageBytes)) {
+        AppUtility.showSnackBar(
+          'Image size must be less than 5mb',
+          '',
+        );
+      } else {
+        _pickedFileList.add(resultFile);
+        update();
+      }
+    }
+  }
+
+  /// Crop Image
+
+  Future<void> cropImage(int index, BuildContext context) async {
+    final image = _pickedFileList[index];
+    var croppedImage = await FileUtility.cropImage(image, context);
+
+    if (croppedImage == null) {
+      AppUtility.showSnackBar(
+        'Error: Image cropping failed',
+        StringValues.error,
+      );
+      return;
+    }
+
+    _pickedFileList.removeAt(index);
+    _pickedFileList.insert(index, croppedImage);
+    update();
+  }
+
+  /// Compress Image
+
+  Future<void> compressImage(int index) async {
+    var image = _pickedFileList[index];
+    var croppedImage = File(image.path);
+    var tempDir = await getTemporaryDirectory();
+
+    AppUtility.log('Compressing...');
+    AppUtility.showLoadingDialog(message: 'Compressing...');
+
+    var timestamp = DateTime.now().millisecondsSinceEpoch;
+
+    var resultFile = await FlutterImageCompress.compressAndGetFile(
+      croppedImage.path,
+      '${tempDir.absolute.path}/temp$timestamp.jpg',
+      quality: 60,
+      format: CompressFormat.jpeg,
+    );
+
+    if (resultFile == null) {
+      AppUtility.closeDialog();
+      AppUtility.showSnackBar(
+          'Error: Image compression failed', StringValues.error);
+      AppUtility.log('Compression done');
+      return;
+    }
+
+    _pickedFileList.removeAt(index);
+    _pickedFileList.insert(index, resultFile);
+    update();
+
+    AppUtility.closeDialog();
+    AppUtility.log('Compression done');
+  }
+
+  /// Pick Video
 
   Future<void> _selectMultipleVideos() async {
     final filePicker = FilePicker.platform;
@@ -510,80 +459,97 @@ class CreatePostController extends GetxController {
       allowedExtensions: ['mp4', 'mkv'],
     );
 
-    if (pickedFiles != null) {
-      fileList = pickedFiles.files;
-      for (var file in fileList) {
-        /// If File is Video ---------------------------------------------------
-        /// --------------------------------------------------------------------
+    if (pickedFiles == null) {
+      return;
+    }
 
-        var videoFile = File(file.path!);
-        var videoSize = file.size;
-        AppUtility.log('Original video size: ${videoFile.sizeToMb()} MB');
+    fileList = pickedFiles.files;
+    for (var file in fileList) {
+      var imageFile = File(file.path!);
+      File? resultFile = imageFile;
+      var size = imageFile.lengthSync();
 
-        if (videoSize > (10 * maxVideoBytes)) {
-          AppUtility.showSnackBar(
-            'Video size must be less than 100mb',
-            '',
-          );
-        } else if (videoSize < maxVideoBytes) {
-          AppUtility.log('Result $videoFile');
-          AppUtility.log('Result video size: ${videoFile.sizeToMb()} MB');
-
-          _pickedFileList.add(videoFile);
-          update();
-        } else {
-          /// ----------- Compress Video ---------------------------------------
-
-          AppUtility.showLoadingDialog(message: 'Compressing...');
-          var info = await VideoCompress.compressVideo(
-            videoFile.path,
-            quality: VideoQuality.DefaultQuality,
-          );
-          AppUtility.closeDialog();
-          AppUtility.log('Result ${info!.toJson()}');
-          videoFile = info.file!;
-          videoSize = info.filesize!;
-
-          /// ------------------------------------------------------------------
-
-          AppUtility.log('Result $videoFile');
-          AppUtility.log('Result video size: ${videoFile.sizeToMb()} MB');
-
-          if (videoSize > (2 * maxVideoBytes)) {
-            AppUtility.showSnackBar(
-              'Video size is too large',
-              '',
-            );
-          } else {
-            _pickedFileList.add(videoFile);
-            update();
-          }
-        }
+      if (size > (10 * maxVideoBytes)) {
+        AppUtility.showSnackBar(
+          'Video size must be less than 100mb',
+          '',
+        );
+      } else {
+        _pickedFileList.add(resultFile);
+        update();
       }
     }
   }
 
-  Future<void> captureImage() async {
-    await _captureImage();
-    RouteManagement.goToCreatePostView();
+  /// Compress Video
+
+  Future<void> compressVideo(int index) async {
+    var video = _pickedFileList[index];
+    var videoFile = File(video.path);
+
+    AppUtility.log('Compressing...');
+    AppUtility.showLoadingDialog(message: 'Compressing...');
+
+    var info = await VideoCompress.compressVideo(
+      videoFile.path,
+      quality: VideoQuality.DefaultQuality,
+    );
+
+    if (info == null) {
+      AppUtility.closeDialog();
+      AppUtility.showSnackBar(
+          'Error: Video compression failed', StringValues.error);
+      AppUtility.log('Compression done');
+      return;
+    }
+
+    _pickedFileList.removeAt(index);
+    _pickedFileList.insert(index, info.file!);
+    update();
+
+    AppUtility.closeDialog();
+    AppUtility.log('Compression done');
   }
 
-  Future<void> recordVideo() async {
-    await _recordVideo();
-    RouteManagement.goToCreatePostView();
+  /// Capture Video
+
+  Future<void> _recordVideo() async {
+    final imagePicker = ImagePicker();
+    const maxVideoBytes = 10485760;
+
+    /// Capture Image ----------------------------------------------------------
+    final pickedVideo = await imagePicker.pickVideo(
+      source: ImageSource.camera,
+      maxDuration: const Duration(seconds: 30),
+    );
+
+    if (pickedVideo != null) {
+      var imageFile = File(pickedVideo.path);
+      File? resultFile = imageFile;
+      var size = imageFile.lengthSync();
+
+      if (size > (10 * maxVideoBytes)) {
+        AppUtility.showSnackBar(
+          'Video size must be less than 100mb',
+          '',
+        );
+      } else {
+        _pickedFileList.add(resultFile);
+        update();
+      }
+    }
   }
 
-  Future<void> selectPostImages() async {
-    await _selectMultipleImages();
-    RouteManagement.goToCreatePostView();
-  }
+  Future<void> captureImage() async => await _captureImage();
 
-  Future<void> selectPosVideos() async {
-    await _selectMultipleVideos();
-    RouteManagement.goToCreatePostView();
-  }
+  Future<void> recordVideo() async => await _recordVideo();
 
-  void goToCaptionView() {
+  Future<void> selectPostImages() async => await _selectMultipleImages();
+
+  Future<void> selectPosVideos() async => await _selectMultipleVideos();
+
+  void goToPostPreview() {
+    if (_pickedFileList.isEmpty) return;
     if (_pickedFileList.length > 10) {
       AppUtility.showSnackBar(
         'Post can\'t have more than 10 images or videos',
@@ -591,14 +557,7 @@ class CreatePostController extends GetxController {
       );
       return;
     }
-    RouteManagement.goToAddCaptionView();
-  }
-
-  Future<void> removePostImage(int index) async {
-    if (_pickedFileList.isNotEmpty) {
-      _pickedFileList.removeAt(index);
-      update();
-    }
+    RouteManagement.goToPostPreviewView();
   }
 
   Future<void> createNewPost() async {

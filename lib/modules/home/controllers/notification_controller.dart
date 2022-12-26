@@ -20,6 +20,7 @@ class NotificationController extends GetxController {
   final _auth = AuthService.find;
   final profile = ProfileController.find;
   final _apiProvider = ApiProvider(http.Client());
+  final followRequestController = FollowRequestController.find;
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
@@ -48,10 +49,10 @@ class NotificationController extends GetxController {
       _notificationList.clear();
       _notificationList.addAll(data.toList());
     }
-    await Future.delayed(const Duration(seconds: 1), () async {
-      await _fetchNotifications();
-      await FollowRequestController.find.fetchFollowRequests();
-    });
+    await Future.wait([
+      _fetchNotifications(),
+      followRequestController.fetchFollowRequests(),
+    ]);
   }
 
   Future<void> _fetchNotifications() async {

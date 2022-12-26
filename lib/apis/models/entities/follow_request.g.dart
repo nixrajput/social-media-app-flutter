@@ -7,13 +7,13 @@ part of 'follow_request.dart';
 // **************************************************************************
 
 abstract class _$FollowRequestCWProxy {
-  FollowRequest createdAt(DateTime createdAt);
-
-  FollowRequest from(User from);
-
   FollowRequest id(String id);
 
   FollowRequest to(User to);
+
+  FollowRequest from(User from);
+
+  FollowRequest createdAt(DateTime createdAt);
 
   FollowRequest updatedAt(DateTime updatedAt);
 
@@ -24,31 +24,31 @@ abstract class _$FollowRequestCWProxy {
   /// FollowRequest(...).copyWith(id: 12, name: "My name")
   /// ````
   FollowRequest call({
-    DateTime? createdAt,
-    User? from,
     String? id,
     User? to,
+    User? from,
+    DateTime? createdAt,
     DateTime? updatedAt,
   });
 }
 
 /// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfFollowRequest.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfFollowRequest.copyWith.fieldName(...)`
 class _$FollowRequestCWProxyImpl implements _$FollowRequestCWProxy {
-  final FollowRequest _value;
-
   const _$FollowRequestCWProxyImpl(this._value);
 
-  @override
-  FollowRequest createdAt(DateTime createdAt) => this(createdAt: createdAt);
-
-  @override
-  FollowRequest from(User from) => this(from: from);
+  final FollowRequest _value;
 
   @override
   FollowRequest id(String id) => this(id: id);
 
   @override
   FollowRequest to(User to) => this(to: to);
+
+  @override
+  FollowRequest from(User from) => this(from: from);
+
+  @override
+  FollowRequest createdAt(DateTime createdAt) => this(createdAt: createdAt);
 
   @override
   FollowRequest updatedAt(DateTime updatedAt) => this(updatedAt: updatedAt);
@@ -62,31 +62,36 @@ class _$FollowRequestCWProxyImpl implements _$FollowRequestCWProxy {
   /// FollowRequest(...).copyWith(id: 12, name: "My name")
   /// ````
   FollowRequest call({
-    Object? createdAt = const $CopyWithPlaceholder(),
-    Object? from = const $CopyWithPlaceholder(),
     Object? id = const $CopyWithPlaceholder(),
     Object? to = const $CopyWithPlaceholder(),
+    Object? from = const $CopyWithPlaceholder(),
+    Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
     return FollowRequest(
-      createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
-          ? _value.createdAt
-          // ignore: cast_nullable_to_non_nullable
-          : createdAt as DateTime,
-      from: from == const $CopyWithPlaceholder() || from == null
-          ? _value.from
-          // ignore: cast_nullable_to_non_nullable
-          : from as User,
       id: id == const $CopyWithPlaceholder() || id == null
-          ? _value.id
+          // ignore: unnecessary_non_null_assertion
+          ? _value.id!
           // ignore: cast_nullable_to_non_nullable
           : id as String,
       to: to == const $CopyWithPlaceholder() || to == null
-          ? _value.to
+          // ignore: unnecessary_non_null_assertion
+          ? _value.to!
           // ignore: cast_nullable_to_non_nullable
           : to as User,
+      from: from == const $CopyWithPlaceholder() || from == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.from!
+          // ignore: cast_nullable_to_non_nullable
+          : from as User,
+      createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.createdAt!
+          // ignore: cast_nullable_to_non_nullable
+          : createdAt as DateTime,
       updatedAt: updatedAt == const $CopyWithPlaceholder() || updatedAt == null
-          ? _value.updatedAt
+          // ignore: unnecessary_non_null_assertion
+          ? _value.updatedAt!
           // ignore: cast_nullable_to_non_nullable
           : updatedAt as DateTime,
     );

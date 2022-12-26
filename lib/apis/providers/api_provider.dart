@@ -42,7 +42,7 @@ class ApiProvider {
   }) async {
     AppUtility.log('$feature Request');
 
-    if (_network.networkStatus == false) {
+    if (_network.isConnected == false) {
       AppUtility.log('Error: No network connection', tag: 'error');
       RouteService.set(RouteStatus.noNetwork);
       return;
@@ -710,6 +710,34 @@ class ApiProvider {
       method: 'POST',
       body: body,
       feature: 'Create Post',
+      headers: {"authorization": "Bearer $token"},
+    );
+
+    return response;
+  }
+
+  /// Create New Poll
+  Future<ResponseData> createPoll(
+      String token, Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.createPollEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Create Poll',
+      headers: {"authorization": "Bearer $token"},
+    );
+
+    return response;
+  }
+
+  /// Create New Poll
+  Future<ResponseData> voteToPoll(
+      String token, Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.voteToPollEndpoint,
+      method: 'POST',
+      body: body,
+      feature: 'Vote To Poll',
       headers: {"authorization": "Bearer $token"},
     );
 

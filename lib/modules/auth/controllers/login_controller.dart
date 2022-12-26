@@ -82,7 +82,6 @@ class LoginController extends GetxController {
 
         _auth.setToken = token;
         _auth.setExpiresAt = expiresAt;
-        _auth.autoLogout();
 
         try {
           await _profile.fetchProfileDetails();

@@ -26,9 +26,8 @@ class EditUsernameView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.username,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                Dimens.boxHeight24,
                 _buildBody(),
               ],
             ),
@@ -42,13 +41,14 @@ class EditUsernameView extends StatelessWidget {
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: Dimens.edgeInsets0_16,
+              padding: Dimens.edgeInsetsHorizDefault,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Dimens.boxHeight8,
                     Container(
                       height: Dimens.fiftySix,
                       constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
@@ -56,7 +56,7 @@ class EditUsernameView extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: StringValues.username,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.eight),
+                            borderRadius: BorderRadius.circular(Dimens.four),
                           ),
                           hintStyle: AppStyles.style14Normal.copyWith(
                             color: ColorValues.grayColor,

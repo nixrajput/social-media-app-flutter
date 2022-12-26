@@ -24,9 +24,8 @@ class ThemeSettingsView extends StatelessWidget {
             children: [
               NxAppBar(
                 title: StringValues.theme,
-                padding: Dimens.edgeInsets8_16,
+                padding: Dimens.edgeInsetsDefault,
               ),
-              Dimens.boxHeight16,
               _buildBody(context),
             ],
           ),
@@ -38,7 +37,7 @@ class ThemeSettingsView extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: Dimens.edgeInsets0_16,
+        padding: Dimens.edgeInsetsHorizDefault,
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics(),
@@ -46,14 +45,13 @@ class ThemeSettingsView extends StatelessWidget {
           child: GetBuilder<AppThemeController>(
             builder: (logic) => Column(
               children: [
+                Dimens.boxHeight8,
+
                 /// System
                 NxRadioTile(
-                  padding: Dimens.edgeInsets16_12,
-                  bgColor: Theme.of(context).dialogBackgroundColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(Dimens.eight),
-                    topRight: Radius.circular(Dimens.eight),
-                  ),
+                  padding: Dimens.edgeInsets12,
+                  bgColor: Theme.of(context).bottomAppBarColor,
+                  borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () => logic.setThemeMode(AppThemeModes.system),
                   onChanged: (value) {
                     logic.setThemeMode(value);
@@ -72,12 +70,13 @@ class ThemeSettingsView extends StatelessWidget {
                   groupValue: logic.themeMode,
                 ),
 
-                Dimens.divider,
+                Dimens.boxHeight8,
 
                 /// Light
                 NxRadioTile(
-                  padding: Dimens.edgeInsets16_12,
-                  bgColor: Theme.of(context).dialogBackgroundColor,
+                  padding: Dimens.edgeInsets12,
+                  bgColor: Theme.of(context).bottomAppBarColor,
+                  borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () => logic.setThemeMode(AppThemeModes.light),
                   onChanged: (value) {
                     logic.setThemeMode(value);
@@ -96,16 +95,13 @@ class ThemeSettingsView extends StatelessWidget {
                   groupValue: logic.themeMode,
                 ),
 
-                Dimens.divider,
+                Dimens.boxHeight8,
 
                 /// Dark
                 NxRadioTile(
-                  padding: Dimens.edgeInsets16_12,
-                  bgColor: Theme.of(context).dialogBackgroundColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(Dimens.eight),
-                    bottomRight: Radius.circular(Dimens.eight),
-                  ),
+                  padding: Dimens.edgeInsets12,
+                  bgColor: Theme.of(context).bottomAppBarColor,
+                  borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () => logic.setThemeMode(AppThemeModes.dark),
                   onChanged: (value) {
                     logic.setThemeMode(value);

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_widget.dart';
@@ -99,30 +99,53 @@ class ChatsTabView extends StatelessWidget {
                         totalLength: logic.lastMessageList.length,
                         index: logic.lastMessageList.indexOf(item),
                         onTap: () => RouteManagement.goToChatDetailsView(
-                          isMe ? item.receiverId! : item.senderId!,
-                          isMe ? item.receiver!.uname : item.sender!.uname,
-                          isMe ? item.receiver!.avatar! : item.sender!.avatar!,
+                          User(
+                            id: isMe ? item.receiverId! : item.senderId!,
+                            fname: isMe
+                                ? item.receiver!.fname
+                                : item.sender!.fname,
+                            lname: isMe
+                                ? item.receiver!.lname
+                                : item.sender!.lname,
+                            email: isMe
+                                ? item.receiver!.email
+                                : item.sender!.email,
+                            uname: isMe
+                                ? item.receiver!.uname
+                                : item.sender!.uname,
+                            avatar: isMe
+                                ? item.receiver!.avatar
+                                : item.sender!.avatar,
+                            isPrivate: isMe
+                                ? item.receiver!.isPrivate
+                                : item.sender!.isPrivate,
+                            followingStatus: isMe
+                                ? item.receiver!.followingStatus
+                                : item.sender!.followingStatus,
+                            accountStatus: isMe
+                                ? item.receiver!.accountStatus
+                                : item.sender!.accountStatus,
+                            isVerified: isMe
+                                ? item.receiver!.isVerified
+                                : item.sender!.isVerified,
+                            createdAt: isMe
+                                ? item.receiver!.createdAt
+                                : item.sender!.createdAt,
+                            updatedAt: isMe
+                                ? item.receiver!.updatedAt
+                                : item.sender!.updatedAt,
+                          ),
                         ),
                         isOnline: isUserOnline,
                       );
                     },
                   ),
-                if (logic.isMoreLoading) Dimens.boxHeight8,
-                if (logic.isMoreLoading)
-                  const Center(child: NxCircularProgressIndicator()),
-                if (!logic.isMoreLoading &&
-                    logic.lastMessageData!.results != null &&
-                    logic.lastMessageData!.hasNextPage!)
-                  Center(
-                    child: NxTextButton(
-                      label: 'Load more',
-                      onTap: logic.loadMore,
-                      labelStyle: AppStyles.style14Bold.copyWith(
-                        color: ColorValues.primaryLightColor,
-                      ),
-                      padding: Dimens.edgeInsets8_0,
-                    ),
-                  ),
+                LoadMoreWidget(
+                  loadingCondition: logic.isMoreLoading,
+                  hasMoreCondition: logic.lastMessageData!.results != null &&
+                      logic.lastMessageData!.hasNextPage!,
+                  loadMore: logic.loadMore,
+                ),
                 Dimens.boxHeight16,
               ],
             ),

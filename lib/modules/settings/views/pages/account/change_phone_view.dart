@@ -32,9 +32,8 @@ class ChangePhoneView extends StatelessWidget {
               children: [
                 NxAppBar(
                   title: StringValues.changePhone,
-                  padding: Dimens.edgeInsets8_16,
+                  padding: Dimens.edgeInsetsDefault,
                 ),
-                Dimens.boxHeight16,
                 _buildBody(),
               ],
             ),
@@ -49,45 +48,64 @@ class ChangePhoneView extends StatelessWidget {
           return Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: Dimens.edgeInsets0_16,
+                padding: Dimens.edgeInsetsHorizDefault,
                 child: FocusScope(
                   node: logic.focusNode,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Dimens.boxHeight8,
                       if (logic.profile.profileDetails!.user!.phone != null)
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              const TextSpan(
-                                text: 'Your current phone number is ',
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                      text: '${StringValues.yourCurrentPhone} ',
+                                      style: AppStyles.style13Normal.copyWith(
+                                        color: Theme.of(Get.context!)
+                                            .textTheme
+                                            .bodyText1!
+                                            .color,
+                                      )),
+                                  TextSpan(
+                                    text:
+                                        '${logic.profile.profileDetails!.user!.countryCode!} ${logic.profile.profileDetails!.user!.phone!}',
+                                    style: AppStyles.style16Bold,
+                                  ),
+                                ],
+                                style: AppStyles.style14Normal.copyWith(
+                                  color: Theme.of(Get.context!)
+                                      .textTheme
+                                      .bodyText1!
+                                      .color,
+                                ),
                               ),
-                              TextSpan(
-                                text: logic.profile.profileDetails!.user!.phone,
-                                style: AppStyles.style14Bold,
-                              ),
-                              const TextSpan(
-                                  text:
-                                      '. Enter the new phone number you want to change with it.'),
-                            ],
-                            style: AppStyles.style14Normal.copyWith(
-                              color: Theme.of(Get.context!)
-                                  .textTheme
-                                  .bodyText1!
-                                  .color,
                             ),
-                          ),
+                            Dimens.boxHeight4,
+                            Text(
+                              StringValues.yourCurrentPhoneDesc,
+                              style: AppStyles.style13Normal.copyWith(
+                                color: Theme.of(Get.context!)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color,
+                              ),
+                            )
+                          ],
                         )
                       else
                         RichText(
                           text: TextSpan(
                             children: const [
-                              TextSpan(
-                                  text:
-                                      'Enter a phone number you want to add.'),
+                              TextSpan(text: StringValues.enterPhoneToAdd),
                             ],
-                            style: AppStyles.style14Normal.copyWith(
+                            style: AppStyles.style13Normal.copyWith(
                               color: Theme.of(Get.context!)
                                   .textTheme
                                   .bodyText1!
@@ -110,7 +128,7 @@ class ChangePhoneView extends StatelessWidget {
                                   color: Theme.of(Get.context!).dividerColor,
                                 ),
                                 borderRadius:
-                                    BorderRadius.circular(Dimens.eight),
+                                    BorderRadius.circular(Dimens.four),
                               ),
                               child: Center(
                                 child: Text(
@@ -129,7 +147,7 @@ class ChangePhoneView extends StatelessWidget {
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                   borderRadius:
-                                      BorderRadius.circular(Dimens.eight),
+                                      BorderRadius.circular(Dimens.four),
                                 ),
                                 hintStyle: AppStyles.style14Normal.copyWith(
                                   color: ColorValues.grayColor,
@@ -167,7 +185,7 @@ class ChangePhoneView extends StatelessWidget {
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.circular(Dimens.eight),
+                                    BorderRadius.circular(Dimens.four),
                               ),
                               hintStyle: AppStyles.style14Normal.copyWith(
                                 color: ColorValues.grayColor,
@@ -316,7 +334,7 @@ class ChangePhoneView extends StatelessWidget {
                             child: Padding(
                               padding: Dimens.edgeInsets8_16,
                               child: NxTextButton(
-                                label: 'Load more',
+                                label: StringValues.loadMore,
                                 onTap: () {
                                   lastIndex += 20;
                                   countryCodes = StaticData.countryCodes
