@@ -136,11 +136,11 @@ class HelpSettingsView extends StatelessWidget {
                 bgColor: Theme.of(context).bottomAppBarColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
-                  StringValues.termsOfUse.toTitleCase(),
+                  StringValues.communityGuidelines.toTitleCase(),
                   style: AppStyles.style14Bold,
                 ),
                 subtitle: Text(
-                  StringValues.communityGuidelines,
+                  StringValues.communityGuidelinesDesc,
                   style: AppStyles.style13Normal.copyWith(
                     color: Theme.of(context).textTheme.subtitle1!.color,
                   ),

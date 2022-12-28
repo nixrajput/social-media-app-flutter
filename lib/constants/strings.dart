@@ -404,6 +404,8 @@ abstract class StringValues {
   static const sendOtpToPhoneDesc = 'Enter your phone number to send OTP';
   static const verifyOtp = 'Verify OTP';
   static const communityGuidelines = 'Community Guidelines';
+  static const communityGuidelinesDesc =
+      'Here are the community guidelines for Rippl.';
   static const twoFaAuthHelpText =
       'Help protect your account from unauthorised access by requiring a second authentication method in addition to your password.';
   static const moreDetails = 'More Details';

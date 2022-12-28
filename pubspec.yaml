@@ -3,7 +3,7 @@ description: A social media app using Flutter, Dart, GetX, and REST API that all
 
 publish_to: "none"
 
-version: 1.0.1+27
+version: 1.0.1+28
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
@@ -18,7 +18,9 @@ dependencies:
   package_info_plus: ^3.0.2
   geolocator: ^9.0.2
   geocoding: ^2.0.5
-  talker: ^2.1.0+1
+  talker: ^2.2.0
+
+  workmanager: ^0.5.1
 
   image_picker: ^0.8.6
   image_cropper: ^3.0.1
@@ -30,7 +32,6 @@ dependencies:
   connectivity_plus: ^3.0.2
   http: ^0.13.5
   intl: ^0.18.0
-  web_socket_channel: ^2.2.0
   get_time_ago: ^1.2.0
   cloudinary: ^1.0.3
   r_upgrade: ^0.4.1
@@ -50,7 +51,7 @@ dependencies:
 
   flutter_local_notifications: ^13.0.0
   firebase_core: ^2.4.0
-  firebase_messaging: ^14.1.4
+  firebase_messaging: ^14.2.0
 
   better_player: ^0.0.83
   emoji_picker_flutter: ^1.5.1

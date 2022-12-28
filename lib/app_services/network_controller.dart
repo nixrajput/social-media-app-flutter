@@ -15,10 +15,8 @@ class NetworkController extends GetxController {
 
   @override
   void onInit() {
-    AppUtility.log('NetworkController Initializing');
-    _checkForInternetConnectivity();
     super.onInit();
-    AppUtility.log('NetworkController Initialized');
+    _init();
   }
 
   @override
@@ -27,16 +25,26 @@ class NetworkController extends GetxController {
     super.onClose();
   }
 
+  void _init() async {
+    AppUtility.log('NetworkController Initializing');
+    _checkForInternetConnectivity();
+    super.onInit();
+    AppUtility.log('NetworkController Initialized');
+  }
+
   void _checkForInternetConnectivity() {
     _streamSubscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.none) {
-        isConnected = false;
-        AppUtility.log('No Internet Connection');
-      } else {
+      if (result == ConnectivityResult.mobile) {
         isConnected = true;
         AppUtility.log('Internet Connection Available');
+      } else if (result == ConnectivityResult.wifi) {
+        isConnected = true;
+        AppUtility.log('Internet Connection Available');
+      } else {
+        isConnected = false;
+        AppUtility.log('No Internet Connection');
       }
     });
   }
