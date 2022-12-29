@@ -39,27 +39,31 @@ class PostDetailsController extends GetxController {
   void onInit() {
     super.onInit();
 
-    String? postId = Get.arguments[0];
+    _postId.value = Get.arguments[0];
     Post? post = Get.arguments[1];
+
     if (post != null) {
+      if (_postId.value.isEmpty) {
+        _postId.value = post.id!;
+      }
       setPostDetailsData = PostDetailsResponse(success: true, post: post);
       update();
     }
 
-    if (post == null && postId != null) {
-      _postId.value = postId;
+    if (_postId.value.isNotEmpty) {
       _fetchPostDetails();
     }
   }
 
   Future<void> _fetchPostDetails() async {
-    if (postId == '' || postId == null) return;
+    if (_postId.value == '' || _postId.value.isEmpty) return;
 
     _isLoading.value = true;
     update();
 
     try {
-      final response = await _apiProvider.getPostDetails(_auth.token, postId!);
+      final response =
+          await _apiProvider.getPostDetails(_auth.token, _postId.value);
 
       if (response.isSuccessful) {
         final decodedData = response.data;
@@ -78,7 +82,6 @@ class PostDetailsController extends GetxController {
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }

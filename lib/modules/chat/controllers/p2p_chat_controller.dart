@@ -74,9 +74,6 @@ class P2PChatController extends GetxController {
   set setMessageData(ChatMessageListResponse response) =>
       _messageData.value = response;
 
-  // String? userId;
-  // String? username;
-  // MediaFile? profileImage;
   User? user;
 
   var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME',
@@ -242,11 +239,11 @@ class P2PChatController extends GetxController {
         var mediaFile = mediaFileMessage.file;
 
         if (FileUtility.isVideoFile(mediaFile.path)) {
-          var compressdFile = await FileUtility.compressVideo(mediaFile.path);
+          var compressedFile = await FileUtility.compressVideo(mediaFile.path);
           var thumbnailFile =
               await FileUtility.getVideoThumbnail(mediaFile.path);
 
-          if (compressdFile != null && thumbnailFile != null) {
+          if (compressedFile != null && thumbnailFile != null) {
             var tempId = AppUtility.generateUid(10);
 
             var tempMessage = ChatMessage(
@@ -256,7 +253,7 @@ class P2PChatController extends GetxController {
               message: encryptedMessage,
               mediaFile: PostMediaFile(
                 mediaType: 'video',
-                url: compressdFile.path,
+                url: compressedFile.path,
                 thumbnail: MediaFile(url: thumbnailFile.path),
               ),
               createdAt: DateTime.now(),
@@ -268,7 +265,7 @@ class P2PChatController extends GetxController {
 
             addTempMessage(tempMessage);
 
-            var urlResult = await _uploadVideo(compressdFile, thumbnailFile);
+            var urlResult = await _uploadVideo(compressedFile, thumbnailFile);
 
             if (urlResult != null) {
               AppUtility.log('Sending message');
@@ -285,9 +282,9 @@ class P2PChatController extends GetxController {
             }
           }
         } else {
-          var compressdFile = await FileUtility.compressImage(mediaFile.path);
+          var compressedFile = await FileUtility.compressImage(mediaFile.path);
 
-          if (compressdFile != null) {
+          if (compressedFile != null) {
             var tempId = AppUtility.generateUid(10);
 
             var tempMessage = ChatMessage(
@@ -297,7 +294,7 @@ class P2PChatController extends GetxController {
               message: encryptedMessage,
               mediaFile: PostMediaFile(
                 mediaType: 'image',
-                url: compressdFile.path,
+                url: compressedFile.path,
               ),
               createdAt: DateTime.now(),
               updatedAt: DateTime.now(),
@@ -308,7 +305,7 @@ class P2PChatController extends GetxController {
 
             addTempMessage(tempMessage);
 
-            var urlResult = await _uploadImage(compressdFile);
+            var urlResult = await _uploadImage(compressedFile);
 
             if (urlResult != null) {
               AppUtility.log('Sending message');

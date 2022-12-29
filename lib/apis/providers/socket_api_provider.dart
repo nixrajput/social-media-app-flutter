@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -21,18 +23,28 @@ class SocketApiProvider {
   /// All the private and public variables
   static WebSocket? _socket;
   StreamController<dynamic>? _socketEventStream;
+  var _isDisposed = false;
 
   Stream<dynamic>? get socketEventStream =>
       _socketEventStream?.stream.asBroadcastStream();
+
   WebSocket? get socket => _socket;
+
   bool get isConnected => _socket?.readyState == WebSocket.open;
+
   bool get isDisconnected => _socket?.readyState == WebSocket.closed;
+
   bool get isConnecting => _socket?.readyState == WebSocket.connecting;
+
   bool get isClosing => _socket?.readyState == WebSocket.closing;
+
   bool get isNotConnected => _socket?.readyState != WebSocket.open;
 
+  bool get isDisposed => _isDisposed;
+
   // All socket related functions.
-  Future<void> init(String token) async {
+  Future<void> init() async {
+    final _authService = AuthService.find;
     AppUtility.log("Socket initializing...");
 
     if (_socket != null && isConnected) {
@@ -40,13 +52,14 @@ class SocketApiProvider {
       return;
     }
 
-    if (token.isEmpty) {
-      AppUtility.log("Socket token is empty", tag: 'warning');
+    if (_authService.token.isEmpty) {
+      AppUtility.log("Socket token is empty");
       return;
     }
 
     try {
-      _socket = await WebSocket.connect('${AppUrls.webSocketUrl}?token=$token');
+      _socket = await WebSocket.connect(
+          '${AppUrls.webSocketUrl}?token=${_authService.token}');
 
       if (_socket != null && isConnected) {
         AppUtility.log("Socket connection established");
@@ -56,12 +69,20 @@ class SocketApiProvider {
       _socket!.listen(
         _socketEventHandler,
         onError: (error) {
+          _socket?.close();
+          _socketEventStream?.close();
+          _socketEventStream = null;
+          _socket = null;
           AppUtility.log("Socket error: $error", tag: 'error');
-          reconnect(token);
+          reconnect(_authService.token);
         },
         onDone: () {
+          _socket?.close();
+          _socketEventStream?.close();
+          _socketEventStream = null;
+          _socket = null;
           AppUtility.log("Socket done");
-          reconnect(token);
+          reconnect(_authService.token);
         },
         cancelOnError: true,
       );
@@ -77,17 +98,24 @@ class SocketApiProvider {
     _socketApi._socketEventStream?.add(event);
   }
 
-  void close() {
-    _socketApi._socketEventStream?.close();
+  void dispose() {
+    AppUtility.log("Socket disposing...");
     _socket?.close();
-    _socketApi._socketEventStream = null;
+    _socketEventStream?.close();
+    _socketEventStream = null;
     _socket = null;
-    AppUtility.log("Socket closed");
+    _isDisposed = true;
+    AppUtility.log("Socket disposed");
   }
 
   void reconnect(String token) {
-    close();
-    init(token);
+    if (isDisposed) {
+      AppUtility.log("Socket is disposed");
+      return;
+    }
+
+    AppUtility.log("Socket reconnecting...");
+    init();
   }
 
   void send(String message) {

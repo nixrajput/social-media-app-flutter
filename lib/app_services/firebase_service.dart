@@ -3,10 +3,8 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:social_media_app/app_services/auth_service.dart';
-import 'package:social_media_app/app_services/network_controller.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:social_media_app/app_services/notification_service.dart';
-import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 @pragma('vm:entry-point')
@@ -30,46 +28,45 @@ int setNotificationId(String type) {
 }
 
 @pragma('vm:entry-point')
-bool setNotificationPriority(String type) {
+Priority setNotificationPriority(String type) {
   switch (type) {
     case 'Chats':
-      return true;
-    case 'Followers':
-      return false;
-    case 'Likes':
-      return false;
+      return Priority.max;
     case 'Comments':
-      return false;
-    case 'Follow Requests':
-      return false;
     case 'General Notifications':
-      return false;
+      return Priority.high;
+    case 'Follow Requests':
+    case 'Followers':
+    case 'Likes':
+    default:
+      return Priority.defaultPriority;
+  }
+}
+
+@pragma('vm:entry-point')
+bool setNotificationImportance(String type) {
+  switch (type) {
+    case 'Chats':
+    case 'Comments':
+    case 'General Notifications':
+      return true;
+    case 'Follow Requests':
+    case 'Followers':
+    case 'Likes':
     default:
       return false;
   }
 }
 
 @pragma('vm:entry-point')
-var isInitialized = false;
-
-@pragma('vm:entry-point')
 Future<void> initializeFirebaseService() async {
   AppUtility.log('Initializing Firebase Service');
 
-  if (isInitialized) {
-    AppUtility.log('Firebase Service already initialized');
-    return;
-  }
-
   await Firebase.initializeApp();
 
-  var _network = NetworkController.find;
-
-  if (_network.isConnected == true) {
-    AppUtility.log('Connected');
-  }
-
   var messaging = FirebaseMessaging.instance;
+
+  await messaging.setAutoInitEnabled(true);
 
   var settings = await messaging.requestPermission(
     alert: true,
@@ -88,84 +85,129 @@ Future<void> initializeFirebaseService() async {
     return;
   }
 
-  var notificationService = NotificationService();
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
+
+  FirebaseMessaging.onMessage.listen(onMessage);
+
+  // var initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+  // if (initialMessage != null) {
+  //   _handleMessage(initialMessage);
+  // }
+  // FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+
+  AppUtility.log('Firebase Service Initialized');
+
+  // if (!notificationService.isInitialized) {
+  //   await notificationService.initialize();
+  // }
+  //
+  // var authService = AuthService.find;
+  //
+  // if (_networkService.isConnected == true) {
+  //   await authService.getToken().then((token) async {
+  //     if (token.isEmpty) {
+  //       return;
+  //     }
+  //
+  //     var isValid = await authService.validateLocalAuthToken();
+  //
+  //     if (isValid == false) {
+  //       return;
+  //     }
+  //
+  //     var tokenValid = await authService.validateToken(token);
+  //     if (tokenValid == null) {
+  //       return;
+  //     } else {
+  //       if (tokenValid == false) {
+  //         notificationService.showNotification(
+  //           title: 'Invalid Token',
+  //           body: 'Token is invalid. Please login again.',
+  //           priority: setNotificationPriority('General Notifications'),
+  //           isImportant: setNotificationImportance('General Notifications'),
+  //           id: setNotificationId('General Notifications'),
+  //           channelId: 'General Notifications',
+  //           channelName: 'General notifications',
+  //         );
+  //         return;
+  //       }
+  //     }
+  //   });
+  //
+  //   if (authService.isLoggedIn) {
+  //     var fcmToken = await authService.readFcmTokenFromLocalStorage();
+  //     AppUtility.log('fcmToken: $fcmToken');
+  //
+  //     if (fcmToken.isEmpty) {
+  //       await messaging.deleteToken();
+  //       var token = await messaging.getToken();
+  //       AppUtility.log('fcmToken: $token');
+  //       await authService.saveFcmTokenToLocalStorage(token!);
+  //       if (authService.token.isNotEmpty) {
+  //         await authService.saveFcmToken(token);
+  //       }
+  //     }
+  //
+  //     messaging.onTokenRefresh.listen((newToken) async {
+  //       AppUtility.log('fcmToken refreshed: $newToken');
+  //       await authService.saveFcmTokenToLocalStorage(newToken);
+  //       if (authService.token.isNotEmpty) {
+  //         await authService.saveFcmToken(newToken);
+  //       }
+  //     });
+  //   } else {
+  //     await StorageService.remove("fcmToken");
+  //     await messaging.deleteToken();
+  //   }
+  // }
+}
+
+// @pragma('vm:entry-point')
+// void _handleMessage(RemoteMessage message) {
+//   if (message.data['type'] == 'Chats') {
+//     RouteManagement.goToChatDetailsView(
+//       User(
+//         id: isMe ? item.receiverId! : item.senderId!,
+//         fname: isMe ? item.receiver!.fname : item.sender!.fname,
+//         lname: isMe ? item.receiver!.lname : item.sender!.lname,
+//         email: isMe ? item.receiver!.email : item.sender!.email,
+//         uname: isMe ? item.receiver!.uname : item.sender!.uname,
+//         avatar: isMe ? item.receiver!.avatar : item.sender!.avatar,
+//         isPrivate: isMe ? item.receiver!.isPrivate : item.sender!.isPrivate,
+//         followingStatus: isMe
+//             ? item.receiver!.followingStatus
+//             : item.sender!.followingStatus,
+//         accountStatus:
+//             isMe ? item.receiver!.accountStatus : item.sender!.accountStatus,
+//         isVerified: isMe ? item.receiver!.isVerified : item.sender!.isVerified,
+//         createdAt: isMe ? item.receiver!.createdAt : item.sender!.createdAt,
+//         updatedAt: isMe ? item.receiver!.updatedAt : item.sender!.updatedAt,
+//       ),
+//     );
+//     Navigator.pushNamed(
+//       context,
+//       '/chat',
+//       arguments: ChatArguments(message),
+//     );
+//   }
+// }
+
+@pragma('vm:entry-point')
+Future<void> onMessage(RemoteMessage message) async {
+  AppUtility.log('Got a message whilst in the foreground!');
+  AppUtility.log('Message data: ${message.data}');
+
+  final notificationService = NotificationService();
 
   if (!notificationService.isInitialized) {
     await notificationService.initialize();
   }
-
-  var authService = AuthService.find;
-
-  if (_network.isConnected == true) {
-    await authService.getToken().then((token) async {
-      if (token.isEmpty) {
-        return;
-      }
-
-      var isValid = await authService.validateLocalAuthToken();
-
-      if (isValid == false) {
-        return;
-      }
-
-      var tokenValid = await authService.validateToken(token);
-      if (tokenValid == null) {
-        return;
-      } else {
-        if (tokenValid == false) {
-          notificationService.showNotification(
-            title: 'Invalid Token',
-            body: 'Token is invalid. Please login again.',
-            priority: setNotificationPriority('General Notifications'),
-            id: setNotificationId('General Notifications'),
-            channelId: 'General Notifications',
-            channelName: 'General notifications',
-          );
-          return;
-        }
-      }
-    });
-
-    if (authService.isLoggedIn) {
-      var fcmToken = await authService.readFcmTokenFromLocalStorage();
-      AppUtility.log('fcmToken: $fcmToken');
-
-      if (fcmToken.isEmpty) {
-        await messaging.deleteToken();
-        var token = await messaging.getToken();
-        AppUtility.log('fcmToken: $token');
-        await authService.saveFcmTokenToLocalStorage(token!);
-        if (authService.token.isNotEmpty) {
-          await authService.saveFcmToken(token);
-        }
-      }
-
-      messaging.onTokenRefresh.listen((newToken) async {
-        AppUtility.log('fcmToken refreshed: $newToken');
-        await authService.saveFcmTokenToLocalStorage(newToken);
-        if (authService.token.isNotEmpty) {
-          await authService.saveFcmToken(newToken);
-        }
-      });
-    } else {
-      await StorageService.remove("fcmToken");
-      await messaging.deleteToken();
-    }
-  }
-
-  FirebaseMessaging.onBackgroundMessage(onBackgroundMessage);
-
-  FirebaseMessaging.onMessage
-      .listen((message) => onMessage(message, notificationService));
-
-  AppUtility.log('Firebase Service Initialized');
-}
-
-@pragma('vm:entry-point')
-Future<void> onMessage(
-    RemoteMessage message, NotificationService notificationService) async {
-  AppUtility.log('Got a message whilst in the foreground!');
-  AppUtility.log('Message data: ${message.data}');
 
   if (message.data.isNotEmpty) {
     var messageData = message.data;
@@ -179,6 +221,7 @@ Future<void> onMessage(
       title: title ?? '',
       body: body ?? '',
       priority: setNotificationPriority(type),
+      isImportant: setNotificationImportance(type),
       id: setNotificationId(type),
       largeIcon: imageUrl,
       channelId: type ?? 'General Notifications',
@@ -197,7 +240,7 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
   debugPrint("Handling a background message");
   debugPrint('Message data: ${message.data}');
 
-  var notificationService = NotificationService();
+  final notificationService = NotificationService();
 
   if (!notificationService.isInitialized) {
     await notificationService.initialize();
@@ -215,6 +258,7 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
       title: title ?? '',
       body: body ?? '',
       priority: setNotificationPriority(type),
+      isImportant: setNotificationImportance(type),
       id: setNotificationId(type),
       largeIcon: imageUrl,
       channelId: type ?? 'General Notifications',

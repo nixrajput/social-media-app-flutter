@@ -42,7 +42,9 @@ class AppUpdateController extends GetxController {
 
   /// Setters
   set version(value) => _version.value = value;
+
   set buildNumber(value) => _buildNumber.value = value;
+
   set updateInfo(value) => _updateInfo.value = value;
 
   Future<void> init() async {

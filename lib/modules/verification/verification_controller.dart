@@ -42,33 +42,57 @@ class VerificationController extends GetxController {
   final _otherLinks = ''.obs;
 
   bool get isLoading => _isLoading.value;
+
   String get legalName => _legalName.value;
+
   String get email => _email.value;
+
   String get phone => _phone.value;
+
   String get category => _category.value;
+
   File? get document => _document.value;
+
   bool get isVerifiedOnOtherPlatform => _isVerifiedOnOtherPlatform.value;
+
   String get otherPlatformLinks => _otherPlatformLinks.value;
+
   bool get hasWikipediaPage => _hasWikipediaPage.value;
+
   String get wikipediaPageLink => _wikipediaPageLink.value;
+
   bool get featuredInNewsArticles => _featuredInNewsArticles.value;
+
   String get newsArticlesLinks => _newsArticlesLinks.value;
+
   String get otherLinks => _otherLinks.value;
 
   set isLoading(bool value) => _isLoading.value = value;
+
   set legalName(String value) => _legalName.value = value;
+
   set email(String value) => _email.value = value;
+
   set phone(String value) => _phone.value = value;
+
   set category(String value) => _category.value = value;
+
   set setDocument(File value) => _document.value = value;
+
   set isVerifiedOnOtherPlatform(bool value) =>
       _isVerifiedOnOtherPlatform.value = value;
+
   set otherPlatformLinks(String value) => _otherPlatformLinks.value = value;
+
   set hasWikipediaPage(bool value) => _hasWikipediaPage.value = value;
+
   set wikipediaPageLink(String value) => _wikipediaPageLink.value = value;
+
   set featuredInNewsArticles(bool value) =>
       _featuredInNewsArticles.value = value;
+
   set newsArticlesLinks(String value) => _newsArticlesLinks.value = value;
+
   set otherLinks(String value) => _otherLinks.value = value;
 
   void onLegalNameChanged(String value) {

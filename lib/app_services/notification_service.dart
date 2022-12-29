@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as http;
 import 'package:social_media_app/utils/utility.dart';
 
 class NotificationService {
@@ -24,24 +28,39 @@ class NotificationService {
     AppUtility.log('Notification Service Initialized');
   }
 
+  Future<Uint8List> getImageBytes(String imageUrl) async {
+    var response = await http.get(Uri.parse(imageUrl));
+    return response.bodyBytes;
+  }
+
   void showNotification({
     String? title,
     required String body,
     int? id,
     String? channelId,
     String? channelName,
-    bool? priority,
+    Priority? priority,
+    bool? isImportant,
     String? largeIcon,
+    String? groupKey,
   }) async {
+    ByteArrayAndroidBitmap? androidBitmap;
+    if (largeIcon != null) {
+      var bodyBytes = await getImageBytes(largeIcon);
+      androidBitmap =
+          ByteArrayAndroidBitmap.fromBase64String(base64.encode(bodyBytes));
+    }
     var androidNot = AndroidNotificationDetails(
       channelId ?? 'General Notifications',
       channelName ?? 'General Notifications',
-      priority: priority == true ? Priority.high : Priority.defaultPriority,
+      groupKey: groupKey,
+      priority: priority ?? Priority.defaultPriority,
       importance:
-          priority == true ? Importance.max : Importance.defaultImportance,
+          isImportant == true ? Importance.max : Importance.defaultImportance,
+      largeIcon: androidBitmap != null ? androidBitmap : null,
     );
     var iosNot = DarwinNotificationDetails(
-      interruptionLevel: priority == true
+      interruptionLevel: isImportant == true
           ? InterruptionLevel.active
           : InterruptionLevel.passive,
     );

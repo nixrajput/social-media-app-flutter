@@ -50,10 +50,15 @@ class PostController extends GetxController {
   }
 
   Future<void> getData() async {
-    await SocketApiProvider().init(_auth.token);
-    await _chatController.initialize();
+    _isLoading.value = true;
+    update();
+    final _socket = SocketApiProvider();
+    await _socket.init();
+    if (_socket.isConnected) {
+      await _chatController.initialize();
+    }
 
-    await _fetchPosts();
+    await _fetchPosts(showLoading: false);
 
     Future.delayed(const Duration(seconds: 1), () async {
       await _notificationController.getData();
@@ -62,11 +67,16 @@ class PostController extends GetxController {
     await Future.delayed(const Duration(seconds: 1), () async {
       await _auth.validateDeviceSession();
     });
+
+    _isLoading.value = false;
+    update();
   }
 
-  Future<void> _fetchPosts({int? page}) async {
-    _isLoading.value = true;
-    update();
+  Future<void> _fetchPosts({int? page, bool? showLoading = true}) async {
+    if (showLoading!) {
+      _isLoading.value = true;
+      update();
+    }
 
     try {
       final response = await _apiProvider.getPosts(_auth.token, page: page);
@@ -83,20 +93,26 @@ class PostController extends GetxController {
             item,
           );
         }
-        _isLoading.value = false;
-        update();
+        if (showLoading) {
+          _isLoading.value = false;
+          update();
+        }
       } else {
         final decodedData = response.data;
-        _isLoading.value = false;
-        update();
+        if (showLoading) {
+          _isLoading.value = false;
+          update();
+        }
         AppUtility.showSnackBar(
           decodedData[StringValues.message],
           StringValues.error,
         );
       }
     } catch (exc) {
-      _isLoading.value = false;
-      update();
+      if (showLoading) {
+        _isLoading.value = false;
+        update();
+      }
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }

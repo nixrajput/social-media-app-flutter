@@ -22,6 +22,7 @@ class LoginInfoController extends GetxController {
   final List<LoginInfo> _loginInfoList = [];
 
   bool get isLoading => _isLoading.value;
+
   bool get isMoreLoading => _isMoreLoading.value;
 
   LoginHistoryResponse? get loginHistoryData => _loginHistoryData.value;
@@ -169,8 +170,10 @@ class LoginInfoController extends GetxController {
   }
 
   Future<void> getLoginHisory() async => await _getLoginHistory();
+
   Future<void> logoutAllOtherDevices(String deviceId) async =>
       await _logoutAllOtherDevices(deviceId);
+
   Future<void> loadMore() async =>
       await _loadMore(page: _loginHistoryData.value.currentPage! + 1);
 

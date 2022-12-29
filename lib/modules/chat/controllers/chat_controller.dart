@@ -20,7 +20,7 @@ class ChatController extends GetxController {
   final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
   final profile = ProfileController.find;
-  final SocketApiProvider _socketApiProvider = SocketApiProvider();
+  final _socketApiProvider = SocketApiProvider();
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;

@@ -44,12 +44,28 @@ void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     await _initPreAppServices();
-    runApp(const MyApp());
+    final networkService = NetworkController.instance;
+    await networkService.init();
     await initializeFirebaseService();
-    if (NetworkController.find.isConnected == true) {
-      await AppUpdateController.find.init();
+    runApp(const MyApp());
+    if (networkService.isConnected == true) {
       await validateSessionAndGetData();
+      await AppUpdateController.find.init();
     }
+    // await Workmanager().cancelAll();
+    // await Workmanager().initialize(
+    //   callbackDispatcher,
+    //   isInDebugMode: true,
+    // );
+    // await Workmanager().registerPeriodicTask(
+    //   backgroundMessageTask,
+    //   backgroundMessageTask,
+    //   initialDelay: const Duration(seconds: 10),
+    //   frequency: const Duration(minutes: 15),
+    //   constraints: Constraints(
+    //     networkType: NetworkType.connected,
+    //   ),
+    // );
   } catch (err) {
     AppUtility.log('Error in main: $err', tag: 'error');
     RouteService.set(RouteStatus.error);
@@ -89,14 +105,12 @@ Future<void> _initPreAppServices() async {
   await Hive.openBox<Post>('profilePosts');
   await Hive.openBox<Follower>('followers');
   await Hive.openBox<Follower>('followings');
-  await Hive.openBox<Comment>('comments');
 
   AppUtility.log('Hive Boxes Opened');
 
   AppUtility.log('Initializing Get Services');
 
   Get.put(AppThemeController(), permanent: true);
-  Get.put(NetworkController(), permanent: true);
   Get.put(AuthService(), permanent: true);
   Get.put(ProfileController(), permanent: true);
   Get.put(FollowRequestController(), permanent: true);
@@ -144,9 +158,9 @@ Future<void> validateSessionAndGetData() async {
   AppUtility.log('Validating Session and Getting Data');
   var authService = AuthService.find;
 
-  var network = NetworkController.find;
+  var networkService = NetworkController.instance;
 
-  if (network.isConnected == false) {
+  if (networkService.isConnected == false) {
     RouteManagement.goToNetworkErrorView();
     return;
   }

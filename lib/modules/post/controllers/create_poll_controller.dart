@@ -34,14 +34,23 @@ class CreatePollController extends GetxController {
   final FocusScopeNode focusNode = FocusScopeNode();
 
   final _isLoading = false.obs;
+
   bool get isLoading => _isLoading.value;
+
   String get pollQuestion => _pollQuestion.value;
+
   List<Widget> get pollOptionFields => _pollOptionFields;
+
   List<String> get pollOptions => _pollOptions;
+
   int get pollLengthDays => _pollLengthDays.value;
+
   int get pollLengthHours => _pollLengthHours.value;
+
   int get pollLengthMinutes => _pollLengthMinutes.value;
+
   Map<String, dynamic> get pollVisibility => _pollVisibility;
+
   String get pollEndsAt => _pollEndsAt.value;
 
   void onChangePollQuestion(String value) {

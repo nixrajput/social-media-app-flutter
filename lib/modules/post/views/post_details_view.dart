@@ -44,47 +44,49 @@ class PostDetailsView extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     return Expanded(
-      child: GetBuilder<PostDetailsController>(builder: (logic) {
-        if (logic.isLoading) {
-          return const Center(child: NxCircularProgressIndicator());
-        }
+      child: GetBuilder<PostDetailsController>(
+        builder: (logic) {
+          if (logic.isLoading) {
+            return const Center(child: NxCircularProgressIndicator());
+          }
 
-        if (logic.postDetailsData == null ||
-            logic.postDetailsData?.post == null) {
-          return Center(
-            child: Padding(
-              padding: Dimens.edgeInsetsHorizDefault,
-              child: Text(
-                StringValues.postDetailsNotFound,
-                style: AppStyles.style32Bold.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+          if (logic.postDetailsData == null ||
+              logic.postDetailsData!.post == null) {
+            return Center(
+              child: Padding(
+                padding: Dimens.edgeInsetsHorizDefault,
+                child: Text(
+                  StringValues.postDetailsNotFound,
+                  style: AppStyles.style32Bold.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
+            );
+          }
+
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            padding: Dimens.edgeInsetsHorizDefault,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                PostDetailsWidget(
+                  post: logic.postDetailsData!.post!,
+                  controller: logic,
+                ),
+                Dimens.boxHeight8,
+                _buildPostComments(context, logic.postDetailsData!.post!.id!),
+                Dimens.boxHeight16,
+              ],
             ),
           );
-        }
-
-        return SingleChildScrollView(
-          physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics(),
-          ),
-          padding: Dimens.edgeInsetsHorizDefault,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PostDetailsWidget(
-                post: logic.postDetailsData!.post!,
-                controller: logic,
-              ),
-              Dimens.boxHeight8,
-              _buildPostComments(context, logic.postDetailsData!.post!.id!),
-              Dimens.boxHeight16,
-            ],
-          ),
-        );
-      }),
+        },
+      ),
     );
   }
 

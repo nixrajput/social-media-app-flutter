@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:math' show Random;
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -125,14 +126,28 @@ class AuthService extends GetxService {
     }
   }
 
+  Future<void> deleteAllLocalDataAndCache() async {
+    await StorageService.remove('loginData');
+    await StorageService.remove('profileData');
+    await StorageService.remove("fcmToken");
+    await HiveService.deleteAllBoxes();
+    AppUtility.log('Local Data Removed');
+  }
+
   Future<void> _logout() async {
+    final _socket = SocketApiProvider();
+    final _chatController = ChatController.find;
     AppUtility.log("Logout Request");
     setToken = '';
     setExpiresAt = 0;
-    _isLoggedIn = false;
-    SocketApiProvider().close();
-    await ChatController.find.close();
+
+    if (_socket.isConnected) {
+      _socket.dispose();
+      await _chatController.close();
+    }
+    await FirebaseMessaging.instance.deleteToken();
     await deleteAllLocalDataAndCache();
+    _isLoggedIn = false;
     AppUtility.log("Logout Success");
     AppUtility.showSnackBar(
       'Logout Successfully',
@@ -166,14 +181,6 @@ class AuthService extends GetxService {
 
     await StorageService.write('loginData', data);
     AppUtility.log('Login Data Saved to Local Storage');
-  }
-
-  Future<void> deleteAllLocalDataAndCache() async {
-    await StorageService.remove('loginData');
-    await StorageService.remove('profileData');
-    await StorageService.remove("fcmToken");
-    await HiveService.deleteAllBoxes();
-    AppUtility.log('Local Data Removed');
   }
 
   Future<void> saveFcmTokenToLocalStorage(String fcmToken) async {

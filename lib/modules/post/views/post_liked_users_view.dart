@@ -28,7 +28,6 @@ class PostLikedUsersView extends StatelessWidget {
                 title: StringValues.likes,
                 padding: Dimens.edgeInsetsDefault,
               ),
-              Dimens.boxHeight16,
               _buildBody(),
             ],
           ),
@@ -49,6 +48,7 @@ class PostLikedUsersView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Dimens.boxHeight8,
               GetBuilder<PostLikedUsersController>(
                 builder: (logic) {
                   if (logic.isLoading) {

@@ -1,47 +1,55 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:get/get.dart';
+import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/utils/utility.dart';
 
-class NetworkController extends GetxController {
-  static NetworkController get find => Get.find();
+class NetworkController {
+  NetworkController._internal();
 
-  final _isConnected = false.obs;
-  bool get isConnected => _isConnected.value;
-  set isConnected(bool value) => _isConnected.value = value;
+  static final NetworkController _instance = NetworkController._internal();
+
+  static NetworkController get instance => _instance;
+
+  var isConnected = false;
+  var isInitialized = false;
 
   StreamSubscription<dynamic>? _streamSubscription;
+  final _connectivity = Connectivity();
+  final _socket = SocketApiProvider();
 
-  @override
-  void onInit() {
-    super.onInit();
-    _init();
-  }
-
-  @override
-  onClose() {
+  close() {
     _streamSubscription?.cancel();
-    super.onClose();
+    isInitialized = false;
   }
 
-  void _init() async {
+  Future<void> init() async {
     AppUtility.log('NetworkController Initializing');
+
+    if (isInitialized) {
+      AppUtility.log('NetworkController Already Initialized');
+      return;
+    }
+
     _checkForInternetConnectivity();
-    super.onInit();
     AppUtility.log('NetworkController Initialized');
   }
 
   void _checkForInternetConnectivity() {
-    _streamSubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
+    _streamSubscription =
+        _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
       if (result == ConnectivityResult.mobile) {
         isConnected = true;
         AppUtility.log('Internet Connection Available');
+        if (!_socket.isConnected) {
+          _socket.init();
+        }
       } else if (result == ConnectivityResult.wifi) {
         isConnected = true;
         AppUtility.log('Internet Connection Available');
+        if (!_socket.isConnected) {
+          _socket.init();
+        }
       } else {
         isConnected = false;
         AppUtility.log('No Internet Connection');

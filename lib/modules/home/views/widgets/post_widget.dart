@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
@@ -137,7 +136,7 @@ class PostWidget extends StatelessWidget {
                   icon: Icons.more_vert,
                   iconSize: Dimens.sixTeen,
                   iconColor: Theme.of(context).textTheme.bodyText1!.color,
-                  onTap: _showHeaderOptionBottomSheet,
+                  onTap: () => _showHeaderOptionBottomSheet(context),
                 ),
               ],
             ),
@@ -212,6 +211,7 @@ class PostWidget extends StatelessWidget {
             ),
             child: NxExpandableText(text: post.pollQuestion!),
           ),
+        Dimens.boxHeight4,
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -234,6 +234,7 @@ class PostWidget extends StatelessWidget {
               )
               .toList(),
         ),
+        Dimens.boxHeight4,
         Padding(
           padding: Dimens.edgeInsets0_8,
           child: Column(
@@ -243,14 +244,14 @@ class PostWidget extends StatelessWidget {
             children: [
               Text(
                 '${post.totalVotes!.toString().toCountingFormat()} votes',
-                style: AppStyles.style13Normal.copyWith(
+                style: AppStyles.style12Normal.copyWith(
                   color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
               ),
               Dimens.boxHeight4,
               Text(
                 '${post.pollEndsAt!.getPollDurationLeft()}',
-                style: AppStyles.style13Normal.copyWith(
+                style: AppStyles.style12Normal.copyWith(
                   color: isExpired
                       ? Theme.of(context).textTheme.subtitle1!.color
                       : ColorValues.primaryColor,
@@ -423,7 +424,8 @@ class PostWidget extends StatelessWidget {
         ),
       );
 
-  _showHeaderOptionBottomSheet() => AppUtility.showBottomSheet(
+  void _showHeaderOptionBottomSheet(BuildContext context) =>
+      AppUtility.showBottomSheet(
         children: [
           if (post.owner!.id == ProfileController.find.profileDetails!.user!.id)
             ListTile(
@@ -431,26 +433,44 @@ class PostWidget extends StatelessWidget {
                 AppUtility.closeBottomSheet();
                 _showDeletePostOptions();
               },
-              leading: const Icon(CupertinoIcons.delete),
+              leading: Icon(
+                Icons.delete,
+                color: Theme.of(context).textTheme.bodyText1!.color,
+                size: Dimens.twentyFour,
+              ),
               title: Text(
                 StringValues.delete,
-                style: AppStyles.style16Bold,
+                style: AppStyles.style16Bold.copyWith(
+                  color: Theme.of(context).textTheme.bodyText1!.color,
+                ),
               ),
             ),
           ListTile(
             onTap: AppUtility.closeBottomSheet,
-            leading: const Icon(CupertinoIcons.share),
+            leading: Icon(
+              Icons.share,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+              size: Dimens.twentyFour,
+            ),
             title: Text(
               StringValues.share,
-              style: AppStyles.style16Bold,
+              style: AppStyles.style16Bold.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
             ),
           ),
           ListTile(
             onTap: AppUtility.closeBottomSheet,
-            leading: const Icon(CupertinoIcons.reply),
+            leading: Icon(
+              Icons.reply,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+              size: Dimens.twentyFour,
+            ),
             title: Text(
               StringValues.report,
-              style: AppStyles.style16Bold,
+              style: AppStyles.style16Bold.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
             ),
           ),
         ],

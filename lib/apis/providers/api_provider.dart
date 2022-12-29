@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/app_services/network_controller.dart';
 import 'package:social_media_app/app_services/route_service.dart';
@@ -28,7 +29,7 @@ class ApiProvider {
 
   String? baseUrl;
 
-  final _network = NetworkController.find;
+  final _networkService = NetworkController.instance;
 
   /// This is the method that is called from the service class.
   Future<dynamic> _catchAsyncApiError({
@@ -42,7 +43,7 @@ class ApiProvider {
   }) async {
     AppUtility.log('$feature Request');
 
-    if (_network.isConnected == false) {
+    if (_networkService.isConnected == false) {
       AppUtility.log('Error: No network connection', tag: 'error');
       RouteService.set(RouteStatus.noNetwork);
       return;

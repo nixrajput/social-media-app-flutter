@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:social_media_app/apis/models/entities/poll_option.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -21,6 +20,7 @@ import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_view_widget.dart';
+import 'package:social_media_app/modules/post/views/widgets/poll_option_widget.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -133,7 +133,7 @@ class PostDetailsWidget extends StatelessWidget {
                   icon: Icons.more_vert,
                   iconSize: Dimens.sixTeen,
                   iconColor: Theme.of(context).textTheme.bodyText1!.color,
-                  onTap: _showHeaderOptionBottomSheet,
+                  onTap: () => _showHeaderOptionBottomSheet(context),
                 ),
               ],
             ),
@@ -161,6 +161,26 @@ class PostDetailsWidget extends StatelessWidget {
   }
 
   Column _buildPoll(BuildContext context) {
+    var isExpired =
+        post.pollEndsAt!.toLocal().isBefore(DateTime.now().toLocal());
+
+    var percentages = [];
+
+    for (var option in post.pollOptions!) {
+      var percentage =
+          post.totalVotes! > 0 ? (option.votes! / post.totalVotes!) * 100 : 0.0;
+
+      percentages.add({'id': option.id, 'percentage': percentage});
+    }
+
+    var greatestPercentageId = percentages[0]['id'];
+
+    for (var i = 0; i < percentages.length - 1; i++) {
+      if (percentages[i]['percentage'] < percentages[i + 1]['percentage']) {
+        greatestPercentageId = percentages[i + 1]['id'];
+      }
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -174,14 +194,30 @@ class PostDetailsWidget extends StatelessWidget {
             ),
             child: NxExpandableText(text: post.pollQuestion!),
           ),
+        Dimens.boxHeight4,
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: post.pollOptions!
-              .map((option) => _buildPollOption(option, context))
+              .map(
+                (option) => PollOptionWidget(
+                  post: post,
+                  option: option,
+                  isExpired: isExpired,
+                  greatestPercentageId: greatestPercentageId,
+                  onTap: () {
+                    if (isExpired) return;
+
+                    if (post.isVoted!) return;
+
+                    controller?.voteToPoll(post, option.id!);
+                  },
+                ),
+              )
               .toList(),
         ),
+        Dimens.boxHeight2,
         Padding(
           padding: Dimens.edgeInsets0_8,
           child: Column(
@@ -191,17 +227,15 @@ class PostDetailsWidget extends StatelessWidget {
             children: [
               Text(
                 '${post.totalVotes!.toString().toCountingFormat()} votes',
-                style: AppStyles.style13Normal.copyWith(
+                style: AppStyles.style12Normal.copyWith(
                   color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
               ),
               Dimens.boxHeight4,
               Text(
                 '${post.pollEndsAt!.getPollDurationLeft()}',
-                style: AppStyles.style13Normal.copyWith(
-                  color: post.pollEndsAt!
-                          .toLocal()
-                          .isBefore(DateTime.now().toLocal())
+                style: AppStyles.style12Normal.copyWith(
+                  color: isExpired
                       ? Theme.of(context).textTheme.subtitle1!.color
                       : ColorValues.primaryColor,
                 ),
@@ -210,46 +244,6 @@ class PostDetailsWidget extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Container _buildPollOption(PollOption option, BuildContext context) {
-    var percentage =
-        post.totalVotes! > 0 ? (option.votes! / post.totalVotes!) * 100 : 0.0;
-    return Container(
-      padding: Dimens.edgeInsets8,
-      child: Container(
-        width: Dimens.screenWidth,
-        padding: Dimens.edgeInsets16_12,
-        decoration: BoxDecoration(
-          color: Theme.of(context).dividerColor,
-          borderRadius: BorderRadius.circular(Dimens.four),
-        ),
-        child: Row(
-          mainAxisAlignment: post.isVoted!
-              ? MainAxisAlignment.spaceBetween
-              : MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Flexible(
-              child: Text(
-                option.option!,
-                style: AppStyles.style14Normal.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
-                ),
-              ),
-            ),
-            if (post.isVoted!) Dimens.boxWidth4,
-            if (post.isVoted!)
-              Text(
-                '${percentage.toStringAsFixed(0)}%',
-                style: AppStyles.style14Normal.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
-                ),
-              ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -462,7 +456,8 @@ class PostDetailsWidget extends StatelessWidget {
     );
   }
 
-  _showHeaderOptionBottomSheet() => AppUtility.showBottomSheet(
+  void _showHeaderOptionBottomSheet(BuildContext context) =>
+      AppUtility.showBottomSheet(
         children: [
           if (post.owner!.id == ProfileController.find.profileDetails!.user!.id)
             ListTile(
@@ -470,26 +465,44 @@ class PostDetailsWidget extends StatelessWidget {
                 AppUtility.closeBottomSheet();
                 _showDeletePostOptions();
               },
-              leading: const Icon(CupertinoIcons.delete),
+              leading: Icon(
+                Icons.delete,
+                color: Theme.of(context).textTheme.bodyText1!.color,
+                size: Dimens.twentyFour,
+              ),
               title: Text(
                 StringValues.delete,
-                style: AppStyles.style16Bold,
+                style: AppStyles.style16Bold.copyWith(
+                  color: Theme.of(context).textTheme.bodyText1!.color,
+                ),
               ),
             ),
           ListTile(
             onTap: AppUtility.closeBottomSheet,
-            leading: const Icon(CupertinoIcons.share),
+            leading: Icon(
+              Icons.share,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+              size: Dimens.twentyFour,
+            ),
             title: Text(
               StringValues.share,
-              style: AppStyles.style16Bold,
+              style: AppStyles.style16Bold.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
             ),
           ),
           ListTile(
             onTap: AppUtility.closeBottomSheet,
-            leading: const Icon(CupertinoIcons.reply),
+            leading: Icon(
+              Icons.reply,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+              size: Dimens.twentyFour,
+            ),
             title: Text(
               StringValues.report,
-              style: AppStyles.style16Bold,
+              style: AppStyles.style16Bold.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
             ),
           ),
         ],

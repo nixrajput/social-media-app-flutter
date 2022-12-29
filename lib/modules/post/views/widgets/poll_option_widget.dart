@@ -4,6 +4,7 @@ import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/modules/post/views/widgets/linear_progress_painter.dart';
 
 class PollOptionWidget extends StatelessWidget {
   const PollOptionWidget({
@@ -21,95 +22,97 @@ class PollOptionWidget extends StatelessWidget {
   final String greatestPercentageId;
   final VoidCallback onTap;
 
-  Color _buildPollOptionColor(Post post, bool isExpired, PollOption option,
+  Color _buildPollColor(Post post, bool isExpired, PollOption option,
       String greatestPercentageId, BuildContext context) {
     if (isExpired && option.id == greatestPercentageId) {
-      return ColorValues.primaryColor.withOpacity(0.8);
+      return ColorValues.primaryColor.withOpacity(0.5);
+    } else if (post.isVoted == true) {
+      return Theme.of(context).dividerColor;
     }
 
-    return Theme.of(context).scaffoldBackgroundColor.withOpacity(0.75);
+    return ColorValues.transparent;
   }
 
-  double _buildPollOptionWidth(
-      Post post, bool isExpired, PollOption option, double percentage) {
+  Color _buildPollBorderColor(Post post, bool isExpired, PollOption option,
+      String greatestPercentageId, BuildContext context) {
     if (isExpired || post.isVoted == true) {
-      return Dimens.screenWidth * (percentage / 100.0);
+      return Theme.of(context).dividerColor;
     }
 
-    return Dimens.screenWidth;
+    return ColorValues.primaryColor;
   }
 
   @override
   Widget build(BuildContext context) {
     final percentage =
-        post.totalVotes! > 0 ? (option.votes! / post.totalVotes!) * 100 : 0.0;
+        post.totalVotes! > 0 ? option.votes! / post.totalVotes! : 0.0;
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: Dimens.edgeInsets8,
-        child: Stack(
-          children: [
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 500),
-              width: _buildPollOptionWidth(post, isExpired, option, percentage),
-              height: Dimens.fourtyEight,
-              decoration: BoxDecoration(
-                color: _buildPollOptionColor(
-                    post, isExpired, option, greatestPercentageId, context),
-                borderRadius: BorderRadius.circular(Dimens.four),
-              ),
+        padding: Dimens.edgeInsets4_8,
+        child: CustomPaint(
+          painter: LinearProgressPainter(
+            valueColor: _buildPollColor(
+                post, isExpired, option, greatestPercentageId, context),
+            value: percentage,
+            textDirection: Directionality.of(context),
+            borderColor: _buildPollBorderColor(
+                post, isExpired, option, greatestPercentageId, context),
+            borderRadius: Dimens.four,
+            borderWidth: Dimens.one,
+          ),
+          child: Container(
+            width: double.infinity,
+            padding: Dimens.edgeInsets8_12,
+            decoration: BoxDecoration(
+              color: ColorValues.transparent,
+              borderRadius: BorderRadius.circular(Dimens.four),
             ),
-            Positioned.fill(
-              child: Container(
-                width: Dimens.screenWidth,
-                padding: Dimens.edgeInsets8,
-                decoration: BoxDecoration(
-                  color: ColorValues.transparent,
-                  borderRadius: BorderRadius.circular(Dimens.four),
-                  border: Border.all(
-                    color: _buildPollOptionColor(
-                        post, isExpired, option, greatestPercentageId, context),
-                    width: Dimens.one,
+            child: Row(
+              mainAxisAlignment: (isExpired || post.isVoted == true)
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Row(
+                    mainAxisAlignment: (isExpired || post.isVoted == true)
+                        ? MainAxisAlignment.spaceBetween
+                        : MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          option.option!,
+                          style: AppStyles.style14Normal.copyWith(
+                            color: post.isVoted == false
+                                ? ColorValues.primaryColor
+                                : Theme.of(context).textTheme.bodyText1!.color,
+                          ),
+                        ),
+                      ),
+                      if (post.isVoted == true && option.id == post.votedOption)
+                        Dimens.boxWidth4,
+                      if (post.isVoted == true && option.id == post.votedOption)
+                        Icon(
+                          Icons.check_circle_outline,
+                          size: Dimens.sixTeen,
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                        ),
+                    ],
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: post.isVoted!
-                      ? MainAxisAlignment.spaceBetween
-                      : MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      option.option!,
-                      style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
-                      ),
+                if (isExpired || post.isVoted == true) Dimens.boxWidth4,
+                if (isExpired || post.isVoted == true)
+                  Text(
+                    '${(percentage * 100).toStringAsFixed(0)}%',
+                    style: AppStyles.style14Normal.copyWith(
+                      color: Theme.of(context).textTheme.bodyText1!.color,
                     ),
-                    if (isExpired || post.isVoted!) Dimens.boxWidth4,
-                    Row(
-                      children: [
-                        if (isExpired || post.isVoted!)
-                          Text(
-                            '${percentage.toStringAsFixed(0)}%',
-                            style: AppStyles.style14Normal.copyWith(
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
-                            ),
-                          ),
-                        if (post.isVoted! && option.id == post.votedOption)
-                          Dimens.boxWidth8,
-                        if (post.isVoted! && option.id == post.votedOption)
-                          Icon(
-                            Icons.check_circle_outline,
-                            size: Dimens.twenty,
-                            color: Theme.of(context).textTheme.bodyText1!.color,
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

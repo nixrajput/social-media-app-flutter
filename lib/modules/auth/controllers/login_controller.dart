@@ -8,6 +8,7 @@ import 'package:social_media_app/apis/models/responses/auth_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -17,6 +18,7 @@ class LoginController extends GetxController {
 
   final _auth = AuthService.find;
   final _profile = ProfileController.find;
+  final _postService = PostController.find;
 
   final _apiProvider = ApiProvider(http.Client());
 
@@ -75,6 +77,8 @@ class LoginController extends GetxController {
       if (response.isSuccessful) {
         _auth.setLoginData = AuthResponse.fromJson(response.data);
 
+        await _auth.deleteAllLocalDataAndCache();
+
         var token = _auth.loginData.token!;
         var expiresAt = _auth.loginData.expiresAt!;
 
@@ -106,12 +110,15 @@ class LoginController extends GetxController {
           _isLoading.value = false;
           update();
           AppUtility.closeDialog();
-          RouteManagement.goToHomeView();
 
+          RouteManagement.goToHomeView();
           AppUtility.showSnackBar(
             StringValues.loginSuccessful,
             StringValues.success,
           );
+
+          await _postService.init();
+          await _postService.getData();
         } catch (e) {
           AppUtility.log("Error: $e");
           _isLoading.value = false;

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
@@ -102,5 +103,5 @@ class BannerController extends GetxController {
 
   void deleteBanner(int index) async => await _deleteBanner(index);
 
-  // Future<void> fetchBanners() async => await _fetchBanners();
+// Future<void> fetchBanners() async => await _fetchBanners();
 }

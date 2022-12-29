@@ -1,4 +1,5 @@
 import 'package:get_storage/get_storage.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 abstract class StorageService {
   static final _storage = GetStorage();
@@ -16,6 +17,7 @@ abstract class StorageService {
   }
 
   static Future<void> remove(String key) async {
+    AppUtility.log('Removing $key from local storage');
     await _storage.remove(key);
   }
 
