@@ -155,7 +155,7 @@ abstract class AppUtility {
             maxWidth: Dimens.hundred * 6,
           ),
           child: Padding(
-            padding: Dimens.edgeInsets16,
+            padding: Dimens.edgeInsets12,
             child: Align(
               alignment: Alignment.center,
               child: Material(
@@ -173,6 +173,92 @@ abstract class AppUtility {
       barrierDismissible: barrierDismissible,
       barrierColor: ColorValues.blackColor.withOpacity(0.75),
       name: 'simple_dialog',
+    );
+  }
+
+  /// Show Delete Dialog
+
+  static void showDeleteDialog(BuildContext context, Function onDelete) {
+    closeDialog();
+    Get.dialog(
+      MediaQuery.removeViewInsets(
+        context: context,
+        removeLeft: true,
+        removeTop: true,
+        removeRight: true,
+        removeBottom: true,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: Dimens.screenHeight,
+            maxWidth: Dimens.hundred * 6,
+          ),
+          child: Padding(
+            padding: Dimens.edgeInsets12,
+            child: Align(
+              alignment: Alignment.center,
+              child: Material(
+                type: MaterialType.card,
+                color: Theme.of(Get.context!).dialogBackgroundColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(Dimens.four),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Dimens.boxHeight8,
+                    Padding(
+                      padding: Dimens.edgeInsetsHorizDefault,
+                      child: Text(
+                        StringValues.delete,
+                        style: AppStyles.style20Bold,
+                      ),
+                    ),
+                    Dimens.boxHeight8,
+                    Padding(
+                      padding: Dimens.edgeInsetsHorizDefault,
+                      child: Text(
+                        StringValues.deleteConfirmationText,
+                        style: AppStyles.style14Normal,
+                      ),
+                    ),
+                    Dimens.boxHeight8,
+                    Padding(
+                      padding: Dimens.edgeInsetsHorizDefault,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          NxTextButton(
+                            label: StringValues.no,
+                            labelStyle: AppStyles.style16Bold.copyWith(
+                              color: ColorValues.errorColor,
+                            ),
+                            onTap: AppUtility.closeDialog,
+                            padding: Dimens.edgeInsets8,
+                          ),
+                          Dimens.boxWidth16,
+                          NxTextButton(
+                            label: StringValues.yes,
+                            labelStyle: AppStyles.style16Bold.copyWith(
+                              color: ColorValues.successColor,
+                            ),
+                            onTap: () => onDelete(),
+                            padding: Dimens.edgeInsets8,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Dimens.boxHeight8,
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      barrierDismissible: false,
+      barrierColor: ColorValues.blackColor.withOpacity(0.75),
+      name: 'delete_dialog',
     );
   }
 

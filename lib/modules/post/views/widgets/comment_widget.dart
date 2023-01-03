@@ -36,7 +36,8 @@ class CommentWidget extends StatelessWidget {
         children: [
           _buildCommentHead(context),
           _buildCommentBody(context),
-          _buildCommentFooter(context),
+          //_buildCommentFooter(context),
+          Dimens.boxHeight8,
         ],
       ),
     );
@@ -164,36 +165,36 @@ class CommentWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildCommentFooter(BuildContext context) => Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          /// Like Button
-          GestureDetector(
-            onTap: () => {},
-            child: Padding(
-              padding: Dimens.edgeInsets8,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.favorite_outline,
-                      size: Dimens.twenty,
-                      color: Theme.of(context).textTheme.subtitle1!.color),
-                  Dimens.boxWidth2,
-                  Text(
-                    '${0}'.toCountingFormat(),
-                    style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      );
+  // Widget _buildCommentFooter(BuildContext context) => Row(
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         /// Like Button
+  //         GestureDetector(
+  //           onTap: () => {},
+  //           child: Padding(
+  //             padding: Dimens.edgeInsets8,
+  //             child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               crossAxisAlignment: CrossAxisAlignment.center,
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: [
+  //                 Icon(Icons.favorite_outline,
+  //                     size: Dimens.twenty,
+  //                     color: Theme.of(context).textTheme.subtitle1!.color),
+  //                 Dimens.boxWidth2,
+  //                 Text(
+  //                   '${0}'.toCountingFormat(),
+  //                   style: AppStyles.style13Normal.copyWith(
+  //                     color: Theme.of(context).textTheme.subtitle1!.color,
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     );
 
   void _showHeaderOptionBottomSheet(BuildContext context) =>
       AppUtility.showBottomSheet(

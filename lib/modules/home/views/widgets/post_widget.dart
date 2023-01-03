@@ -16,11 +16,13 @@ import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
 import 'package:social_media_app/helpers/get_time_ago_msg.dart';
+import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/modules/home/controllers/trending_post_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_view_widget.dart';
+import 'package:social_media_app/modules/post/controllers/post_details_controller.dart';
 import 'package:social_media_app/modules/post/views/widgets/poll_option_widget.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -37,6 +39,9 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    assert(controller is PostDetailsController ||
+        controller is PostController ||
+        controller is TrendingPostController);
     return NxElevatedCard(
       margin: Dimens.edgeInsets8_0,
       borderRadius: Dimens.four,
@@ -440,7 +445,13 @@ class PostWidget extends StatelessWidget {
             ListTile(
               onTap: () {
                 AppUtility.closeBottomSheet();
-                _showDeletePostOptions();
+                AppUtility.showDeleteDialog(
+                  context,
+                  () async {
+                    AppUtility.closeDialog();
+                    controller?.deletePost(post.id!);
+                  },
+                );
               },
               leading: Icon(
                 Icons.delete,
@@ -484,61 +495,4 @@ class PostWidget extends StatelessWidget {
           ),
         ],
       );
-
-  Future<void> _showDeletePostOptions() async {
-    AppUtility.showSimpleDialog(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Dimens.boxHeight8,
-          Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Text(
-              StringValues.delete,
-              style: AppStyles.style20Bold,
-            ),
-          ),
-          Dimens.boxHeight8,
-          Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Text(
-              StringValues.deleteConfirmationText,
-              style: AppStyles.style14Normal,
-            ),
-          ),
-          Dimens.boxHeight8,
-          Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                NxTextButton(
-                  label: StringValues.no,
-                  labelStyle: AppStyles.style16Bold.copyWith(
-                    color: ColorValues.errorColor,
-                  ),
-                  onTap: AppUtility.closeDialog,
-                  padding: Dimens.edgeInsets8,
-                ),
-                Dimens.boxWidth16,
-                NxTextButton(
-                  label: StringValues.yes,
-                  labelStyle: AppStyles.style16Bold.copyWith(
-                    color: ColorValues.successColor,
-                  ),
-                  onTap: () async {
-                    AppUtility.closeDialog();
-                    controller?.deletePost(post.id!);
-                  },
-                  padding: Dimens.edgeInsets8,
-                ),
-              ],
-            ),
-          ),
-          Dimens.boxHeight8,
-        ],
-      ),
-    );
-  }
 }

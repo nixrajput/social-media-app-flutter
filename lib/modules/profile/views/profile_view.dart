@@ -95,6 +95,7 @@ class ProfileView extends StatelessWidget {
         children: [
           /// Account
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
             leading: Icon(
               Icons.account_circle_outlined,
@@ -113,6 +114,7 @@ class ProfileView extends StatelessWidget {
 
           /// Security
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
             leading: Icon(
               Icons.verified_user_outlined,
@@ -131,6 +133,7 @@ class ProfileView extends StatelessWidget {
 
           /// Privacy
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
             leading: Icon(
               Icons.lock_outline,
@@ -149,6 +152,7 @@ class ProfileView extends StatelessWidget {
 
           /// Help
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
             leading: Icon(
               Icons.help_outline_outlined,
@@ -167,6 +171,7 @@ class ProfileView extends StatelessWidget {
 
           /// Theme
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
             leading: Icon(
               Icons.palette_outlined,
@@ -185,6 +190,7 @@ class ProfileView extends StatelessWidget {
 
           /// About
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
             leading: Icon(
               Icons.info_outline,
@@ -203,6 +209,7 @@ class ProfileView extends StatelessWidget {
 
           /// Check for update
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
             leading: Icon(
               Icons.loop_outlined,
@@ -221,6 +228,7 @@ class ProfileView extends StatelessWidget {
 
           /// Logout
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
             leading: Icon(
               Icons.logout_outlined,
@@ -402,6 +410,7 @@ class ProfileView extends StatelessWidget {
       height: Dimens.thirtySix,
       padding: Dimens.edgeInsets0_8,
       borderRadius: Dimens.four,
+      borderWidth: Dimens.one,
       labelStyle: AppStyles.style14Normal.copyWith(
         color: Theme.of(context).textTheme.bodyText1!.color,
       ),
@@ -414,8 +423,11 @@ class ProfileView extends StatelessWidget {
       width: Dimens.screenWidth,
       padding: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
-        color: Theme.of(context).bottomAppBarColor,
         borderRadius: BorderRadius.circular(Dimens.four),
+        border: Border.all(
+          color: Theme.of(context).bottomAppBarColor,
+          width: Dimens.one,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

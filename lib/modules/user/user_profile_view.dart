@@ -16,6 +16,7 @@ import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/image_viewer_widget.dart';
 import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
+import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -213,7 +214,7 @@ class UserProfileView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
-                Icons.link_outlined,
+                Icons.link,
                 size: Dimens.sixTeen,
                 color: Theme.of(context).textTheme.subtitle1!.color,
               ),
@@ -333,35 +334,40 @@ class UserProfileView extends StatelessWidget {
             ),
           ),
         ),
-        Dimens.boxWidth16,
-        Expanded(
-          child: NxOutlinedButton(
-            label: StringValues.message.toTitleCase(),
-            width: Dimens.screenWidth,
-            height: Dimens.thirtySix,
-            padding: Dimens.edgeInsets0_8,
-            borderRadius: Dimens.four,
-            labelStyle: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
-            ),
-            onTap: () => RouteManagement.goToChatDetailsView(
-              User(
-                id: user.id,
-                fname: user.fname,
-                lname: user.lname,
-                email: user.email,
-                uname: user.uname,
-                avatar: user.avatar,
-                isPrivate: user.isPrivate,
-                followingStatus: user.followingStatus,
-                accountStatus: user.accountStatus,
-                isVerified: user.isVerified,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt,
+        if (!user.isPrivate ||
+            (user.isPrivate && user.followingStatus == "following"))
+          Dimens.boxWidth12,
+        if (!user.isPrivate ||
+            (user.isPrivate && user.followingStatus == "following"))
+          Expanded(
+            child: NxFilledButton(
+              label: StringValues.message.toTitleCase(),
+              bgColor: Theme.of(context).bottomAppBarColor,
+              width: Dimens.screenWidth,
+              height: Dimens.thirtySix,
+              padding: Dimens.edgeInsets0_8,
+              borderRadius: Dimens.four,
+              labelStyle: AppStyles.style14Normal.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
+              onTap: () => RouteManagement.goToChatDetailsView(
+                User(
+                  id: user.id,
+                  fname: user.fname,
+                  lname: user.lname,
+                  email: user.email,
+                  uname: user.uname,
+                  avatar: user.avatar,
+                  isPrivate: user.isPrivate,
+                  followingStatus: user.followingStatus,
+                  accountStatus: user.accountStatus,
+                  isVerified: user.isVerified,
+                  createdAt: user.createdAt,
+                  updatedAt: user.updatedAt,
+                ),
               ),
             ),
-          ),
-        )
+          )
       ],
     );
   }
@@ -373,8 +379,11 @@ class UserProfileView extends StatelessWidget {
       width: Dimens.screenWidth,
       padding: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
-        color: Theme.of(context).bottomAppBarColor,
         borderRadius: BorderRadius.circular(Dimens.four),
+        border: Border.all(
+          color: Theme.of(context).bottomAppBarColor,
+          width: Dimens.one,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,

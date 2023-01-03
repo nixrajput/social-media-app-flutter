@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 
@@ -42,14 +41,17 @@ class NxCountWidget extends StatelessWidget {
           children: [
             Text(
               value,
-              style: valueStyle ?? AppStyles.style16Bold,
+              style: valueStyle ??
+                  AppStyles.style16Bold.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
             ),
             Dimens.boxHeight4,
             Text(
               title,
               style: titleStyle ??
                   AppStyles.style13Normal.copyWith(
-                    color: ColorValues.grayColor,
+                    color: Theme.of(context).textTheme.subtitle2!.color,
                   ),
             ),
           ],

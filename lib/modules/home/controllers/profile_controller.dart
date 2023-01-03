@@ -248,7 +248,7 @@ class ProfileController extends GetxController {
       final response = await _apiProvider.getUserPosts(
         _auth.token,
         _profileDetails.value.user!.id,
-        limit: 16,
+        limit: 12,
       );
 
       if (response.isSuccessful) {
@@ -284,7 +284,7 @@ class ProfileController extends GetxController {
         _auth.token,
         _profileDetails.value.user!.id,
         page: page,
-        limit: 16,
+        limit: 12,
       );
 
       if (response.isSuccessful) {

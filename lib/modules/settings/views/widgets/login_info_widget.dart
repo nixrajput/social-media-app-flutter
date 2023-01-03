@@ -25,7 +25,20 @@ class LoginInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onLongPress: () => _showDeleteDialog(item.deviceId!),
+      onLongPress: () => AppUtility.showDeleteDialog(
+        context,
+        () async {
+          AppUtility.closeDialog();
+          if (item.deviceId! == AuthService.find.deviceId.toString()) {
+            await AuthService.find.logout();
+            RouteManagement.goToWelcomeView();
+            return;
+          } else {
+            await LoginInfoController.find
+                .deleteLoginDeviceInfo(item.deviceId!);
+          }
+        },
+      ),
       child: Padding(
         padding: margin ?? Dimens.edgeInsets8_0,
         child: NxListTile(
@@ -119,11 +132,11 @@ class LoginInfoWidget extends StatelessWidget {
           Padding(
             padding: Dimens.edgeInsets0_16,
             child: Text(
-              'Delete',
-              style: AppStyles.style18Bold,
+              StringValues.delete,
+              style: AppStyles.style20Bold,
             ),
           ),
-          Dimens.dividerWithHeight,
+          Dimens.boxHeight8,
           Padding(
             padding: Dimens.edgeInsets0_16,
             child: Text(
