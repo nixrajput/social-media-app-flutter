@@ -16,6 +16,8 @@ their posts.
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-app-flutter?style=flat-square)][pulls]
 [![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-app-flutter?style=flat-square)][license]
 
+- This project is powered by [NixLab Technologies][website].
+
 - The app is developed using Flutter and GetX state management. The app is
 currently in development and is not yet ready for production.
 
@@ -130,7 +132,6 @@ This project is licensed under the GPL-3.0 License - see the
 [![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Github&logoColor=fff)][github]
 [![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Twitter&logoColor=fff)][twitter]
 [![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Facebook&logoColor=fff)][facebook]
-[![Website: nixlab.co.in](https://img.shields.io/badge/nixlab-282C34?style=for-the-badge&logo=Google-Chrome&logoColor=fff)][website]
 
 [github]: https://github.com/nixrajput
 [website]: https://nixlab.co.in
