@@ -8,7 +8,6 @@ their posts.
 [![Stars](https://img.shields.io/github/stars/nixrajput/social-media-app-flutter?style=flat-square)][repo]
 [![Forks](https://img.shields.io/github/forks/nixrajput/social-media-app-flutter?style=flat-square)][repo]
 [![Watchers](https://img.shields.io/github/watchers/nixrajput/social-media-app-flutter?style=flat-square)][repo]
-[![Followers](https://img.shields.io/github/followers/nixrajput?style=flat-square)][github]
 [![Contributors](https://img.shields.io/github/contributors/nixrajput/social-media-app-flutter?style=flat-square)][repo]
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/social-media-app-flutter?style=flat-square)][releases]
@@ -126,12 +125,12 @@ This project is licensed under the GPL-3.0 License - see the
 
 ## Connect With Me
 
-[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Instagram&logoColor=fff&link=https://instagram.com/nixrajput/)][instagram]
-[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Linkedin&logoColor=fff&link=https://linkedin.com/in/nixrajput/)][linkedin]
-[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Github&logoColor=fff&link=https://github.com/nixrajput/)][github]
-[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Twitter&logoColor=fff&link=https://twitter.com/nixrajput07/)][twitter]
-[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Facebook&logoColor=fff&link=https://facebook.com/nixrajput07/)][facebook]
-[![Website: nixlab.co.in](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Google-Chrome&logoColor=fff&link=https://nixlab.co.in/)][website]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Instagram&logoColor=fff)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Linkedin&logoColor=fff)][linkedin]
+[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Github&logoColor=fff)][github]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Twitter&logoColor=fff)][twitter]
+[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Facebook&logoColor=fff)][facebook]
+[![Website: nixlab.co.in](https://img.shields.io/badge/nixlab-282C34?style=for-the-badge&logo=Google-Chrome&logoColor=fff)][website]
 
 [github]: https://github.com/nixrajput
 [website]: https://nixlab.co.in
