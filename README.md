@@ -1,10 +1,21 @@
-# Rippl! - A Social Media App
+# Rippl - A Social Media App
 
-Rippl! is a social media app that allows users to share their photos and videos
+Rippl is a social media app that allows users to share their photos and videos
 with other users. Users can also follow other users and like and comment on
 their posts.
 
-[<img src='screenshots/download.png' height='50' alt='Download' title='Download'>][releases]
+[![Downloads](https://img.shields.io/github/downloads/nixrajput/social-media-app-flutter/total?style=social)][releases]
+[![Stars](https://img.shields.io/github/stars/nixrajput/social-media-app-flutter?style=social)][repo]
+[![Forks](https://img.shields.io/github/forks/nixrajput/social-media-app-flutter?style=social)][repo]
+[![GitHub watchers](https://img.shields.io/github/watchers/nixrajput/social-media-app-flutter?style=social)][repo]
+[![GitHub followers](https://img.shields.io/github/followers/nixrajput?style=social)][github]
+[![Contributors](https://img.shields.io/github/contributors/nixrajput/social-media-app-flutter?style=social)][repo]
+
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/social-media-app-flutter?style=social)][releases]
+[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/social-media-app-flutter?style=social)][repo]
+[![GitHub issues](https://img.shields.io/github/issues/nixrajput/social-media-app-flutter?style=social)][issues]
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-app-flutter?style=social)][pulls]
+[![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-app-flutter?style=social)][license]
 
 - The app is developed using Flutter and GetX state management. The app is
 currently in development and is not yet ready for production.
@@ -133,17 +144,12 @@ This project is licensed under the GPL-3.0 License - see the
 
 ## Connect With Me
 
-[<img align="left" alt="nixrajput | Website" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/globe-icon.svg" />][website]
-
-[<img align="left" alt="nixrajput | GitHub" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/github-brands.svg" />][github]
-
-[<img align="left" alt="nixrajput | Instagram" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/instagram-brands.svg" />][instagram]
-
-[<img align="left" alt="nixrajput | Facebook" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/facebook-brands.svg" />][facebook]
-
-[<img align="left" alt="nixrajput | Twitter" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/twitter-brands.svg" />][twitter]
-
-[<img align="left" alt="nixrajput | LinkedIn" width="24px" src="https://raw.githubusercontent.com/nixrajput/nixlab-files/master/images/icons/linkedin-in-brands.svg" />][linkedin]
+[![Instagram: nixrajput](https://img.shields.io/badge/-nixrajput-blue?style=social&logo=Instagram&link=https://www.instagram.com/nixrajput/)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/-nixrajput-blue?style=social&logo=Linkedin&link=https://www.linkedin.com/in/nixrajput/)][linkedin]
+[![GitHub: nixrajput](https://img.shields.io/badge/-nixrajput-blue?style=social&logo=Github&link=https://www.github.com/nixrajput/)][github]
+[![Twitter: nixrajput07](https://img.shields.io/badge/-nixrajput07-blue?style=social&logo=Twitter&link=https://www.twitter.com/nixrajput07/)][twitter]
+[![Facebook: nixrajput07](https://img.shields.io/badge/-nixrajput07-blue?style=social&logo=Facebook&link=https://www.facebook.com/nixrajput07/)][facebook]
+[![Website: nixlab.co.in](https://img.shields.io/badge/-nixlab.co.in-blue?style=social&logo=Google-Chrome&link=https://www.nixlab.co.in/)][website]
 
 [github]: https://github.com/nixrajput
 [website]: https://nixlab.co.in
@@ -153,3 +159,7 @@ This project is licensed under the GPL-3.0 License - see the
 [linkedin]: https://linkedin.com/in/nixrajput
 [portfolio]: https://nixrajput.nixlab.co.in
 [releases]: https://github.com/nixrajput/social-media-app-flutter/releases
+[repo]: https://github.com/nixrajput/social-media-app-flutter
+[issues]: https://github.com/nixrajput/social-media-app-flutter/issues
+[license]: https://github.com/nixrajput/social-media-app-flutter/blob/master/LICENSE.md
+[pulls]: https://github.com/nixrajput/social-media-app-flutter/pulls
