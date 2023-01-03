@@ -4,18 +4,18 @@ Rippl is a social media app that allows users to share their photos and videos
 with other users. Users can also follow other users and like and comment on
 their posts.
 
-[![Downloads](https://img.shields.io/github/downloads/nixrajput/social-media-app-flutter/total?style=social)][releases]
-[![Stars](https://img.shields.io/github/stars/nixrajput/social-media-app-flutter?style=social)][repo]
-[![Forks](https://img.shields.io/github/forks/nixrajput/social-media-app-flutter?style=social)][repo]
-[![GitHub watchers](https://img.shields.io/github/watchers/nixrajput/social-media-app-flutter?style=social)][repo]
-[![GitHub followers](https://img.shields.io/github/followers/nixrajput?style=social)][github]
-[![Contributors](https://img.shields.io/github/contributors/nixrajput/social-media-app-flutter?style=social)][repo]
+[![Downloads](https://img.shields.io/github/downloads/nixrajput/social-media-app-flutter/total?style=flat-square&label=Downloads)][releases]
+[![Stars](https://img.shields.io/github/stars/nixrajput/social-media-app-flutter?style=flat-square)][repo]
+[![Forks](https://img.shields.io/github/forks/nixrajput/social-media-app-flutter?style=flat-square)][repo]
+[![Watchers](https://img.shields.io/github/watchers/nixrajput/social-media-app-flutter?style=flat-square)][repo]
+[![Followers](https://img.shields.io/github/followers/nixrajput?style=flat-square)][github]
+[![Contributors](https://img.shields.io/github/contributors/nixrajput/social-media-app-flutter?style=flat-square)][repo]
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/social-media-app-flutter?style=social)][releases]
-[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/social-media-app-flutter?style=social)][repo]
-[![GitHub issues](https://img.shields.io/github/issues/nixrajput/social-media-app-flutter?style=social)][issues]
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-app-flutter?style=social)][pulls]
-[![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-app-flutter?style=social)][license]
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/social-media-app-flutter?style=flat-square)][releases]
+[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/social-media-app-flutter?style=flat-square)][repo]
+[![GitHub issues](https://img.shields.io/github/issues/nixrajput/social-media-app-flutter?style=flat-square)][issues]
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-app-flutter?style=flat-square)][pulls]
+[![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-app-flutter?style=flat-square)][license]
 
 - The app is developed using Flutter and GetX state management. The app is
 currently in development and is not yet ready for production.
@@ -56,24 +56,6 @@ flutter pub get packages
 ```
 
 ## Screenshots
-
-Created with [previewed.app](https://previewed.app).
-
-### Row `1`
-
-<img src='screenshots/image1.png' height='720' align='left' alt='Welcome Screen' title='Welcome Screen'>
-
-<img src='screenshots/image2.png' height='720' alt='Login Screen' title='Login Screen'>
-
-### Row `2`
-
-<img src='screenshots/image3.png' height='720' align='left' alt='About Screen' title='About Screen'>
-
-<img src='screenshots/image4.png' height='720' alt='Home Screen' title='Home Screen'>
-
-### Row `3`
-
-<img src='screenshots/image5.png' height='720'  alt='Profile Screen' title='Profile Screen'>
 
 ## Download
 
@@ -144,12 +126,12 @@ This project is licensed under the GPL-3.0 License - see the
 
 ## Connect With Me
 
-[![Instagram: nixrajput](https://img.shields.io/badge/-nixrajput-blue?style=social&logo=Instagram&link=https://www.instagram.com/nixrajput/)][instagram]
-[![Linkedin: nixrajput](https://img.shields.io/badge/-nixrajput-blue?style=social&logo=Linkedin&link=https://www.linkedin.com/in/nixrajput/)][linkedin]
-[![GitHub: nixrajput](https://img.shields.io/badge/-nixrajput-blue?style=social&logo=Github&link=https://www.github.com/nixrajput/)][github]
-[![Twitter: nixrajput07](https://img.shields.io/badge/-nixrajput07-blue?style=social&logo=Twitter&link=https://www.twitter.com/nixrajput07/)][twitter]
-[![Facebook: nixrajput07](https://img.shields.io/badge/-nixrajput07-blue?style=social&logo=Facebook&link=https://www.facebook.com/nixrajput07/)][facebook]
-[![Website: nixlab.co.in](https://img.shields.io/badge/-nixlab.co.in-blue?style=social&logo=Google-Chrome&link=https://www.nixlab.co.in/)][website]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Instagram&logoColor=fff&link=https://instagram.com/nixrajput/)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Linkedin&logoColor=fff&link=https://linkedin.com/in/nixrajput/)][linkedin]
+[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Github&logoColor=fff&link=https://github.com/nixrajput/)][github]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Twitter&logoColor=fff&link=https://twitter.com/nixrajput07/)][twitter]
+[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Facebook&logoColor=fff&link=https://facebook.com/nixrajput07/)][facebook]
+[![Website: nixlab.co.in](https://img.shields.io/badge/nixrajput-grey?style=for-the-badge&logo=Google-Chrome&logoColor=fff&link=https://nixlab.co.in/)][website]
 
 [github]: https://github.com/nixrajput
 [website]: https://nixlab.co.in
