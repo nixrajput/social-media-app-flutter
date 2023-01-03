@@ -300,7 +300,8 @@ class ProfileDetailsView extends StatelessWidget {
                       ),
                     ),
 
-                    Dimens.boxHeight8,
+                    if (logic.profileDetails!.user!.phone != null)
+                      Dimens.boxHeight8,
 
                     /// Phone
 

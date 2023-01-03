@@ -9,7 +9,6 @@ import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/unfocus_widget.dart';
-import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/create_comment_controller.dart';
 import 'package:social_media_app/modules/post/views/widgets/comment_widget.dart';
@@ -53,41 +52,49 @@ class PostCommentView extends StatelessWidget {
       bottom: Dimens.zero,
       left: Dimens.zero,
       right: Dimens.zero,
-      child: GetBuilder<CreateCommentController>(
-        builder: (con) => Container(
-          color: Theme.of(Get.context!).dialogTheme.backgroundColor,
-          width: Dimens.screenWidth,
-          height: Dimens.fourtyEight,
-          padding: Dimens.edgeInsetsHorizDefault,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: con.commentTextController,
-                  onChanged: (value) => con.onChangedText(value),
-                  decoration: const InputDecoration(
-                    hintText: StringValues.addComment,
-                    border: InputBorder.none,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Dimens.divider,
+          GetBuilder<CreateCommentController>(
+            builder: (con) => Container(
+              color: Theme.of(Get.context!).dialogTheme.backgroundColor,
+              width: Dimens.screenWidth,
+              height: Dimens.fourtyEight,
+              padding: Dimens.edgeInsetsHorizDefault,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: con.commentTextController,
+                      onChanged: (value) => con.onChangedText(value),
+                      decoration: const InputDecoration(
+                        hintText: StringValues.addComment,
+                        border: InputBorder.none,
+                      ),
+                      minLines: 1,
+                      maxLines: 1,
+                      style: AppStyles.style14Normal.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                      ),
+                    ),
                   ),
-                  minLines: 1,
-                  maxLines: 1,
-                  style: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
-                  ),
-                ),
+                  Dimens.boxWidth4,
+                  if (con.comment.isNotEmpty)
+                    NxIconButton(
+                      icon: Icons.send,
+                      iconColor: ColorValues.primaryColor,
+                      iconSize: Dimens.twentyFour,
+                      onTap: con.createNewComment,
+                    )
+                ],
               ),
-              Dimens.boxWidth4,
-              if (con.comment.isNotEmpty)
-                NxIconButton(
-                  icon: Icons.send,
-                  iconColor: ColorValues.primaryColor,
-                  iconSize: Dimens.twentyFour,
-                  onTap: con.createNewComment,
-                )
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -106,7 +113,7 @@ class PostCommentView extends StatelessWidget {
 
             if (logic.commentsData == null || logic.commentList.isEmpty) {
               return Padding(
-                padding: Dimens.edgeInsets0_16,
+                padding: Dimens.edgeInsetsHorizDefault,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -121,7 +128,6 @@ class PostCommentView extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     Dimens.boxHeight16,
-                    Dimens.boxHeight64,
                   ],
                 ),
               );
@@ -136,7 +142,6 @@ class PostCommentView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Dimens.boxHeight8,
                   _buildComments(logic),
                   LoadMoreWidget(
                     loadingCondition: logic.isMoreLoading,
@@ -155,20 +160,10 @@ class PostCommentView extends StatelessWidget {
   }
 
   ListView _buildComments(CommentController commentsLogic) {
-    final profile = ProfileController.find.profileDetails!.user!;
-
     return ListView.builder(
       itemBuilder: (context, index) {
         var comment = commentsLogic.commentList[index];
-        return InkWell(
-          child: CommentWidget(comment: comment),
-          onLongPress: () {
-            if (comment.user.id != profile.id) {
-              return;
-            }
-            commentsLogic.showDeleteCommentOptions(comment.id);
-          },
-        );
+        return CommentWidget(comment: comment);
       },
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
@@ -329,7 +328,7 @@ class PostDetailsWidget extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: Dimens.edgeInsetsDefault,
+            padding: Dimens.edgeInsetsHorizDefault,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -337,39 +336,95 @@ class PostDetailsWidget extends StatelessWidget {
                 /// Like Button
                 GestureDetector(
                   onTap: () => controller?.toggleLikePost(post),
-                  child: Icon(
-                    post.isLiked == true
-                        ? Icons.favorite
-                        : Icons.favorite_outline,
-                    size: Dimens.twenty,
-                    color: post.isLiked == true
-                        ? ColorValues.errorColor
-                        : ColorValues.grayColor,
+                  child: Padding(
+                    padding: Dimens.edgeInsets8,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          post.isLiked == true
+                              ? Icons.favorite
+                              : Icons.favorite_outline,
+                          size: Dimens.twenty,
+                          color: post.isLiked == true
+                              ? ColorValues.primaryColor
+                              : ColorValues.grayColor,
+                        ),
+                        Dimens.boxWidth2,
+                        Text(
+                          '${post.likesCount}'.toCountingFormat(),
+                          style: AppStyles.style13Normal.copyWith(
+                            color: post.isLiked == true
+                                ? ColorValues.primaryColor
+                                : Theme.of(context).textTheme.subtitle1!.color,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
                 /// Comment Button
                 GestureDetector(
                   onTap: () => RouteManagement.goToPostCommentsView(post.id!),
-                  child: Icon(
-                    Icons.comment_outlined,
-                    size: Dimens.twenty,
-                    color: ColorValues.grayColor,
+                  child: Padding(
+                    padding: Dimens.edgeInsets8,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.comment_outlined,
+                          size: Dimens.twenty,
+                          color: Theme.of(context).textTheme.subtitle1!.color,
+                        ),
+                        Dimens.boxWidth2,
+                        Text(
+                          '${post.commentsCount}'.toCountingFormat(),
+                          style: AppStyles.style13Normal.copyWith(
+                            color: Theme.of(context).textTheme.subtitle1!.color,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
                 /// RePost Button
-                Icon(
-                  Icons.repeat_outlined,
-                  size: Dimens.twenty,
-                  color: ColorValues.grayColor,
+                Padding(
+                  padding: Dimens.edgeInsets8,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.repeat_outlined,
+                        size: Dimens.twenty,
+                        color: Theme.of(context).textTheme.subtitle1!.color,
+                      ),
+                      Dimens.boxWidth2,
+                      Text(
+                        '${0}'.toCountingFormat(),
+                        style: AppStyles.style13Normal.copyWith(
+                          color: Theme.of(context).textTheme.subtitle1!.color,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 /// Share Button
-                Icon(
-                  Icons.share_outlined,
-                  size: Dimens.twenty,
-                  color: ColorValues.grayColor,
+                Padding(
+                  padding: Dimens.edgeInsets8,
+                  child: Icon(
+                    Icons.share_outlined,
+                    size: Dimens.twenty,
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
                 ),
               ],
             ),
@@ -494,7 +549,7 @@ class PostDetailsWidget extends StatelessWidget {
           ListTile(
             onTap: AppUtility.closeBottomSheet,
             leading: Icon(
-              Icons.reply,
+              Icons.report,
               color: Theme.of(context).textTheme.bodyText1!.color,
               size: Dimens.twentyFour,
             ),

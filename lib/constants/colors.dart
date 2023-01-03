@@ -50,10 +50,13 @@ abstract class ColorValues {
   static const Color darkSubtitle2TextColor =
       Color.fromARGB(255, 124, 124, 124);
 
-  static const Color lightBgColor = Color.fromARGB(255, 230, 230, 230);
-  static const Color lightDialogColor = Color.fromARGB(255, 252, 252, 252);
-  static const Color darkBgColor = Color.fromRGBO(18, 18, 30, 1.0);
-  static const Color darkDialogColor = Color.fromARGB(255, 41, 42, 56);
+  static const Color lightBgColor = Color.fromARGB(255, 250, 250, 250);
+  static const Color lightDialogColor = Color.fromARGB(255, 236, 236, 236);
+  static const Color darkBgColor = Color.fromARGB(255, 18, 18, 30);
+  static const Color darkDialogColor = Color.fromARGB(255, 40, 40, 50);
+
+  static const Color lightShadowColor = Color.fromARGB(255, 0, 0, 0);
+  static const Color darkShadowColor = Color.fromARGB(255, 200, 200, 200);
 
   static const primaryGrad = LinearGradient(
     colors: [primaryColor, primaryLightColor],

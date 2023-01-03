@@ -329,15 +329,15 @@ class PostWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Padding(
-              padding: Dimens.edgeInsets8_0,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  /// Like Button
-                  GestureDetector(
-                    onTap: () => controller?.toggleLikePost(post),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                /// Like Button
+                GestureDetector(
+                  onTap: () => controller?.toggleLikePost(post),
+                  child: Padding(
+                    padding: Dimens.edgeInsets8,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -349,25 +349,28 @@ class PostWidget extends StatelessWidget {
                               : Icons.favorite_outline,
                           size: Dimens.twenty,
                           color: post.isLiked == true
-                              ? ColorValues.errorColor
-                              : ColorValues.grayColor,
+                              ? ColorValues.primaryColor
+                              : Theme.of(context).textTheme.subtitle1!.color,
                         ),
                         Dimens.boxWidth2,
                         Text(
                           '${post.likesCount}'.toCountingFormat(),
                           style: AppStyles.style13Normal.copyWith(
                             color: post.isLiked == true
-                                ? ColorValues.errorColor
-                                : ColorValues.grayColor,
+                                ? ColorValues.primaryColor
+                                : Theme.of(context).textTheme.subtitle1!.color,
                           ),
                         ),
                       ],
                     ),
                   ),
+                ),
 
-                  /// Comment Button
-                  GestureDetector(
-                    onTap: () => RouteManagement.goToPostCommentsView(post.id!),
+                /// Comment Button
+                GestureDetector(
+                  onTap: () => RouteManagement.goToPostCommentsView(post.id!),
+                  child: Padding(
+                    padding: Dimens.edgeInsets8,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -376,21 +379,24 @@ class PostWidget extends StatelessWidget {
                         Icon(
                           Icons.comment_outlined,
                           size: Dimens.twenty,
-                          color: ColorValues.grayColor,
+                          color: Theme.of(context).textTheme.subtitle1!.color,
                         ),
                         Dimens.boxWidth2,
                         Text(
                           '${post.commentsCount}'.toCountingFormat(),
                           style: AppStyles.style13Normal.copyWith(
-                            color: ColorValues.grayColor,
+                            color: Theme.of(context).textTheme.subtitle1!.color,
                           ),
                         ),
                       ],
                     ),
                   ),
+                ),
 
-                  /// RePost Button
-                  Row(
+                /// RePost Button
+                Padding(
+                  padding: Dimens.edgeInsets8,
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
@@ -398,26 +404,29 @@ class PostWidget extends StatelessWidget {
                       Icon(
                         Icons.repeat_outlined,
                         size: Dimens.twenty,
-                        color: ColorValues.grayColor,
+                        color: Theme.of(context).textTheme.subtitle1!.color,
                       ),
                       Dimens.boxWidth2,
                       Text(
                         '${0}'.toCountingFormat(),
                         style: AppStyles.style13Normal.copyWith(
-                          color: ColorValues.grayColor,
+                          color: Theme.of(context).textTheme.subtitle1!.color,
                         ),
                       ),
                     ],
                   ),
+                ),
 
-                  /// Share Button
-                  Icon(
+                /// Share Button
+                Padding(
+                  padding: Dimens.edgeInsets8,
+                  child: Icon(
                     Icons.share_outlined,
                     size: Dimens.twenty,
-                    color: ColorValues.grayColor,
+                    color: Theme.of(context).textTheme.subtitle1!.color,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             Dimens.boxHeight8,
           ],
@@ -462,7 +471,7 @@ class PostWidget extends StatelessWidget {
           ListTile(
             onTap: AppUtility.closeBottomSheet,
             leading: Icon(
-              Icons.reply,
+              Icons.report,
               color: Theme.of(context).textTheme.bodyText1!.color,
               size: Dimens.twentyFour,
             ),
@@ -487,12 +496,10 @@ class PostWidget extends StatelessWidget {
             padding: Dimens.edgeInsets0_16,
             child: Text(
               StringValues.delete,
-              style: AppStyles.style18Bold,
+              style: AppStyles.style20Bold,
             ),
           ),
-          Dimens.boxHeight4,
-          Dimens.dividerWithHeight,
-          Dimens.boxHeight4,
+          Dimens.boxHeight8,
           Padding(
             padding: Dimens.edgeInsets0_16,
             child: Text(

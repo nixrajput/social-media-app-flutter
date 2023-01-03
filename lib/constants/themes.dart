@@ -12,18 +12,18 @@ abstract class AppThemes {
     scaffoldBackgroundColor: ColorValues.lightBgColor,
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.lightBgColor),
     bottomAppBarColor: ColorValues.lightDialogColor,
-    shadowColor: ColorValues.blackColor.withOpacity(0.1),
+    shadowColor: ColorValues.lightShadowColor.withOpacity(0.1),
     cardTheme: const CardTheme(color: ColorValues.lightDialogColor),
     dialogTheme:
         const DialogTheme(backgroundColor: ColorValues.lightDialogColor),
     dialogBackgroundColor: ColorValues.lightDialogColor,
     errorColor: ColorValues.errorColor,
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
-      backgroundColor: ColorValues.lightDialogColor,
+      backgroundColor: ColorValues.lightBgColor,
     ),
     dividerColor: ColorValues.lightDividerColor,
     snackBarTheme: SnackBarThemeData(
-      backgroundColor: ColorValues.darkDialogColor,
+      backgroundColor: ColorValues.darkBgColor,
       contentTextStyle: AppStyles.style14Normal.copyWith(
         color: ColorValues.darkBodyTextColor,
       ),
@@ -64,7 +64,7 @@ abstract class AppThemes {
     ),
     iconTheme: const IconThemeData(color: ColorValues.darkGrayColor),
     scaffoldBackgroundColor: ColorValues.darkBgColor,
-    shadowColor: ColorValues.blackColor.withOpacity(0.1),
+    shadowColor: ColorValues.darkShadowColor.withOpacity(0.1),
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.darkBgColor),
     bottomAppBarColor: ColorValues.darkDialogColor,
     cardTheme: const CardTheme(color: ColorValues.darkDialogColor),
@@ -77,7 +77,7 @@ abstract class AppThemes {
     ),
     dividerColor: ColorValues.darkDividerColor,
     snackBarTheme: const SnackBarThemeData(
-      backgroundColor: ColorValues.lightDialogColor,
+      backgroundColor: ColorValues.lightBgColor,
       contentTextStyle: TextStyle(
         color: ColorValues.lightBodyTextColor,
       ),

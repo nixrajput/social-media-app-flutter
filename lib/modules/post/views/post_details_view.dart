@@ -8,7 +8,6 @@ import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/unfocus_widget.dart';
-import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/post_details_controller.dart';
 import 'package:social_media_app/modules/post/views/widgets/comment_widget.dart';
@@ -94,45 +93,36 @@ class PostDetailsView extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           StringValues.comments,
           style: AppStyles.style18Bold.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.bodyText1!.color,
           ),
         ),
-        Dimens.boxHeight4,
         GetBuilder<CommentController>(
-          initState: (state) {
-            state.controller?.fetchComments(postId: postId);
-          },
+          init: CommentController(postId: postId),
           builder: (logic) {
             if (logic.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: NxCircularProgressIndicator());
             }
 
             if (logic.commentsData == null || logic.commentList.isEmpty) {
-              return Padding(
-                padding: Dimens.edgeInsets0_16,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Dimens.boxHeight8,
-                    Text(
-                      StringValues.noComments,
-                      style: AppStyles.style32Bold.copyWith(
-                        color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
-                      ),
-                      textAlign: TextAlign.center,
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Dimens.boxHeight8,
+                  Text(
+                    StringValues.noComments,
+                    style: AppStyles.style32Bold.copyWith(
+                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                     ),
-                    Dimens.boxHeight16,
-                    Dimens.boxHeight64,
-                  ],
-                ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Dimens.boxHeight16,
+                ],
               );
             }
 
@@ -158,20 +148,10 @@ class PostDetailsView extends StatelessWidget {
   }
 
   ListView _buildComments(CommentController commentsLogic) {
-    final profile = ProfileController.find.profileDetails!.user!;
-
     return ListView.builder(
       itemBuilder: (context, index) {
         var comment = commentsLogic.commentList[index];
-        return GestureDetector(
-          child: CommentWidget(comment: comment),
-          onLongPress: () {
-            if (comment.user.id != profile.id) {
-              return;
-            }
-            commentsLogic.showDeleteCommentOptions(comment.id);
-          },
-        );
+        return CommentWidget(comment: comment);
       },
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

@@ -4,24 +4,35 @@ class HashTagLinker extends Linkifier {
   const HashTagLinker();
 
   @override
-  List<LinkifyElement> parse(
-      List<LinkifyElement> elements, LinkifyOptions options) {
+  List<LinkifyElement> parse(elements, options) {
     var items = <LinkifyElement>[];
+
     for (var element in elements) {
-      if (element.text.contains("#")) {
-        var index = 0;
-        element.text.trim().split(" ").forEach((innerText) {
-          if (innerText.contains("#")) {
-            if (index != 0) {
-              items.add(LinkableElement("$innerText ", innerText));
-            } else {
-              items.add(LinkableElement("$innerText ", innerText));
+      if (element is TextElement) {
+        var text = element.text;
+        var hashTag = RegExp(r"#\w+");
+        var matches = hashTag.allMatches(text);
+
+        if (matches.isNotEmpty) {
+          var start = 0;
+          for (var match in matches) {
+            var end = match.start;
+            var hashTag = match.group(0);
+
+            if (start != end) {
+              items.add(TextElement(text.substring(start, end)));
             }
-          } else {
-            items.add(TextElement("$innerText "));
+
+            items.add(LinkableElement(hashTag!, hashTag));
+            start = match.end;
           }
-          index = index + 1;
-        });
+
+          if (start != text.length) {
+            items.add(TextElement(text.substring(start)));
+          }
+        } else {
+          items.add(element);
+        }
       } else {
         items.add(element);
       }

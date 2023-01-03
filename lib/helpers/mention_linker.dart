@@ -4,28 +4,35 @@ class MentionLinker extends Linkifier {
   const MentionLinker();
 
   @override
-  List<LinkifyElement> parse(
-      List<LinkifyElement> elements, LinkifyOptions options) {
+  List<LinkifyElement> parse(elements, options) {
     var items = <LinkifyElement>[];
-    for (var element in elements) {
-      var index = 0;
 
-      if (element.text.contains("@")) {
-        element.text.split(" ").forEach((innerText) {
-          // stdin.readLineSync();
-          if (innerText.contains("@")) {
-            // added space in front of all mention
-            if (index != 0) {
-              items.add(LinkableElement("$innerText ", innerText));
-            } else {
-              items.add(LinkableElement("$innerText ", innerText));
+    for (var element in elements) {
+      if (element is TextElement) {
+        var text = element.text;
+        var mention = RegExp(r"@\w+");
+        var matches = mention.allMatches(text);
+
+        if (matches.isNotEmpty) {
+          var start = 0;
+          for (var match in matches) {
+            var end = match.start;
+            var mention = match.group(0);
+
+            if (start != end) {
+              items.add(TextElement(text.substring(start, end)));
             }
-          } else {
-            items.add(TextElement(" "));
-            items.add(TextElement("$innerText "));
+
+            items.add(LinkableElement(mention!, mention));
+            start = match.end;
           }
-          index = index + 1;
-        });
+
+          if (start != text.length) {
+            items.add(TextElement(text.substring(start)));
+          }
+        } else {
+          items.add(element);
+        }
       } else {
         items.add(element);
       }

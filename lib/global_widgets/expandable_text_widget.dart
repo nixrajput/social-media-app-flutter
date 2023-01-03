@@ -41,7 +41,7 @@ class NxExpandableTextState extends State<NxExpandableText> {
 
     return AnimatedSize(
       duration: const Duration(milliseconds: 300),
-      child: _buildExpandableText(text!.trim()),
+      child: _buildExpandableText(text!),
     );
   }
 
@@ -63,13 +63,11 @@ class NxExpandableTextState extends State<NxExpandableText> {
               AppStyles.style13Normal.copyWith(
                 color: Theme.of(context).textTheme.bodyText1!.color,
                 decoration: TextDecoration.none,
-                height: 1.25,
               ),
           linkStyle: widget.linkStyle ??
               AppStyles.style13Normal.copyWith(
                 color: ColorValues.primaryColor,
                 decoration: TextDecoration.none,
-                height: 1.25,
               ),
           onOpen: (link) async {
             FocusManager.instance.primaryFocus!.unfocus();
