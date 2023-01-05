@@ -20,6 +20,8 @@
             </intent-filter>
         </activity>
 <!-- //no Changes -->
+
+<!-- //no Changes -->
         <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="fullSensor" android:theme="@style/Theme.AppCompat.Light.NoActionBar" tools:ignore="MissingClass" />
 
         <meta-data android:name="flutterEmbedding" android:value="2" />
