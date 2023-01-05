@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
+<!-- //no Changes -->
         <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="fullSensor" android:theme="@style/Theme.AppCompat.Light.NoActionBar" tools:ignore="MissingClass" />
 
         <meta-data android:name="flutterEmbedding" android:value="2" />
