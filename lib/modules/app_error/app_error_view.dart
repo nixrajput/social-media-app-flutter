@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:rive/rive.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class AppErrorView extends StatelessWidget {
@@ -10,6 +12,7 @@ class AppErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var errorMessage = Get.arguments as String? ?? 'An error occurred';
     var lastExitTime = DateTime.now();
     return WillPopScope(
       onWillPop: () async {
@@ -32,26 +35,29 @@ class AppErrorView extends StatelessWidget {
           child: Container(
             width: Dimens.screenWidth,
             height: Dimens.screenHeight,
-            padding: Dimens.edgeInsets16,
+            padding: Dimens.edgeInsetsDefault,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                NxAssetImage(
-                  imgAsset: AssetValues.error,
-                  width: Dimens.screenWidth * 0.5,
-                  height: Dimens.screenWidth * 0.5,
+                SizedBox(
+                  width: Dimens.screenWidth * 0.75,
+                  height: Dimens.screenWidth * 0.75,
+                  child: const RiveAnimation.asset(
+                    RiveAssets.error,
+                    alignment: Alignment.center,
+                  ),
                 ),
                 Dimens.boxHeight16,
                 Text(
-                  'An error occurred',
+                  errorMessage,
                   style: AppStyles.style20Bold,
                   textAlign: TextAlign.center,
                 ),
                 Dimens.boxHeight8,
                 Text(
-                  'Please try again later.',
-                  style: AppStyles.style14Normal,
+                  StringValues.pleaseTryAgainLater,
+                  style: AppStyles.style13Normal,
                   textAlign: TextAlign.center,
                 ),
                 Dimens.boxHeight16,

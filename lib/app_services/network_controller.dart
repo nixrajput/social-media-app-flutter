@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class NetworkController {
@@ -16,7 +15,6 @@ class NetworkController {
 
   StreamSubscription<dynamic>? _streamSubscription;
   final _connectivity = Connectivity();
-  final _socket = SocketApiProvider();
 
   close() {
     _streamSubscription?.cancel();
@@ -41,15 +39,9 @@ class NetworkController {
       if (result == ConnectivityResult.mobile) {
         isConnected = true;
         AppUtility.log('Internet Connection Available');
-        if (!_socket.isConnected) {
-          _socket.init();
-        }
       } else if (result == ConnectivityResult.wifi) {
         isConnected = true;
         AppUtility.log('Internet Connection Available');
-        if (!_socket.isConnected) {
-          _socket.init();
-        }
       } else {
         isConnected = false;
         AppUtility.log('No Internet Connection');

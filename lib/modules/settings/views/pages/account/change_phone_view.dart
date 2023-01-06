@@ -216,6 +216,7 @@ class ChangePhoneView extends StatelessWidget {
                         label: logic.otpSent
                             ? StringValues.save.toUpperCase()
                             : StringValues.next.toUpperCase(),
+                        height: Dimens.fiftySix,
                       ),
                       Dimens.boxHeight16,
                     ],

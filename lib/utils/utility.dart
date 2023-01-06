@@ -3,13 +3,13 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rive/rive.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
-import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:talker/talker.dart';
@@ -98,13 +98,13 @@ abstract class AppUtility {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   NxCircularProgressIndicator(
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                    size: Dimens.fourtyEight,
+                    size: Dimens.thirtyTwo,
+                    strokeWidth: Dimens.four,
                     value: value,
                   ),
                   Dimens.boxHeight12,
                   Text(
-                    message ?? 'Please wait...',
+                    message ?? StringValues.pleaseWait,
                     style: AppStyles.style16Normal.copyWith(
                       color: Theme.of(Get.context!).textTheme.bodyText1!.color,
                     ),
@@ -301,10 +301,13 @@ abstract class AppUtility {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                NxAssetImage(
-                  imgAsset: AssetValues.error,
-                  width: Dimens.hundred * 1.6,
-                  height: Dimens.hundred * 1.6,
+                SizedBox(
+                  width: Dimens.screenWidth * 0.75,
+                  height: Dimens.screenWidth * 0.75,
+                  child: const RiveAnimation.asset(
+                    RiveAssets.error,
+                    alignment: Alignment.center,
+                  ),
                 ),
                 Dimens.boxHeight16,
                 Text(
@@ -349,7 +352,7 @@ abstract class AppUtility {
         ),
       ),
       isScrollControlled: isScrollControlled ?? false,
-      barrierColor: ColorValues.blackColor.withOpacity(0.75),
+      barrierColor: ColorValues.blackColor.withOpacity(0.5),
       backgroundColor: Theme.of(Get.context!).bottomSheetTheme.backgroundColor,
     );
   }
@@ -397,9 +400,9 @@ abstract class AppUtility {
         mainButton: Padding(
           padding: Dimens.edgeInsets0_8,
           child: NxTextButton(
-            label: 'DISMISS',
+            label: StringValues.ok.toUpperCase(),
             labelStyle: AppStyles.style13Bold.copyWith(
-              color: ColorValues.primaryColor,
+              color: ColorValues.linkColor,
             ),
             onTap: closeSnackBar,
           ),

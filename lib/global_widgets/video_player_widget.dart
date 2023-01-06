@@ -4,6 +4,7 @@ import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
+import 'package:social_media_app/global_widgets/custom_colored_box.dart';
 import 'package:social_media_app/global_widgets/custom_video_controls.dart';
 
 class NxVideoPlayerWidget extends StatefulWidget {
@@ -60,7 +61,7 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
             showPlaceholderUntilPlay: true,
             placeholderOnTop: true,
             placeholder: widget.thumbnailUrl == null
-                ? const SizedBox()
+                ? const NxColoredBox()
                 : widget.thumbnailUrl!.startsWith("http") ||
                         widget.thumbnailUrl!.startsWith("https")
                     ? NxNetworkImage(imageUrl: widget.thumbnailUrl!)

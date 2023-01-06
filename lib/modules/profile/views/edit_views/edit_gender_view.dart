@@ -110,6 +110,7 @@ class EditGenderView extends StatelessWidget {
                   NxFilledButton(
                     onTap: logic.updateGender,
                     label: StringValues.save.toUpperCase(),
+                    height: Dimens.fiftySix,
                   ),
 
                   Dimens.boxHeight16,

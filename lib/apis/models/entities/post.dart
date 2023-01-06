@@ -1,10 +1,16 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/poll_option.dart';
 import 'package:social_media_app/apis/models/entities/post_media_file.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
+import 'package:social_media_app/apis/models/responses/common_response.dart';
+import 'package:social_media_app/apis/providers/api_provider.dart';
+import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/hive_type_id.dart';
+import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/utils/utility.dart';
 
 part 'post.g.dart';
 
@@ -162,4 +168,46 @@ class Post {
   @JsonKey(name: 'votedOption')
   @HiveField(28)
   String? votedOption;
+
+  void _toggleLike() {
+    if (isLiked == true) {
+      isLiked = false;
+      likesCount = likesCount! - 1;
+      return;
+    } else {
+      isLiked = true;
+      likesCount = likesCount! + 1;
+      return;
+    }
+  }
+
+  Future<void> like() async {
+    _toggleLike();
+
+    final _apiProvider = ApiProvider(http.Client());
+    final _auth = AuthService.find;
+
+    if (id == null) return;
+
+    try {
+      final response = await _apiProvider.likeUnlikePost(_auth.token, id!);
+
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
+        AppUtility.log(apiResponse.message!);
+      } else {
+        _toggleLike();
+        final decodedData = response.data;
+        final apiResponse = CommonResponse.fromJson(decodedData);
+        AppUtility.showSnackBar(
+          apiResponse.message!,
+          StringValues.error,
+        );
+      }
+    } catch (exc) {
+      _toggleLike();
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+    }
+  }
 }

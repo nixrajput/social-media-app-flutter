@@ -170,6 +170,7 @@ class ResetPasswordView extends StatelessWidget {
                     NxFilledButton(
                       onTap: () => logic.resetPassword(),
                       label: StringValues.resetPassword.toUpperCase(),
+                      height: Dimens.fiftySix,
                     ),
                     Dimens.boxHeight48,
                     Row(

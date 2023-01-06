@@ -165,6 +165,7 @@ class ChangePasswordView extends StatelessWidget {
                       NxFilledButton(
                         onTap: logic.changePassword,
                         label: StringValues.changePassword.toUpperCase(),
+                        height: Dimens.fiftySix,
                       ),
                       Dimens.boxHeight32,
                       Row(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class ServerOfflineView extends StatelessWidget {
@@ -32,15 +32,18 @@ class ServerOfflineView extends StatelessWidget {
           child: Container(
             width: Dimens.screenWidth,
             height: Dimens.screenHeight,
-            padding: Dimens.edgeInsets16,
+            padding: Dimens.edgeInsetsDefault,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                NxAssetImage(
-                  imgAsset: AssetValues.error,
-                  width: Dimens.screenWidth * 0.5,
-                  height: Dimens.screenWidth * 0.5,
+                SizedBox(
+                  width: Dimens.screenWidth * 0.75,
+                  height: Dimens.screenWidth * 0.75,
+                  child: const RiveAnimation.asset(
+                    RiveAssets.error,
+                    alignment: Alignment.center,
+                  ),
                 ),
                 Dimens.boxHeight16,
                 Text(

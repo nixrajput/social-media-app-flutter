@@ -177,7 +177,10 @@ class UserProfileView extends StatelessWidget {
                 }
                 Get.to(() => ImageViewerWidget(url: user.avatar!.url!));
               },
-              child: AvatarWidget(avatar: user.avatar),
+              child: Hero(
+                tag: user.id,
+                child: AvatarWidget(avatar: user.avatar),
+              ),
             ),
             Dimens.boxHeight16,
             Row(
@@ -227,7 +230,7 @@ class UserProfileView extends StatelessWidget {
                       ? Uri.parse(user.website!).host
                       : user.website!,
                   style: AppStyles.style13Bold.copyWith(
-                    color: ColorValues.primaryColor,
+                    color: ColorValues.linkColor,
                   ),
                 ),
               ),
@@ -381,7 +384,7 @@ class UserProfileView extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimens.four),
         border: Border.all(
-          color: Theme.of(context).bottomAppBarColor,
+          color: Theme.of(context).dividerColor,
           width: Dimens.one,
         ),
       ),

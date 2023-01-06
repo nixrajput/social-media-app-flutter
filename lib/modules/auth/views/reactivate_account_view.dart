@@ -156,6 +156,7 @@ class ReactivateAccountView extends StatelessWidget {
                       label: logic.otpSent
                           ? StringValues.reactivateAccount.toUpperCase()
                           : StringValues.sendOtp.toUpperCase(),
+                      height: Dimens.fiftySix,
                     ),
                     Dimens.boxHeight16,
                   ],

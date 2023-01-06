@@ -372,7 +372,7 @@ class ProfileView extends StatelessWidget {
                         ? Uri.parse(logic.profileDetails!.user!.website!).host
                         : logic.profileDetails!.user!.website!,
                     style: AppStyles.style13Bold.copyWith(
-                      color: ColorValues.primaryColor,
+                      color: ColorValues.linkColor,
                     ),
                   ),
                 ),
@@ -425,7 +425,7 @@ class ProfileView extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimens.four),
         border: Border.all(
-          color: Theme.of(context).bottomAppBarColor,
+          color: Theme.of(context).dividerColor,
           width: Dimens.one,
         ),
       ),

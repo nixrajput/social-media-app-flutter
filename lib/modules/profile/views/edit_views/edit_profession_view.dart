@@ -10,6 +10,7 @@ import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profession_controller.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -18,8 +19,7 @@ class EditProfessionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return UnFocusWidget(
       child: Scaffold(
         body: SafeArea(
           child: SizedBox(
@@ -83,6 +83,7 @@ class EditProfessionView extends StatelessWidget {
                     NxFilledButton(
                       onTap: logic.updateProfession,
                       label: StringValues.save.toUpperCase(),
+                      height: Dimens.fiftySix,
                     ),
                     Dimens.boxHeight16,
                   ],

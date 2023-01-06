@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/global_widgets/custom_colored_box.dart';
 
 class CustomControlsWidget extends StatefulWidget {
   final BetterPlayerController? controller;
@@ -145,11 +145,7 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
   Widget build(BuildContext context) {
     if (widget.controller!.isVideoInitialized() == false) {
       return const Positioned.fill(
-        child: Center(
-          child: NxCircularProgressIndicator(
-            color: ColorValues.whiteColor,
-          ),
-        ),
+        child: NxColoredBox(),
       );
     }
     return Positioned.fill(

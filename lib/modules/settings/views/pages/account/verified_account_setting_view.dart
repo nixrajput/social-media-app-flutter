@@ -125,6 +125,7 @@ class VerifiedAccountSettingView extends StatelessWidget {
 
             NxFilledButton(
               label: StringValues.apply.toUpperCase(),
+              height: Dimens.fiftySix,
               onTap: () {
                 RouteManagement.goToBack();
                 RouteManagement.goToBlueTickVerificationView();

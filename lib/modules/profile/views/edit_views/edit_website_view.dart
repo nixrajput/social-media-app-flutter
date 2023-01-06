@@ -77,6 +77,7 @@ class EditWebsiteView extends StatelessWidget {
                     NxFilledButton(
                       onTap: logic.updateWebsite,
                       label: StringValues.save.toUpperCase(),
+                      height: Dimens.fiftySix,
                     ),
                     Dimens.boxHeight16,
                   ],

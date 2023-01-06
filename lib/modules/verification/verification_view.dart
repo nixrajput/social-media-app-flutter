@@ -644,6 +644,7 @@ class VerificationView extends StatelessWidget {
     return NxFilledButton(
       onTap: () => logic.changePassword(),
       label: StringValues.send.toUpperCase(),
+      height: Dimens.fiftySix,
     );
   }
 

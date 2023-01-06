@@ -178,6 +178,7 @@ class DeactivateAccountView extends StatelessWidget {
                           NxFilledButton(
                             onTap: logic.deactivateAccount,
                             label: StringValues.next.toUpperCase(),
+                            height: Dimens.fiftySix,
                           ),
                         ],
                       ),

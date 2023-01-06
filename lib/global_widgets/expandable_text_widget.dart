@@ -66,7 +66,7 @@ class NxExpandableTextState extends State<NxExpandableText> {
               ),
           linkStyle: widget.linkStyle ??
               AppStyles.style13Normal.copyWith(
-                color: ColorValues.primaryColor,
+                color: ColorValues.linkColor,
                 decoration: TextDecoration.none,
               ),
           onOpen: (link) async {

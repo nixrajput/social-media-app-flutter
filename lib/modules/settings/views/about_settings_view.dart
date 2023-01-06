@@ -159,7 +159,7 @@ class AboutSettingsView extends StatelessWidget {
                   StringValues.developerName,
                   textAlign: TextAlign.center,
                   style: AppStyles.style14Bold.copyWith(
-                    color: ColorValues.primaryColor,
+                    color: ColorValues.linkColor,
                   ),
                 ),
               ),

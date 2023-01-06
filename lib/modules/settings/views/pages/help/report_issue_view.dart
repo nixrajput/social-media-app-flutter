@@ -133,6 +133,7 @@ class ReportIssueView extends StatelessWidget {
                 NxFilledButton(
                   onTap: logic.sendIssueReportOtp,
                   label: StringValues.next.toUpperCase(),
+                  height: Dimens.fiftySix,
                 ),
                 Dimens.boxHeight16,
               ],

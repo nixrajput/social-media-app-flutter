@@ -94,6 +94,7 @@ class EditUsernameView extends StatelessWidget {
                     NxFilledButton(
                       onTap: logic.updateUsername,
                       label: StringValues.save.toUpperCase(),
+                      height: Dimens.fiftySix,
                     ),
                     Dimens.boxHeight16,
                   ],

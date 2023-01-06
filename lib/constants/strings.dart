@@ -4,6 +4,8 @@ abstract class StringValues {
   static const to = 'to';
   static const hello = 'Hello';
   static const register = 'Register';
+  static const registerUsingEmail = 'Register Using Email';
+  static const registerUsingPhone = 'Register Using Phone';
   static const login = 'Login';
   static const logout = 'Logout';
   static const loginToAccount = 'Login To Account';
@@ -46,6 +48,8 @@ abstract class StringValues {
   static const light = 'Light';
   static const dark = 'Dark';
   static const okay = 'Okay';
+  static const cancel = 'Cancel';
+  static const ok = 'Ok';
   static const info = 'info';
   static const success = 'success';
   static const warning = 'warning';
@@ -53,7 +57,6 @@ abstract class StringValues {
   static const none = 'none';
   static const message = 'message';
   static const title = 'title';
-  static const cancel = 'cancel';
   static const messages = 'Messages';
   static const connections = 'Connections';
   static const enterFirstName = 'Enter your first name';
@@ -582,4 +585,7 @@ abstract class StringValues {
   ];
   static const agreeToPrivacyAndTerms1 = 'By registering, you agree to the ';
   static const and = 'and';
+  static const pleaseTryAgain = 'Please try again';
+  static const pleaseTryAgainLater = 'Please try again later';
+  static const pleaseWait = 'Please wait...';
 }

@@ -196,6 +196,7 @@ class VerifyOtpView extends StatelessWidget {
   NxFilledButton _buildVerifyOtpBtn(VerifyOtpController logic) {
     return NxFilledButton(
       width: Dimens.screenWidth,
+      height: Dimens.fiftySix,
       label: StringValues.verify.toUpperCase(),
       onTap: () => logic.isEmailVerification
           ? logic.verifyOtpFromEmail()

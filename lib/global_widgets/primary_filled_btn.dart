@@ -5,9 +5,9 @@ import 'package:social_media_app/constants/styles.dart';
 class NxFilledButton extends StatelessWidget {
   const NxFilledButton({
     Key? key,
+    required this.label,
     this.bgColor,
     this.borderRadius,
-    required this.label,
     this.prefix,
     this.suffix,
     this.labelColor,
@@ -38,7 +38,7 @@ class NxFilledButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
-        height: height ?? Dimens.fiftySix,
+        height: height,
         padding: padding,
         constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
         decoration: BoxDecoration(

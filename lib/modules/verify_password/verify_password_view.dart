@@ -90,6 +90,7 @@ class VerifyPasswordView extends StatelessWidget {
                       NxFilledButton(
                         onTap: () => logic.verifyPassword(),
                         label: StringValues.next.toUpperCase(),
+                        height: Dimens.fiftySix,
                       ),
                       Dimens.boxHeight16,
                     ],

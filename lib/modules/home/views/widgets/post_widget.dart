@@ -12,7 +12,6 @@ import 'package:social_media_app/extensions/date_extensions.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
-import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
@@ -42,9 +41,16 @@ class PostWidget extends StatelessWidget {
     assert(controller is PostDetailsController ||
         controller is PostController ||
         controller is TrendingPostController);
-    return NxElevatedCard(
+    return Container(
       margin: Dimens.edgeInsets8_0,
-      borderRadius: Dimens.four,
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(Dimens.four),
+        border: Border.all(
+          color: Theme.of(context).dividerColor,
+          width: Dimens.one,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -240,29 +246,42 @@ class PostWidget extends StatelessWidget {
               .toList(),
         ),
         Dimens.boxHeight4,
-        Padding(
-          padding: Dimens.edgeInsets0_8,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '${post.totalVotes!.toString().toCountingFormat()} votes',
-                style: AppStyles.style12Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+        Flexible(
+          child: Padding(
+            padding: Dimens.edgeInsets0_8,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '${post.totalVotes!.toString().toCountingFormat()} votes',
+                  style: AppStyles.style12Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
                 ),
-              ),
-              Dimens.boxHeight4,
-              Text(
-                '${post.pollEndsAt!.getPollDurationLeft()}',
-                style: AppStyles.style12Normal.copyWith(
-                  color: isExpired
-                      ? Theme.of(context).textTheme.subtitle1!.color
-                      : ColorValues.primaryColor,
+                Dimens.boxWidth4,
+                Container(
+                  width: Dimens.four,
+                  height: Dimens.four,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).disabledColor,
+                    shape: BoxShape.circle,
+                  ),
                 ),
-              ),
-            ],
+                Dimens.boxWidth4,
+                Flexible(
+                  child: Text(
+                    '${post.pollEndsAt!.getPollDurationLeft()}',
+                    style: AppStyles.style12Normal.copyWith(
+                      color: isExpired
+                          ? Theme.of(context).textTheme.subtitle1!.color
+                          : ColorValues.linkColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -433,7 +452,6 @@ class PostWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Dimens.boxHeight8,
           ],
         ),
       );

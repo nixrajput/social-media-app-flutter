@@ -41,34 +41,20 @@ import 'package:social_media_app/translations/app_translations.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 void main() async {
-  try {
-    WidgetsFlutterBinding.ensureInitialized();
-    await _initPreAppServices();
-    final networkService = NetworkController.instance;
-    await networkService.init();
-    await initializeFirebaseService();
-    runApp(const MyApp());
-    if (networkService.isConnected == true) {
-      await validateSessionAndGetData();
-      await AppUpdateController.find.init();
-    }
-    // await Workmanager().cancelAll();
-    // await Workmanager().initialize(
-    //   callbackDispatcher,
-    //   isInDebugMode: true,
-    // );
-    // await Workmanager().registerPeriodicTask(
-    //   backgroundMessageTask,
-    //   backgroundMessageTask,
-    //   initialDelay: const Duration(seconds: 10),
-    //   frequency: const Duration(minutes: 15),
-    //   constraints: Constraints(
-    //     networkType: NetworkType.connected,
-    //   ),
-    // );
-  } catch (err) {
-    AppUtility.log('Error in main: $err', tag: 'error');
-    RouteService.set(RouteStatus.error);
+  WidgetsFlutterBinding.ensureInitialized();
+  await _initPreAppServices();
+  final networkService = NetworkController.instance;
+  await networkService.init();
+  await initializeFirebaseService();
+  runApp(const MyApp());
+  await _initPostAppServices();
+}
+
+Future<void> _initPostAppServices() async {
+  final networkService = NetworkController.instance;
+  if (networkService.isConnected == true) {
+    await validateSessionAndGetData();
+    await AppUpdateController.find.init();
   }
 }
 

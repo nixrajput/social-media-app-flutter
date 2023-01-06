@@ -114,6 +114,7 @@ class SendOtpToEmailView extends StatelessWidget {
       width: Dimens.screenWidth,
       onTap: () => logic.sendOtpToEmail(),
       label: StringValues.sendOtp.toUpperCase(),
+      height: Dimens.fiftySix,
     );
   }
 }

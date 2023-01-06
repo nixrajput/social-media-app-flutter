@@ -72,6 +72,7 @@ class SendSuggestionsView extends StatelessWidget {
                 NxFilledButton(
                   onTap: logic.sendSuggestionsEmail,
                   label: StringValues.next.toUpperCase(),
+                  height: Dimens.fiftySix,
                 ),
                 Dimens.boxHeight16,
               ],

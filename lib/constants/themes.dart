@@ -8,18 +8,18 @@ abstract class AppThemes {
     colorScheme: const ColorScheme.light().copyWith(
       primary: ColorValues.primarySwatch,
     ),
-    iconTheme: const IconThemeData(color: ColorValues.darkGrayColor),
+    iconTheme: const IconThemeData(color: ColorValues.lightGrayColor),
     scaffoldBackgroundColor: ColorValues.lightBgColor,
     appBarTheme: const AppBarTheme(backgroundColor: ColorValues.lightBgColor),
     bottomAppBarColor: ColorValues.lightDialogColor,
     shadowColor: ColorValues.lightShadowColor.withOpacity(0.1),
-    cardTheme: const CardTheme(color: ColorValues.lightDialogColor),
+    cardTheme: const CardTheme(color: ColorValues.lightBgColor),
     dialogTheme:
         const DialogTheme(backgroundColor: ColorValues.lightDialogColor),
     dialogBackgroundColor: ColorValues.lightDialogColor,
     errorColor: ColorValues.errorColor,
     bottomSheetTheme: const BottomSheetThemeData().copyWith(
-      backgroundColor: ColorValues.lightBgColor,
+      backgroundColor: ColorValues.lightDialogColor,
     ),
     dividerColor: ColorValues.lightDividerColor,
     snackBarTheme: SnackBarThemeData(
@@ -27,6 +27,7 @@ abstract class AppThemes {
       contentTextStyle: AppStyles.style14Normal.copyWith(
         color: ColorValues.darkBodyTextColor,
       ),
+      actionTextColor: ColorValues.primaryColor,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: const ButtonStyle().copyWith(
@@ -81,6 +82,7 @@ abstract class AppThemes {
       contentTextStyle: TextStyle(
         color: ColorValues.lightBodyTextColor,
       ),
+      actionTextColor: ColorValues.primaryColor,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: const ButtonStyle().copyWith(

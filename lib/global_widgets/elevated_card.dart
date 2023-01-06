@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 
 class NxElevatedCard extends StatelessWidget {
@@ -28,8 +29,8 @@ class NxElevatedCard extends StatelessWidget {
       elevation: elevation ?? Dimens.zero,
       color: bgColor ?? Theme.of(context).cardTheme.color,
       shadowColor: shadowColor ?? Theme.of(context).cardTheme.shadowColor,
+      surfaceTintColor: ColorValues.transparent,
       borderOnForeground: false,
-      clipBehavior: Clip.none,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius ?? Dimens.four),
       ),

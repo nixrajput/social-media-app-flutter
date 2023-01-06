@@ -17,31 +17,31 @@ abstract class ColorValues {
     },
   );
 
-  static const Color primaryColor = Color(0xFF2878F0);
-  static const Color primaryLightColor = Color.fromARGB(255, 130, 170, 240);
+  static const Color primaryColor = Color.fromARGB(255, 238, 113, 30);
+  static const Color primaryLightColor = Color.fromARGB(255, 235, 146, 87);
 
-  static const Color linkColor = Color(0xFF2878F0);
+  static const Color linkColor = Color.fromARGB(255, 56, 130, 240);
 
   static const Color lightChatBubbleColor = Color.fromARGB(255, 242, 242, 242);
   static const Color darkChatBubbleColor = Color.fromARGB(255, 18, 66, 148);
 
-  static const Color successColor = Color(0xFF4CAF50);
-  static const Color errorColor = Color(0xFFF44336);
-  static const Color warningColor = Color(0xFFF09C00);
+  static const Color successColor = Color.fromARGB(255, 76, 175, 80);
+  static const Color errorColor = Color.fromARGB(255, 244, 67, 54);
+  static const Color warningColor = Color.fromARGB(255, 240, 156, 0);
 
-  static const Color whiteColor = Color(0xFFFFFFFF);
-  static const Color blackColor = Color(0xFF000000);
+  static const Color whiteColor = Color.fromARGB(255, 255, 255, 255);
+  static const Color blackColor = Color.fromARGB(255, 0, 0, 0);
   static const Color transparent = Color(0x00000000);
 
-  static const Color grayColor = Color(0xFFb4b4b4);
-  static const Color darkGrayColor = Color(0xff787878);
-  static const Color darkerGrayColor = Color(0xff505050);
-  static const Color lightGrayColor = Color(0xffd2d2d2);
+  static const Color grayColor = Color.fromARGB(255, 180, 180, 180);
+  static const Color darkGrayColor = Color.fromARGB(255, 120, 120, 120);
+  static const Color darkerGrayColor = Color.fromARGB(255, 80, 80, 80);
+  static const Color lightGrayColor = Color.fromARGB(255, 210, 210, 210);
 
-  static const Color darkDividerColor = Color(0xff707070);
-  static const Color lightDividerColor = Color.fromARGB(255, 192, 192, 192);
+  static const Color darkDividerColor = Color.fromARGB(255, 60, 60, 60);
+  static const Color lightDividerColor = Color.fromARGB(255, 220, 220, 220);
 
-  static const Color lightBodyTextColor = Color(0xFF282828);
+  static const Color lightBodyTextColor = Color.fromARGB(255, 40, 40, 40);
   static const Color lightSubtitleTextColor = Color.fromARGB(255, 92, 92, 92);
   static const Color lightSubtitle2TextColor =
       Color.fromARGB(255, 141, 141, 141);
@@ -56,7 +56,7 @@ abstract class ColorValues {
   static const Color darkDialogColor = Color.fromARGB(255, 40, 40, 50);
 
   static const Color lightShadowColor = Color.fromARGB(255, 0, 0, 0);
-  static const Color darkShadowColor = Color.fromARGB(255, 150, 150, 150);
+  static const Color darkShadowColor = Color.fromARGB(255, 50, 50, 50);
 
   static const primaryGrad = LinearGradient(
     colors: [primaryColor, primaryLightColor],

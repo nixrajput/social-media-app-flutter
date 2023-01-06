@@ -150,6 +150,7 @@ class SendOtpToPhoneView extends StatelessWidget {
       width: Dimens.screenWidth,
       onTap: () => logic.sendOtpToPhone(),
       label: StringValues.sendOtp.toUpperCase(),
+      height: Dimens.fiftySix,
     );
   }
 

@@ -4,17 +4,17 @@ Rippl is a social media app that allows users to share their photos and videos
 with other users. Users can also follow other users and like and comment on
 their posts.
 
-[![Downloads](https://img.shields.io/github/downloads/nixrajput/social-media-app-flutter/total?style=flat-square&label=Downloads)][releases]
-[![Stars](https://img.shields.io/github/stars/nixrajput/social-media-app-flutter?style=flat-square)][repo]
-[![Forks](https://img.shields.io/github/forks/nixrajput/social-media-app-flutter?style=flat-square)][repo]
-[![Watchers](https://img.shields.io/github/watchers/nixrajput/social-media-app-flutter?style=flat-square)][repo]
-[![Contributors](https://img.shields.io/github/contributors/nixrajput/social-media-app-flutter?style=flat-square)][repo]
+[![Downloads](https://img.shields.io/github/downloads/nixrajput/social-media-app-flutter/total?label=Downloads)][releases]
+[![Stars](https://img.shields.io/github/stars/nixrajput/social-media-app-flutter?label=Stars)][repo]
+[![Forks](https://img.shields.io/github/forks/nixrajput/social-media-app-flutter?label=Forks)][repo]
+[![Watchers](https://img.shields.io/github/watchers/nixrajput/social-media-app-flutter?label=Watchers)][repo]
+[![Contributors](https://img.shields.io/github/contributors/nixrajput/social-media-app-flutter?label=Contributors)][repo]
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/social-media-app-flutter?style=flat-square)][releases]
-[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/social-media-app-flutter?style=flat-square)][repo]
-[![GitHub issues](https://img.shields.io/github/issues/nixrajput/social-media-app-flutter?style=flat-square)][issues]
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-app-flutter?style=flat-square)][pulls]
-[![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-app-flutter?style=flat-square)][license]
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/nixrajput/social-media-app-flutter?label=Latest)][releases]
+[![GitHub last commit](https://img.shields.io/github/last-commit/nixrajput/social-media-app-flutter?label=Last+Commit)][repo]
+[![GitHub issues](https://img.shields.io/github/issues/nixrajput/social-media-app-flutter?label=Issues)][issues]
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-app-flutter?label=Pull+Requests)][pulls]
+[![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-app-flutter?label=Licence)][license]
 
 - This project is powered by [NixLab Technologies][website].
 

@@ -78,6 +78,7 @@ class EditAboutView extends StatelessWidget {
                     NxFilledButton(
                       onTap: logic.updateAbout,
                       label: StringValues.save.toUpperCase(),
+                      height: Dimens.fiftySix,
                     ),
                     Dimens.boxHeight16,
                   ],

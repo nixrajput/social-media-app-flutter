@@ -33,7 +33,7 @@ class NxTextButton extends StatelessWidget {
           style: labelStyle ??
               AppStyles.style16Bold.copyWith(
                 color: enabled == true
-                    ? ColorValues.primaryLightColor
+                    ? ColorValues.linkColor
                     : ColorValues.grayColor,
               ),
         ),

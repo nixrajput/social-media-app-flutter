@@ -124,6 +124,7 @@ class LoginView extends StatelessWidget {
                     NxFilledButton(
                       onTap: () => logic.login(),
                       label: StringValues.login.toUpperCase(),
+                      height: Dimens.fiftySix,
                     ),
                     Dimens.boxHeight48,
                     Row(

@@ -25,7 +25,7 @@ class PollOptionWidget extends StatelessWidget {
   Color _buildPollColor(Post post, bool isExpired, PollOption option,
       String greatestPercentageId, BuildContext context) {
     if (isExpired && option.id == greatestPercentageId) {
-      return ColorValues.primaryColor.withOpacity(0.5);
+      return ColorValues.linkColor.withOpacity(0.75);
     } else if (post.isVoted == true) {
       return Theme.of(context).dividerColor;
     }
@@ -39,7 +39,7 @@ class PollOptionWidget extends StatelessWidget {
       return Theme.of(context).dividerColor;
     }
 
-    return ColorValues.primaryColor;
+    return ColorValues.linkColor;
   }
 
   @override
@@ -84,7 +84,7 @@ class PollOptionWidget extends StatelessWidget {
                       Flexible(
                         child: Text(
                           option.option!,
-                          style: AppStyles.style14Normal.copyWith(
+                          style: AppStyles.style13Normal.copyWith(
                             color: post.isVoted == false
                                 ? ColorValues.primaryColor
                                 : Theme.of(context).textTheme.bodyText1!.color,
@@ -106,7 +106,7 @@ class PollOptionWidget extends StatelessWidget {
                 if (isExpired || post.isVoted == true)
                   Text(
                     '${(percentage * 100).toStringAsFixed(0)}%',
-                    style: AppStyles.style14Normal.copyWith(
+                    style: AppStyles.style13Normal.copyWith(
                       color: Theme.of(context).textTheme.bodyText1!.color,
                     ),
                   ),

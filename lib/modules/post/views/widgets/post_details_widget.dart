@@ -12,7 +12,6 @@ import 'package:social_media_app/extensions/date_extensions.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
-import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
@@ -40,9 +39,16 @@ class PostDetailsWidget extends StatelessWidget {
     assert(controller is PostDetailsController ||
         controller is PostController ||
         controller is TrendingPostController);
-    return NxElevatedCard(
+    return Container(
       margin: Dimens.edgeInsets8_0,
-      borderRadius: Dimens.four,
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(Dimens.four),
+        border: Border.all(
+          color: Theme.of(context).dividerColor,
+          width: Dimens.one,
+        ),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -241,7 +247,7 @@ class PostDetailsWidget extends StatelessWidget {
                 style: AppStyles.style12Normal.copyWith(
                   color: isExpired
                       ? Theme.of(context).textTheme.subtitle1!.color
-                      : ColorValues.primaryColor,
+                      : ColorValues.linkColor,
                 ),
               ),
             ],
@@ -434,7 +440,6 @@ class PostDetailsWidget extends StatelessWidget {
               ],
             ),
           ),
-          Dimens.boxHeight8,
         ],
       );
 

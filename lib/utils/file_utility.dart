@@ -38,7 +38,7 @@ abstract class FileUtility {
       var thumbFile = await VideoCompress.getFileThumbnail(
         path,
         quality: 60,
-        position: 500,
+        position: 100,
       );
 
       return thumbFile;

@@ -84,6 +84,7 @@ class EditDOBView extends StatelessWidget {
                     NxFilledButton(
                       onTap: logic.updateDOB,
                       label: StringValues.save.toUpperCase(),
+                      height: Dimens.fiftySix,
                     ),
                     Dimens.boxHeight16,
                   ],
