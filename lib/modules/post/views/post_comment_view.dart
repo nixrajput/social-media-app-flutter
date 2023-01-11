@@ -94,6 +94,7 @@ class PostCommentView extends StatelessWidget {
               ),
             ),
           ),
+          Dimens.divider,
         ],
       ),
     );

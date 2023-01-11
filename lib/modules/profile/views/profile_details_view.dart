@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/data.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -384,7 +385,9 @@ class ProfileDetailsView extends StatelessWidget {
         children: [
           /// View Profile Picture
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.image_outlined,
               size: Dimens.twentyFour,
@@ -406,7 +409,9 @@ class ProfileDetailsView extends StatelessWidget {
 
           /// Change Profile Picture
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.camera_alt_outlined,
               size: Dimens.twentyFour,
@@ -424,7 +429,9 @@ class ProfileDetailsView extends StatelessWidget {
 
           /// Remove Profile Picture
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.delete_outline,
               size: Dimens.twentyFour,

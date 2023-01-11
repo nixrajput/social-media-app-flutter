@@ -70,7 +70,7 @@ class P2PChatView extends StatelessWidget {
                         _buildBody(context, logic),
                       ],
                     ),
-                    _buildMessageTypingContainer(logic),
+                    _buildMessageTypingContainer(logic, context),
                     if (logic.scrolledToBottom == false)
                       _buildScrollToLast(logic, context),
                   ],
@@ -83,7 +83,8 @@ class P2PChatView extends StatelessWidget {
     );
   }
 
-  Positioned _buildMessageTypingContainer(P2PChatController logic) {
+  Positioned _buildMessageTypingContainer(
+      P2PChatController logic, BuildContext context) {
     return Positioned(
       bottom: Dimens.zero,
       left: Dimens.zero,
@@ -94,7 +95,9 @@ class P2PChatView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (logic.replyTo.id != null) _buildReplyTo(logic),
-          _buildMessageTypingBox(logic),
+          Dimens.divider,
+          _buildMessageTypingBox(logic, context),
+          Dimens.divider,
         ],
       ),
     );
@@ -108,11 +111,6 @@ class P2PChatView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AvatarWidget(
-              avatar: logic.user!.avatar,
-              size: Dimens.eighteen,
-            ),
-            Dimens.boxWidth8,
             GetBuilder<ChatController>(builder: (con) {
               final isUserOnline = con.isUserOnline(logic.user!.id);
               return Column(
@@ -137,10 +135,23 @@ class P2PChatView extends StatelessWidget {
               );
             }),
             const Spacer(),
-            const NxIconButton(
-              icon: Icons.info,
-              iconColor: ColorValues.primaryColor,
+            GestureDetector(
               onTap: RouteManagement.goToChatSettingsView,
+              child: Container(
+                padding: Dimens.edgeInsets6,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).bottomAppBarColor,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Theme.of(context).dividerColor,
+                  ),
+                ),
+                child: Icon(
+                  Icons.more_vert_outlined,
+                  size: Dimens.twenty,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
+                ),
+              ),
             ),
           ],
         ),
@@ -148,9 +159,10 @@ class P2PChatView extends StatelessWidget {
     );
   }
 
-  Container _buildMessageTypingBox(P2PChatController logic) {
+  Container _buildMessageTypingBox(
+      P2PChatController logic, BuildContext context) {
     return Container(
-      color: Theme.of(Get.context!).dialogTheme.backgroundColor,
+      color: Theme.of(context).bottomAppBarColor,
       width: Dimens.screenWidth,
       height: Dimens.fourtyEight,
       padding: Dimens.edgeInsets0_12,
@@ -179,23 +191,27 @@ class P2PChatView extends StatelessWidget {
           ),
           Dimens.boxWidth8,
           if (logic.message.isNotEmpty)
-            NxIconButton(
-              icon: Icons.send,
-              iconColor: ColorValues.primaryColor,
-              iconSize: Dimens.twentyFour,
+            GestureDetector(
               onTap: logic.sendMessage,
+              child: Container(
+                padding: Dimens.edgeInsets6,
+                decoration: const BoxDecoration(
+                  color: ColorValues.primaryColor,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  size: Dimens.twenty,
+                  color: Theme.of(context).textTheme.bodyText1!.color,
+                ),
+              ),
             )
           else
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                NxIconButton(
-                  icon: Icons.attach_file,
-                  iconSize: Dimens.twentyFour,
-                  iconColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
-                  onTap: () => _showAttachmentOptions(logic),
-                )
-              ],
+            NxIconButton(
+              icon: Icons.add_outlined,
+              iconSize: Dimens.twentyFour,
+              iconColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              onTap: () => _showAttachmentOptions(logic),
             ),
         ],
       ),
@@ -212,14 +228,9 @@ class P2PChatView extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).bottomAppBarColor,
           shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(Get.context!).shadowColor,
-              offset: Offset(Dimens.zero, Dimens.two),
-              blurRadius: Dimens.four,
-              spreadRadius: Dimens.two,
-            ),
-          ],
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+          ),
         ),
         child: NxIconButton(
           icon: Icons.arrow_downward,
@@ -297,17 +308,15 @@ class P2PChatView extends StatelessWidget {
                     logic.messageData!.hasNextPage!)
                   Center(
                     child: NxTextButton(
-                      label: 'Load older messages',
+                      label: StringValues.loadMore,
                       onTap: () => logic.loadMore(),
                       labelStyle: AppStyles.style14Bold.copyWith(
-                        color: ColorValues.primaryLightColor,
+                        color: ColorValues.linkColor,
                       ),
                       padding: Dimens.edgeInsets8_0,
                     ),
                   ),
                 _buildChatMessages(logic.chatMessages, logic),
-                if (logic.chatController.isUserTyping(logic.user!.id))
-                  Dimens.boxHeight8,
                 if (logic.chatController.isUserTyping(logic.user!.id))
                   _buildTypingBubble(logic, logic.chatController),
               ],
@@ -321,36 +330,45 @@ class P2PChatView extends StatelessWidget {
     );
   }
 
-  Row _buildTypingBubble(P2PChatController logic, ChatController chatsLogic) {
-    return Row(
+  Widget _buildTypingBubble(
+      P2PChatController logic, ChatController chatsLogic) {
+    return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AvatarWidget(
-          avatar: logic.user!.avatar,
-          size: Dimens.sixTeen,
+        Dimens.boxHeight8,
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            AvatarWidget(
+              avatar: logic.user!.avatar,
+              size: Dimens.sixTeen,
+            ),
+            PhysicalShape(
+              elevation: Dimens.zero,
+              clipper: ChatBubbleClipper(
+                radius: Dimens.sixTeen,
+                nipSize: Dimens.six,
+                type: BubbleType.receiverBubble,
+              ),
+              color: Theme.of(Get.context!).dialogBackgroundColor,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: Dimens.eight,
+                  bottom: Dimens.sixTeen,
+                  left: Dimens.sixTeen,
+                  right: Dimens.eight,
+                ),
+                child: TypingIndicator(
+                  showIndicator: chatsLogic.isUserTyping(logic.user!.id),
+                ),
+              ),
+            )
+          ],
         ),
-        PhysicalShape(
-          elevation: Dimens.zero,
-          clipper: ChatBubbleClipper(
-            radius: Dimens.sixTeen,
-            nipSize: Dimens.six,
-            type: BubbleType.receiverBubble,
-          ),
-          color: Theme.of(Get.context!).dialogBackgroundColor,
-          child: Padding(
-            padding: EdgeInsets.only(
-              top: Dimens.eight,
-              bottom: Dimens.sixTeen,
-              left: Dimens.sixTeen,
-              right: Dimens.eight,
-            ),
-            child: TypingIndicator(
-              showIndicator: chatsLogic.isUserTyping(logic.user!.id),
-            ),
-          ),
-        )
       ],
     );
   }

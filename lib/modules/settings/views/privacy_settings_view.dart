@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -44,7 +43,9 @@ class PrivacySettingsView extends StatelessWidget {
             parent: AlwaysScrollableScrollPhysics(),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Dimens.boxHeight8,
 
@@ -59,12 +60,18 @@ class PrivacySettingsView extends StatelessWidget {
                     style: AppStyles.style14Bold,
                   ),
                   subtitle: Text(
+                    StringValues.accountPrivacyDesc,
+                    style: AppStyles.style13Normal.copyWith(
+                      color: Theme.of(context).textTheme.subtitle1!.color,
+                    ),
+                  ),
+                  trailing: Text(
                     logic.profileDetails!.user!.isPrivate
                         ? StringValues.on
                         : StringValues.off,
-                    style: AppStyles.style13Normal.copyWith(
+                    style: AppStyles.style13Bold.copyWith(
                       color: logic.profileDetails!.user!.isPrivate
-                          ? ColorValues.primaryColor
+                          ? Theme.of(context).colorScheme.primary
                           : Theme.of(context).textTheme.subtitle1!.color,
                     ),
                   ),
@@ -86,13 +93,20 @@ class PrivacySettingsView extends StatelessWidget {
                       style: AppStyles.style14Bold,
                     ),
                     subtitle: Text(
+                      StringValues.onlineStatusDesc,
+                      style: AppStyles.style13Normal.copyWith(
+                        color: Theme.of(context).textTheme.subtitle1!.color,
+                      ),
+                    ),
+                    trailing: Text(
                       logic.profileDetails!.user!.showOnlineStatus == true
                           ? StringValues.on
                           : StringValues.off,
-                      style: AppStyles.style13Normal.copyWith(
-                        color: logic.profileDetails!.user!.isPrivate
-                            ? ColorValues.primaryColor
-                            : Theme.of(context).textTheme.subtitle1!.color,
+                      style: AppStyles.style13Bold.copyWith(
+                        color:
+                            logic.profileDetails!.user!.showOnlineStatus == true
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).textTheme.subtitle1!.color,
                       ),
                     ),
                     onTap: RouteManagement.goToChangeOnlineStatusView,

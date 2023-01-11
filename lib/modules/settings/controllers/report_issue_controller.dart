@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/extensions/file_extensions.dart';
@@ -39,15 +38,15 @@ class ReportIssueController extends GetxController {
       }
     }
 
-    final email = Email(
-      body: message,
-      subject: 'Report Issue - Rippl!',
-      recipients: ['nixlab.in@gmail.com'],
-      attachmentPaths: [...filePaths],
-      isHTML: false,
-    );
+    // final email = Email(
+    //   body: message,
+    //   subject: 'Report Issue - Rippl!',
+    //   recipients: ['nixlab.in@gmail.com'],
+    //   attachmentPaths: [...filePaths],
+    //   isHTML: false,
+    // );
 
-    await FlutterEmailSender.send(email);
+    // await FlutterEmailSender.send(email);
   }
 
   void selectMultipleFiles() async {

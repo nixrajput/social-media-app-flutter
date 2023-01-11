@@ -84,7 +84,6 @@ class SocketApiProvider {
           AppUtility.log("Socket done");
           reconnect(_authService.token);
         },
-        cancelOnError: true,
       );
     } catch (e) {
       AppUtility.log("Socket connection error: $e", tag: 'error');

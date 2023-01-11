@@ -8,6 +8,15 @@ abstract class Dimens {
   static double screenHeight = Get.mediaQuery.size.height;
   static double screenWidth = Get.mediaQuery.size.width;
 
+  static double pointOne = 0.1.r;
+  static double pointTwo = 0.2.r;
+  static double pointThree = 0.3.r;
+  static double pointFour = 0.4.r;
+  static double pointFive = 0.5.r;
+  static double pointSix = 0.6.r;
+  static double pointSeven = 0.7.r;
+  static double pointEight = 0.8.r;
+  static double pointNine = 0.9.r;
   static double sixTeen = 16.r;
   static double nineteen = 19.r;
   static double eleven = 11.r;
@@ -28,7 +37,6 @@ abstract class Dimens {
   static double twentyFive = 25.r;
   static double thirty = 30.r;
   static double eighty = 80.r;
-  static double pointFive = 0.5.r;
   static double twentySix = 26.r;
   static double sixtyFour = 64.r;
   static double twenty = 20.r;
@@ -94,6 +102,16 @@ abstract class Dimens {
     horizontal: four,
   );
 
+  static EdgeInsets edgeInsets6_0 = EdgeInsets.symmetric(
+    vertical: six,
+    horizontal: zero,
+  );
+
+  static EdgeInsets edgeInsets0_6 = EdgeInsets.symmetric(
+    vertical: zero,
+    horizontal: six,
+  );
+
   static EdgeInsets edgeInsets8_0 = EdgeInsets.symmetric(
     vertical: eight,
     horizontal: zero,
@@ -127,6 +145,16 @@ abstract class Dimens {
   static EdgeInsets edgeInsets8_16 = EdgeInsets.symmetric(
     vertical: eight,
     horizontal: sixTeen,
+  );
+
+  static EdgeInsets edgeInsets6_8 = EdgeInsets.symmetric(
+    vertical: six,
+    horizontal: eight,
+  );
+
+  static EdgeInsets edgeInsets8_6 = EdgeInsets.symmetric(
+    vertical: eight,
+    horizontal: six,
   );
 
   static EdgeInsets edgeInsets6_12 = EdgeInsets.symmetric(
@@ -300,14 +328,17 @@ abstract class Dimens {
 
   static SizedBox shrinkedBox = const SizedBox.shrink();
 
-  static SizedBox boxHeight(double height) => SizedBox(height: height);
+  static SizedBox heightedBox(double height) => SizedBox(height: height);
 
-  static SizedBox boxWidth(double width) => SizedBox(width: width);
+  static SizedBox widthedBox(double width) => SizedBox(width: width);
 
-  static Divider divider = const Divider(height: 0.0, thickness: 0.4);
+  static Divider divider = Divider(
+    height: Dimens.zero,
+    thickness: Dimens.pointEight,
+  );
 
   static Divider dividerWithHeight = Divider(
-    thickness: 0.5,
+    thickness: Dimens.pointEight,
     height: Dimens.one,
   );
 }

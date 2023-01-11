@@ -40,15 +40,19 @@ class NotificationController extends GetxController {
   set setNotificationData(NotificationResponse value) =>
       _notificationData.value = value;
 
-  Future<void> _getData() async {
+  Future<void> _loadLocalNotification() async {
     var isExists =
         await HiveService.hasLength<NotificationModel>('notifications');
+
     if (isExists) {
       var data = await HiveService.getAll<NotificationModel>('notifications');
       data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
       _notificationList.clear();
       _notificationList.addAll(data.toList());
     }
+  }
+
+  Future<void> _getData() async {
     await Future.wait([
       _fetchNotifications(),
       followRequestController.fetchFollowRequests(),
@@ -199,6 +203,8 @@ class NotificationController extends GetxController {
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
+
+  Future<void> loadLocalNotification() async => await _loadLocalNotification();
 
   Future<void> getNotifications() async => await _fetchNotifications();
 

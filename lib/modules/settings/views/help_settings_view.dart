@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -6,6 +8,7 @@ import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/utils/utility.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 class HelpSettingsView extends StatelessWidget {
   const HelpSettingsView({Key? key}) : super(key: key);
@@ -148,6 +151,37 @@ class HelpSettingsView extends StatelessWidget {
                 onTap: () => AppUtility.openUrl(
                     Uri.parse(StringValues.communityGuidelinesUrl)),
               ),
+
+              if (kDebugMode) Dimens.boxHeight8,
+
+              /// View Logs
+              if (kDebugMode)
+                NxListTile(
+                  padding: Dimens.edgeInsets12,
+                  bgColor: Theme.of(context).bottomAppBarColor,
+                  borderRadius: BorderRadius.circular(Dimens.four),
+                  title: Text(
+                    StringValues.viewLogs.toTitleCase(),
+                    style: AppStyles.style14Bold,
+                  ),
+                  subtitle: Text(
+                    StringValues.viewLogsDesc,
+                    style: AppStyles.style13Normal.copyWith(
+                      color: Theme.of(context).textTheme.subtitle1!.color,
+                    ),
+                  ),
+                  onTap: () => Get.to(
+                    () => TalkerScreen(
+                      talker: AppUtility.logger,
+                      appBarTitle: 'Logs',
+                      theme: TalkerScreenTheme(
+                        backgroudColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                      ),
+                    ),
+                  ),
+                ),
+
               Dimens.boxHeight16,
             ],
           ),

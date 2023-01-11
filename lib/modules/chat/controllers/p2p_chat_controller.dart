@@ -22,7 +22,6 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/global_string_key.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
-import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/file_utility.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -34,6 +33,8 @@ class P2PChatController extends GetxController {
   final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
   final _socketApiProvider = SocketApiProvider();
+
+  final String kChatDataKey = 'chatData';
 
   final messageTextController = material.TextEditingController();
   final scrollController = material.ScrollController();
@@ -227,6 +228,7 @@ class P2PChatController extends GetxController {
   void addTempMessage(ChatMessage message) {
     _chatMessages.add(message);
     update();
+    chatController.addMessageToLastMessagesList(message);
   }
 
   void sendMessage() async {
@@ -264,6 +266,10 @@ class P2PChatController extends GetxController {
             );
 
             addTempMessage(tempMessage);
+
+            if (!_socketApiProvider.isConnected) {
+              await _socketApiProvider.init();
+            }
 
             var urlResult = await _uploadVideo(compressedFile, thumbnailFile);
 
@@ -304,6 +310,10 @@ class P2PChatController extends GetxController {
             );
 
             addTempMessage(tempMessage);
+
+            if (!_socketApiProvider.isConnected) {
+              await _socketApiProvider.init();
+            }
 
             var urlResult = await _uploadImage(compressedFile);
 
@@ -350,6 +360,10 @@ class P2PChatController extends GetxController {
 
     addTempMessage(tempMessage);
 
+    if (!_socketApiProvider.isConnected) {
+      await _socketApiProvider.init();
+    }
+
     AppUtility.log('Sending message');
     _socketApiProvider.sendJson({
       "type": "send-message",
@@ -388,31 +402,26 @@ class P2PChatController extends GetxController {
     });
   }
 
-  _getData() async {
-    var isAllMessagesExists =
-        await HiveService.hasLength<ChatMessage>('allMessages');
+  void _getData() async {
+    var currentUserId = profile.profileDetails!.user!.id;
 
-    if (isAllMessagesExists) {
-      final currentUserId = profile.profileDetails!.user!.id;
-      var data = await HiveService.getAll<ChatMessage>('allMessages');
+    var chatBox = kChatDataKey + user!.id + currentUserId;
 
-      var messages = data
-          .where((element) =>
-              (element.senderId == currentUserId &&
-                  element.receiverId == user!.id) ||
-              (element.senderId == user!.id &&
-                  element.receiverId == currentUserId))
-          .toList();
+    await Hive.openBox<ChatMessage>(chatBox);
 
-      _chatMessages.addAll(messages);
-      _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-    }
-    Hive.box<ChatMessage>('allMessages').watch().listen((event) async {
-      AppUtility.log('ChatBox Event : ${event.key}');
+    Hive.box<ChatMessage>(chatBox).watch().listen((event) async {
       if (event.deleted) {
-        AppUtility.log('ChatBox Event : ${event.key} deleted');
-        _chatMessages.removeWhere((element) => element.id == event.key);
+        AppUtility.log('Deleted message ${event.key}');
+
+        _chatMessages.removeWhere((element) =>
+            element.id == event.key || element.tempId == event.key);
+        _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
         update();
+
+        if (_chatMessages.isNotEmpty) {
+          var lastMessage = _chatMessages[_chatMessages.length - 1];
+          await chatController.saveLastMessageToLocalDB(lastMessage);
+        }
       } else {
         var message = event.value;
         var tempMessage = _chatMessages.firstWhereOrNull((element) =>
@@ -436,12 +445,12 @@ class P2PChatController extends GetxController {
               element.id == message.id || element.tempId == message.tempId);
           _chatMessages.add(updatedMessage);
           _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-          update();
         } else {
           _chatMessages.add(message);
           _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-          update();
         }
+
+        update();
       }
     });
 
@@ -589,17 +598,7 @@ class P2PChatController extends GetxController {
         setMessageData = ChatMessageListResponse.fromJson(decodedData);
 
         for (var element in messageData!.results!) {
-          var item = await HiveService.get<ChatMessage>(
-            'allMessages',
-            element.id!,
-          );
-          if (item == null) {
-            await HiveService.put<ChatMessage>(
-              'allMessages',
-              element.id!,
-              element,
-            );
-          }
+          await chatController.saveChatDataToLocalDB(element);
         }
 
         _isLoading.value = false;
@@ -620,9 +619,11 @@ class P2PChatController extends GetxController {
     }
   }
 
-  Future<void> _loadMore({int? page}) async {
+  Future<void> _loadMore() async {
     _isMoreLoading.value = true;
     update();
+
+    var page = _messageData.value.currentPage! + 1;
 
     try {
       final response =
@@ -633,17 +634,7 @@ class P2PChatController extends GetxController {
         setMessageData = ChatMessageListResponse.fromJson(decodedData);
 
         for (var element in messageData!.results!) {
-          var item = await HiveService.get<ChatMessage>(
-            'allMessages',
-            element.id!,
-          );
-          if (item == null) {
-            await HiveService.put<ChatMessage>(
-              'allMessages',
-              element.id!,
-              element,
-            );
-          }
+          await chatController.saveChatDataToLocalDB(element);
         }
 
         _isMoreLoading.value = false;
@@ -666,8 +657,7 @@ class P2PChatController extends GetxController {
 
   Future<void> fetchLatestMessages() async => await _fetchMessagesById();
 
-  Future<void> loadMore() async =>
-      await _loadMore(page: _messageData.value.currentPage! + 1);
+  Future<void> loadMore() async => await _loadMore();
 
   void markMessageAsRead() => _markMessageAsRead();
 }

@@ -1,100 +1,114 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
-import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/home_controller.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/modules/home/views/widgets/nav_icon_btn.dart';
 
-class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
+class NxBottomNavBar extends StatelessWidget {
+  const NxBottomNavBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
-      builder: (controller) => StyleProvider(
-        style: _BottomNavStyle(),
-        child: ConvexAppBar.badge(
-          {
-            2: _buildChatBadge(),
-            3: _buildNotificationBadge(),
-          },
-          badgeMargin: Dimens.edgeInsets0.copyWith(
-            bottom: Dimens.thirtyTwo,
-          ),
-          badgePadding: Dimens.edgeInsets0,
-          style: TabStyle.reactCircle,
+      builder: (logic) {
+        return Container(
           height: Dimens.fiftySix,
-          items: controller.buildBottomNavItems(),
-          initialActiveIndex: 0,
-          color: Theme.of(context).textTheme.bodyText1!.color!,
-          activeColor: Theme.of(context).textTheme.bodyText1!.color!,
-          disableDefaultTabController: true,
-          onTap: (index) => controller.bottomNavTapped(index),
-          elevation: Dimens.eight,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          shadowColor: Theme.of(context).shadowColor,
-          top: -Dimens.sixTeen,
-          cornerRadius: Dimens.zero,
-          curve: Curves.easeInOut,
-        ),
-      ),
+          width: Dimens.screenWidth,
+          padding: Dimens.edgeInsetsHorizDefault,
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildHomeIconBtn(logic, context),
+              _buildTrendingIconBtn(logic, context),
+              _buildChatIconBtn(logic, context),
+              _buildNotificationIconBtn(logic, context),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildChatBadge() {
-    return GetBuilder<ChatController>(
-      builder: (logic) => logic.lastMessageList
-              .map((e) =>
-                  e.receiverId ==
-                      ProfileController.find.profileDetails!.user!.id &&
-                  e.seen == false)
-              .contains(true)
-          ? Container(
-              width: Dimens.eight,
-              height: Dimens.eight,
-              decoration: const BoxDecoration(
-                color: ColorValues.primaryColor,
-                shape: BoxShape.circle,
-              ),
-            )
-          : Dimens.shrinkedBox,
-    );
-  }
-
-  Widget _buildNotificationBadge() {
+  GetBuilder<NotificationController> _buildNotificationIconBtn(
+      HomeController logic, BuildContext context) {
     return GetBuilder<NotificationController>(
-      builder: (logic) =>
-          (logic.notificationList.map((e) => e.isRead).contains(false) ||
-                  logic.followRequestController.followRequestList.isNotEmpty)
-              ? Container(
-                  width: Dimens.eight,
-                  height: Dimens.eight,
-                  decoration: const BoxDecoration(
-                    color: ColorValues.primaryColor,
-                    shape: BoxShape.circle,
-                  ),
-                )
-              : Dimens.shrinkedBox,
+      builder: (con) {
+        var isUnreadNotification =
+            con.notificationList.map((e) => e.isRead).contains(false) ||
+                con.followRequestController.followRequestList.isNotEmpty;
+
+        return NavIconBtn(
+          icon: logic.currentPageIndex == 3
+              ? Icons.notifications
+              : Icons.notifications_outlined,
+          iconColor: logic.currentPageIndex == 3
+              ? ColorValues.primaryColor
+              : Theme.of(context).textTheme.bodyText1!.color,
+          isActive: logic.currentPageIndex == 3,
+          itemsCount: 4,
+          onTap: () => logic.changePage(3),
+          showBadge: isUnreadNotification ? true : false,
+        );
+      },
     );
   }
-}
 
-class _BottomNavStyle extends StyleHook {
-  @override
-  double get activeIconMargin => Dimens.twelve;
+  GetBuilder<ChatController> _buildChatIconBtn(
+      HomeController logic, BuildContext context) {
+    return GetBuilder<ChatController>(
+      builder: (con) {
+        var isUnreadMessages = con.lastMessageList
+            .map((e) =>
+                e.receiverId ==
+                    ProfileController.find.profileDetails!.user!.id &&
+                e.seen == false)
+            .contains(true);
 
-  @override
-  double get activeIconSize => Dimens.twentyEight;
+        return NavIconBtn(
+          icon:
+              logic.currentPageIndex == 2 ? Icons.email : Icons.email_outlined,
+          iconColor: logic.currentPageIndex == 2
+              ? ColorValues.primaryColor
+              : Theme.of(context).textTheme.bodyText1!.color,
+          isActive: logic.currentPageIndex == 2,
+          itemsCount: 4,
+          onTap: () => logic.changePage(2),
+          showBadge: isUnreadMessages ? true : false,
+        );
+      },
+    );
+  }
 
-  @override
-  double? get iconSize => Dimens.twentyFour;
+  NavIconBtn _buildTrendingIconBtn(HomeController logic, BuildContext context) {
+    return NavIconBtn(
+      icon:
+          logic.currentPageIndex == 1 ? Icons.numbers : Icons.numbers_outlined,
+      iconColor: logic.currentPageIndex == 1
+          ? ColorValues.primaryColor
+          : Theme.of(context).textTheme.bodyText1!.color,
+      isActive: logic.currentPageIndex == 1,
+      itemsCount: 5,
+      onTap: () => logic.changePage(1),
+    );
+  }
 
-  @override
-  TextStyle textStyle(Color color, String? fontFamily) {
-    return AppStyles.style16Bold;
+  NavIconBtn _buildHomeIconBtn(HomeController logic, BuildContext context) {
+    return NavIconBtn(
+      icon: logic.currentPageIndex == 0 ? Icons.home : Icons.home_outlined,
+      iconColor: logic.currentPageIndex == 0
+          ? ColorValues.primaryColor
+          : Theme.of(context).textTheme.bodyText1!.color,
+      isActive: logic.currentPageIndex == 0,
+      itemsCount: 5,
+      onTap: () => logic.changePage(0),
+    );
   }
 }

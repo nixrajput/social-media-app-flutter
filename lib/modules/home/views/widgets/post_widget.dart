@@ -42,13 +42,13 @@ class PostWidget extends StatelessWidget {
         controller is PostController ||
         controller is TrendingPostController);
     return Container(
-      margin: Dimens.edgeInsets8_0,
+      margin: Dimens.edgeInsets6_0,
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).bottomAppBarColor,
         borderRadius: BorderRadius.circular(Dimens.four),
         border: Border.all(
           color: Theme.of(context).dividerColor,
-          width: Dimens.one,
+          width: Dimens.pointEight,
         ),
       ),
       child: Column(

@@ -41,6 +41,9 @@ class OnlineStatusView extends StatelessWidget {
         child: SingleChildScrollView(
           child: GetBuilder<ProfileController>(
             builder: (logic) => Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Dimens.boxHeight8,
 
@@ -48,6 +51,7 @@ class OnlineStatusView extends StatelessWidget {
                 NxRadioTile(
                   padding: Dimens.edgeInsets12,
                   bgColor: Theme.of(context).bottomAppBarColor,
+                  showBorder: true,
                   borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () {
                     var body = {'showOnlineStatus': 'true'};
@@ -84,6 +88,7 @@ class OnlineStatusView extends StatelessWidget {
                 NxRadioTile(
                   padding: Dimens.edgeInsets12,
                   bgColor: Theme.of(context).bottomAppBarColor,
+                  showBorder: true,
                   borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () {
                     var body = {'showOnlineStatus': 'false'};

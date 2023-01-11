@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -36,7 +37,7 @@ class ChatsTabView extends StatelessWidget {
                   padding: Dimens.edgeInsetsDefault,
                   showBackBtn: false,
                 ),
-                _buildBody(),
+                _buildBody(context),
               ],
             ),
           ),
@@ -45,7 +46,7 @@ class ChatsTabView extends StatelessWidget {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(BuildContext context) {
     final profile = ProfileController.find;
 
     return Expanded(
@@ -67,10 +68,18 @@ class ChatsTabView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Dimens.boxHeight8,
                 if (logic.isLoading)
                   const Center(child: NxCircularProgressIndicator()),
                 if (logic.isLoading) Dimens.boxHeight16,
+                if (logic.socketApiProvider.isConnecting)
+                  Center(
+                    child: Text(
+                      StringValues.connecting,
+                      style: AppStyles.style12Bold.copyWith(
+                        color: ColorValues.primaryColor,
+                      ),
+                    ),
+                  ),
                 if (logic.lastMessageData == null ||
                     logic.lastMessageList.isEmpty)
                   Center(

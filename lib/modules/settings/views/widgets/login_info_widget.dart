@@ -4,10 +4,8 @@ import 'package:social_media_app/apis/models/entities/login_info.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
-import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -39,12 +37,24 @@ class LoginInfoWidget extends StatelessWidget {
           }
         },
       ),
-      child: Padding(
-        padding: margin ?? Dimens.edgeInsets8_0,
+      child: Container(
+        margin: Dimens.edgeInsets6_0,
+        padding: Dimens.edgeInsets8,
+        constraints: BoxConstraints(
+          maxWidth: Dimens.screenWidth,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).bottomAppBarColor,
+          borderRadius: BorderRadius.circular(Dimens.four),
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+            width: Dimens.pointEight,
+          ),
+        ),
         child: NxListTile(
-          padding: Dimens.edgeInsets12,
-          bgColor: Theme.of(context).dialogBackgroundColor,
-          borderRadius: BorderRadius.all(Radius.circular(Dimens.four)),
+          padding: Dimens.edgeInsets0,
+          bgColor: ColorValues.transparent,
+          showBorder: false,
           leading: item.deviceType == 'android'
               ? CircleAvatar(
                   backgroundColor: ColorValues.grayColor,
@@ -111,7 +121,7 @@ class LoginInfoWidget extends StatelessWidget {
           ),
           trailingFlex: 0,
           trailing: GestureDetector(
-            onTap: () => _showDeleteDialog(item.deviceId!),
+            onTap: () => _showDeleteDialog(item.deviceId!, context),
             child: Icon(
               Icons.close,
               color: Theme.of(context).textTheme.bodyText1!.color,
@@ -122,67 +132,19 @@ class LoginInfoWidget extends StatelessWidget {
     );
   }
 
-  Future<void> _showDeleteDialog(String deviceId) async {
-    AppUtility.showSimpleDialog(
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Dimens.boxHeight8,
-          Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Text(
-              StringValues.delete,
-              style: AppStyles.style20Bold,
-            ),
-          ),
-          Dimens.boxHeight8,
-          Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Text(
-              StringValues.deleteConfirmationText,
-              style: AppStyles.style14Normal,
-            ),
-          ),
-          Dimens.boxHeight8,
-          Padding(
-            padding: Dimens.edgeInsets0_16,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                NxTextButton(
-                  label: StringValues.no,
-                  labelStyle: AppStyles.style16Bold.copyWith(
-                    color: ColorValues.errorColor,
-                  ),
-                  onTap: AppUtility.closeDialog,
-                  padding: Dimens.edgeInsets8,
-                ),
-                Dimens.boxWidth16,
-                NxTextButton(
-                  label: StringValues.yes,
-                  labelStyle: AppStyles.style16Bold.copyWith(
-                    color: ColorValues.successColor,
-                  ),
-                  onTap: () async {
-                    AppUtility.closeDialog();
-                    if (deviceId == AuthService.find.deviceId.toString()) {
-                      await AuthService.find.logout();
-                      RouteManagement.goToWelcomeView();
-                      return;
-                    } else {
-                      await LoginInfoController.find
-                          .deleteLoginDeviceInfo(deviceId);
-                    }
-                  },
-                  padding: Dimens.edgeInsets8,
-                ),
-              ],
-            ),
-          ),
-          Dimens.boxHeight8,
-        ],
-      ),
+  Future<void> _showDeleteDialog(String deviceId, BuildContext context) async {
+    AppUtility.showDeleteDialog(
+      context,
+      () async {
+        AppUtility.closeDialog();
+        if (deviceId == AuthService.find.deviceId.toString()) {
+          await AuthService.find.logout();
+          RouteManagement.goToWelcomeView();
+          return;
+        } else {
+          await LoginInfoController.find.deleteLoginDeviceInfo(deviceId);
+        }
+      },
     );
   }
 }

@@ -10,6 +10,7 @@ import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/circular_asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
@@ -65,7 +66,7 @@ class HomeTabView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 InkWell(
-                  onTap: _showCreatePostOptions,
+                  onTap: () => _showCreatePostOptions(context),
                   child: Icon(
                     Icons.add_circle_outline_rounded,
                     size: Dimens.thirtyTwo,
@@ -181,112 +182,74 @@ class HomeTabView extends StatelessWidget {
     );
   }
 
-  _showCreatePostOptions() => AppUtility.showBottomSheet(
+  void _showCreatePostOptions(BuildContext context) =>
+      AppUtility.showBottomSheet(
         children: [
           /// Post
-          ListTile(
+          NxListTile(
+            bgColor: ColorValues.transparent,
+            padding: Dimens.edgeInsets12,
+            showBorder: false,
+            leading: Icon(
+              Icons.post_add_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.post,
+              style: AppStyles.style16Normal.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
+            ),
             onTap: () {
               AppUtility.closeBottomSheet();
               RouteManagement.goToCreatePostView();
             },
-            leading: Icon(
-              Icons.post_add_outlined,
-              size: Dimens.twentyFour,
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-            ),
-            minLeadingWidth: Dimens.twentyFour,
-            title: Text(
-              StringValues.post,
-              style: AppStyles.style16Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-              ),
-            ),
           ),
 
           /// Poll
-          ListTile(
+          NxListTile(
+            bgColor: ColorValues.transparent,
+            padding: Dimens.edgeInsets12,
+            showBorder: false,
+            leading: Icon(
+              Icons.poll_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.poll,
+              style: AppStyles.style16Normal.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
+            ),
             onTap: () {
               AppUtility.closeBottomSheet();
               RouteManagement.toCreatePollView();
             },
-            leading: Icon(
-              Icons.poll_outlined,
-              size: Dimens.twentyFour,
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-            ),
-            minLeadingWidth: Dimens.twentyFour,
-            title: Text(
-              StringValues.poll,
-              style: AppStyles.style16Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-              ),
-            ),
           ),
 
           /// Story
-          ListTile(
+          NxListTile(
+            bgColor: ColorValues.transparent,
+            padding: Dimens.edgeInsets12,
+            showBorder: false,
+            leading: Icon(
+              Icons.photo_library_outlined,
+              size: Dimens.twentyFour,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            title: Text(
+              StringValues.story,
+              style: AppStyles.style16Normal.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
+            ),
             onTap: () {
               AppUtility.closeBottomSheet();
               AppUtility.printLog('Go to create story page');
             },
-            leading: Icon(
-              Icons.photo_library_outlined,
-              size: Dimens.twentyFour,
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-            ),
-            minLeadingWidth: Dimens.twentyFour,
-            title: Text(
-              StringValues.story,
-              style: AppStyles.style16Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-              ),
-            ),
           ),
-
-          // ListTile(
-          //   onTap: () {
-          //     AppUtility.closeBottomSheet();
-          //     CreatePostController.find.captureImage();
-          //   },
-          //   leading: const Icon(Icons.camera),
-          //   title: Text(
-          //     StringValues.captureImage,
-          //     style: AppStyles.style16Bold,
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     AppUtility.closeBottomSheet();
-          //     CreatePostController.find.recordVideo();
-          //   },
-          //   leading: const Icon(Icons.videocam),
-          //   title: Text(
-          //     StringValues.recordVideo,
-          //     style: AppStyles.style16Bold,
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     AppUtility.closeBottomSheet();
-          //     CreatePostController.find.selectPostImages();
-          //   },
-          //   leading: const Icon(Icons.photo_album),
-          //   title: Text(
-          //     StringValues.chooseImages,
-          //     style: AppStyles.style16Bold,
-          //   ),
-          // ),
-          // ListTile(
-          //   onTap: () {
-          //     AppUtility.closeBottomSheet();
-          //     CreatePostController.find.selectPosVideos();
-          //   },
-          //   leading: const Icon(Icons.video_collection),
-          //   title: Text(
-          //     StringValues.chooseVideos,
-          //     style: AppStyles.style16Bold,
-          //   ),
-          // ),
         ],
       );
 

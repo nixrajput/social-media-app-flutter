@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -24,10 +23,8 @@ import 'package:social_media_app/app_services/firebase_service.dart';
 import 'package:social_media_app/app_services/network_controller.dart';
 import 'package:social_media_app/app_services/route_service.dart';
 import 'package:social_media_app/app_services/theme_controller.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/enums.dart';
 import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/themes.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/follow_request/follow_request_controller.dart';
@@ -45,9 +42,18 @@ void main() async {
   await _initPreAppServices();
   final networkService = NetworkController.instance;
   await networkService.init();
+  // runApp(const MyApp());
+  runApplication();
   await initializeFirebaseService();
-  runApp(const MyApp());
   await _initPostAppServices();
+}
+
+void runApplication() {
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  runApp(const MyApp());
 }
 
 Future<void> _initPostAppServices() async {
@@ -82,15 +88,17 @@ Future<void> _initPreAppServices() async {
 
   AppUtility.log('Opening Hive Boxes');
 
+  await Hive.openBox<String>('themeMode');
   await Hive.openBox<Post>('posts');
   await Hive.openBox<Post>('trendingPosts');
   await Hive.openBox<User>('recommendedUsers');
   await Hive.openBox<ChatMessage>('lastMessages');
-  await Hive.openBox<ChatMessage>('allMessages');
   await Hive.openBox<NotificationModel>('notifications');
   await Hive.openBox<Post>('profilePosts');
   await Hive.openBox<Follower>('followers');
   await Hive.openBox<Follower>('followings');
+
+  // await HiveService.deleteBox<ChatMessage>('lastMessages');
 
   AppUtility.log('Hive Boxes Opened');
 
@@ -122,7 +130,9 @@ Future<void> _initPreAppServices() async {
 
       var hasData = await ProfileController.find.loadProfileDetails();
       if (hasData) {
-        await PostController.find.init();
+        await PostController.find.loadLocalPosts();
+        await ChatController.find.loadLocalMessages();
+        await NotificationController.find.loadLocalNotification();
         RouteService.set(RouteStatus.loggedIn);
         AppUtility.log("User is logged in");
       } else {
@@ -195,40 +205,15 @@ Future<void> validateSessionAndGetData() async {
   AppUtility.log('Session Validated and Data Fetched');
 }
 
+const String kSystemMode = 'system';
+const String kLightMode = 'light';
+const String kDarkMode = 'dark';
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    if (SchedulerBinding.instance.window.platformBrightness ==
-        Brightness.light) {
-      SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.dark,
-          statusBarColor: ColorValues.lightBgColor,
-          statusBarBrightness: Brightness.light,
-          systemNavigationBarColor: ColorValues.lightBgColor,
-          systemNavigationBarDividerColor: Colors.transparent,
-          systemNavigationBarIconBrightness: Brightness.dark,
-        ),
-      );
-    } else {
-      SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(
-          statusBarIconBrightness: Brightness.light,
-          statusBarColor: ColorValues.darkBgColor,
-          statusBarBrightness: Brightness.dark,
-          systemNavigationBarColor: ColorValues.darkBgColor,
-          systemNavigationBarDividerColor: Colors.transparent,
-          systemNavigationBarIconBrightness: Brightness.light,
-        ),
-      );
-    }
-
     return GetBuilder<AppThemeController>(
       builder: (logic) => ScreenUtilInit(
         designSize: const Size(392, 744),
@@ -236,8 +221,8 @@ class MyApp extends StatelessWidget {
           title: StringValues.appName,
           debugShowCheckedModeBanner: false,
           themeMode: _handleAppTheme(logic.themeMode),
-          theme: AppThemes.lightTheme,
-          darkTheme: AppThemes.darkTheme,
+          theme: logic.getLightThemeData(),
+          darkTheme: logic.getDarkThemeData(),
           getPages: AppPages.pages,
           initialRoute: _handleAppInitialRoute(),
           translations: AppTranslation(),
@@ -268,11 +253,11 @@ class MyApp extends StatelessWidget {
     }
   }
 
-  ThemeMode _handleAppTheme(AppThemeModes mode) {
-    if (mode == AppThemeModes.dark) {
+  ThemeMode _handleAppTheme(String mode) {
+    if (mode == kDarkMode) {
       return ThemeMode.dark;
     }
-    if (mode == AppThemeModes.light) {
+    if (mode == kLightMode) {
       return ThemeMode.light;
     }
     return ThemeMode.system;

@@ -12,33 +12,33 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:talker/talker.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 abstract class AppUtility {
   /// Logger
 
-  static final _logger = Talker();
+  static final logger = TalkerFlutter.init();
 
   static void log(dynamic message, {String? tag}) {
     switch (tag) {
       case 'error':
-        _logger.error(message);
+        logger.error(message);
         break;
       case 'warning':
-        _logger.warning(message);
+        logger.warning(message);
         break;
       case 'info':
-        _logger.info(message);
+        logger.info(message);
         break;
       case 'debug':
-        _logger.debug(message);
+        logger.debug(message);
         break;
       case 'critical':
-        _logger.critical(message);
+        logger.critical(message);
         break;
       default:
-        _logger.verbose(message);
+        logger.verbose(message);
         break;
     }
   }

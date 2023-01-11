@@ -460,6 +460,14 @@ abstract class AppPages {
       transition: defaultTransition,
     ),
 
+    GetPage(
+      name: _Routes.sendSuggestionsSettings,
+      page: SendSuggestionsView.new,
+      transitionDuration: transitionDuration,
+      binding: SendSuggestionsBinding(),
+      transition: defaultTransition,
+    ),
+
     /// ------------------------------------------------------------------------
 
     /// ACCOUNT SETTINGS -------------------------------------------------------

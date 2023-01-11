@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -25,14 +24,14 @@ class SendSuggestionsController extends GetxController {
       return;
     }
 
-    final email = Email(
-      body: message,
-      subject: 'Suggestion - Rippl!',
-      recipients: ['nixlab.in@gmail.com'],
-      isHTML: false,
-    );
+    // final email = Email(
+    //   body: message,
+    //   subject: 'Suggestion - Rippl!',
+    //   recipients: ['nixlab.in@gmail.com'],
+    //   isHTML: false,
+    // );
 
-    await FlutterEmailSender.send(email);
+    // await FlutterEmailSender.send(email);
   }
 
   Future<void> sendSuggestionsEmail() async {

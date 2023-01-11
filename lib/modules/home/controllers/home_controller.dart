@@ -1,4 +1,3 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/global_widgets/keep_alive_page.dart';
@@ -28,38 +27,17 @@ class HomeController extends GetxController {
     ];
   }
 
-  List<TabItem<dynamic>> buildBottomNavItems() {
-    return [
-      const TabItem(
-        icon: Icons.home_outlined,
-        activeIcon: Icons.home,
-      ),
-      const TabItem(
-        icon: Icons.numbers_outlined,
-        activeIcon: Icons.numbers,
-      ),
-      const TabItem(
-        icon: Icons.messenger_outline_rounded,
-        activeIcon: Icons.messenger_rounded,
-      ),
-      const TabItem(
-        icon: Icons.notifications_outlined,
-        activeIcon: Icons.notifications,
-      ),
-    ];
-  }
-
-  void changePage(int index) {
+  void changeNavIndex(int index) {
     _currentPageIndex = index;
     update();
   }
 
-  void bottomNavTapped(int index) {
+  void changePage(int index) {
     _currentPageIndex = index;
     pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOutCirc,
+      curve: Curves.bounceInOut,
     );
     update();
   }

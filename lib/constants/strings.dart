@@ -104,9 +104,11 @@ abstract class StringValues {
   static const requested = 'Requested';
   static const follow = 'Follow';
   static const unfollow = 'Unfollow';
+  static const followBack = 'Follow Back';
+  static const followBackDesc = 'Follow back to see their posts';
   static const followRequests = 'Follow Requests';
   static const followRequestsDesc = 'People who want to follow you';
-  static const followBack = 'Follow Back';
+  static const connecting = 'Connecting';
   static const maxImageVideoLimitWarning =
       'You can select maximum 10 images and videos';
   static const maxImageLimitWarning = 'You can select maximum 10 images';
@@ -157,6 +159,7 @@ abstract class StringValues {
   static const loginActivityDesc =
       'You can see your login activity from different devices.';
   static const noPosts = 'No posts to show.';
+  static const somethingWentWrong = 'Something went wrong, please try again';
   static const writeSomethingAboutYou = 'Write something about you...';
   static const dobFormat = 'dd mmm, yyyy';
   static const select = 'Select';
@@ -224,13 +227,16 @@ abstract class StringValues {
   static const forward = 'Forward';
   static const posts = 'Posts';
   static const public = 'public';
-  static const publicPrivacyDesc = 'Anyone can see your posts';
+  static const publicPrivacyDesc = 'Anyone can see your posts.';
   static const private = 'private';
-  static const privatePrivacyDesc = 'Only your followers can see your posts';
+  static const privatePrivacyDesc = 'Only your followers can see your posts.';
   static const display = 'Display';
   static const account = 'Account';
   static const accountPrivacy = 'Account Privacy';
+  static const accountPrivacyDesc =
+      'Who can see your account information and posts.';
   static const security = 'Security';
+  static const securityDesc = 'Security and login settings';
   static const privacy = 'Privacy';
   static const addComment = 'Add a comment';
   static const profileData = "profileData";
@@ -262,6 +268,7 @@ abstract class StringValues {
   static const website = 'Website';
   static const aboutUs = 'About Us';
   static const onlineStatus = 'Online Status';
+  static const onlineStatusDesc = 'Show your online status to others.';
   static const addPhoneNumber = 'Add Phone Number';
   static const nameHelpText =
       "Either your full name, nickname, or business name.";
@@ -394,6 +401,7 @@ abstract class StringValues {
   static const submitRequest = 'Submit Request';
   static const verify = 'Verify';
   static const verified = 'Verified';
+  static const verifiedDesc = 'Your account is verified or not?';
   static const verifiedAccount = 'Verified Account';
   static const verifiedAccountDesc = 'This account is verified.';
   static const verifiedAccountHelp =
@@ -412,6 +420,8 @@ abstract class StringValues {
   static const twoFaAuthHelpText =
       'Help protect your account from unauthorised access by requiring a second authentication method in addition to your password.';
   static const moreDetails = 'More Details';
+  static const viewLogs = 'View Logs';
+  static const viewLogsDesc = 'View app logs.';
   static const websiteUrl = 'https://nixlab.co.in';
   static const privacyPolicyUrl = 'https://nixlab.co.in/privacy-policy';
   static const termsOfServiceUrl = 'https://nixlab.co.in/terms-of-service';

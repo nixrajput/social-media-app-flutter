@@ -5,7 +5,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
-import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class UserWidget extends StatelessWidget {
@@ -42,15 +42,18 @@ class UserWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: index != (totalLength - 1)
-            ? Dimens.edgeInsetsOnlyBottom16
-            : Dimens.edgeInsets0,
-        padding: padding ?? Dimens.edgeInsets0,
+        margin: Dimens.edgeInsets6_0,
+        padding: padding ?? Dimens.edgeInsets8,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(context).bottomAppBarColor,
+          borderRadius: BorderRadius.circular(Dimens.four),
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+            width: Dimens.pointEight,
+          ),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -134,19 +137,15 @@ class UserWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Dimens.boxWidth16,
-            NxOutlinedButton(
+            Dimens.boxWidth12,
+            NxFilledButton(
               label: getFollowStatus(user.followingStatus, context),
               bgColor: getButtonColor(user.followingStatus, context),
-              borderColor: ColorValues.primaryColor,
-              borderStyle: getBorderStyle(user.followingStatus, context),
               onTap: onActionTap,
-              padding: Dimens.edgeInsets6_12,
-              borderWidth: Dimens.one,
+              padding: Dimens.edgeInsets6_8,
               borderRadius: Dimens.four,
-              labelStyle: AppStyles.style13Normal.copyWith(
+              labelStyle: AppStyles.style12Normal.copyWith(
                 color: getLabelColor(user.followingStatus, context),
-                fontWeight: FontWeight.w500,
               ),
             ),
             if (extraActions != null) extraActions!
@@ -168,14 +167,10 @@ class UserWidget extends StatelessWidget {
 
   Color getButtonColor(String status, BuildContext context) {
     if (status == "following" || status == "requested") {
-      return Theme.of(context).bottomAppBarColor;
+      return Theme.of(context).dividerColor;
     }
 
     return ColorValues.primaryColor;
-  }
-
-  BorderStyle getBorderStyle(String status, BuildContext context) {
-    return BorderStyle.none;
   }
 
   Color getLabelColor(String status, BuildContext context) {

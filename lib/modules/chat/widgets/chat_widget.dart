@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
+import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
+import 'package:social_media_app/global_widgets/rive_asset_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class ChatWidget extends StatelessWidget {
@@ -40,12 +42,22 @@ class ChatWidget extends StatelessWidget {
         : chat.sender!;
 
     var isSender = chat.sender!.id == profile.profileDetails!.user!.id;
+
     return InkWell(
       onTap: onTap,
       child: Container(
-        margin: Dimens.edgeInsetsOnlyBottom16,
+        margin: Dimens.edgeInsets6_0,
+        padding: Dimens.edgeInsets8,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).bottomAppBarColor,
+          borderRadius: BorderRadius.circular(Dimens.four),
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+            width: Dimens.pointEight,
+          ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -193,10 +205,15 @@ class ChatWidget extends StatelessWidget {
       );
     }
 
-    return Icon(
-      Icons.circle_outlined,
-      size: Dimens.sixTeen,
-      color: Theme.of(Get.context!).textTheme.subtitle1!.color!,
+    return SizedBox(
+      width: Dimens.twenty,
+      height: Dimens.twenty,
+      child: const RiveTimerAnimatedIcon(
+        asset: RiveAssets.icons,
+        artboard: 'TIMER',
+        initAnimation: 'active',
+        autoPlay: true,
+      ),
     );
   }
 }

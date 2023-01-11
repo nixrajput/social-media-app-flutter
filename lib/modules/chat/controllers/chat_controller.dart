@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/online_user.dart';
@@ -9,10 +10,16 @@ import 'package:social_media_app/apis/models/responses/chat_message_list_respons
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
+import 'package:social_media_app/app_services/network_controller.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
+
+const String _kLastMessagesKey = 'lastMessages';
+// const String _kOnlineUsersKey = 'onlineUsers';
+// const String _kTypingUsersKey = 'typingUsers';
+const String _kChatDataKey = 'chatData';
 
 class ChatController extends GetxController {
   static ChatController get find => Get.find();
@@ -20,7 +27,8 @@ class ChatController extends GetxController {
   final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
   final profile = ProfileController.find;
-  final _socketApiProvider = SocketApiProvider();
+  final socketApiProvider = SocketApiProvider();
+  final networkController = NetworkController.instance;
 
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
@@ -50,14 +58,60 @@ class ChatController extends GetxController {
   set setLastMessageData(ChatMessageListResponse response) =>
       _lastMessageData.value = response;
 
-  Future<void> initialize() async {
-    if (_socketApiProvider.isConnected) {
-      _socketSubscription ??=
-          _socketApiProvider.socketEventStream!.listen(_addSocketEventListener);
+  /// Methods ------------------------------------------------------------------
+  /// --------------------------------------------------------------------------
+
+  Future<void> _loadLocalMessages() async {
+    var isExists = await HiveService.hasLength<ChatMessage>(_kLastMessagesKey);
+
+    if (isExists) {
+      var data = await HiveService.getAll<ChatMessage>(_kLastMessagesKey);
+      data.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      _lastMessageList.clear();
+      _lastMessageList.addAll(data.toList());
+      _lastMessageList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
     }
-    await _getLastMessages();
+  }
+
+  Future<void> initialize() async {
+    AppUtility.log("ChatController initializing");
+    if (socketApiProvider.isConnected) {
+      _socketSubscription ??=
+          socketApiProvider.socketEventStream!.listen(_addSocketEventListener);
+    }
+
+    networkController.connectionStatus.listen((status) async {
+      if (status == true) {
+        if (!socketApiProvider.isConnected) {
+          await socketApiProvider.init();
+          _socketSubscription ??= socketApiProvider.socketEventStream!
+              .listen(_addSocketEventListener);
+        } else {
+          _socketSubscription ??= socketApiProvider.socketEventStream!
+              .listen(_addSocketEventListener);
+        }
+      } else {
+        await _socketSubscription?.cancel();
+        _socketSubscription = null;
+      }
+    });
+
+    Hive.box<ChatMessage>(_kLastMessagesKey).watch().listen((event) async {
+      if (event.deleted) {
+        _lastMessageList.removeWhere((element) => element.id == event.key);
+        _lastMessageList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+        update();
+      } else {
+        var message = event.value;
+
+        await addMessageToLastMessagesList(message);
+      }
+    });
+
+    await _fetchLastMessages();
     _getUndeliveredMessages();
     _checkOnlineUsers();
+    AppUtility.log("ChatController initialized");
   }
 
   Future<void> close() async {
@@ -72,7 +126,7 @@ class ChatController extends GetxController {
 
   void _getUndeliveredMessages() {
     AppUtility.log('Get Undelivered Messages');
-    _socketApiProvider.sendJson({
+    socketApiProvider.sendJson({
       'type': 'get-undelivered-messages',
     });
   }
@@ -85,7 +139,7 @@ class ChatController extends GetxController {
             : e.senderId)
         .toList();
 
-    _socketApiProvider.sendJson({
+    socketApiProvider.sendJson({
       'type': 'check-online-users',
       'payload': {
         'userIds': userIds,
@@ -169,101 +223,104 @@ class ChatController extends GetxController {
   }
 
   void _addMessageListener(ChatMessage encryptedMessage) async {
-    var isExitsInAllMessages =
-        await _checkIfSameMessageInAllMessages(encryptedMessage);
-    if (!isExitsInAllMessages) {
-      await HiveService.put<ChatMessage>(
-        'allMessages',
-        encryptedMessage.id ?? encryptedMessage.tempId,
-        encryptedMessage,
-      );
-    } else {
-      var tempMessage = await HiveService.get<ChatMessage>(
-          'allMessages', encryptedMessage.id ?? encryptedMessage.tempId);
-      var updatedMessage = tempMessage!.copyWith(
-        id: encryptedMessage.id,
-        sender: encryptedMessage.sender,
-        receiver: encryptedMessage.receiver,
-        replyTo: encryptedMessage.replyTo,
-        sent: encryptedMessage.sent,
-        sentAt: encryptedMessage.sentAt,
-        delivered: encryptedMessage.delivered,
-        deliveredAt: encryptedMessage.deliveredAt,
-        seen: encryptedMessage.seen,
-        seenAt: encryptedMessage.seenAt,
-        createdAt: encryptedMessage.createdAt,
-        updatedAt: encryptedMessage.updatedAt,
-      );
-      await HiveService.delete<ChatMessage>(
-        'allMessages',
-        tempMessage.id ?? tempMessage.tempId,
-      );
-      await HiveService.put<ChatMessage>(
-        'allMessages',
-        updatedMessage.id ?? updatedMessage.tempId,
-        updatedMessage,
-      );
-    }
+    // var isExitsInAllMessages =
+    //     await _checkIfSameMessageInAllMessages(encryptedMessage);
+    // if (!isExitsInAllMessages) {
+    //   await HiveService.put<ChatMessage>(
+    //     'allMessages',
+    //     encryptedMessage.id ?? encryptedMessage.tempId,
+    //     encryptedMessage,
+    //   );
+    // } else {
+    //   var tempMessage = await HiveService.get<ChatMessage>(
+    //       'allMessages', encryptedMessage.id ?? encryptedMessage.tempId);
+    //   var updatedMessage = tempMessage!.copyWith(
+    //     id: encryptedMessage.id,
+    //     sender: encryptedMessage.sender,
+    //     receiver: encryptedMessage.receiver,
+    //     replyTo: encryptedMessage.replyTo,
+    //     sent: encryptedMessage.sent,
+    //     sentAt: encryptedMessage.sentAt,
+    //     delivered: encryptedMessage.delivered,
+    //     deliveredAt: encryptedMessage.deliveredAt,
+    //     seen: encryptedMessage.seen,
+    //     seenAt: encryptedMessage.seenAt,
+    //     createdAt: encryptedMessage.createdAt,
+    //     updatedAt: encryptedMessage.updatedAt,
+    //   );
+    //   await HiveService.delete<ChatMessage>(
+    //     'allMessages',
+    //     tempMessage.id ?? tempMessage.tempId,
+    //   );
+    //   await HiveService.put<ChatMessage>(
+    //     'allMessages',
+    //     updatedMessage.id ?? updatedMessage.tempId,
+    //     updatedMessage,
+    //   );
+    // }
 
-    if (!_checkIfSameMessageInLastMessages(encryptedMessage)) {
-      var index = _checkIfAlreadyPresentInLastMessages(encryptedMessage);
-      if (index < 0) {
-        _lastMessageList.add(encryptedMessage);
-        update();
-        await HiveService.put<ChatMessage>(
-          'lastMessages',
-          encryptedMessage.id ?? encryptedMessage.tempId,
-          encryptedMessage,
-        );
-      } else {
-        var oldMessage = _lastMessageList.elementAt(index);
-        var isAfter =
-            _checkIfLatestChatInLastMessages(oldMessage, encryptedMessage);
-        if (isAfter) {
-          _lastMessageList.remove(oldMessage);
-          _lastMessageList.add(encryptedMessage);
-          update();
-          await HiveService.delete<ChatMessage>(
-            'lastMessages',
-            oldMessage.id ?? oldMessage.tempId,
-          );
-          await HiveService.put<ChatMessage>(
-            'lastMessages',
-            encryptedMessage.id ?? encryptedMessage.tempId,
-            encryptedMessage,
-          );
-        }
-      }
-    } else {
-      var tempIndex = _lastMessageList.indexWhere(
-        (element) =>
-            element.tempId == encryptedMessage.tempId ||
-            element.id == encryptedMessage.id,
-      );
-      var tempMessage = _lastMessageList[tempIndex];
-      var updatedMessage = tempMessage.copyWith(
-        id: encryptedMessage.id,
-        sender: encryptedMessage.sender,
-        receiver: encryptedMessage.receiver,
-        replyTo: encryptedMessage.replyTo,
-        sent: encryptedMessage.sent,
-        sentAt: encryptedMessage.sentAt,
-        delivered: encryptedMessage.delivered,
-        deliveredAt: encryptedMessage.deliveredAt,
-        seen: encryptedMessage.seen,
-        seenAt: encryptedMessage.seenAt,
-        createdAt: encryptedMessage.createdAt,
-        updatedAt: encryptedMessage.updatedAt,
-      );
-      _lastMessageList[tempIndex] = updatedMessage;
-      update();
-      await HiveService.delete<ChatMessage>('lastMessages', tempMessage.id!);
-      await HiveService.put<ChatMessage>(
-        'lastMessages',
-        updatedMessage.id ?? updatedMessage.tempId,
-        updatedMessage,
-      );
-    }
+    await saveChatDataToLocalDB(encryptedMessage);
+
+    //await addMessageToLastMessagesList(encryptedMessage);
+
+    // if (!_checkIfMessageExistsInLastMessageList(encryptedMessage)) {
+    //   var index = _checkIfAlreadyPresentInLastMessages(encryptedMessage);
+    //   if (index < 0) {
+    //     _lastMessageList.add(encryptedMessage);
+    //     update();
+    //     await HiveService.put<ChatMessage>(
+    //       'lastMessages',
+    //       encryptedMessage.id ?? encryptedMessage.tempId,
+    //       encryptedMessage,
+    //     );
+    //   } else {
+    //     var oldMessage = _lastMessageList.elementAt(index);
+    //     var isAfter = checkIfNewerMessage(oldMessage, encryptedMessage);
+    //     if (isAfter) {
+    //       _lastMessageList.remove(oldMessage);
+    //       _lastMessageList.add(encryptedMessage);
+    //       update();
+    //       await HiveService.delete<ChatMessage>(
+    //         'lastMessages',
+    //         oldMessage.id ?? oldMessage.tempId,
+    //       );
+    //       await HiveService.put<ChatMessage>(
+    //         'lastMessages',
+    //         encryptedMessage.id ?? encryptedMessage.tempId,
+    //         encryptedMessage,
+    //       );
+    //     }
+    //   }
+    // } else {
+    //   var tempIndex = _lastMessageList.indexWhere(
+    //     (element) =>
+    //         element.tempId == encryptedMessage.tempId ||
+    //         element.id == encryptedMessage.id,
+    //   );
+    //   var tempMessage = _lastMessageList[tempIndex];
+    //   var updatedMessage = tempMessage.copyWith(
+    //     id: encryptedMessage.id,
+    //     sender: encryptedMessage.sender,
+    //     receiver: encryptedMessage.receiver,
+    //     replyTo: encryptedMessage.replyTo,
+    //     sent: encryptedMessage.sent,
+    //     sentAt: encryptedMessage.sentAt,
+    //     delivered: encryptedMessage.delivered,
+    //     deliveredAt: encryptedMessage.deliveredAt,
+    //     seen: encryptedMessage.seen,
+    //     seenAt: encryptedMessage.seenAt,
+    //     createdAt: encryptedMessage.createdAt,
+    //     updatedAt: encryptedMessage.updatedAt,
+    //   );
+    //   _lastMessageList[tempIndex] = updatedMessage;
+    //   update();
+    //   await HiveService.delete<ChatMessage>('lastMessages', tempMessage.id!);
+    //   await HiveService.put<ChatMessage>(
+    //     'lastMessages',
+    //     updatedMessage.id ?? updatedMessage.tempId,
+    //     updatedMessage,
+    //   );
+    // }
     AppUtility.log("Chat Message Added");
   }
 
@@ -285,24 +342,6 @@ class ChatController extends GetxController {
 
     AppUtility.log("Chat Message Deleted");
   }
-
-  // void deleteMultipleMessages(List<String> messageIds) {
-  //   _socketApiProvider.sendJson({
-  //     'type': 'delete-messages',
-  //     'payload': {
-  //       'messageIds': messageIds,
-  //     }
-  //   });
-  // }
-
-  // void deleteMessage(String messageId) {
-  //   _socketApiProvider.sendJson({
-  //     'type': 'delete-message',
-  //     'payload': {
-  //       'messageId': messageId,
-  //     }
-  //   });
-  // }
 
   // var secretKeys = await _e2eeService.getSecretKeys();
   // var regId = int.parse(
@@ -354,70 +393,182 @@ class ChatController extends GetxController {
     return false;
   }
 
-  bool _checkIfSameMessageInLastMessages(ChatMessage message) {
-    var item = _lastMessageList.any((element) =>
+  /// Check if the message is already present in the last message list
+  Future<bool> checkIfMessageExistsInLastMessageList(
+      ChatMessage message) async {
+    var isExists = _lastMessageList.any((element) =>
         element.id == message.id ||
         (element.tempId != null &&
             message.tempId != null &&
             element.tempId == message.tempId));
 
-    if (item) return true;
+    if (isExists) return true;
 
     return false;
   }
 
-  Future<bool> _checkIfSameMessageInAllMessages(ChatMessage message) async {
-    var item = await HiveService.get<ChatMessage>(
-        'allMessages', message.id ?? message.tempId);
-
-    // var item = _allMessages.any((element) =>
-    //     element.id == message.id ||
-    //     (element.tempId != null &&
-    //         message.tempId != null &&
-    //         element.tempId == message.tempId));
-
-    if (item != null) return true;
-
-    return false;
-  }
-
-  int _checkIfAlreadyPresentInLastMessages(ChatMessage message) {
-    var item = _lastMessageList.any((element) =>
-        (element.senderId == message.senderId &&
-            element.receiverId == message.receiverId) ||
-        (element.senderId == message.receiverId &&
-            element.receiverId == message.senderId));
-
-    if (item) {
-      var index = _lastMessageList.indexWhere((element) =>
-          (element.senderId == message.senderId &&
-              element.receiverId == message.receiverId) ||
-          (element.senderId == message.receiverId &&
-              element.receiverId == message.senderId));
-      return index;
-    }
-    return -1;
-  }
-
-  bool _checkIfLatestChatInLastMessages(
-      ChatMessage oldMessage, ChatMessage newMessage) {
+  /// Check if the message is newer
+  bool checkIfNewerMessage(ChatMessage oldMessage, ChatMessage newMessage) {
     var isAfter = newMessage.createdAt!.isAfter(oldMessage.createdAt!);
+
     if (isAfter) return true;
+
     return false;
   }
 
-  _getLastMessages() async {
-    var isExists = await HiveService.hasLength<ChatMessage>('lastMessages');
+  /// Check if the message is already present in the local DB
+  Future<bool> checkIfMessageExistsInLocalDB(String boxName, String key) async {
+    var item = await HiveService.find<ChatMessage>(boxName, key);
+
+    if (item != null) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /// Check if the message is already present in the last messages list
+  /// of local DB
+  Future<bool> checkIfSameMessageExistsInLastMessagesLocalDB(
+      ChatMessage message) async {
+    var currentUserId = profile.profileDetails!.user!.id;
+
+    var key = message.senderId! + message.receiverId!;
+
+    if (message.senderId == currentUserId) {
+      key = message.receiverId! + message.senderId!;
+    }
+
+    var item = await HiveService.find<ChatMessage>(_kLastMessagesKey, key);
+
+    if (item != null) {
+      if (item.id == message.id ||
+          (item.tempId != null &&
+              message.tempId != null &&
+              item.tempId == message.tempId)) return true;
+    }
+
+    return false;
+  }
+
+  /// Check if the last exists for the specific user
+  Future<bool> checkIfMessageExistsForUserInLastMessagesLocalDB(
+      ChatMessage message) async {
+    var currentUserId = profile.profileDetails!.user!.id;
+
+    var key = message.senderId! + message.receiverId!;
+
+    if (message.senderId == currentUserId) {
+      key = message.receiverId! + message.senderId!;
+    }
+
+    var item = await HiveService.find<ChatMessage>(_kLastMessagesKey, key);
+
+    if (item != null) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /// Save the message to the last messages list of local DB
+  Future<void> saveLastMessageToLocalDB(ChatMessage message) async {
+    var currentUserId = profile.profileDetails!.user!.id;
+
+    var key = message.senderId! + message.receiverId!;
+
+    if (message.senderId == currentUserId) {
+      key = message.receiverId! + message.senderId!;
+    }
+
+    var messageExists =
+        await checkIfMessageExistsForUserInLastMessagesLocalDB(message);
+
+    var isSameMessage =
+        await checkIfSameMessageExistsInLastMessagesLocalDB(message);
+
+    if (messageExists || isSameMessage) {
+      await HiveService.delete<ChatMessage>(_kLastMessagesKey, key);
+      await HiveService.put<ChatMessage>(_kLastMessagesKey, key, message);
+
+      AppUtility.log('Last message added to local DB');
+
+      return;
+    }
+
+    await HiveService.put<ChatMessage>(_kLastMessagesKey, key, message);
+    AppUtility.log('Last message added to local DB');
+  }
+
+  /// Save the chats to the user's messages list of local DB
+  Future<void> saveChatDataToLocalDB(ChatMessage message) async {
+    var currentUserId = profile.profileDetails!.user!.id;
+
+    var boxName = _kChatDataKey + message.senderId! + message.receiverId!;
+
+    if (message.senderId == currentUserId) {
+      boxName = _kChatDataKey + message.receiverId! + message.senderId!;
+    }
+
+    var key = message.id ?? message.tempId;
+
+    if (key == null) {
+      AppUtility.log('Key is null', tag: 'error');
+      return;
+    }
+
+    var isSameMessage = await checkIfMessageExistsInLocalDB(boxName, key);
+
+    if (isSameMessage) {
+      await HiveService.delete<ChatMessage>(boxName, key);
+      await HiveService.put<ChatMessage>(boxName, key, message);
+
+      return;
+    }
+
+    await HiveService.put<ChatMessage>(boxName, key, message);
+  }
+
+  /// Add message to last messages list
+  Future<void> addMessageToLastMessagesList(ChatMessage message) async {
+    var isExists = await checkIfMessageExistsInLastMessageList(message);
 
     if (isExists) {
-      var data = await HiveService.getAll<ChatMessage>('lastMessages');
-      data.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-      _lastMessageList.clear();
-      _lastMessageList.addAll(data.toList());
+      var index = _lastMessageList.indexWhere((element) =>
+          element.id == message.id ||
+          (element.tempId != null &&
+              message.tempId != null &&
+              element.tempId == message.tempId));
+
+      var tempMessage = _lastMessageList[index];
+      var updatedMessage = tempMessage.copyWith(
+        id: message.id,
+        sender: message.sender,
+        receiver: message.receiver,
+        replyTo: message.replyTo,
+        sent: message.sent,
+        sentAt: message.sentAt,
+        delivered: message.delivered,
+        deliveredAt: message.deliveredAt,
+        seen: message.seen,
+        seenAt: message.seenAt,
+        createdAt: message.createdAt,
+        updatedAt: message.updatedAt,
+      );
+      _lastMessageList[index] = updatedMessage;
+      _lastMessageList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
       update();
+
+      AppUtility.log('Last message added to list');
+
+      return;
     }
 
-    await _fetchLastMessages();
+    _lastMessageList.add(message);
+    _lastMessageList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+    update();
+
+    AppUtility.log('Last message added to list');
   }
 
   Future<void> _fetchLastMessages() async {
@@ -430,14 +581,8 @@ class ChatController extends GetxController {
       if (response.isSuccessful) {
         final decodedData = response.data;
         setLastMessageData = ChatMessageListResponse.fromJson(decodedData);
-        _lastMessageList.clear();
-        _lastMessageList.addAll(_lastMessageData.value.results!);
         for (var item in _lastMessageList) {
-          await HiveService.put<ChatMessage>(
-            'lastMessages',
-            item.id ?? item.tempId,
-            item,
-          );
+          await saveLastMessageToLocalDB(item);
         }
         _isLoading.value = false;
         update();
@@ -453,28 +598,28 @@ class ChatController extends GetxController {
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+      AppUtility.showSnackBar(
+        StringValues.somethingWentWrong,
+        StringValues.error,
+      );
     }
   }
 
-  Future<void> _loadMore({int? page}) async {
+  Future<void> _loadMore() async {
     _isMoreLoading.value = true;
     update();
 
+    var kPage = _lastMessageData.value.currentPage! + 1;
+
     try {
       final response =
-          await _apiProvider.getAllLastMessages(_auth.token, page: page);
+          await _apiProvider.getAllLastMessages(_auth.token, page: kPage);
 
       if (response.isSuccessful) {
         final decodedData = response.data;
         setLastMessageData = ChatMessageListResponse.fromJson(decodedData);
-        _lastMessageList.addAll(_lastMessageData.value.results!);
         for (var item in _lastMessageData.value.results!) {
-          await HiveService.put<ChatMessage>(
-            'lastMessages',
-            item.id ?? item.tempId,
-            item,
-          );
+          await saveLastMessageToLocalDB(item);
         }
         _isMoreLoading.value = false;
         update();
@@ -490,12 +635,16 @@ class ChatController extends GetxController {
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+      AppUtility.showSnackBar(
+        StringValues.somethingWentWrong,
+        StringValues.error,
+      );
     }
   }
 
+  Future<void> loadLocalMessages() async => await _loadLocalMessages();
+
   Future<void> fetchLastMessages() async => await _fetchLastMessages();
 
-  Future<void> loadMore() async =>
-      await _loadMore(page: _lastMessageData.value.currentPage! + 1);
+  Future<void> loadMore() async => await _loadMore();
 }

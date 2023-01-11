@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
@@ -7,7 +6,6 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -25,23 +23,40 @@ class PostThumbnailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => RouteManagement.goToPostDetailsView(post.id!, post),
-      onLongPress: () => _showHeaderOptionBottomSheet(post),
+      onLongPress: () => _showHeaderOptionBottomSheet(context),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Dimens.four),
-        child: Container(
-          color: Theme.of(context).dividerColor,
-          child: _buildBody(context),
-        ),
+        child: _buildBody(context),
       ),
     );
   }
 
   Widget _buildBody(BuildContext context) {
     if (post.postType! == "poll") {
-      return Center(
-        child: Text(
-          StringValues.poll,
-          style: AppStyles.style16Bold,
+      return Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).bottomAppBarColor,
+          borderRadius: BorderRadius.circular(Dimens.four),
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.poll_outlined,
+              size: Dimens.thirtyTwo,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+            Dimens.boxHeight4,
+            Text(
+              StringValues.poll,
+              style: AppStyles.style16Bold,
+            ),
+          ],
         ),
       );
     }
@@ -71,79 +86,61 @@ class PostThumbnailWidget extends StatelessWidget {
     );
   }
 
-  void _showHeaderOptionBottomSheet(Post post) => AppUtility.showBottomSheet(
+  void _showHeaderOptionBottomSheet(BuildContext context) =>
+      AppUtility.showBottomSheet(
         children: [
           if (post.owner!.id == ProfileController.find.profileDetails!.user!.id)
             ListTile(
-              onTap: () async {
+              onTap: () {
                 AppUtility.closeBottomSheet();
-                await _showDeletePostOptions(post.id!);
+                AppUtility.showDeleteDialog(
+                  context,
+                  () async {
+                    AppUtility.closeDialog();
+                    await Get.find<PostController>().deletePost(post.id!);
+                  },
+                );
               },
-              leading: const Icon(CupertinoIcons.delete),
+              leading: Icon(
+                Icons.delete,
+                color: Theme.of(context).textTheme.bodyText1!.color,
+                size: Dimens.twentyFour,
+              ),
               title: Text(
                 StringValues.delete,
-                style: AppStyles.style16Bold,
+                style: AppStyles.style16Bold.copyWith(
+                  color: Theme.of(context).textTheme.bodyText1!.color,
+                ),
               ),
             ),
           ListTile(
             onTap: AppUtility.closeBottomSheet,
-            leading: const Icon(CupertinoIcons.share),
+            leading: Icon(
+              Icons.share,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+              size: Dimens.twentyFour,
+            ),
             title: Text(
               StringValues.share,
-              style: AppStyles.style16Bold,
+              style: AppStyles.style16Bold.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
             ),
           ),
           ListTile(
             onTap: AppUtility.closeBottomSheet,
-            leading: const Icon(CupertinoIcons.reply),
+            leading: Icon(
+              Icons.report,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+              size: Dimens.twentyFour,
+            ),
             title: Text(
               StringValues.report,
-              style: AppStyles.style16Bold,
+              style: AppStyles.style16Bold.copyWith(
+                color: Theme.of(context).textTheme.bodyText1!.color,
+              ),
             ),
           ),
         ],
       );
-
-  Future<void> _showDeletePostOptions(String id) async {
-    AppUtility.showSimpleDialog(
-      Padding(
-        padding: Dimens.edgeInsets16,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              StringValues.deleteConfirmationText,
-              style: AppStyles.style14Normal,
-            ),
-            Dimens.boxHeight24,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                NxTextButton(
-                  label: StringValues.no,
-                  labelStyle: AppStyles.style16Bold.copyWith(
-                    color: ColorValues.errorColor,
-                  ),
-                  onTap: AppUtility.closeDialog,
-                  padding: Dimens.edgeInsets8,
-                ),
-                Dimens.boxWidth16,
-                NxTextButton(
-                  label: StringValues.yes,
-                  labelStyle: AppStyles.style16Bold.copyWith(
-                    color: ColorValues.successColor,
-                  ),
-                  onTap: () async {
-                    AppUtility.closeDialog();
-                    await Get.find<PostController>().deletePost(id);
-                  },
-                  padding: Dimens.edgeInsets8,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

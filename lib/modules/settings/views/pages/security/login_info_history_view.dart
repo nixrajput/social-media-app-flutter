@@ -10,6 +10,7 @@ import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
 import 'package:social_media_app/modules/settings/views/widgets/login_info_widget.dart';
 
@@ -18,24 +19,26 @@ class LoginInfoHistoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SizedBox(
-          width: Dimens.screenWidth,
-          height: Dimens.screenHeight,
-          child: NxRefreshIndicator(
-            onRefresh: LoginInfoController.find.getLoginHisory,
-            showProgress: false,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                NxAppBar(
-                  title: StringValues.loginActivity,
-                  padding: Dimens.edgeInsetsDefault,
-                ),
-                _buildBody(context),
-              ],
+    return UnFocusWidget(
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
+            width: Dimens.screenWidth,
+            height: Dimens.screenHeight,
+            child: NxRefreshIndicator(
+              onRefresh: LoginInfoController.find.getLoginHisory,
+              showProgress: false,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  NxAppBar(
+                    title: StringValues.loginActivity,
+                    padding: Dimens.edgeInsetsDefault,
+                  ),
+                  _buildBody(context),
+                ],
+              ),
             ),
           ),
         ),
@@ -112,7 +115,7 @@ class LoginInfoHistoryView extends StatelessWidget {
                         logic.loginHistoryData!.hasNextPage!,
                     loadMore: logic.loadMore,
                   ),
-                  Dimens.boxHeight16,
+                  Dimens.boxHeight8,
                   NxTextButton(
                     label: StringValues.logoutAllDevices,
                     onTap: () => logic.logoutAllOtherDevices(

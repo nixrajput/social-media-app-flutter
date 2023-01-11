@@ -40,9 +40,9 @@ class PostDetailsWidget extends StatelessWidget {
         controller is PostController ||
         controller is TrendingPostController);
     return Container(
-      margin: Dimens.edgeInsets8_0,
+      margin: Dimens.edgeInsets6_0,
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).bottomAppBarColor,
         borderRadius: BorderRadius.circular(Dimens.four),
         border: Border.all(
           color: Theme.of(context).dividerColor,
@@ -227,30 +227,43 @@ class PostDetailsWidget extends StatelessWidget {
               )
               .toList(),
         ),
-        Dimens.boxHeight2,
-        Padding(
-          padding: Dimens.edgeInsets0_8,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '${post.totalVotes!.toString().toCountingFormat()} votes',
-                style: AppStyles.style12Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+        Dimens.boxHeight4,
+        Flexible(
+          child: Padding(
+            padding: Dimens.edgeInsets0_8,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '${post.totalVotes!.toString().toCountingFormat()} votes',
+                  style: AppStyles.style12Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
                 ),
-              ),
-              Dimens.boxHeight4,
-              Text(
-                '${post.pollEndsAt!.getPollDurationLeft()}',
-                style: AppStyles.style12Normal.copyWith(
-                  color: isExpired
-                      ? Theme.of(context).textTheme.subtitle1!.color
-                      : ColorValues.linkColor,
+                Dimens.boxWidth4,
+                Container(
+                  width: Dimens.four,
+                  height: Dimens.four,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).disabledColor,
+                    shape: BoxShape.circle,
+                  ),
                 ),
-              ),
-            ],
+                Dimens.boxWidth4,
+                Flexible(
+                  child: Text(
+                    '${post.pollEndsAt!.getPollDurationLeft()}',
+                    style: AppStyles.style12Normal.copyWith(
+                      color: isExpired
+                          ? Theme.of(context).textTheme.subtitle1!.color
+                          : ColorValues.linkColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],

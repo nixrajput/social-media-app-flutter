@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
+import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/enums.dart';
@@ -14,6 +15,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/date_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/global_widgets/rive_asset_widget.dart';
 import 'package:social_media_app/global_widgets/swipeable_widget.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/chat/controllers/p2p_chat_controller.dart';
@@ -53,18 +55,15 @@ class _ChatBubbleState extends State<ChatBubble> {
     return decryptedMessage;
   }
 
-  Color _setBubbleColor(bool isSenderBubble) {
+  Color _setBubbleColor(bool isSenderBubble, BuildContext context) {
     if (isSenderBubble) {
-      return ColorValues.darkChatBubbleColor;
+      return ColorValues.primaryColor;
     }
-    return Theme.of(Get.context!).dialogBackgroundColor;
+    return Theme.of(context).dividerColor;
   }
 
-  Color _setMessageColor(bool isSenderBubble) {
-    if (isSenderBubble) {
-      return ColorValues.lightBgColor;
-    }
-    return Theme.of(Get.context!).textTheme.bodyText1!.color!;
+  Color _setMessageColor(bool isSenderBubble, BuildContext context) {
+    return Theme.of(context).textTheme.bodyText1!.color!;
   }
 
   EdgeInsets _setPadding(bool isSenderBubble) {
@@ -222,22 +221,7 @@ class _ChatBubbleState extends State<ChatBubble> {
             size: Dimens.sixTeen,
           ),
         if (isYourMessage && _setMessageStatus(isYourMessage) == 'Sending')
-          Padding(
-            padding: EdgeInsets.only(bottom: Dimens.eight),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                NxCircularProgressIndicator(
-                  size: Dimens.twenty,
-                  strokeWidth: Dimens.one,
-                  color: ColorValues.lightGrayColor,
-                ),
-                Dimens.boxWidth8,
-              ],
-            ),
-          ),
+          _buildMessageSendingIndicator(context),
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onLongPress: showChatDetailsAndOptions,
@@ -252,7 +236,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                   ? BubbleType.sendBubble
                   : BubbleType.receiverBubble,
             ),
-            color: _setBubbleColor(isYourMessage),
+            color: _setBubbleColor(isYourMessage, context),
             child: Container(
               margin: _setPadding(isYourMessage),
               decoration: BoxDecoration(
@@ -287,7 +271,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                         Text(
                           _decryptMessage(widget.message.message!),
                           style: AppStyles.style13Normal.copyWith(
-                            color: _setMessageColor(isYourMessage),
+                            color: _setMessageColor(isYourMessage, context),
                           ),
                         ),
                       ],
@@ -320,6 +304,29 @@ class _ChatBubbleState extends State<ChatBubble> {
             size: Dimens.sixTeen,
           ),
       ],
+    );
+  }
+
+  Padding _buildMessageSendingIndicator(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: Dimens.twelve),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: Dimens.twenty,
+            height: Dimens.twenty,
+            child: const RiveTimerAnimatedIcon(
+              asset: RiveAssets.icons,
+              artboard: 'TIMER',
+              initAnimation: 'active',
+            ),
+          ),
+          Dimens.boxWidth4,
+        ],
+      ),
     );
   }
 

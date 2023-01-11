@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:social_media_app/constants/dimens.dart';
 
 class NxRadioTile extends StatelessWidget {
-  const NxRadioTile(
-      {Key? key,
-      required this.onChanged,
-      this.value,
-      this.groupValue,
-      required this.title,
-      this.margin,
-      this.padding,
-      this.titleStyle,
-      this.activeColor,
-      this.onTap,
-      this.bgColor,
-      this.borderRadius,
-      this.subtitle})
-      : super(key: key);
+  const NxRadioTile({
+    Key? key,
+    required this.onChanged,
+    this.value,
+    this.groupValue,
+    required this.title,
+    this.margin,
+    this.padding,
+    this.titleStyle,
+    this.activeColor,
+    this.onTap,
+    this.bgColor,
+    this.borderRadius,
+    this.subtitle,
+    this.showBorder = false,
+  }) : super(key: key);
 
   final Function(dynamic) onChanged;
   final dynamic value;
@@ -30,6 +31,7 @@ class NxRadioTile extends StatelessWidget {
   final Function()? onTap;
   final Color? bgColor;
   final BorderRadius? borderRadius;
+  final bool? showBorder;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,12 @@ class NxRadioTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: bgColor ?? Colors.transparent,
           borderRadius: borderRadius ?? const BorderRadius.all(Radius.zero),
+          border: showBorder == true
+              ? Border.all(
+                  color: Theme.of(context).dividerColor,
+                  width: Dimens.pointEight,
+                )
+              : null,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -57,12 +65,6 @@ class NxRadioTile extends StatelessWidget {
                   if (subtitle != null) Dimens.boxHeight2,
                   if (subtitle != null) subtitle!
                 ],
-                // children: [
-                //   Text(
-                //     title,
-                //     style: titleStyle ?? AppStyles.style14Bold,
-                //   ),
-                // ],
               ),
             ),
             Expanded(
@@ -71,8 +73,9 @@ class NxRadioTile extends StatelessWidget {
                 value: value,
                 groupValue: groupValue,
                 onChanged: onChanged,
+                splashRadius: Dimens.four,
                 activeColor:
-                    activeColor ?? Theme.of(context).textTheme.bodyText1!.color,
+                    activeColor ?? Theme.of(context).colorScheme.primary,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
             ),

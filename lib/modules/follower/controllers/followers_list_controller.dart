@@ -83,7 +83,6 @@ class FollowersListController extends GetxController {
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
@@ -122,7 +121,6 @@ class FollowersListController extends GetxController {
     } catch (exc) {
       _isMoreLoading.value = false;
       update();
-      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
@@ -162,7 +160,6 @@ class FollowersListController extends GetxController {
     } catch (exc) {
       _isLoading.value = false;
       update();
-      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
@@ -225,7 +222,6 @@ class FollowersListController extends GetxController {
       }
     } catch (exc) {
       _toggleFollowUser(user);
-      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
@@ -254,7 +250,6 @@ class FollowersListController extends GetxController {
       }
     } catch (exc) {
       _toggleFollowUser(user);
-      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }

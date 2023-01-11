@@ -7,6 +7,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/load_more_widget.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/home/controllers/recommended_user_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/user_widget.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -16,36 +17,43 @@ class PeopleTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NxRefreshIndicator(
-      onRefresh: RecommendedUsersController.find.getUsers,
-      showProgress: false,
-      child: GetBuilder<RecommendedUsersController>(
-        builder: (logic) {
-          return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-            ),
-            child: Column(
-              children: [
-                Dimens.boxHeight8,
-                _buildSearchField(logic),
-                Dimens.boxHeight16,
-                _buildUserList(logic),
-                Dimens.boxHeight16,
-              ],
-            ),
-          );
-        },
+    return UnFocusWidget(
+      child: NxRefreshIndicator(
+        onRefresh: RecommendedUsersController.find.getUsers,
+        showProgress: false,
+        child: GetBuilder<RecommendedUsersController>(
+          builder: (logic) {
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              child: Column(
+                children: [
+                  Dimens.boxHeight8,
+                  _buildSearchField(logic, context),
+                  Dimens.boxHeight8,
+                  _buildUserList(logic),
+                  Dimens.boxHeight16,
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
 
-  TextFormField _buildSearchField(RecommendedUsersController logic) {
+  TextFormField _buildSearchField(
+      RecommendedUsersController logic, BuildContext context) {
     return TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(Dimens.eight),
+          borderRadius: BorderRadius.circular(Dimens.four),
           gapPadding: Dimens.zero,
+          borderSide: BorderSide(
+            color: Theme.of(context).dividerColor,
+            width: Dimens.pointEight,
+          ),
         ),
         contentPadding: Dimens.edgeInsets4_8,
         constraints: BoxConstraints(
@@ -145,7 +153,6 @@ class PeopleTab extends StatelessWidget {
               logic.recommendedUsersData!.hasNextPage!,
           loadMore: logic.loadMore,
         ),
-        Dimens.boxHeight16,
       ],
     );
   }

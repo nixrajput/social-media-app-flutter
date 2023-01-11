@@ -70,7 +70,7 @@ class NotificationTabView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Dimens.boxHeight(Dimens.screenHeight * 0.25),
+                  Dimens.heightedBox(Dimens.screenHeight * 0.25),
                   Text(
                     StringValues.noNotifications,
                     style: AppStyles.style32Bold.copyWith(
@@ -108,8 +108,9 @@ class NotificationTabView extends StatelessWidget {
                       const NxCircularProgressIndicator(),
                     ],
                   ),
+                if (profile.isPrivate) Dimens.boxHeight8,
                 if (profile.isPrivate) _buildFollowRequestBtn(context),
-                if (!profile.isPrivate) Dimens.boxHeight8,
+                if (profile.isPrivate) Dimens.boxHeight8,
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: logic.notificationList.length,
@@ -142,8 +143,19 @@ class NotificationTabView extends StatelessWidget {
   GetBuilder<FollowRequestController> _buildFollowRequestBtn(
       BuildContext context) {
     return GetBuilder<FollowRequestController>(
-      builder: (logic) => Padding(
-        padding: Dimens.edgeInsetsVertDefault,
+      builder: (logic) => Container(
+        padding: Dimens.edgeInsets8,
+        constraints: BoxConstraints(
+          maxWidth: Dimens.screenWidth,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(Dimens.four),
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+            width: Dimens.pointEight,
+          ),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -213,7 +225,6 @@ class NotificationTabView extends StatelessWidget {
                 ],
               ),
             ),
-            Dimens.boxHeight8,
           ],
         ),
       ),

@@ -22,41 +22,48 @@ class TrendingTabView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TabBar(
-                    controller: logic.controller,
-                    tabs: logic.tabs,
-                    indicatorWeight: Dimens.two,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    unselectedLabelColor:
-                        Theme.of(context).textTheme.subtitle1!.color,
-                    labelColor: ColorValues.primaryColor,
-                    labelStyle: AppStyles.style14Bold.copyWith(
-                      color: ColorValues.primaryColor,
-                    ),
-                    unselectedLabelStyle: AppStyles.style16Bold.copyWith(
-                      color: ColorValues.grayColor,
-                    ),
-                    labelPadding: Dimens.edgeInsets0,
-                    padding: Dimens.edgeInsetsHorizDefault,
-                    indicatorPadding: Dimens.edgeInsets0,
-                    indicatorColor: ColorValues.primaryColor,
-                  ),
+                  _buildTabBar(logic, context),
                   Dimens.boxHeight8,
-                  Expanded(
-                    child: Padding(
-                      padding: Dimens.edgeInsetsHorizDefault,
-                      child: TabBarView(
-                        controller: logic.controller,
-                        children: logic.tabViews,
-                      ),
-                    ),
-                  ),
+                  _buildTabBarView(logic),
                 ],
               );
             },
           ),
         ),
       ),
+    );
+  }
+
+  Expanded _buildTabBarView(TrendingTabController logic) {
+    return Expanded(
+      child: Padding(
+        padding: Dimens.edgeInsetsHorizDefault,
+        child: TabBarView(
+          controller: logic.controller,
+          children: logic.tabViews,
+        ),
+      ),
+    );
+  }
+
+  TabBar _buildTabBar(TrendingTabController logic, BuildContext context) {
+    return TabBar(
+      controller: logic.controller,
+      tabs: logic.tabs,
+      indicatorWeight: Dimens.two,
+      indicatorSize: TabBarIndicatorSize.label,
+      unselectedLabelColor: Theme.of(context).textTheme.subtitle1!.color,
+      labelColor: ColorValues.primaryColor,
+      labelStyle: AppStyles.style14Bold.copyWith(
+        color: ColorValues.primaryColor,
+      ),
+      unselectedLabelStyle: AppStyles.style16Bold.copyWith(
+        color: ColorValues.grayColor,
+      ),
+      labelPadding: Dimens.edgeInsets0,
+      padding: Dimens.edgeInsetsHorizDefault,
+      indicatorPadding: Dimens.edgeInsets0,
+      indicatorColor: ColorValues.primaryColor,
     );
   }
 }

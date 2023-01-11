@@ -34,7 +34,7 @@ class LoadMoreWidget extends StatelessWidget {
               label: StringValues.loadMore,
               onTap: loadMore,
               labelStyle: AppStyles.style14Bold.copyWith(
-                color: ColorValues.primaryLightColor,
+                color: ColorValues.linkColor,
               ),
               padding: Dimens.edgeInsets8_0,
             ),

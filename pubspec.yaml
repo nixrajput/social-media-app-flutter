@@ -18,7 +18,8 @@ dependencies:
   package_info_plus: ^3.0.2
   geolocator: ^9.0.2
   geocoding: ^2.0.5
-  talker: ^2.2.1
+
+  talker_flutter: ^2.2.1
 
   image_picker: ^0.8.6
   image_cropper: ^3.0.1
@@ -44,13 +45,11 @@ dependencies:
   url_launcher: ^6.1.7
   flutter_linkify: ^5.0.2
   share_plus: ^6.3.0
-  flutter_email_sender: ^5.2.0
 
   flutter_local_notifications: ^13.0.0
   firebase_core: ^2.4.1
   firebase_messaging: ^14.2.1
 
-  convex_bottom_bar: ^3.1.0+1
   better_player: ^0.0.83
   emoji_picker_flutter: ^1.5.1
   path: ^1.8.2

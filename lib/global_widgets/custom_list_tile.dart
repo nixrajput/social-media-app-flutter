@@ -16,6 +16,7 @@ class NxListTile extends StatelessWidget {
     this.leadingFlex,
     this.titleFlex,
     this.trailingFlex,
+    this.showBorder = true,
   }) : super(key: key);
 
   final Widget? leading;
@@ -30,6 +31,7 @@ class NxListTile extends StatelessWidget {
   final int? leadingFlex;
   final int? titleFlex;
   final int? trailingFlex;
+  final bool? showBorder;
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +47,19 @@ class NxListTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: bgColor ?? Theme.of(context).dialogTheme.backgroundColor,
           borderRadius: borderRadius ?? BorderRadius.circular(Dimens.zero),
+          border: showBorder == true
+              ? Border.all(
+                  color: Theme.of(context).dividerColor,
+                  width: Dimens.pointEight,
+                )
+              : null,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -76,7 +84,7 @@ class NxListTile extends StatelessWidget {
                 ],
               ),
             ),
-            if (trailing != null) const Spacer(),
+            if (trailing != null) Dimens.boxWidth12,
             if (trailing != null)
               Expanded(
                 flex: trailingFlex ?? 0,

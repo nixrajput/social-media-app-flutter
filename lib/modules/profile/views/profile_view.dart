@@ -76,6 +76,9 @@ class ProfileView extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).bottomAppBarColor,
                   shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Theme.of(context).dividerColor,
+                  ),
                 ),
                 child: Icon(
                   Icons.menu,
@@ -97,6 +100,7 @@ class ProfileView extends StatelessWidget {
           NxListTile(
             bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.account_circle_outlined,
               size: Dimens.twentyFour,
@@ -116,6 +120,7 @@ class ProfileView extends StatelessWidget {
           NxListTile(
             bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.verified_user_outlined,
               size: Dimens.twentyFour,
@@ -135,6 +140,7 @@ class ProfileView extends StatelessWidget {
           NxListTile(
             bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.lock_outline,
               size: Dimens.twentyFour,
@@ -154,6 +160,7 @@ class ProfileView extends StatelessWidget {
           NxListTile(
             bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.help_outline_outlined,
               size: Dimens.twentyFour,
@@ -173,6 +180,7 @@ class ProfileView extends StatelessWidget {
           NxListTile(
             bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.palette_outlined,
               size: Dimens.twentyFour,
@@ -192,6 +200,7 @@ class ProfileView extends StatelessWidget {
           NxListTile(
             bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.info_outline,
               size: Dimens.twentyFour,
@@ -211,6 +220,7 @@ class ProfileView extends StatelessWidget {
           NxListTile(
             bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.loop_outlined,
               size: Dimens.twentyFour,
@@ -230,6 +240,7 @@ class ProfileView extends StatelessWidget {
           NxListTile(
             bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.logout_outlined,
               size: Dimens.twentyFour,
@@ -407,10 +418,9 @@ class ProfileView extends StatelessWidget {
     return NxOutlinedButton(
       label: StringValues.editProfile.toTitleCase(),
       width: Dimens.screenWidth,
-      height: Dimens.thirtySix,
-      padding: Dimens.edgeInsets0_8,
+      padding: Dimens.edgeInsets8,
       borderRadius: Dimens.four,
-      borderWidth: Dimens.one,
+      borderWidth: Dimens.pointEight,
       labelStyle: AppStyles.style14Normal.copyWith(
         color: Theme.of(context).textTheme.bodyText1!.color,
       ),
@@ -524,7 +534,9 @@ class ProfileView extends StatelessWidget {
         children: [
           /// View Profile Picture
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.image_outlined,
               size: Dimens.twentyFour,
@@ -546,7 +558,9 @@ class ProfileView extends StatelessWidget {
 
           /// Change Profile Picture
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.camera_alt_outlined,
               size: Dimens.twentyFour,
@@ -564,7 +578,9 @@ class ProfileView extends StatelessWidget {
 
           /// Remove Profile Picture
           NxListTile(
+            bgColor: ColorValues.transparent,
             padding: Dimens.edgeInsets12,
+            showBorder: false,
             leading: Icon(
               Icons.delete_outline,
               size: Dimens.twentyFour,

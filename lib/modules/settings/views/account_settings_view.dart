@@ -6,6 +6,7 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
+import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -127,10 +128,16 @@ class AccountSettingsView extends StatelessWidget {
                 style: AppStyles.style14Bold,
               ),
               subtitle: Text(
-                profile.isVerified ? StringValues.yes : StringValues.no,
+                StringValues.verifiedDesc,
                 style: AppStyles.style13Normal.copyWith(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
+                ),
+              ),
+              trailing: Text(
+                profile.isVerified ? StringValues.yes : StringValues.no,
+                style: AppStyles.style13Bold.copyWith(
                   color: profile.isVerified
-                      ? ColorValues.primaryColor
+                      ? Theme.of(context).colorScheme.primary
                       : Theme.of(context).textTheme.subtitle1!.color,
                 ),
               ),
@@ -140,10 +147,10 @@ class AccountSettingsView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Dimens.boxHeight16,
+                      Dimens.boxHeight12,
                       Icon(
                         Icons.verified,
-                        color: ColorValues.primaryColor,
+                        color: Theme.of(context).colorScheme.primary,
                         size: Dimens.sixty,
                       ),
                       Dimens.boxHeight16,
@@ -159,7 +166,14 @@ class AccountSettingsView extends StatelessWidget {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      Dimens.boxHeight16,
+                      Dimens.boxHeight12,
+                      NxFilledButton(
+                        label:
+                            '${StringValues.remove} ${StringValues.verification}',
+                        padding: Dimens.edgeInsets12,
+                        onTap: AppUtility.closeBottomSheet,
+                      ),
+                      Dimens.boxHeight12,
                     ],
                   );
                   return;

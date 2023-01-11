@@ -42,6 +42,12 @@ abstract class HiveService {
     return box.get(key);
   }
 
+  static Future<E?> find<E>(String boxName, dynamic key) async {
+    final box = await _openBox<E>(boxName);
+
+    return box.get(key);
+  }
+
   static Future<Map<String, dynamic>> getBox<E>(String boxName) async {
     final box = await _openBox<E>(boxName);
     return box.toMap() as Map<String, dynamic>;

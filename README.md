@@ -127,11 +127,11 @@ This project is licensed under the GPL-3.0 License - see the
 
 ## Connect With Me
 
-[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Instagram&logoColor=fff)][instagram]
-[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Linkedin&logoColor=fff)][linkedin]
-[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Github&logoColor=fff)][github]
-[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Twitter&logoColor=fff)][twitter]
-[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput-282C34?style=for-the-badge&logo=Facebook&logoColor=fff)][facebook]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Instagram&logoColor=fff)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Linkedin&logoColor=fff)][linkedin]
+[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Github&logoColor=fff)][github]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-141430?logo=Twitter&logoColor=fff)][twitter]
+[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput07-141430?logo=Facebook&logoColor=fff)][facebook]
 
 [github]: https://github.com/nixrajput
 [website]: https://nixlab.co.in

@@ -7,7 +7,6 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
@@ -159,21 +158,6 @@ class FollowersListView extends StatelessWidget {
                 }
                 logic.followUnfollowUser(item);
               },
-              extraActions:
-                  logic.userId == logic.profile.profileDetails!.user!.id
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Dimens.boxWidth8,
-                            NxIconButton(
-                              icon: Icons.close,
-                              iconSize: Dimens.twenty,
-                              onTap: () {},
-                            ),
-                          ],
-                        )
-                      : Dimens.shrinkedBox,
             );
           },
         ),

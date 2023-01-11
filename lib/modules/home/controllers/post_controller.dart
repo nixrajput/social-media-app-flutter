@@ -39,7 +39,7 @@ class PostController extends GetxController {
 
   set setPostData(PostResponse value) => _postData.value = value;
 
-  Future<void> _init() async {
+  Future<void> _loadLocalPosts() async {
     var isExists = await HiveService.hasLength<Post>('posts');
     if (isExists) {
       var data = await HiveService.getAll<Post>('posts');
@@ -288,7 +288,7 @@ class PostController extends GetxController {
     }
   }
 
-  Future<void> init() async => await _init();
+  Future<void> loadLocalPosts() async => await _loadLocalPosts();
 
   Future<void> fetchPosts() async => await _fetchPosts();
 

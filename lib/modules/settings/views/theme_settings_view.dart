@@ -8,6 +8,10 @@ import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_radio_tile.dart';
 
+const String kSystemMode = 'system';
+const String kLightMode = 'light';
+const String kDarkMode = 'dark';
+
 class ThemeSettingsView extends StatelessWidget {
   const ThemeSettingsView({Key? key}) : super(key: key);
 
@@ -50,9 +54,10 @@ class ThemeSettingsView extends StatelessWidget {
                 /// System
                 NxRadioTile(
                   padding: Dimens.edgeInsets12,
+                  showBorder: true,
                   bgColor: Theme.of(context).bottomAppBarColor,
                   borderRadius: BorderRadius.circular(Dimens.four),
-                  onTap: () => logic.setThemeMode(AppThemeModes.system),
+                  onTap: () => logic.setThemeMode(kSystemMode),
                   onChanged: (value) {
                     logic.setThemeMode(value);
                   },
@@ -66,7 +71,7 @@ class ThemeSettingsView extends StatelessWidget {
                       color: Theme.of(context).textTheme.subtitle1!.color,
                     ),
                   ),
-                  value: AppThemeModes.system,
+                  value: kSystemMode,
                   groupValue: logic.themeMode,
                 ),
 
@@ -75,9 +80,10 @@ class ThemeSettingsView extends StatelessWidget {
                 /// Light
                 NxRadioTile(
                   padding: Dimens.edgeInsets12,
+                  showBorder: true,
                   bgColor: Theme.of(context).bottomAppBarColor,
                   borderRadius: BorderRadius.circular(Dimens.four),
-                  onTap: () => logic.setThemeMode(AppThemeModes.light),
+                  onTap: () => logic.setThemeMode(kLightMode),
                   onChanged: (value) {
                     logic.setThemeMode(value);
                   },
@@ -91,7 +97,7 @@ class ThemeSettingsView extends StatelessWidget {
                       color: Theme.of(context).textTheme.subtitle1!.color,
                     ),
                   ),
-                  value: AppThemeModes.light,
+                  value: kLightMode,
                   groupValue: logic.themeMode,
                 ),
 
@@ -100,9 +106,10 @@ class ThemeSettingsView extends StatelessWidget {
                 /// Dark
                 NxRadioTile(
                   padding: Dimens.edgeInsets12,
+                  showBorder: true,
                   bgColor: Theme.of(context).bottomAppBarColor,
                   borderRadius: BorderRadius.circular(Dimens.four),
-                  onTap: () => logic.setThemeMode(AppThemeModes.dark),
+                  onTap: () => logic.setThemeMode(kDarkMode),
                   onChanged: (value) {
                     logic.setThemeMode(value);
                   },
@@ -116,7 +123,7 @@ class ThemeSettingsView extends StatelessWidget {
                       color: Theme.of(context).textTheme.subtitle1!.color,
                     ),
                   ),
-                  value: AppThemeModes.dark,
+                  value: kDarkMode,
                   groupValue: logic.themeMode,
                 ),
               ],

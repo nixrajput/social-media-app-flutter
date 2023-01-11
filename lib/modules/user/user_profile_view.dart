@@ -71,6 +71,9 @@ class UserProfileView extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).bottomAppBarColor,
                   shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Theme.of(context).dividerColor,
+                  ),
                 ),
                 child: Icon(
                   Icons.more_vert,
@@ -276,7 +279,7 @@ class UserProfileView extends StatelessWidget {
 
   Color getButtonColor(String status, BuildContext context) {
     if (status == "following" || status == "requested") {
-      return Theme.of(context).bottomAppBarColor;
+      return Theme.of(context).dividerColor;
     }
 
     return ColorValues.primaryColor;
@@ -284,7 +287,7 @@ class UserProfileView extends StatelessWidget {
 
   Color getBorderColor(String status, BuildContext context) {
     if (status == "following" || status == "requested") {
-      return Theme.of(context).bottomAppBarColor;
+      return Theme.of(context).dividerColor;
     }
 
     return ColorValues.primaryColor;
@@ -304,9 +307,9 @@ class UserProfileView extends StatelessWidget {
       return NxOutlinedButton(
         label: StringValues.editProfile.toTitleCase(),
         width: Dimens.screenWidth,
-        height: Dimens.thirtySix,
-        padding: Dimens.edgeInsets0_8,
+        padding: Dimens.edgeInsets8,
         borderRadius: Dimens.four,
+        borderWidth: Dimens.pointEight,
         labelStyle: AppStyles.style14Normal.copyWith(
           color: Theme.of(context).textTheme.bodyText1!.color,
         ),
@@ -317,10 +320,9 @@ class UserProfileView extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: NxOutlinedButton(
+          child: NxFilledButton(
             label: getFollowStatus(user.followingStatus, context),
             bgColor: getButtonColor(user.followingStatus, context),
-            borderColor: getBorderColor(user.followingStatus, context),
             onTap: () {
               if (user.followingStatus == "requested") {
                 logic.cancelFollowRequest(user);
@@ -328,10 +330,9 @@ class UserProfileView extends StatelessWidget {
               }
               logic.followUnfollowUser(user);
             },
-            padding: Dimens.edgeInsets0_8,
+            padding: Dimens.edgeInsets8,
             width: Dimens.screenWidth,
             borderRadius: Dimens.four,
-            height: Dimens.thirtySix,
             labelStyle: AppStyles.style14Normal.copyWith(
               color: getLabelColor(user.followingStatus, context),
             ),
@@ -345,10 +346,9 @@ class UserProfileView extends StatelessWidget {
           Expanded(
             child: NxFilledButton(
               label: StringValues.message.toTitleCase(),
-              bgColor: Theme.of(context).bottomAppBarColor,
+              bgColor: Theme.of(context).dividerColor,
               width: Dimens.screenWidth,
-              height: Dimens.thirtySix,
-              padding: Dimens.edgeInsets0_8,
+              padding: Dimens.edgeInsets8,
               borderRadius: Dimens.four,
               labelStyle: AppStyles.style14Normal.copyWith(
                 color: Theme.of(context).textTheme.bodyText1!.color,

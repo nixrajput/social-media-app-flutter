@@ -13,11 +13,19 @@ class NetworkController {
   var isConnected = false;
   var isInitialized = false;
 
-  StreamSubscription<dynamic>? _streamSubscription;
   final _connectivity = Connectivity();
+
+  StreamSubscription<dynamic>? _streamSubscription;
+
+  final StreamController<bool> _connectionStatusController =
+      StreamController<bool>.broadcast();
+
+  Stream<bool> get connectionStatus =>
+      _connectionStatusController.stream.asBroadcastStream();
 
   close() {
     _streamSubscription?.cancel();
+    _connectionStatusController.close();
     isInitialized = false;
   }
 
@@ -38,12 +46,15 @@ class NetworkController {
         _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
       if (result == ConnectivityResult.mobile) {
         isConnected = true;
+        _connectionStatusController.add(true);
         AppUtility.log('Internet Connection Available');
       } else if (result == ConnectivityResult.wifi) {
         isConnected = true;
+        _connectionStatusController.add(true);
         AppUtility.log('Internet Connection Available');
       } else {
         isConnected = false;
+        _connectionStatusController.add(false);
         AppUtility.log('No Internet Connection');
       }
     });

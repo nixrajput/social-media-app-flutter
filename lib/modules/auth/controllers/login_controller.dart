@@ -117,7 +117,7 @@ class LoginController extends GetxController {
             StringValues.success,
           );
 
-          await _postService.init();
+          await _postService.loadLocalPosts();
           await _postService.getData();
         } catch (e) {
           AppUtility.log("Error: $e");
