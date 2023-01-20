@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/home/controllers/tab_controller.dart';
 
 class TrendingTabView extends StatelessWidget {
@@ -11,25 +10,23 @@ class TrendingTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UnFocusWidget(
-      child: SafeArea(
-        child: SizedBox(
-          width: Dimens.screenWidth,
-          height: Dimens.screenHeight,
-          child: GetBuilder<TrendingTabController>(
-            builder: (logic) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTabBar(logic, context),
-                  Dimens.boxHeight8,
-                  _buildTabBarView(logic),
-                ],
-              );
-            },
-          ),
-        ),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
+      width: Dimens.screenWidth,
+      height: Dimens.screenHeight,
+      child: GetBuilder<TrendingTabController>(
+        builder: (logic) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildTabBar(logic, context),
+              Dimens.boxHeight8,
+              _buildTabBarView(logic),
+            ],
+          );
+        },
       ),
     );
   }

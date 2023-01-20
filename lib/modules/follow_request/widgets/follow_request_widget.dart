@@ -40,16 +40,18 @@ class FollowRequestWidget extends StatelessWidget {
       onTap: onTap ??
           () => RouteManagement.goToUserProfileView(followRequest.from.id),
       child: Container(
-        margin: index != (totalLength - 1)
-            ? Dimens.edgeInsetsOnlyBottom16
-            : Dimens.edgeInsets0,
-        padding: padding ?? Dimens.edgeInsets0,
+        margin: Dimens.edgeInsets6_0,
+        padding: padding ?? Dimens.edgeInsets8,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: bgColor ?? Colors.transparent,
-          borderRadius: BorderRadius.circular(borderRadius ?? Dimens.zero),
+          color: Theme.of(context).bottomAppBarColor,
+          borderRadius: BorderRadius.circular(Dimens.four),
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+            width: Dimens.pointEight,
+          ),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

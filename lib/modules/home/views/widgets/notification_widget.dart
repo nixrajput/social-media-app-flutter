@@ -38,7 +38,7 @@ class NotificationWidget extends StatelessWidget {
       },
       onLongPress: () => _showDeletePostOptions(context),
       child: Container(
-        margin: Dimens.edgeInsets6_0,
+        margin: Dimens.edgeInsets8_0,
         padding: Dimens.edgeInsets8,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
@@ -46,10 +46,7 @@ class NotificationWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).bottomAppBarColor,
           borderRadius: BorderRadius.circular(Dimens.four),
-          border: Border.all(
-            color: Theme.of(context).dividerColor,
-            width: Dimens.pointEight,
-          ),
+          boxShadow: AppStyles.defaultShadow,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

@@ -86,7 +86,7 @@ class TrendingPostsTab extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const NxCircularProgressIndicator(),
+          const Center(child: NxCircularProgressIndicator()),
           Dimens.boxHeight8,
         ],
       );

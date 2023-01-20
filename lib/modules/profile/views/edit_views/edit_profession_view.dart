@@ -100,7 +100,7 @@ class EditProfessionView extends StatelessWidget {
     AppUtility.showBottomSheet(
       children: [
         Padding(
-          padding: Dimens.edgeInsets8_16,
+          padding: Dimens.edgeInsetsDefault,
           child: Text(
             '${StringValues.select} ${StringValues.profession}',
             style: AppStyles.style18Bold.copyWith(
@@ -110,22 +110,15 @@ class EditProfessionView extends StatelessWidget {
         ),
         Dimens.boxHeight8,
         Expanded(
-          child: StatefulBuilder(
-            builder: (ctx, setInnerState) => Column(
-              children: [
-                Container(
-                  height: Dimens.fiftySix,
-                  margin: Dimens.edgeInsets0_16,
-                  constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                  child: TextFormField(
+          child: Padding(
+            padding: Dimens.edgeInsetsHorizDefault,
+            child: StatefulBuilder(
+              builder: (ctx, setInnerState) => Column(
+                children: [
+                  TextFormField(
                     decoration: InputDecoration(
                       hintText: StringValues.search,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(Dimens.eight),
-                      ),
-                      hintStyle: AppStyles.style14Normal.copyWith(
-                        color: ColorValues.grayColor,
-                      ),
+                      fillColor: Theme.of(Get.context!).scaffoldBackgroundColor,
                     ),
                     maxLines: 1,
                     keyboardType: TextInputType.text,
@@ -148,60 +141,63 @@ class EditProfessionView extends StatelessWidget {
                       setInnerState(() {});
                     },
                   ),
-                ),
-                Dimens.boxHeight8,
-                Expanded(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: occupationList
-                              .map(
-                                (e) => NxListTile(
-                                  title: Text(
-                                    e.toTitleCase(),
-                                    style: AppStyles.style14Normal.copyWith(
-                                      color: Theme.of(Get.context!)
-                                          .textTheme
-                                          .bodyText1!
-                                          .color,
+                  Dimens.boxHeight8,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: Dimens.edgeInsetsHorizDefault,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: occupationList
+                                .map(
+                                  (e) => NxListTile(
+                                    showBorder: false,
+                                    padding: Dimens.edgeInsets8_0,
+                                    title: Text(
+                                      e.toTitleCase(),
+                                      style: AppStyles.style14Bold.copyWith(
+                                        color: Theme.of(Get.context!)
+                                            .textTheme
+                                            .bodyText1!
+                                            .color,
+                                      ),
                                     ),
+                                    onTap: () {
+                                      Get.back();
+                                      EditProfessionController.find
+                                          .onProfessionChanged(e);
+                                    },
                                   ),
-                                  onTap: () {
-                                    Get.back();
-                                    Get.find<EditProfessionController>()
-                                        .onProfessionChanged(e);
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: Dimens.edgeInsets8_16,
-                            child: NxTextButton(
-                              label: 'Load more',
-                              onTap: () {
-                                lastIndex += 20;
-                                occupationList = StaticData.occupationList
-                                    .sublist(1, lastIndex);
-                                setInnerState(() {});
-                              },
+                                )
+                                .toList(),
+                          ),
+                          Center(
+                            child: Padding(
+                              padding: Dimens.edgeInsets8_16,
+                              child: NxTextButton(
+                                label: 'Load more',
+                                onTap: () {
+                                  lastIndex += 20;
+                                  occupationList = StaticData.occupationList
+                                      .sublist(1, lastIndex);
+                                  setInnerState(() {});
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         )

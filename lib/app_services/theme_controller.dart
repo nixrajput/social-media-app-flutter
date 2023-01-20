@@ -3,9 +3,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/services/hive_service.dart';
-import 'package:social_media_app/utils/utility.dart';
 
 const String kThemeModeBox = 'themeMode';
 const String kThemeModeKey = 'themeMode';
@@ -28,8 +28,6 @@ class AppThemeController extends GetxController {
 
   void getSystemChromeData() {
     var themeBrightness = SchedulerBinding.instance.window.platformBrightness;
-
-    AppUtility.log('themeBrightness: $themeBrightness, themeMode: $themeMode');
 
     if (themeMode == kLightMode) {
       SystemChrome.setSystemUIOverlayStyle(
@@ -81,6 +79,7 @@ class AppThemeController extends GetxController {
   }
 
   ThemeData getLightThemeData() {
+    getSystemChromeData();
     return ThemeData(
       useMaterial3: true,
       colorSchemeSeed: ColorValues.primaryColor,
@@ -88,7 +87,7 @@ class AppThemeController extends GetxController {
       scaffoldBackgroundColor: ColorValues.lightBgColor,
       appBarTheme: const AppBarTheme(backgroundColor: ColorValues.lightBgColor),
       bottomAppBarColor: ColorValues.lightDialogColor,
-      shadowColor: ColorValues.lightShadowColor.withOpacity(0.1),
+      shadowColor: ColorValues.shadowColor.withAlpha(12),
       cardTheme: const CardTheme(color: ColorValues.lightBgColor),
       dialogTheme:
           const DialogTheme(backgroundColor: ColorValues.lightDialogColor),
@@ -112,22 +111,81 @@ class AppThemeController extends GetxController {
           elevation: MaterialStateProperty.all(0.0),
         ),
       ),
+      fontFamily: 'Lato',
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: ColorValues.lightDialogColor,
+        constraints: BoxConstraints(
+          minHeight: Dimens.fiftySix,
+          maxWidth: Dimens.screenWidth,
+        ),
+        labelStyle: AppStyles.style14Normal.copyWith(
+          color: ColorValues.lightBodyTextColor,
+        ),
+        floatingLabelStyle: AppStyles.style14Normal.copyWith(
+          color: ColorValues.lightBodyTextColor.withAlpha(140),
+        ),
+        hintStyle: AppStyles.style14Normal.copyWith(
+          color: ColorValues.lightBodyTextColor.withAlpha(140),
+        ),
+        errorStyle: AppStyles.style14Normal.copyWith(
+          color: ColorValues.errorColor,
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.lightDividerColor,
+            width: Dimens.pointFour,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.lightDividerColor.withAlpha(20),
+            width: Dimens.pointFour,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.lightDividerColor,
+            width: Dimens.pointFour,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.primaryColor,
+            width: Dimens.pointEight,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.errorColor,
+            width: Dimens.pointEight,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.errorColor,
+            width: Dimens.pointEight,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+      ),
       textTheme: const TextTheme().copyWith(
         bodyText1: const TextStyle(
           color: ColorValues.lightBodyTextColor,
-          fontFamily: 'Lato',
         ),
         bodyText2: const TextStyle(
           color: ColorValues.lightBodyTextColor,
-          fontFamily: 'Lato',
         ),
-        subtitle1: const TextStyle(
-          color: ColorValues.lightSubtitleTextColor,
-          fontFamily: 'Lato',
+        subtitle1: TextStyle(
+          color: ColorValues.lightBodyTextColor.withAlpha(180),
         ),
-        subtitle2: const TextStyle(
-          color: ColorValues.lightSubtitle2TextColor,
-          fontFamily: 'Lato',
+        subtitle2: TextStyle(
+          color: ColorValues.lightBodyTextColor.withAlpha(140),
         ),
       ),
       brightness: Brightness.light,
@@ -136,12 +194,13 @@ class AppThemeController extends GetxController {
   }
 
   ThemeData getDarkThemeData() {
+    getSystemChromeData();
     return ThemeData(
       useMaterial3: true,
       colorSchemeSeed: ColorValues.primaryColor,
       iconTheme: const IconThemeData(color: ColorValues.darkGrayColor),
       scaffoldBackgroundColor: ColorValues.darkBgColor,
-      shadowColor: ColorValues.darkShadowColor.withOpacity(0.1),
+      shadowColor: ColorValues.shadowColor.withAlpha(12),
       appBarTheme: const AppBarTheme(backgroundColor: ColorValues.darkBgColor),
       bottomAppBarColor: ColorValues.darkDialogColor,
       cardTheme: const CardTheme(color: ColorValues.darkDialogColor),
@@ -167,22 +226,81 @@ class AppThemeController extends GetxController {
           elevation: MaterialStateProperty.all(0.0),
         ),
       ),
+      fontFamily: 'Lato',
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: ColorValues.darkDialogColor,
+        constraints: BoxConstraints(
+          minHeight: Dimens.fiftySix,
+          maxWidth: Dimens.screenWidth,
+        ),
+        labelStyle: AppStyles.style14Normal.copyWith(
+          color: ColorValues.darkBodyTextColor,
+        ),
+        floatingLabelStyle: AppStyles.style14Normal.copyWith(
+          color: ColorValues.darkBodyTextColor.withAlpha(140),
+        ),
+        hintStyle: AppStyles.style14Normal.copyWith(
+          color: ColorValues.darkBodyTextColor.withAlpha(140),
+        ),
+        errorStyle: AppStyles.style14Normal.copyWith(
+          color: ColorValues.errorColor,
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.darkDividerColor,
+            width: Dimens.pointFour,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+        disabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.darkDividerColor,
+            width: Dimens.pointFour,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.darkDividerColor,
+            width: Dimens.pointFour,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.primaryColor,
+            width: Dimens.pointEight,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.errorColor,
+            width: Dimens.pointEight,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: ColorValues.errorColor,
+            width: Dimens.pointEight,
+          ),
+          borderRadius: BorderRadius.circular(Dimens.four),
+        ),
+      ),
       textTheme: const TextTheme().copyWith(
         bodyText1: const TextStyle(
           color: ColorValues.darkBodyTextColor,
-          fontFamily: 'Lato',
         ),
         bodyText2: const TextStyle(
           color: ColorValues.darkBodyTextColor,
-          fontFamily: 'Lato',
         ),
-        subtitle1: const TextStyle(
-          color: ColorValues.darkSubtitleTextColor,
-          fontFamily: 'Lato',
+        subtitle1: TextStyle(
+          color: ColorValues.darkBodyTextColor.withAlpha(180),
         ),
-        subtitle2: const TextStyle(
-          color: ColorValues.darkSubtitle2TextColor,
-          fontFamily: 'Lato',
+        subtitle2: TextStyle(
+          color: ColorValues.darkBodyTextColor.withAlpha(140),
         ),
       ),
       brightness: Brightness.dark,
@@ -193,7 +311,6 @@ class AppThemeController extends GetxController {
   void setThemeMode(String mode) async {
     _themeMode.value = mode;
     await HiveService.put<String>(kThemeModeBox, kThemeModeKey, mode);
-    getSystemChromeData();
     update();
   }
 
@@ -214,8 +331,6 @@ class AppThemeController extends GetxController {
         _themeMode.value = kSystemMode;
         break;
     }
-
-    getSystemChromeData();
     update();
   }
 }

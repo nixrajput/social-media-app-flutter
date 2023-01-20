@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -32,7 +31,7 @@ class ResetPasswordView extends StatelessWidget {
                   title: StringValues.resetPassword,
                   padding: Dimens.edgeInsetsDefault,
                 ),
-                _buildResetPasswordFields(),
+                _buildResetPasswordFields(context),
               ],
             ),
           ),
@@ -41,7 +40,8 @@ class ResetPasswordView extends StatelessWidget {
     );
   }
 
-  Widget _buildResetPasswordFields() => GetBuilder<PasswordController>(
+  Widget _buildResetPasswordFields(BuildContext context) =>
+      GetBuilder<PasswordController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
@@ -54,111 +54,78 @@ class ResetPasswordView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      StringValues.resetYourPassword,
+                      StringValues.resetPasswordWelcome,
                       style: AppStyles.style32Bold.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    Dimens.boxHeight4,
+                    Dimens.boxHeight32,
                     Text(
-                      StringValues.enterOtpYouGet,
+                      StringValues.enterOtpPassword,
                       style: AppStyles.style12Normal,
                     ),
-                    Dimens.boxHeight32,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.four),
-                          ),
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
-                          ),
-                          hintText: StringValues.otp,
-                        ),
-                        keyboardType: TextInputType.number,
-                        maxLines: 1,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          LengthLimitingTextInputFormatter(6),
-                        ],
-                        style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.otpTextController,
-                        onEditingComplete: logic.focusNode.nextFocus,
+                    Dimens.boxHeight12,
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: StringValues.otp,
                       ),
-                    ),
-                    Dimens.boxHeight16,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        obscureText: logic.showPassword,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.four),
-                          ),
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
-                          ),
-                          hintText: StringValues.newPassword,
-                          suffixIcon: InkWell(
-                            onTap: logic.toggleViewPassword,
-                            child: Icon(
-                              logic.showPassword
-                                  ? CupertinoIcons.eye
-                                  : CupertinoIcons.eye_slash,
-                            ),
-                          ),
-                        ),
-                        keyboardType: TextInputType.visiblePassword,
-                        maxLines: 1,
-                        style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.passwordTextController,
-                        onEditingComplete: logic.focusNode.nextFocus,
+                      keyboardType: TextInputType.number,
+                      maxLines: 1,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(6),
+                      ],
+                      style: AppStyles.style14Normal.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1!.color,
                       ),
+                      controller: logic.otpTextController,
+                      onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight16,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        obscureText: logic.showPassword,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.four),
-                          ),
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
-                          ),
-                          hintText: StringValues.confirmPassword,
-                          suffixIcon: InkWell(
-                            onTap: logic.toggleViewPassword,
-                            child: Icon(
-                              logic.showPassword
-                                  ? CupertinoIcons.eye
-                                  : CupertinoIcons.eye_slash,
-                            ),
+                    Dimens.boxHeight12,
+                    TextFormField(
+                      obscureText: logic.showPassword,
+                      decoration: InputDecoration(
+                        hintText: StringValues.newPassword,
+                        suffixIcon: InkWell(
+                          onTap: logic.toggleViewPassword,
+                          child: Icon(
+                            logic.showPassword
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash,
                           ),
                         ),
-                        keyboardType: TextInputType.visiblePassword,
-                        maxLines: 1,
-                        style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.confirmPasswordTextController,
-                        onEditingComplete: logic.focusNode.unfocus,
                       ),
+                      keyboardType: TextInputType.visiblePassword,
+                      maxLines: 1,
+                      style: AppStyles.style14Normal.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                      ),
+                      controller: logic.passwordTextController,
+                      onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight32,
+                    Dimens.boxHeight12,
+                    TextFormField(
+                      obscureText: logic.showPassword,
+                      decoration: InputDecoration(
+                        hintText: StringValues.confirmPassword,
+                        suffixIcon: InkWell(
+                          onTap: logic.toggleViewPassword,
+                          child: Icon(
+                            logic.showPassword
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash,
+                          ),
+                        ),
+                      ),
+                      keyboardType: TextInputType.visiblePassword,
+                      maxLines: 1,
+                      style: AppStyles.style14Normal.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                      ),
+                      controller: logic.confirmPasswordTextController,
+                      onEditingComplete: logic.focusNode.unfocus,
+                    ),
+                    Dimens.heightedBox(Dimens.twentyEight),
                     NxTextButton(
                       label: StringValues.loginToAccount,
                       onTap: () {
@@ -172,7 +139,7 @@ class ResetPasswordView extends StatelessWidget {
                       label: StringValues.resetPassword.toUpperCase(),
                       height: Dimens.fiftySix,
                     ),
-                    Dimens.boxHeight48,
+                    Dimens.boxHeight32,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -191,7 +158,7 @@ class ResetPasswordView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Dimens.boxHeight32,
+                    Dimens.boxHeight16,
                   ],
                 ),
               ),

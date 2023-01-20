@@ -24,14 +24,11 @@ class CommentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: Dimens.edgeInsets6_0,
+      margin: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
         color: Theme.of(context).bottomAppBarColor,
         borderRadius: BorderRadius.circular(Dimens.four),
-        border: Border.all(
-          color: Theme.of(context).dividerColor,
-          width: Dimens.pointEight,
-        ),
+        boxShadow: AppStyles.defaultShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +86,7 @@ class CommentWidget extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: '${comment.user.fname} ${comment.user.lname}',
-                      style: AppStyles.style14Bold.copyWith(
+                      style: AppStyles.style15Bold.copyWith(
                         color: Theme.of(context).textTheme.bodyText1!.color,
                       ),
                       recognizer: TapGestureRecognizer()

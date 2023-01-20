@@ -1,9 +1,12 @@
 abstract class StringValues {
   static const appName = 'Rippl';
+  static const appDescription = 'Connect with the world!';
   static const welcome = 'Welcome';
+  static const welcomeDescription = 'Login or Register to continue';
   static const to = 'to';
   static const hello = 'Hello';
   static const register = 'Register';
+  static const hiThere = 'Hi there!';
   static const registerUsingEmail = 'Register Using Email';
   static const registerUsingPhone = 'Register Using Phone';
   static const login = 'Login';
@@ -12,6 +15,19 @@ abstract class StringValues {
   static const resendOtp = 'Resend OTP';
   static const loginWelcome = 'Welcome, Login to continue';
   static const registerWelcome = 'Hello! Register to get started';
+  static const forgotPasswordWelcome = 'Hi there, Forgot your password?';
+  static const resetPasswordWelcome = 'Hi there, Reset your password now';
+  static const enterOtpPassword =
+      'Enter OTP and new password to reset password';
+  static const enterEmailToSendOtp = 'Enter your email to send OTP';
+  static const enterPhoneToSendOtp = 'Enter your phone to send OTP';
+  static const enterOtpYouGet =
+      'An OTP has been sent to your email, please enter it below';
+  static const enterOtpYouGetPhone =
+      'An OTP has been sent to your phone, please enter it below';
+  static const enterOtp = 'Enter OTP';
+  static const reactivateAccountWelcome =
+      'Hi there, Reactivate your account now';
   static const forgotPassword = 'Forgot Password';
   static const resetPassword = 'Reset Password';
   static const verifyAccount = 'Verify Account';
@@ -37,8 +53,9 @@ abstract class StringValues {
   static const enterDifferentEmail = 'Enter an email other than current email';
   static const enterEmailForOtp =
       'Enter your email address and an OTP will be sent to your email address if account exists';
-  static const enterOtpYouGet =
-      'An OTP has been sent to your email address, please enter OTP to proceed';
+  static const enterDetailsToRegister = 'Enter your details to register';
+  static const enterEmailUsernamePassword =
+      'Enter your email or username and password to login';
   static const settings = 'Settings';
   static const profile = 'Profile';
   static const doNotHaveAccount = "Don't have an account?";
@@ -66,7 +83,6 @@ abstract class StringValues {
   static const enterPassword = 'Enter a password';
   static const enterOldPassword = 'Enter current password';
   static const enterNewPassword = 'Enter a new password';
-  static const enterOtp = 'Enter the OTP';
   static const enterWebsiteUrl = 'Enter your website URL';
   static const enterConfirmPassword = 'Retype your password';
   static const errorOccurred = 'An error occurred, please try again.';
@@ -422,12 +438,6 @@ abstract class StringValues {
   static const moreDetails = 'More Details';
   static const viewLogs = 'View Logs';
   static const viewLogsDesc = 'View app logs.';
-  static const websiteUrl = 'https://nixlab.co.in';
-  static const privacyPolicyUrl = 'https://nixlab.co.in/privacy-policy';
-  static const termsOfServiceUrl = 'https://nixlab.co.in/terms-of-service';
-  static const communityGuidelinesUrl =
-      'https://nixlab.co.in/community-guidelines';
-  static const portfolioUrl = 'https://nixrajput.nixlab.co.in';
   static const downloadLatestApp = 'Download Latest App';
   static const githubRepo = 'Github Repo';
   static const telegramChannel = 'Telegram Channel';
@@ -438,11 +448,7 @@ abstract class StringValues {
   static const developerName = 'Nikhil Rajput (nixrajput)';
   static const by = 'By';
   static const developedBy = 'Developed By';
-  static const appDownloadUrl =
-      'https://github.com/nixrajput/social-media-app-flutter/releases/latest';
-  static const appGithubUrl =
-      'https://github.com/nixrajput/social-media-app-flutter';
-  static const telegramUrl = 'https://telegram.me/nixlab_in';
+
   static const appUpdateAvailable = 'App update available';
   static const poll = 'Poll';
   static const addQuestion = 'Ask a question...';
@@ -598,4 +604,18 @@ abstract class StringValues {
   static const pleaseTryAgain = 'Please try again';
   static const pleaseTryAgainLater = 'Please try again later';
   static const pleaseWait = 'Please wait...';
+
+  /// Urls
+  static const nixlabStoreId = 'com.nixlab.rippl';
+  static const appDownloadUrl = 'https://nixlab.co.in/projects';
+  static const appGithubUrl =
+      'https://github.com/nixrajput/social-media-app-flutter';
+  static const telegramUrl = 'https://telegram.me/nixlab_in';
+
+  static const websiteUrl = 'https://nixlab.co.in';
+  static const privacyPolicyUrl = 'https://nixlab.co.in/privacy-policy';
+  static const termsOfServiceUrl = 'https://nixlab.co.in/terms-of-service';
+  static const communityGuidelinesUrl =
+      'https://nixlab.co.in/community-guidelines';
+  static const portfolioUrl = 'https://nixrajput.nixlab.co.in';
 }

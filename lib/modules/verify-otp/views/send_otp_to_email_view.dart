@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -84,28 +83,18 @@ class SendOtpToEmailView extends StatelessWidget {
     );
   }
 
-  Container _buildEmailField(VerifyOtpController logic) {
-    return Container(
-      height: Dimens.fiftySix,
-      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-      child: TextFormField(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(Dimens.four),
-          ),
-          hintText: StringValues.email,
-          hintStyle: AppStyles.style14Normal.copyWith(
-            color: ColorValues.grayColor,
-          ),
-        ),
-        keyboardType: TextInputType.emailAddress,
-        maxLines: 1,
-        style: AppStyles.style14Normal.copyWith(
-          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
-        ),
-        onEditingComplete: logic.focusNode.unfocus,
-        onChanged: (value) => logic.onEmailChanged(value),
+  Widget _buildEmailField(VerifyOtpController logic) {
+    return TextFormField(
+      decoration: const InputDecoration(
+        hintText: StringValues.email,
       ),
+      keyboardType: TextInputType.emailAddress,
+      maxLines: 1,
+      style: AppStyles.style14Normal.copyWith(
+        color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+      ),
+      onEditingComplete: logic.focusNode.unfocus,
+      onChanged: (value) => logic.onEmailChanged(value),
     );
   }
 

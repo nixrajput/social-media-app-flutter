@@ -85,8 +85,8 @@ class PollOptionWidget extends StatelessWidget {
                         child: Text(
                           option.option!,
                           style: AppStyles.style13Normal.copyWith(
-                            color: post.isVoted == false
-                                ? ColorValues.primaryColor
+                            color: !isExpired && post.isVoted == false
+                                ? ColorValues.linkColor
                                 : Theme.of(context).textTheme.bodyText1!.color,
                           ),
                         ),

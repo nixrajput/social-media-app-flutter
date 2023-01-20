@@ -42,12 +42,13 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.login);
   }
 
-  static void _goToRegisterView() {
-    Get.toNamed(AppRoutes.register);
-  }
+  // static void _goToRegisterView() {
+
+  // }
 
   static void goToRegisterView() {
-    goToSendOtpToEmailView(callback: _goToRegisterView);
+    // goToSendOtpToEmailView(callback: _goToRegisterView);
+    Get.toNamed(AppRoutes.register);
   }
 
   static void goToForgotPasswordView() {

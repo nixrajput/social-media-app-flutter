@@ -78,7 +78,7 @@ class PostDetailsView extends StatelessWidget {
                   post: logic.postDetailsData!.post!,
                   controller: logic,
                 ),
-                Dimens.boxHeight8,
+                Dimens.boxHeight12,
                 _buildPostComments(context, logic.postDetailsData!.post!.id!),
                 Dimens.boxHeight16,
               ],

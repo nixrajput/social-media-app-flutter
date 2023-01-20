@@ -12,6 +12,7 @@ abstract class AppUrls {
   static const verifyAccountEndpoint = '/verify-account';
 
   static const sendOtpToEmailEndpoint = '/send-otp-to-email';
+  static const sendVerifyEmailOtpEndpoint = '/send-verify-email-otp';
   static const verifyOtpFromEmailEndpoint = '/verify-email-otp';
   static const sendOtpToPhoneEndpoint = '/send-otp-to-phone';
   static const verifyOtpFromPhoneEndpoint = '/verify-phone-otp';

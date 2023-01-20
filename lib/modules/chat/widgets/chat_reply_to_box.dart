@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/profile.dart';
 import 'package:social_media_app/constants/colors.dart';
@@ -40,13 +39,13 @@ class ChatReplyToBox extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildReplyBubble(profile),
+              _buildReplyBubble(profile, context),
               Dimens.boxHeight4,
               if (message.mediaFile != null && message.mediaFile!.url != null)
                 Text(
                   message.mediaFile!.mediaType == "video" ? 'Video' : 'Image',
                   style: AppStyles.style12Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.subtitle1!.color,
                   ),
                 ),
               if (message.message != null && message.message!.isNotEmpty)
@@ -57,7 +56,7 @@ class ChatReplyToBox extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyText1!.color,
                   ),
                 ),
             ],
@@ -75,12 +74,12 @@ class ChatReplyToBox extends StatelessWidget {
           child: Container(
             padding: Dimens.edgeInsets4,
             decoration: BoxDecoration(
-              color: Theme.of(Get.context!).bottomAppBarColor,
+              color: Theme.of(context).bottomAppBarColor,
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.close,
-              color: Theme.of(Get.context!).textTheme.subtitle2!.color,
+              color: Theme.of(context).textTheme.subtitle2!.color,
               size: Dimens.twenty,
             ),
           ),
@@ -89,7 +88,7 @@ class ChatReplyToBox extends StatelessWidget {
     );
   }
 
-  Widget _buildReplyBubble(Profile profile) {
+  Widget _buildReplyBubble(Profile profile, BuildContext context) {
     var repliedUser =
         message.senderId == profile.id ? 'Yourself' : message.sender!.fname;
 
@@ -105,14 +104,14 @@ class ChatReplyToBox extends StatelessWidget {
           children: [
             Icon(
               Icons.reply,
-              color: Theme.of(Get.context!).textTheme.subtitle2!.color,
+              color: Theme.of(context).textTheme.subtitle2!.color,
               size: Dimens.twenty,
             ),
             Dimens.boxWidth4,
             Text(
               'Replying to $repliedUser',
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle2!.color,
+                color: Theme.of(context).textTheme.subtitle2!.color,
               ),
             ),
           ],

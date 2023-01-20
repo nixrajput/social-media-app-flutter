@@ -35,11 +35,8 @@ class PostThumbnailWidget extends StatelessWidget {
     if (post.postType! == "poll") {
       return Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: ColorValues.primaryColor.withAlpha(150),
           borderRadius: BorderRadius.circular(Dimens.four),
-          border: Border.all(
-            color: Theme.of(context).dividerColor,
-          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

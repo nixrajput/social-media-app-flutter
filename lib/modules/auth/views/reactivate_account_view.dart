@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -30,7 +29,7 @@ class ReactivateAccountView extends StatelessWidget {
                   title: StringValues.reactivateAccount,
                   padding: Dimens.edgeInsetsDefault,
                 ),
-                _buildLoginFields(),
+                _buildLoginFields(context),
               ],
             ),
           ),
@@ -39,7 +38,8 @@ class ReactivateAccountView extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginFields() => GetBuilder<ReactivateAccountController>(
+  Widget _buildLoginFields(BuildContext context) =>
+      GetBuilder<ReactivateAccountController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
@@ -52,103 +52,67 @@ class ReactivateAccountView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      'Hi there, Reactivate your account now',
+                      StringValues.reactivateAccountWelcome,
                       style: AppStyles.style32Bold.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     Dimens.boxHeight32,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.four),
-                          ),
-                          hintText: StringValues.email,
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: StringValues.email,
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                      maxLines: 1,
+                      enabled: logic.otpSent ? false : true,
+                      style: AppStyles.style14Normal.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                      ),
+                      controller: logic.emailTextController,
+                      onEditingComplete: logic.focusNode.nextFocus,
+                    ),
+                    Dimens.boxHeight12,
+                    TextFormField(
+                      obscureText: logic.showPassword,
+                      decoration: InputDecoration(
+                        suffixIcon: InkWell(
+                          onTap: logic.toggleViewPassword,
+                          child: Icon(
+                            logic.showPassword
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash,
                           ),
                         ),
-                        keyboardType: TextInputType.emailAddress,
+                        hintText: StringValues.password,
+                      ),
+                      keyboardType: TextInputType.visiblePassword,
+                      maxLines: 1,
+                      enabled: logic.otpSent ? false : true,
+                      style: AppStyles.style16Normal.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                      ),
+                      controller: logic.passwordTextController,
+                      onEditingComplete: logic.focusNode.unfocus,
+                    ),
+                    if (logic.otpSent) Dimens.boxHeight12,
+                    if (logic.otpSent)
+                      TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: StringValues.otp,
+                        ),
+                        keyboardType: TextInputType.number,
                         maxLines: 1,
-                        enabled: logic.otpSent ? false : true,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(6),
+                        ],
                         style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyText1!.color,
                         ),
-                        controller: logic.emailTextController,
+                        controller: logic.otpTextController,
                         onEditingComplete: logic.focusNode.nextFocus,
                       ),
-                    ),
-                    Dimens.boxHeight16,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        obscureText: logic.showPassword,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.four),
-                          ),
-                          suffixIcon: InkWell(
-                            onTap: logic.toggleViewPassword,
-                            child: Icon(
-                              logic.showPassword
-                                  ? CupertinoIcons.eye
-                                  : CupertinoIcons.eye_slash,
-                            ),
-                          ),
-                          hintText: StringValues.password,
-                          hintStyle: const TextStyle(
-                            color: ColorValues.grayColor,
-                          ),
-                        ),
-                        keyboardType: TextInputType.visiblePassword,
-                        maxLines: 1,
-                        enabled: logic.otpSent ? false : true,
-                        style: AppStyles.style16Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.passwordTextController,
-                        onEditingComplete: logic.focusNode.unfocus,
-                      ),
-                    ),
-                    if (logic.otpSent) Dimens.boxHeight16,
-                    if (logic.otpSent)
-                      Container(
-                        height: Dimens.fiftySix,
-                        constraints:
-                            BoxConstraints(maxWidth: Dimens.screenWidth),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(Dimens.four),
-                            ),
-                            hintStyle: AppStyles.style14Normal.copyWith(
-                              color: ColorValues.grayColor,
-                            ),
-                            hintText: StringValues.otp,
-                          ),
-                          keyboardType: TextInputType.number,
-                          maxLines: 1,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(6),
-                          ],
-                          style: AppStyles.style14Normal.copyWith(
-                            color: Theme.of(Get.context!)
-                                .textTheme
-                                .bodyText1!
-                                .color,
-                          ),
-                          controller: logic.otpTextController,
-                          onEditingComplete: logic.focusNode.nextFocus,
-                        ),
-                      ),
-                    Dimens.boxHeight40,
+                    Dimens.boxHeight32,
                     NxFilledButton(
                       onTap: () => logic.otpSent
                           ? logic.reactivateAccount()

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -30,7 +29,7 @@ class ForgotPasswordView extends StatelessWidget {
                   title: StringValues.forgotPassword,
                   padding: Dimens.edgeInsetsDefault,
                 ),
-                _buildForgotPasswordFields(),
+                _buildForgotPasswordFields(context),
               ],
             ),
           ),
@@ -39,7 +38,8 @@ class ForgotPasswordView extends StatelessWidget {
     );
   }
 
-  Widget _buildForgotPasswordFields() => GetBuilder<PasswordController>(
+  Widget _buildForgotPasswordFields(BuildContext context) =>
+      GetBuilder<PasswordController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
@@ -52,41 +52,30 @@ class ForgotPasswordView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      StringValues.forgotYourPassword,
+                      StringValues.forgotPasswordWelcome,
                       style: AppStyles.style32Bold.copyWith(
                         fontWeight: FontWeight.w900,
                       ),
                     ),
-                    Dimens.boxHeight4,
+                    Dimens.boxHeight32,
                     Text(
-                      StringValues.enterEmailForOtp,
+                      StringValues.enterEmailToSendOtp,
                       style: AppStyles.style12Normal,
                     ),
-                    Dimens.boxHeight32,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.four),
-                          ),
-                          hintText: StringValues.enterEmail,
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
-                          ),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        maxLines: 1,
-                        style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.emailTextController,
-                        onEditingComplete: logic.focusNode.unfocus,
+                    Dimens.boxHeight12,
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: StringValues.enterEmail,
                       ),
+                      keyboardType: TextInputType.emailAddress,
+                      maxLines: 1,
+                      style: AppStyles.style14Normal.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                      ),
+                      controller: logic.emailTextController,
+                      onEditingComplete: logic.focusNode.unfocus,
                     ),
-                    Dimens.boxHeight32,
+                    Dimens.heightedBox(Dimens.twentyEight),
                     NxTextButton(
                       label: StringValues.loginToAccount,
                       onTap: () {
@@ -100,7 +89,7 @@ class ForgotPasswordView extends StatelessWidget {
                       label: StringValues.sendOtp.toUpperCase(),
                       height: Dimens.fiftySix,
                     ),
-                    Dimens.boxHeight48,
+                    Dimens.boxHeight32,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -119,7 +108,7 @@ class ForgotPasswordView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Dimens.boxHeight32,
+                    Dimens.boxHeight16,
                   ],
                 ),
               ),

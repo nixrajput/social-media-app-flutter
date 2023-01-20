@@ -42,14 +42,11 @@ class PostWidget extends StatelessWidget {
         controller is PostController ||
         controller is TrendingPostController);
     return Container(
-      margin: Dimens.edgeInsets6_0,
+      margin: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
         color: Theme.of(context).bottomAppBarColor,
         borderRadius: BorderRadius.circular(Dimens.four),
-        border: Border.all(
-          color: Theme.of(context).dividerColor,
-          width: Dimens.pointEight,
-        ),
+        boxShadow: AppStyles.defaultShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,7 +104,7 @@ class PostWidget extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: '${post.owner!.fname} ${post.owner!.lname}',
-                      style: AppStyles.style14Bold.copyWith(
+                      style: AppStyles.style15Bold.copyWith(
                         color: Theme.of(context).textTheme.bodyText1!.color,
                       ),
                       recognizer: TapGestureRecognizer()
@@ -245,43 +242,30 @@ class PostWidget extends StatelessWidget {
               )
               .toList(),
         ),
-        Dimens.boxHeight4,
-        Flexible(
-          child: Padding(
-            padding: Dimens.edgeInsets0_8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '${post.totalVotes!.toString().toCountingFormat()} votes',
-                  style: AppStyles.style12Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
-                  ),
+        Dimens.boxHeight8,
+        Padding(
+          padding: Dimens.edgeInsets0_8,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${post.totalVotes!.toString().toCountingFormat()} votes',
+                style: AppStyles.style13Normal.copyWith(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
-                Dimens.boxWidth4,
-                Container(
-                  width: Dimens.four,
-                  height: Dimens.four,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).disabledColor,
-                    shape: BoxShape.circle,
-                  ),
+              ),
+              Dimens.boxHeight8,
+              Text(
+                '${post.pollEndsAt!.getPollDurationLeft()}',
+                style: AppStyles.style13Normal.copyWith(
+                  color: isExpired
+                      ? Theme.of(context).textTheme.subtitle1!.color
+                      : ColorValues.linkColor,
                 ),
-                Dimens.boxWidth4,
-                Flexible(
-                  child: Text(
-                    '${post.pollEndsAt!.getPollDurationLeft()}',
-                    style: AppStyles.style12Normal.copyWith(
-                      color: isExpired
-                          ? Theme.of(context).textTheme.subtitle1!.color
-                          : ColorValues.linkColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ],

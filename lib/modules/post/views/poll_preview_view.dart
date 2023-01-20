@@ -10,7 +10,6 @@ import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/date_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -67,7 +66,7 @@ class PollPreviewView extends StatelessWidget {
       child: Container(
         padding: Dimens.edgeInsets8_16,
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: ColorValues.primaryColor,
           borderRadius: BorderRadius.circular(Dimens.four),
         ),
         child: Center(
@@ -107,9 +106,13 @@ class PollPreviewView extends StatelessWidget {
 
   Widget _buildPoll(BuildContext context, CreatePollController logic) {
     final profile = ProfileController.find.profileDetails!.user!;
-    return NxElevatedCard(
+    return Container(
       margin: Dimens.edgeInsets8_0,
-      borderRadius: Dimens.four,
+      decoration: BoxDecoration(
+        color: Theme.of(context).bottomAppBarColor,
+        borderRadius: BorderRadius.circular(Dimens.four),
+        boxShadow: AppStyles.defaultShadow,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -131,6 +134,11 @@ class PollPreviewView extends StatelessWidget {
             children: logic.pollOptions
                 .map((option) => _buildPollOption(context, logic, option))
                 .toList(),
+          ),
+          Dimens.boxHeight8,
+          Padding(
+            padding: Dimens.edgeInsets0_8,
+            child: _buildPostTime(context),
           ),
           Dimens.boxHeight8,
           Padding(
@@ -178,55 +186,37 @@ class PollPreviewView extends StatelessWidget {
       );
 
   Widget _buildFullName(BuildContext context, Profile profile) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Flexible(
-            child: Row(
+            child: RichText(
+              text: TextSpan(
+                text: '${profile.fname} ${profile.lname}',
+                style: AppStyles.style14Bold.copyWith(
+                  color: Theme.of(context).textTheme.bodyText1!.color,
+                ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = RouteManagement.goToProfileView,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          if (profile.isVerified)
+            Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Flexible(
-                  child: RichText(
-                    text: TextSpan(
-                      text: '${profile.fname} ${profile.lname}',
-                      style: AppStyles.style14Bold.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = RouteManagement.goToProfileView,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                Dimens.boxWidth4,
+                Icon(
+                  Icons.verified,
+                  color: ColorValues.primaryColor,
+                  size: Dimens.sixTeen,
                 ),
-                if (profile.isVerified)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Dimens.boxWidth4,
-                      Icon(
-                        Icons.verified,
-                        color: ColorValues.primaryColor,
-                        size: Dimens.sixTeen,
-                      ),
-                    ],
-                  ),
               ],
             ),
-          ),
-          Flexible(
-            flex: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Dimens.boxWidth12,
-                _buildPostTime(context),
-              ],
-            ),
-          ),
         ],
       );
 
@@ -254,40 +244,24 @@ class PollPreviewView extends StatelessWidget {
       BuildContext context, CreatePollController logic, String option) {
     return Padding(
       padding: Dimens.edgeInsets4_8,
-      child: Stack(
-        children: [
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 500),
-            width: Dimens.screenWidth,
-            height: Dimens.fourtyEight,
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(Dimens.four),
+      child: Container(
+        width: Dimens.screenWidth,
+        padding: Dimens.edgeInsetsDefault,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Dimens.four),
+          border: Border.all(
+            color: ColorValues.linkColor,
+            width: Dimens.one,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            option,
+            style: AppStyles.style14Normal.copyWith(
+              color: Theme.of(context).textTheme.bodyText1!.color,
             ),
           ),
-          Positioned.fill(
-            child: Container(
-              width: Dimens.screenWidth,
-              padding: Dimens.edgeInsets0_8,
-              decoration: BoxDecoration(
-                color: ColorValues.transparent,
-                borderRadius: BorderRadius.circular(Dimens.four),
-                border: Border.all(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  width: Dimens.one,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  option,
-                  style: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

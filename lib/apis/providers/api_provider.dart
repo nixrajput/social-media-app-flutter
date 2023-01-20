@@ -257,6 +257,18 @@ class ApiProvider {
     return response;
   }
 
+  /// Send Verify Email OTP
+  Future<ResponseData> sendVerifyEmailOtp(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.sendVerifyEmailOtpEndpoint,
+      method: 'POST',
+      feature: 'Send Verify Email OTP',
+      body: body,
+    );
+
+    return response;
+  }
+
   /// Verify OTP From Email
   Future<ResponseData> verifyOtpFromEmail(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(

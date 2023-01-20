@@ -75,7 +75,7 @@ class ProfileDetailsView extends StatelessWidget {
                             tag: logic.profileDetails!.user!.id,
                             child: AvatarWidget(
                               avatar: logic.profileDetails!.user!.avatar,
-                              size: Dimens.hundred,
+                              size: Dimens.screenWidth * 0.25,
                             ),
                           ),
                         ),
@@ -100,7 +100,10 @@ class ProfileDetailsView extends StatelessWidget {
                       ),
                       subtitle: Text(
                         '${logic.profileDetails!.user!.fname} ${logic.profileDetails!.user!.lname}',
-                        style: AppStyles.style16Normal,
+                        style: AppStyles.style16Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
                       ),
                       onTap: RouteManagement.goToEditNameView,
                     ),
@@ -123,7 +126,10 @@ class ProfileDetailsView extends StatelessWidget {
                       ),
                       subtitle: Text(
                         logic.profileDetails!.user!.uname,
-                        style: AppStyles.style16Normal,
+                        style: AppStyles.style16Normal.copyWith(
+                          color:
+                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                        ),
                       ),
                       onTap: RouteManagement.goToEditUsernameView,
                     ),

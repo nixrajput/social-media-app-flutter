@@ -175,10 +175,12 @@ class P2PChatView extends StatelessWidget {
               onChanged: (value) => logic.onChangedText(value),
               decoration: InputDecoration(
                 hintText: StringValues.message.toTitleCase(),
-                hintStyle: AppStyles.style14Normal.copyWith(
-                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-                ),
                 border: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                focusedErrorBorder: InputBorder.none,
               ),
               minLines: 1,
               maxLines: 5,

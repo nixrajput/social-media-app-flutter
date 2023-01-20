@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -31,7 +30,7 @@ class LoginView extends StatelessWidget {
                   title: StringValues.login,
                   padding: Dimens.edgeInsetsDefault,
                 ),
-                _buildLoginFields(),
+                _buildLoginFields(context),
               ],
             ),
           ),
@@ -40,7 +39,7 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Widget _buildLoginFields() => GetBuilder<LoginController>(
+  Widget _buildLoginFields(BuildContext context) => GetBuilder<LoginController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
@@ -59,63 +58,48 @@ class LoginView extends StatelessWidget {
                       ),
                     ),
                     Dimens.boxHeight32,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.four),
-                          ),
-                          hintText: StringValues.emailOrUsername,
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
-                          ),
-                        ),
-                        keyboardType: TextInputType.text,
-                        maxLines: 1,
-                        style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.emailUnameTextController,
-                        onEditingComplete: logic.focusNode.nextFocus,
+                    Text(
+                      StringValues.enterEmailUsernamePassword,
+                      style: AppStyles.style14Normal.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1!.color,
                       ),
                     ),
-                    Dimens.boxHeight16,
-                    Container(
-                      height: Dimens.fiftySix,
-                      constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
-                      child: TextFormField(
-                        obscureText: logic.showPassword,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(Dimens.four),
-                          ),
-                          suffixIcon: InkWell(
-                            onTap: logic.toggleViewPassword,
-                            child: Icon(
-                              logic.showPassword
-                                  ? CupertinoIcons.eye
-                                  : CupertinoIcons.eye_slash,
-                            ),
-                          ),
-                          hintText: StringValues.password,
-                          hintStyle: AppStyles.style14Normal.copyWith(
-                            color: ColorValues.grayColor,
-                          ),
-                        ),
-                        keyboardType: TextInputType.visiblePassword,
-                        maxLines: 1,
-                        style: AppStyles.style14Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
-                        controller: logic.passwordTextController,
-                        onEditingComplete: logic.focusNode.unfocus,
+                    Dimens.boxHeight12,
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: StringValues.emailOrUsername,
                       ),
+                      keyboardType: TextInputType.text,
+                      maxLines: 1,
+                      style: AppStyles.style14Normal.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                      ),
+                      controller: logic.emailUnameTextController,
+                      onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight32,
+                    Dimens.boxHeight12,
+                    TextFormField(
+                      obscureText: logic.showPassword,
+                      decoration: InputDecoration(
+                        suffixIcon: InkWell(
+                          onTap: logic.toggleViewPassword,
+                          child: Icon(
+                            logic.showPassword
+                                ? CupertinoIcons.eye
+                                : CupertinoIcons.eye_slash,
+                          ),
+                        ),
+                        hintText: StringValues.password,
+                      ),
+                      keyboardType: TextInputType.visiblePassword,
+                      maxLines: 1,
+                      style: AppStyles.style14Normal.copyWith(
+                        color: Theme.of(context).textTheme.bodyText1!.color,
+                      ),
+                      controller: logic.passwordTextController,
+                      onEditingComplete: logic.focusNode.unfocus,
+                    ),
+                    Dimens.heightedBox(Dimens.twentyEight),
                     const NxTextButton(
                       label: StringValues.forgotPassword,
                       onTap: RouteManagement.goToForgotPasswordView,
@@ -126,7 +110,7 @@ class LoginView extends StatelessWidget {
                       label: StringValues.login.toUpperCase(),
                       height: Dimens.fiftySix,
                     ),
-                    Dimens.boxHeight48,
+                    Dimens.boxHeight32,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -145,7 +129,7 @@ class LoginView extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Dimens.boxHeight32,
+                    Dimens.boxHeight16,
                   ],
                 ),
               ),

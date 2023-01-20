@@ -24,11 +24,11 @@ class ChangePhoneController extends GetxController {
   final _phone = ''.obs;
   final _otp = ''.obs;
   final FocusScopeNode focusNode = FocusScopeNode();
-  CountryCode code = const CountryCode(
+  final Rx<CountryCode> _countryCode = const CountryCode(
     name: 'India',
     code: 'IN',
     dialCode: '+91',
-  );
+  ).obs;
 
   /// Getters
   bool get isLoading => _isLoading.value;
@@ -39,13 +39,15 @@ class ChangePhoneController extends GetxController {
 
   String get otp => _otp.value;
 
+  CountryCode get countryCode => _countryCode.value;
+
   /// Setters
   set phone(String val) => _phone.value = val;
 
   set otp(String val) => _otp.value = val;
 
   void onChangeCountryCode(CountryCode code) {
-    code = code;
+    _countryCode.value = code;
     update();
   }
 
@@ -78,7 +80,7 @@ class ChangePhoneController extends GetxController {
 
     final body = {
       "phone": _phone.value,
-      "countryCode": code.dialCode,
+      "countryCode": _countryCode.value.dialCode,
     };
 
     AppUtility.showLoadingDialog();
@@ -113,7 +115,6 @@ class ChangePhoneController extends GetxController {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.log('Error: $exc', tag: 'error');
       AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }
@@ -138,7 +139,7 @@ class ChangePhoneController extends GetxController {
     final body = {
       'otp': _otp.value,
       "phone": _phone.value,
-      "countryCode": code.dialCode,
+      "countryCode": _countryCode.value.dialCode,
     };
 
     AppUtility.showLoadingDialog();
@@ -173,7 +174,6 @@ class ChangePhoneController extends GetxController {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.log('Error: $exc', tag: 'error');
       AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }

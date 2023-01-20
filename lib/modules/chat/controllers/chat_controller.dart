@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/online_user.dart';
@@ -65,11 +64,12 @@ class ChatController extends GetxController {
     var isExists = await HiveService.hasLength<ChatMessage>(_kLastMessagesKey);
 
     if (isExists) {
+      // await HiveService.deleteBox<ChatMessage>(_kLastMessagesKey);
       var data = await HiveService.getAll<ChatMessage>(_kLastMessagesKey);
-      data.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       _lastMessageList.clear();
-      _lastMessageList.addAll(data.toList());
-      _lastMessageList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+      for (var i = 0; i < data.length; i++) {
+        await addMessageToLastMessagesList(data[i]);
+      }
     }
   }
 
@@ -96,17 +96,17 @@ class ChatController extends GetxController {
       }
     });
 
-    Hive.box<ChatMessage>(_kLastMessagesKey).watch().listen((event) async {
-      if (event.deleted) {
-        _lastMessageList.removeWhere((element) => element.id == event.key);
-        _lastMessageList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-        update();
-      } else {
-        var message = event.value;
+    // Hive.box<ChatMessage>(_kLastMessagesKey).watch().listen((event) async {
+    //   if (event.deleted) {
+    //     _lastMessageList.removeWhere((element) => element.id == event.key);
+    //     _lastMessageList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+    //     update();
+    //   } else {
+    //     var message = event.value;
 
-        await addMessageToLastMessagesList(message);
-      }
-    });
+    //     await addMessageToLastMessagesList(message);
+    //   }
+    // });
 
     await _fetchLastMessages();
     _getUndeliveredMessages();
@@ -133,11 +133,15 @@ class ChatController extends GetxController {
 
   void _checkOnlineUsers() {
     AppUtility.log('Check Online Users');
-    var userIds = _lastMessageList
-        .map((e) => e.senderId == profile.profileDetails!.user!.id
-            ? e.receiverId
-            : e.senderId)
-        .toList();
+    var userIds = [];
+
+    if (_lastMessageList.isNotEmpty) {
+      userIds = _lastMessageList
+          .map((e) => e.senderId == profile.profileDetails!.user!.id
+              ? e.receiverId
+              : e.senderId)
+          .toList();
+    }
 
     socketApiProvider.sendJson({
       'type': 'check-online-users',
@@ -181,7 +185,7 @@ class ChatController extends GetxController {
 
       case 'error':
         AppUtility.log("Error: ${decodedData['message']}");
-        AppUtility.showSnackBar(decodedData['message'], StringValues.error);
+        //AppUtility.showSnackBar(decodedData['message'], StringValues.error);
         break;
 
       default:
@@ -223,124 +227,13 @@ class ChatController extends GetxController {
   }
 
   void _addMessageListener(ChatMessage encryptedMessage) async {
-    // var isExitsInAllMessages =
-    //     await _checkIfSameMessageInAllMessages(encryptedMessage);
-    // if (!isExitsInAllMessages) {
-    //   await HiveService.put<ChatMessage>(
-    //     'allMessages',
-    //     encryptedMessage.id ?? encryptedMessage.tempId,
-    //     encryptedMessage,
-    //   );
-    // } else {
-    //   var tempMessage = await HiveService.get<ChatMessage>(
-    //       'allMessages', encryptedMessage.id ?? encryptedMessage.tempId);
-    //   var updatedMessage = tempMessage!.copyWith(
-    //     id: encryptedMessage.id,
-    //     sender: encryptedMessage.sender,
-    //     receiver: encryptedMessage.receiver,
-    //     replyTo: encryptedMessage.replyTo,
-    //     sent: encryptedMessage.sent,
-    //     sentAt: encryptedMessage.sentAt,
-    //     delivered: encryptedMessage.delivered,
-    //     deliveredAt: encryptedMessage.deliveredAt,
-    //     seen: encryptedMessage.seen,
-    //     seenAt: encryptedMessage.seenAt,
-    //     createdAt: encryptedMessage.createdAt,
-    //     updatedAt: encryptedMessage.updatedAt,
-    //   );
-    //   await HiveService.delete<ChatMessage>(
-    //     'allMessages',
-    //     tempMessage.id ?? tempMessage.tempId,
-    //   );
-    //   await HiveService.put<ChatMessage>(
-    //     'allMessages',
-    //     updatedMessage.id ?? updatedMessage.tempId,
-    //     updatedMessage,
-    //   );
-    // }
-
+    await saveLastMessageToLocalDB(encryptedMessage);
     await saveChatDataToLocalDB(encryptedMessage);
-
-    //await addMessageToLastMessagesList(encryptedMessage);
-
-    // if (!_checkIfMessageExistsInLastMessageList(encryptedMessage)) {
-    //   var index = _checkIfAlreadyPresentInLastMessages(encryptedMessage);
-    //   if (index < 0) {
-    //     _lastMessageList.add(encryptedMessage);
-    //     update();
-    //     await HiveService.put<ChatMessage>(
-    //       'lastMessages',
-    //       encryptedMessage.id ?? encryptedMessage.tempId,
-    //       encryptedMessage,
-    //     );
-    //   } else {
-    //     var oldMessage = _lastMessageList.elementAt(index);
-    //     var isAfter = checkIfNewerMessage(oldMessage, encryptedMessage);
-    //     if (isAfter) {
-    //       _lastMessageList.remove(oldMessage);
-    //       _lastMessageList.add(encryptedMessage);
-    //       update();
-    //       await HiveService.delete<ChatMessage>(
-    //         'lastMessages',
-    //         oldMessage.id ?? oldMessage.tempId,
-    //       );
-    //       await HiveService.put<ChatMessage>(
-    //         'lastMessages',
-    //         encryptedMessage.id ?? encryptedMessage.tempId,
-    //         encryptedMessage,
-    //       );
-    //     }
-    //   }
-    // } else {
-    //   var tempIndex = _lastMessageList.indexWhere(
-    //     (element) =>
-    //         element.tempId == encryptedMessage.tempId ||
-    //         element.id == encryptedMessage.id,
-    //   );
-    //   var tempMessage = _lastMessageList[tempIndex];
-    //   var updatedMessage = tempMessage.copyWith(
-    //     id: encryptedMessage.id,
-    //     sender: encryptedMessage.sender,
-    //     receiver: encryptedMessage.receiver,
-    //     replyTo: encryptedMessage.replyTo,
-    //     sent: encryptedMessage.sent,
-    //     sentAt: encryptedMessage.sentAt,
-    //     delivered: encryptedMessage.delivered,
-    //     deliveredAt: encryptedMessage.deliveredAt,
-    //     seen: encryptedMessage.seen,
-    //     seenAt: encryptedMessage.seenAt,
-    //     createdAt: encryptedMessage.createdAt,
-    //     updatedAt: encryptedMessage.updatedAt,
-    //   );
-    //   _lastMessageList[tempIndex] = updatedMessage;
-    //   update();
-    //   await HiveService.delete<ChatMessage>('lastMessages', tempMessage.id!);
-    //   await HiveService.put<ChatMessage>(
-    //     'lastMessages',
-    //     updatedMessage.id ?? updatedMessage.tempId,
-    //     updatedMessage,
-    //   );
-    // }
-    AppUtility.log("Chat Message Added");
+    await addMessageToLastMessagesList(encryptedMessage);
   }
 
   void _deleteMessageListener(String messageId) async {
-    var indexInLastMessages =
-        _lastMessageList.indexWhere((element) => element.id == messageId);
-
-    if (indexInLastMessages >= 0) {
-      _lastMessageList.removeAt(indexInLastMessages);
-      update();
-      await HiveService.delete<ChatMessage>('lastMessages', messageId);
-    }
-
-    var item = await HiveService.get<ChatMessage>('allMessages', messageId);
-
-    if (item != null) {
-      await HiveService.delete<ChatMessage>('allMessages', messageId);
-    }
-
-    AppUtility.log("Chat Message Deleted");
+    AppUtility.log("Chat Message Deleted $messageId");
   }
 
   // var secretKeys = await _e2eeService.getSecretKeys();
@@ -393,31 +286,59 @@ class ChatController extends GetxController {
     return false;
   }
 
-  /// Check if the message is already present in the last message list
-  Future<bool> checkIfMessageExistsInLastMessageList(
-      ChatMessage message) async {
-    var isExists = _lastMessageList.any((element) =>
-        element.id == message.id ||
-        (element.tempId != null &&
-            message.tempId != null &&
-            element.tempId == message.tempId));
+  /// Get message index by id from the last message list
+  int _getMessageIndexByIdFromLastMessageList(ChatMessage message) {
+    var index = _lastMessageList.indexWhere(
+      (element) =>
+          (element.senderId == message.senderId &&
+              element.receiverId == message.receiverId) ||
+          (element.senderId == message.receiverId &&
+              element.receiverId == message.senderId),
+    );
 
-    if (isExists) return true;
-
-    return false;
+    return index;
   }
 
-  /// Check if the message is newer
-  bool checkIfNewerMessage(ChatMessage oldMessage, ChatMessage newMessage) {
-    var isAfter = newMessage.createdAt!.isAfter(oldMessage.createdAt!);
+  /// Check if the message is already presentfor the same user in
+  /// the last message list
+  Future<bool> _checkIfSameMessageExistsForSameUserInLastMessageList(
+      ChatMessage message) async {
+    var currentUserId = profile.profileDetails!.user!.id;
 
-    if (isAfter) return true;
+    var key = message.senderId! + message.receiverId!;
+
+    if (message.senderId == currentUserId) {
+      key = message.receiverId! + message.senderId!;
+    }
+
+    var index = _lastMessageList.indexWhere(
+      (element) =>
+          (element.senderId == message.senderId &&
+              element.receiverId == message.receiverId) ||
+          (element.senderId == message.receiverId &&
+              element.receiverId == message.senderId),
+    );
+
+    if (index < 0) return false;
+
+    var oldMessage = _lastMessageList[index];
+
+    var oldKey = oldMessage.senderId! + oldMessage.receiverId!;
+
+    if (oldMessage.senderId == currentUserId) {
+      oldKey = oldMessage.receiverId! + oldMessage.senderId!;
+    }
+
+    if (key == oldKey) {
+      return true;
+    }
 
     return false;
   }
 
   /// Check if the message is already present in the local DB
-  Future<bool> checkIfMessageExistsInLocalDB(String boxName, String key) async {
+  Future<bool> _checkIfMessageExistsInLocalChatDB(
+      String boxName, String key) async {
     var item = await HiveService.find<ChatMessage>(boxName, key);
 
     if (item != null) {
@@ -429,7 +350,7 @@ class ChatController extends GetxController {
 
   /// Check if the message is already present in the last messages list
   /// of local DB
-  Future<bool> checkIfSameMessageExistsInLastMessagesLocalDB(
+  Future<bool> _checkIfSameMessageExistsInLastMessagesLocalDB(
       ChatMessage message) async {
     var currentUserId = profile.profileDetails!.user!.id;
 
@@ -442,17 +363,14 @@ class ChatController extends GetxController {
     var item = await HiveService.find<ChatMessage>(_kLastMessagesKey, key);
 
     if (item != null) {
-      if (item.id == message.id ||
-          (item.tempId != null &&
-              message.tempId != null &&
-              item.tempId == message.tempId)) return true;
+      if (item.id == message.id || item.tempId == message.tempId) return true;
     }
 
     return false;
   }
 
   /// Check if the last exists for the specific user
-  Future<bool> checkIfMessageExistsForUserInLastMessagesLocalDB(
+  Future<bool> _checkIfMessageExistsForUserInLastMessagesLocalDB(
       ChatMessage message) async {
     var currentUserId = profile.profileDetails!.user!.id;
 
@@ -482,16 +400,16 @@ class ChatController extends GetxController {
     }
 
     var messageExists =
-        await checkIfMessageExistsForUserInLastMessagesLocalDB(message);
+        await _checkIfMessageExistsForUserInLastMessagesLocalDB(message);
 
     var isSameMessage =
-        await checkIfSameMessageExistsInLastMessagesLocalDB(message);
+        await _checkIfSameMessageExistsInLastMessagesLocalDB(message);
 
     if (messageExists || isSameMessage) {
       await HiveService.delete<ChatMessage>(_kLastMessagesKey, key);
       await HiveService.put<ChatMessage>(_kLastMessagesKey, key, message);
 
-      AppUtility.log('Last message added to local DB');
+      AppUtility.log('Last message updated in local DB');
 
       return;
     }
@@ -517,55 +435,41 @@ class ChatController extends GetxController {
       return;
     }
 
-    var isSameMessage = await checkIfMessageExistsInLocalDB(boxName, key);
+    var isSameMessage = await _checkIfMessageExistsInLocalChatDB(boxName, key);
 
     if (isSameMessage) {
       await HiveService.delete<ChatMessage>(boxName, key);
       await HiveService.put<ChatMessage>(boxName, key, message);
 
+      AppUtility.log('Message updated in local DB');
+
       return;
     }
 
     await HiveService.put<ChatMessage>(boxName, key, message);
+    AppUtility.log('Message added to local DB');
   }
 
   /// Add message to last messages list
   Future<void> addMessageToLastMessagesList(ChatMessage message) async {
-    var isExists = await checkIfMessageExistsInLastMessageList(message);
+    var isExists =
+        await _checkIfSameMessageExistsForSameUserInLastMessageList(message);
 
     if (isExists) {
-      var index = _lastMessageList.indexWhere((element) =>
-          element.id == message.id ||
-          (element.tempId != null &&
-              message.tempId != null &&
-              element.tempId == message.tempId));
-
-      var tempMessage = _lastMessageList[index];
-      var updatedMessage = tempMessage.copyWith(
-        id: message.id,
-        sender: message.sender,
-        receiver: message.receiver,
-        replyTo: message.replyTo,
-        sent: message.sent,
-        sentAt: message.sentAt,
-        delivered: message.delivered,
-        deliveredAt: message.deliveredAt,
-        seen: message.seen,
-        seenAt: message.seenAt,
-        createdAt: message.createdAt,
-        updatedAt: message.updatedAt,
-      );
-      _lastMessageList[index] = updatedMessage;
-      _lastMessageList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+      AppUtility.log('Message already exists in last messages list');
+      var index = _getMessageIndexByIdFromLastMessageList(message);
+      _lastMessageList.removeAt(index);
+      _lastMessageList.add(message);
+      _lastMessageList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       update();
 
-      AppUtility.log('Last message added to list');
+      AppUtility.log('Last message updated in list');
 
       return;
     }
 
     _lastMessageList.add(message);
-    _lastMessageList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+    _lastMessageList.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
     update();
 
     AppUtility.log('Last message added to list');
@@ -581,9 +485,12 @@ class ChatController extends GetxController {
       if (response.isSuccessful) {
         final decodedData = response.data;
         setLastMessageData = ChatMessageListResponse.fromJson(decodedData);
-        for (var item in _lastMessageList) {
+
+        for (var item in _lastMessageData.value.results!) {
           await saveLastMessageToLocalDB(item);
+          await addMessageToLastMessagesList(item);
         }
+
         _isLoading.value = false;
         update();
       } else {
@@ -618,9 +525,12 @@ class ChatController extends GetxController {
       if (response.isSuccessful) {
         final decodedData = response.data;
         setLastMessageData = ChatMessageListResponse.fromJson(decodedData);
+
         for (var item in _lastMessageData.value.results!) {
           await saveLastMessageToLocalDB(item);
+          await addMessageToLastMessagesList(item);
         }
+
         _isMoreLoading.value = false;
         update();
       } else {

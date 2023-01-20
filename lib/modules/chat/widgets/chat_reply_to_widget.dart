@@ -33,7 +33,7 @@ class ChatReplyToWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(Dimens.eight),
         decoration: BoxDecoration(
-          color: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(0.5),
+          color: Theme.of(context).dividerColor.withOpacity(0.5),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(Dimens.sixTeen),
             topRight: Radius.circular(Dimens.sixTeen),

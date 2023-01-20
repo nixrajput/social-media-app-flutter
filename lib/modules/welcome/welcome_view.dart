@@ -17,12 +17,16 @@ class WelcomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          _buildAnimation(),
-          _buildBackgroundBlur(),
-          _buildBody(context)
-        ],
+      body: SizedBox(
+        width: Dimens.screenWidth,
+        height: Dimens.screenHeight,
+        child: Stack(
+          children: [
+            _buildAnimation(),
+            _buildBackgroundBlur(),
+            _buildBody(context)
+          ],
+        ),
       ),
     );
   }
@@ -38,39 +42,47 @@ class WelcomeView extends StatelessWidget {
     return Positioned.fill(
       child: BackdropFilter(
         filter: ImageFilter.blur(
-          sigmaX: Dimens.six,
-          sigmaY: Dimens.six,
+          sigmaX: Dimens.twelve,
+          sigmaY: Dimens.twelve,
         ),
         child: const SizedBox(),
       ),
     );
   }
 
-  Positioned _buildBody(BuildContext context) {
-    return Positioned.fill(
-      child: SafeArea(
-        child: Padding(
-          padding: Dimens.edgeInsetsHorizDefault,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Dimens.boxHeight24,
-              Expanded(
+  Widget _buildBody(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: Dimens.edgeInsetsHorizDefault,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Dimens.heightedBox(Dimens.screenWidth * Dimens.pointTwo),
+            Expanded(
+              child: SizedBox(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    SizedBox(
+                      width: Dimens.screenWidth * Dimens.pointFive,
+                      child: Text(
+                        StringValues.hiThere.toTitleCase(),
+                        style: AppStyles.style13Bold.copyWith(
+                          fontSize: Dimens.fourty,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                    Dimens.boxHeight12,
                     Text(
                       "${StringValues.welcome} ${StringValues.to}"
                           .toTitleCase(),
-                      textAlign: TextAlign.center,
                       style: AppStyles.style13Bold.copyWith(
                         fontSize: Dimens.fiftySix,
-                        fontFamily: 'Muge',
-                        letterSpacing: Dimens.four,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                     Text(
@@ -81,35 +93,38 @@ class WelcomeView extends StatelessWidget {
                         letterSpacing: Dimens.four,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Dimens.boxHeight24,
-              const Spacer(),
-              Dimens.boxHeight24,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    NxFilledButton(
-                      label: StringValues.login.toUpperCase(),
-                      onTap: RouteManagement.goToLoginView,
-                      height: Dimens.fiftySix,
-                    ),
                     Dimens.boxHeight12,
-                    NxOutlinedButton(
-                      label: StringValues.register.toUpperCase(),
-                      onTap: RouteManagement.goToRegisterView,
-                      height: Dimens.fiftySix,
+                    Text(
+                      StringValues.appDescription,
+                      style: AppStyles.style20Bold,
                     ),
                   ],
                 ),
               ),
-              Dimens.boxHeight24,
-            ],
-          ),
+            ),
+            Dimens.boxHeight12,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  NxFilledButton(
+                    label: StringValues.login.toUpperCase(),
+                    onTap: RouteManagement.goToLoginView,
+                    height: Dimens.fiftySix,
+                  ),
+                  Dimens.boxHeight12,
+                  NxOutlinedButton(
+                    label: StringValues.register.toUpperCase(),
+                    onTap: RouteManagement.goToRegisterView,
+                    height: Dimens.fiftySix,
+                  ),
+                ],
+              ),
+            ),
+            Dimens.boxHeight12,
+          ],
         ),
       ),
     );

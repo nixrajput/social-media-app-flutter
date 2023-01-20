@@ -73,12 +73,58 @@ extension DateHelper on DateTime {
     final hours = diff.inHours - (days * 24);
     final minutes = diff.inMinutes - (days * 24 * 60) - (hours * 60);
 
+    var dayStr = '';
+    var hourStr = '';
+    var minuteStr = '';
+
     if (days > 0) {
-      return '$days days $hours hours $minutes minutes';
+      if (days == 1) {
+        dayStr = '$days ${StringValues.day}';
+      } else {
+        dayStr = '$days ${StringValues.days}';
+      }
+
+      if (hours > 0) {
+        if (hours == 1) {
+          hourStr = '$hours ${StringValues.hour}';
+        } else {
+          hourStr = '$hours ${StringValues.hours}';
+        }
+      }
+
+      if (minutes > 0) {
+        if (minutes == 1) {
+          minuteStr = '$minutes ${StringValues.minute}';
+        } else {
+          minuteStr = '$minutes ${StringValues.minutes}';
+        }
+      }
+
+      return '$dayStr $hourStr $minuteStr';
     } else if (hours > 0) {
-      return '$hours hours $minutes minutes';
+      if (hours == 1) {
+        hourStr = '$hours ${StringValues.hour}';
+      } else {
+        hourStr = '$hours ${StringValues.hours}';
+      }
+
+      if (minutes > 0) {
+        if (minutes == 1) {
+          minuteStr = '$minutes ${StringValues.minute}';
+        } else {
+          minuteStr = '$minutes ${StringValues.minutes}';
+        }
+      }
+
+      return '$hourStr $minuteStr';
     } else {
-      return '$minutes minutes';
+      if (minutes == 1) {
+        minuteStr = '$minutes ${StringValues.minute}';
+      } else {
+        minuteStr = '$minutes ${StringValues.minutes}';
+      }
+
+      return '$minuteStr';
     }
   }
 
@@ -88,11 +134,10 @@ extension DateHelper on DateTime {
     }
 
     final now = DateTime.now().toLocal();
-    final diff = toLocal().difference(now);
-
+    final diff = now.difference(this).abs();
     final days = diff.inDays;
     final hours = diff.inHours - (days * 24);
-    final minutes = diff.inMinutes - ((days * 24 * 60) + (hours * 60));
+    final minutes = diff.inMinutes - (days * 24 * 60) - (hours * 60);
 
     var dayStr = '';
     var hourStr = '';
@@ -105,21 +150,25 @@ extension DateHelper on DateTime {
         dayStr = '$days ${StringValues.days}';
       }
 
-      if (hours == 1) {
-        hourStr = '$hours ${StringValues.hour}';
-      } else {
-        hourStr = '$hours ${StringValues.hours}';
+      if (hours > 0) {
+        if (hours == 1) {
+          hourStr = '$hours ${StringValues.hour}';
+        } else {
+          hourStr = '$hours ${StringValues.hours}';
+        }
       }
 
-      if (minutes == 1) {
-        minuteStr = '$minutes ${StringValues.minute}';
-      } else {
-        minuteStr = '$minutes ${StringValues.minutes}';
+      if (minutes > 0) {
+        if (minutes == 1) {
+          minuteStr = '$minutes ${StringValues.minute}';
+        } else {
+          minuteStr = '$minutes ${StringValues.minutes}';
+        }
       }
 
       return showLeft == true
-          ? '$dayStr $hourStr $minuteStr ${StringValues.left}'.toLowerCase()
-          : '$dayStr $hourStr $minuteStr'.toLowerCase();
+          ? '$dayStr $hourStr $minuteStr ${StringValues.left}'
+          : '$dayStr $hourStr $minuteStr';
     } else if (hours > 0) {
       if (hours == 1) {
         hourStr = '$hours ${StringValues.hour}';
@@ -127,15 +176,17 @@ extension DateHelper on DateTime {
         hourStr = '$hours ${StringValues.hours}';
       }
 
-      if (minutes == 1) {
-        minuteStr = '$minutes ${StringValues.minute}';
-      } else {
-        minuteStr = '$minutes ${StringValues.minutes}';
+      if (minutes > 0) {
+        if (minutes == 1) {
+          minuteStr = '$minutes ${StringValues.minute}';
+        } else {
+          minuteStr = '$minutes ${StringValues.minutes}';
+        }
       }
 
       return showLeft == true
-          ? '$hourStr $minuteStr ${StringValues.left}'.toLowerCase()
-          : '$hourStr $minuteStr'.toLowerCase();
+          ? '$hourStr $minuteStr ${StringValues.left}'
+          : '$hourStr $minuteStr';
     } else {
       if (minutes == 1) {
         minuteStr = '$minutes ${StringValues.minute}';
@@ -144,8 +195,8 @@ extension DateHelper on DateTime {
       }
 
       return showLeft == true
-          ? '$minuteStr ${StringValues.left}'.toLowerCase()
-          : '$minuteStr'.toLowerCase();
+          ? '$minuteStr ${StringValues.left}'
+          : '$minuteStr';
     }
   }
 }

@@ -40,9 +40,13 @@ class NotificationService {
     String? channelId,
     String? channelName,
     Priority? priority,
-    bool? isImportant,
     String? largeIcon,
     String? groupKey,
+    Importance? importance,
+    InterruptionLevel? interruptionLevel,
+    bool? playSound,
+    bool? enableVibration,
+    bool? enableLights,
   }) async {
     ByteArrayAndroidBitmap? androidBitmap;
     if (largeIcon != null) {
@@ -55,14 +59,14 @@ class NotificationService {
       channelName ?? 'General Notifications',
       groupKey: groupKey,
       priority: priority ?? Priority.defaultPriority,
-      importance:
-          isImportant == true ? Importance.max : Importance.defaultImportance,
+      importance: importance ?? Importance.defaultImportance,
+      playSound: playSound ?? false,
+      enableVibration: enableVibration ?? false,
+      enableLights: enableLights ?? true,
       largeIcon: androidBitmap != null ? androidBitmap : null,
     );
     var iosNot = DarwinNotificationDetails(
-      interruptionLevel: isImportant == true
-          ? InterruptionLevel.active
-          : InterruptionLevel.passive,
+      interruptionLevel: interruptionLevel ?? InterruptionLevel.passive,
     );
     final platformNot = NotificationDetails(
       android: androidNot,

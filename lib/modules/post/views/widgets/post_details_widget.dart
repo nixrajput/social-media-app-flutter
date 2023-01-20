@@ -44,10 +44,7 @@ class PostDetailsWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).bottomAppBarColor,
         borderRadius: BorderRadius.circular(Dimens.four),
-        border: Border.all(
-          color: Theme.of(context).dividerColor,
-          width: Dimens.one,
-        ),
+        boxShadow: AppStyles.defaultShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,7 +102,7 @@ class PostDetailsWidget extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: '${post.owner!.fname} ${post.owner!.lname}',
-                      style: AppStyles.style14Bold.copyWith(
+                      style: AppStyles.style15Bold.copyWith(
                         color: Theme.of(context).textTheme.bodyText1!.color,
                       ),
                       recognizer: TapGestureRecognizer()

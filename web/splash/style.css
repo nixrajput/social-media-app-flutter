@@ -5,7 +5,7 @@ html {
 body {
   margin: 0;
   min-height: 100%;
-  background-color: #fcfcfc;
+  background-color: #ececec;
   background-size: 100% 100%;
 }
 
@@ -57,6 +57,6 @@ body {
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #12121e;
+    background-color: #0a0a10;
   }
 }

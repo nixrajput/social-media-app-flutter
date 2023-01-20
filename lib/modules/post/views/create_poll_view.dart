@@ -5,7 +5,6 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/extensions/date_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/circle_border.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
@@ -67,7 +66,7 @@ class CreatePollView extends StatelessWidget {
       child: Container(
         padding: Dimens.edgeInsets8_16,
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: ColorValues.primaryColor,
           borderRadius: BorderRadius.circular(Dimens.four),
         ),
         child: Center(
@@ -180,27 +179,28 @@ class CreatePollView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildPollQuestion(logic),
-        Dimens.boxHeight8,
+        _buildPollQuestion(context, logic),
         _buildPollOptions(context, logic),
       ],
     );
   }
 
-  Padding _buildPollQuestion(CreatePollController logic) {
+  Padding _buildPollQuestion(BuildContext context, CreatePollController logic) {
     return Padding(
       padding: Dimens.edgeInsets8_0,
       child: TextFormField(
         decoration: InputDecoration(
           hintText: StringValues.addQuestion,
-          hintStyle: AppStyles.style16Normal.copyWith(
-            color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-          ),
           border: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
           contentPadding: Dimens.edgeInsets0,
         ),
         style: AppStyles.style16Normal.copyWith(
-          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyText1!.color,
         ),
         scrollPadding: Dimens.edgeInsets0,
         minLines: 1,
@@ -327,7 +327,7 @@ class CreatePollView extends StatelessWidget {
               color: Theme.of(context).bottomAppBarColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               border: Border.all(
-                color: Theme.of(context).textTheme.subtitle1!.color!,
+                color: Theme.of(context).dividerColor,
                 width: Dimens.one,
               ),
             ),
@@ -385,7 +385,7 @@ class CreatePollView extends StatelessWidget {
               color: Theme.of(context).bottomAppBarColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               border: Border.all(
-                color: Theme.of(context).textTheme.subtitle1!.color!,
+                color: Theme.of(context).dividerColor,
                 width: Dimens.one,
               ),
             ),
@@ -443,7 +443,7 @@ class CreatePollView extends StatelessWidget {
               color: Theme.of(context).bottomAppBarColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               border: Border.all(
-                color: Theme.of(context).textTheme.subtitle1!.color!,
+                color: Theme.of(context).dividerColor,
                 width: Dimens.one,
               ),
             ),
@@ -496,7 +496,7 @@ class CreatePollView extends StatelessWidget {
           Container(
             padding: Dimens.edgeInsets12,
             decoration: BoxDecoration(
-              color: Theme.of(Get.context!).scaffoldBackgroundColor,
+              color: Theme.of(context).scaffoldBackgroundColor,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -540,8 +540,7 @@ class CreatePollView extends StatelessWidget {
           child: Padding(
             padding: Dimens.edgeInsetsVertDefault,
             child: Text(
-              DateTime.parse(logic.pollEndsAt)
-                  .getPollDurationLeft(showLeft: false),
+              logic.getDaysHoursMinutes(),
               style: AppStyles.style13Normal.copyWith(
                 color: ColorValues.primaryColor,
               ),

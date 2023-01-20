@@ -80,19 +80,63 @@ class CreatePollController extends GetxController {
       _pollLengthMinutes.value = 0;
     }
 
-    _pollEndsAt.value = DateTime.now()
-        .add(Duration(
-          days: _pollLengthDays.value > 0 ? _pollLengthDays.value : 0,
-          hours: _pollLengthHours.value > 0 ? _pollLengthHours.value : 0,
-          minutes: _pollLengthMinutes.value > 0 ? _pollLengthMinutes.value : 0,
-        ))
-        .toIso8601String();
-
-    AppUtility.log(
-        'pollEndsAt: ${DateTime.parse(_pollEndsAt.value).getPollDurationLeft()}');
-    AppUtility.log('pollEndsAt: ${_pollEndsAt.value}');
-
     update();
+  }
+
+  String getDaysHoursMinutes() {
+    var dayStr = '';
+    var hourStr = '';
+    var minuteStr = '';
+
+    if (pollLengthDays > 0) {
+      if (pollLengthDays == 1) {
+        dayStr = '$pollLengthDays ${StringValues.day}';
+      } else {
+        dayStr = '$pollLengthDays ${StringValues.days}';
+      }
+
+      if (pollLengthHours > 0) {
+        if (pollLengthHours == 1) {
+          hourStr = '$pollLengthHours ${StringValues.hour}';
+        } else {
+          hourStr = '$pollLengthHours ${StringValues.hours}';
+        }
+      }
+
+      if (pollLengthMinutes > 0) {
+        if (pollLengthMinutes == 1) {
+          minuteStr = '$pollLengthMinutes ${StringValues.minute}';
+        } else {
+          minuteStr = '$pollLengthMinutes ${StringValues.minutes}';
+        }
+      }
+
+      return '$dayStr $hourStr $minuteStr';
+    } else if (pollLengthHours > 0) {
+      if (pollLengthHours == 1) {
+        hourStr = '$pollLengthHours ${StringValues.hour}';
+      } else {
+        hourStr = '$pollLengthHours ${StringValues.hours}';
+      }
+
+      if (pollLengthMinutes > 0) {
+        if (pollLengthMinutes == 1) {
+          minuteStr = '$pollLengthMinutes ${StringValues.minute}';
+        } else {
+          minuteStr = '$pollLengthMinutes ${StringValues.minutes}';
+        }
+      }
+
+      return '$hourStr $minuteStr';
+    } else {
+      if (pollLengthMinutes == 1) {
+        minuteStr = '$pollLengthMinutes ${StringValues.minute}';
+      } else {
+        minuteStr = '$pollLengthMinutes ${StringValues.minutes}';
+      }
+
+      return '$minuteStr';
+    }
   }
 
   void onChangePollLengthHours(int value) {
@@ -138,12 +182,6 @@ class CreatePollController extends GetxController {
       child: TextFormField(
         decoration: InputDecoration(
           hintText: '${StringValues.option} ${index + 1}',
-          hintStyle: AppStyles.style14Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle2!.color,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(Dimens.four),
-          ),
           suffix: GetBuilder<CreatePollController>(
             builder: (logic) => Text(
               logic.pollOptions[index].length.toString(),
@@ -185,19 +223,6 @@ class CreatePollController extends GetxController {
         .add(_buildOptionField(Get.context!, _pollOptionFields.length));
     _pollOptionFields
         .add(_buildOptionField(Get.context!, _pollOptionFields.length));
-
-    _pollEndsAt.value = DateTime.now()
-        .add(Duration(
-          days: _pollLengthDays.value > 0 ? _pollLengthDays.value : 0,
-          hours: _pollLengthHours.value > 0 ? _pollLengthHours.value : 0,
-          minutes: _pollLengthMinutes.value > 0 ? _pollLengthMinutes.value : 0,
-        ))
-        .toIso8601String();
-  }
-
-  @override
-  onClose() {
-    super.onClose();
   }
 
   void goToPollPreviewPage() {
@@ -220,6 +245,16 @@ class CreatePollController extends GetxController {
         return;
       }
     }
+
+    _pollEndsAt.value = DateTime.now()
+        .add(Duration(
+          days: _pollLengthDays.value > 0 ? _pollLengthDays.value : 0,
+          hours: _pollLengthHours.value > 0 ? _pollLengthHours.value : 0,
+          minutes: _pollLengthMinutes.value > 0 ? _pollLengthMinutes.value : 0,
+        ))
+        .toLocal()
+        .toUtc()
+        .toIso8601String();
 
     RouteManagement.goToPollPreviewView();
   }
@@ -245,13 +280,27 @@ class CreatePollController extends GetxController {
       }
     }
 
+    var pollEndsAt = DateTime.now()
+        .add(Duration(
+          days: _pollLengthDays.value > 0 ? _pollLengthDays.value : 0,
+          hours: _pollLengthHours.value > 0 ? _pollLengthHours.value : 0,
+          minutes: _pollLengthMinutes.value > 0 ? _pollLengthMinutes.value : 0,
+        ))
+        .toLocal()
+        .toUtc()
+        .toIso8601String();
+
+    AppUtility.log(
+        'pollEndsAt: ${DateTime.parse(_pollEndsAt.value).getPollDurationLeft()}');
+    AppUtility.log('pollEndsAt: ${_pollEndsAt.value}');
+
     AppUtility.showLoadingDialog();
 
     try {
       final body = {
         'pollQuestion': _pollQuestion.value,
         'pollOptions': _pollOptions,
-        'pollEndsAt': _pollEndsAt.value,
+        'pollEndsAt': pollEndsAt,
         'visibility': _pollVisibility['id']!,
       };
 
@@ -287,7 +336,6 @@ class CreatePollController extends GetxController {
       AppUtility.closeDialog();
       _isLoading.value = false;
       update();
-      AppUtility.log('Error: $exc', tag: 'error');
       AppUtility.showSnackBar('Error: $exc', StringValues.error);
     }
   }

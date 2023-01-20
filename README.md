@@ -42,9 +42,8 @@ please read the [contribution guidelines](CONTRIBUTING.md) and then contact the 
 
 ```dart
 abstract class AppSecrets {
-  static const uploadPreset = 'XXX-XXX-XXX-XXX';
+  static const cloudinaryUploadPreset = 'XXX-XXX-XXX-XXX';
   static const cloudinaryCloudName = 'XXX-XXX-XXX-XXX';
-  static const githubToken = 'XXX-XXX-XXX-XXX';
 }
 ```
 

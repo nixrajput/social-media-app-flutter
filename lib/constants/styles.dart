@@ -8,6 +8,29 @@ abstract class AppStyles {
 
   static double get defaultHeight => 1.25;
 
+  static const Color kShadowColor = Color.fromARGB(255, 0, 0, 0);
+
+  static List<BoxShadow> get defaultShadow => [
+        BoxShadow(
+          color: kShadowColor.withAlpha(14),
+          blurRadius: Dimens.four,
+          spreadRadius: Dimens.zero,
+          offset: Offset(Dimens.zero, Dimens.three),
+        ),
+        BoxShadow(
+          color: kShadowColor.withAlpha(12),
+          blurRadius: Dimens.three,
+          spreadRadius: -Dimens.two,
+          offset: Offset(Dimens.zero, Dimens.three),
+        ),
+        BoxShadow(
+          color: kShadowColor.withAlpha(2),
+          blurRadius: Dimens.eight,
+          spreadRadius: Dimens.zero,
+          offset: Offset(Dimens.zero, Dimens.one),
+        ),
+      ];
+
   static TextStyle style12Normal = TextStyle(
     fontSize: Dimens.twelve,
     fontWeight: FontWeight.w400,

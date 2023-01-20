@@ -9,7 +9,6 @@ import 'package:social_media_app/global_widgets/circular_progress_indicator.dart
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/load_more_widget.dart';
-import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/chat/widgets/chat_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -20,27 +19,25 @@ class ChatsTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return UnFocusWidget(
-      child: SafeArea(
-        child: SizedBox(
-          width: Dimens.screenWidth,
-          height: Dimens.screenHeight,
-          child: NxRefreshIndicator(
-            onRefresh: ChatController.find.fetchLastMessages,
-            showProgress: false,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NxAppBar(
-                  title: StringValues.chats,
-                  padding: Dimens.edgeInsetsDefault,
-                  showBackBtn: false,
-                ),
-                _buildBody(context),
-              ],
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
+      width: Dimens.screenWidth,
+      height: Dimens.screenHeight,
+      child: NxRefreshIndicator(
+        onRefresh: ChatController.find.fetchLastMessages,
+        showProgress: false,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            NxAppBar(
+              title: StringValues.chats,
+              padding: Dimens.edgeInsetsDefault,
+              showBackBtn: false,
             ),
-          ),
+            _buildBody(context),
+          ],
         ),
       ),
     );
@@ -55,9 +52,6 @@ class ChatsTabView extends StatelessWidget {
           if (!logic.initialized) {
             return const Center(child: NxCircularProgressIndicator());
           }
-
-          logic.lastMessageList
-              .sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
 
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(

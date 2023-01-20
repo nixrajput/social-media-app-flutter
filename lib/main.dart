@@ -42,18 +42,21 @@ void main() async {
   await _initPreAppServices();
   final networkService = NetworkController.instance;
   await networkService.init();
-  // runApp(const MyApp());
+
   runApplication();
+
   await initializeFirebaseService();
   await _initPostAppServices();
 }
 
 void runApplication() {
+  AppUtility.log('Initializing App');
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
   runApp(const MyApp());
+  AppUtility.log('App Initialized');
 }
 
 Future<void> _initPostAppServices() async {
@@ -97,8 +100,6 @@ Future<void> _initPreAppServices() async {
   await Hive.openBox<Post>('profilePosts');
   await Hive.openBox<Follower>('followers');
   await Hive.openBox<Follower>('followings');
-
-  // await HiveService.deleteBox<ChatMessage>('lastMessages');
 
   AppUtility.log('Hive Boxes Opened');
 
@@ -205,10 +206,6 @@ Future<void> validateSessionAndGetData() async {
   AppUtility.log('Session Validated and Data Fetched');
 }
 
-const String kSystemMode = 'system';
-const String kLightMode = 'light';
-const String kDarkMode = 'dark';
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -217,7 +214,7 @@ class MyApp extends StatelessWidget {
     return GetBuilder<AppThemeController>(
       builder: (logic) => ScreenUtilInit(
         designSize: const Size(392, 744),
-        builder: (_, __) => GetMaterialApp(
+        builder: (ctx, child) => GetMaterialApp(
           title: StringValues.appName,
           debugShowCheckedModeBanner: false,
           themeMode: _handleAppTheme(logic.themeMode),
@@ -227,7 +224,7 @@ class MyApp extends StatelessWidget {
           initialRoute: _handleAppInitialRoute(),
           translations: AppTranslation(),
           locale: Get.deviceLocale,
-          fallbackLocale: const Locale('en', 'US'),
+          fallbackLocale: const Locale('en', 'IN'),
         ),
       ),
     );

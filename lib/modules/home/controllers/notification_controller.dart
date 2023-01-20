@@ -78,6 +78,7 @@ class NotificationController extends GetxController {
             item,
           );
         }
+        await followRequestController.fetchFollowRequests();
         _isLoading.value = false;
         update();
       } else {

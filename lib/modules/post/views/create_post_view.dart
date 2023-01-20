@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/profile.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -69,7 +70,7 @@ class CreatePostView extends StatelessWidget {
       child: Container(
         padding: Dimens.edgeInsets8_16,
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: ColorValues.primaryColor,
           borderRadius: BorderRadius.circular(Dimens.four),
         ),
         child: Center(
@@ -183,14 +184,16 @@ class CreatePostView extends StatelessWidget {
       child: TextFormField(
         decoration: InputDecoration(
           hintText: StringValues.whatsOnYourMind,
-          hintStyle: AppStyles.style16Normal.copyWith(
-            color: Theme.of(Get.context!).textTheme.subtitle1!.color,
-          ),
           border: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          errorBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          focusedErrorBorder: InputBorder.none,
           contentPadding: Dimens.edgeInsets0,
         ),
         style: AppStyles.style16Normal.copyWith(
-          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyText1!.color,
         ),
         scrollPadding: Dimens.edgeInsets0,
         minLines: 1,
@@ -339,8 +342,7 @@ class CreatePostView extends StatelessWidget {
                       child: Text(
                         logic.caption.length.toString(),
                         style: AppStyles.style12Bold.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                          color: Theme.of(context).textTheme.subtitle1!.color,
                         ),
                       ),
                     ),
@@ -387,7 +389,7 @@ class CreatePostView extends StatelessWidget {
               child: NxIconButton(
                 icon: Icons.video_library_outlined,
                 iconSize: Dimens.twenty,
-                iconColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                iconColor: Theme.of(context).textTheme.bodyText1!.color,
                 onTap: () {
                   if (logic.pickedFileList.length >= 10) {
                     AppUtility.showSnackBar(
@@ -405,7 +407,7 @@ class CreatePostView extends StatelessWidget {
               child: NxIconButton(
                 icon: Icons.camera_alt_outlined,
                 iconSize: Dimens.twenty,
-                iconColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                iconColor: Theme.of(context).textTheme.bodyText1!.color,
                 onTap: () {
                   if (logic.pickedFileList.length >= 10) {
                     AppUtility.showSnackBar(

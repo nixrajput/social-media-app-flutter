@@ -48,44 +48,56 @@ abstract class HiveService {
     return box.get(key);
   }
 
-  static Future<Map<String, dynamic>> getBox<E>(String boxName) async {
+  static Future<Map<dynamic, E>> getBox<E>(String boxName) async {
     final box = await _openBox<E>(boxName);
-    return box.toMap() as Map<String, dynamic>;
+    return box.toMap();
   }
 
   static Future<List<E>> getAll<E>(String boxName) async {
+    AppUtility.log('Getting all from box: $boxName');
     final box = await _openBox<E>(boxName);
+    AppUtility.log('Got all from box: $boxName');
     return box.values.toList();
   }
 
   static Future<void> delete<E>(String boxName, dynamic key) async {
+    AppUtility.log('Deleting key: $key from box: $boxName');
     final box = await _openBox<E>(boxName);
     var values = box.values.toList();
     if (values.isEmpty) return;
     await box.delete(key);
+    AppUtility.log('Deleted key: $key from box: $boxName');
   }
 
   static Future<void> deleteAt<E>(String boxName, int index) async {
+    AppUtility.log('Deleting at index: $index from box: $boxName');
     final box = await _openBox<E>(boxName);
     var values = box.values.toList();
     if (values.length > index) {
       await box.deleteAt(index);
+      AppUtility.log('Deleted at index: $index from box: $boxName');
     }
   }
 
   static Future<void> closeBox(String boxName) async {
+    AppUtility.log('Closing Box: $boxName');
     if (Hive.isBoxOpen(boxName)) {
       await Hive.box(boxName).close();
+      AppUtility.log('Box Closed: $boxName');
     }
   }
 
   static Future<void> deleteBox<E>(String boxName) async {
+    AppUtility.log('Deleting Box: $boxName');
     if (Hive.isBoxOpen(boxName)) {
       await Hive.box<E>(boxName).deleteFromDisk();
+      AppUtility.log('Box Deleted: $boxName');
     }
   }
 
   static Future<void> deleteAllBoxes() async {
+    AppUtility.log('Deleting All Boxes');
     await Hive.deleteFromDisk();
+    AppUtility.log('All Boxes Deleted');
   }
 }

@@ -27,22 +27,21 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
-        width: Dimens.screenWidth,
-        height: Dimens.screenHeight,
-        child: NxRefreshIndicator(
-          onRefresh: () => PostController.find.fetchPosts(),
-          showProgress: false,
-          child: CustomScrollView(
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-            ),
-            slivers: [
-              _buildAppBar(context),
-              _buildBody(),
-            ],
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      width: Dimens.screenWidth,
+      height: Dimens.screenHeight,
+      child: NxRefreshIndicator(
+        onRefresh: () => PostController.find.fetchPosts(),
+        showProgress: false,
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
           ),
+          slivers: [
+            _buildAppBar(context),
+            _buildBody(),
+          ],
         ),
       ),
     );

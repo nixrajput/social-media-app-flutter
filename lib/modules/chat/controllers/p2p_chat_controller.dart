@@ -22,6 +22,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/global_string_key.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
+import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/file_utility.dart';
 import 'package:social_media_app/utils/utility.dart';
 
@@ -228,7 +229,7 @@ class P2PChatController extends GetxController {
   void addTempMessage(ChatMessage message) {
     _chatMessages.add(message);
     update();
-    chatController.addMessageToLastMessagesList(message);
+    // chatController.addMessageToLastMessagesList(message);
   }
 
   void sendMessage() async {
@@ -402,9 +403,100 @@ class P2PChatController extends GetxController {
     });
   }
 
-  void _getData() async {
+  /// Check if the message is already present in the message list
+  Future<bool> _checkIfMessageExistsInMessageList(ChatMessage message) async {
+    var isExists = false;
+
+    if (message.id != null) {
+      if (message.tempId != null) {
+        isExists = _chatMessages.any((element) =>
+            element.id == message.id || element.tempId == message.tempId);
+      } else {
+        isExists = _chatMessages.any((element) => element.id == message.id);
+      }
+    } else {
+      isExists =
+          _chatMessages.any((element) => element.tempId == message.tempId);
+    }
+
+    return isExists;
+  }
+
+  /// Get message index by id from the message list
+  int _getMessageIndexByIdFromMessageList(ChatMessage message) {
+    var index = -1;
+
+    if (message.id != null) {
+      if (message.tempId != null) {
+        index = _chatMessages.indexWhere((element) =>
+            element.id == message.id || element.tempId == message.tempId);
+      } else {
+        index = _chatMessages.indexWhere((element) => element.id == message.id);
+      }
+    } else {
+      index = _chatMessages
+          .indexWhere((element) => element.tempId == message.tempId);
+    }
+
+    return index;
+  }
+
+  /// Add message to last messages list
+  Future<void> addMessageToMessagesList(ChatMessage message) async {
+    var isExists = await _checkIfMessageExistsInMessageList(message);
+
+    if (isExists) {
+      var index = _getMessageIndexByIdFromMessageList(message);
+
+      if (index < 0) {
+        return;
+      }
+
+      _chatMessages.removeAt(index);
+      _chatMessages.add(message);
+      _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+      update();
+
+      AppUtility.log('Message updated in list');
+
+      return;
+    }
+
+    _chatMessages.add(message);
+    _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+    update();
+
+    AppUtility.log('Message added to list');
+  }
+
+  Future<void> _loadLocalMessages() async {
+    AppUtility.log('Loading local messages');
     var currentUserId = profile.profileDetails!.user!.id;
 
+    var chatBox = kChatDataKey + user!.id + currentUserId;
+
+    await Hive.openBox<ChatMessage>(chatBox);
+
+    var isExists = await HiveService.hasLength<ChatMessage>(chatBox);
+
+    if (isExists) {
+      // await HiveService.deleteBox<ChatMessage>(chatBox);
+      // await Hive.openBox<ChatMessage>(chatBox);
+
+      var data = await HiveService.getAll<ChatMessage>(chatBox);
+      data.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      _chatMessages.clear();
+      for (var i = 0; i < data.length; i++) {
+        await addMessageToMessagesList(data[i]);
+      }
+    }
+    AppUtility.log('Local messages loaded');
+  }
+
+  void _getData() async {
+    await _loadLocalMessages();
+
+    var currentUserId = profile.profileDetails!.user!.id;
     var chatBox = kChatDataKey + user!.id + currentUserId;
 
     await Hive.openBox<ChatMessage>(chatBox);
@@ -412,45 +504,12 @@ class P2PChatController extends GetxController {
     Hive.box<ChatMessage>(chatBox).watch().listen((event) async {
       if (event.deleted) {
         AppUtility.log('Deleted message ${event.key}');
-
-        _chatMessages.removeWhere((element) =>
-            element.id == event.key || element.tempId == event.key);
-        _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-        update();
-
-        if (_chatMessages.isNotEmpty) {
-          var lastMessage = _chatMessages[_chatMessages.length - 1];
-          await chatController.saveLastMessageToLocalDB(lastMessage);
-        }
       } else {
         var message = event.value;
-        var tempMessage = _chatMessages.firstWhereOrNull((element) =>
-            element.id == message.id || element.tempId == message.tempId);
-        if (tempMessage != null) {
-          var updatedMessage = tempMessage.copyWith(
-            id: message.id,
-            sender: message.sender,
-            receiver: message.receiver,
-            replyTo: message.replyTo,
-            sent: message.sent,
-            sentAt: message.sentAt,
-            delivered: message.delivered,
-            deliveredAt: message.deliveredAt,
-            seen: message.seen,
-            seenAt: message.seenAt,
-            createdAt: message.createdAt,
-            updatedAt: message.updatedAt,
-          );
-          _chatMessages.removeWhere((element) =>
-              element.id == message.id || element.tempId == message.tempId);
-          _chatMessages.add(updatedMessage);
-          _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-        } else {
-          _chatMessages.add(message);
-          _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
-        }
 
-        update();
+        if (message != null) {
+          await addMessageToMessagesList(message);
+        }
       }
     });
 
@@ -459,6 +518,10 @@ class P2PChatController extends GetxController {
   }
 
   void deleteMultipleMessages(List<String> messageIds) {
+    _chatMessages.removeWhere((element) => messageIds.contains(element.id));
+    _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+    update();
+
     _socketApiProvider.sendJson({
       'type': 'delete-messages',
       'payload': {
@@ -467,7 +530,31 @@ class P2PChatController extends GetxController {
     });
   }
 
-  void deleteMessage(String messageId) {
+  /// Check if the message is the last message in the list
+  bool _checkIfMessageIsLastMessageInList(String messageId) {
+    var isLastMessage = _chatMessages.last.id == messageId;
+
+    return isLastMessage;
+  }
+
+  void deleteMessage(String messageId) async {
+    var isLastMessage = _checkIfMessageIsLastMessageInList(messageId);
+
+    if (isLastMessage) {
+      AppUtility.log('Last message deleted');
+      var lastMessage = _chatMessages[_chatMessages.length - 2];
+      await chatController.saveLastMessageToLocalDB(lastMessage);
+      await chatController.addMessageToLastMessagesList(lastMessage);
+    }
+
+    var currentUserId = profile.profileDetails!.user!.id;
+    var chatBox = kChatDataKey + user!.id + currentUserId;
+    await HiveService.delete<ChatMessage>(chatBox, messageId);
+
+    _chatMessages.removeWhere((element) => element.id == messageId);
+    _chatMessages.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+    update();
+
     _socketApiProvider.sendJson({
       'type': 'delete-message',
       'payload': {

@@ -7,6 +7,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
+import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/settings/controllers/change_email_controller.dart';
 
 class ChangeEmailView extends StatelessWidget {
@@ -14,8 +15,7 @@ class ChangeEmailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return UnFocusWidget(
       child: Scaffold(
         body: SafeArea(
           child: SizedBox(
@@ -55,19 +55,15 @@ class ChangeEmailView extends StatelessWidget {
                         text: TextSpan(
                           children: [
                             TextSpan(
-                                text: '${StringValues.yourCurrentEmail} ',
-                                style: AppStyles.style13Normal.copyWith(
-                                  color: Theme.of(Get.context!)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color,
-                                )),
+                              text:
+                                  '${StringValues.current} ${StringValues.email.toLowerCase()} : ',
+                            ),
                             TextSpan(
                               text: logic.profile.profileDetails!.user!.email,
                               style: AppStyles.style16Bold,
                             ),
                           ],
-                          style: AppStyles.style14Normal.copyWith(
+                          style: AppStyles.style16Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
                                 .bodyText1!
@@ -75,15 +71,12 @@ class ChangeEmailView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Dimens.boxHeight4,
+                      Dimens.boxHeight32,
                       Text(
                         StringValues.yourCurrentEmailDesc,
-                        style: AppStyles.style13Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
-                        ),
+                        style: AppStyles.style13Normal,
                       ),
-                      Dimens.boxHeight32,
+                      Dimens.boxHeight12,
                       Container(
                         height: Dimens.fiftySix,
                         constraints:

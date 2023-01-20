@@ -74,6 +74,11 @@ class PostCommentView extends StatelessWidget {
                       decoration: const InputDecoration(
                         hintText: StringValues.addComment,
                         border: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
                       ),
                       minLines: 1,
                       maxLines: 1,

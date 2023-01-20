@@ -42,7 +42,7 @@ class UserWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: Dimens.edgeInsets6_0,
+        margin: Dimens.edgeInsets8_0,
         padding: padding ?? Dimens.edgeInsets8,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
@@ -50,10 +50,7 @@ class UserWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).bottomAppBarColor,
           borderRadius: BorderRadius.circular(Dimens.four),
-          border: Border.all(
-            color: Theme.of(context).dividerColor,
-            width: Dimens.pointEight,
-          ),
+          boxShadow: AppStyles.defaultShadow,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,7 +99,7 @@ class UserWidget extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 text: user.uname.toLowerCase(),
-                style: AppStyles.style14Bold.copyWith(
+                style: AppStyles.style15Bold.copyWith(
                   color: Theme.of(context).textTheme.bodyText1!.color,
                 ),
               ),

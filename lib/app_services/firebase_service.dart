@@ -32,27 +32,96 @@ Priority setNotificationPriority(String type) {
   switch (type) {
     case 'Chats':
       return Priority.max;
-    case 'Comments':
     case 'General Notifications':
       return Priority.high;
+    case 'Comments':
+      return Priority.high;
     case 'Follow Requests':
+      return Priority.high;
     case 'Followers':
+      return Priority.high;
     case 'Likes':
+      return Priority.high;
     default:
       return Priority.defaultPriority;
   }
 }
 
 @pragma('vm:entry-point')
-bool setNotificationImportance(String type) {
+Importance setNotificationImportance(String type) {
   switch (type) {
     case 'Chats':
+      return Importance.max;
+    case 'General Notifications':
+      return Importance.high;
     case 'Comments':
+      return Importance.defaultImportance;
+    case 'Follow Requests':
+      return Importance.defaultImportance;
+    case 'Followers':
+      return Importance.defaultImportance;
+    case 'Likes':
+      return Importance.defaultImportance;
+    default:
+      return Importance.defaultImportance;
+  }
+}
+
+@pragma('vm:entry-point')
+bool setNotificationPlaySound(String type) {
+  switch (type) {
+    case 'Chats':
+      return true;
+    case 'General Notifications':
+      return true;
+    case 'Comments':
+      return false;
+    case 'Follow Requests':
+      return false;
+    case 'Followers':
+      return false;
+    case 'Likes':
+      return false;
+    default:
+      return false;
+  }
+}
+
+@pragma('vm:entry-point')
+bool setNotificationEnableVibration(String type) {
+  switch (type) {
+    case 'Chats':
+      return true;
+    case 'General Notifications':
+      return true;
+    case 'Comments':
+      return false;
+    case 'Follow Requests':
+      return false;
+    case 'Followers':
+      return false;
+    case 'Likes':
+      return false;
+    default:
+      return false;
+  }
+}
+
+@pragma('vm:entry-point')
+bool setNotificationEnableLights(String type) {
+  switch (type) {
+    case 'Chats':
+      return true;
+    case 'Comments':
+      return true;
     case 'General Notifications':
       return true;
     case 'Follow Requests':
+      return true;
     case 'Followers':
+      return true;
     case 'Likes':
+      return true;
     default:
       return false;
   }
@@ -221,7 +290,10 @@ Future<void> onMessage(RemoteMessage message) async {
       title: title ?? '',
       body: body ?? '',
       priority: setNotificationPriority(type),
-      isImportant: setNotificationImportance(type),
+      importance: setNotificationImportance(type),
+      playSound: setNotificationEnableLights(type),
+      enableVibration: setNotificationEnableVibration(type),
+      enableLights: setNotificationEnableLights(type),
       id: setNotificationId(type),
       largeIcon: imageUrl,
       channelId: type ?? 'General Notifications',
@@ -258,7 +330,10 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
       title: title ?? '',
       body: body ?? '',
       priority: setNotificationPriority(type),
-      isImportant: setNotificationImportance(type),
+      importance: setNotificationImportance(type),
+      playSound: setNotificationEnableLights(type),
+      enableVibration: setNotificationEnableVibration(type),
+      enableLights: setNotificationEnableLights(type),
       id: setNotificationId(type),
       largeIcon: imageUrl,
       channelId: type ?? 'General Notifications',

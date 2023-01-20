@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 /// Contains the dimensions and padding used
 /// all over the application.
 abstract class Dimens {
-  static double screenHeight = Get.mediaQuery.size.height;
-  static double screenWidth = Get.mediaQuery.size.width;
+  static double screenHeight = Get.size.height;
+  static double screenWidth = Get.size.width;
 
   static double pointOne = 0.1.r;
   static double pointTwo = 0.2.r;
@@ -221,6 +221,18 @@ abstract class Dimens {
     vertical: eight,
     horizontal: twelve,
   );
+
+  static EdgeInsets edgeInsetsRight4 = EdgeInsets.only(right: four);
+
+  static EdgeInsets edgeInsetsRight6 = EdgeInsets.only(right: six);
+
+  static EdgeInsets edgeInsetsRight8 = EdgeInsets.only(right: eight);
+
+  static EdgeInsets edgeInsetsRight12 = EdgeInsets.only(right: twelve);
+
+  static EdgeInsets edgeInsetsRight16 = EdgeInsets.only(right: sixTeen);
+
+  static EdgeInsets edgeInsetsRight20 = EdgeInsets.only(right: twenty);
 
   static EdgeInsets edgeInsets0 = EdgeInsets.zero;
 

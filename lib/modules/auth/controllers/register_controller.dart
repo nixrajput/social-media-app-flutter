@@ -21,24 +21,59 @@ class RegisterController extends GetxController {
   final confirmPasswordTextController = TextEditingController();
 
   final FocusScopeNode focusNode = FocusScopeNode();
+  final FocusScopeNode otpFocusNode = FocusScopeNode();
 
   final _isLoading = false.obs;
   final _showPassword = true.obs;
   final _showConfirmPassword = true.obs;
+  final _isOtpSent = false.obs;
+  final _isEmailVerified = false.obs;
+  final _otp = List.empty(growable: true)..length = 6;
+
+  Timer? resendTimer;
+  int resendTimerSec = 0;
+  int resendTimerMin = 0;
 
   bool get isLoading => _isLoading.value;
-
   bool get showPassword => _showPassword.value;
-
   bool get showConfirmPassword => _showConfirmPassword.value;
+  bool get isOtpSent => _isOtpSent.value;
+  bool get isEmailVerified => _isEmailVerified.value;
+  String get otp => _otp.join();
 
-  void _clearRegisterTextControllers() {
-    fNameTextController.clear();
-    lNameTextController.clear();
-    emailTextController.clear();
-    unameTextController.clear();
-    passwordTextController.clear();
-    confirmPasswordTextController.clear();
+  void onOtpChanged(String value, int index) {
+    _otp[index] = value;
+    update();
+  }
+
+  void _clearOtpFields() {
+    _otp.clear();
+    resetTimer();
+    update();
+  }
+
+  void startTimer() {
+    resendTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      resendTimerSec++;
+      update();
+      if (resendTimerSec > 59) {
+        resendTimerSec = 0;
+        resendTimerMin++;
+        update();
+      }
+      if (timer.tick == 120) {
+        resendTimerSec = 0;
+        resendTimerMin = 0;
+        timer.cancel();
+        update();
+      }
+    });
+  }
+
+  void resetTimer() {
+    resendTimerSec = 0;
+    resendTimerMin = 0;
+    resendTimer?.cancel();
   }
 
   void toggleViewPassword() {
@@ -51,50 +86,158 @@ class RegisterController extends GetxController {
     update();
   }
 
-  Future<void> _register(
-    String fName,
-    String lName,
-    String email,
-    String uname,
-    String password,
-    String confPassword,
-  ) async {
-    if (fName.isEmpty) {
-      AppUtility.showSnackBar(
-        StringValues.enterFirstName,
-        StringValues.warning,
-      );
-      return;
-    }
-    if (lName.isEmpty) {
-      AppUtility.showSnackBar(
-        StringValues.enterLastName,
-        StringValues.warning,
-      );
-      return;
-    }
-    if (email.isEmpty) {
+  void _clearRegisterTextControllers() {
+    fNameTextController.clear();
+    lNameTextController.clear();
+    emailTextController.clear();
+    unameTextController.clear();
+    passwordTextController.clear();
+    confirmPasswordTextController.clear();
+    _otp.clear();
+  }
+
+  Future<void> _sendOtpToEmail({required bool isResend}) async {
+    if (emailTextController.text.isEmpty) {
       AppUtility.showSnackBar(
         StringValues.enterEmail,
         StringValues.warning,
       );
       return;
     }
-    if (uname.isEmpty) {
+
+    final body = {'email': emailTextController.text.trim()};
+
+    AppUtility.showLoadingDialog();
+    _isLoading.value = true;
+    update();
+
+    try {
+      final response = await _apiProvider.sendVerifyEmailOtp(body);
+
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        AppUtility.closeDialog();
+        _isOtpSent.value = true;
+        _isLoading.value = false;
+        update();
+
+        if (isResend) {
+          resetTimer();
+        }
+
+        startTimer();
+
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+        );
+      } else {
+        final decodedData = response.data;
+        AppUtility.closeDialog();
+        _isLoading.value = false;
+        update();
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } catch (exc) {
+      AppUtility.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+    }
+  }
+
+  Future<void> _verifyOtpFromEmail() async {
+    if (_otp.isEmpty || _otp.length < 6) {
+      AppUtility.showSnackBar(
+        StringValues.enterOtp,
+        StringValues.warning,
+      );
+      return;
+    }
+
+    final body = {
+      'email': emailTextController.text.trim(),
+      'otp': _otp.join(),
+    };
+
+    AppUtility.showLoadingDialog();
+    _isLoading.value = true;
+    update();
+
+    try {
+      final response = await _apiProvider.verifyOtpFromEmail(body);
+
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        _clearOtpFields();
+        _isOtpSent.value = false;
+        _isEmailVerified.value = true;
+        AppUtility.closeDialog();
+        _isLoading.value = false;
+        update();
+
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+        );
+      } else {
+        final decodedData = response.data;
+        AppUtility.closeDialog();
+        _isLoading.value = false;
+        update();
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } catch (exc) {
+      AppUtility.closeDialog();
+      _isLoading.value = false;
+      update();
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+    }
+  }
+
+  Future<void> _register() async {
+    if (fNameTextController.text.isEmpty) {
+      AppUtility.showSnackBar(
+        StringValues.enterFirstName,
+        StringValues.warning,
+      );
+      return;
+    }
+    if (lNameTextController.text.isEmpty) {
+      AppUtility.showSnackBar(
+        StringValues.enterLastName,
+        StringValues.warning,
+      );
+      return;
+    }
+    if (emailTextController.text.isEmpty) {
+      AppUtility.showSnackBar(
+        StringValues.enterEmail,
+        StringValues.warning,
+      );
+      return;
+    }
+    if (unameTextController.text.isEmpty) {
       AppUtility.showSnackBar(
         StringValues.enterUsername,
         StringValues.warning,
       );
       return;
     }
-    if (password.isEmpty) {
+    if (passwordTextController.text.isEmpty) {
       AppUtility.showSnackBar(
         StringValues.enterPassword,
         StringValues.warning,
       );
       return;
     }
-    if (confPassword.isEmpty) {
+    if (confirmPasswordTextController.text.isEmpty) {
       AppUtility.showSnackBar(
         StringValues.enterConfirmPassword,
         StringValues.warning,
@@ -103,13 +246,13 @@ class RegisterController extends GetxController {
     }
 
     final body = {
-      'fname': fName,
-      'lname': lName,
-      'email': email,
-      'uname': uname,
-      'password': password,
-      'confirmPassword': confPassword,
-      'isValidated': 'true',
+      'fname': fNameTextController.text.trim(),
+      'lname': lNameTextController.text.trim(),
+      'email': emailTextController.text.trim(),
+      'uname': unameTextController.text.trim(),
+      'password': passwordTextController.text.trim(),
+      'confirmPassword': confirmPasswordTextController.text.trim(),
+      'isValidated': '${_isEmailVerified.value}',
     };
 
     AppUtility.showLoadingDialog();
@@ -150,13 +293,21 @@ class RegisterController extends GetxController {
 
   Future<void> register() async {
     AppUtility.closeFocus();
-    await _register(
-      fNameTextController.text.trim(),
-      lNameTextController.text.trim(),
-      emailTextController.text.trim(),
-      unameTextController.text.trim(),
-      passwordTextController.text.trim(),
-      confirmPasswordTextController.text.trim(),
-    );
+    await _register();
+  }
+
+  Future<void> sendOtpToEmail() async {
+    AppUtility.closeFocus();
+    await _sendOtpToEmail(isResend: false);
+  }
+
+  Future<void> resendOtpToEmail() async {
+    AppUtility.closeFocus();
+    await _sendOtpToEmail(isResend: true);
+  }
+
+  Future<void> verifyOtpFromEmail() async {
+    AppUtility.closeFocus();
+    await _verifyOtpFromEmail();
   }
 }

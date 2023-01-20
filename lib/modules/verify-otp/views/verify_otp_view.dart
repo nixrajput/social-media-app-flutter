@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -138,13 +137,8 @@ class VerifyOtpView extends StatelessWidget {
       width: Dimens.screenWidth / 8,
       height: Dimens.screenWidth / 8,
       child: TextFormField(
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(Dimens.four),
-          ),
-          hintStyle: AppStyles.style16Bold.copyWith(
-            color: ColorValues.grayColor,
-          ),
+        decoration: const InputDecoration(
+          hintText: StringValues.zero,
         ),
         keyboardType: TextInputType.number,
         maxLines: 1,
@@ -182,7 +176,7 @@ class VerifyOtpView extends StatelessWidget {
                 : logic.resendOtpToPhone(),
           ),
         ),
-        Dimens.boxWidth16,
+        Dimens.boxWidth12,
         Text(
           '${logic.resendTimerMin}:${logic.resendTimerSec}',
           style: AppStyles.style16Bold.copyWith(

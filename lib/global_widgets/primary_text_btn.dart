@@ -23,7 +23,7 @@ class NxTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: enabled == true ? onTap : () {},
       child: Container(
         padding: padding ?? Dimens.edgeInsets0,
@@ -34,7 +34,11 @@ class NxTextButton extends StatelessWidget {
               AppStyles.style16Bold.copyWith(
                 color: enabled == true
                     ? ColorValues.linkColor
-                    : ColorValues.grayColor,
+                    : Theme.of(context)
+                        .textTheme
+                        .bodyText1!
+                        .color!
+                        .withAlpha(50),
               ),
         ),
       ),

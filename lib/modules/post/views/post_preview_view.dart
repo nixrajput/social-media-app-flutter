@@ -10,10 +10,8 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/elevated_card.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/file_image.dart';
-import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
 import 'package:social_media_app/global_widgets/unfocus_widget.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -71,7 +69,7 @@ class PostPreviewView extends StatelessWidget {
       child: Container(
         padding: Dimens.edgeInsets8_16,
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: ColorValues.primaryColor,
           borderRadius: BorderRadius.circular(Dimens.four),
         ),
         child: Center(
@@ -90,25 +88,19 @@ class PostPreviewView extends StatelessWidget {
     return Expanded(
       child: GetBuilder<CreatePostController>(
         builder: (logic) {
-          return Stack(
-            fit: StackFit.expand,
-            children: [
-              SingleChildScrollView(
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                padding: Dimens.edgeInsetsDefault,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildPost(context, logic),
-                    Dimens.boxHeight16,
-                  ],
-                ),
-              ),
-              _buildBottomBarMenu(logic, context),
-            ],
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            padding: Dimens.edgeInsetsDefault,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildPost(context, logic),
+                Dimens.boxHeight16,
+              ],
+            ),
           );
         },
       ),
@@ -117,9 +109,13 @@ class PostPreviewView extends StatelessWidget {
 
   Widget _buildPost(BuildContext context, CreatePostController logic) {
     final profile = ProfileController.find.profileDetails!.user!;
-    return NxElevatedCard(
+    return Container(
       margin: Dimens.edgeInsets8_0,
-      borderRadius: Dimens.four,
+      decoration: BoxDecoration(
+        color: Theme.of(context).bottomAppBarColor,
+        borderRadius: BorderRadius.circular(Dimens.four),
+        boxShadow: AppStyles.defaultShadow,
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -135,7 +131,7 @@ class PostPreviewView extends StatelessWidget {
             ),
           Dimens.boxHeight4,
           _buildPostMedia(context, logic),
-          Dimens.boxHeight4,
+          Dimens.boxHeight8,
           _buildPostTime(context),
           Dimens.boxHeight8,
         ],
@@ -263,47 +259,6 @@ class PostPreviewView extends StatelessWidget {
           indicatorRadius: Dimens.four,
           itemSpacing: Dimens.twelve,
         ),
-      ),
-    );
-  }
-
-  Positioned _buildBottomBarMenu(
-      CreatePostController logic, BuildContext context) {
-    return Positioned(
-      bottom: Dimens.zero,
-      left: Dimens.zero,
-      right: Dimens.zero,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Dimens.divider,
-          Container(
-            padding: Dimens.edgeInsets12,
-            decoration: BoxDecoration(
-              color: Theme.of(Get.context!).scaffoldBackgroundColor,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Spacer(),
-                Dimens.boxWidth16,
-                Row(
-                  children: [
-                    Dimens.boxWidth16,
-                    NxIconButton(
-                      icon: Icons.settings_outlined,
-                      iconColor: Theme.of(context).textTheme.bodyText1!.color,
-                      onTap: () {},
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

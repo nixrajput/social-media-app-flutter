@@ -346,9 +346,9 @@ class CreatePostController extends GetxController {
       File? resultFile = imageFile;
       var size = imageFile.lengthSync();
 
-      if (size > (5 * maxImageBytes)) {
+      if (size > (10 * maxImageBytes)) {
         AppUtility.showSnackBar(
-          'Image size must be less than 5mb',
+          'Image size must be less than 10mb',
           '',
         );
       } else {
@@ -377,9 +377,9 @@ class CreatePostController extends GetxController {
       File? resultFile = imageFile;
       var size = imageFile.lengthSync();
 
-      if (size > (5 * maxImageBytes)) {
+      if (size > (10 * maxImageBytes)) {
         AppUtility.showSnackBar(
-          'Image size must be less than 5mb',
+          'Image size must be less than 10mb',
           '',
         );
       } else {

@@ -3,14 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
-import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
-import 'package:social_media_app/global_widgets/rive_asset_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class ChatWidget extends StatelessWidget {
@@ -46,7 +44,7 @@ class ChatWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        margin: Dimens.edgeInsets6_0,
+        margin: Dimens.edgeInsets8_0,
         padding: Dimens.edgeInsets8,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
@@ -54,10 +52,7 @@ class ChatWidget extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).bottomAppBarColor,
           borderRadius: BorderRadius.circular(Dimens.four),
-          border: Border.all(
-            color: Theme.of(context).dividerColor,
-            width: Dimens.pointEight,
-          ),
+          boxShadow: AppStyles.defaultShadow,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -104,7 +99,7 @@ class ChatWidget extends StatelessWidget {
                           children: [
                             Text(
                               user.uname,
-                              style: AppStyles.style13Bold,
+                              style: AppStyles.style15Bold,
                             ),
                             if (chat.mediaFile != null &&
                                 chat.mediaFile!.url != null)
@@ -122,7 +117,20 @@ class ChatWidget extends StatelessWidget {
                             else
                               Text(
                                 _decryptMessage(chat.message!),
-                                style: AppStyles.style13Normal,
+                                style: chat.seen == true
+                                    ? AppStyles.style13Normal.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1!
+                                            .color!,
+                                      )
+                                    : AppStyles.style13Normal.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .color!,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                               ),
@@ -205,14 +213,12 @@ class ChatWidget extends StatelessWidget {
       );
     }
 
-    return SizedBox(
-      width: Dimens.twenty,
-      height: Dimens.twenty,
-      child: const RiveTimerAnimatedIcon(
-        asset: RiveAssets.icons,
-        artboard: 'TIMER',
-        initAnimation: 'active',
-        autoPlay: true,
+    return Container(
+      width: Dimens.sixTeen,
+      height: Dimens.sixTeen,
+      decoration: const BoxDecoration(
+        color: ColorValues.errorColor,
+        shape: BoxShape.circle,
       ),
     );
   }

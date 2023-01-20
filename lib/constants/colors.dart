@@ -31,30 +31,31 @@ abstract class ColorValues {
 
   static const Color whiteColor = Color.fromARGB(255, 255, 255, 255);
   static const Color blackColor = Color.fromARGB(255, 0, 0, 0);
-  static const Color transparent = Color(0x00000000);
+  static const Color transparent = Color.fromARGB(0, 0, 0, 0);
 
   static const Color grayColor = Color.fromARGB(255, 180, 180, 180);
   static const Color darkGrayColor = Color.fromARGB(255, 120, 120, 120);
   static const Color darkerGrayColor = Color.fromARGB(255, 80, 80, 80);
   static const Color lightGrayColor = Color.fromARGB(255, 210, 210, 210);
 
-  static const Color darkDividerColor = Color.fromARGB(255, 60, 60, 60);
-  static const Color lightDividerColor = Color.fromARGB(255, 220, 220, 220);
+  static const Color darkDividerColor = Color.fromARGB(255, 70, 70, 70);
+  static const Color lightDividerColor = Color.fromARGB(255, 200, 200, 200);
 
-  static const Color lightBodyTextColor = Color.fromARGB(255, 40, 40, 40);
-  static const Color lightSubtitleTextColor = Color.fromARGB(255, 92, 92, 92);
+  static const Color lightBodyTextColor = Color.fromARGB(255, 30, 30, 30);
+  static const Color lightSubtitleTextColor =
+      Color.fromARGB(255, 100, 100, 100);
   static const Color lightSubtitle2TextColor =
-      Color.fromARGB(255, 141, 141, 141);
-  static const Color darkBodyTextColor = Color.fromARGB(255, 228, 228, 228);
-  static const Color darkSubtitleTextColor = Color.fromARGB(255, 180, 180, 180);
+      Color.fromARGB(255, 140, 140, 140);
+  static const Color darkBodyTextColor = Color.fromARGB(255, 240, 240, 240);
+  static const Color darkSubtitleTextColor = Color.fromARGB(255, 160, 160, 160);
   static const Color darkSubtitle2TextColor =
-      Color.fromARGB(255, 124, 124, 124);
+      Color.fromARGB(255, 100, 100, 100);
 
-  static const Color lightBgColor = Color.fromARGB(255, 248, 240, 240);
+  static const Color lightBgColor = Color.fromARGB(255, 236, 236, 236);
   static const Color lightDialogColor = Color.fromARGB(255, 252, 252, 252);
-  static const Color darkBgColor = Color.fromARGB(255, 12, 12, 24);
-  static const Color darkDialogColor = Color.fromARGB(255, 20, 20, 36);
 
-  static const Color lightShadowColor = Color.fromARGB(255, 0, 0, 0);
-  static const Color darkShadowColor = Color.fromARGB(255, 50, 50, 50);
+  static const Color darkBgColor = Color.fromARGB(255, 10, 10, 16);
+  static const Color darkDialogColor = Color.fromARGB(255, 36, 36, 50);
+
+  static const Color shadowColor = Color.fromARGB(255, 0, 0, 0);
 }

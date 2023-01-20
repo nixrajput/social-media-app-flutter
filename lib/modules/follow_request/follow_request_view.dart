@@ -61,7 +61,6 @@ class FollowRequestView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Dimens.boxHeight8,
                   Text(
                     StringValues.noFollowRequests,
                     style: AppStyles.style32Bold.copyWith(
