@@ -12,6 +12,7 @@ const String kThemeModeKey = 'themeMode';
 const String kSystemMode = 'system';
 const String kLightMode = 'light';
 const String kDarkMode = 'dark';
+const String kDefaultFontFamily = 'Poppins';
 
 class AppThemeController extends GetxController {
   static AppThemeController get find => Get.find();
@@ -88,7 +89,7 @@ class AppThemeController extends GetxController {
       appBarTheme: const AppBarTheme(backgroundColor: ColorValues.lightBgColor),
       bottomAppBarColor: ColorValues.lightDialogColor,
       shadowColor: ColorValues.shadowColor.withAlpha(12),
-      cardTheme: const CardTheme(color: ColorValues.lightBgColor),
+      cardTheme: const CardTheme(color: ColorValues.lightDialogColor),
       dialogTheme:
           const DialogTheme(backgroundColor: ColorValues.lightDialogColor),
       dialogBackgroundColor: ColorValues.lightDialogColor,
@@ -111,7 +112,7 @@ class AppThemeController extends GetxController {
           elevation: MaterialStateProperty.all(0.0),
         ),
       ),
-      fontFamily: 'Lato',
+      fontFamily: kDefaultFontFamily,
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: ColorValues.lightDialogColor,
@@ -226,7 +227,7 @@ class AppThemeController extends GetxController {
           elevation: MaterialStateProperty.all(0.0),
         ),
       ),
-      fontFamily: 'Lato',
+      fontFamily: kDefaultFontFamily,
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: ColorValues.darkDialogColor,

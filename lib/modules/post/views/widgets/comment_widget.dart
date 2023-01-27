@@ -86,7 +86,7 @@ class CommentWidget extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: '${comment.user.fname} ${comment.user.lname}',
-                      style: AppStyles.style15Bold.copyWith(
+                      style: AppStyles.style14Bold.copyWith(
                         color: Theme.of(context).textTheme.bodyText1!.color,
                       ),
                       recognizer: TapGestureRecognizer()

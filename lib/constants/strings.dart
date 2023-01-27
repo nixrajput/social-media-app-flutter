@@ -6,7 +6,7 @@ abstract class StringValues {
   static const to = 'to';
   static const hello = 'Hello';
   static const register = 'Register';
-  static const hiThere = 'Hi there!';
+  static const hiThere = 'Hi there,';
   static const registerUsingEmail = 'Register Using Email';
   static const registerUsingPhone = 'Register Using Phone';
   static const login = 'Login';

@@ -182,7 +182,10 @@ class UserProfileView extends StatelessWidget {
               },
               child: Hero(
                 tag: user.id,
-                child: AvatarWidget(avatar: user.avatar),
+                child: AvatarWidget(
+                  avatar: user.avatar,
+                  size: Dimens.screenWidth * 0.25,
+                ),
               ),
             ),
             Dimens.boxHeight16,

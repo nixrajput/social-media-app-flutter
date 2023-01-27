@@ -102,7 +102,7 @@ class PostDetailsWidget extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: '${post.owner!.fname} ${post.owner!.lname}',
-                      style: AppStyles.style15Bold.copyWith(
+                      style: AppStyles.style14Bold.copyWith(
                         color: Theme.of(context).textTheme.bodyText1!.color,
                       ),
                       recognizer: TapGestureRecognizer()
@@ -336,7 +336,9 @@ class PostDetailsWidget extends StatelessWidget {
             child: _buildPostTime(context),
           ),
           Padding(
-            padding: Dimens.edgeInsets8,
+            padding: Dimens.edgeInsets8.copyWith(
+              bottom: Dimens.zero,
+            ),
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [

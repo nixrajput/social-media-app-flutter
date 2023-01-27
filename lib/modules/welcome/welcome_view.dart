@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -63,40 +64,47 @@ class WelcomeView extends StatelessWidget {
               child: SizedBox(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(
-                      width: Dimens.screenWidth * Dimens.pointFive,
-                      child: Text(
-                        StringValues.hiThere.toTitleCase(),
-                        style: AppStyles.style13Bold.copyWith(
-                          fontSize: Dimens.fourty,
-                          fontWeight: FontWeight.w900,
+                    Text(
+                      StringValues.hiThere.toTitleCase(),
+                      style: AppStyles.style40Bold,
+                    ).animate().slide(
+                          duration: 500.ms,
+                          delay: 800.ms,
                         ),
-                      ),
-                    ),
-                    Dimens.boxHeight12,
+                    Dimens.boxHeight4,
                     Text(
                       "${StringValues.welcome} ${StringValues.to}"
                           .toTitleCase(),
-                      style: AppStyles.style13Bold.copyWith(
-                        fontSize: Dimens.fiftySix,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
+                      style: AppStyles.style40Bold,
+                    ).animate().slide(
+                          duration: 500.ms,
+                          delay: 300.ms,
+                        ),
+                    Dimens.boxHeight16,
                     Text(
                       StringValues.appName.toUpperCase(),
                       style: AppStyles.style24Bold.copyWith(
-                        fontFamily: "Muge",
+                        fontFamily: AppStyles.mugeFontFamily,
                         fontSize: Dimens.fiftySix,
+                        fontWeight: FontWeight.w900,
                         letterSpacing: Dimens.four,
                       ),
-                    ),
-                    Dimens.boxHeight12,
+                    ).animate().shake(
+                          duration: 500.ms,
+                          delay: 1300.ms,
+                        ),
+                    Dimens.boxHeight16,
                     Text(
                       StringValues.appDescription,
                       style: AppStyles.style20Bold,
+                    ),
+                    Dimens.boxHeight8,
+                    Text(
+                      StringValues.welcomeDescription,
+                      style: AppStyles.style16Normal,
                     ),
                   ],
                 ),

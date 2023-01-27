@@ -25,9 +25,9 @@ class PollOptionWidget extends StatelessWidget {
   Color _buildPollColor(Post post, bool isExpired, PollOption option,
       String greatestPercentageId, BuildContext context) {
     if (isExpired && option.id == greatestPercentageId) {
-      return ColorValues.linkColor.withOpacity(0.75);
+      return ColorValues.linkColor.withOpacity(0.8);
     } else if (post.isVoted == true) {
-      return Theme.of(context).dividerColor;
+      return Theme.of(context).disabledColor;
     }
 
     return ColorValues.transparent;
@@ -36,7 +36,7 @@ class PollOptionWidget extends StatelessWidget {
   Color _buildPollBorderColor(Post post, bool isExpired, PollOption option,
       String greatestPercentageId, BuildContext context) {
     if (isExpired || post.isVoted == true) {
-      return Theme.of(context).dividerColor;
+      return Theme.of(context).disabledColor;
     }
 
     return ColorValues.linkColor;

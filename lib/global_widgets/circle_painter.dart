@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/constants/dimens.dart';
 
 class CirclePainter extends CustomPainter {
   final _paint = Paint()
-    ..color = Colors.white
-    ..strokeWidth = 3
+    ..color = ThemeData.dark().dividerColor
+    ..strokeWidth = Dimens.two
     ..style = PaintingStyle.stroke;
 
   @override

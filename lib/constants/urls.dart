@@ -36,6 +36,11 @@ abstract class AppUrls {
   static const likeCommentEndpoint = '/like-comment';
   static const deleteCommentEndpoint = '/delete-comment';
 
+  static const addCommentReplyEndpoint = '/add-comment-reply';
+  static const getCommentRepliesEndpoint = '/get-comment-replies';
+  static const likeUnlikeCommentReplyEndpoint = '/like-comment-reply';
+  static const deleteCommentReplyEndpoint = '/delete-comment-reply';
+
   static const profileDetailsEndpoint = '/me';
   static const uploadProfilePicEndpoint = '/upload-profile-picture';
   static const deleteProfilePicEndpoint = '/remove-profile-picture';
@@ -79,6 +84,9 @@ abstract class AppUrls {
   static const searchFollowersEndpoint = '/search-followers';
   static const searchFollowingEndpoint = '/search-followings';
   static const getUserPostsEndpoint = '/get-user-posts';
+
+  static const blockUserEndpoint = '/block-user';
+  static const unblockUserEndpoint = '/unblock-user';
 
   static const getNotificationsEndpoint = '/get-notifications';
   static const markNotificationsReadEndpoint = '/mark-read-notification';

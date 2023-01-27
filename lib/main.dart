@@ -134,14 +134,22 @@ Future<void> _initPreAppServices() async {
         await PostController.find.loadLocalPosts();
         await ChatController.find.loadLocalMessages();
         await NotificationController.find.loadLocalNotification();
-        RouteService.set(RouteStatus.loggedIn);
+
+        if (RouteService.routeStatus != RouteStatus.loggedIn) {
+          RouteService.set(RouteStatus.loggedIn);
+        }
+
         AppUtility.log("User is logged in");
       } else {
-        RouteService.set(RouteStatus.error);
+        if (RouteService.routeStatus != RouteStatus.error) {
+          RouteService.set(RouteStatus.error);
+        }
         await StorageService.remove('profileData');
       }
     } else {
-      RouteService.set(RouteStatus.notLoggedIn);
+      if (RouteService.routeStatus != RouteStatus.notLoggedIn) {
+        RouteService.set(RouteStatus.notLoggedIn);
+      }
       AppUtility.log("User is not logged in", tag: 'error');
     }
   });
@@ -166,7 +174,7 @@ Future<void> validateSessionAndGetData() async {
   AppUtility.log("ServerHealth: $serverHealth");
 
   if (serverHealth == null) {
-    RouteService.set(RouteStatus.error);
+    RouteManagement.goToWelcomeView();
   } else {
     if (serverHealth.toLowerCase() == "offline") {
       RouteManagement.goToServerOfflineView();
@@ -182,7 +190,9 @@ Future<void> validateSessionAndGetData() async {
   var token = authService.token;
 
   if (token.isEmpty) {
-    RouteManagement.goToWelcomeView();
+    if (RouteService.routeStatus != RouteStatus.notLoggedIn) {
+      RouteManagement.goToWelcomeView();
+    }
     return;
   }
 
@@ -195,7 +205,9 @@ Future<void> validateSessionAndGetData() async {
 
   if (tokenValid == false) {
     await authService.deleteAllLocalDataAndCache();
-    RouteManagement.goToWelcomeView();
+    if (RouteService.routeStatus != RouteStatus.notLoggedIn) {
+      RouteManagement.goToWelcomeView();
+    }
     return;
   }
 

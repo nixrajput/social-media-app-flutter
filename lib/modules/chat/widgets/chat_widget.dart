@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
+import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
@@ -35,11 +36,11 @@ class ChatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var profile = ProfileController.find;
-    var user = chat.sender!.id == profile.profileDetails!.user!.id
+    var user = chat.senderId == profile.profileDetails!.user!.id
         ? chat.receiver!
         : chat.sender!;
 
-    var isSender = chat.sender!.id == profile.profileDetails!.user!.id;
+    var isSender = chat.senderId == profile.profileDetails!.user!.id;
 
     return InkWell(
       onTap: onTap,
@@ -97,10 +98,7 @@ class ChatWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              user.uname,
-                              style: AppStyles.style15Bold,
-                            ),
+                            _buildUserUsername(context, user),
                             if (chat.mediaFile != null &&
                                 chat.mediaFile!.url != null)
                               Text(
@@ -117,19 +115,19 @@ class ChatWidget extends StatelessWidget {
                             else
                               Text(
                                 _decryptMessage(chat.message!),
-                                style: chat.seen == true
+                                style: (!isSender && chat.seen == false)
                                     ? AppStyles.style13Normal.copyWith(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1!
-                                            .color!,
-                                      )
-                                    : AppStyles.style13Normal.copyWith(
                                         color: Theme.of(context)
                                             .textTheme
                                             .bodyText1!
                                             .color!,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w500,
+                                      )
+                                    : AppStyles.style13Normal.copyWith(
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1!
+                                            .color!,
                                       ),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
@@ -191,6 +189,33 @@ class ChatWidget extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildUserUsername(BuildContext context, User user) => Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Flexible(
+            child: RichText(
+              text: TextSpan(
+                text: user.uname.toLowerCase(),
+                style: AppStyles.style14Bold.copyWith(
+                  color: Theme.of(context).textTheme.bodyText1!.color,
+                ),
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
+          ),
+          if (user.isVerified) Dimens.boxWidth4,
+          if (user.isVerified)
+            Icon(
+              Icons.verified,
+              color: ColorValues.primaryColor,
+              size: Dimens.sixTeen,
+            ),
+        ],
+      );
 
   Widget _buildMessageStatus() {
     if (chat.seen == true) {

@@ -35,6 +35,8 @@ please read the [contribution guidelines](CONTRIBUTING.md) and then contact the 
 
 - We are also open to bug reports. If you would like to report a bug, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to fix the bug as soon as possible.
 
+- For any help and support, please join our [Telegram][telegram] group.
+
 ## Setup
 
 - Create `secrets.dart` file in constants folder.
@@ -144,3 +146,4 @@ This project is licensed under the GPL-3.0 License - see the
 [issues]: https://github.com/nixrajput/social-media-app-flutter/issues
 [license]: https://github.com/nixrajput/social-media-app-flutter/blob/master/LICENSE.md
 [pulls]: https://github.com/nixrajput/social-media-app-flutter/pulls
+[telegram]: https://telegram.me/nixlab_in

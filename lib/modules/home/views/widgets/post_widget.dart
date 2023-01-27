@@ -104,7 +104,7 @@ class PostWidget extends StatelessWidget {
                   child: RichText(
                     text: TextSpan(
                       text: '${post.owner!.fname} ${post.owner!.lname}',
-                      style: AppStyles.style15Bold.copyWith(
+                      style: AppStyles.style14Bold.copyWith(
                         color: Theme.of(context).textTheme.bodyText1!.color,
                       ),
                       recognizer: TapGestureRecognizer()
@@ -114,19 +114,12 @@ class PostWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                if (post.owner!.isVerified) Dimens.boxWidth4,
                 if (post.owner!.isVerified)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Dimens.boxWidth4,
-                      Icon(
-                        Icons.verified,
-                        color: ColorValues.primaryColor,
-                        size: Dimens.sixTeen,
-                      ),
-                    ],
+                  Icon(
+                    Icons.verified,
+                    color: ColorValues.primaryColor,
+                    size: Dimens.sixTeen,
                   ),
               ],
             ),

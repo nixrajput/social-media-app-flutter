@@ -14,7 +14,7 @@ class NxColoredBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = Theme.of(context).iconTheme.color;
+    final bgColor = Theme.of(context).dividerColor;
 
     return Container(
       width: width,

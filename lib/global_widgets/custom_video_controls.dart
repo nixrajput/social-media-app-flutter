@@ -143,7 +143,7 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.controller!.isVideoInitialized() == false) {
+    if (widget.controller!.isVideoInitialized() == false || !mounted) {
       return const Positioned.fill(
         child: NxColoredBox(),
       );

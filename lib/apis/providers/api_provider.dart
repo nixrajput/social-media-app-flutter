@@ -743,7 +743,7 @@ class ApiProvider {
     return response;
   }
 
-  /// Create New Poll
+  /// Vote To Poll
   Future<ResponseData> voteToPoll(
       String token, Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
@@ -1283,17 +1283,32 @@ class ApiProvider {
   /// Add New Comment
   Future<ResponseData> addComment(
       String token, String postId, String comment) async {
-    var queryParameters = <String, dynamic>{};
-
-    queryParameters['postId'] = postId;
-
     final response = await _catchAsyncApiError(
       endPoint: AppUrls.addCommentEndpoint,
       method: 'POST',
       feature: 'Add Comment',
       headers: {"authorization": "Bearer $token"},
-      body: {'comment': comment},
-      queryParams: queryParameters,
+      body: {
+        'postId': postId,
+        'comment': comment,
+      },
+    );
+
+    return response;
+  }
+
+  /// Add New Comment Reply
+  Future<ResponseData> addCommentReply(
+      String token, String commentId, String reply) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.addCommentReplyEndpoint,
+      method: 'POST',
+      feature: 'Add Comment Reply',
+      headers: {"authorization": "Bearer $token"},
+      body: {
+        'commentId': commentId,
+        'reply': reply,
+      },
     );
 
     return response;
@@ -1325,6 +1340,32 @@ class ApiProvider {
     return response;
   }
 
+  /// Get Comments Replies
+  Future<ResponseData> getCommentReplies(String token, String commentId,
+      {int? page, int? limit}) async {
+    var queryParameters = <String, dynamic>{};
+
+    queryParameters['commentId'] = commentId;
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getCommentRepliesEndpoint,
+      method: 'GET',
+      feature: 'Get Comment Replies',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
+    );
+
+    return response;
+  }
+
   /// Delete Comment
   Future<ResponseData> deleteComment(String token, String commentId) async {
     final response = await _catchAsyncApiError(
@@ -1338,6 +1379,19 @@ class ApiProvider {
     return response;
   }
 
+  /// Delete Comment Reply
+  Future<ResponseData> deleteCommentReply(String token, String replyId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.deleteCommentReplyEndpoint,
+      method: 'DELETE',
+      feature: 'Delete Comment Reply',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'id': replyId},
+    );
+
+    return response;
+  }
+
   /// Like/Unlike Comment
   Future<ResponseData> likeUnlikeComment(String token, String commentId) async {
     final response = await _catchAsyncApiError(
@@ -1346,6 +1400,20 @@ class ApiProvider {
       feature: 'Like Unlike Comment',
       headers: {"authorization": "Bearer $token"},
       queryParams: {'id': commentId},
+    );
+
+    return response;
+  }
+
+  /// Like/Unlike Comment Reply
+  Future<ResponseData> likeUnlikeCommentReply(
+      String token, String replyId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.likeUnlikeCommentReplyEndpoint,
+      method: 'GET',
+      feature: 'Like Unlike Comment Reply',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: {'id': replyId},
     );
 
     return response;

@@ -8,7 +8,6 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/asset_image.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
-import 'package:social_media_app/global_widgets/circular_asset_image.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
@@ -81,9 +80,12 @@ class HomeTabView extends StatelessWidget {
                           logic.profileDetails!.user == null ||
                           logic.profileDetails!.user!.avatar == null ||
                           logic.profileDetails!.user!.avatar!.url == null) {
-                        return NxCircleAssetImage(
-                          imgAsset: AssetValues.avatar,
-                          radius: Dimens.sixTeen,
+                        return Hero(
+                          tag: logic.profileDetails!.user!.id,
+                          child: AvatarWidget(
+                            avatar: logic.profileDetails!.user!.avatar,
+                            size: Dimens.sixTeen,
+                          ),
                         );
                       }
                       return Hero(

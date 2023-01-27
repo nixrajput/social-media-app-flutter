@@ -82,7 +82,7 @@ class NotificationWidget extends StatelessWidget {
                         ),
                         TextSpan(
                           text: " ${notification.body}",
-                          style: AppStyles.style14Normal.copyWith(
+                          style: AppStyles.style13Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
                                 .bodyText1!

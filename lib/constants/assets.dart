@@ -10,3 +10,9 @@ abstract class RiveAssets {
   static const String error = 'assets/rive/error.riv';
   static const String heart = 'assets/rive/heart.riv';
 }
+
+abstract class SvgAssets {
+  static const femaleAvatar = 'assets/svgs/profile_pic_female.svg';
+  static const maleAvatar = 'assets/svgs/profile_pic_male.svg';
+  static const upgrade = 'assets/svgs/upgrade.svg';
+}

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
-import 'package:social_media_app/global_widgets/shimmer_loading.dart';
+import 'package:social_media_app/global_widgets/custom_colored_box.dart';
 
 class NxNetworkImage extends StatelessWidget {
   const NxNetworkImage({
@@ -38,10 +38,9 @@ class NxNetworkImage extends StatelessWidget {
         child: CachedNetworkImage(
           imageUrl: imageUrl,
           fit: imageFit ?? BoxFit.cover,
-          placeholder: (ctx, url) => ShimmerLoading(
+          placeholder: (ctx, url) => NxColoredBox(
             width: width,
             height: height,
-            color: ColorValues.grayColor.withOpacity(0.5),
           ),
           errorWidget: (ctx, url, err) => const Icon(
             CupertinoIcons.info,

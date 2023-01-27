@@ -99,7 +99,7 @@ class UserWidget extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 text: user.uname.toLowerCase(),
-                style: AppStyles.style15Bold.copyWith(
+                style: AppStyles.style14Bold.copyWith(
                   color: Theme.of(context).textTheme.bodyText1!.color,
                 ),
               ),
@@ -113,7 +113,7 @@ class UserWidget extends StatelessWidget {
               Icons.verified,
               color: ColorValues.primaryColor,
               size: Dimens.twenty,
-            )
+            ),
         ],
       );
 

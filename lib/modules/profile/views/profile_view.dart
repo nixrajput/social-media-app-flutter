@@ -330,6 +330,7 @@ class ProfileView extends StatelessWidget {
                   tag: logic.profileDetails!.user!.id,
                   child: AvatarWidget(
                     avatar: logic.profileDetails!.user!.avatar,
+                    size: Dimens.screenWidth * 0.25,
                   ),
                 ),
               ),

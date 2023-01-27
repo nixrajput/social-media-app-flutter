@@ -3,7 +3,7 @@ description: A social media app using Flutter, Dart, GetX, and REST API that all
 
 publish_to: "none"
 
-version: 1.0.1+30
+version: 1.0.1+31
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
@@ -21,6 +21,7 @@ dependencies:
 
   talker_flutter: ^2.2.1
 
+  flutter_svg: ^1.1.6
   image_picker: ^0.8.6
   image_cropper: ^3.0.1
   photo_view: ^0.14.0
@@ -33,7 +34,7 @@ dependencies:
   connectivity_plus: ^3.0.2
   http: ^0.13.5
   intl: ^0.18.0
-  get_time_ago: ^1.2.1
+  get_time_ago: ^1.2.2
 
   cloudinary: ^1.1.0
   r_upgrade: ^0.4.1
@@ -91,21 +92,55 @@ flutter:
     - assets/images/
     - assets/fonts/
     - assets/rive/
+    - assets/svgs/
 
   fonts:
-    - family: Lato
+    - family: Poppins
       fonts:
-        - asset: assets/fonts/Lato-Thin.ttf
+        - asset: assets/fonts/Poppins-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Poppins-ThinItalic.ttf
+          weight: 100
+          style: italic
+        - asset: assets/fonts/Poppins-ExtraLight.ttf
           weight: 200
-        - asset: assets/fonts/Lato-Light.ttf
+        - asset: assets/fonts/Poppins-ExtraLightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/Poppins-Light.ttf
           weight: 300
-        - asset: assets/fonts/Lato-Regular.ttf
+        - asset: assets/fonts/Poppins-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/Poppins-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Lato-Bold.ttf
+        - asset: assets/fonts/Poppins-RegularItalic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/Poppins-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Lato-Black.ttf
+        - asset: assets/fonts/Poppins-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/Poppins-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Poppins-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+        - asset: assets/fonts/Poppins-Black.ttf
           weight: 900
-        - asset: assets/fonts/Lato-Italic.ttf
+        - asset: assets/fonts/Poppins-BlackItalic.ttf
+          weight: 900
           style: italic
 
     - family: Muge
