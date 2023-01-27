@@ -14,6 +14,7 @@ import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
+import 'package:social_media_app/global_widgets/verified_widget.dart';
 import 'package:social_media_app/global_widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -60,34 +61,39 @@ class PostDetailsWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildPostHead(BuildContext context) => Padding(
-        padding: Dimens.edgeInsets8,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () => RouteManagement.goToUserProfileView(post.owner!.id),
-              child: AvatarWidget(
-                avatar: post.owner!.avatar,
-                size: Dimens.twenty,
-              ),
+  Widget _buildPostHead(BuildContext context) {
+    var profile = ProfileController.find.profileDetails!.user!;
+    var avatar =
+        post.owner!.id == profile.id ? profile.avatar : post.owner!.avatar;
+    return Padding(
+      padding: Dimens.edgeInsets8,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () => RouteManagement.goToUserProfileView(post.owner!.id),
+            child: AvatarWidget(
+              avatar: avatar,
+              size: Dimens.twenty,
             ),
-            Dimens.boxWidth8,
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildFullName(context),
-                  _buildUsername(context),
-                ],
-              ),
+          ),
+          Dimens.boxWidth8,
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildFullName(context),
+                _buildUsername(context),
+              ],
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildFullName(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -112,19 +118,11 @@ class PostDetailsWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                if (post.owner!.isVerified) Dimens.boxWidth4,
                 if (post.owner!.isVerified)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Dimens.boxWidth4,
-                      Icon(
-                        Icons.verified,
-                        color: ColorValues.primaryColor,
-                        size: Dimens.sixTeen,
-                      ),
-                    ],
+                  VerifiedWidget(
+                    verifiedCategory: post.owner!.verifiedCategory!,
+                    size: Dimens.fourteen,
                   ),
               ],
             ),

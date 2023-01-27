@@ -18,6 +18,7 @@ import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/verified_widget.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -93,42 +94,198 @@ class UserProfileView extends StatelessWidget {
       return const Expanded(
         child: Center(child: NxCircularProgressIndicator()),
       );
-    } else if (logic.userDetails == null || logic.userDetails!.user == null) {
+    }
+
+    /// If user not found
+    else if (logic.userDetails == null || logic.userDetails!.user == null) {
       return Expanded(
-        child: SizedBox(
-          width: Dimens.screenWidth,
-          height: Dimens.screenHeight,
+        child: Center(
           child: Padding(
-            padding: Dimens.edgeInsetsHorizDefault,
+            padding: Dimens.edgeInsetsDefault,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   StringValues.userNotFoundError,
-                  style: AppStyles.style32Bold.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
-                  ),
                   textAlign: TextAlign.center,
+                  style: AppStyles.style24Bold.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
                 ),
                 Dimens.boxHeight16,
+                NxFilledButton(
+                  label: StringValues.back,
+                  padding: Dimens.edgeInsetsDefault,
+                  labelStyle: AppStyles.style14Bold.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
+                  onTap: RouteManagement.goToBack,
+                ),
               ],
             ),
           ),
         ),
       );
     }
-    if (logic.userDetails!.user!.accountStatus == "deactivated") {
+
+    /// If user is deactivated
+    else if (logic.userDetails!.user!.accountStatus == "deactivated") {
       return Expanded(
         child: Center(
           child: Padding(
             padding: Dimens.edgeInsetsDefault,
-            child: Text(
-              StringValues.deactivatedAccountWarning,
-              style: AppStyles.style32Bold.copyWith(
-                color: Theme.of(context).textTheme.subtitle1!.color,
-              ),
-              textAlign: TextAlign.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '@${logic.userDetails!.user!.uname}',
+                        style: AppStyles.style24Bold.copyWith(
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' ${StringValues.hasDeactivatedTheirAccount}',
+                        style: AppStyles.style24Normal.copyWith(
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Dimens.boxHeight4,
+                Text(
+                  StringValues.deactivatedAccountWarningDesc,
+                  textAlign: TextAlign.center,
+                  style: AppStyles.style16Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
+                ),
+                Dimens.boxHeight16,
+                NxFilledButton(
+                  label: StringValues.learnMore,
+                  padding: Dimens.edgeInsetsDefault,
+                  labelStyle: AppStyles.style14Bold.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    /// If current user is blocked by the user
+    else if (logic.userDetails!.user!.isBlockedByUser) {
+      return Expanded(
+        child: Center(
+          child: Padding(
+            padding: Dimens.edgeInsetsDefault,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '@${logic.userDetails!.user!.uname}',
+                        style: AppStyles.style24Bold.copyWith(
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' ${StringValues.blockedYou}',
+                        style: AppStyles.style24Normal.copyWith(
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Dimens.boxHeight4,
+                Text(
+                  StringValues.blockedAccountWarningDesc,
+                  textAlign: TextAlign.center,
+                  style: AppStyles.style16Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
+                ),
+                Dimens.boxHeight16,
+                NxFilledButton(
+                  label: StringValues.learnMore,
+                  padding: Dimens.edgeInsetsDefault,
+                  labelStyle: AppStyles.style14Bold.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    /// if user is blocked by current user
+    else if (logic.userDetails!.user!.isBlockedByYou) {
+      return Expanded(
+        child: Center(
+          child: Padding(
+            padding: Dimens.edgeInsetsDefault,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${StringValues.youBlocked} ',
+                        style: AppStyles.style24Normal.copyWith(
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '@${logic.userDetails!.user!.uname}',
+                        style: AppStyles.style24Bold.copyWith(
+                          color: Theme.of(context).textTheme.bodyText1!.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Dimens.boxHeight4,
+                Text(
+                  StringValues.blockedAccountWarningDesc,
+                  textAlign: TextAlign.center,
+                  style: AppStyles.style16Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
+                ),
+                Dimens.boxHeight16,
+                NxFilledButton(
+                  label: StringValues.unblock,
+                  padding: Dimens.edgeInsetsDefault,
+                  labelStyle: AppStyles.style14Bold.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
+                  ),
+                  onTap: () {},
+                ),
+              ],
             ),
           ),
         ),
@@ -198,11 +355,9 @@ class UserProfileView extends StatelessWidget {
                 ),
                 if (user.isVerified) Dimens.boxWidth4,
                 if (user.isVerified)
-                  Icon(
-                    Icons.verified,
-                    color: ColorValues.primaryColor,
-                    size: Dimens.twenty,
-                  )
+                  VerifiedWidget(
+                    verifiedCategory: user.verifiedCategory!,
+                  ),
               ],
             ),
             Dimens.boxHeight2,
@@ -255,7 +410,7 @@ class UserProfileView extends StatelessWidget {
             Expanded(
               child: Text(
                 'Joined - ${DateFormat.yMMMd().format(user.createdAt)}',
-                style: AppStyles.style12Bold.copyWith(
+                style: AppStyles.style13Normal.copyWith(
                   color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
               ),
@@ -368,6 +523,9 @@ class UserProfileView extends StatelessWidget {
                   followingStatus: user.followingStatus,
                   accountStatus: user.accountStatus,
                   isVerified: user.isVerified,
+                  verifiedCategory: user.verifiedCategory,
+                  isBlockedByYou: user.isBlockedByYou,
+                  isBlockedByUser: user.isBlockedByUser,
                   createdAt: user.createdAt,
                   updatedAt: user.updatedAt,
                 ),
@@ -446,9 +604,9 @@ class UserProfileView extends StatelessWidget {
         child: Padding(
           padding: Dimens.edgeInsetsDefault,
           child: Text(
-            StringValues.privateAccountWarning,
-            style: AppStyles.style32Bold.copyWith(
-              color: Theme.of(context).textTheme.subtitle1!.color,
+            StringValues.privateAccountWarningDesc,
+            style: AppStyles.style24Bold.copyWith(
+              color: Theme.of(context).textTheme.bodyText1!.color,
             ),
             textAlign: TextAlign.center,
           ),
@@ -471,8 +629,8 @@ class UserProfileView extends StatelessWidget {
                 padding: Dimens.edgeInsets16,
                 child: Text(
                   StringValues.noPosts,
-                  style: AppStyles.style32Bold.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  style: AppStyles.style24Bold.copyWith(
+                    color: Theme.of(context).textTheme.bodyText1!.color,
                   ),
                   textAlign: TextAlign.center,
                 ),

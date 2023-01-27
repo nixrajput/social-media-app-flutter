@@ -6,6 +6,7 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
+import 'package:social_media_app/global_widgets/verified_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class UserWidget extends StatelessWidget {
@@ -92,6 +93,7 @@ class UserWidget extends StatelessWidget {
   }
 
   Widget _buildUserUsername(BuildContext context) => Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -109,10 +111,9 @@ class UserWidget extends StatelessWidget {
           ),
           if (user.isVerified) Dimens.boxWidth4,
           if (user.isVerified)
-            Icon(
-              Icons.verified,
-              color: ColorValues.primaryColor,
-              size: Dimens.twenty,
+            VerifiedWidget(
+              verifiedCategory: user.verifiedCategory!,
+              size: Dimens.fourteen,
             ),
         ],
       );

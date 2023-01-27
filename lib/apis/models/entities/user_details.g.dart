@@ -45,6 +45,12 @@ abstract class _$UserDetailsCWProxy {
 
   UserDetails isVerified(bool isVerified);
 
+  UserDetails verifiedCategory(String? verifiedCategory);
+
+  UserDetails isBlockedByYou(bool isBlockedByYou);
+
+  UserDetails isBlockedByUser(bool isBlockedByUser);
+
   UserDetails role(String role);
 
   UserDetails createdAt(DateTime createdAt);
@@ -77,6 +83,9 @@ abstract class _$UserDetailsCWProxy {
     bool? isPrivate,
     bool? isValid,
     bool? isVerified,
+    String? verifiedCategory,
+    bool? isBlockedByYou,
+    bool? isBlockedByUser,
     String? role,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -151,6 +160,18 @@ class _$UserDetailsCWProxyImpl implements _$UserDetailsCWProxy {
   UserDetails isVerified(bool isVerified) => this(isVerified: isVerified);
 
   @override
+  UserDetails verifiedCategory(String? verifiedCategory) =>
+      this(verifiedCategory: verifiedCategory);
+
+  @override
+  UserDetails isBlockedByYou(bool isBlockedByYou) =>
+      this(isBlockedByYou: isBlockedByYou);
+
+  @override
+  UserDetails isBlockedByUser(bool isBlockedByUser) =>
+      this(isBlockedByUser: isBlockedByUser);
+
+  @override
   UserDetails role(String role) => this(role: role);
 
   @override
@@ -187,6 +208,9 @@ class _$UserDetailsCWProxyImpl implements _$UserDetailsCWProxy {
     Object? isPrivate = const $CopyWithPlaceholder(),
     Object? isValid = const $CopyWithPlaceholder(),
     Object? isVerified = const $CopyWithPlaceholder(),
+    Object? verifiedCategory = const $CopyWithPlaceholder(),
+    Object? isBlockedByYou = const $CopyWithPlaceholder(),
+    Object? isBlockedByUser = const $CopyWithPlaceholder(),
     Object? role = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
@@ -287,6 +311,22 @@ class _$UserDetailsCWProxyImpl implements _$UserDetailsCWProxy {
               ? _value.isVerified!
               // ignore: cast_nullable_to_non_nullable
               : isVerified as bool,
+      verifiedCategory: verifiedCategory == const $CopyWithPlaceholder()
+          ? _value.verifiedCategory
+          // ignore: cast_nullable_to_non_nullable
+          : verifiedCategory as String?,
+      isBlockedByYou: isBlockedByYou == const $CopyWithPlaceholder() ||
+              isBlockedByYou == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.isBlockedByYou!
+          // ignore: cast_nullable_to_non_nullable
+          : isBlockedByYou as bool,
+      isBlockedByUser: isBlockedByUser == const $CopyWithPlaceholder() ||
+              isBlockedByUser == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.isBlockedByUser!
+          // ignore: cast_nullable_to_non_nullable
+          : isBlockedByUser as bool,
       role: role == const $CopyWithPlaceholder() || role == null
           // ignore: unnecessary_non_null_assertion
           ? _value.role!
@@ -338,6 +378,9 @@ UserDetails _$UserDetailsFromJson(Map<String, dynamic> json) => UserDetails(
       isPrivate: json['isPrivate'] as bool,
       isValid: json['isValid'] as bool,
       isVerified: json['isVerified'] as bool,
+      verifiedCategory: json['verifiedCategory'] as String?,
+      isBlockedByYou: json['isBlockedByYou'] as bool,
+      isBlockedByUser: json['isBlockedByUser'] as bool,
       role: json['role'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
@@ -364,6 +407,9 @@ Map<String, dynamic> _$UserDetailsToJson(UserDetails instance) =>
       'isPrivate': instance.isPrivate,
       'isValid': instance.isValid,
       'isVerified': instance.isVerified,
+      'verifiedCategory': instance.verifiedCategory,
+      'isBlockedByYou': instance.isBlockedByYou,
+      'isBlockedByUser': instance.isBlockedByUser,
       'role': instance.role,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),

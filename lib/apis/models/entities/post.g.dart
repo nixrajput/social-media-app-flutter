@@ -57,7 +57,7 @@ abstract class _$PostCWProxy {
 
   Post visibility(String? visibility);
 
-  Post postStatus(String? postStatus);
+  Post status(String? status);
 
   Post createdAt(DateTime? createdAt);
 
@@ -95,7 +95,7 @@ abstract class _$PostCWProxy {
     bool? allowSave,
     bool? allowDownload,
     String? visibility,
-    String? postStatus,
+    String? status,
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -186,7 +186,7 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
   Post visibility(String? visibility) => this(visibility: visibility);
 
   @override
-  Post postStatus(String? postStatus) => this(postStatus: postStatus);
+  Post status(String? status) => this(status: status);
 
   @override
   Post createdAt(DateTime? createdAt) => this(createdAt: createdAt);
@@ -228,7 +228,7 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
     Object? allowSave = const $CopyWithPlaceholder(),
     Object? allowDownload = const $CopyWithPlaceholder(),
     Object? visibility = const $CopyWithPlaceholder(),
-    Object? postStatus = const $CopyWithPlaceholder(),
+    Object? status = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
@@ -333,10 +333,10 @@ class _$PostCWProxyImpl implements _$PostCWProxy {
           ? _value.visibility
           // ignore: cast_nullable_to_non_nullable
           : visibility as String?,
-      postStatus: postStatus == const $CopyWithPlaceholder()
-          ? _value.postStatus
+      status: status == const $CopyWithPlaceholder()
+          ? _value.status
           // ignore: cast_nullable_to_non_nullable
-          : postStatus as String?,
+          : status as String?,
       createdAt: createdAt == const $CopyWithPlaceholder()
           ? _value.createdAt
           // ignore: cast_nullable_to_non_nullable
@@ -395,7 +395,7 @@ class PostAdapter extends TypeAdapter<Post> {
       allowSave: fields[22] as bool?,
       allowDownload: fields[23] as bool?,
       visibility: fields[24] as String?,
-      postStatus: fields[25] as String?,
+      status: fields[25] as String?,
       createdAt: fields[26] as DateTime?,
       updatedAt: fields[27] as DateTime?,
     )..votedOption = fields[28] as String?;
@@ -456,7 +456,7 @@ class PostAdapter extends TypeAdapter<Post> {
       ..writeByte(24)
       ..write(obj.visibility)
       ..writeByte(25)
-      ..write(obj.postStatus)
+      ..write(obj.status)
       ..writeByte(26)
       ..write(obj.createdAt)
       ..writeByte(27)
@@ -518,7 +518,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
       allowSave: json['allowSave'] as bool?,
       allowDownload: json['allowDownload'] as bool?,
       visibility: json['visibility'] as String?,
-      postStatus: json['postStatus'] as String?,
+      status: json['status'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -553,7 +553,7 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'allowSave': instance.allowSave,
       'allowDownload': instance.allowDownload,
       'visibility': instance.visibility,
-      'postStatus': instance.postStatus,
+      'status': instance.status,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'votedOption': instance.votedOption,

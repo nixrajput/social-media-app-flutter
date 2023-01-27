@@ -131,6 +131,15 @@ class ChatsTabView extends StatelessWidget {
                             isVerified: isMe
                                 ? item.receiver!.isVerified
                                 : item.sender!.isVerified,
+                            verifiedCategory: isMe
+                                ? item.receiver!.verifiedCategory
+                                : item.sender!.verifiedCategory,
+                            isBlockedByYou: isMe
+                                ? item.receiver!.isBlockedByYou
+                                : item.sender!.isBlockedByYou,
+                            isBlockedByUser: isMe
+                                ? item.receiver!.isBlockedByUser
+                                : item.sender!.isBlockedByUser,
                             createdAt: isMe
                                 ? item.receiver!.createdAt
                                 : item.sender!.createdAt,

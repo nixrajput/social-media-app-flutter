@@ -32,11 +32,11 @@ class NxExpandableTextState extends State<NxExpandableText> {
 
   @override
   Widget build(BuildContext context) {
-    canExpand = widget.text.length >= 100;
+    canExpand = widget.text.length >= 110;
     text = canExpand
         ? isExpand
             ? widget.text
-            : '${widget.text.substring(0, 100)}...'
+            : widget.text.substring(0, 110)
         : widget.text;
 
     return AnimatedSize(
@@ -94,8 +94,8 @@ class NxExpandableTextState extends State<NxExpandableText> {
             },
             child: Text(
               isExpand ? 'show less' : 'show more',
-              style: AppStyles.style14Bold.copyWith(
-                color: ColorValues.primaryColor,
+              style: AppStyles.style13Bold.copyWith(
+                color: ColorValues.linkColor,
               ),
               textAlign: TextAlign.start,
             ),

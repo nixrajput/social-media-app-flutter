@@ -29,6 +29,12 @@ abstract class _$UserCWProxy {
 
   User isVerified(bool isVerified);
 
+  User verifiedCategory(String? verifiedCategory);
+
+  User isBlockedByYou(bool isBlockedByYou);
+
+  User isBlockedByUser(bool isBlockedByUser);
+
   User createdAt(DateTime createdAt);
 
   User updatedAt(DateTime updatedAt);
@@ -51,6 +57,9 @@ abstract class _$UserCWProxy {
     String? followingStatus,
     String? accountStatus,
     bool? isVerified,
+    String? verifiedCategory,
+    bool? isBlockedByYou,
+    bool? isBlockedByUser,
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -98,6 +107,18 @@ class _$UserCWProxyImpl implements _$UserCWProxy {
   User isVerified(bool isVerified) => this(isVerified: isVerified);
 
   @override
+  User verifiedCategory(String? verifiedCategory) =>
+      this(verifiedCategory: verifiedCategory);
+
+  @override
+  User isBlockedByYou(bool isBlockedByYou) =>
+      this(isBlockedByYou: isBlockedByYou);
+
+  @override
+  User isBlockedByUser(bool isBlockedByUser) =>
+      this(isBlockedByUser: isBlockedByUser);
+
+  @override
   User createdAt(DateTime createdAt) => this(createdAt: createdAt);
 
   @override
@@ -123,6 +144,9 @@ class _$UserCWProxyImpl implements _$UserCWProxy {
     Object? followingStatus = const $CopyWithPlaceholder(),
     Object? accountStatus = const $CopyWithPlaceholder(),
     Object? isVerified = const $CopyWithPlaceholder(),
+    Object? verifiedCategory = const $CopyWithPlaceholder(),
+    Object? isBlockedByYou = const $CopyWithPlaceholder(),
+    Object? isBlockedByUser = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
@@ -183,6 +207,22 @@ class _$UserCWProxyImpl implements _$UserCWProxy {
               ? _value.isVerified!
               // ignore: cast_nullable_to_non_nullable
               : isVerified as bool,
+      verifiedCategory: verifiedCategory == const $CopyWithPlaceholder()
+          ? _value.verifiedCategory
+          // ignore: cast_nullable_to_non_nullable
+          : verifiedCategory as String?,
+      isBlockedByYou: isBlockedByYou == const $CopyWithPlaceholder() ||
+              isBlockedByYou == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.isBlockedByYou!
+          // ignore: cast_nullable_to_non_nullable
+          : isBlockedByYou as bool,
+      isBlockedByUser: isBlockedByUser == const $CopyWithPlaceholder() ||
+              isBlockedByUser == null
+          // ignore: unnecessary_non_null_assertion
+          ? _value.isBlockedByUser!
+          // ignore: cast_nullable_to_non_nullable
+          : isBlockedByUser as bool,
       createdAt: createdAt == const $CopyWithPlaceholder() || createdAt == null
           // ignore: unnecessary_non_null_assertion
           ? _value.createdAt!
@@ -229,15 +269,18 @@ class UserAdapter extends TypeAdapter<User> {
       followingStatus: fields[6] as String,
       accountStatus: fields[7] as String,
       isVerified: fields[10] as bool,
-      createdAt: fields[11] as DateTime,
-      updatedAt: fields[12] as DateTime,
+      verifiedCategory: fields[11] as String?,
+      isBlockedByYou: fields[12] as bool,
+      isBlockedByUser: fields[13] as bool,
+      createdAt: fields[14] as DateTime,
+      updatedAt: fields[15] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(13)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -261,8 +304,14 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(10)
       ..write(obj.isVerified)
       ..writeByte(11)
-      ..write(obj.createdAt)
+      ..write(obj.verifiedCategory)
       ..writeByte(12)
+      ..write(obj.isBlockedByYou)
+      ..writeByte(13)
+      ..write(obj.isBlockedByUser)
+      ..writeByte(14)
+      ..write(obj.createdAt)
+      ..writeByte(15)
       ..write(obj.updatedAt);
   }
 
@@ -295,6 +344,9 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       followingStatus: json['followingStatus'] as String,
       accountStatus: json['accountStatus'] as String,
       isVerified: json['isVerified'] as bool,
+      verifiedCategory: json['verifiedCategory'] as String?,
+      isBlockedByYou: json['isBlockedByYou'] as bool,
+      isBlockedByUser: json['isBlockedByUser'] as bool,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
@@ -311,6 +363,9 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'profession': instance.profession,
       'isPrivate': instance.isPrivate,
       'isVerified': instance.isVerified,
+      'verifiedCategory': instance.verifiedCategory,
+      'isBlockedByYou': instance.isBlockedByYou,
+      'isBlockedByUser': instance.isBlockedByUser,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
     };

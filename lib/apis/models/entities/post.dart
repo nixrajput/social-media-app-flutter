@@ -38,7 +38,7 @@ class Post {
     this.allowSave,
     this.allowDownload,
     this.visibility,
-    this.postStatus,
+    this.status,
     this.createdAt,
     this.updatedAt,
   });
@@ -147,9 +147,9 @@ class Post {
   @HiveField(24)
   String? visibility;
 
-  @JsonKey(name: 'postStatus')
+  @JsonKey(name: 'status')
   @HiveField(25)
-  String? postStatus;
+  String? status;
 
   @JsonKey(name: 'createdAt')
   @HiveField(26)

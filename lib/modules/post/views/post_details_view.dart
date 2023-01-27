@@ -110,13 +110,13 @@ class PostDetailsView extends StatelessWidget {
 
             if (logic.commentsData == null || logic.commentList.isEmpty) {
               return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Dimens.boxHeight8,
                   Text(
                     StringValues.noComments,
-                    style: AppStyles.style32Bold.copyWith(
+                    style: AppStyles.style24Bold.copyWith(
                       color: Theme.of(Get.context!).textTheme.subtitle1!.color,
                     ),
                     textAlign: TextAlign.center,

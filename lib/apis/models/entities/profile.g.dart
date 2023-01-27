@@ -55,6 +55,8 @@ abstract class _$ProfileCWProxy {
 
   Profile isVerified(bool isVerified);
 
+  Profile verifiedCategory(String? verifiedCategory);
+
   Profile showOnlineStatus(bool? showOnlineStatus);
 
   Profile lastSeen(DateTime? lastSeen);
@@ -94,6 +96,7 @@ abstract class _$ProfileCWProxy {
     String? accountStatus,
     bool? isValid,
     bool? isVerified,
+    String? verifiedCategory,
     bool? showOnlineStatus,
     DateTime? lastSeen,
     DateTime? createdAt,
@@ -185,6 +188,10 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
   Profile isVerified(bool isVerified) => this(isVerified: isVerified);
 
   @override
+  Profile verifiedCategory(String? verifiedCategory) =>
+      this(verifiedCategory: verifiedCategory);
+
+  @override
   Profile showOnlineStatus(bool? showOnlineStatus) =>
       this(showOnlineStatus: showOnlineStatus);
 
@@ -230,6 +237,7 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
     Object? accountStatus = const $CopyWithPlaceholder(),
     Object? isValid = const $CopyWithPlaceholder(),
     Object? isVerified = const $CopyWithPlaceholder(),
+    Object? verifiedCategory = const $CopyWithPlaceholder(),
     Object? showOnlineStatus = const $CopyWithPlaceholder(),
     Object? lastSeen = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
@@ -352,6 +360,10 @@ class _$ProfileCWProxyImpl implements _$ProfileCWProxy {
               ? _value.isVerified!
               // ignore: cast_nullable_to_non_nullable
               : isVerified as bool,
+      verifiedCategory: verifiedCategory == const $CopyWithPlaceholder()
+          ? _value.verifiedCategory
+          // ignore: cast_nullable_to_non_nullable
+          : verifiedCategory as String?,
       showOnlineStatus: showOnlineStatus == const $CopyWithPlaceholder()
           ? _value.showOnlineStatus
           // ignore: cast_nullable_to_non_nullable
@@ -414,22 +426,23 @@ class ProfileAdapter extends TypeAdapter<Profile> {
       postsCount: fields[16] as int,
       followersCount: fields[17] as int,
       followingCount: fields[18] as int,
-      role: fields[23] as String,
+      role: fields[24] as String,
       isPrivate: fields[20] as bool,
       accountStatus: fields[19] as String,
       isValid: fields[21] as bool,
       isVerified: fields[22] as bool,
-      showOnlineStatus: fields[24] as bool?,
-      lastSeen: fields[25] as DateTime?,
-      createdAt: fields[26] as DateTime,
-      updatedAt: fields[27] as DateTime,
+      verifiedCategory: fields[23] as String?,
+      showOnlineStatus: fields[25] as bool?,
+      lastSeen: fields[26] as DateTime?,
+      createdAt: fields[27] as DateTime,
+      updatedAt: fields[28] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, Profile obj) {
     writer
-      ..writeByte(28)
+      ..writeByte(29)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -477,14 +490,16 @@ class ProfileAdapter extends TypeAdapter<Profile> {
       ..writeByte(22)
       ..write(obj.isVerified)
       ..writeByte(23)
-      ..write(obj.role)
+      ..write(obj.verifiedCategory)
       ..writeByte(24)
-      ..write(obj.showOnlineStatus)
+      ..write(obj.role)
       ..writeByte(25)
-      ..write(obj.lastSeen)
+      ..write(obj.showOnlineStatus)
       ..writeByte(26)
-      ..write(obj.createdAt)
+      ..write(obj.lastSeen)
       ..writeByte(27)
+      ..write(obj.createdAt)
+      ..writeByte(28)
       ..write(obj.updatedAt);
   }
 
@@ -530,6 +545,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) => Profile(
       accountStatus: json['accountStatus'] as String,
       isValid: json['isValid'] as bool,
       isVerified: json['isVerified'] as bool,
+      verifiedCategory: json['verifiedCategory'] as String?,
       showOnlineStatus: json['showOnlineStatus'] as bool?,
       lastSeen: json['lastSeen'] == null
           ? null
@@ -562,6 +578,7 @@ Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
       'isPrivate': instance.isPrivate,
       'isValid': instance.isValid,
       'isVerified': instance.isVerified,
+      'verifiedCategory': instance.verifiedCategory,
       'role': instance.role,
       'showOnlineStatus': instance.showOnlineStatus,
       'lastSeen': instance.lastSeen?.toIso8601String(),

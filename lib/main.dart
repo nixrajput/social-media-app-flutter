@@ -100,6 +100,7 @@ Future<void> _initPreAppServices() async {
   await Hive.openBox<Post>('profilePosts');
   await Hive.openBox<Follower>('followers');
   await Hive.openBox<Follower>('followings');
+  await Hive.openBox<String>('blockedUsers');
 
   AppUtility.log('Hive Boxes Opened');
 

@@ -4,41 +4,39 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/constants/hive_type_id.dart';
 
-part 'comment.g.dart';
+part 'comment_reply.g.dart';
 
 @CopyWith()
 @JsonSerializable()
 @HiveType(typeId: HiveTypeId.comment)
-class Comment {
-  Comment({
+class CommentReply {
+  CommentReply({
     this.id,
-    this.type,
+    this.reply,
     this.comment,
     this.user,
     this.post,
     this.likesCount,
-    this.repliesCount,
     this.isLiked,
     this.allowLikes,
-    this.allowReplies,
     this.visibility,
     this.status,
     this.createdAt,
     this.updatedAt,
   });
 
-  factory Comment.fromJson(Map<String, dynamic> json) =>
-      _$CommentFromJson(json);
+  factory CommentReply.fromJson(Map<String, dynamic> json) =>
+      _$CommentReplyFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CommentToJson(this);
+  Map<String, dynamic> toJson() => _$CommentReplyToJson(this);
 
   @JsonKey(name: '_id')
   @HiveField(0)
   String? id;
 
-  @JsonKey(name: 'type')
+  @JsonKey(name: 'reply')
   @HiveField(1)
-  String? type;
+  String? reply;
 
   @JsonKey(name: 'comment')
   @HiveField(2)
@@ -56,35 +54,27 @@ class Comment {
   @HiveField(5)
   int? likesCount;
 
-  @JsonKey(name: 'repliesCount')
-  @HiveField(6)
-  int? repliesCount;
-
   @JsonKey(name: 'isLiked')
-  @HiveField(7)
+  @HiveField(6)
   bool? isLiked;
 
   @JsonKey(name: 'allowLikes')
-  @HiveField(8)
+  @HiveField(7)
   bool? allowLikes;
 
-  @JsonKey(name: 'allowReplies')
-  @HiveField(9)
-  bool? allowReplies;
-
   @JsonKey(name: 'visibility')
-  @HiveField(10)
+  @HiveField(8)
   String? visibility;
 
   @JsonKey(name: 'status')
-  @HiveField(11)
+  @HiveField(9)
   String? status;
 
   @JsonKey(name: 'createdAt')
-  @HiveField(12)
+  @HiveField(10)
   DateTime? createdAt;
 
   @JsonKey(name: 'updatedAt')
-  @HiveField(13)
+  @HiveField(11)
   DateTime? updatedAt;
 }

@@ -35,6 +35,7 @@ class Profile {
     required this.accountStatus,
     required this.isValid,
     required this.isVerified,
+    this.verifiedCategory,
     this.showOnlineStatus,
     this.lastSeen,
     required this.createdAt,
@@ -138,23 +139,27 @@ class Profile {
   @HiveField(22)
   bool isVerified;
 
-  @JsonKey(name: 'role')
+  @JsonKey(name: 'verifiedCategory')
   @HiveField(23)
+  String? verifiedCategory;
+
+  @JsonKey(name: 'role')
+  @HiveField(24)
   String role;
 
   @JsonKey(name: 'showOnlineStatus')
-  @HiveField(24)
+  @HiveField(25)
   bool? showOnlineStatus;
 
   @JsonKey(name: 'lastSeen')
-  @HiveField(25)
+  @HiveField(26)
   DateTime? lastSeen;
 
   @JsonKey(name: 'createdAt')
-  @HiveField(26)
+  @HiveField(27)
   DateTime createdAt;
 
   @JsonKey(name: 'updatedAt')
-  @HiveField(27)
+  @HiveField(28)
   final DateTime updatedAt;
 }

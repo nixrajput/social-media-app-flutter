@@ -18,6 +18,7 @@ import 'package:social_media_app/global_widgets/image_viewer_widget.dart';
 import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
+import 'package:social_media_app/global_widgets/verified_widget.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_profile_picture_controller.dart';
@@ -344,11 +345,10 @@ class ProfileView extends StatelessWidget {
                   ),
                   if (logic.profileDetails!.user!.isVerified) Dimens.boxWidth4,
                   if (logic.profileDetails!.user!.isVerified)
-                    Icon(
-                      Icons.verified,
-                      color: ColorValues.primaryColor,
-                      size: Dimens.twenty,
-                    )
+                    VerifiedWidget(
+                      verifiedCategory:
+                          logic.profileDetails!.user!.verifiedCategory!,
+                    ),
                 ],
               ),
               Dimens.boxHeight2,
@@ -403,7 +403,7 @@ class ProfileView extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Joined - ${DateFormat.yMMMd().format(logic.profileDetails!.user!.createdAt)}',
-                  style: AppStyles.style12Bold.copyWith(
+                  style: AppStyles.style13Normal.copyWith(
                     color: Theme.of(context).textTheme.subtitle1!.color,
                   ),
                 ),
@@ -549,11 +549,17 @@ class ProfileView extends StatelessWidget {
             ),
             onTap: () {
               AppUtility.closeBottomSheet();
-              Get.to(
-                () => ImageViewerWidget(
-                    url: ProfileController
-                        .find.profileDetails!.user!.avatar!.url!),
-              );
+              if (ProfileController.find.profileDetails!.user!.avatar != null &&
+                  ProfileController.find.profileDetails!.user!.avatar!.url !=
+                      null &&
+                  ProfileController
+                      .find.profileDetails!.user!.avatar!.url!.isNotEmpty) {
+                Get.to(
+                  () => ImageViewerWidget(
+                      url: ProfileController
+                          .find.profileDetails!.user!.avatar!.url!),
+                );
+              }
             },
           ),
 

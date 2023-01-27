@@ -1,57 +1,51 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'comment.dart';
+part of 'comment_reply.dart';
 
 // **************************************************************************
 // CopyWithGenerator
 // **************************************************************************
 
-abstract class _$CommentCWProxy {
-  Comment id(String? id);
+abstract class _$CommentReplyCWProxy {
+  CommentReply id(String? id);
 
-  Comment type(String? type);
+  CommentReply reply(String? reply);
 
-  Comment comment(String? comment);
+  CommentReply comment(String? comment);
 
-  Comment user(User? user);
+  CommentReply user(User? user);
 
-  Comment post(String? post);
+  CommentReply post(String? post);
 
-  Comment likesCount(int? likesCount);
+  CommentReply likesCount(int? likesCount);
 
-  Comment repliesCount(int? repliesCount);
+  CommentReply isLiked(bool? isLiked);
 
-  Comment isLiked(bool? isLiked);
+  CommentReply allowLikes(bool? allowLikes);
 
-  Comment allowLikes(bool? allowLikes);
+  CommentReply visibility(String? visibility);
 
-  Comment allowReplies(bool? allowReplies);
+  CommentReply status(String? status);
 
-  Comment visibility(String? visibility);
+  CommentReply createdAt(DateTime? createdAt);
 
-  Comment status(String? status);
+  CommentReply updatedAt(DateTime? updatedAt);
 
-  Comment createdAt(DateTime? createdAt);
-
-  Comment updatedAt(DateTime? updatedAt);
-
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Comment(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CommentReply(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// Comment(...).copyWith(id: 12, name: "My name")
+  /// CommentReply(...).copyWith(id: 12, name: "My name")
   /// ````
-  Comment call({
+  CommentReply call({
     String? id,
-    String? type,
+    String? reply,
     String? comment,
     User? user,
     String? post,
     int? likesCount,
-    int? repliesCount,
     bool? isLiked,
     bool? allowLikes,
-    bool? allowReplies,
     String? visibility,
     String? status,
     DateTime? createdAt,
@@ -59,87 +53,79 @@ abstract class _$CommentCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfComment.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfComment.copyWith.fieldName(...)`
-class _$CommentCWProxyImpl implements _$CommentCWProxy {
-  const _$CommentCWProxyImpl(this._value);
+/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfCommentReply.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfCommentReply.copyWith.fieldName(...)`
+class _$CommentReplyCWProxyImpl implements _$CommentReplyCWProxy {
+  const _$CommentReplyCWProxyImpl(this._value);
 
-  final Comment _value;
-
-  @override
-  Comment id(String? id) => this(id: id);
+  final CommentReply _value;
 
   @override
-  Comment type(String? type) => this(type: type);
+  CommentReply id(String? id) => this(id: id);
 
   @override
-  Comment comment(String? comment) => this(comment: comment);
+  CommentReply reply(String? reply) => this(reply: reply);
 
   @override
-  Comment user(User? user) => this(user: user);
+  CommentReply comment(String? comment) => this(comment: comment);
 
   @override
-  Comment post(String? post) => this(post: post);
+  CommentReply user(User? user) => this(user: user);
 
   @override
-  Comment likesCount(int? likesCount) => this(likesCount: likesCount);
+  CommentReply post(String? post) => this(post: post);
 
   @override
-  Comment repliesCount(int? repliesCount) => this(repliesCount: repliesCount);
+  CommentReply likesCount(int? likesCount) => this(likesCount: likesCount);
 
   @override
-  Comment isLiked(bool? isLiked) => this(isLiked: isLiked);
+  CommentReply isLiked(bool? isLiked) => this(isLiked: isLiked);
 
   @override
-  Comment allowLikes(bool? allowLikes) => this(allowLikes: allowLikes);
+  CommentReply allowLikes(bool? allowLikes) => this(allowLikes: allowLikes);
 
   @override
-  Comment allowReplies(bool? allowReplies) => this(allowReplies: allowReplies);
+  CommentReply visibility(String? visibility) => this(visibility: visibility);
 
   @override
-  Comment visibility(String? visibility) => this(visibility: visibility);
+  CommentReply status(String? status) => this(status: status);
 
   @override
-  Comment status(String? status) => this(status: status);
+  CommentReply createdAt(DateTime? createdAt) => this(createdAt: createdAt);
 
   @override
-  Comment createdAt(DateTime? createdAt) => this(createdAt: createdAt);
-
-  @override
-  Comment updatedAt(DateTime? updatedAt) => this(updatedAt: updatedAt);
+  CommentReply updatedAt(DateTime? updatedAt) => this(updatedAt: updatedAt);
 
   @override
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Comment(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CommentReply(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// Comment(...).copyWith(id: 12, name: "My name")
+  /// CommentReply(...).copyWith(id: 12, name: "My name")
   /// ````
-  Comment call({
+  CommentReply call({
     Object? id = const $CopyWithPlaceholder(),
-    Object? type = const $CopyWithPlaceholder(),
+    Object? reply = const $CopyWithPlaceholder(),
     Object? comment = const $CopyWithPlaceholder(),
     Object? user = const $CopyWithPlaceholder(),
     Object? post = const $CopyWithPlaceholder(),
     Object? likesCount = const $CopyWithPlaceholder(),
-    Object? repliesCount = const $CopyWithPlaceholder(),
     Object? isLiked = const $CopyWithPlaceholder(),
     Object? allowLikes = const $CopyWithPlaceholder(),
-    Object? allowReplies = const $CopyWithPlaceholder(),
     Object? visibility = const $CopyWithPlaceholder(),
     Object? status = const $CopyWithPlaceholder(),
     Object? createdAt = const $CopyWithPlaceholder(),
     Object? updatedAt = const $CopyWithPlaceholder(),
   }) {
-    return Comment(
+    return CommentReply(
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
           : id as String?,
-      type: type == const $CopyWithPlaceholder()
-          ? _value.type
+      reply: reply == const $CopyWithPlaceholder()
+          ? _value.reply
           // ignore: cast_nullable_to_non_nullable
-          : type as String?,
+          : reply as String?,
       comment: comment == const $CopyWithPlaceholder()
           ? _value.comment
           // ignore: cast_nullable_to_non_nullable
@@ -156,10 +142,6 @@ class _$CommentCWProxyImpl implements _$CommentCWProxy {
           ? _value.likesCount
           // ignore: cast_nullable_to_non_nullable
           : likesCount as int?,
-      repliesCount: repliesCount == const $CopyWithPlaceholder()
-          ? _value.repliesCount
-          // ignore: cast_nullable_to_non_nullable
-          : repliesCount as int?,
       isLiked: isLiked == const $CopyWithPlaceholder()
           ? _value.isLiked
           // ignore: cast_nullable_to_non_nullable
@@ -168,10 +150,6 @@ class _$CommentCWProxyImpl implements _$CommentCWProxy {
           ? _value.allowLikes
           // ignore: cast_nullable_to_non_nullable
           : allowLikes as bool?,
-      allowReplies: allowReplies == const $CopyWithPlaceholder()
-          ? _value.allowReplies
-          // ignore: cast_nullable_to_non_nullable
-          : allowReplies as bool?,
       visibility: visibility == const $CopyWithPlaceholder()
           ? _value.visibility
           // ignore: cast_nullable_to_non_nullable
@@ -192,52 +170,50 @@ class _$CommentCWProxyImpl implements _$CommentCWProxy {
   }
 }
 
-extension $CommentCopyWith on Comment {
-  /// Returns a callable class that can be used as follows: `instanceOfComment.copyWith(...)` or like so:`instanceOfComment.copyWith.fieldName(...)`.
+extension $CommentReplyCopyWith on CommentReply {
+  /// Returns a callable class that can be used as follows: `instanceOfCommentReply.copyWith(...)` or like so:`instanceOfCommentReply.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
-  _$CommentCWProxy get copyWith => _$CommentCWProxyImpl(this);
+  _$CommentReplyCWProxy get copyWith => _$CommentReplyCWProxyImpl(this);
 }
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CommentAdapter extends TypeAdapter<Comment> {
+class CommentReplyAdapter extends TypeAdapter<CommentReply> {
   @override
   final int typeId = 15;
 
   @override
-  Comment read(BinaryReader reader) {
+  CommentReply read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Comment(
+    return CommentReply(
       id: fields[0] as String?,
-      type: fields[1] as String?,
+      reply: fields[1] as String?,
       comment: fields[2] as String?,
       user: fields[4] as User?,
       post: fields[3] as String?,
       likesCount: fields[5] as int?,
-      repliesCount: fields[6] as int?,
-      isLiked: fields[7] as bool?,
-      allowLikes: fields[8] as bool?,
-      allowReplies: fields[9] as bool?,
-      visibility: fields[10] as String?,
-      status: fields[11] as String?,
-      createdAt: fields[12] as DateTime?,
-      updatedAt: fields[13] as DateTime?,
+      isLiked: fields[6] as bool?,
+      allowLikes: fields[7] as bool?,
+      visibility: fields[8] as String?,
+      status: fields[9] as String?,
+      createdAt: fields[10] as DateTime?,
+      updatedAt: fields[11] as DateTime?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Comment obj) {
+  void write(BinaryWriter writer, CommentReply obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.type)
+      ..write(obj.reply)
       ..writeByte(2)
       ..write(obj.comment)
       ..writeByte(3)
@@ -247,20 +223,16 @@ class CommentAdapter extends TypeAdapter<Comment> {
       ..writeByte(5)
       ..write(obj.likesCount)
       ..writeByte(6)
-      ..write(obj.repliesCount)
-      ..writeByte(7)
       ..write(obj.isLiked)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.allowLikes)
-      ..writeByte(9)
-      ..write(obj.allowReplies)
-      ..writeByte(10)
+      ..writeByte(8)
       ..write(obj.visibility)
-      ..writeByte(11)
+      ..writeByte(9)
       ..write(obj.status)
-      ..writeByte(12)
+      ..writeByte(10)
       ..write(obj.createdAt)
-      ..writeByte(13)
+      ..writeByte(11)
       ..write(obj.updatedAt);
   }
 
@@ -270,7 +242,7 @@ class CommentAdapter extends TypeAdapter<Comment> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CommentAdapter &&
+      other is CommentReplyAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -279,19 +251,17 @@ class CommentAdapter extends TypeAdapter<Comment> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
+CommentReply _$CommentReplyFromJson(Map<String, dynamic> json) => CommentReply(
       id: json['_id'] as String?,
-      type: json['type'] as String?,
+      reply: json['reply'] as String?,
       comment: json['comment'] as String?,
       user: json['user'] == null
           ? null
           : User.fromJson(json['user'] as Map<String, dynamic>),
       post: json['post'] as String?,
       likesCount: json['likesCount'] as int?,
-      repliesCount: json['repliesCount'] as int?,
       isLiked: json['isLiked'] as bool?,
       allowLikes: json['allowLikes'] as bool?,
-      allowReplies: json['allowReplies'] as bool?,
       visibility: json['visibility'] as String?,
       status: json['status'] as String?,
       createdAt: json['createdAt'] == null
@@ -302,17 +272,16 @@ Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
           : DateTime.parse(json['updatedAt'] as String),
     );
 
-Map<String, dynamic> _$CommentToJson(Comment instance) => <String, dynamic>{
+Map<String, dynamic> _$CommentReplyToJson(CommentReply instance) =>
+    <String, dynamic>{
       '_id': instance.id,
-      'type': instance.type,
+      'reply': instance.reply,
       'comment': instance.comment,
       'post': instance.post,
       'user': instance.user,
       'likesCount': instance.likesCount,
-      'repliesCount': instance.repliesCount,
       'isLiked': instance.isLiked,
       'allowLikes': instance.allowLikes,
-      'allowReplies': instance.allowReplies,
       'visibility': instance.visibility,
       'status': instance.status,
       'createdAt': instance.createdAt?.toIso8601String(),

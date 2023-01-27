@@ -664,6 +664,7 @@ class VerificationView extends StatelessWidget {
             children: categoriesList
                 .map(
                   (item) => NxListTile(
+                    showBorder: false,
                     title: Text(
                       item,
                       style: AppStyles.style16Bold.copyWith(

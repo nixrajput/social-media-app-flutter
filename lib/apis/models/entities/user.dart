@@ -22,6 +22,9 @@ class User {
     required this.followingStatus,
     required this.accountStatus,
     required this.isVerified,
+    this.verifiedCategory,
+    required this.isBlockedByYou,
+    required this.isBlockedByUser,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -74,11 +77,23 @@ class User {
   @HiveField(10)
   bool isVerified;
 
-  @JsonKey(name: 'createdAt')
+  @JsonKey(name: 'verifiedCategory')
   @HiveField(11)
+  String? verifiedCategory;
+
+  @JsonKey(name: 'isBlockedByYou')
+  @HiveField(12)
+  final bool isBlockedByYou;
+
+  @JsonKey(name: 'isBlockedByUser')
+  @HiveField(13)
+  final bool isBlockedByUser;
+
+  @JsonKey(name: 'createdAt')
+  @HiveField(14)
   final DateTime createdAt;
 
   @JsonKey(name: 'updatedAt')
-  @HiveField(12)
+  @HiveField(15)
   final DateTime updatedAt;
 }

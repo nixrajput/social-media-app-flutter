@@ -27,6 +27,9 @@ class UserDetails {
     required this.isPrivate,
     required this.isValid,
     required this.isVerified,
+    this.verifiedCategory,
+    required this.isBlockedByYou,
+    required this.isBlockedByUser,
     required this.role,
     required this.createdAt,
     required this.updatedAt,
@@ -93,6 +96,15 @@ class UserDetails {
 
   @JsonKey(name: 'isVerified')
   final bool isVerified;
+
+  @JsonKey(name: 'verifiedCategory')
+  String? verifiedCategory;
+
+  @JsonKey(name: 'isBlockedByYou')
+  final bool isBlockedByYou;
+
+  @JsonKey(name: 'isBlockedByUser')
+  final bool isBlockedByUser;
 
   @JsonKey(name: 'role')
   final String role;

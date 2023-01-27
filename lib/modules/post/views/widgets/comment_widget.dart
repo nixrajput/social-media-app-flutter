@@ -6,10 +6,12 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
+import 'package:social_media_app/global_widgets/verified_widget.dart';
 import 'package:social_media_app/helpers/get_time_ago_msg.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
@@ -37,7 +39,7 @@ class CommentWidget extends StatelessWidget {
         children: [
           _buildCommentHead(context),
           _buildCommentBody(context),
-          //_buildCommentFooter(context),
+          _buildCommentFooter(context),
           Dimens.boxHeight8,
         ],
       ),
@@ -51,9 +53,10 @@ class CommentWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () => RouteManagement.goToUserProfileView(comment.user.id),
+              onTap: () =>
+                  RouteManagement.goToUserProfileView(comment.user!.id),
               child: AvatarWidget(
-                avatar: comment.user.avatar,
+                avatar: comment.user!.avatar,
                 size: Dimens.twenty,
               ),
             ),
@@ -85,30 +88,22 @@ class CommentWidget extends StatelessWidget {
                 Flexible(
                   child: RichText(
                     text: TextSpan(
-                      text: '${comment.user.fname} ${comment.user.lname}',
+                      text: '${comment.user!.fname} ${comment.user!.lname}',
                       style: AppStyles.style14Bold.copyWith(
                         color: Theme.of(context).textTheme.bodyText1!.color,
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => RouteManagement.goToUserProfileView(
-                            comment.user.id),
+                            comment.user!.id),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                if (comment.user.isVerified)
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Dimens.boxWidth4,
-                      Icon(
-                        Icons.verified,
-                        color: ColorValues.primaryColor,
-                        size: Dimens.sixTeen,
-                      ),
-                    ],
+                if (comment.user!.isVerified) Dimens.boxWidth4,
+                if (comment.user!.isVerified)
+                  VerifiedWidget(
+                    verifiedCategory: comment.user!.verifiedCategory!,
+                    size: Dimens.fourteen,
                   ),
               ],
             ),
@@ -137,7 +132,7 @@ class CommentWidget extends StatelessWidget {
   Widget _buildPostTime(BuildContext context) {
     GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
     return GetTimeAgoWidget(
-      date: comment.createdAt.toLocal(),
+      date: comment.createdAt!.toLocal(),
       pattern: 'dd MMM yy',
       builder: (BuildContext context, String value) => Text(
         value,
@@ -150,7 +145,7 @@ class CommentWidget extends StatelessWidget {
 
   Widget _buildUsername(BuildContext context) => RichText(
         text: TextSpan(
-          text: comment.user.uname,
+          text: comment.user!.uname,
           style: AppStyles.style13Normal.copyWith(
             color: Theme.of(context).textTheme.subtitle1!.color,
           ),
@@ -162,45 +157,82 @@ class CommentWidget extends StatelessWidget {
   Widget _buildCommentBody(BuildContext context) {
     return Padding(
       padding: Dimens.edgeInsets0_8,
-      child: NxExpandableText(text: comment.comment),
+      child: NxExpandableText(text: comment.comment!),
     );
   }
 
-  // Widget _buildCommentFooter(BuildContext context) => Row(
-  //       crossAxisAlignment: CrossAxisAlignment.center,
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         /// Like Button
-  //         GestureDetector(
-  //           onTap: () => {},
-  //           child: Padding(
-  //             padding: Dimens.edgeInsets8,
-  //             child: Row(
-  //               mainAxisAlignment: MainAxisAlignment.start,
-  //               crossAxisAlignment: CrossAxisAlignment.center,
-  //               mainAxisSize: MainAxisSize.min,
-  //               children: [
-  //                 Icon(Icons.favorite_outline,
-  //                     size: Dimens.twenty,
-  //                     color: Theme.of(context).textTheme.subtitle1!.color),
-  //                 Dimens.boxWidth2,
-  //                 Text(
-  //                   '${0}'.toCountingFormat(),
-  //                   style: AppStyles.style13Normal.copyWith(
-  //                     color: Theme.of(context).textTheme.subtitle1!.color,
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     );
+  Widget _buildCommentFooter(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        /// Like Button
+        GestureDetector(
+          onTap: () => {},
+          child: Padding(
+            padding: Dimens.edgeInsets8,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  comment.isLiked == true
+                      ? Icons.favorite
+                      : Icons.favorite_outline,
+                  size: Dimens.twenty,
+                  color: comment.isLiked == true
+                      ? ColorValues.primaryColor
+                      : Theme.of(context).textTheme.subtitle1!.color,
+                ),
+                Dimens.boxWidth2,
+                Text(
+                  '${comment.likesCount}'.toCountingFormat(),
+                  style: AppStyles.style13Normal.copyWith(
+                    color: comment.isLiked == true
+                        ? ColorValues.primaryColor
+                        : Theme.of(context).textTheme.subtitle1!.color,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        /// Comment Button
+        GestureDetector(
+          onTap: () => {},
+          child: Padding(
+            padding: Dimens.edgeInsets8,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.comment_outlined,
+                  size: Dimens.twenty,
+                  color: Theme.of(context).textTheme.subtitle1!.color,
+                ),
+                Dimens.boxWidth2,
+                Text(
+                  '${comment.repliesCount!}'.toCountingFormat(),
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.subtitle1!.color,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   void _showHeaderOptionBottomSheet(BuildContext context) =>
       AppUtility.showBottomSheet(
         children: [
-          if (comment.user.id ==
+          if (comment.user!.id ==
               ProfileController.find.profileDetails!.user!.id)
             ListTile(
               onTap: () {
@@ -255,7 +287,7 @@ class CommentWidget extends StatelessWidget {
       context,
       () async {
         AppUtility.closeDialog();
-        await CommentController.find.deleteComment(comment.id);
+        await CommentController.find.deleteComment(comment.id!);
       },
     );
   }

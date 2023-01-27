@@ -174,7 +174,7 @@ abstract class StringValues {
   static const loginActivity = 'Login Activity';
   static const loginActivityDesc =
       'You can see your login activity from different devices.';
-  static const noPosts = 'No posts to show.';
+  static const noPosts = 'No posts to show';
   static const somethingWentWrong = 'Something went wrong, please try again';
   static const writeSomethingAboutYou = 'Write something about you...';
   static const dobFormat = 'dd mmm, yyyy';
@@ -202,6 +202,21 @@ abstract class StringValues {
   static const usernameNotFound = 'Username not found';
   static const privateAccountWarning = 'This Account is private';
   static const deactivatedAccountWarning = 'This Account is deactivated';
+  static const hasDeactivatedTheirAccount = 'has deactivated their account';
+  static const privateAccountWarningDesc =
+      'Follow to see their photos and videos.';
+  static const deactivatedAccountWarningDesc =
+      'The user has temporarily deactivated their account.';
+  static const youAreBlockedAccountWarning = 'You are blocked';
+  static const youBlockedAccountWarning = 'You blocked this account';
+  static const blocked = 'Blocked';
+  static const unblock = 'Unblock';
+  static const block = 'Block';
+  static const learnMore = 'Learn More';
+  static const blockedYou = 'blocked you';
+  static const youBlocked = 'You blocked';
+  static const blockedAccountWarningDesc =
+      'You can\'t follow, message or see their posts';
   static const noImageVideoSelectedWarning = 'No image or video selected';
   static const enterMessage = 'Enter your message';
   static const writeAboutIssue = 'Write about your issue here';

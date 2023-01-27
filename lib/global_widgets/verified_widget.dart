@@ -3,9 +3,14 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 
 class VerifiedWidget extends StatelessWidget {
-  const VerifiedWidget({super.key, required this.verifiedCategory});
+  const VerifiedWidget({
+    super.key,
+    required this.verifiedCategory,
+    this.size,
+  });
 
   final String verifiedCategory;
+  final double? size;
 
   Color getIconColor(String category) {
     return ColorValues.primaryColor;
@@ -13,12 +18,10 @@ class VerifiedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Icon(
-        Icons.verified,
-        color: getIconColor(verifiedCategory),
-        size: Dimens.twenty,
-      ),
+    return Icon(
+      Icons.verified,
+      color: getIconColor(verifiedCategory),
+      size: size ?? Dimens.twenty,
     );
   }
 }
