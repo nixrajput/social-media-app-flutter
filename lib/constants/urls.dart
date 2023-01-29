@@ -5,14 +5,18 @@ abstract class AppUrls {
 
   ///  Endpoints
   static const serverHealthEndpoint = '/health';
+
   static const loginEndpoint = '/login';
   static const registerEndpoint = '/register';
+  static const sendregisterOtpEndpoint = '/send-register-otp';
   static const forgotPasswordEndpoint = '/forgot-password';
   static const resetPasswordEndpoint = '/reset-password';
-  static const verifyAccountEndpoint = '/verify-account';
+  static const validateUserEndpoint = '/validate-user';
+
+  static const validateTokenEndpoint = '/validate-token';
+  static const logoutEndpoint = '/logout';
 
   static const sendOtpToEmailEndpoint = '/send-otp-to-email';
-  static const sendVerifyEmailOtpEndpoint = '/send-verify-email-otp';
   static const verifyOtpFromEmailEndpoint = '/verify-email-otp';
   static const sendOtpToPhoneEndpoint = '/send-otp-to-phone';
   static const verifyOtpFromPhoneEndpoint = '/verify-phone-otp';
@@ -49,7 +53,6 @@ abstract class AppUrls {
   static const checkUsernameEndpoint = '/check-username';
   static const changeUsernameEndpoint = '/change-username';
   static const deleteProfileEndpoint = '/delete-profile';
-  static const validateTokenEndpoint = '/validate-token';
   static const addChangePhoneEndpoint = '/add-change-phone';
   static const changeEmailEndpoint = '/change-email';
   static const verifyPasswordEndpoint = '/verify-password';
@@ -87,6 +90,7 @@ abstract class AppUrls {
 
   static const blockUserEndpoint = '/block-user';
   static const unblockUserEndpoint = '/unblock-user';
+  static const getBlockedUsersEndpoint = '/get-blocked-users';
 
   static const getNotificationsEndpoint = '/get-notifications';
   static const markNotificationsReadEndpoint = '/mark-read-notification';

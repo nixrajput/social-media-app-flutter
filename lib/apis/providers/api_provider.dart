@@ -209,6 +209,18 @@ class ApiProvider {
     return response;
   }
 
+  /// Send Register OTP
+  Future<ResponseData> sendRegisterOtp(Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.sendregisterOtpEndpoint,
+      method: 'POST',
+      feature: 'Send Register OTP',
+      body: body,
+    );
+
+    return response;
+  }
+
   /// Register
   Future<ResponseData> register(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
@@ -245,24 +257,24 @@ class ApiProvider {
     return response;
   }
 
-  /// Send OTP To Email
-  Future<ResponseData> sendOtpToEmail(Map<String, dynamic> body) async {
+  /// Validate User
+  Future<ResponseData> validateUser(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
-      endPoint: AppUrls.sendOtpToEmailEndpoint,
+      endPoint: AppUrls.validateUserEndpoint,
       method: 'POST',
-      feature: 'Send OTP To Email',
+      feature: 'Validate User',
       body: body,
     );
 
     return response;
   }
 
-  /// Send Verify Email OTP
-  Future<ResponseData> sendVerifyEmailOtp(Map<String, dynamic> body) async {
+  /// Send OTP To Email
+  Future<ResponseData> sendOtpToEmail(Map<String, dynamic> body) async {
     final response = await _catchAsyncApiError(
-      endPoint: AppUrls.sendVerifyEmailOtpEndpoint,
+      endPoint: AppUrls.sendOtpToEmailEndpoint,
       method: 'POST',
-      feature: 'Send Verify Email OTP',
+      feature: 'Send OTP To Email',
       body: body,
     );
 
@@ -299,30 +311,6 @@ class ApiProvider {
       endPoint: AppUrls.verifyOtpFromPhoneEndpoint,
       method: 'POST',
       feature: 'Verify OTP From Phone',
-      body: body,
-    );
-
-    return response;
-  }
-
-  /// Send Verify Account OTP
-  Future<ResponseData> sendVerifyAccountOtp(Map<String, dynamic> body) async {
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.verifyAccountEndpoint,
-      method: 'POST',
-      feature: 'Send Verify Account OTP',
-      body: body,
-    );
-
-    return response;
-  }
-
-  /// Verify Account
-  Future<ResponseData> verifyAccount(Map<String, dynamic> body) async {
-    final response = await _catchAsyncApiError(
-      endPoint: AppUrls.verifyAccountEndpoint,
-      method: 'PUT',
-      feature: 'Verify Account',
       body: body,
     );
 
@@ -1580,6 +1568,58 @@ class ApiProvider {
   }
 
   /// --------------------------------------------------------------------------
+
+  /// Block --------------------------------------------------------------------
+
+  /// Block User
+  Future<ResponseData> blockUser(String token, String userId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.blockUserEndpoint,
+      method: 'POST',
+      feature: 'Block User',
+      headers: {"authorization": "Bearer $token"},
+      body: {'userId': userId},
+    );
+
+    return response;
+  }
+
+  /// Unblock User
+  Future<ResponseData> unblockUser(String token, String userId) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.unblockUserEndpoint,
+      method: 'POST',
+      feature: 'Unblock User',
+      headers: {"authorization": "Bearer $token"},
+      body: {'userId': userId},
+    );
+
+    return response;
+  }
+
+  /// Get Blocked Users
+  Future<ResponseData> getBlockedUsers(String token,
+      {int? page, int? limit}) async {
+    var queryParameters = <String, dynamic>{};
+
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
+
+    if (limit != null) {
+      queryParameters['limit'] = limit.toString();
+    }
+
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.getBlockedUsersEndpoint,
+      method: 'GET',
+      feature: 'Get Blocked Users',
+      headers: {"authorization": "Bearer $token"},
+      queryParams: queryParameters,
+    );
+
+    return response;
+  }
 
   /// App Update ---------------------------------------------------------------
 

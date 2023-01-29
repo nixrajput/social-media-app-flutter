@@ -112,7 +112,7 @@ class RegisterController extends GetxController {
     update();
 
     try {
-      final response = await _apiProvider.sendVerifyEmailOtp(body);
+      final response = await _apiProvider.sendRegisterOtp(body);
 
       if (response.isSuccessful) {
         final decodedData = response.data;
