@@ -13,7 +13,18 @@ class VerifiedWidget extends StatelessWidget {
   final double? size;
 
   Color getIconColor(String category) {
-    return ColorValues.primaryColor;
+    switch (category) {
+      case 'verified':
+        return ColorValues.primaryColor;
+      case 'unverified':
+        return ColorValues.primaryColor;
+      case 'pending':
+        return ColorValues.primaryColor;
+      case 'rejected':
+        return ColorValues.primaryColor;
+      default:
+        return ColorValues.primaryColor;
+    }
   }
 
   @override

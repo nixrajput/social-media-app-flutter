@@ -98,6 +98,7 @@ class AppThemeController extends GetxController {
         backgroundColor: ColorValues.lightDialogColor,
       ),
       dividerColor: ColorValues.lightDividerColor,
+      disabledColor: ColorValues.lightGrayColor,
       snackBarTheme: SnackBarThemeData(
         backgroundColor: ColorValues.darkBgColor,
         contentTextStyle: AppStyles.style14Normal.copyWith(
@@ -213,6 +214,7 @@ class AppThemeController extends GetxController {
         backgroundColor: ColorValues.darkDialogColor,
       ),
       dividerColor: ColorValues.darkDividerColor,
+      disabledColor: ColorValues.darkGrayColor,
       snackBarTheme: const SnackBarThemeData(
         backgroundColor: ColorValues.lightBgColor,
         contentTextStyle: TextStyle(

@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 
 class NxColoredBox extends StatelessWidget {
   const NxColoredBox({
-    super.key,
+    Key? key,
     this.color,
     this.width,
     this.height,
-  });
+    this.child,
+  }) : super(key: key);
 
+  final Widget? child;
   final Color? color;
-  final double? width;
   final double? height;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class NxColoredBox extends StatelessWidget {
       width: width,
       height: height,
       color: color ?? bgColor,
+      child: child,
     );
   }
 }

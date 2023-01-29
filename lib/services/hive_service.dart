@@ -2,14 +2,6 @@ import 'package:hive/hive.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 abstract class HiveService {
-  static Future<Box<E>> _openBox<E>(String boxName) async {
-    if (Hive.isBoxOpen(boxName)) {
-      return Hive.box<E>(boxName);
-    } else {
-      return Hive.openBox<E>(boxName);
-    }
-  }
-
   static Future<bool> hasLength<E>(String boxName) async {
     final openBox = await _openBox<E>(boxName);
     var length = openBox.length;
@@ -99,5 +91,13 @@ abstract class HiveService {
     AppUtility.log('Deleting All Boxes');
     await Hive.deleteFromDisk();
     AppUtility.log('All Boxes Deleted');
+  }
+
+  static Future<Box<E>> _openBox<E>(String boxName) async {
+    if (Hive.isBoxOpen(boxName)) {
+      return Hive.box<E>(boxName);
+    } else {
+      return Hive.openBox<E>(boxName);
+    }
   }
 }

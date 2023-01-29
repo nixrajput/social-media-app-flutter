@@ -23,29 +23,6 @@ class CommentWidget extends StatelessWidget {
 
   final Comment comment;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: Dimens.edgeInsets8_0,
-      decoration: BoxDecoration(
-        color: Theme.of(context).bottomAppBarColor,
-        borderRadius: BorderRadius.circular(Dimens.four),
-        boxShadow: AppStyles.defaultShadow,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildCommentHead(context),
-          _buildCommentBody(context),
-          _buildCommentFooter(context),
-          Dimens.boxHeight8,
-        ],
-      ),
-    );
-  }
-
   Widget _buildCommentHead(BuildContext context) => Padding(
         padding: Dimens.edgeInsets8,
         child: Row(
@@ -289,6 +266,29 @@ class CommentWidget extends StatelessWidget {
         AppUtility.closeDialog();
         await CommentController.find.deleteComment(comment.id!);
       },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: Dimens.edgeInsets8_0,
+      decoration: BoxDecoration(
+        color: Theme.of(context).bottomAppBarColor,
+        borderRadius: BorderRadius.circular(Dimens.four),
+        boxShadow: AppStyles.defaultShadow,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildCommentHead(context),
+          _buildCommentBody(context),
+          _buildCommentFooter(context),
+          Dimens.boxHeight8,
+        ],
+      ),
     );
   }
 }

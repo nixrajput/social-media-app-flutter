@@ -11,7 +11,7 @@ class PollOptionWidget extends StatelessWidget {
     super.key,
     required this.option,
     required this.isExpired,
-    required this.greatestPercentageId,
+    this.greatestPercentageId,
     required this.onTap,
     required this.post,
   });
@@ -19,13 +19,16 @@ class PollOptionWidget extends StatelessWidget {
   final Post post;
   final PollOption option;
   final bool isExpired;
-  final String greatestPercentageId;
+  final String? greatestPercentageId;
   final VoidCallback onTap;
 
   Color _buildPollColor(Post post, bool isExpired, PollOption option,
-      String greatestPercentageId, BuildContext context) {
-    if (isExpired && option.id == greatestPercentageId) {
-      return ColorValues.linkColor.withOpacity(0.8);
+      String? greatestPercentageId, BuildContext context) {
+    if (isExpired) {
+      if (greatestPercentageId != null && option.id == greatestPercentageId) {
+        return ColorValues.primaryColor;
+      }
+      return Theme.of(context).disabledColor;
     } else if (post.isVoted == true) {
       return Theme.of(context).disabledColor;
     }
@@ -34,7 +37,7 @@ class PollOptionWidget extends StatelessWidget {
   }
 
   Color _buildPollBorderColor(Post post, bool isExpired, PollOption option,
-      String greatestPercentageId, BuildContext context) {
+      String? greatestPercentageId, BuildContext context) {
     if (isExpired || post.isVoted == true) {
       return Theme.of(context).disabledColor;
     }
@@ -59,7 +62,7 @@ class PollOptionWidget extends StatelessWidget {
             borderColor: _buildPollBorderColor(
                 post, isExpired, option, greatestPercentageId, context),
             borderRadius: Dimens.four,
-            borderWidth: Dimens.one,
+            borderWidth: Dimens.pointFour,
           ),
           child: Container(
             width: double.infinity,

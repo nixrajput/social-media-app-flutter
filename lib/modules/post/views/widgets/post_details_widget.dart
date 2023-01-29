@@ -32,34 +32,8 @@ class PostDetailsWidget extends StatelessWidget {
     required this.controller,
   }) : super(key: key);
 
-  final Post post;
   final dynamic controller;
-
-  @override
-  Widget build(BuildContext context) {
-    assert(controller is PostDetailsController ||
-        controller is PostController ||
-        controller is TrendingPostController);
-    return Container(
-      margin: Dimens.edgeInsets6_0,
-      decoration: BoxDecoration(
-        color: Theme.of(context).bottomAppBarColor,
-        borderRadius: BorderRadius.circular(Dimens.four),
-        boxShadow: AppStyles.defaultShadow,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildPostHead(context),
-          _buildPostBody(context),
-          Dimens.boxHeight4,
-          _buildPostFooter(context),
-        ],
-      ),
-    );
-  }
+  final Post post;
 
   Widget _buildPostHead(BuildContext context) {
     var profile = ProfileController.find.profileDetails!.user!;
@@ -169,20 +143,16 @@ class PostDetailsWidget extends StatelessWidget {
     var isExpired =
         post.pollEndsAt!.toLocal().isBefore(DateTime.now().toLocal());
 
-    var percentages = [];
+    String? greatestPercentageId = post.pollOptions!.first.id!;
+    var highestVotes = post.pollOptions!.first.votes!;
 
-    for (var option in post.pollOptions!) {
-      var percentage =
-          post.totalVotes! > 0 ? (option.votes! / post.totalVotes!) * 100 : 0.0;
+    for (var i = 1; i < post.pollOptions!.length; i++) {
+      if (post.pollOptions![i].votes! > highestVotes) {
+        greatestPercentageId = post.pollOptions![i].id!;
+      }
 
-      percentages.add({'id': option.id, 'percentage': percentage});
-    }
-
-    var greatestPercentageId = percentages[0]['id'];
-
-    for (var i = 0; i < percentages.length - 1; i++) {
-      if (percentages[i]['percentage'] < percentages[i + 1]['percentage']) {
-        greatestPercentageId = percentages[i + 1]['id'];
+      if (post.pollOptions![i].votes! == highestVotes) {
+        greatestPercentageId = null;
       }
     }
 
@@ -588,4 +558,30 @@ class PostDetailsWidget extends StatelessWidget {
           ),
         ],
       );
+
+  @override
+  Widget build(BuildContext context) {
+    assert(controller is PostDetailsController ||
+        controller is PostController ||
+        controller is TrendingPostController);
+    return Container(
+      margin: Dimens.edgeInsets6_0,
+      decoration: BoxDecoration(
+        color: Theme.of(context).bottomAppBarColor,
+        borderRadius: BorderRadius.circular(Dimens.four),
+        boxShadow: AppStyles.defaultShadow,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildPostHead(context),
+          _buildPostBody(context),
+          Dimens.boxHeight4,
+          _buildPostFooter(context),
+        ],
+      ),
+    );
+  }
 }

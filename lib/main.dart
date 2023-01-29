@@ -222,27 +222,6 @@ Future<void> validateSessionAndGetData() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return GetBuilder<AppThemeController>(
-      builder: (logic) => ScreenUtilInit(
-        designSize: const Size(392, 744),
-        builder: (ctx, child) => GetMaterialApp(
-          title: StringValues.appName,
-          debugShowCheckedModeBanner: false,
-          themeMode: _handleAppTheme(logic.themeMode),
-          theme: logic.getLightThemeData(),
-          darkTheme: logic.getDarkThemeData(),
-          getPages: AppPages.pages,
-          initialRoute: _handleAppInitialRoute(),
-          translations: AppTranslation(),
-          locale: Get.deviceLocale,
-          fallbackLocale: const Locale('en', 'IN'),
-        ),
-      ),
-    );
-  }
-
   String _handleAppInitialRoute() {
     switch (RouteService.routeStatus) {
       case RouteStatus.init:
@@ -271,5 +250,26 @@ class MyApp extends StatelessWidget {
       return ThemeMode.light;
     }
     return ThemeMode.system;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<AppThemeController>(
+      builder: (logic) => ScreenUtilInit(
+        designSize: const Size(392, 744),
+        builder: (ctx, child) => GetMaterialApp(
+          title: StringValues.appName,
+          debugShowCheckedModeBanner: false,
+          themeMode: _handleAppTheme(logic.themeMode),
+          theme: logic.getLightThemeData(),
+          darkTheme: logic.getDarkThemeData(),
+          getPages: AppPages.pages,
+          initialRoute: _handleAppInitialRoute(),
+          translations: AppTranslation(),
+          locale: Get.deviceLocale,
+          fallbackLocale: const Locale('en', 'IN'),
+        ),
+      ),
+    );
   }
 }

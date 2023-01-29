@@ -203,7 +203,8 @@ abstract class AppUtility {
                   Radius.circular(Dimens.four),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Dimens.boxHeight8,
@@ -211,14 +212,16 @@ abstract class AppUtility {
                       padding: Dimens.edgeInsetsHorizDefault,
                       child: Text(
                         StringValues.delete,
+                        textAlign: TextAlign.center,
                         style: AppStyles.style20Bold,
                       ),
                     ),
-                    Dimens.boxHeight8,
+                    Dimens.boxHeight10,
                     Padding(
                       padding: Dimens.edgeInsetsHorizDefault,
                       child: Text(
                         StringValues.deleteConfirmationText,
+                        textAlign: TextAlign.center,
                         style: AppStyles.style14Normal,
                       ),
                     ),
@@ -226,7 +229,7 @@ abstract class AppUtility {
                     Padding(
                       padding: Dimens.edgeInsetsHorizDefault,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           NxTextButton(
                             label: StringValues.no,

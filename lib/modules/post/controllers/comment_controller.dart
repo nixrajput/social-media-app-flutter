@@ -10,18 +10,27 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class CommentController extends GetxController {
-  static CommentController get find => Get.find();
-
   CommentController({this.postId});
 
-  final _auth = AuthService.find;
-  final _apiProvider = ApiProvider(http.Client());
+  String? postId = '';
 
+  final _apiProvider = ApiProvider(http.Client());
+  final _auth = AuthService.find;
+  final List<Comment> _commentList = [];
+  final _commentsData = const CommentsResponse().obs;
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
-  final _commentsData = const CommentsResponse().obs;
-  final List<Comment> _commentList = [];
-  String? postId = '';
+
+  @override
+  void onInit() {
+    super.onInit();
+    postId = Get.arguments[0];
+    if (postId != null && postId!.isNotEmpty) {
+      _fetchComments();
+    }
+  }
+
+  static CommentController get find => Get.find();
 
   bool get isLoading => _isLoading.value;
 
@@ -34,6 +43,15 @@ class CommentController extends GetxController {
   set setCommentData(CommentsResponse response) {
     _commentsData.value = response;
   }
+
+  Future<void> fetchComments({String? postId}) async =>
+      await _fetchComments(id: postId);
+
+  Future<void> deleteComment(String commentId) async =>
+      await _deleteComment(commentId);
+
+  Future<void> loadMore({String? postId}) async =>
+      await _loadMore(page: _commentsData.value.currentPage! + 1, id: postId);
 
   Future<void> _fetchComments({String? id}) async {
     var tempId = id ?? postId;
@@ -143,24 +161,6 @@ class CommentController extends GetxController {
       update();
       AppUtility.log('Error: ${exc.toString()}', tag: 'error');
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
-    }
-  }
-
-  Future<void> fetchComments({String? postId}) async =>
-      await _fetchComments(id: postId);
-
-  Future<void> deleteComment(String commentId) async =>
-      await _deleteComment(commentId);
-
-  Future<void> loadMore({String? postId}) async =>
-      await _loadMore(page: _commentsData.value.currentPage! + 1, id: postId);
-
-  @override
-  void onInit() {
-    super.onInit();
-    postId = Get.arguments[0];
-    if (postId != null && postId!.isNotEmpty) {
-      _fetchComments();
     }
   }
 }
