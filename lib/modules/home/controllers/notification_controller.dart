@@ -15,17 +15,17 @@ import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class NotificationController extends GetxController {
-  static NotificationController get find => Get.find();
-
-  final _auth = AuthService.find;
-  final profile = ProfileController.find;
-  final _apiProvider = ApiProvider(http.Client());
   final followRequestController = FollowRequestController.find;
+  final profile = ProfileController.find;
 
+  final _apiProvider = ApiProvider(http.Client());
+  final _auth = AuthService.find;
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
   final _notificationData = const NotificationResponse().obs;
   final List<NotificationModel> _notificationList = [];
+
+  static NotificationController get find => Get.find();
 
   /// Getters
   bool get isLoading => _isLoading.value;
@@ -40,6 +40,34 @@ class NotificationController extends GetxController {
   set setNotificationData(NotificationResponse value) =>
       _notificationData.value = value;
 
+  void goToPost(String postId) async {
+    var postFound =
+        PostController.find.postList.any((element) => element.id == postId);
+
+    if (postFound) {
+      var post = PostController.find.postList
+          .firstWhere((element) => element.id == postId);
+      RouteManagement.goToPostDetailsView(postId, post);
+    } else {
+      RouteManagement.goToPostDetailsView(postId, null);
+    }
+  }
+
+  Future<void> loadLocalNotification() async => await _loadLocalNotification();
+
+  Future<void> getNotifications() async => await _fetchNotifications();
+
+  Future<void> markNotificationRead(String id) async =>
+      await _markNotificationRead(id);
+
+  Future<void> deleteNotification(String id) async =>
+      await _deleteNotification(id);
+
+  Future<void> loadMore() async =>
+      await _loadMore(page: _notificationData.value.currentPage! + 1);
+
+  Future<void> getData() async => await _getData();
+
   Future<void> _loadLocalNotification() async {
     var isExists =
         await HiveService.hasLength<NotificationModel>('notifications');
@@ -53,10 +81,8 @@ class NotificationController extends GetxController {
   }
 
   Future<void> _getData() async {
-    await Future.wait([
-      _fetchNotifications(),
-      followRequestController.fetchFollowRequests(),
-    ]);
+    await _fetchNotifications();
+    await followRequestController.fetchFollowRequests();
   }
 
   Future<void> _fetchNotifications() async {
@@ -161,19 +187,6 @@ class NotificationController extends GetxController {
     }
   }
 
-  void goToPost(String postId) async {
-    var postFound =
-        PostController.find.postList.any((element) => element.id == postId);
-
-    if (postFound) {
-      var post = PostController.find.postList
-          .firstWhere((element) => element.id == postId);
-      RouteManagement.goToPostDetailsView(postId, post);
-    } else {
-      RouteManagement.goToPostDetailsView(postId, null);
-    }
-  }
-
   Future<void> _deleteNotification(String id) async {
     var isPresent = _notificationList.any((element) => element.id == id);
 
@@ -204,19 +217,4 @@ class NotificationController extends GetxController {
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
-
-  Future<void> loadLocalNotification() async => await _loadLocalNotification();
-
-  Future<void> getNotifications() async => await _fetchNotifications();
-
-  Future<void> markNotificationRead(String id) async =>
-      await _markNotificationRead(id);
-
-  Future<void> deleteNotification(String id) async =>
-      await _deleteNotification(id);
-
-  Future<void> loadMore() async =>
-      await _loadMore(page: _notificationData.value.currentPage! + 1);
-
-  Future<void> getData() async => await _getData();
 }

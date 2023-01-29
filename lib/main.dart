@@ -61,9 +61,12 @@ void runApplication() {
 
 Future<void> _initPostAppServices() async {
   final networkService = NetworkController.instance;
+
   if (networkService.isConnected == true) {
     await validateSessionAndGetData();
-    await AppUpdateController.find.init();
+    Future.delayed(const Duration(seconds: 3), () {
+      AppUpdateController.find.init();
+    });
   }
 }
 

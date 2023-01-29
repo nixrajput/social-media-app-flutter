@@ -18,15 +18,22 @@ import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class AuthService extends GetxService {
-  static AuthService get find => Get.find();
-
   final _apiProvider = ApiProvider(http.Client());
-
-  String _token = '';
-  int _expiresAt = 0;
   int _deviceId = 0;
+  int _expiresAt = 0;
   bool _isLoggedIn = false;
   AuthResponse _loginData = AuthResponse();
+  String _token = '';
+
+  @override
+  void onInit() {
+    AppUtility.log("AuthService Initializing");
+    super.onInit();
+    getDeviceId();
+    AppUtility.log("AuthService Initialized");
+  }
+
+  static AuthService get find => Get.find();
 
   /// Getters
   String get token => _token;
@@ -48,14 +55,6 @@ class AuthService extends GetxService {
 
   set setDeviceId(int value) => _deviceId = value;
 
-  @override
-  void onInit() {
-    AppUtility.log("AuthService Initializing");
-    super.onInit();
-    getDeviceId();
-    AppUtility.log("AuthService Initialized");
-  }
-
   Future<String> getToken() async {
     var authToken = '';
     final decodedData = await readLoginDataFromLocalStorage();
@@ -68,91 +67,12 @@ class AuthService extends GetxService {
     return authToken;
   }
 
-  Future<String?> _checkServerHealth() async {
-    try {
-      final response = await _apiProvider.checkServerHealth();
-
-      if (response.isSuccessful) {
-        return response.data['server'];
-      } else {
-        return response.data['server'];
-      }
-    } catch (exc) {
-      AppUtility.log('Error: $exc', tag: 'error');
-    }
-
-    return null;
-  }
-
-  Future<bool?> _validateToken(String token) async {
-    try {
-      final response = await _apiProvider.validateToken(token);
-
-      if (response.isSuccessful) {
-        var data = response.data;
-        AppUtility.log(data[StringValues.message]);
-        return true;
-      } else {
-        var data = response.data;
-        AppUtility.log(data[StringValues.message], tag: 'error');
-        return false;
-      }
-    } catch (exc) {
-      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
-      return null;
-    }
-  }
-
-  Future<void> _validateDeviceSession() async {
-    try {
-      final response = await _apiProvider.verifyLoginInfo(
-        token,
-        deviceId.toString(),
-      );
-
-      if (response.isSuccessful) {
-        var data = response.data;
-        AppUtility.log(data[StringValues.message]);
-      } else {
-        var data = response.data;
-        AppUtility.log(data[StringValues.message]);
-        if (data['isValid'] == false) {
-          await _logout();
-          RouteManagement.goToWelcomeView();
-        }
-      }
-    } catch (exc) {
-      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
-    }
-  }
-
   Future<void> deleteAllLocalDataAndCache() async {
     await StorageService.remove('loginData');
     await StorageService.remove('profileData');
     await StorageService.remove("fcmToken");
     await HiveService.deleteAllBoxes();
     AppUtility.log('Local Data Removed');
-  }
-
-  Future<void> _logout() async {
-    final _socket = SocketApiProvider();
-    final _chatController = ChatController.find;
-    AppUtility.log("Logout Request");
-    setToken = '';
-    setExpiresAt = 0;
-
-    if (_socket.isConnected) {
-      _socket.dispose();
-      await _chatController.close();
-    }
-    await FirebaseMessaging.instance.deleteToken();
-    await deleteAllLocalDataAndCache();
-    _isLoggedIn = false;
-    AppUtility.log("Logout Success");
-    AppUtility.showSnackBar(
-      'Logout Successfully',
-      '',
-    );
   }
 
   Future<Map<String, dynamic>?> readLoginDataFromLocalStorage() async {
@@ -268,40 +188,6 @@ class AuthService extends GetxService {
     }
   }
 
-  Future<dynamic> _getDeviceInfo() async {
-    var deviceInfoPlugin = DeviceInfoPlugin();
-    Map<String, dynamic> deviceInfo;
-    if (GetPlatform.isIOS) {
-      var iosInfo = await deviceInfoPlugin.iosInfo;
-
-      deviceInfo = <String, dynamic>{
-        "deviceName": iosInfo.utsname.machine,
-        "deviceModel": iosInfo.utsname.machine,
-        "deviceBrand": "Apple",
-        "deviceManufacturer": "Apple",
-        "deviceOs": iosInfo.utsname.sysname,
-        "deviceOsVersion": iosInfo.utsname.version,
-        "deviceType": "ios",
-        "deviceUniqueId": iosInfo.identifierForVendor,
-      };
-    } else {
-      var androidInfo = await deviceInfoPlugin.androidInfo;
-
-      deviceInfo = <String, dynamic>{
-        "deviceName": androidInfo.device,
-        "deviceModel": androidInfo.model,
-        "deviceBrand": androidInfo.brand,
-        "deviceManufacturer": androidInfo.manufacturer,
-        "deviceOs": androidInfo.version.release,
-        "deviceOsVersion": androidInfo.version.sdkInt.toString(),
-        "deviceType": "android",
-        "deviceUniqueId": androidInfo.id,
-      };
-    }
-
-    return deviceInfo;
-  }
-
   Future<void> saveLoginInfo() async {
     var deviceInfo = await _getDeviceInfo();
     await getDeviceId();
@@ -346,4 +232,117 @@ class AuthService extends GetxService {
   Future<String?> checkServerHealth() async => await _checkServerHealth();
 
   Future<void> validateDeviceSession() async => await _validateDeviceSession();
+
+  Future<String?> _checkServerHealth() async {
+    try {
+      final response = await _apiProvider.checkServerHealth();
+
+      if (response.isSuccessful) {
+        return response.data['server'];
+      } else {
+        return response.data['server'];
+      }
+    } catch (exc) {
+      AppUtility.log('Error: $exc', tag: 'error');
+    }
+
+    return null;
+  }
+
+  Future<bool?> _validateToken(String token) async {
+    try {
+      final response = await _apiProvider.validateToken(token);
+
+      if (response.isSuccessful) {
+        var data = response.data;
+        AppUtility.log(data[StringValues.message]);
+        return true;
+      } else {
+        var data = response.data;
+        AppUtility.log(data[StringValues.message], tag: 'error');
+        return false;
+      }
+    } catch (exc) {
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+      return null;
+    }
+  }
+
+  Future<void> _validateDeviceSession() async {
+    try {
+      final response = await _apiProvider.verifyLoginInfo(
+        token,
+        deviceId.toString(),
+      );
+
+      if (response.isSuccessful) {
+        var data = response.data;
+        AppUtility.log(data[StringValues.message]);
+      } else {
+        var data = response.data;
+        AppUtility.log(data[StringValues.message]);
+        if (data['isValid'] == false) {
+          await _logout();
+          RouteManagement.goToWelcomeView();
+        }
+      }
+    } catch (exc) {
+      AppUtility.log('Error: ${exc.toString()}', tag: 'error');
+    }
+  }
+
+  Future<void> _logout() async {
+    final _socket = SocketApiProvider();
+    final _chatController = ChatController.find;
+    AppUtility.log("Logout Request");
+    setToken = '';
+    setExpiresAt = 0;
+
+    if (_socket.isConnected) {
+      _socket.dispose();
+      await _chatController.close();
+    }
+    await FirebaseMessaging.instance.deleteToken();
+    await deleteAllLocalDataAndCache();
+    _isLoggedIn = false;
+    AppUtility.log("Logout Success");
+    AppUtility.showSnackBar(
+      'Logout Successfully',
+      '',
+    );
+  }
+
+  Future<dynamic> _getDeviceInfo() async {
+    var deviceInfoPlugin = DeviceInfoPlugin();
+    Map<String, dynamic> deviceInfo;
+    if (GetPlatform.isIOS) {
+      var iosInfo = await deviceInfoPlugin.iosInfo;
+
+      deviceInfo = <String, dynamic>{
+        "deviceName": iosInfo.utsname.machine,
+        "deviceModel": iosInfo.utsname.machine,
+        "deviceBrand": "Apple",
+        "deviceManufacturer": "Apple",
+        "deviceOs": iosInfo.utsname.sysname,
+        "deviceOsVersion": iosInfo.utsname.version,
+        "deviceType": "ios",
+        "deviceUniqueId": iosInfo.identifierForVendor,
+      };
+    } else {
+      var androidInfo = await deviceInfoPlugin.androidInfo;
+
+      deviceInfo = <String, dynamic>{
+        "deviceName": androidInfo.device,
+        "deviceModel": androidInfo.model,
+        "deviceBrand": androidInfo.brand,
+        "deviceManufacturer": androidInfo.manufacturer,
+        "deviceOs": androidInfo.version.release,
+        "deviceOsVersion": androidInfo.version.sdkInt.toString(),
+        "deviceType": "android",
+        "deviceUniqueId": androidInfo.id,
+      };
+    }
+
+    return deviceInfo;
+  }
 }

@@ -6,19 +6,18 @@ import 'package:social_media_app/utils/utility.dart';
 class NetworkController {
   NetworkController._internal();
 
-  static final NetworkController _instance = NetworkController._internal();
-
-  static NetworkController get instance => _instance;
-
   var isConnected = false;
   var isInitialized = false;
 
-  final _connectivity = Connectivity();
-
-  StreamSubscription<dynamic>? _streamSubscription;
+  static final NetworkController _instance = NetworkController._internal();
 
   final StreamController<bool> _connectionStatusController =
       StreamController<bool>.broadcast();
+
+  final _connectivity = Connectivity();
+  StreamSubscription<dynamic>? _streamSubscription;
+
+  static NetworkController get instance => _instance;
 
   Stream<bool> get connectionStatus =>
       _connectionStatusController.stream.asBroadcastStream();

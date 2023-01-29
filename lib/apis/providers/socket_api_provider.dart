@@ -7,23 +7,24 @@ import 'package:social_media_app/constants/urls.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class SocketApiProvider {
-  /// A static private instance to access _socketApi from inside class only
-  static final SocketApiProvider _socketApi = SocketApiProvider._internal();
-
-  /// An internal private constructor to access it for only once for static
-  /// instance of class.
-  SocketApiProvider._internal();
-
   /// Factory constructor to return same static instance everytime you
   /// create any object.
   factory SocketApiProvider() {
     return _socketApi;
   }
 
+  /// An internal private constructor to access it for only once for static
+  /// instance of class.
+  SocketApiProvider._internal();
+
   /// All the private and public variables
   static WebSocket? _socket;
-  StreamController<dynamic>? _socketEventStream;
+
+  /// A static private instance to access _socketApi from inside class only
+  static final SocketApiProvider _socketApi = SocketApiProvider._internal();
+
   var _isDisposed = false;
+  StreamController<dynamic>? _socketEventStream;
 
   Stream<dynamic>? get socketEventStream =>
       _socketEventStream?.stream.asBroadcastStream();
@@ -92,11 +93,6 @@ class SocketApiProvider {
     AppUtility.log("Socket initialized");
   }
 
-  void _socketEventHandler(dynamic event) {
-    AppUtility.log("Socket event received");
-    _socketApi._socketEventStream?.add(event);
-  }
-
   void dispose() {
     AppUtility.log("Socket disposing...");
     _socket?.close();
@@ -123,5 +119,10 @@ class SocketApiProvider {
 
   void sendJson(Map<String, dynamic> json) {
     _socket?.add(jsonEncode(json));
+  }
+
+  void _socketEventHandler(dynamic event) {
+    AppUtility.log("Socket event received");
+    _socketApi._socketEventStream?.add(event);
   }
 }

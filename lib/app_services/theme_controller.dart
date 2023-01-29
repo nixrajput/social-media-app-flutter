@@ -15,17 +15,17 @@ const String kDarkMode = 'dark';
 const String kDefaultFontFamily = 'Poppins';
 
 class AppThemeController extends GetxController {
-  static AppThemeController get find => Get.find();
-
   final _themeMode = kSystemMode.obs;
-
-  String get themeMode => _themeMode.value;
 
   @override
   void onInit() {
     super.onInit();
     getThemeMode();
   }
+
+  static AppThemeController get find => Get.find();
+
+  String get themeMode => _themeMode.value;
 
   void getSystemChromeData() {
     var themeBrightness = SchedulerBinding.instance.window.platformBrightness;

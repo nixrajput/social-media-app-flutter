@@ -18,16 +18,15 @@ enum UpgradeMethod {
 }
 
 class AppUpdateController extends GetxController {
-  static AppUpdateController get find => Get.find();
-
   final _apiProvider = ApiProvider(http.Client());
   final _authService = AuthService.find;
-
-  final _isLoading = false.obs;
-  final _hasUpdate = false.obs;
-  final _version = ''.obs;
   final _buildNumber = ''.obs;
+  final _hasUpdate = false.obs;
+  final _isLoading = false.obs;
   final _updateInfo = UpdateInfo().obs;
+  final _version = ''.obs;
+
+  static AppUpdateController get find => Get.find();
 
   /// Getters
   bool get isLoading => _isLoading.value;
@@ -50,6 +49,32 @@ class AppUpdateController extends GetxController {
   Future<void> init() async {
     await _checkAppUpdate(false, false);
   }
+
+  String getStatus(DownloadStatus? status) {
+    if (status == DownloadStatus.STATUS_FAILED) {
+      return 'Failed';
+    } else if (status == DownloadStatus.STATUS_PAUSED) {
+      return 'Paused';
+    } else if (status == DownloadStatus.STATUS_PENDING) {
+      return 'Pending';
+    } else if (status == DownloadStatus.STATUS_RUNNING) {
+      return 'Downloading';
+    } else if (status == DownloadStatus.STATUS_SUCCESSFUL) {
+      return 'Successful';
+    } else if (status == DownloadStatus.STATUS_CANCEL) {
+      return 'Cancelled';
+    } else {
+      return 'Unknown';
+    }
+  }
+
+  Future<void> checkAppUpdate(
+          {bool showLoading = true, bool showAlert = true}) async =>
+      await _checkAppUpdate(showLoading, showAlert);
+
+  Future<void> downloadAppUpdate() async => await _downloadAppUpdate();
+
+  void getPackageInfo() => _getPackageInfo();
 
   Future<void> _getPackageInfo() async {
     AppUtility.log("Getting package info...");
@@ -79,6 +104,8 @@ class AppUpdateController extends GetxController {
 
         var isUpdateAvailable = decodedData['isUpdateAvailable'];
 
+        // var isUpdateAvailable = true;
+
         if (showLoading) {
           AppUtility.closeDialog();
         }
@@ -97,6 +124,15 @@ class AppUpdateController extends GetxController {
             await _authService.logout();
           }
           updateInfo = UpdateInfo.fromJson(decodedData['data']);
+
+          // updateInfo = UpdateInfo(
+          //   downloadUrl: 'https://nixlab.co.in/app-release.apk',
+          //   fileName: 'app-release.apk',
+          //   currentVersion: 'v1.0.0',
+          //   latestVersion: 'v1.1.0',
+          //   publishedAt: DateTime.now(),
+          //   changelog: 'New features added',
+          // );
 
           _isLoading.value = false;
           update();
@@ -162,30 +198,4 @@ class AppUpdateController extends GetxController {
       );
     }
   }
-
-  String getStatus(DownloadStatus? status) {
-    if (status == DownloadStatus.STATUS_FAILED) {
-      return 'Failed';
-    } else if (status == DownloadStatus.STATUS_PAUSED) {
-      return 'Paused';
-    } else if (status == DownloadStatus.STATUS_PENDING) {
-      return 'Pending';
-    } else if (status == DownloadStatus.STATUS_RUNNING) {
-      return 'Downloading';
-    } else if (status == DownloadStatus.STATUS_SUCCESSFUL) {
-      return 'Successful';
-    } else if (status == DownloadStatus.STATUS_CANCEL) {
-      return 'Cancelled';
-    } else {
-      return 'Unknown';
-    }
-  }
-
-  Future<void> checkAppUpdate(
-          {bool showLoading = true, bool showAlert = true}) async =>
-      await _checkAppUpdate(showLoading, showAlert);
-
-  Future<void> downloadAppUpdate() async => await _downloadAppUpdate();
-
-  void getPackageInfo() => _getPackageInfo();
 }

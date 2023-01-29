@@ -11,16 +11,16 @@ import 'package:social_media_app/modules/home/controllers/profile_controller.dar
 import 'package:social_media_app/utils/utility.dart';
 
 class FollowRequestController extends GetxController {
-  static FollowRequestController get find => Get.find();
-
-  final _auth = AuthService.find;
   final profile = ProfileController.find;
-  final _apiProvider = ApiProvider(http.Client());
 
-  final _isLoadingFollowRequest = false.obs;
-  final _isMoreLoadingFollowRequest = false.obs;
+  final _apiProvider = ApiProvider(http.Client());
+  final _auth = AuthService.find;
   final _followRequestData = const FollowRequestResponse().obs;
   final List<FollowRequest> _followRequestList = [];
+  final _isLoadingFollowRequest = false.obs;
+  final _isMoreLoadingFollowRequest = false.obs;
+
+  static FollowRequestController get find => Get.find();
 
   /// Getters
 
@@ -35,6 +35,17 @@ class FollowRequestController extends GetxController {
   /// Setters
   set setFollowRequestData(FollowRequestResponse value) =>
       _followRequestData.value = value;
+
+  Future<void> fetchFollowRequests() async => await _fetchFollowRequests();
+
+  Future<void> loadMoreFollowRequests() async => await _loadMoreFollowRequests(
+      page: _followRequestData.value.currentPage! + 1);
+
+  Future<void> acceptFollowRequest(String notificationId) async =>
+      await _acceptFollowRequest(notificationId);
+
+  Future<void> removeFollowRequest(String notificationId) async =>
+      await _removeFollowRequest(notificationId);
 
   Future<void> _fetchFollowRequests() async {
     _isLoadingFollowRequest.value = true;
@@ -167,15 +178,4 @@ class FollowRequestController extends GetxController {
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
-
-  Future<void> fetchFollowRequests() async => await _fetchFollowRequests();
-
-  Future<void> loadMoreFollowRequests() async => await _loadMoreFollowRequests(
-      page: _followRequestData.value.currentPage! + 1);
-
-  Future<void> acceptFollowRequest(String notificationId) async =>
-      await _acceptFollowRequest(notificationId);
-
-  Future<void> removeFollowRequest(String notificationId) async =>
-      await _removeFollowRequest(notificationId);
 }

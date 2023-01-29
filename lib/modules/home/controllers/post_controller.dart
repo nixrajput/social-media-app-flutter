@@ -16,18 +16,16 @@ import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class PostController extends GetxController {
-  static PostController get find => Get.find();
-
-  final _auth = AuthService.find;
   final _apiProvider = ApiProvider(http.Client());
-  final _notificationController = NotificationController.find;
+  final _auth = AuthService.find;
   final _chatController = ChatController.find;
-
   final _isLoading = false.obs;
   final _isMoreLoading = false.obs;
+  final _notificationController = NotificationController.find;
   final _postData = PostResponse().obs;
-
   final List<Post> _postList = [];
+
+  static PostController get find => Get.find();
 
   bool get isLoading => _isLoading.value;
 
@@ -39,19 +37,10 @@ class PostController extends GetxController {
 
   set setPostData(PostResponse value) => _postData.value = value;
 
-  Future<void> _loadLocalPosts() async {
-    var isExists = await HiveService.hasLength<Post>('posts');
-    if (isExists) {
-      var data = await HiveService.getAll<Post>('posts');
-      data.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
-      _postList.clear();
-      _postList.addAll(data.toList());
-    }
-  }
-
   Future<void> getData() async {
     _isLoading.value = true;
     update();
+
     final _socket = SocketApiProvider();
     await _socket.init();
     if (_socket.isConnected) {
@@ -70,6 +59,30 @@ class PostController extends GetxController {
 
     _isLoading.value = false;
     update();
+  }
+
+  Future<void> loadLocalPosts() async => await _loadLocalPosts();
+
+  Future<void> fetchPosts() async => await _fetchPosts();
+
+  Future<void> loadMore() async =>
+      await _loadMore(page: _postData.value.currentPage! + 1);
+
+  Future<void> deletePost(String postId) async => await _deletePost(postId);
+
+  Future<void> toggleLikePost(Post post) async => await _toggleLikePost(post);
+
+  Future<void> voteToPoll(Post post, String optionId) async =>
+      await _voteToPoll(post, optionId);
+
+  Future<void> _loadLocalPosts() async {
+    var isExists = await HiveService.hasLength<Post>('posts');
+    if (isExists) {
+      var data = await HiveService.getAll<Post>('posts');
+      data.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
+      _postList.clear();
+      _postList.addAll(data.toList());
+    }
   }
 
   Future<void> _fetchPosts({int? page, bool? showLoading = true}) async {
@@ -287,18 +300,4 @@ class PostController extends GetxController {
       AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
     }
   }
-
-  Future<void> loadLocalPosts() async => await _loadLocalPosts();
-
-  Future<void> fetchPosts() async => await _fetchPosts();
-
-  Future<void> loadMore() async =>
-      await _loadMore(page: _postData.value.currentPage! + 1);
-
-  Future<void> deletePost(String postId) async => await _deletePost(postId);
-
-  Future<void> toggleLikePost(Post post) async => await _toggleLikePost(post);
-
-  Future<void> voteToPoll(Post post, String optionId) async =>
-      await _voteToPoll(post, optionId);
 }

@@ -6,12 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:social_media_app/utils/utility.dart';
 
 class NotificationService {
-  final _notificationPlugin = FlutterLocalNotificationsPlugin();
   final _androidInitSettings =
       const AndroidInitializationSettings('@mipmap/launcher_icon');
-  final _iosInitSettings = const DarwinInitializationSettings();
 
   bool _initialized = false;
+  final _iosInitSettings = const DarwinInitializationSettings();
+  final _notificationPlugin = FlutterLocalNotificationsPlugin();
 
   bool get isInitialized => _initialized;
 
