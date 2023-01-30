@@ -50,8 +50,8 @@ import 'package:social_media_app/modules/profile/views/edit_views/edit_username_
 import 'package:social_media_app/modules/profile/views/edit_views/edit_website_view.dart';
 import 'package:social_media_app/modules/profile/views/profile_details_view.dart';
 import 'package:social_media_app/modules/profile/views/profile_view.dart';
-import 'package:social_media_app/modules/report_issue/report_issue_binding.dart';
-import 'package:social_media_app/modules/report_issue/report_issue_view.dart';
+import 'package:social_media_app/modules/report/report_binding.dart';
+import 'package:social_media_app/modules/report/report_view.dart';
 import 'package:social_media_app/modules/server_maintenance/server_maintenance_view.dart';
 import 'package:social_media_app/modules/server_offline/server_offline_view.dart';
 import 'package:social_media_app/modules/settings/bindings/change_email_binding.dart';
@@ -587,8 +587,8 @@ abstract class AppPages {
 
     GetPage(
       name: _Routes.reportIssue,
-      page: ReportIssueView.new,
-      binding: ReportIssueBinding(),
+      page: ReportView.new,
+      binding: ReportBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),

@@ -6,6 +6,7 @@ import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/constants/enums.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/date_extensions.dart';
@@ -430,7 +431,7 @@ class PostWidget extends StatelessWidget {
           leading: Icon(
             Icons.visibility,
             color: Theme.of(context).textTheme.bodyLarge!.color,
-            size: Dimens.twenty,
+            size: Dimens.twentyFour,
           ),
           title: Text(
             StringValues.view,
@@ -460,7 +461,7 @@ class PostWidget extends StatelessWidget {
             leading: Icon(
               Icons.delete,
               color: Theme.of(context).textTheme.bodyLarge!.color,
-              size: Dimens.twenty,
+              size: Dimens.twentyFour,
             ),
             title: Text(
               StringValues.delete,
@@ -485,7 +486,7 @@ class PostWidget extends StatelessWidget {
             leading: Icon(
               Icons.edit,
               color: Theme.of(context).textTheme.bodyLarge!.color,
-              size: Dimens.twenty,
+              size: Dimens.twentyFour,
             ),
             title: Text(
               StringValues.edit,
@@ -511,7 +512,7 @@ class PostWidget extends StatelessWidget {
           leading: Icon(
             Icons.share,
             color: Theme.of(context).textTheme.bodyLarge!.color,
-            size: Dimens.twenty,
+            size: Dimens.twentyFour,
           ),
           title: Text(
             StringValues.share,
@@ -529,12 +530,12 @@ class PostWidget extends StatelessWidget {
           showBorder: false,
           onTap: () {
             AppUtility.closeBottomSheet();
-            RouteManagement.goToReportIssueView(post.id!);
+            RouteManagement.goToReportIssueView(post.id!, ReportType.post);
           },
           leading: Icon(
             Icons.report,
             color: Theme.of(context).textTheme.bodyLarge!.color,
-            size: Dimens.twenty,
+            size: Dimens.twentyFour,
           ),
           title: Text(
             StringValues.report,

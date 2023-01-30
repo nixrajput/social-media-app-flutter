@@ -364,6 +364,7 @@ abstract class StringValues {
   static const public = 'public';
   static const publicPrivacyDesc = 'Anyone can see your posts.';
   static const publish = 'Publish';
+  static const pleaseSelectReason = 'Please select a reason';
   static const reactivate = 'Reactivate';
   static const reactivateAccount = 'Reactivate Account';
   static const reactivateAccountHelp =

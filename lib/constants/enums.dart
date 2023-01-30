@@ -14,3 +14,9 @@ enum BubbleType {
   sendBubble,
   receiverBubble,
 }
+
+enum ReportType {
+  user,
+  post,
+  comment,
+}

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
+import 'package:social_media_app/constants/enums.dart';
 import 'package:social_media_app/modules/chat/controllers/p2p_chat_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/following_list_controller.dart';
@@ -314,8 +315,9 @@ abstract class RouteManagement {
 
   /// Report Issue -------------------------------------------------------------
 
-  static void goToReportIssueView(String id) {
-    Get.toNamed(AppRoutes.reportIssue, arguments: {'id': id});
+  static void goToReportIssueView(String id, ReportType type) {
+    Get.toNamed(AppRoutes.reportIssue,
+        arguments: {'id': id, 'reportType': type});
   }
 
   /// --------------------------------------------------------------------------

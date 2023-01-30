@@ -25,71 +25,44 @@ class UserWidget extends StatelessWidget {
     this.onActionTap,
   }) : super(key: key);
 
-  final User user;
-  final int totalLength;
-  final int index;
-  final double? bottomMargin;
-  final VoidCallback? onTap;
-  final VoidCallback? onActionTap;
   final double? avatarSize;
-  final EdgeInsets? padding;
   final Color? bgColor;
   final BorderRadius? borderRadius;
+  final double? bottomMargin;
   final Widget? extraActions;
+  final int index;
+  final VoidCallback? onActionTap;
+  final VoidCallback? onTap;
+  final EdgeInsets? padding;
+  final int totalLength;
+  final User user;
 
-  @override
-  Widget build(BuildContext context) {
-    final profile = ProfileController.find;
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        margin: Dimens.edgeInsets8_0,
-        padding: padding ?? Dimens.edgeInsets8,
-        constraints: BoxConstraints(
-          maxWidth: Dimens.screenWidth,
-        ),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(Dimens.four),
-          boxShadow: AppStyles.defaultShadow,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Hero(
-                    tag: user.id,
-                    child: AvatarWidget(
-                      avatar: user.avatar,
-                      size: avatarSize ?? Dimens.twentyFour,
-                    ),
-                  ),
-                  Dimens.boxWidth8,
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildUserUsername(context),
-                        _buildUserFullName(context),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (user.id != profile.profileDetails!.user!.id)
-              _buildFollowAction(context),
-          ],
-        ),
-      ),
-    );
+  String getFollowStatus(String status, BuildContext context) {
+    if (status == "following") {
+      return StringValues.following;
+    }
+
+    if (status == "requested") {
+      return StringValues.requested;
+    }
+
+    return StringValues.follow;
+  }
+
+  Color getButtonColor(String status, BuildContext context) {
+    if (status == "following" || status == "requested") {
+      return Theme.of(context).dividerColor;
+    }
+
+    return ColorValues.primaryColor;
+  }
+
+  Color getLabelColor(String status, BuildContext context) {
+    if (status == "following" || status == "requested") {
+      return Theme.of(context).textTheme.bodyLarge!.color!;
+    }
+
+    return ColorValues.whiteColor;
   }
 
   Widget _buildUserUsername(BuildContext context) => Row(
@@ -151,31 +124,58 @@ class UserWidget extends StatelessWidget {
         ),
       );
 
-  String getFollowStatus(String status, BuildContext context) {
-    if (status == "following") {
-      return StringValues.following;
-    }
-
-    if (status == "requested") {
-      return StringValues.requested;
-    }
-
-    return StringValues.follow;
-  }
-
-  Color getButtonColor(String status, BuildContext context) {
-    if (status == "following" || status == "requested") {
-      return Theme.of(context).dividerColor;
-    }
-
-    return ColorValues.primaryColor;
-  }
-
-  Color getLabelColor(String status, BuildContext context) {
-    if (status == "following" || status == "requested") {
-      return Theme.of(context).textTheme.bodyLarge!.color!;
-    }
-
-    return ColorValues.whiteColor;
+  @override
+  Widget build(BuildContext context) {
+    final profile = ProfileController.find;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: Dimens.edgeInsets8_0,
+        padding: padding ?? Dimens.edgeInsets8,
+        constraints: BoxConstraints(
+          maxWidth: Dimens.screenWidth,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(Dimens.four),
+          boxShadow: AppStyles.defaultShadow,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Hero(
+                    tag: user.id,
+                    child: AvatarWidget(
+                      avatar: user.avatar,
+                      size: avatarSize ?? Dimens.twentyFour,
+                    ),
+                  ),
+                  Dimens.boxWidth8,
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildUserUsername(context),
+                        _buildUserFullName(context),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (user.id != profile.profileDetails!.user!.id)
+              _buildFollowAction(context),
+          ],
+        ),
+      ),
+    );
   }
 }

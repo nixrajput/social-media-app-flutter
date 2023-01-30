@@ -1,53 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/custom_list_tile.dart';
+import 'package:social_media_app/global_widgets/custom_radio_tile.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/unfocus_widget.dart';
-import 'package:social_media_app/modules/report_issue/report_issue_controller.dart';
+import 'package:social_media_app/modules/report/report_controller.dart';
 
-class ReportIssueView extends StatelessWidget {
-  const ReportIssueView({super.key});
+class ReportView extends StatelessWidget {
+  const ReportView({super.key});
 
   Widget _buildBody(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
-        child: GetBuilder<ReportIssueController>(
+        child: GetBuilder<ReportController>(
           builder: (logic) => Padding(
             padding: Dimens.edgeInsetsHorizDefault,
-            child: FocusScope(
-              node: logic.focusNode,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Dimens.boxHeight12,
-                  _buildReportHelpText(context),
-                  Dimens.boxHeight4,
-                  _buildReportHelpTextDesc(context),
-                  Dimens.boxHeight12,
-                  _buildReasonTiles(context),
-                  Dimens.boxHeight12,
-                  _buildActionBtn(logic),
-                  Dimens.boxHeight12,
-                ],
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Dimens.boxHeight12,
+                _buildReportHelpText(context),
+                Dimens.boxHeight4,
+                _buildReportHelpTextDesc(context),
+                Dimens.boxHeight12,
+                _buildReasonTiles(context, logic),
+                Dimens.boxHeight12,
+              ],
             ),
           ),
         ),
       ),
-    );
-  }
-
-  NxFilledButton _buildActionBtn(ReportIssueController logic) {
-    return NxFilledButton(
-      onTap: () => logic.updateAbout(),
-      label: StringValues.submit.toUpperCase(),
-      height: Dimens.fiftySix,
     );
   }
 
@@ -67,21 +53,27 @@ class ReportIssueView extends StatelessWidget {
     );
   }
 
-  ListView _buildReasonTiles(BuildContext context) {
+  ListView _buildReasonTiles(BuildContext context, ReportController logic) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: StringValues.reportReasons.length,
       itemBuilder: (context, index) {
         var reason = StringValues.reportReasons[index];
-        return NxListTile(
+        return NxRadioTile(
           showBorder: false,
-          bgColor: ColorValues.transparent,
+          bgColor: Theme.of(context).cardColor,
+          margin: Dimens.edgeInsetsOnlyBottom12,
+          padding: Dimens.edgeInsetsDefault,
+          borderRadius: BorderRadius.circular(Dimens.four),
           title: Text(
             reason,
-            style: AppStyles.style14Bold,
+            style: AppStyles.style13Bold,
           ),
-          //onTap: () => logic.updateReason(reason),
+          value: reason,
+          groupValue: logic.reason,
+          onChanged: (value) => logic.updateReason(reason),
+          onTap: () => logic.updateReason(reason),
         );
       },
     );
@@ -99,14 +91,34 @@ class ReportIssueView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                NxAppBar(
-                  title: StringValues.report,
-                  padding: Dimens.edgeInsetsDefault,
-                ),
+                _buildAppBar(),
                 _buildBody(context),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  NxAppBar _buildAppBar() {
+    return NxAppBar(
+      padding: Dimens.edgeInsetsDefault,
+      child: Expanded(
+        child: Row(
+          children: [
+            Text(
+              StringValues.report,
+              style: AppStyles.style20Bold,
+            ),
+            const Spacer(),
+            NxFilledButton(
+              onTap: () => ReportController.find.submitReport(),
+              label: StringValues.submit.toUpperCase(),
+              labelStyle: AppStyles.style13Bold,
+              padding: Dimens.edgeInsetsDefault,
+            )
+          ],
         ),
       ),
     );
