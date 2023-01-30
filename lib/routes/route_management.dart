@@ -312,6 +312,14 @@ abstract class RouteManagement {
 
   /// --------------------------------------------------------------------------
 
+  /// Report Issue -------------------------------------------------------------
+
+  static void goToReportIssueView(String id) {
+    Get.toNamed(AppRoutes.reportIssue, arguments: {'id': id});
+  }
+
+  /// --------------------------------------------------------------------------
+
   /// Go to back Page / Close Pages --------------------------------------------
 
   static void goToBack() {

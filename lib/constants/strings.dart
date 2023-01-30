@@ -424,6 +424,7 @@ abstract class StringValues {
   static const sent = 'Sent';
   static const settings = 'Settings';
   static const share = 'Share';
+  static const edit = 'Edit';
   static const shares = 'Shares';
   static const somethingWentWrong = 'Something went wrong, please try again';
   static const status = "status";
@@ -519,6 +520,10 @@ abstract class StringValues {
   static const writeAboutIssue = 'Write about your issue here';
   static const writeSomethingAboutYou = 'Write something about you...';
   static const writeSuggestion = 'Write your suggestions here';
+  static const whyAreYouReportingThis = 'Why are you reporting this?';
+  static const whyAreYouReportingThisDesc =
+      'Your report will be sent to Rippl team. Please provide a reason for reporting this. This will help us to take action on this. Your report will be anonymous.';
+  static const thanksForReporting = 'Thanks for reporting';
   static const yes = 'Yes';
   static const youAreBlockedAccountWarning = 'You are blocked';
   static const youBlocked = 'You blocked';
@@ -686,5 +691,30 @@ abstract class StringValues {
     57,
     58,
     59,
+  ];
+
+  static const reportTypes = [
+    "spam",
+    "harassment",
+    "inappropriate",
+    "violence",
+    "abuse",
+    "other",
+  ];
+
+  static const reportReasons = [
+    "It's spam",
+    "Harassment or bullying",
+    "Scam or fraud",
+    "Inappropriate or sensitive content",
+    "Hateful or abusive content",
+    "I don't like it",
+    "Suicide, self-injury or eating disorders",
+    "Sale of illegal or regulated goods",
+    "Nudity or sexual activity",
+    "Hate speech or symbols",
+    "Violence or dangerous organisations",
+    "Intellectual property violation",
+    "False information"
   ];
 }

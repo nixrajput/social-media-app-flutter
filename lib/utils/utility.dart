@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rive/rive.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
@@ -262,6 +263,18 @@ abstract class AppUtility {
       barrierDismissible: false,
       barrierColor: ColorValues.blackColor.withOpacity(0.75),
       name: 'delete_dialog',
+    );
+  }
+
+  /// Show Share Dialog
+
+  static void showShareDialog(BuildContext context, String text,
+      {String? subject}) async {
+    final box = context.findRenderObject() as RenderBox?;
+    await Share.share(
+      text,
+      subject: subject,
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
     );
   }
 

@@ -8,10 +8,10 @@ import 'package:social_media_app/global_widgets/custom_app_bar.dart';
 import 'package:social_media_app/global_widgets/file_image.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/modules/settings/controllers/report_issue_controller.dart';
+import 'package:social_media_app/modules/settings/controllers/report_app_issue_controller.dart';
 
-class ReportIssueView extends StatelessWidget {
-  const ReportIssueView({Key? key}) : super(key: key);
+class ReportAppIssueView extends StatelessWidget {
+  const ReportAppIssueView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class ReportIssueView extends StatelessWidget {
             children: [
               NxAppBar(
                 title: StringValues.reportIssue,
-                padding: Dimens.edgeInsets8_16,
+                padding: Dimens.edgeInsetsDefault,
               ),
               Dimens.boxHeight16,
               _buildBody(),
@@ -40,7 +40,7 @@ class ReportIssueView extends StatelessWidget {
   Widget _buildBody() {
     return Expanded(
       child: SingleChildScrollView(
-          child: GetBuilder<ReportIssueController>(
+          child: GetBuilder<ReportAppIssueController>(
         builder: (logic) => Padding(
           padding: Dimens.edgeInsets0_16,
           child: FocusScope(

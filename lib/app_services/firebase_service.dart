@@ -3,129 +3,8 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:social_media_app/app_services/notification_service.dart';
 import 'package:social_media_app/utils/utility.dart';
-
-@pragma('vm:entry-point')
-int setNotificationId(String type) {
-  switch (type) {
-    case 'Chats':
-      return 2;
-    case 'Followers':
-      return 3;
-    case 'Likes':
-      return 4;
-    case 'Comments':
-      return 5;
-    case 'Follow Requests':
-      return 6;
-    case 'General Notifications':
-      return 7;
-    default:
-      return 1;
-  }
-}
-
-@pragma('vm:entry-point')
-Priority setNotificationPriority(String type) {
-  switch (type) {
-    case 'Chats':
-      return Priority.max;
-    case 'General Notifications':
-      return Priority.high;
-    case 'Comments':
-      return Priority.high;
-    case 'Follow Requests':
-      return Priority.high;
-    case 'Followers':
-      return Priority.high;
-    case 'Likes':
-      return Priority.high;
-    default:
-      return Priority.defaultPriority;
-  }
-}
-
-@pragma('vm:entry-point')
-Importance setNotificationImportance(String type) {
-  switch (type) {
-    case 'Chats':
-      return Importance.max;
-    case 'General Notifications':
-      return Importance.high;
-    case 'Comments':
-      return Importance.defaultImportance;
-    case 'Follow Requests':
-      return Importance.defaultImportance;
-    case 'Followers':
-      return Importance.defaultImportance;
-    case 'Likes':
-      return Importance.defaultImportance;
-    default:
-      return Importance.defaultImportance;
-  }
-}
-
-@pragma('vm:entry-point')
-bool setNotificationPlaySound(String type) {
-  switch (type) {
-    case 'Chats':
-      return true;
-    case 'General Notifications':
-      return true;
-    case 'Comments':
-      return false;
-    case 'Follow Requests':
-      return false;
-    case 'Followers':
-      return false;
-    case 'Likes':
-      return false;
-    default:
-      return false;
-  }
-}
-
-@pragma('vm:entry-point')
-bool setNotificationEnableVibration(String type) {
-  switch (type) {
-    case 'Chats':
-      return true;
-    case 'General Notifications':
-      return true;
-    case 'Comments':
-      return false;
-    case 'Follow Requests':
-      return false;
-    case 'Followers':
-      return false;
-    case 'Likes':
-      return false;
-    default:
-      return false;
-  }
-}
-
-@pragma('vm:entry-point')
-bool setNotificationEnableLights(String type) {
-  switch (type) {
-    case 'Chats':
-      return true;
-    case 'Comments':
-      return true;
-    case 'General Notifications':
-      return true;
-    case 'Follow Requests':
-      return true;
-    case 'Followers':
-      return true;
-    case 'Likes':
-      return true;
-    default:
-      return false;
-  }
-}
 
 @pragma('vm:entry-point')
 Future<void> initializeFirebaseService() async {
@@ -268,37 +147,115 @@ Future<void> initializeFirebaseService() async {
 // }
 
 @pragma('vm:entry-point')
-Future<void> onMessage(RemoteMessage message) async {
-  AppUtility.log('Got a message whilst in the foreground!');
-  AppUtility.log('Message data: ${message.data}');
+bool setNotificationPlaySound(String type) {
+  switch (type) {
+    case 'Chats':
+      return true;
+    case 'General Notifications':
+      return true;
+    case 'Comments':
+      return false;
+    case 'Follow Requests':
+      return false;
+    case 'Followers':
+      return false;
+    case 'Likes':
+      return false;
+    default:
+      return false;
+  }
+}
 
+@pragma('vm:entry-point')
+void showNotificationByCategory(
+    String type, String title, String body, String? imageUrl) async {
   final notificationService = NotificationService();
 
   if (!notificationService.isInitialized) {
     await notificationService.initialize();
   }
 
+  switch (type) {
+    case 'Chats':
+      await notificationService.showNotification(
+        title: title,
+        body: body,
+        largeIcon: imageUrl,
+        channelId: 'Chats',
+        channelName: 'Chats',
+        id: 2,
+      );
+      break;
+    case 'Followers':
+      await notificationService.showNotificationWithNoSound(
+        title: title,
+        body: body,
+        largeIcon: imageUrl,
+        channelId: 'Followers',
+        channelName: 'Followers',
+        id: 3,
+        enableVibration: false,
+      );
+      break;
+    case 'Likes':
+      await notificationService.showBigPictureNotificationWithNoSound(
+        title: title,
+        body: body,
+        bigPictureUrl: imageUrl ?? '',
+        channelId: 'Likes',
+        channelName: 'Likes',
+        id: 4,
+        enableVibration: false,
+      );
+      break;
+    case 'Comments':
+      await notificationService.showBigPictureNotification(
+        title: title,
+        body: body,
+        bigPictureUrl: imageUrl ?? '',
+        channelId: 'Comments',
+        channelName: 'Comments',
+        id: 5,
+      );
+      break;
+    case 'Follow Requests':
+      await notificationService.showNotificationWithNoSound(
+        title: title,
+        body: body,
+        largeIcon: imageUrl,
+        channelId: 'Follow Requests',
+        channelName: 'Follow Requests',
+        id: 6,
+        enableVibration: true,
+      );
+      break;
+    default:
+      await notificationService.showNotification(
+        title: title,
+        body: body,
+        largeIcon: imageUrl,
+        channelId: 'General Notifications',
+        channelName: 'General Notifications',
+        id: 1,
+      );
+      break;
+  }
+}
+
+@pragma('vm:entry-point')
+Future<void> onMessage(RemoteMessage message) async {
+  AppUtility.log('Got a message whilst in the foreground!');
+  AppUtility.log('Message data: ${message.data}');
+
   if (message.data.isNotEmpty) {
     var messageData = message.data;
 
-    var title = messageData['title'];
-    var body = messageData['body'];
-    var imageUrl = messageData['image'];
+    var title = messageData['title'] ?? '';
+    var body = messageData['body'] ?? '';
+    var imageUrl = messageData['image'] ?? '';
     var type = messageData['type'];
 
-    notificationService.showNotification(
-      title: title ?? '',
-      body: body ?? '',
-      priority: setNotificationPriority(type),
-      importance: setNotificationImportance(type),
-      playSound: setNotificationEnableLights(type),
-      enableVibration: setNotificationEnableVibration(type),
-      enableLights: setNotificationEnableLights(type),
-      id: setNotificationId(type),
-      largeIcon: imageUrl,
-      channelId: type ?? 'General Notifications',
-      channelName: type ?? 'General notifications',
-    );
+    showNotificationByCategory(type, title, body, imageUrl);
   }
 
   if (message.notification != null) {
@@ -312,33 +269,15 @@ Future<void> onBackgroundMessage(RemoteMessage message) async {
   debugPrint("Handling a background message");
   debugPrint('Message data: ${message.data}');
 
-  final notificationService = NotificationService();
-
-  if (!notificationService.isInitialized) {
-    await notificationService.initialize();
-  }
-
   if (message.data.isNotEmpty) {
     var messageData = message.data;
 
-    var title = messageData['title'];
-    var body = messageData['body'];
-    var imageUrl = messageData['image'];
+    var title = messageData['title'] ?? '';
+    var body = messageData['body'] ?? '';
+    var imageUrl = messageData['image'] ?? '';
     var type = messageData['type'];
 
-    notificationService.showNotification(
-      title: title ?? '',
-      body: body ?? '',
-      priority: setNotificationPriority(type),
-      importance: setNotificationImportance(type),
-      playSound: setNotificationEnableLights(type),
-      enableVibration: setNotificationEnableVibration(type),
-      enableLights: setNotificationEnableLights(type),
-      id: setNotificationId(type),
-      largeIcon: imageUrl,
-      channelId: type ?? 'General Notifications',
-      channelName: type ?? 'General notifications',
-    );
+    showNotificationByCategory(type, title, body, imageUrl);
   }
 
   if (message.notification != null) {

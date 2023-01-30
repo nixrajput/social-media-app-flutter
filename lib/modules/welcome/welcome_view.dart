@@ -15,23 +15,6 @@ import 'package:social_media_app/routes/route_management.dart';
 class WelcomeView extends StatelessWidget {
   const WelcomeView({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SizedBox(
-        width: Dimens.screenWidth,
-        height: Dimens.screenHeight,
-        child: Stack(
-          children: [
-            _buildAnimation(),
-            _buildBackgroundBlur(),
-            _buildBody(context)
-          ],
-        ),
-      ),
-    );
-  }
-
   RiveAnimation _buildAnimation() {
     return const RiveAnimation.asset(
       RiveAssets.cube,
@@ -132,6 +115,23 @@ class WelcomeView extends StatelessWidget {
               ),
             ),
             Dimens.boxHeight12,
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SizedBox(
+        width: Dimens.screenWidth,
+        height: Dimens.screenHeight,
+        child: Stack(
+          children: [
+            _buildAnimation(),
+            _buildBackgroundBlur(),
+            _buildBody(context)
           ],
         ),
       ),

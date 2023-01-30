@@ -12,6 +12,7 @@ import 'package:social_media_app/extensions/date_extensions.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/cached_network_image.dart';
+import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
 import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
@@ -114,7 +115,7 @@ class PostWidget extends StatelessWidget {
                 Dimens.boxWidth4,
                 NxIconButton(
                   icon: Icons.more_vert,
-                  iconSize: Dimens.sixTeen,
+                  iconSize: Dimens.twenty,
                   iconColor: Theme.of(context).textTheme.bodyText1!.color,
                   onTap: () => _showHeaderOptionBottomSheet(context),
                 ),
@@ -408,63 +409,139 @@ class PostWidget extends StatelessWidget {
         ),
       );
 
-  void _showHeaderOptionBottomSheet(BuildContext context) =>
-      AppUtility.showBottomSheet(
-        children: [
-          if (post.owner!.id == ProfileController.find.profileDetails!.user!.id)
-            ListTile(
-              onTap: () {
-                AppUtility.closeBottomSheet();
-                AppUtility.showDeleteDialog(
-                  context,
-                  () async {
-                    AppUtility.closeDialog();
-                    controller?.deletePost(post.id!);
-                  },
-                );
-              },
-              leading: Icon(
-                Icons.delete,
-                color: Theme.of(context).textTheme.bodyText1!.color,
-                size: Dimens.twentyFour,
-              ),
-              title: Text(
-                StringValues.delete,
-                style: AppStyles.style16Bold.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
-                ),
-              ),
-            ),
-          ListTile(
-            onTap: AppUtility.closeBottomSheet,
-            leading: Icon(
-              Icons.share,
+  void _showHeaderOptionBottomSheet(BuildContext context) {
+    final currentUser = ProfileController.find.profileDetails!.user!;
+    AppUtility.showBottomSheet(
+      children: [
+        /// View Post
+
+        NxListTile(
+          bgColor: ColorValues.transparent,
+          padding: Dimens.edgeInsets12,
+          showBorder: false,
+          onTap: () {
+            AppUtility.closeBottomSheet();
+            RouteManagement.goToPostDetailsView(post.id!, post);
+          },
+          leading: Icon(
+            Icons.visibility,
+            color: Theme.of(context).textTheme.bodyText1!.color,
+            size: Dimens.twenty,
+          ),
+          title: Text(
+            StringValues.view,
+            style: AppStyles.style16Normal.copyWith(
               color: Theme.of(context).textTheme.bodyText1!.color,
-              size: Dimens.twentyFour,
+            ),
+          ),
+        ),
+
+        /// Delete Post
+
+        if (post.owner!.id == currentUser.id)
+          NxListTile(
+            bgColor: ColorValues.transparent,
+            padding: Dimens.edgeInsets12,
+            showBorder: false,
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              AppUtility.showDeleteDialog(
+                context,
+                () async {
+                  AppUtility.closeDialog();
+                  controller?.deletePost(post.id!);
+                },
+              );
+            },
+            leading: Icon(
+              Icons.delete,
+              color: Theme.of(context).textTheme.bodyText1!.color,
+              size: Dimens.twenty,
             ),
             title: Text(
-              StringValues.share,
-              style: AppStyles.style16Bold.copyWith(
+              StringValues.delete,
+              style: AppStyles.style16Normal.copyWith(
                 color: Theme.of(context).textTheme.bodyText1!.color,
               ),
             ),
           ),
-          ListTile(
-            onTap: AppUtility.closeBottomSheet,
+
+        /// Edit Post
+
+        if (post.owner!.id == currentUser.id)
+          NxListTile(
+            bgColor: ColorValues.transparent,
+            padding: Dimens.edgeInsets12,
+            showBorder: false,
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              debugPrint('Edit Post');
+              //RouteManagement.goToEditPostView(post);
+            },
             leading: Icon(
-              Icons.report,
+              Icons.edit,
               color: Theme.of(context).textTheme.bodyText1!.color,
-              size: Dimens.twentyFour,
+              size: Dimens.twenty,
             ),
             title: Text(
-              StringValues.report,
-              style: AppStyles.style16Bold.copyWith(
+              StringValues.edit,
+              style: AppStyles.style16Normal.copyWith(
                 color: Theme.of(context).textTheme.bodyText1!.color,
               ),
             ),
           ),
-        ],
-      );
+
+        /// Share Post
+
+        NxListTile(
+          bgColor: ColorValues.transparent,
+          padding: Dimens.edgeInsets12,
+          showBorder: false,
+          onTap: () {
+            AppUtility.closeBottomSheet();
+            AppUtility.showShareDialog(
+              context,
+              '${StringValues.websiteUrl}/post/${post.id}',
+            );
+          },
+          leading: Icon(
+            Icons.share,
+            color: Theme.of(context).textTheme.bodyText1!.color,
+            size: Dimens.twenty,
+          ),
+          title: Text(
+            StringValues.share,
+            style: AppStyles.style16Normal.copyWith(
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+          ),
+        ),
+
+        /// Report Post
+
+        NxListTile(
+          bgColor: ColorValues.transparent,
+          padding: Dimens.edgeInsets12,
+          showBorder: false,
+          onTap: () {
+            AppUtility.closeBottomSheet();
+            RouteManagement.goToReportIssueView(post.id!);
+          },
+          leading: Icon(
+            Icons.report,
+            color: Theme.of(context).textTheme.bodyText1!.color,
+            size: Dimens.twenty,
+          ),
+          title: Text(
+            StringValues.report,
+            style: AppStyles.style16Normal.copyWith(
+              color: Theme.of(context).textTheme.bodyText1!.color,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

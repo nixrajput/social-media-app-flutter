@@ -9,8 +9,8 @@ import 'package:social_media_app/extensions/file_extensions.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/utils/utility.dart';
 
-class ReportIssueController extends GetxController {
-  static ReportIssueController get find => Get.find();
+class ReportAppIssueController extends GetxController {
+  static ReportAppIssueController get find => Get.find();
 
   final profile = ProfileController.find;
 

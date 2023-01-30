@@ -50,6 +50,8 @@ import 'package:social_media_app/modules/profile/views/edit_views/edit_username_
 import 'package:social_media_app/modules/profile/views/edit_views/edit_website_view.dart';
 import 'package:social_media_app/modules/profile/views/profile_details_view.dart';
 import 'package:social_media_app/modules/profile/views/profile_view.dart';
+import 'package:social_media_app/modules/report_issue/report_issue_binding.dart';
+import 'package:social_media_app/modules/report_issue/report_issue_view.dart';
 import 'package:social_media_app/modules/server_maintenance/server_maintenance_view.dart';
 import 'package:social_media_app/modules/server_offline/server_offline_view.dart';
 import 'package:social_media_app/modules/settings/bindings/change_email_binding.dart';
@@ -58,7 +60,7 @@ import 'package:social_media_app/modules/settings/bindings/change_phone_binding.
 import 'package:social_media_app/modules/settings/bindings/deactivate_account_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/login_info_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/privacy_settings_binding.dart';
-import 'package:social_media_app/modules/settings/bindings/report_issue_binding.dart';
+import 'package:social_media_app/modules/settings/bindings/report_app_issue_binding.dart';
 import 'package:social_media_app/modules/settings/bindings/send_suggestions_binding.dart';
 import 'package:social_media_app/modules/settings/views/about_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/account_settings_view.dart';
@@ -67,7 +69,7 @@ import 'package:social_media_app/modules/settings/views/pages/account/change_ema
 import 'package:social_media_app/modules/settings/views/pages/account/change_phone_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/deactivate_account_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/account/verified_account_setting_view.dart';
-import 'package:social_media_app/modules/settings/views/pages/help/report_issue_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/help/report_app_issue_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/help/send_suggestions_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy/account_privacy_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy/online_status_view.dart';
@@ -91,9 +93,7 @@ import 'package:social_media_app/modules/welcome/welcome_view.dart';
 part 'app_routes.dart';
 
 abstract class AppPages {
-  static var transitionDuration = const Duration(milliseconds: 500);
   static var defaultTransition = Transition.circularReveal;
-
   static final pages = [
     GetPage(
       name: _Routes.maintenance,
@@ -446,9 +446,9 @@ abstract class AppPages {
 
     GetPage(
       name: _Routes.reportIssueSettings,
-      page: ReportIssueView.new,
+      page: ReportAppIssueView.new,
       transitionDuration: transitionDuration,
-      binding: ReportIssueBinding(),
+      binding: ReportAppIssueBinding(),
       transition: defaultTransition,
     ),
 
@@ -574,5 +574,27 @@ abstract class AppPages {
     ),
 
     /// ------------------------------------------------------------------------
+
+    /// Report Issue -----------------------------------------------------------
+
+    GetPage(
+      name: _Routes.reportIssueSettings,
+      page: ReportAppIssueView.new,
+      binding: ReportAppIssueBinding(),
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.reportIssue,
+      page: ReportIssueView.new,
+      binding: ReportIssueBinding(),
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    /// ------------------------------------------------------------------------
   ];
+
+  static var transitionDuration = const Duration(milliseconds: 500);
 }

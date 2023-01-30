@@ -17,26 +17,26 @@ import 'package:social_media_app/routes/route_management.dart';
 class ChatsTabView extends StatelessWidget {
   const ChatsTabView({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
-      width: Dimens.screenWidth,
-      height: Dimens.screenHeight,
-      child: NxRefreshIndicator(
-        onRefresh: ChatController.find.fetchLastMessages,
-        showProgress: false,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+  NxAppBar _buildAppBar(BuildContext context) {
+    return NxAppBar(
+      padding: Dimens.edgeInsetsDefault,
+      showBackBtn: false,
+      child: Expanded(
+        child: Row(
           children: [
-            NxAppBar(
-              title: StringValues.chats,
-              padding: Dimens.edgeInsetsDefault,
-              showBackBtn: false,
+            Text(
+              StringValues.chats,
+              style: AppStyles.style20Bold,
             ),
-            _buildBody(context),
+            const Spacer(),
+            GestureDetector(
+              onTap: () => {},
+              child: Icon(
+                Icons.search,
+                size: Dimens.twentyFour,
+                color: Theme.of(context).textTheme.bodyText1!.color!,
+              ),
+            ),
           ],
         ),
       ),
@@ -163,6 +163,28 @@ class ChatsTabView extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
+      width: Dimens.screenWidth,
+      height: Dimens.screenHeight,
+      child: NxRefreshIndicator(
+        onRefresh: ChatController.find.fetchLastMessages,
+        showProgress: false,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildAppBar(context),
+            _buildBody(context),
+          ],
+        ),
       ),
     );
   }
