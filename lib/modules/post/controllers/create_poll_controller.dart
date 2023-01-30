@@ -186,13 +186,13 @@ class CreatePollController extends GetxController {
             builder: (logic) => Text(
               logic.pollOptions[index].length.toString(),
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(context).textTheme.subtitle2!.color,
+                color: Theme.of(context).textTheme.titleSmall!.color,
               ),
             ),
           ),
         ),
         style: AppStyles.style14Normal.copyWith(
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         minLines: 1,
         maxLines: 1,

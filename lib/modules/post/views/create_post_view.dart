@@ -77,7 +77,7 @@ class CreatePostView extends StatelessWidget {
           child: Text(
             StringValues.next,
             style: AppStyles.style15Bold.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -96,7 +96,7 @@ class CreatePostView extends StatelessWidget {
             _buildPostPrivacyPicker(context, logic),
             Expanded(
               child: Container(
-                color: Theme.of(context).bottomAppBarColor,
+                color: Theme.of(context).cardColor,
                 child: Stack(
                   children: [
                     SingleChildScrollView(
@@ -164,7 +164,7 @@ class CreatePostView extends StatelessWidget {
             Text(
               logic.postVisibility['title']!,
               style: AppStyles.style14Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             Dimens.boxWidth8,
@@ -193,7 +193,7 @@ class CreatePostView extends StatelessWidget {
           contentPadding: Dimens.edgeInsets0,
         ),
         style: AppStyles.style16Normal.copyWith(
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         scrollPadding: Dimens.edgeInsets0,
         minLines: 1,
@@ -218,7 +218,7 @@ class CreatePostView extends StatelessWidget {
         Text(
           StringValues.noImageVideoSelectedWarning,
           style: AppStyles.style32Bold.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
           textAlign: TextAlign.center,
         ),
@@ -289,7 +289,7 @@ class CreatePostView extends StatelessWidget {
               child: Icon(
                 Icons.crop,
                 size: Dimens.twenty,
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -305,7 +305,7 @@ class CreatePostView extends StatelessWidget {
             child: Icon(
               Icons.delete,
               size: Dimens.twenty,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -342,7 +342,7 @@ class CreatePostView extends StatelessWidget {
                       child: Text(
                         logic.caption.length.toString(),
                         style: AppStyles.style12Bold.copyWith(
-                          color: Theme.of(context).textTheme.subtitle1!.color,
+                          color: Theme.of(context).textTheme.titleMedium!.color,
                         ),
                       ),
                     ),
@@ -370,7 +370,7 @@ class CreatePostView extends StatelessWidget {
               child: NxIconButton(
                 icon: Icons.photo_library_outlined,
                 iconSize: Dimens.twenty,
-                iconColor: Theme.of(context).textTheme.bodyText1!.color,
+                iconColor: Theme.of(context).textTheme.bodyLarge!.color,
                 onTap: () {
                   if (logic.pickedFileList.length >= 10) {
                     AppUtility.showSnackBar(
@@ -389,7 +389,7 @@ class CreatePostView extends StatelessWidget {
               child: NxIconButton(
                 icon: Icons.video_library_outlined,
                 iconSize: Dimens.twenty,
-                iconColor: Theme.of(context).textTheme.bodyText1!.color,
+                iconColor: Theme.of(context).textTheme.bodyLarge!.color,
                 onTap: () {
                   if (logic.pickedFileList.length >= 10) {
                     AppUtility.showSnackBar(
@@ -407,7 +407,7 @@ class CreatePostView extends StatelessWidget {
               child: NxIconButton(
                 icon: Icons.camera_alt_outlined,
                 iconSize: Dimens.twenty,
-                iconColor: Theme.of(context).textTheme.bodyText1!.color,
+                iconColor: Theme.of(context).textTheme.bodyLarge!.color,
                 onTap: () {
                   if (logic.pickedFileList.length >= 10) {
                     AppUtility.showSnackBar(
@@ -425,7 +425,7 @@ class CreatePostView extends StatelessWidget {
               child: NxIconButton(
                 icon: Icons.videocam_outlined,
                 iconSize: Dimens.twenty,
-                iconColor: Theme.of(context).textTheme.bodyText1!.color,
+                iconColor: Theme.of(context).textTheme.bodyLarge!.color,
                 onTap: () {
                   if (logic.pickedFileList.length >= 10) {
                     AppUtility.showSnackBar(

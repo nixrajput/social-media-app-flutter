@@ -73,7 +73,7 @@ class CreatePollView extends StatelessWidget {
           child: Text(
             StringValues.next,
             style: AppStyles.style15Bold.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -93,7 +93,7 @@ class CreatePollView extends StatelessWidget {
               _buildPostPrivacyPicker(context, logic),
               Expanded(
                 child: Container(
-                  color: Theme.of(context).bottomAppBarColor,
+                  color: Theme.of(context).cardColor,
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
@@ -159,7 +159,7 @@ class CreatePollView extends StatelessWidget {
             Text(
               logic.pollVisibility['title']!,
               style: AppStyles.style14Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             Dimens.boxWidth8,
@@ -200,7 +200,7 @@ class CreatePollView extends StatelessWidget {
           contentPadding: Dimens.edgeInsets0,
         ),
         style: AppStyles.style16Normal.copyWith(
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         scrollPadding: Dimens.edgeInsets0,
         minLines: 1,
@@ -272,7 +272,7 @@ class CreatePollView extends StatelessWidget {
               Text(
                 '${StringValues.pollLength}',
                 style: AppStyles.style18Bold.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
               GestureDetector(
@@ -317,14 +317,14 @@ class CreatePollView extends StatelessWidget {
           Text(
             StringValues.minutes,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
           Dimens.boxHeight8,
           Container(
             padding: Dimens.edgeInsets4_8,
             decoration: BoxDecoration(
-              color: Theme.of(context).bottomAppBarColor,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               border: Border.all(
                 color: Theme.of(context).dividerColor,
@@ -334,7 +334,7 @@ class CreatePollView extends StatelessWidget {
             child: DropdownButton(
               isExpanded: false,
               value: logic.pollLengthMinutes,
-              dropdownColor: Theme.of(context).bottomAppBarColor,
+              dropdownColor: Theme.of(context).cardColor,
               elevation: Dimens.two.toInt(),
               borderRadius: BorderRadius.circular(Dimens.four),
               underline: Dimens.shrinkedBox,
@@ -350,7 +350,7 @@ class CreatePollView extends StatelessWidget {
                       child: Text(
                         e.toString(),
                         style: AppStyles.style14Normal.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                       ),
                     ),
@@ -375,14 +375,14 @@ class CreatePollView extends StatelessWidget {
           Text(
             StringValues.hours,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
           Dimens.boxHeight8,
           Container(
             padding: Dimens.edgeInsets4_8,
             decoration: BoxDecoration(
-              color: Theme.of(context).bottomAppBarColor,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               border: Border.all(
                 color: Theme.of(context).dividerColor,
@@ -392,7 +392,7 @@ class CreatePollView extends StatelessWidget {
             child: DropdownButton(
               isExpanded: false,
               value: logic.pollLengthHours,
-              dropdownColor: Theme.of(context).bottomAppBarColor,
+              dropdownColor: Theme.of(context).cardColor,
               elevation: Dimens.two.toInt(),
               borderRadius: BorderRadius.circular(Dimens.four),
               underline: Dimens.shrinkedBox,
@@ -408,7 +408,7 @@ class CreatePollView extends StatelessWidget {
                       child: Text(
                         e.toString(),
                         style: AppStyles.style14Normal.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                       ),
                     ),
@@ -433,14 +433,14 @@ class CreatePollView extends StatelessWidget {
           Text(
             StringValues.days,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
           Dimens.boxHeight8,
           Container(
             padding: Dimens.edgeInsets4_8,
             decoration: BoxDecoration(
-              color: Theme.of(context).bottomAppBarColor,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               border: Border.all(
                 color: Theme.of(context).dividerColor,
@@ -450,7 +450,7 @@ class CreatePollView extends StatelessWidget {
             child: DropdownButton(
               isExpanded: false,
               value: logic.pollLengthDays,
-              dropdownColor: Theme.of(context).bottomAppBarColor,
+              dropdownColor: Theme.of(context).cardColor,
               elevation: Dimens.two.toInt(),
               borderRadius: BorderRadius.circular(Dimens.four),
               underline: Dimens.shrinkedBox,
@@ -466,7 +466,7 @@ class CreatePollView extends StatelessWidget {
                       child: Text(
                         e.toString(),
                         style: AppStyles.style14Normal.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                       ),
                     ),
@@ -531,7 +531,7 @@ class CreatePollView extends StatelessWidget {
         Text(
           StringValues.pollLength,
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
         ),
         Dimens.boxWidth8,
@@ -558,7 +558,7 @@ class CreatePollView extends StatelessWidget {
         child: Text(
           logic.pollQuestion.length.toString(),
           style: AppStyles.style12Bold.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
         ),
       ),

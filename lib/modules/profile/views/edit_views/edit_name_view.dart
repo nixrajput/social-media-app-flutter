@@ -67,7 +67,7 @@ class EditNameView extends StatelessWidget {
                         textCapitalization: TextCapitalization.words,
                         style: AppStyles.style14Normal.copyWith(
                           color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                              Theme.of(Get.context!).textTheme.bodyLarge!.color,
                         ),
                         controller: logic.fNameTextController,
                         onEditingComplete: logic.focusNode.nextFocus,
@@ -92,7 +92,7 @@ class EditNameView extends StatelessWidget {
                         textCapitalization: TextCapitalization.words,
                         style: AppStyles.style14Normal.copyWith(
                           color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                              Theme.of(Get.context!).textTheme.bodyLarge!.color,
                         ),
                         controller: logic.lNameTextController,
                         onEditingComplete: logic.focusNode.unfocus,

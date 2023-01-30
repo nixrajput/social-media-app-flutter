@@ -50,7 +50,7 @@ class OnlineStatusView extends StatelessWidget {
                 /// Public
                 NxRadioTile(
                   padding: Dimens.edgeInsets12,
-                  bgColor: Theme.of(context).bottomAppBarColor,
+                  bgColor: Theme.of(context).cardColor,
                   showBorder: true,
                   borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () {
@@ -74,7 +74,7 @@ class OnlineStatusView extends StatelessWidget {
                   subtitle: Text(
                     StringValues.onlineStatusOnDesc,
                     style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
+                      color: Theme.of(context).textTheme.titleMedium!.color,
                     ),
                   ),
                   value: true,
@@ -87,7 +87,7 @@ class OnlineStatusView extends StatelessWidget {
                 /// Private
                 NxRadioTile(
                   padding: Dimens.edgeInsets12,
-                  bgColor: Theme.of(context).bottomAppBarColor,
+                  bgColor: Theme.of(context).cardColor,
                   showBorder: true,
                   borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () {
@@ -111,7 +111,7 @@ class OnlineStatusView extends StatelessWidget {
                   subtitle: Text(
                     StringValues.onlineStatusOffDesc,
                     style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
+                      color: Theme.of(context).textTheme.titleMedium!.color,
                     ),
                   ),
                   value: false,

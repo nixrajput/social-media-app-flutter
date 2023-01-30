@@ -72,7 +72,7 @@ class TrendingPostsTab extends StatelessWidget {
       keyboardType: TextInputType.text,
       maxLines: 1,
       style: AppStyles.style14Normal.copyWith(
-        color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+        color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
       ),
       controller: logic.searchTextController,
       onChanged: (value) => logic.searchPosts(value),
@@ -99,7 +99,7 @@ class TrendingPostsTab extends StatelessWidget {
           Text(
             StringValues.noData,
             style: AppStyles.style32Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              color: Theme.of(Get.context!).textTheme.titleMedium!.color,
             ),
             textAlign: TextAlign.center,
           ),

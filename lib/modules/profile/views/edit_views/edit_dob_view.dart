@@ -71,7 +71,7 @@ class EditDOBView extends StatelessWidget {
                           style: AppStyles.style16Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                           controller: logic.dobTextController,
@@ -102,7 +102,7 @@ class EditDOBView extends StatelessWidget {
         backgroundColor:
             Theme.of(Get.context!).bottomSheetTheme.backgroundColor!,
         itemStyle: TextStyle(
-          color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+          color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
         ),
         cancelStyle: const TextStyle(
           color: ColorValues.errorColor,

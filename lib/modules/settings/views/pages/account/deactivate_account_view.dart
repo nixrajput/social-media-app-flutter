@@ -62,7 +62,7 @@ class DeactivateAccountView extends StatelessWidget {
                               style: AppStyles.style20Bold.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .color,
                               ),
                             ),
@@ -77,7 +77,7 @@ class DeactivateAccountView extends StatelessWidget {
                               style: AppStyles.style13Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .color,
                               ),
                             ),
@@ -92,7 +92,7 @@ class DeactivateAccountView extends StatelessWidget {
                               style: AppStyles.style13Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .color,
                               ),
                             ),
@@ -107,7 +107,7 @@ class DeactivateAccountView extends StatelessWidget {
                               style: AppStyles.style13Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .color,
                               ),
                             ),
@@ -132,7 +132,7 @@ class DeactivateAccountView extends StatelessWidget {
                               style: AppStyles.style13Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .color,
                               ),
                             ),
@@ -167,7 +167,7 @@ class DeactivateAccountView extends StatelessWidget {
                               style: AppStyles.style14Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .color,
                               ),
                               controller: logic.passwordTextController,

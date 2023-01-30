@@ -49,7 +49,7 @@ class SecuritySettingsView extends StatelessWidget {
               /// Change Password
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.changePassword,
@@ -58,7 +58,7 @@ class SecuritySettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.changePasswordDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 onTap: RouteManagement.goToChangePasswordView,
@@ -69,7 +69,7 @@ class SecuritySettingsView extends StatelessWidget {
               /// Login Activity
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.loginActivity.toTitleCase(),
@@ -78,7 +78,7 @@ class SecuritySettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.loginActivityDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 onTap: RouteManagement.goToLoginActivityView,
@@ -89,7 +89,7 @@ class SecuritySettingsView extends StatelessWidget {
               /// 2-FA
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.twoFaAuth,
@@ -98,7 +98,7 @@ class SecuritySettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.no,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ),

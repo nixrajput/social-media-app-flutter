@@ -36,7 +36,7 @@ class NxTextButton extends StatelessWidget {
                     ? ColorValues.linkColor
                     : Theme.of(context)
                         .textTheme
-                        .bodyText1!
+                        .bodyLarge!
                         .color!
                         .withAlpha(50),
               ),

@@ -68,7 +68,7 @@ class AboutSettingsView extends StatelessWidget {
             text:
                 '${StringValues.version}  ${AppUpdateController.find.version}+${AppUpdateController.find.buildNumber}',
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.subtitle1!.color,
+              color: Theme.of(context).textTheme.titleMedium!.color,
             ),
           ),
         ),
@@ -81,12 +81,12 @@ class AboutSettingsView extends StatelessWidget {
       children: [
         NxOutlinedButton(
           label: StringValues.downloadLatestApp,
-          borderColor: Theme.of(context).textTheme.bodyText1!.color,
+          borderColor: Theme.of(context).textTheme.bodyLarge!.color,
           padding: Dimens.edgeInsets0_8,
           width: Dimens.screenWidth,
           height: Dimens.thirtySix,
           labelStyle: AppStyles.style14Normal.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
           onTap: () =>
               AppUtility.openUrl(Uri.parse(StringValues.appDownloadUrl)),
@@ -94,36 +94,36 @@ class AboutSettingsView extends StatelessWidget {
         Dimens.boxHeight8,
         NxOutlinedButton(
           label: StringValues.githubRepo,
-          borderColor: Theme.of(context).textTheme.bodyText1!.color,
+          borderColor: Theme.of(context).textTheme.bodyLarge!.color,
           padding: Dimens.edgeInsets0_8,
           width: Dimens.screenWidth,
           height: Dimens.thirtySix,
           labelStyle: AppStyles.style14Normal.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
           onTap: () => AppUtility.openUrl(Uri.parse(StringValues.appGithubUrl)),
         ),
         Dimens.boxHeight8,
         NxOutlinedButton(
           label: StringValues.ourWebsite,
-          borderColor: Theme.of(context).textTheme.bodyText1!.color,
+          borderColor: Theme.of(context).textTheme.bodyLarge!.color,
           padding: Dimens.edgeInsets0_8,
           width: Dimens.screenWidth,
           height: Dimens.thirtySix,
           labelStyle: AppStyles.style14Normal.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
           onTap: () => AppUtility.openUrl(Uri.parse(StringValues.websiteUrl)),
         ),
         Dimens.boxHeight8,
         NxOutlinedButton(
           label: StringValues.joinTelegramChannel,
-          borderColor: Theme.of(context).textTheme.bodyText1!.color,
+          borderColor: Theme.of(context).textTheme.bodyLarge!.color,
           padding: Dimens.edgeInsets0_8,
           width: Dimens.screenWidth,
           height: Dimens.thirtySix,
           labelStyle: AppStyles.style14Normal.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
           onTap: () => AppUtility.openUrl(Uri.parse(StringValues.telegramUrl)),
         ),
@@ -146,7 +146,7 @@ class AboutSettingsView extends StatelessWidget {
               StringValues.developedBy,
               textAlign: TextAlign.center,
               style: AppStyles.style14Normal.copyWith(
-                color: Theme.of(context).textTheme.subtitle1!.color,
+                color: Theme.of(context).textTheme.titleMedium!.color,
               ),
             ),
             Dimens.boxWidth4,
@@ -169,7 +169,7 @@ class AboutSettingsView extends StatelessWidget {
         Text(
           StringValues.madeWithLove,
           style: AppStyles.style14Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
         ),
       ],

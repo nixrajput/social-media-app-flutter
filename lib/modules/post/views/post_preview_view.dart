@@ -76,7 +76,7 @@ class PostPreviewView extends StatelessWidget {
           child: Text(
             StringValues.post,
             style: AppStyles.style15Bold.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -112,7 +112,7 @@ class PostPreviewView extends StatelessWidget {
     return Container(
       margin: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
-        color: Theme.of(context).bottomAppBarColor,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(Dimens.four),
         boxShadow: AppStyles.defaultShadow,
       ),
@@ -181,7 +181,7 @@ class PostPreviewView extends StatelessWidget {
                   text: TextSpan(
                     text: '${profile.fname} ${profile.lname}',
                     style: AppStyles.style14Bold.copyWith(
-                      color: Theme.of(context).textTheme.bodyText1!.color,
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
                     ),
                     recognizer: TapGestureRecognizer()
                       ..onTap = RouteManagement.goToProfileView,
@@ -214,7 +214,7 @@ class PostPreviewView extends StatelessWidget {
       child: Text(
         DateFormat('dd MMM yyyy hh:mm a').format(DateTime.now().toLocal()),
         style: AppStyles.style12Normal.copyWith(
-          color: Theme.of(context).textTheme.subtitle1!.color,
+          color: Theme.of(context).textTheme.titleMedium!.color,
         ),
       ),
     );
@@ -224,7 +224,7 @@ class PostPreviewView extends StatelessWidget {
         text: TextSpan(
           text: profile.uname,
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
         ),
         overflow: TextOverflow.ellipsis,

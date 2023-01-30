@@ -44,7 +44,7 @@ class NotificationWidget extends StatelessWidget {
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(Dimens.four),
           boxShadow: AppStyles.defaultShadow,
         ),
@@ -76,7 +76,7 @@ class NotificationWidget extends StatelessWidget {
                           style: AppStyles.style14Bold.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                         ),
@@ -85,7 +85,7 @@ class NotificationWidget extends StatelessWidget {
                           style: AppStyles.style13Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                         ),
@@ -96,7 +96,8 @@ class NotificationWidget extends StatelessWidget {
                   Text(
                     notification.createdAt.getDateTime(),
                     style: AppStyles.style12Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      color:
+                          Theme.of(Get.context!).textTheme.titleMedium!.color,
                     ),
                   ),
                 ],

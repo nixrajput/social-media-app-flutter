@@ -52,7 +52,7 @@ class ChatWidget extends StatelessWidget {
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(Dimens.four),
           boxShadow: AppStyles.defaultShadow,
         ),
@@ -107,7 +107,7 @@ class ChatWidget extends StatelessWidget {
                                 style: AppStyles.style13Normal.copyWith(
                                   color: Theme.of(context)
                                       .textTheme
-                                      .subtitle1!
+                                      .titleMedium!
                                       .color!,
                                 ),
                                 overflow: TextOverflow.ellipsis,
@@ -120,14 +120,14 @@ class ChatWidget extends StatelessWidget {
                                     ? AppStyles.style13Normal.copyWith(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .bodyText1!
+                                            .bodyLarge!
                                             .color!,
                                         fontWeight: FontWeight.w500,
                                       )
                                     : AppStyles.style13Normal.copyWith(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .subtitle1!
+                                            .titleMedium!
                                             .color!,
                                       ),
                                 overflow: TextOverflow.ellipsis,
@@ -159,7 +159,7 @@ class ChatWidget extends StatelessWidget {
                               style: AppStyles.style12Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .subtitle1!
+                                    .titleMedium!
                                     .color,
                               ),
                             ),
@@ -201,7 +201,7 @@ class ChatWidget extends StatelessWidget {
               text: TextSpan(
                 text: user.uname.toLowerCase(),
                 style: AppStyles.style14Bold.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
               overflow: TextOverflow.ellipsis,
@@ -228,13 +228,13 @@ class ChatWidget extends StatelessWidget {
       return Icon(
         Icons.done_all,
         size: Dimens.sixTeen,
-        color: Theme.of(Get.context!).textTheme.subtitle1!.color!,
+        color: Theme.of(Get.context!).textTheme.titleMedium!.color!,
       );
     } else if (chat.sent == true) {
       return Icon(
         Icons.done,
         size: Dimens.sixTeen,
-        color: Theme.of(Get.context!).textTheme.subtitle1!.color!,
+        color: Theme.of(Get.context!).textTheme.titleMedium!.color!,
       );
     }
 

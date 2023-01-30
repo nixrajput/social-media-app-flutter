@@ -70,7 +70,7 @@ class ForgotPasswordView extends StatelessWidget {
                       keyboardType: TextInputType.emailAddress,
                       maxLines: 1,
                       style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       controller: logic.emailTextController,
                       onEditingComplete: logic.focusNode.unfocus,

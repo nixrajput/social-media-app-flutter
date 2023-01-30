@@ -45,7 +45,7 @@ class ChatReplyToBox extends StatelessWidget {
                 Text(
                   message.mediaFile!.mediaType == "video" ? 'Video' : 'Image',
                   style: AppStyles.style12Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               if (message.message != null && message.message!.isNotEmpty)
@@ -56,7 +56,7 @@ class ChatReplyToBox extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                 ),
             ],
@@ -74,12 +74,12 @@ class ChatReplyToBox extends StatelessWidget {
           child: Container(
             padding: Dimens.edgeInsets4,
             decoration: BoxDecoration(
-              color: Theme.of(context).bottomAppBarColor,
+              color: Theme.of(context).cardColor,
               shape: BoxShape.circle,
             ),
             child: Icon(
               Icons.close,
-              color: Theme.of(context).textTheme.subtitle2!.color,
+              color: Theme.of(context).textTheme.titleSmall!.color,
               size: Dimens.twenty,
             ),
           ),
@@ -104,14 +104,14 @@ class ChatReplyToBox extends StatelessWidget {
           children: [
             Icon(
               Icons.reply,
-              color: Theme.of(context).textTheme.subtitle2!.color,
+              color: Theme.of(context).textTheme.titleSmall!.color,
               size: Dimens.twenty,
             ),
             Dimens.boxWidth4,
             Text(
               'Replying to $repliedUser',
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(context).textTheme.subtitle2!.color,
+                color: Theme.of(context).textTheme.titleSmall!.color,
               ),
             ),
           ],

@@ -43,7 +43,7 @@ class NxAppBar extends StatelessWidget {
                 child: Icon(
                   CupertinoIcons.arrow_left,
                   color: backBtnColor ??
-                      Theme.of(context).textTheme.bodyText1!.color,
+                      Theme.of(context).textTheme.bodyLarge!.color,
                   size: Dimens.twentyFour,
                 ),
               ),
@@ -60,7 +60,7 @@ class NxAppBar extends StatelessWidget {
                       title!,
                       style: titleStyle ??
                           AppStyles.style20Bold.copyWith(
-                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            color: Theme.of(context).textTheme.bodyLarge!.color,
                           ),
                     )
                 ],

@@ -5,10 +5,10 @@ abstract class ColorValues {
   static const Color darkBgColor = Color.fromARGB(255, 10, 10, 16);
   static const Color darkBodyTextColor = Color.fromARGB(255, 240, 240, 240);
   static const Color darkChatBubbleColor = Color.fromARGB(255, 18, 66, 148);
-  static const Color darkDialogColor = Color.fromARGB(255, 36, 36, 50);
+  static const Color darkDialogColor = Color.fromARGB(255, 36, 36, 56);
   static const Color darkDividerColor = Color.fromARGB(255, 70, 70, 70);
   static const Color darkGrayColor = Color.fromARGB(255, 120, 120, 120);
-  static const Color darkSubtitle2TextColor =
+  static const Color darktitleSmallTextColor =
       Color.fromARGB(255, 100, 100, 100);
 
   static const Color darkSubtitleTextColor = Color.fromARGB(255, 160, 160, 160);
@@ -21,7 +21,7 @@ abstract class ColorValues {
   static const Color lightDialogColor = Color.fromARGB(255, 252, 252, 252);
   static const Color lightDividerColor = Color.fromARGB(255, 200, 200, 200);
   static const Color lightGrayColor = Color.fromARGB(255, 210, 210, 210);
-  static const Color lightSubtitle2TextColor =
+  static const Color lighttitleSmallTextColor =
       Color.fromARGB(255, 140, 140, 140);
 
   static const Color lightSubtitleTextColor =

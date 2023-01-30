@@ -82,7 +82,7 @@ class ChangePasswordView extends StatelessWidget {
                           style: AppStyles.style14Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                           controller: logic.oldPasswordTextController,
@@ -118,7 +118,7 @@ class ChangePasswordView extends StatelessWidget {
                           style: AppStyles.style14Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                           controller: logic.newPasswordTextController,
@@ -154,7 +154,7 @@ class ChangePasswordView extends StatelessWidget {
                           style: AppStyles.style14Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                           controller: logic.confirmPasswordTextController,
@@ -182,7 +182,7 @@ class ChangePasswordView extends StatelessWidget {
                               style: AppStyles.style12Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .subtitle1!
+                                    .titleMedium!
                                     .color,
                               ),
                             ),
@@ -204,7 +204,7 @@ class ChangePasswordView extends StatelessWidget {
                               style: AppStyles.style12Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .subtitle1!
+                                    .titleMedium!
                                     .color,
                               ),
                             ),
@@ -226,7 +226,7 @@ class ChangePasswordView extends StatelessWidget {
                               style: AppStyles.style12Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .subtitle1!
+                                    .titleMedium!
                                     .color,
                               ),
                             ),
@@ -249,7 +249,7 @@ class ChangePasswordView extends StatelessWidget {
                               style: AppStyles.style12Normal.copyWith(
                                 color: Theme.of(Get.context!)
                                     .textTheme
-                                    .subtitle1!
+                                    .titleMedium!
                                     .color,
                               ),
                             ),

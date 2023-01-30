@@ -64,7 +64,8 @@ class FollowRequestView extends StatelessWidget {
                   Text(
                     StringValues.noFollowRequests,
                     style: AppStyles.style32Bold.copyWith(
-                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      color:
+                          Theme.of(Get.context!).textTheme.titleMedium!.color,
                     ),
                     textAlign: TextAlign.center,
                   ),

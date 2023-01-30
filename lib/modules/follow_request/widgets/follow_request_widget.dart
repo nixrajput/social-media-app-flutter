@@ -46,7 +46,7 @@ class FollowRequestWidget extends StatelessWidget {
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(Dimens.four),
           border: Border.all(
             color: Theme.of(context).dividerColor,
@@ -101,7 +101,7 @@ class FollowRequestWidget extends StatelessWidget {
               text: TextSpan(
                 text: followRequest.from.uname.toLowerCase(),
                 style: AppStyles.style14Bold.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
               overflow: TextOverflow.ellipsis,
@@ -122,7 +122,7 @@ class FollowRequestWidget extends StatelessWidget {
         text: TextSpan(
           text: '${followRequest.from.fname} ${followRequest.from.lname}',
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
         ),
         overflow: TextOverflow.ellipsis,
@@ -137,7 +137,7 @@ class FollowRequestWidget extends StatelessWidget {
           children: [
             Dimens.boxWidth16,
             NxIconButton(
-              bgColor: Theme.of(context).bottomAppBarColor,
+              bgColor: Theme.of(context).cardColor,
               borderRadius: Dimens.four,
               padding: Dimens.edgeInsets4,
               width: Dimens.fourtyEight,
@@ -148,7 +148,7 @@ class FollowRequestWidget extends StatelessWidget {
             ),
             Dimens.boxWidth8,
             NxIconButton(
-              bgColor: Theme.of(context).bottomAppBarColor,
+              bgColor: Theme.of(context).cardColor,
               borderRadius: Dimens.four,
               padding: Dimens.edgeInsets4,
               width: Dimens.fourtyEight,

@@ -53,7 +53,7 @@ class AccountSettingsView extends StatelessWidget {
             /// Change Email Address
             NxListTile(
               padding: Dimens.edgeInsets12,
-              bgColor: Theme.of(context).bottomAppBarColor,
+              bgColor: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               title: Text(
                 StringValues.email.toTitleCase(),
@@ -62,7 +62,7 @@ class AccountSettingsView extends StatelessWidget {
               subtitle: Text(
                 profile.email,
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.titleMedium!.color,
                 ),
               ),
               onTap: () => RouteManagement.goToVerifyPasswordView(
@@ -75,7 +75,7 @@ class AccountSettingsView extends StatelessWidget {
             /// Add or Change Phone Number
             NxListTile(
               padding: Dimens.edgeInsets12,
-              bgColor: Theme.of(context).bottomAppBarColor,
+              bgColor: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               title: Text(
                 StringValues.phone.toTitleCase(),
@@ -86,7 +86,7 @@ class AccountSettingsView extends StatelessWidget {
                     ? '${profile.countryCode} ${profile.phone}'
                     : StringValues.addPhoneNumber,
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.titleMedium!.color,
                 ),
               ),
               onTap: () => RouteManagement.goToVerifyPasswordView(
@@ -99,7 +99,7 @@ class AccountSettingsView extends StatelessWidget {
             /// Change Username
             NxListTile(
               padding: Dimens.edgeInsets12,
-              bgColor: Theme.of(context).bottomAppBarColor,
+              bgColor: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               title: Text(
                 StringValues.username.toTitleCase(),
@@ -108,7 +108,7 @@ class AccountSettingsView extends StatelessWidget {
               subtitle: Text(
                 profile.uname,
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.titleMedium!.color,
                 ),
               ),
               onTap: () => RouteManagement.goToVerifyPasswordView(
@@ -121,7 +121,7 @@ class AccountSettingsView extends StatelessWidget {
             /// Apply for Blue Tick
             NxListTile(
               padding: Dimens.edgeInsets12,
-              bgColor: Theme.of(context).bottomAppBarColor,
+              bgColor: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               title: Text(
                 StringValues.verified.toTitleCase(),
@@ -130,7 +130,7 @@ class AccountSettingsView extends StatelessWidget {
               subtitle: Text(
                 StringValues.verifiedDesc,
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.titleMedium!.color,
                 ),
               ),
               trailing: Text(
@@ -138,7 +138,7 @@ class AccountSettingsView extends StatelessWidget {
                 style: AppStyles.style13Bold.copyWith(
                   color: profile.isVerified
                       ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).textTheme.subtitle1!.color,
+                      : Theme.of(context).textTheme.titleMedium!.color,
                 ),
               ),
               onTap: () {
@@ -162,7 +162,7 @@ class AccountSettingsView extends StatelessWidget {
                       Text(
                         StringValues.verifiedAccountDesc,
                         style: AppStyles.style14Normal.copyWith(
-                          color: Theme.of(context).textTheme.subtitle1!.color,
+                          color: Theme.of(context).textTheme.titleMedium!.color,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -189,7 +189,7 @@ class AccountSettingsView extends StatelessWidget {
 
             NxListTile(
               padding: Dimens.edgeInsets12,
-              bgColor: Theme.of(context).bottomAppBarColor,
+              bgColor: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(Dimens.four),
               title: Text(
                 StringValues.deactivate.toTitleCase(),
@@ -200,7 +200,7 @@ class AccountSettingsView extends StatelessWidget {
               subtitle: Text(
                 StringValues.deactivateAccountHelp,
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.titleMedium!.color,
                 ),
               ),
               onTap: RouteManagement.goToDeactivateAccountSettingsView,

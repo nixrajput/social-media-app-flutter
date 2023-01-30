@@ -83,7 +83,7 @@ class PostCommentView extends StatelessWidget {
                       minLines: 1,
                       maxLines: 1,
                       style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                     ),
                   ),
@@ -129,7 +129,7 @@ class PostCommentView extends StatelessWidget {
                       StringValues.noComments,
                       style: AppStyles.style32Bold.copyWith(
                         color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                            Theme.of(Get.context!).textTheme.titleMedium!.color,
                       ),
                       textAlign: TextAlign.center,
                     ),

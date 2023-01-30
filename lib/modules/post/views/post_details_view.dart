@@ -57,7 +57,7 @@ class PostDetailsView extends StatelessWidget {
                 child: Text(
                   StringValues.postDetailsNotFound,
                   style: AppStyles.style32Bold.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -98,7 +98,7 @@ class PostDetailsView extends StatelessWidget {
         Text(
           StringValues.comments,
           style: AppStyles.style18Bold.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
         ),
         GetBuilder<CommentController>(
@@ -117,7 +117,8 @@ class PostDetailsView extends StatelessWidget {
                   Text(
                     StringValues.noComments,
                     style: AppStyles.style24Bold.copyWith(
-                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      color:
+                          Theme.of(Get.context!).textTheme.titleMedium!.color,
                     ),
                     textAlign: TextAlign.center,
                   ),

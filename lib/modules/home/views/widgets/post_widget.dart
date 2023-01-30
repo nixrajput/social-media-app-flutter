@@ -86,7 +86,7 @@ class PostWidget extends StatelessWidget {
                     text: TextSpan(
                       text: '${post.owner!.fname} ${post.owner!.lname}',
                       style: AppStyles.style14Bold.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () =>
@@ -116,7 +116,7 @@ class PostWidget extends StatelessWidget {
                 NxIconButton(
                   icon: Icons.more_vert,
                   iconSize: Dimens.twenty,
-                  iconColor: Theme.of(context).textTheme.bodyText1!.color,
+                  iconColor: Theme.of(context).textTheme.bodyLarge!.color,
                   onTap: () => _showHeaderOptionBottomSheet(context),
                 ),
               ],
@@ -133,7 +133,7 @@ class PostWidget extends StatelessWidget {
       builder: (BuildContext context, String value) => Text(
         value,
         style: AppStyles.style12Normal.copyWith(
-          color: Theme.of(context).textTheme.subtitle1!.color,
+          color: Theme.of(context).textTheme.titleMedium!.color,
         ),
       ),
     );
@@ -143,7 +143,7 @@ class PostWidget extends StatelessWidget {
         text: TextSpan(
           text: post.owner!.uname,
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
         ),
         overflow: TextOverflow.ellipsis,
@@ -222,7 +222,7 @@ class PostWidget extends StatelessWidget {
               Text(
                 '${post.totalVotes!.toString().toCountingFormat()} votes',
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.titleMedium!.color,
                 ),
               ),
               Dimens.boxHeight8,
@@ -230,7 +230,7 @@ class PostWidget extends StatelessWidget {
                 '${post.pollEndsAt!.getPollDurationLeft()}',
                 style: AppStyles.style13Normal.copyWith(
                   color: isExpired
-                      ? Theme.of(context).textTheme.subtitle1!.color
+                      ? Theme.of(context).textTheme.titleMedium!.color
                       : ColorValues.linkColor,
                 ),
               ),
@@ -327,7 +327,7 @@ class PostWidget extends StatelessWidget {
                           size: Dimens.twenty,
                           color: post.isLiked == true
                               ? ColorValues.primaryColor
-                              : Theme.of(context).textTheme.subtitle1!.color,
+                              : Theme.of(context).textTheme.titleMedium!.color,
                         ),
                         Dimens.boxWidth2,
                         Text(
@@ -335,7 +335,10 @@ class PostWidget extends StatelessWidget {
                           style: AppStyles.style13Normal.copyWith(
                             color: post.isLiked == true
                                 ? ColorValues.primaryColor
-                                : Theme.of(context).textTheme.subtitle1!.color,
+                                : Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .color,
                           ),
                         ),
                       ],
@@ -356,13 +359,14 @@ class PostWidget extends StatelessWidget {
                         Icon(
                           Icons.comment_outlined,
                           size: Dimens.twenty,
-                          color: Theme.of(context).textTheme.subtitle1!.color,
+                          color: Theme.of(context).textTheme.titleMedium!.color,
                         ),
                         Dimens.boxWidth2,
                         Text(
                           '${post.commentsCount}'.toCountingFormat(),
                           style: AppStyles.style13Normal.copyWith(
-                            color: Theme.of(context).textTheme.subtitle1!.color,
+                            color:
+                                Theme.of(context).textTheme.titleMedium!.color,
                           ),
                         ),
                       ],
@@ -381,13 +385,13 @@ class PostWidget extends StatelessWidget {
                       Icon(
                         Icons.repeat_outlined,
                         size: Dimens.twenty,
-                        color: Theme.of(context).textTheme.subtitle1!.color,
+                        color: Theme.of(context).textTheme.titleMedium!.color,
                       ),
                       Dimens.boxWidth2,
                       Text(
                         '${0}'.toCountingFormat(),
                         style: AppStyles.style13Normal.copyWith(
-                          color: Theme.of(context).textTheme.subtitle1!.color,
+                          color: Theme.of(context).textTheme.titleMedium!.color,
                         ),
                       ),
                     ],
@@ -400,7 +404,7 @@ class PostWidget extends StatelessWidget {
                   child: Icon(
                     Icons.share_outlined,
                     size: Dimens.twenty,
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ],
@@ -425,13 +429,13 @@ class PostWidget extends StatelessWidget {
           },
           leading: Icon(
             Icons.visibility,
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
             size: Dimens.twenty,
           ),
           title: Text(
             StringValues.view,
             style: AppStyles.style16Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -455,13 +459,13 @@ class PostWidget extends StatelessWidget {
             },
             leading: Icon(
               Icons.delete,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
               size: Dimens.twenty,
             ),
             title: Text(
               StringValues.delete,
               style: AppStyles.style16Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -480,13 +484,13 @@ class PostWidget extends StatelessWidget {
             },
             leading: Icon(
               Icons.edit,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
               size: Dimens.twenty,
             ),
             title: Text(
               StringValues.edit,
               style: AppStyles.style16Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -506,13 +510,13 @@ class PostWidget extends StatelessWidget {
           },
           leading: Icon(
             Icons.share,
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
             size: Dimens.twenty,
           ),
           title: Text(
             StringValues.share,
             style: AppStyles.style16Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -529,13 +533,13 @@ class PostWidget extends StatelessWidget {
           },
           leading: Icon(
             Icons.report,
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
             size: Dimens.twenty,
           ),
           title: Text(
             StringValues.report,
             style: AppStyles.style16Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -551,7 +555,7 @@ class PostWidget extends StatelessWidget {
     return Container(
       margin: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
-        color: Theme.of(context).bottomAppBarColor,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(Dimens.four),
         boxShadow: AppStyles.defaultShadow,
       ),

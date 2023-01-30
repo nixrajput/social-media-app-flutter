@@ -53,7 +53,7 @@ class PrivacySettingsView extends StatelessWidget {
               GetBuilder<ProfileController>(
                 builder: (logic) => NxListTile(
                   padding: Dimens.edgeInsets12,
-                  bgColor: Theme.of(context).bottomAppBarColor,
+                  bgColor: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(Dimens.four),
                   title: Text(
                     StringValues.accountPrivacy,
@@ -62,7 +62,7 @@ class PrivacySettingsView extends StatelessWidget {
                   subtitle: Text(
                     StringValues.accountPrivacyDesc,
                     style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
+                      color: Theme.of(context).textTheme.titleMedium!.color,
                     ),
                   ),
                   trailing: Text(
@@ -72,7 +72,7 @@ class PrivacySettingsView extends StatelessWidget {
                     style: AppStyles.style13Bold.copyWith(
                       color: logic.profileDetails!.user!.isPrivate
                           ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).textTheme.subtitle1!.color,
+                          : Theme.of(context).textTheme.titleMedium!.color,
                     ),
                   ),
                   onTap: RouteManagement.goToChangeAccountPrivacyView,
@@ -86,7 +86,7 @@ class PrivacySettingsView extends StatelessWidget {
                 builder: (logic) {
                   return NxListTile(
                     padding: Dimens.edgeInsets12,
-                    bgColor: Theme.of(context).bottomAppBarColor,
+                    bgColor: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(Dimens.four),
                     title: Text(
                       StringValues.onlineStatus,
@@ -95,7 +95,7 @@ class PrivacySettingsView extends StatelessWidget {
                     subtitle: Text(
                       StringValues.onlineStatusDesc,
                       style: AppStyles.style13Normal.copyWith(
-                        color: Theme.of(context).textTheme.subtitle1!.color,
+                        color: Theme.of(context).textTheme.titleMedium!.color,
                       ),
                     ),
                     trailing: Text(
@@ -103,10 +103,10 @@ class PrivacySettingsView extends StatelessWidget {
                           ? StringValues.on
                           : StringValues.off,
                       style: AppStyles.style13Bold.copyWith(
-                        color:
-                            logic.profileDetails!.user!.showOnlineStatus == true
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context).textTheme.subtitle1!.color,
+                        color: logic.profileDetails!.user!.showOnlineStatus ==
+                                true
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).textTheme.titleMedium!.color,
                       ),
                     ),
                     onTap: RouteManagement.goToChangeOnlineStatusView,
@@ -119,7 +119,7 @@ class PrivacySettingsView extends StatelessWidget {
               /// Posts
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.postPrivacy,
@@ -128,7 +128,7 @@ class PrivacySettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.postPrivacyDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ),
@@ -138,7 +138,7 @@ class PrivacySettingsView extends StatelessWidget {
               /// Comments
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.commentPrivacy,
@@ -147,7 +147,7 @@ class PrivacySettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.commentPrivacyDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ),
@@ -157,7 +157,7 @@ class PrivacySettingsView extends StatelessWidget {
               /// Messages
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.messagePrivacy,
@@ -166,7 +166,7 @@ class PrivacySettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.commentPrivacyDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ),
@@ -176,7 +176,7 @@ class PrivacySettingsView extends StatelessWidget {
               /// Moments
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.storyPrivacy,
@@ -185,7 +185,7 @@ class PrivacySettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.storyPrivacyDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ),

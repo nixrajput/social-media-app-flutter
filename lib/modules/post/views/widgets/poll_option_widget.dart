@@ -90,7 +90,7 @@ class PollOptionWidget extends StatelessWidget {
                           style: AppStyles.style13Normal.copyWith(
                             color: !isExpired && post.isVoted == false
                                 ? ColorValues.linkColor
-                                : Theme.of(context).textTheme.bodyText1!.color,
+                                : Theme.of(context).textTheme.bodyLarge!.color,
                           ),
                         ),
                       ),
@@ -100,7 +100,7 @@ class PollOptionWidget extends StatelessWidget {
                         Icon(
                           Icons.check_circle_outline,
                           size: Dimens.sixTeen,
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                     ],
                   ),
@@ -110,7 +110,7 @@ class PollOptionWidget extends StatelessWidget {
                   Text(
                     '${(percentage * 100).toStringAsFixed(0)}%',
                     style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.bodyText1!.color,
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
                     ),
                   ),
               ],

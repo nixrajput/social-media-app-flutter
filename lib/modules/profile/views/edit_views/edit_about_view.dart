@@ -68,7 +68,7 @@ class EditAboutView extends StatelessWidget {
                         maxLines: 4,
                         style: AppStyles.style14Normal.copyWith(
                           color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                              Theme.of(Get.context!).textTheme.bodyLarge!.color,
                         ),
                         controller: logic.aboutTextController,
                         onEditingComplete: logic.focusNode.unfocus,

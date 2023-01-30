@@ -71,7 +71,8 @@ class NotificationTabView extends StatelessWidget {
                   Text(
                     StringValues.noNotifications,
                     style: AppStyles.style32Bold.copyWith(
-                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      color:
+                          Theme.of(Get.context!).textTheme.titleMedium!.color,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -161,7 +162,7 @@ class NotificationTabView extends StatelessWidget {
                         Container(
                           padding: Dimens.edgeInsets12,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).bottomAppBarColor,
+                            color: Theme.of(context).cardColor,
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: Theme.of(context).dividerColor,
@@ -171,7 +172,7 @@ class NotificationTabView extends StatelessWidget {
                           child: Icon(
                             Icons.person_add_alt,
                             size: Dimens.twentyFour,
-                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            color: Theme.of(context).textTheme.bodyLarge!.color,
                           ),
                         ),
                         Dimens.boxWidth8,
@@ -185,7 +186,7 @@ class NotificationTabView extends StatelessWidget {
                               style: AppStyles.style14Bold.copyWith(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .color,
                               ),
                             ),
@@ -194,7 +195,7 @@ class NotificationTabView extends StatelessWidget {
                                 style: AppStyles.style13Normal.copyWith(
                                   color: Theme.of(context)
                                       .textTheme
-                                      .subtitle1!
+                                      .titleMedium!
                                       .color,
                                 )),
                           ],
@@ -204,7 +205,7 @@ class NotificationTabView extends StatelessWidget {
                     Text(
                       logic.followRequestList.length.toString(),
                       style: AppStyles.style14Bold.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       textAlign: TextAlign.center,
                     ),

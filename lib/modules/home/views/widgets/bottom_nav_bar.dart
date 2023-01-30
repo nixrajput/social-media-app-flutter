@@ -67,7 +67,7 @@ class NxBottomNavBar extends StatelessWidget {
 
         return BottomNavItem(
           icon: Icons.notifications,
-          iconColor: Theme.of(context).textTheme.bodyText1!.color,
+          iconColor: Theme.of(context).textTheme.bodyLarge!.color,
           isActive: logic.currentPageIndex == 3,
           itemsCount: 5,
           onTap: () => logic.changePage(3),
@@ -90,7 +90,7 @@ class NxBottomNavBar extends StatelessWidget {
 
         return BottomNavItem(
           icon: Icons.messenger,
-          iconColor: Theme.of(context).textTheme.bodyText1!.color,
+          iconColor: Theme.of(context).textTheme.bodyLarge!.color,
           isActive: logic.currentPageIndex == 2,
           itemsCount: 5,
           onTap: () => logic.changePage(2),
@@ -104,7 +104,7 @@ class NxBottomNavBar extends StatelessWidget {
       HomeController logic, BuildContext context) {
     return BottomNavItem(
       icon: Icons.numbers,
-      iconColor: Theme.of(context).textTheme.bodyText1!.color,
+      iconColor: Theme.of(context).textTheme.bodyLarge!.color,
       isActive: logic.currentPageIndex == 1,
       itemsCount: 5,
       onTap: () => logic.changePage(1),
@@ -114,7 +114,7 @@ class NxBottomNavBar extends StatelessWidget {
   BottomNavItem _buildHomeIconBtn(HomeController logic, BuildContext context) {
     return BottomNavItem(
       icon: Icons.home,
-      iconColor: Theme.of(context).textTheme.bodyText1!.color,
+      iconColor: Theme.of(context).textTheme.bodyLarge!.color,
       isActive: logic.currentPageIndex == 0,
       itemsCount: 5,
       onTap: () => logic.changePage(0),

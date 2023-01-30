@@ -61,7 +61,7 @@ class AppUpdateView extends StatelessWidget {
       StringValues.updateAvailableDesc,
       textAlign: TextAlign.center,
       style: AppStyles.style13Normal.copyWith(
-        color: Theme.of(context).textTheme.subtitle1!.color,
+        color: Theme.of(context).textTheme.titleMedium!.color,
       ),
     );
   }
@@ -71,7 +71,7 @@ class AppUpdateView extends StatelessWidget {
       StringValues.updateAvailable.toTitleCase(),
       textAlign: TextAlign.center,
       style: AppStyles.style20Bold.copyWith(
-        color: Theme.of(context).textTheme.bodyText1!.color,
+        color: Theme.of(context).textTheme.bodyLarge!.color,
       ),
     );
   }
@@ -88,7 +88,7 @@ class AppUpdateView extends StatelessWidget {
     return Container(
       height: Dimens.screenWidth,
       decoration: BoxDecoration(
-        color: Theme.of(context).bottomAppBarColor,
+        color: Theme.of(context).cardColor,
         boxShadow: AppStyles.defaultShadow,
         borderRadius: BorderRadius.circular(Dimens.four),
       ),
@@ -104,7 +104,7 @@ class AppUpdateView extends StatelessWidget {
               StringValues.changelog.toTitleCase(),
               textAlign: TextAlign.center,
               style: AppStyles.style16Bold.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             _buildChangelogMarkdown(logic, context),
@@ -118,8 +118,8 @@ class AppUpdateView extends StatelessWidget {
       AppUpdateController logic, BuildContext context) {
     return NxOutlinedButton(
       label: StringValues.updateNow.toUpperCase(),
-      bgColor: Theme.of(context).textTheme.bodyText1!.color,
-      borderColor: Theme.of(context).textTheme.bodyText1!.color,
+      bgColor: Theme.of(context).textTheme.bodyLarge!.color,
+      borderColor: Theme.of(context).textTheme.bodyLarge!.color,
       padding: Dimens.edgeInsets0_8,
       width: Dimens.screenWidth,
       height: Dimens.fiftySix,
@@ -139,19 +139,19 @@ class AppUpdateView extends StatelessWidget {
       data: logic.updateInfo.changelog!,
       styleSheet: MarkdownStyleSheet(
         p: AppStyles.style13Normal.copyWith(
-          color: Theme.of(context).textTheme.subtitle1!.color,
+          color: Theme.of(context).textTheme.titleMedium!.color,
         ),
         h1: AppStyles.style20Bold.copyWith(
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         h2: AppStyles.style18Bold.copyWith(
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         em: AppStyles.style13Normal.copyWith(
-          color: Theme.of(context).textTheme.subtitle1!.color,
+          color: Theme.of(context).textTheme.titleMedium!.color,
         ),
         blockquote: AppStyles.style13Normal.copyWith(
-          color: Theme.of(context).textTheme.subtitle1!.color,
+          color: Theme.of(context).textTheme.titleMedium!.color,
         ),
         code: AppStyles.style13Bold.copyWith(
           color: ColorValues.successColor,
@@ -168,7 +168,7 @@ class AppUpdateView extends StatelessWidget {
           '${StringValues.newVersion} ${StringValues.version}:',
           textAlign: TextAlign.center,
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
         ),
         Dimens.boxWidth4,
@@ -176,7 +176,7 @@ class AppUpdateView extends StatelessWidget {
           logic.updateInfo.latestVersion!,
           textAlign: TextAlign.center,
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
         ),
       ],
@@ -192,7 +192,7 @@ class AppUpdateView extends StatelessWidget {
           '${StringValues.current} ${StringValues.version}:',
           textAlign: TextAlign.center,
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
         ),
         Dimens.boxWidth4,
@@ -200,7 +200,7 @@ class AppUpdateView extends StatelessWidget {
           logic.updateInfo.currentVersion!,
           textAlign: TextAlign.center,
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
         ),
       ],
@@ -253,7 +253,7 @@ class AppUpdateView extends StatelessWidget {
     return Text(
       logic.getStatus(snapshot.data!.status),
       style: AppStyles.style14Bold.copyWith(
-        color: Theme.of(context).textTheme.bodyText1!.color,
+        color: Theme.of(context).textTheme.bodyLarge!.color,
       ),
     );
   }
@@ -264,7 +264,7 @@ class AppUpdateView extends StatelessWidget {
       value: progress,
       backgroundColor: Theme.of(context).dialogBackgroundColor,
       valueColor: AlwaysStoppedAnimation<Color>(
-        Theme.of(context).textTheme.bodyText1!.color!,
+        Theme.of(context).textTheme.bodyLarge!.color!,
       ),
     );
   }
@@ -277,14 +277,14 @@ class AppUpdateView extends StatelessWidget {
           : 'Resume'.toUpperCase(),
       bgColor: snapshot.data!.status == DownloadStatus.STATUS_RUNNING
           ? Colors.transparent
-          : Theme.of(context).textTheme.bodyText1!.color,
-      borderColor: Theme.of(context).textTheme.bodyText1!.color,
+          : Theme.of(context).textTheme.bodyLarge!.color,
+      borderColor: Theme.of(context).textTheme.bodyLarge!.color,
       padding: Dimens.edgeInsets0_8,
       width: Dimens.screenWidth,
       height: Dimens.fiftySix,
       labelStyle: AppStyles.style16Bold.copyWith(
         color: snapshot.data!.status == DownloadStatus.STATUS_RUNNING
-            ? Theme.of(context).textTheme.bodyText1!.color
+            ? Theme.of(context).textTheme.bodyLarge!.color
             : Theme.of(context).scaffoldBackgroundColor,
       ),
       onTap: snapshot.data!.status == DownloadStatus.STATUS_RUNNING
@@ -307,14 +307,14 @@ class AppUpdateView extends StatelessWidget {
         Text(
           '$size MB / $totalSize MB',
           style: AppStyles.style14Bold.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
         ),
         Dimens.boxHeight8,
         Text(
           '$downloadSpeed',
           style: AppStyles.style14Bold.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
         ),
       ],

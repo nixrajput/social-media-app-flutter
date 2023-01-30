@@ -40,7 +40,7 @@ class PreviewMediaFilesView extends StatelessWidget {
                                 icon: Icons.arrow_back,
                                 iconColor: Theme.of(context)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .color,
                                 onTap: Get.back,
                               ),
@@ -51,7 +51,7 @@ class PreviewMediaFilesView extends StatelessWidget {
                                     icon: Icons.delete,
                                     iconColor: Theme.of(context)
                                         .textTheme
-                                        .bodyText1!
+                                        .bodyLarge!
                                         .color,
                                     onTap: () => logic.removeFile(currentItem),
                                   ),
@@ -60,7 +60,7 @@ class PreviewMediaFilesView extends StatelessWidget {
                                     icon: Icons.crop,
                                     iconColor: Theme.of(context)
                                         .textTheme
-                                        .bodyText1!
+                                        .bodyLarge!
                                         .color,
                                     onTap: () {},
                                   ),
@@ -178,7 +178,7 @@ class PreviewMediaFilesView extends StatelessWidget {
                                                             color: Theme.of(Get
                                                                     .context!)
                                                                 .textTheme
-                                                                .subtitle1!
+                                                                .titleMedium!
                                                                 .color,
                                                           ),
                                                           border:
@@ -192,7 +192,7 @@ class PreviewMediaFilesView extends StatelessWidget {
                                                           color:
                                                               Theme.of(context)
                                                                   .textTheme
-                                                                  .bodyText1!
+                                                                  .bodyLarge!
                                                                   .color,
                                                         ),
                                                       ),

@@ -107,7 +107,7 @@ abstract class AppUtility {
                   Text(
                     message ?? StringValues.pleaseWait,
                     style: AppStyles.style16Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
                     ),
                   ),
                 ],
@@ -132,7 +132,7 @@ abstract class AppUtility {
           fontFamily: "Muge",
           fontSize: fontSize,
           letterSpacing: Dimens.four,
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         textAlign: isCentered == true ? TextAlign.center : TextAlign.start,
       );
@@ -369,7 +369,8 @@ abstract class AppUtility {
       ),
       isScrollControlled: isScrollControlled ?? false,
       barrierColor: ColorValues.blackColor.withOpacity(0.5),
-      backgroundColor: Theme.of(Get.context!).bottomSheetTheme.backgroundColor,
+      backgroundColor:
+          Theme.of(Get.context!).bottomSheetTheme.modalBackgroundColor,
     );
   }
 

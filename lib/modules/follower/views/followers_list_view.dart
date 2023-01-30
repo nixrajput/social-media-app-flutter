@@ -83,7 +83,7 @@ class FollowersListView extends StatelessWidget {
                     keyboardType: TextInputType.text,
                     maxLines: 1,
                     style: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
                     ),
                     controller: logic.searchTextController,
                     onChanged: (value) => logic.searchFollowers(value),
@@ -115,7 +115,7 @@ class FollowersListView extends StatelessWidget {
             Text(
               StringValues.noFollower,
               style: AppStyles.style32Bold.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(Get.context!).textTheme.titleMedium!.color,
               ),
               textAlign: TextAlign.center,
             ),

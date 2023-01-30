@@ -117,7 +117,7 @@ class VerificationView extends StatelessWidget {
             keyboardType: TextInputType.url,
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
             ),
             onChanged: (value) => logic.onOtherLinksChanged(value),
             onEditingComplete: logic.focusNode.unfocus,
@@ -129,7 +129,7 @@ class VerificationView extends StatelessWidget {
             text: TextSpan(
               text: StringValues.otherLinksHelp,
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(Get.context!).textTheme.titleMedium!.color,
               ),
             ),
           ),
@@ -160,7 +160,7 @@ class VerificationView extends StatelessWidget {
             keyboardType: TextInputType.url,
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
             ),
             onChanged: (value) => logic.onNewsArticlesLinksChanged(value),
             onEditingComplete: logic.focusNode.nextFocus,
@@ -172,7 +172,7 @@ class VerificationView extends StatelessWidget {
             text: TextSpan(
               text: StringValues.newsArticleLinkHelp,
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(Get.context!).textTheme.titleMedium!.color,
               ),
             ),
           ),
@@ -192,7 +192,7 @@ class VerificationView extends StatelessWidget {
             child: Text(
               StringValues.featuredInNewsArticle,
               style: AppStyles.style14Bold.copyWith(
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -233,7 +233,7 @@ class VerificationView extends StatelessWidget {
             keyboardType: TextInputType.url,
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
             ),
             onChanged: (value) => logic.onWikipediaPageLinkChanged(value),
             onEditingComplete: logic.focusNode.nextFocus,
@@ -245,7 +245,7 @@ class VerificationView extends StatelessWidget {
             text: TextSpan(
               text: StringValues.wikiPageLinkHelp,
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(Get.context!).textTheme.titleMedium!.color,
               ),
             ),
           ),
@@ -265,7 +265,7 @@ class VerificationView extends StatelessWidget {
             child: Text(
               StringValues.hasWikiPage,
               style: AppStyles.style14Bold.copyWith(
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -306,7 +306,7 @@ class VerificationView extends StatelessWidget {
             keyboardType: TextInputType.url,
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
             ),
             onChanged: (value) => logic.onOtherPlatformLinksChanged(value),
             onEditingComplete: logic.focusNode.nextFocus,
@@ -318,7 +318,7 @@ class VerificationView extends StatelessWidget {
             text: TextSpan(
               text: StringValues.otherPlatformLinksHelp,
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(Get.context!).textTheme.titleMedium!.color,
               ),
             ),
           ),
@@ -338,7 +338,7 @@ class VerificationView extends StatelessWidget {
             child: Text(
               StringValues.verifiedOnOtherPlatform,
               style: AppStyles.style14Bold.copyWith(
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -390,7 +390,7 @@ class VerificationView extends StatelessWidget {
                             ),
                       style: AppStyles.style14Bold.copyWith(
                         color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                            Theme.of(Get.context!).textTheme.bodyLarge!.color,
                       ),
                     ),
                   ),
@@ -414,7 +414,7 @@ class VerificationView extends StatelessWidget {
             text: TextSpan(
               text: StringValues.selectDocumentHelp,
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(Get.context!).textTheme.titleMedium!.color,
               ),
             ),
           ),
@@ -454,7 +454,7 @@ class VerificationView extends StatelessWidget {
                           : logic.category,
                       style: AppStyles.style14Bold.copyWith(
                         color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                            Theme.of(Get.context!).textTheme.bodyLarge!.color,
                       ),
                     ),
                   ),
@@ -477,7 +477,7 @@ class VerificationView extends StatelessWidget {
             text: TextSpan(
               text: StringValues.selectCategoryHelp,
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(Get.context!).textTheme.titleMedium!.color,
               ),
             ),
           ),
@@ -518,7 +518,7 @@ class VerificationView extends StatelessWidget {
             ],
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
             ),
             onChanged: (value) => logic.onPhoneChanged(value),
             onEditingComplete: logic.focusNode.nextFocus,
@@ -530,7 +530,7 @@ class VerificationView extends StatelessWidget {
             text: TextSpan(
               text: StringValues.enterPhoneHelp,
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(Get.context!).textTheme.titleMedium!.color,
               ),
             ),
           ),
@@ -568,7 +568,7 @@ class VerificationView extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
             ),
             onChanged: (value) => logic.onEmailChanged(value),
             onEditingComplete: logic.focusNode.nextFocus,
@@ -580,7 +580,7 @@ class VerificationView extends StatelessWidget {
             text: TextSpan(
               text: StringValues.enterEmailHelp,
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(Get.context!).textTheme.titleMedium!.color,
               ),
             ),
           ),
@@ -619,7 +619,7 @@ class VerificationView extends StatelessWidget {
             textCapitalization: TextCapitalization.words,
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
             ),
             onChanged: (value) => logic.onLegalNameChanged(value),
             onEditingComplete: logic.focusNode.nextFocus,
@@ -631,7 +631,7 @@ class VerificationView extends StatelessWidget {
             text: TextSpan(
               text: StringValues.enterLegalNameHelp,
               style: AppStyles.style12Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                color: Theme.of(Get.context!).textTheme.titleMedium!.color,
               ),
             ),
           ),
@@ -669,7 +669,7 @@ class VerificationView extends StatelessWidget {
                       item,
                       style: AppStyles.style16Bold.copyWith(
                         color:
-                            Theme.of(Get.context!).textTheme.bodyText1!.color,
+                            Theme.of(Get.context!).textTheme.bodyLarge!.color,
                       ),
                     ),
                     onTap: () {

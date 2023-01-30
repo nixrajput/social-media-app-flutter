@@ -55,7 +55,7 @@ class ThemeSettingsView extends StatelessWidget {
                 NxRadioTile(
                   padding: Dimens.edgeInsets12,
                   showBorder: true,
-                  bgColor: Theme.of(context).bottomAppBarColor,
+                  bgColor: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () => logic.setThemeMode(kSystemMode),
                   onChanged: (value) {
@@ -68,7 +68,7 @@ class ThemeSettingsView extends StatelessWidget {
                   subtitle: Text(
                     StringValues.systemDefaultDesc,
                     style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
+                      color: Theme.of(context).textTheme.titleMedium!.color,
                     ),
                   ),
                   value: kSystemMode,
@@ -81,7 +81,7 @@ class ThemeSettingsView extends StatelessWidget {
                 NxRadioTile(
                   padding: Dimens.edgeInsets12,
                   showBorder: true,
-                  bgColor: Theme.of(context).bottomAppBarColor,
+                  bgColor: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () => logic.setThemeMode(kLightMode),
                   onChanged: (value) {
@@ -94,7 +94,7 @@ class ThemeSettingsView extends StatelessWidget {
                   subtitle: Text(
                     StringValues.lightModeDesc,
                     style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
+                      color: Theme.of(context).textTheme.titleMedium!.color,
                     ),
                   ),
                   value: kLightMode,
@@ -107,7 +107,7 @@ class ThemeSettingsView extends StatelessWidget {
                 NxRadioTile(
                   padding: Dimens.edgeInsets12,
                   showBorder: true,
-                  bgColor: Theme.of(context).bottomAppBarColor,
+                  bgColor: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(Dimens.four),
                   onTap: () => logic.setThemeMode(kDarkMode),
                   onChanged: (value) {
@@ -120,7 +120,7 @@ class ThemeSettingsView extends StatelessWidget {
                   subtitle: Text(
                     StringValues.darkModeDesc,
                     style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
+                      color: Theme.of(context).textTheme.titleMedium!.color,
                     ),
                   ),
                   value: kDarkMode,

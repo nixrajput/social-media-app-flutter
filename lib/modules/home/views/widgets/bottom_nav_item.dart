@@ -84,7 +84,7 @@ class _BottomNavItemState extends State<BottomNavItem>
                         icon: widget.icon,
                         size: widget.iconSize ?? Dimens.twentyFour,
                         color: widget.iconColor ??
-                            Theme.of(context).textTheme.bodyText1!.color,
+                            Theme.of(context).textTheme.bodyLarge!.color,
                         controller: _animationController,
                       ),
                     ),

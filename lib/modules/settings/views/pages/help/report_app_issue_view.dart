@@ -65,7 +65,7 @@ class ReportAppIssueView extends StatelessWidget {
                     keyboardType: TextInputType.multiline,
                     maxLines: 4,
                     style: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
                     ),
                     controller: logic.messageTextController,
                   ),

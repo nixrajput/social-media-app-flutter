@@ -79,7 +79,7 @@ class VerifyPasswordView extends StatelessWidget {
                           style: AppStyles.style14Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                           controller: logic.passwordTextController,

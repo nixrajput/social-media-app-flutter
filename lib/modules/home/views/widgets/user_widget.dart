@@ -49,7 +49,7 @@ class UserWidget extends StatelessWidget {
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(Dimens.four),
           boxShadow: AppStyles.defaultShadow,
         ),
@@ -102,7 +102,7 @@ class UserWidget extends StatelessWidget {
               text: TextSpan(
                 text: user.uname.toLowerCase(),
                 style: AppStyles.style14Bold.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
               overflow: TextOverflow.ellipsis,
@@ -122,7 +122,7 @@ class UserWidget extends StatelessWidget {
         text: TextSpan(
           text: '${user.fname} ${user.lname}',
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
         ),
         overflow: TextOverflow.ellipsis,
@@ -173,7 +173,7 @@ class UserWidget extends StatelessWidget {
 
   Color getLabelColor(String status, BuildContext context) {
     if (status == "following" || status == "requested") {
-      return Theme.of(context).textTheme.bodyText1!.color!;
+      return Theme.of(context).textTheme.bodyLarge!.color!;
     }
 
     return ColorValues.whiteColor;

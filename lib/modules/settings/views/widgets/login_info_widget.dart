@@ -44,7 +44,7 @@ class LoginInfoWidget extends StatelessWidget {
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(Dimens.four),
           boxShadow: AppStyles.defaultShadow,
         ),
@@ -77,7 +77,7 @@ class LoginInfoWidget extends StatelessWidget {
                 TextSpan(
                   text: item.deviceModel!,
                   style: AppStyles.style14Bold.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                 ),
                 if (item.deviceId == AuthService.find.deviceId.toString())
@@ -99,7 +99,7 @@ class LoginInfoWidget extends StatelessWidget {
                 text: TextSpan(
                   text: "${item.city!}, ${item.regionName!}, ${item.country!}",
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ),
@@ -110,7 +110,7 @@ class LoginInfoWidget extends StatelessWidget {
                     pattern: 'dd MMM yyyy hh:mm a',
                   ),
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ),
@@ -121,7 +121,7 @@ class LoginInfoWidget extends StatelessWidget {
             onTap: () => _showDeleteDialog(item.deviceId!, context),
             child: Icon(
               Icons.close,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),

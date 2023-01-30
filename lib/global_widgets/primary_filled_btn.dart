@@ -58,7 +58,7 @@ class NxFilledButton extends StatelessWidget {
               style: labelStyle ??
                   AppStyles.style16Bold.copyWith(
                     color: labelColor ??
-                        Theme.of(context).textTheme.bodyText1!.color,
+                        Theme.of(context).textTheme.bodyLarge!.color,
                     fontSize: fontSize ?? Dimens.sixTeen,
                   ),
             ),

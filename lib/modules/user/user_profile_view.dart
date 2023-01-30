@@ -70,7 +70,7 @@ class UserProfileView extends StatelessWidget {
               child: Container(
                 padding: Dimens.edgeInsets6,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).bottomAppBarColor,
+                  color: Theme.of(context).cardColor,
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: Theme.of(context).dividerColor,
@@ -79,7 +79,7 @@ class UserProfileView extends StatelessWidget {
                 child: Icon(
                   Icons.more_vert,
                   size: Dimens.twenty,
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
             ),
@@ -111,7 +111,7 @@ class UserProfileView extends StatelessWidget {
                   StringValues.userNotFoundError,
                   textAlign: TextAlign.center,
                   style: AppStyles.style24Bold.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                 ),
                 Dimens.boxHeight16,
@@ -119,7 +119,7 @@ class UserProfileView extends StatelessWidget {
                   label: StringValues.back,
                   padding: Dimens.edgeInsetsDefault,
                   labelStyle: AppStyles.style14Bold.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                   onTap: RouteManagement.goToBack,
                 ),
@@ -148,13 +148,13 @@ class UserProfileView extends StatelessWidget {
                       TextSpan(
                         text: '@${logic.userDetails!.user!.uname}',
                         style: AppStyles.style24Bold.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                       ),
                       TextSpan(
                         text: ' ${StringValues.hasDeactivatedTheirAccount}',
                         style: AppStyles.style24Normal.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                       ),
                     ],
@@ -165,7 +165,7 @@ class UserProfileView extends StatelessWidget {
                   StringValues.deactivatedAccountWarningDesc,
                   textAlign: TextAlign.center,
                   style: AppStyles.style16Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 Dimens.boxHeight16,
@@ -173,7 +173,7 @@ class UserProfileView extends StatelessWidget {
                   label: StringValues.learnMore,
                   padding: Dimens.edgeInsetsDefault,
                   labelStyle: AppStyles.style14Bold.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                   onTap: () {},
                 ),
@@ -202,13 +202,13 @@ class UserProfileView extends StatelessWidget {
                       TextSpan(
                         text: '@${logic.userDetails!.user!.uname}',
                         style: AppStyles.style24Bold.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                       ),
                       TextSpan(
                         text: ' ${StringValues.blockedYou}',
                         style: AppStyles.style24Normal.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                       ),
                     ],
@@ -219,7 +219,7 @@ class UserProfileView extends StatelessWidget {
                   StringValues.blockedAccountWarningDesc,
                   textAlign: TextAlign.center,
                   style: AppStyles.style16Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 Dimens.boxHeight16,
@@ -227,7 +227,7 @@ class UserProfileView extends StatelessWidget {
                   label: StringValues.learnMore,
                   padding: Dimens.edgeInsetsDefault,
                   labelStyle: AppStyles.style14Bold.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                   onTap: () {},
                 ),
@@ -256,13 +256,13 @@ class UserProfileView extends StatelessWidget {
                       TextSpan(
                         text: '${StringValues.youBlocked} ',
                         style: AppStyles.style24Normal.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                       ),
                       TextSpan(
                         text: '@${logic.userDetails!.user!.uname}',
                         style: AppStyles.style24Bold.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                       ),
                     ],
@@ -273,7 +273,7 @@ class UserProfileView extends StatelessWidget {
                   StringValues.blockedAccountWarningDesc,
                   textAlign: TextAlign.center,
                   style: AppStyles.style16Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 Dimens.boxHeight16,
@@ -281,7 +281,7 @@ class UserProfileView extends StatelessWidget {
                   label: StringValues.unblock,
                   padding: Dimens.edgeInsetsDefault,
                   labelStyle: AppStyles.style14Bold.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                   onTap: () {},
                 ),
@@ -364,7 +364,7 @@ class UserProfileView extends StatelessWidget {
             Text(
               "@${user.uname}",
               style: AppStyles.style14Normal.copyWith(
-                color: Theme.of(context).textTheme.subtitle1!.color,
+                color: Theme.of(context).textTheme.titleMedium!.color,
               ),
             ),
           ],
@@ -380,7 +380,7 @@ class UserProfileView extends StatelessWidget {
               Icon(
                 Icons.link,
                 size: Dimens.sixTeen,
-                color: Theme.of(context).textTheme.subtitle1!.color,
+                color: Theme.of(context).textTheme.titleMedium!.color,
               ),
               Dimens.boxWidth8,
               InkWell(
@@ -404,14 +404,14 @@ class UserProfileView extends StatelessWidget {
             Icon(
               Icons.calendar_today,
               size: Dimens.sixTeen,
-              color: Theme.of(context).textTheme.subtitle1!.color,
+              color: Theme.of(context).textTheme.titleMedium!.color,
             ),
             Dimens.boxWidth8,
             Expanded(
               child: Text(
                 'Joined - ${DateFormat.yMMMd().format(user.createdAt)}',
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.titleMedium!.color,
                 ),
               ),
             ),
@@ -453,7 +453,7 @@ class UserProfileView extends StatelessWidget {
 
   Color getLabelColor(String status, BuildContext context) {
     if (status == "following" || status == "requested") {
-      return Theme.of(context).textTheme.bodyText1!.color!;
+      return Theme.of(context).textTheme.bodyLarge!.color!;
     }
 
     return ColorValues.whiteColor;
@@ -469,7 +469,7 @@ class UserProfileView extends StatelessWidget {
         borderRadius: Dimens.four,
         borderWidth: Dimens.pointEight,
         labelStyle: AppStyles.style14Normal.copyWith(
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         onTap: RouteManagement.goToEditProfileView,
       );
@@ -509,7 +509,7 @@ class UserProfileView extends StatelessWidget {
               padding: Dimens.edgeInsets8,
               borderRadius: Dimens.four,
               labelStyle: AppStyles.style14Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
               onTap: () => RouteManagement.goToChatDetailsView(
                 User(
@@ -606,7 +606,7 @@ class UserProfileView extends StatelessWidget {
           child: Text(
             StringValues.privateAccountWarningDesc,
             style: AppStyles.style24Bold.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             textAlign: TextAlign.center,
           ),
@@ -630,7 +630,7 @@ class UserProfileView extends StatelessWidget {
                 child: Text(
                   StringValues.noPosts,
                   style: AppStyles.style24Bold.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                   textAlign: TextAlign.center,
                 ),

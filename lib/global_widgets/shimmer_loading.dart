@@ -38,7 +38,7 @@ class ShimmerLoading extends StatelessWidget {
         .animate(onPlay: (controller) => controller.repeat(), delay: 5000.ms)
         .shimmer(
           duration: 3000.ms,
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         );
   }
 }

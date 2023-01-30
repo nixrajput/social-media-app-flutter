@@ -99,7 +99,7 @@ class RegisterView extends StatelessWidget {
           Text(
             StringValues.enterDetailsToRegister,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
           Dimens.boxHeight12,
@@ -115,7 +115,7 @@ class RegisterView extends StatelessWidget {
                   keyboardType: TextInputType.name,
                   maxLines: 1,
                   style: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                   controller: logic.fNameTextController,
                   onEditingComplete: logic.focusNode.nextFocus,
@@ -130,7 +130,7 @@ class RegisterView extends StatelessWidget {
                   keyboardType: TextInputType.name,
                   maxLines: 1,
                   style: AppStyles.style14Normal.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                   controller: logic.lNameTextController,
                   onEditingComplete: logic.focusNode.nextFocus,
@@ -146,7 +146,7 @@ class RegisterView extends StatelessWidget {
             keyboardType: TextInputType.text,
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             controller: logic.unameTextController,
             onEditingComplete: logic.focusNode.nextFocus,
@@ -168,7 +168,7 @@ class RegisterView extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             controller: logic.passwordTextController,
             onEditingComplete: logic.focusNode.nextFocus,
@@ -190,7 +190,7 @@ class RegisterView extends StatelessWidget {
             keyboardType: TextInputType.visiblePassword,
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             controller: logic.confirmPasswordTextController,
             onEditingComplete: logic.focusNode.unfocus,
@@ -219,7 +219,7 @@ class RegisterView extends StatelessWidget {
         Text(
           StringValues.enterOtpYouGet,
           style: AppStyles.style14Normal.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
         ),
         Dimens.boxHeight12,
@@ -241,7 +241,7 @@ class RegisterView extends StatelessWidget {
           Text(
             StringValues.enterEmailToSendOtp,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
           Dimens.boxHeight12,
@@ -252,7 +252,7 @@ class RegisterView extends StatelessWidget {
             keyboardType: TextInputType.emailAddress,
             maxLines: 1,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             controller: logic.emailTextController,
             onEditingComplete: logic.focusNode.unfocus,
@@ -297,7 +297,7 @@ class RegisterView extends StatelessWidget {
           LengthLimitingTextInputFormatter(1),
         ],
         style: AppStyles.style16Bold.copyWith(
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         onChanged: (value) {
           if (value.isNotEmpty && !isLast) {
@@ -327,7 +327,7 @@ class RegisterView extends StatelessWidget {
         Text(
           '${logic.resendTimerMin}:${logic.resendTimerSec}',
           style: AppStyles.style16Bold.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
         ),
       ],
@@ -410,7 +410,7 @@ class RegisterView extends StatelessWidget {
           ),
         ],
         style: AppStyles.style13Normal.copyWith(
-          color: Theme.of(context).textTheme.subtitle1!.color,
+          color: Theme.of(context).textTheme.titleMedium!.color,
         ),
       ),
     );

@@ -88,21 +88,23 @@ class ProfileDetailsView extends StatelessWidget {
 
                     NxListTile(
                       padding: Dimens.edgeInsets12,
-                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      bgColor: Theme.of(Get.context!).cardColor,
                       borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.person_outline),
                       title: Text(
                         StringValues.name,
                         style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .titleMedium!
+                              .color,
                         ),
                       ),
                       subtitle: Text(
                         '${logic.profileDetails!.user!.fname} ${logic.profileDetails!.user!.lname}',
                         style: AppStyles.style16Normal.copyWith(
                           color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                              Theme.of(Get.context!).textTheme.bodyLarge!.color,
                         ),
                       ),
                       onTap: RouteManagement.goToEditNameView,
@@ -114,21 +116,23 @@ class ProfileDetailsView extends StatelessWidget {
 
                     NxListTile(
                       padding: Dimens.edgeInsets12,
-                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      bgColor: Theme.of(Get.context!).cardColor,
                       borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.alternate_email_outlined),
                       title: Text(
                         StringValues.username,
                         style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .titleMedium!
+                              .color,
                         ),
                       ),
                       subtitle: Text(
                         logic.profileDetails!.user!.uname,
                         style: AppStyles.style16Normal.copyWith(
                           color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                              Theme.of(Get.context!).textTheme.bodyLarge!.color,
                         ),
                       ),
                       onTap: RouteManagement.goToEditUsernameView,
@@ -140,14 +144,16 @@ class ProfileDetailsView extends StatelessWidget {
 
                     NxListTile(
                       padding: Dimens.edgeInsets12,
-                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      bgColor: Theme.of(Get.context!).cardColor,
                       borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.note_add_outlined),
                       title: Text(
                         StringValues.about,
                         style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .titleMedium!
+                              .color,
                         ),
                       ),
                       subtitle: Text(
@@ -157,11 +163,11 @@ class ProfileDetailsView extends StatelessWidget {
                           color: logic.profileDetails!.user!.about == null
                               ? Theme.of(Get.context!)
                                   .textTheme
-                                  .subtitle1
+                                  .titleMedium
                                   ?.color
                               : Theme.of(Get.context!)
                                   .textTheme
-                                  .bodyText1
+                                  .bodyLarge
                                   ?.color,
                         ),
                         maxLines: 3,
@@ -175,14 +181,16 @@ class ProfileDetailsView extends StatelessWidget {
 
                     NxListTile(
                       padding: Dimens.edgeInsets12,
-                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      bgColor: Theme.of(Get.context!).cardColor,
                       borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.work_outline),
                       title: Text(
                         StringValues.profession,
                         style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .titleMedium!
+                              .color,
                         ),
                       ),
                       subtitle: Text(
@@ -200,11 +208,11 @@ class ProfileDetailsView extends StatelessWidget {
                                           'user')
                                   ? Theme.of(Get.context!)
                                       .textTheme
-                                      .subtitle1
+                                      .titleMedium
                                       ?.color
                                   : Theme.of(Get.context!)
                                       .textTheme
-                                      .bodyText1
+                                      .bodyLarge
                                       ?.color,
                         ),
                       ),
@@ -217,14 +225,16 @@ class ProfileDetailsView extends StatelessWidget {
 
                     NxListTile(
                       padding: Dimens.edgeInsets12,
-                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      bgColor: Theme.of(Get.context!).cardColor,
                       borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.cake_outlined),
                       title: Text(
                         StringValues.birthDate,
                         style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .titleMedium!
+                              .color,
                         ),
                       ),
                       subtitle: Text(
@@ -234,11 +244,11 @@ class ProfileDetailsView extends StatelessWidget {
                           color: logic.profileDetails!.user!.dob == null
                               ? Theme.of(Get.context!)
                                   .textTheme
-                                  .subtitle1
+                                  .titleMedium
                                   ?.color
                               : Theme.of(Get.context!)
                                   .textTheme
-                                  .bodyText1
+                                  .bodyLarge
                                   ?.color,
                         ),
                       ),
@@ -251,14 +261,16 @@ class ProfileDetailsView extends StatelessWidget {
 
                     NxListTile(
                       padding: Dimens.edgeInsets12,
-                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      bgColor: Theme.of(Get.context!).cardColor,
                       borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.male_outlined),
                       title: Text(
                         StringValues.gender,
                         style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .titleMedium!
+                              .color,
                         ),
                       ),
                       subtitle: Text(
@@ -268,11 +280,11 @@ class ProfileDetailsView extends StatelessWidget {
                           color: logic.profileDetails!.user!.gender == null
                               ? Theme.of(Get.context!)
                                   .textTheme
-                                  .subtitle1
+                                  .titleMedium
                                   ?.color
                               : Theme.of(Get.context!)
                                   .textTheme
-                                  .bodyText1
+                                  .bodyLarge
                                   ?.color,
                         ),
                       ),
@@ -285,21 +297,23 @@ class ProfileDetailsView extends StatelessWidget {
 
                     NxListTile(
                       padding: Dimens.edgeInsets12,
-                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      bgColor: Theme.of(Get.context!).cardColor,
                       borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.email_outlined),
                       title: Text(
                         StringValues.email,
                         style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .titleMedium!
+                              .color,
                         ),
                       ),
                       subtitle: Text(
                         logic.profileDetails!.user!.email,
                         style: AppStyles.style16Normal.copyWith(
                           color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                              Theme.of(Get.context!).textTheme.bodyLarge!.color,
                         ),
                       ),
                       onTap: () => RouteManagement.goToVerifyPasswordView(
@@ -315,7 +329,7 @@ class ProfileDetailsView extends StatelessWidget {
                     if (logic.profileDetails!.user!.phone != null)
                       NxListTile(
                         padding: Dimens.edgeInsets12,
-                        bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                        bgColor: Theme.of(Get.context!).cardColor,
                         borderRadius: BorderRadius.circular(Dimens.four),
                         leading: const Icon(Icons.phone_android),
                         title: Text(
@@ -323,7 +337,7 @@ class ProfileDetailsView extends StatelessWidget {
                           style: AppStyles.style12Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .subtitle1!
+                                .titleMedium!
                                 .color,
                           ),
                         ),
@@ -332,7 +346,7 @@ class ProfileDetailsView extends StatelessWidget {
                           style: AppStyles.style16Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                         ),
@@ -347,14 +361,16 @@ class ProfileDetailsView extends StatelessWidget {
 
                     NxListTile(
                       padding: Dimens.edgeInsets12,
-                      bgColor: Theme.of(Get.context!).bottomAppBarColor,
+                      bgColor: Theme.of(Get.context!).cardColor,
                       borderRadius: BorderRadius.circular(Dimens.four),
                       leading: const Icon(Icons.link),
                       title: Text(
                         StringValues.website,
                         style: AppStyles.style12Normal.copyWith(
-                          color:
-                              Theme.of(Get.context!).textTheme.subtitle1!.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .titleMedium!
+                              .color,
                         ),
                       ),
                       subtitle: Text(
@@ -366,11 +382,11 @@ class ProfileDetailsView extends StatelessWidget {
                           color: logic.profileDetails!.user!.website == null
                               ? Theme.of(Get.context!)
                                   .textTheme
-                                  .subtitle1
+                                  .titleMedium
                                   ?.color
                               : Theme.of(Get.context!)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodyLarge!
                                   .color,
                         ),
                       ),
@@ -397,7 +413,7 @@ class ProfileDetailsView extends StatelessWidget {
             leading: Icon(
               Icons.image_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.view,
@@ -421,7 +437,7 @@ class ProfileDetailsView extends StatelessWidget {
             leading: Icon(
               Icons.camera_alt_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.change,
@@ -441,7 +457,7 @@ class ProfileDetailsView extends StatelessWidget {
             leading: Icon(
               Icons.delete_outline,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.remove,

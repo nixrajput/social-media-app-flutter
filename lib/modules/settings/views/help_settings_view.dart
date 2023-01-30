@@ -52,7 +52,7 @@ class HelpSettingsView extends StatelessWidget {
               /// Report an issue
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.reportIssue.toTitleCase(),
@@ -61,7 +61,7 @@ class HelpSettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.reportIssueDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 onTap: () =>
@@ -73,7 +73,7 @@ class HelpSettingsView extends StatelessWidget {
               /// Send us suggestions
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.sendUsSuggestions.toTitleCase(),
@@ -82,7 +82,7 @@ class HelpSettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.sendUsSuggestionsDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 onTap: () =>
@@ -94,7 +94,7 @@ class HelpSettingsView extends StatelessWidget {
               /// Privacy Policy
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.privacyPolicy.toTitleCase(),
@@ -103,7 +103,7 @@ class HelpSettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.privacyPolicyDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 onTap: () =>
@@ -115,7 +115,7 @@ class HelpSettingsView extends StatelessWidget {
               /// Terms of Use
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.termsOfUse.toTitleCase(),
@@ -124,7 +124,7 @@ class HelpSettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.termsOfUseDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 onTap: () => AppUtility.openUrl(
@@ -136,7 +136,7 @@ class HelpSettingsView extends StatelessWidget {
               /// Community Guidelines
               NxListTile(
                 padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).bottomAppBarColor,
+                bgColor: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(Dimens.four),
                 title: Text(
                   StringValues.communityGuidelines.toTitleCase(),
@@ -145,7 +145,7 @@ class HelpSettingsView extends StatelessWidget {
                 subtitle: Text(
                   StringValues.communityGuidelinesDesc,
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
                 onTap: () => AppUtility.openUrl(
@@ -158,7 +158,7 @@ class HelpSettingsView extends StatelessWidget {
               if (kDebugMode)
                 NxListTile(
                   padding: Dimens.edgeInsets12,
-                  bgColor: Theme.of(context).bottomAppBarColor,
+                  bgColor: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(Dimens.four),
                   title: Text(
                     StringValues.viewLogs.toTitleCase(),
@@ -167,7 +167,7 @@ class HelpSettingsView extends StatelessWidget {
                   subtitle: Text(
                     StringValues.viewLogsDesc,
                     style: AppStyles.style13Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
+                      color: Theme.of(context).textTheme.titleMedium!.color,
                     ),
                   ),
                   onTap: () => Get.to(

@@ -121,14 +121,14 @@ class P2PChatView extends StatelessWidget {
                   Text(
                     logic.user != null ? logic.user!.uname : '',
                     style: AppStyles.style16Bold.copyWith(
-                      color: Theme.of(context).textTheme.bodyText1!.color,
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
                     ),
                   ),
                   if (isUserOnline)
                     Text(
                       StringValues.activeNow,
                       style: AppStyles.style12Normal.copyWith(
-                        color: Theme.of(context).textTheme.subtitle1!.color,
+                        color: Theme.of(context).textTheme.titleMedium!.color,
                       ),
                     ),
                 ],
@@ -140,7 +140,7 @@ class P2PChatView extends StatelessWidget {
               child: Container(
                 padding: Dimens.edgeInsets6,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).bottomAppBarColor,
+                  color: Theme.of(context).cardColor,
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: Theme.of(context).dividerColor,
@@ -149,7 +149,7 @@ class P2PChatView extends StatelessWidget {
                 child: Icon(
                   Icons.more_vert_outlined,
                   size: Dimens.twenty,
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
             ),
@@ -162,7 +162,7 @@ class P2PChatView extends StatelessWidget {
   Container _buildMessageTypingBox(
       P2PChatController logic, BuildContext context) {
     return Container(
-      color: Theme.of(context).bottomAppBarColor,
+      color: Theme.of(context).cardColor,
       width: Dimens.screenWidth,
       height: Dimens.fourtyEight,
       padding: Dimens.edgeInsets0_12,
@@ -187,7 +187,7 @@ class P2PChatView extends StatelessWidget {
               keyboardType: TextInputType.multiline,
               textCapitalization: TextCapitalization.sentences,
               style: AppStyles.style14Normal.copyWith(
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -204,7 +204,7 @@ class P2PChatView extends StatelessWidget {
                 child: Icon(
                   Icons.arrow_forward_ios_outlined,
                   size: Dimens.twenty,
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
             )
@@ -212,7 +212,7 @@ class P2PChatView extends StatelessWidget {
             NxIconButton(
               icon: Icons.add_outlined,
               iconSize: Dimens.twentyFour,
-              iconColor: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              iconColor: Theme.of(Get.context!).textTheme.bodyLarge!.color,
               onTap: () => _showAttachmentOptions(logic),
             ),
         ],
@@ -228,7 +228,7 @@ class P2PChatView extends StatelessWidget {
       child: Container(
         padding: Dimens.edgeInsets12,
         decoration: BoxDecoration(
-          color: Theme.of(context).bottomAppBarColor,
+          color: Theme.of(context).cardColor,
           shape: BoxShape.circle,
           border: Border.all(
             color: Theme.of(context).dividerColor,
@@ -237,7 +237,7 @@ class P2PChatView extends StatelessWidget {
         child: NxIconButton(
           icon: Icons.arrow_downward,
           iconSize: Dimens.twenty,
-          iconColor: Theme.of(context).textTheme.bodyText1!.color,
+          iconColor: Theme.of(context).textTheme.bodyLarge!.color,
           onTap: logic.scrollToLast,
         ),
       ),
@@ -273,7 +273,7 @@ class P2PChatView extends StatelessWidget {
             child: Text(
               StringValues.noMessages,
               style: AppStyles.style32Bold.copyWith(
-                color: Theme.of(context).textTheme.subtitle1!.color,
+                color: Theme.of(context).textTheme.titleMedium!.color,
               ),
               textAlign: TextAlign.center,
             ),
@@ -415,7 +415,7 @@ class P2PChatView extends StatelessWidget {
           Text(
             date.formatDate().toUpperCase(),
             style: AppStyles.style12Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle2!.color,
+              color: Theme.of(Get.context!).textTheme.titleSmall!.color,
             ),
           ),
           Dimens.boxHeight8,

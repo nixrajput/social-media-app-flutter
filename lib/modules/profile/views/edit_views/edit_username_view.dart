@@ -67,7 +67,7 @@ class EditUsernameView extends StatelessWidget {
                         keyboardType: TextInputType.text,
                         style: AppStyles.style14Normal.copyWith(
                           color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                              Theme.of(Get.context!).textTheme.bodyLarge!.color,
                         ),
                         onChanged: (value) {
                           logic.setUsername = value;

@@ -66,7 +66,7 @@ class ReactivateAccountView extends StatelessWidget {
                       maxLines: 1,
                       enabled: logic.otpSent ? false : true,
                       style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       controller: logic.emailTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
@@ -89,7 +89,7 @@ class ReactivateAccountView extends StatelessWidget {
                       maxLines: 1,
                       enabled: logic.otpSent ? false : true,
                       style: AppStyles.style16Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       controller: logic.passwordTextController,
                       onEditingComplete: logic.focusNode.unfocus,
@@ -107,7 +107,7 @@ class ReactivateAccountView extends StatelessWidget {
                           LengthLimitingTextInputFormatter(6),
                         ],
                         style: AppStyles.style14Normal.copyWith(
-                          color: Theme.of(context).textTheme.bodyText1!.color,
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                         controller: logic.otpTextController,
                         onEditingComplete: logic.focusNode.nextFocus,

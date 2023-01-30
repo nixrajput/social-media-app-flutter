@@ -71,7 +71,7 @@ class PeopleTab extends StatelessWidget {
       keyboardType: TextInputType.text,
       maxLines: 1,
       style: AppStyles.style14Normal.copyWith(
-        color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+        color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
       ),
       controller: logic.searchTextController,
       onChanged: (value) => logic.searchUsers(value),
@@ -101,7 +101,7 @@ class PeopleTab extends StatelessWidget {
           Text(
             StringValues.noData,
             style: AppStyles.style32Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              color: Theme.of(Get.context!).textTheme.titleMedium!.color,
             ),
             textAlign: TextAlign.center,
           ),

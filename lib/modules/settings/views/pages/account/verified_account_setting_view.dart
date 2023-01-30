@@ -83,7 +83,7 @@ class VerifiedAccountSettingView extends StatelessWidget {
               style: AppStyles.style16Normal.copyWith(
                 color: Theme.of(context)
                     .textTheme
-                    .subtitle1!
+                    .titleMedium!
                     .color!
                     .withOpacity(0.5),
               ),
@@ -103,7 +103,7 @@ class VerifiedAccountSettingView extends StatelessWidget {
               style: AppStyles.style16Normal.copyWith(
                 color: Theme.of(context)
                     .textTheme
-                    .subtitle1!
+                    .titleMedium!
                     .color!
                     .withOpacity(0.5),
               ),
@@ -164,7 +164,7 @@ class VerificationProcess extends StatelessWidget {
             child: Container(
               width: Dimens.eight,
               decoration: BoxDecoration(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -180,7 +180,7 @@ class VerificationProcess extends StatelessWidget {
                 /// Verification Process Index
                 Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                     shape: BoxShape.circle,
                   ),
                   padding: Dimens.edgeInsets8,
@@ -202,7 +202,7 @@ class VerificationProcess extends StatelessWidget {
                   style: AppStyles.style16Normal.copyWith(
                     color: Theme.of(context)
                         .textTheme
-                        .subtitle1!
+                        .titleMedium!
                         .color!
                         .withOpacity(0.5),
                   ),

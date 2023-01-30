@@ -67,7 +67,7 @@ class EditWebsiteView extends StatelessWidget {
                         keyboardType: TextInputType.url,
                         style: AppStyles.style14Normal.copyWith(
                           color:
-                              Theme.of(Get.context!).textTheme.bodyText1!.color,
+                              Theme.of(Get.context!).textTheme.bodyLarge!.color,
                         ),
                         onChanged: (value) => logic.onChangeWebsite(value),
                         onEditingComplete: logic.focusNode.unfocus,

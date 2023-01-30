@@ -61,7 +61,7 @@ class LoginView extends StatelessWidget {
                     Text(
                       StringValues.enterEmailUsernamePassword,
                       style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                     ),
                     Dimens.boxHeight12,
@@ -72,7 +72,7 @@ class LoginView extends StatelessWidget {
                       keyboardType: TextInputType.text,
                       maxLines: 1,
                       style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       controller: logic.emailUnameTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
@@ -94,7 +94,7 @@ class LoginView extends StatelessWidget {
                       keyboardType: TextInputType.visiblePassword,
                       maxLines: 1,
                       style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       controller: logic.passwordTextController,
                       onEditingComplete: logic.focusNode.unfocus,

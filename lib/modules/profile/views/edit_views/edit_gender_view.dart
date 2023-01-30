@@ -56,7 +56,7 @@ class EditGenderView extends StatelessWidget {
                   NxRadioTile(
                     padding: Dimens.edgeInsets12,
                     showBorder: true,
-                    bgColor: Theme.of(context).bottomAppBarColor,
+                    bgColor: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(Dimens.four),
                     onTap: () => logic.setGender = StringValues.male,
                     onChanged: (value) {
@@ -76,7 +76,7 @@ class EditGenderView extends StatelessWidget {
                   NxRadioTile(
                     padding: Dimens.edgeInsets12,
                     showBorder: true,
-                    bgColor: Theme.of(context).bottomAppBarColor,
+                    bgColor: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(Dimens.four),
                     onTap: () => logic.setGender = StringValues.female,
                     onChanged: (value) {
@@ -96,7 +96,7 @@ class EditGenderView extends StatelessWidget {
                   NxRadioTile(
                     padding: Dimens.edgeInsets12,
                     showBorder: true,
-                    bgColor: Theme.of(context).bottomAppBarColor,
+                    bgColor: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(Dimens.four),
                     onTap: () => logic.setGender = StringValues.others,
                     onChanged: (value) {

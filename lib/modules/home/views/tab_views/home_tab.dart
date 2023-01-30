@@ -68,7 +68,7 @@ class HomeTabView extends StatelessWidget {
                   child: Icon(
                     Icons.add_circle_outline_rounded,
                     size: Dimens.thirtyTwo,
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
                 ),
                 Dimens.boxWidth12,
@@ -127,7 +127,8 @@ class HomeTabView extends StatelessWidget {
                   Text(
                     StringValues.noPosts,
                     style: AppStyles.style32Bold.copyWith(
-                      color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                      color:
+                          Theme.of(Get.context!).textTheme.titleMedium!.color,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -194,12 +195,12 @@ class HomeTabView extends StatelessWidget {
             leading: Icon(
               Icons.post_add_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.post,
               style: AppStyles.style16Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             onTap: () {
@@ -216,12 +217,12 @@ class HomeTabView extends StatelessWidget {
             leading: Icon(
               Icons.poll_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.poll,
               style: AppStyles.style16Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             onTap: () {
@@ -238,12 +239,12 @@ class HomeTabView extends StatelessWidget {
             leading: Icon(
               Icons.photo_library_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.story,
               style: AppStyles.style16Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             onTap: () {

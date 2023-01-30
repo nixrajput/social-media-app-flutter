@@ -66,7 +66,7 @@ class ChangeEmailView extends StatelessWidget {
                           style: AppStyles.style16Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                         ),
@@ -97,7 +97,7 @@ class ChangeEmailView extends StatelessWidget {
                           style: AppStyles.style14Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                           controller: logic.emailTextController,
@@ -129,7 +129,7 @@ class ChangeEmailView extends StatelessWidget {
                             style: AppStyles.style14Normal.copyWith(
                               color: Theme.of(Get.context!)
                                   .textTheme
-                                  .bodyText1!
+                                  .bodyLarge!
                                   .color,
                             ),
                             controller: logic.otpTextController,

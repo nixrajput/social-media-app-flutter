@@ -73,7 +73,7 @@ class PollPreviewView extends StatelessWidget {
           child: Text(
             StringValues.post,
             style: AppStyles.style15Bold.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -109,7 +109,7 @@ class PollPreviewView extends StatelessWidget {
     return Container(
       margin: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
-        color: Theme.of(context).bottomAppBarColor,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(Dimens.four),
         boxShadow: AppStyles.defaultShadow,
       ),
@@ -195,7 +195,7 @@ class PollPreviewView extends StatelessWidget {
               text: TextSpan(
                 text: '${profile.fname} ${profile.lname}',
                 style: AppStyles.style14Bold.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = RouteManagement.goToProfileView,
@@ -224,7 +224,7 @@ class PollPreviewView extends StatelessWidget {
     return Text(
       DateFormat('dd MMM yyyy hh:mm a').format(DateTime.now().toLocal()),
       style: AppStyles.style12Normal.copyWith(
-        color: Theme.of(context).textTheme.subtitle1!.color,
+        color: Theme.of(context).textTheme.titleMedium!.color,
       ),
     );
   }
@@ -233,7 +233,7 @@ class PollPreviewView extends StatelessWidget {
         text: TextSpan(
           text: profile.uname,
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
         ),
         overflow: TextOverflow.ellipsis,
@@ -258,7 +258,7 @@ class PollPreviewView extends StatelessWidget {
           child: Text(
             option,
             style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),

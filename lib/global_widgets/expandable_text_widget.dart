@@ -61,7 +61,7 @@ class NxExpandableTextState extends State<NxExpandableText> {
           ],
           style: widget.textStyle ??
               AppStyles.style13Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
                 decoration: TextDecoration.none,
               ),
           linkStyle: widget.linkStyle ??

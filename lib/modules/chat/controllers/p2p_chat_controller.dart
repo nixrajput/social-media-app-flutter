@@ -658,7 +658,7 @@ class P2PChatController extends GetxController {
   //                     style: AppStyles.style14Normal.copyWith(
   //                       color: material.Theme.of(context)
   //                           .textTheme
-  //                           .bodyText1!
+  //                           .bodyLarge!
   //                           .color,
   //                     ),
   //                   ),

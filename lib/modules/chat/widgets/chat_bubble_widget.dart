@@ -61,7 +61,7 @@ class _ChatBubbleState extends State<ChatBubble> {
   }
 
   Color _setMessageColor(bool isSenderBubble, BuildContext context) {
-    return Theme.of(context).textTheme.bodyText1!.color!;
+    return Theme.of(context).textTheme.bodyLarge!.color!;
   }
 
   EdgeInsets _setPadding(bool isSenderBubble) {
@@ -98,10 +98,10 @@ class _ChatBubbleState extends State<ChatBubble> {
     if (widget.message.seen == true) {
       return ColorValues.successColor;
     } else if (widget.message.delivered == true) {
-      return Theme.of(Get.context!).textTheme.subtitle1!.color!;
+      return Theme.of(Get.context!).textTheme.titleMedium!.color!;
     }
 
-    return Theme.of(Get.context!).textTheme.subtitle2!.color!;
+    return Theme.of(Get.context!).textTheme.titleSmall!.color!;
   }
 
   @override
@@ -174,7 +174,7 @@ class _ChatBubbleState extends State<ChatBubble> {
             widget.message.createdAt!.getDateTime().toUpperCase(),
             style: AppStyles.style12Normal.copyWith(
               fontSize: Dimens.ten,
-              color: Theme.of(context).textTheme.subtitle2!.color,
+              color: Theme.of(context).textTheme.titleSmall!.color,
             ),
           ),
         ),
@@ -299,7 +299,7 @@ class _ChatBubbleState extends State<ChatBubble> {
           NxCircularProgressIndicator(
             size: Dimens.twelve,
             strokeWidth: Dimens.two,
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
           Dimens.boxWidth8,
         ],
@@ -344,14 +344,14 @@ class _ChatBubbleState extends State<ChatBubble> {
               children: [
                 Icon(
                   Icons.reply,
-                  color: Theme.of(Get.context!).textTheme.subtitle2!.color,
+                  color: Theme.of(Get.context!).textTheme.titleSmall!.color,
                   size: Dimens.twenty,
                 ),
                 Dimens.boxWidth4,
                 Text(
                   '$replyingUser replied to $repliedUser',
                   style: AppStyles.style12Normal.copyWith(
-                    color: Theme.of(Get.context!).textTheme.subtitle2!.color,
+                    color: Theme.of(Get.context!).textTheme.titleSmall!.color,
                   ),
                 ),
               ],
@@ -448,7 +448,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                 .format(widget.message.createdAt!.toLocal())
                 .toUpperCase(),
             style: AppStyles.style13Normal.copyWith(
-              color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+              color: Theme.of(Get.context!).textTheme.titleMedium!.color,
             ),
           ),
         ),
@@ -465,7 +465,7 @@ class _ChatBubbleState extends State<ChatBubble> {
             title: Text(
               StringValues.delete,
               style: AppStyles.style16Bold.copyWith(
-                color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -478,7 +478,7 @@ class _ChatBubbleState extends State<ChatBubble> {
           title: Text(
             StringValues.reply,
             style: AppStyles.style16Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -488,7 +488,7 @@ class _ChatBubbleState extends State<ChatBubble> {
           title: Text(
             StringValues.report,
             style: AppStyles.style16Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
             ),
           ),
         ),

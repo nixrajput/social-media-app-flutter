@@ -73,7 +73,7 @@ class EditProfessionView extends StatelessWidget {
                           style: AppStyles.style14Normal.copyWith(
                             color: Theme.of(Get.context!)
                                 .textTheme
-                                .bodyText1!
+                                .bodyLarge!
                                 .color,
                           ),
                         ),
@@ -104,7 +104,7 @@ class EditProfessionView extends StatelessWidget {
           child: Text(
             '${StringValues.select} ${StringValues.profession}',
             style: AppStyles.style18Bold.copyWith(
-              color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+              color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -124,7 +124,7 @@ class EditProfessionView extends StatelessWidget {
                     keyboardType: TextInputType.text,
                     textCapitalization: TextCapitalization.words,
                     style: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                      color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
                     ),
                     onChanged: (value) {
                       if (value.isEmpty) {
@@ -165,7 +165,7 @@ class EditProfessionView extends StatelessWidget {
                                       style: AppStyles.style14Bold.copyWith(
                                         color: Theme.of(Get.context!)
                                             .textTheme
-                                            .bodyText1!
+                                            .bodyLarge!
                                             .color,
                                       ),
                                     ),

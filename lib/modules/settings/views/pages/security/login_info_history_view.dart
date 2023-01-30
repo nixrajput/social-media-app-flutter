@@ -85,7 +85,7 @@ class LoginInfoHistoryView extends StatelessWidget {
                               style: AppStyles.style14Bold.copyWith(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .subtitle1!
+                                    .titleMedium!
                                     .color,
                               ),
                             ),
@@ -97,7 +97,7 @@ class LoginInfoHistoryView extends StatelessWidget {
                               style: AppStyles.style14Bold.copyWith(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .subtitle1!
+                                    .titleMedium!
                                     .color,
                               ),
                             ),

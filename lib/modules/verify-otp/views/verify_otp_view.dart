@@ -84,7 +84,7 @@ class VerifyOtpView extends StatelessWidget {
             TextSpan(
               text: 'We have sent you an OTP on ',
               style: AppStyles.style13Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             TextSpan(
@@ -92,19 +92,19 @@ class VerifyOtpView extends StatelessWidget {
                   ? logic.email
                   : '${logic.countryCode.dialCode} ${logic.phone}',
               style: AppStyles.style13Bold.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             TextSpan(
               text: '. Please enter the OTP to verify your ',
               style: AppStyles.style13Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
             TextSpan(
               text: ' ${logic.isEmailVerification ? 'email' : 'phone'}',
               style: AppStyles.style13Normal.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
           ]),
@@ -148,7 +148,7 @@ class VerifyOtpView extends StatelessWidget {
           LengthLimitingTextInputFormatter(1),
         ],
         style: AppStyles.style16Bold.copyWith(
-          color: Theme.of(context).textTheme.bodyText1!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
         onChanged: (value) {
           if (value.isNotEmpty && !isLast) {
@@ -180,7 +180,7 @@ class VerifyOtpView extends StatelessWidget {
         Text(
           '${logic.resendTimerMin}:${logic.resendTimerSec}',
           style: AppStyles.style16Bold.copyWith(
-            color: Theme.of(context).textTheme.bodyText1!.color,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
           ),
         ),
       ],

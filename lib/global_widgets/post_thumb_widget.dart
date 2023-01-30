@@ -46,7 +46,7 @@ class PostThumbnailWidget extends StatelessWidget {
             Icon(
               Icons.poll_outlined,
               size: Dimens.thirtyTwo,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             Dimens.boxHeight4,
             Text(
@@ -100,13 +100,13 @@ class PostThumbnailWidget extends StatelessWidget {
               },
               leading: Icon(
                 Icons.delete,
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
                 size: Dimens.twentyFour,
               ),
               title: Text(
                 StringValues.delete,
                 style: AppStyles.style16Bold.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
             ),
@@ -114,13 +114,13 @@ class PostThumbnailWidget extends StatelessWidget {
             onTap: AppUtility.closeBottomSheet,
             leading: Icon(
               Icons.share,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
               size: Dimens.twentyFour,
             ),
             title: Text(
               StringValues.share,
               style: AppStyles.style16Bold.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -128,13 +128,13 @@ class PostThumbnailWidget extends StatelessWidget {
             onTap: AppUtility.closeBottomSheet,
             leading: Icon(
               Icons.report,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
               size: Dimens.twentyFour,
             ),
             title: Text(
               StringValues.report,
               style: AppStyles.style16Bold.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
           ),

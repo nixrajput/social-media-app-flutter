@@ -91,7 +91,7 @@ class SendOtpToEmailView extends StatelessWidget {
       keyboardType: TextInputType.emailAddress,
       maxLines: 1,
       style: AppStyles.style14Normal.copyWith(
-        color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+        color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
       ),
       onEditingComplete: logic.focusNode.unfocus,
       onChanged: (value) => logic.onEmailChanged(value),

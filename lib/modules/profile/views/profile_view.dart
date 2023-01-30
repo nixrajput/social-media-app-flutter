@@ -75,7 +75,7 @@ class ProfileView extends StatelessWidget {
               child: Container(
                 padding: Dimens.edgeInsets6,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).bottomAppBarColor,
+                  color: Theme.of(context).cardColor,
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: Theme.of(context).dividerColor,
@@ -84,7 +84,7 @@ class ProfileView extends StatelessWidget {
                 child: Icon(
                   Icons.menu,
                   size: Dimens.twenty,
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
             ),
@@ -105,7 +105,7 @@ class ProfileView extends StatelessWidget {
             leading: Icon(
               Icons.account_circle_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.account,
@@ -125,7 +125,7 @@ class ProfileView extends StatelessWidget {
             leading: Icon(
               Icons.verified_user_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.security,
@@ -145,7 +145,7 @@ class ProfileView extends StatelessWidget {
             leading: Icon(
               Icons.lock_outline,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.privacy,
@@ -165,7 +165,7 @@ class ProfileView extends StatelessWidget {
             leading: Icon(
               Icons.help_outline_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.help,
@@ -185,7 +185,7 @@ class ProfileView extends StatelessWidget {
             leading: Icon(
               Icons.palette_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.theme,
@@ -205,7 +205,7 @@ class ProfileView extends StatelessWidget {
             leading: Icon(
               Icons.info_outline,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.about,
@@ -225,7 +225,7 @@ class ProfileView extends StatelessWidget {
             leading: Icon(
               Icons.loop_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.checkForUpdates.toTitleCase(),
@@ -280,7 +280,7 @@ class ProfileView extends StatelessWidget {
               Text(
                 StringValues.userNotFoundError,
                 style: AppStyles.style32Bold.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.titleMedium!.color,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -355,7 +355,7 @@ class ProfileView extends StatelessWidget {
               Text(
                 "@${logic.profileDetails!.user!.uname}",
                 style: AppStyles.style14Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.titleMedium!.color,
                 ),
               ),
             ],
@@ -371,7 +371,7 @@ class ProfileView extends StatelessWidget {
                 Icon(
                   Icons.link_outlined,
                   size: Dimens.sixTeen,
-                  color: Theme.of(Get.context!).textTheme.subtitle1!.color,
+                  color: Theme.of(Get.context!).textTheme.titleMedium!.color,
                 ),
                 Dimens.boxWidth8,
                 InkWell(
@@ -397,14 +397,14 @@ class ProfileView extends StatelessWidget {
               Icon(
                 Icons.calendar_today,
                 size: Dimens.sixTeen,
-                color: Theme.of(context).textTheme.subtitle1!.color,
+                color: Theme.of(context).textTheme.titleMedium!.color,
               ),
               Dimens.boxWidth8,
               Expanded(
                 child: Text(
                   'Joined - ${DateFormat.yMMMd().format(logic.profileDetails!.user!.createdAt)}',
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ),
@@ -423,7 +423,7 @@ class ProfileView extends StatelessWidget {
       borderRadius: Dimens.four,
       borderWidth: Dimens.pointEight,
       labelStyle: AppStyles.style14Normal.copyWith(
-        color: Theme.of(context).textTheme.bodyText1!.color,
+        color: Theme.of(context).textTheme.bodyLarge!.color,
       ),
       onTap: RouteManagement.goToEditProfileView,
     );
@@ -487,7 +487,7 @@ class ProfileView extends StatelessWidget {
           child: Text(
             StringValues.noPosts,
             style: AppStyles.style20Normal.copyWith(
-              color: Theme.of(context).textTheme.subtitle1!.color,
+              color: Theme.of(context).textTheme.titleMedium!.color,
             ),
             textAlign: TextAlign.center,
           ),
@@ -541,7 +541,7 @@ class ProfileView extends StatelessWidget {
             leading: Icon(
               Icons.image_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.view,
@@ -571,7 +571,7 @@ class ProfileView extends StatelessWidget {
             leading: Icon(
               Icons.camera_alt_outlined,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.change,
@@ -591,7 +591,7 @@ class ProfileView extends StatelessWidget {
             leading: Icon(
               Icons.delete_outline,
               size: Dimens.twentyFour,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
             title: Text(
               StringValues.remove,

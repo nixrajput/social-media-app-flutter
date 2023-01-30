@@ -54,7 +54,7 @@ class AccountPrivacyView extends StatelessWidget {
                   /// Public
                   NxRadioTile(
                     padding: Dimens.edgeInsets12,
-                    bgColor: Theme.of(context).bottomAppBarColor,
+                    bgColor: Theme.of(context).cardColor,
                     showBorder: true,
                     borderRadius: BorderRadius.circular(Dimens.four),
                     onTap: () => logic.changeAccountPrivacy(false),
@@ -66,7 +66,7 @@ class AccountPrivacyView extends StatelessWidget {
                     subtitle: Text(
                       StringValues.publicPrivacyDesc,
                       style: AppStyles.style13Normal.copyWith(
-                        color: Theme.of(context).textTheme.subtitle1!.color,
+                        color: Theme.of(context).textTheme.titleMedium!.color,
                       ),
                     ),
                     value: false,
@@ -78,7 +78,7 @@ class AccountPrivacyView extends StatelessWidget {
                   /// Private
                   NxRadioTile(
                     padding: Dimens.edgeInsets12,
-                    bgColor: Theme.of(context).bottomAppBarColor,
+                    bgColor: Theme.of(context).cardColor,
                     showBorder: true,
                     borderRadius: BorderRadius.circular(Dimens.four),
                     onTap: () => logic.changeAccountPrivacy(true),
@@ -90,7 +90,7 @@ class AccountPrivacyView extends StatelessWidget {
                     subtitle: Text(
                       StringValues.privatePrivacyDesc,
                       style: AppStyles.style13Normal.copyWith(
-                        color: Theme.of(context).textTheme.subtitle1!.color,
+                        color: Theme.of(context).textTheme.titleMedium!.color,
                       ),
                     ),
                     value: true,

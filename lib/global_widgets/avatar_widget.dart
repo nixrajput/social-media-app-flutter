@@ -28,7 +28,7 @@ class AvatarWidget extends StatelessWidget {
       );
     }
     return CircleAvatar(
-      backgroundColor: Theme.of(context).textTheme.subtitle2!.color,
+      backgroundColor: Theme.of(context).textTheme.titleSmall!.color,
       radius: size,
       child: SvgPicture.asset(
         SvgAssets.maleAvatar,

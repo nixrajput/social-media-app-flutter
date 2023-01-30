@@ -79,7 +79,7 @@ class ChangePhoneView extends StatelessWidget {
                               style: AppStyles.style16Normal.copyWith(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .color,
                               ),
                             ),
@@ -89,7 +89,7 @@ class ChangePhoneView extends StatelessWidget {
                             StringValues.yourCurrentPhoneDesc,
                             style: AppStyles.style13Normal.copyWith(
                               color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
+                                  Theme.of(context).textTheme.bodyLarge!.color,
                             ),
                           )
                         ],
@@ -101,7 +101,7 @@ class ChangePhoneView extends StatelessWidget {
                             TextSpan(text: StringValues.enterPhoneToAdd),
                           ],
                           style: AppStyles.style13Normal.copyWith(
-                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            color: Theme.of(context).textTheme.bodyLarge!.color,
                           ),
                         ),
                       ),
@@ -112,7 +112,7 @@ class ChangePhoneView extends StatelessWidget {
                         maxHeight: Dimens.fiftySix,
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).bottomAppBarColor,
+                        color: Theme.of(context).cardColor,
                         border: Border.all(
                           color: Theme.of(context).dividerColor,
                           width: Dimens.pointEight,
@@ -132,7 +132,7 @@ class ChangePhoneView extends StatelessWidget {
                                 style: AppStyles.style14Bold.copyWith(
                                   color: Theme.of(context)
                                       .textTheme
-                                      .bodyText1!
+                                      .bodyLarge!
                                       .color,
                                 ),
                               ),
@@ -182,7 +182,7 @@ class ChangePhoneView extends StatelessWidget {
                               style: AppStyles.style14Normal.copyWith(
                                 color: Theme.of(context)
                                     .textTheme
-                                    .bodyText1!
+                                    .bodyLarge!
                                     .color,
                               ),
                               onChanged: (value) => logic.onChangeOtp(value),
@@ -217,7 +217,7 @@ class ChangePhoneView extends StatelessWidget {
                             LengthLimitingTextInputFormatter(6),
                           ],
                           style: AppStyles.style14Normal.copyWith(
-                            color: Theme.of(context).textTheme.bodyText1!.color,
+                            color: Theme.of(context).textTheme.bodyLarge!.color,
                           ),
                           onChanged: (value) => logic.onChangeOtp(value),
                           onEditingComplete: () => logic.focusNode.unfocus(),
@@ -254,7 +254,7 @@ class ChangePhoneView extends StatelessWidget {
           child: Text(
             StringValues.select,
             style: AppStyles.style18Bold.copyWith(
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
             ),
           ),
         ),
@@ -274,7 +274,7 @@ class ChangePhoneView extends StatelessWidget {
                     keyboardType: TextInputType.text,
                     textCapitalization: TextCapitalization.words,
                     style: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(context).textTheme.bodyText1!.color,
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
                     ),
                     onChanged: (value) {
                       if (value.isEmpty) {
@@ -318,7 +318,7 @@ class ChangePhoneView extends StatelessWidget {
                                       style: AppStyles.style14Bold.copyWith(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .bodyText1!
+                                            .bodyLarge!
                                             .color,
                                       ),
                                     ),
@@ -328,7 +328,7 @@ class ChangePhoneView extends StatelessWidget {
                                       style: AppStyles.style14Bold.copyWith(
                                         color: Theme.of(context)
                                             .textTheme
-                                            .bodyText1!
+                                            .bodyLarge!
                                             .color,
                                       ),
                                     ),

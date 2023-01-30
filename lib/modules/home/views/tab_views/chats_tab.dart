@@ -34,7 +34,7 @@ class ChatsTabView extends StatelessWidget {
               child: Icon(
                 Icons.search,
                 size: Dimens.twentyFour,
-                color: Theme.of(context).textTheme.bodyText1!.color!,
+                color: Theme.of(context).textTheme.bodyLarge!.color!,
               ),
             ),
           ],
@@ -81,7 +81,7 @@ class ChatsTabView extends StatelessWidget {
                       StringValues.noConversation,
                       style: AppStyles.style32Bold.copyWith(
                         color:
-                            Theme.of(Get.context!).textTheme.subtitle1!.color,
+                            Theme.of(Get.context!).textTheme.titleMedium!.color,
                       ),
                       textAlign: TextAlign.center,
                     ),

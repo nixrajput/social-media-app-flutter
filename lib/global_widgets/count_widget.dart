@@ -43,7 +43,7 @@ class NxCountWidget extends StatelessWidget {
               value,
               style: valueStyle ??
                   AppStyles.style16Bold.copyWith(
-                    color: Theme.of(context).textTheme.bodyText1!.color,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
                   ),
             ),
             Dimens.boxHeight4,
@@ -51,7 +51,7 @@ class NxCountWidget extends StatelessWidget {
               title,
               style: titleStyle ??
                   AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle2!.color,
+                    color: Theme.of(context).textTheme.titleSmall!.color,
                   ),
             ),
           ],

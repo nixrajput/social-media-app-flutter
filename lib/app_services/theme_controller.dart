@@ -87,15 +87,17 @@ class AppThemeController extends GetxController {
       iconTheme: const IconThemeData(color: ColorValues.lightGrayColor),
       scaffoldBackgroundColor: ColorValues.lightBgColor,
       appBarTheme: const AppBarTheme(backgroundColor: ColorValues.lightBgColor),
-      bottomAppBarColor: ColorValues.lightDialogColor,
+      cardColor: ColorValues.lightDialogColor,
       shadowColor: ColorValues.shadowColor.withAlpha(12),
       cardTheme: const CardTheme(color: ColorValues.lightDialogColor),
       dialogTheme:
           const DialogTheme(backgroundColor: ColorValues.lightDialogColor),
       dialogBackgroundColor: ColorValues.lightDialogColor,
-      errorColor: ColorValues.errorColor,
       bottomSheetTheme: const BottomSheetThemeData().copyWith(
         backgroundColor: ColorValues.lightDialogColor,
+        surfaceTintColor: ColorValues.lightDialogColor,
+        modalBackgroundColor: ColorValues.lightDialogColor,
+        modalBarrierColor: ColorValues.blackColor.withOpacity(0.5),
       ),
       dividerColor: ColorValues.lightDividerColor,
       disabledColor: ColorValues.lightGrayColor,
@@ -113,7 +115,6 @@ class AppThemeController extends GetxController {
           elevation: MaterialStateProperty.all(0.0),
         ),
       ),
-      fontFamily: kDefaultFontFamily,
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: ColorValues.lightDialogColor,
@@ -176,17 +177,21 @@ class AppThemeController extends GetxController {
           borderRadius: BorderRadius.circular(Dimens.four),
         ),
       ),
+      fontFamily: kDefaultFontFamily,
       textTheme: const TextTheme().copyWith(
-        bodyText1: const TextStyle(
+        bodyLarge: const TextStyle(
           color: ColorValues.lightBodyTextColor,
         ),
-        bodyText2: const TextStyle(
+        bodyMedium: const TextStyle(
           color: ColorValues.lightBodyTextColor,
         ),
-        subtitle1: TextStyle(
+        bodySmall: const TextStyle(
+          color: ColorValues.lightBodyTextColor,
+        ),
+        titleMedium: TextStyle(
           color: ColorValues.lightBodyTextColor.withAlpha(180),
         ),
-        subtitle2: TextStyle(
+        titleSmall: TextStyle(
           color: ColorValues.lightBodyTextColor.withAlpha(140),
         ),
       ),
@@ -204,14 +209,16 @@ class AppThemeController extends GetxController {
       scaffoldBackgroundColor: ColorValues.darkBgColor,
       shadowColor: ColorValues.shadowColor.withAlpha(12),
       appBarTheme: const AppBarTheme(backgroundColor: ColorValues.darkBgColor),
-      bottomAppBarColor: ColorValues.darkDialogColor,
+      cardColor: ColorValues.darkDialogColor,
       cardTheme: const CardTheme(color: ColorValues.darkDialogColor),
       dialogTheme:
           const DialogTheme(backgroundColor: ColorValues.darkDialogColor),
       dialogBackgroundColor: ColorValues.darkDialogColor,
-      errorColor: ColorValues.errorColor,
       bottomSheetTheme: const BottomSheetThemeData().copyWith(
         backgroundColor: ColorValues.darkDialogColor,
+        surfaceTintColor: ColorValues.darkDialogColor,
+        modalBackgroundColor: ColorValues.darkDialogColor,
+        modalBarrierColor: ColorValues.blackColor.withOpacity(0.5),
       ),
       dividerColor: ColorValues.darkDividerColor,
       disabledColor: ColorValues.darkGrayColor,
@@ -229,7 +236,6 @@ class AppThemeController extends GetxController {
           elevation: MaterialStateProperty.all(0.0),
         ),
       ),
-      fontFamily: kDefaultFontFamily,
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: ColorValues.darkDialogColor,
@@ -292,17 +298,21 @@ class AppThemeController extends GetxController {
           borderRadius: BorderRadius.circular(Dimens.four),
         ),
       ),
+      fontFamily: kDefaultFontFamily,
       textTheme: const TextTheme().copyWith(
-        bodyText1: const TextStyle(
+        bodyLarge: const TextStyle(
           color: ColorValues.darkBodyTextColor,
         ),
-        bodyText2: const TextStyle(
+        bodyMedium: const TextStyle(
           color: ColorValues.darkBodyTextColor,
         ),
-        subtitle1: TextStyle(
+        bodySmall: const TextStyle(
+          color: ColorValues.darkBodyTextColor,
+        ),
+        titleMedium: TextStyle(
           color: ColorValues.darkBodyTextColor.withAlpha(180),
         ),
-        subtitle2: TextStyle(
+        titleSmall: TextStyle(
           color: ColorValues.darkBodyTextColor.withAlpha(140),
         ),
       ),

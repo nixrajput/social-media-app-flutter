@@ -76,7 +76,7 @@ class ResetPasswordView extends StatelessWidget {
                         LengthLimitingTextInputFormatter(6),
                       ],
                       style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       controller: logic.otpTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
@@ -98,7 +98,7 @@ class ResetPasswordView extends StatelessWidget {
                       keyboardType: TextInputType.visiblePassword,
                       maxLines: 1,
                       style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       controller: logic.passwordTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
@@ -120,7 +120,7 @@ class ResetPasswordView extends StatelessWidget {
                       keyboardType: TextInputType.visiblePassword,
                       maxLines: 1,
                       style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       controller: logic.confirmPasswordTextController,
                       onEditingComplete: logic.focusNode.unfocus,

@@ -6,7 +6,7 @@ publish_to: "none"
 version: 1.0.1+31
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: ">=2.18.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -28,7 +28,7 @@ dependencies:
   cached_network_image: ^3.2.3
   flutter_carousel_widget: ^2.0.1
 
-  flutter_animate: ^2.1.0
+  flutter_animate: ^3.1.0
   rive: ^0.10.1
 
   connectivity_plus: ^3.0.2

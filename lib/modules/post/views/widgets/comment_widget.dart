@@ -67,7 +67,7 @@ class CommentWidget extends StatelessWidget {
                     text: TextSpan(
                       text: '${comment.user!.fname} ${comment.user!.lname}',
                       style: AppStyles.style14Bold.copyWith(
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () => RouteManagement.goToUserProfileView(
@@ -97,7 +97,7 @@ class CommentWidget extends StatelessWidget {
                 NxIconButton(
                   icon: Icons.more_vert,
                   iconSize: Dimens.sixTeen,
-                  iconColor: Theme.of(context).textTheme.bodyText1!.color,
+                  iconColor: Theme.of(context).textTheme.bodyLarge!.color,
                   onTap: () => _showHeaderOptionBottomSheet(context),
                 ),
               ],
@@ -114,7 +114,7 @@ class CommentWidget extends StatelessWidget {
       builder: (BuildContext context, String value) => Text(
         value,
         style: AppStyles.style12Normal.copyWith(
-          color: Theme.of(context).textTheme.subtitle1!.color,
+          color: Theme.of(context).textTheme.titleMedium!.color,
         ),
       ),
     );
@@ -124,7 +124,7 @@ class CommentWidget extends StatelessWidget {
         text: TextSpan(
           text: comment.user!.uname,
           style: AppStyles.style13Normal.copyWith(
-            color: Theme.of(context).textTheme.subtitle1!.color,
+            color: Theme.of(context).textTheme.titleMedium!.color,
           ),
         ),
         overflow: TextOverflow.ellipsis,
@@ -160,7 +160,7 @@ class CommentWidget extends StatelessWidget {
                   size: Dimens.twenty,
                   color: comment.isLiked == true
                       ? ColorValues.primaryColor
-                      : Theme.of(context).textTheme.subtitle1!.color,
+                      : Theme.of(context).textTheme.titleMedium!.color,
                 ),
                 Dimens.boxWidth2,
                 Text(
@@ -168,7 +168,7 @@ class CommentWidget extends StatelessWidget {
                   style: AppStyles.style13Normal.copyWith(
                     color: comment.isLiked == true
                         ? ColorValues.primaryColor
-                        : Theme.of(context).textTheme.subtitle1!.color,
+                        : Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ],
@@ -189,13 +189,13 @@ class CommentWidget extends StatelessWidget {
                 Icon(
                   Icons.comment_outlined,
                   size: Dimens.twenty,
-                  color: Theme.of(context).textTheme.subtitle1!.color,
+                  color: Theme.of(context).textTheme.titleMedium!.color,
                 ),
                 Dimens.boxWidth2,
                 Text(
                   '${comment.repliesCount!}'.toCountingFormat(),
                   style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.subtitle1!.color,
+                    color: Theme.of(context).textTheme.titleMedium!.color,
                   ),
                 ),
               ],
@@ -218,13 +218,13 @@ class CommentWidget extends StatelessWidget {
               },
               leading: Icon(
                 Icons.delete,
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
                 size: Dimens.twentyFour,
               ),
               title: Text(
                 StringValues.delete,
                 style: AppStyles.style16Bold.copyWith(
-                  color: Theme.of(context).textTheme.bodyText1!.color,
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                 ),
               ),
             ),
@@ -232,13 +232,13 @@ class CommentWidget extends StatelessWidget {
             onTap: AppUtility.closeBottomSheet,
             leading: Icon(
               Icons.reply,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
               size: Dimens.twentyFour,
             ),
             title: Text(
               StringValues.reply,
               style: AppStyles.style16Bold.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -246,13 +246,13 @@ class CommentWidget extends StatelessWidget {
             onTap: AppUtility.closeBottomSheet,
             leading: Icon(
               Icons.report,
-              color: Theme.of(context).textTheme.bodyText1!.color,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
               size: Dimens.twentyFour,
             ),
             title: Text(
               StringValues.report,
               style: AppStyles.style16Bold.copyWith(
-                color: Theme.of(context).textTheme.bodyText1!.color,
+                color: Theme.of(context).textTheme.bodyLarge!.color,
               ),
             ),
           ),
@@ -274,7 +274,7 @@ class CommentWidget extends StatelessWidget {
     return Container(
       margin: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
-        color: Theme.of(context).bottomAppBarColor,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(Dimens.four),
         boxShadow: AppStyles.defaultShadow,
       ),

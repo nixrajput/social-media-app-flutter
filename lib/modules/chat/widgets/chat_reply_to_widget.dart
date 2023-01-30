@@ -57,7 +57,7 @@ class ChatReplyToWidget extends StatelessWidget {
               Text(
                 reply.mediaFile!.mediaType!.toTitleCase(),
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(context).textTheme.subtitle1!.color!,
+                  color: Theme.of(context).textTheme.titleMedium!.color!,
                 ),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
@@ -68,7 +68,7 @@ class ChatReplyToWidget extends StatelessWidget {
               Text(
                 _decryptMessage(reply.message!),
                 style: AppStyles.style13Normal.copyWith(
-                  color: Theme.of(Get.context!).textTheme.bodyText1!.color,
+                  color: Theme.of(Get.context!).textTheme.bodyLarge!.color,
                 ),
               ),
             Dimens.boxHeight8,

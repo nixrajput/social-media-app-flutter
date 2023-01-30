@@ -54,7 +54,8 @@ class NxOutlinedButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: borderColor ?? Theme.of(context).textTheme.subtitle1!.color!,
+            color:
+                borderColor ?? Theme.of(context).textTheme.titleMedium!.color!,
             width: borderWidth ?? Dimens.pointEight,
             style: borderStyle ?? BorderStyle.solid,
           ),
@@ -73,7 +74,7 @@ class NxOutlinedButton extends StatelessWidget {
               style: labelStyle ??
                   AppStyles.style16Bold.copyWith(
                     color: labelColor ??
-                        Theme.of(context).textTheme.bodyText1!.color,
+                        Theme.of(context).textTheme.bodyLarge!.color,
                     fontSize: fontSize ?? Dimens.sixTeen,
                   ),
             ),

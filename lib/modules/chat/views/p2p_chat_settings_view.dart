@@ -78,7 +78,7 @@ class P2PChatSettingsView extends StatelessWidget {
                   Text(
                     "@${logic.user!.uname}",
                     style: AppStyles.style14Normal.copyWith(
-                      color: Theme.of(context).textTheme.subtitle1!.color,
+                      color: Theme.of(context).textTheme.titleMedium!.color,
                     ),
                   ),
                 ],
