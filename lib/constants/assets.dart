@@ -12,7 +12,10 @@ abstract class RiveAssets {
 }
 
 abstract class SvgAssets {
-  static const femaleAvatar = 'assets/svgs/profile_pic_female.svg';
-  static const maleAvatar = 'assets/svgs/profile_pic_male.svg';
-  static const upgrade = 'assets/svgs/upgrade.svg';
+  static const femaleAvatar = 'assets/svgs/avatar_female.svg';
+  static const maleAvatar = 'assets/svgs/avatar_male.svg';
+  static const update = 'assets/svgs/update.svg';
+  static const noData = 'assets/svgs/no_data.svg';
+  static const addFiles = 'assets/svgs/add_files.svg';
+  static const messaging = 'assets/svgs/messaging.svg';
 }

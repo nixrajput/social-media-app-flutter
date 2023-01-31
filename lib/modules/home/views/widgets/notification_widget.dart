@@ -52,8 +52,8 @@ class NotificationWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () =>
-                  RouteManagement.goToUserProfileView(notification.from.id),
+              onTap: () => RouteManagement.goToUserProfileDetailsViewByUserId(
+                  notification.from.id),
               child: AvatarWidget(
                 avatar: notification.from.avatar,
                 size: Dimens.twentyFour,

@@ -50,7 +50,8 @@ class PostWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: () => RouteManagement.goToUserProfileView(post.owner!.id),
+            onTap: () => RouteManagement.goToUserProfileDetailsViewByUserId(
+                post.owner!.id),
             child: AvatarWidget(
               avatar: avatar,
               size: Dimens.twenty,
@@ -91,7 +92,8 @@ class PostWidget extends StatelessWidget {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () =>
-                            RouteManagement.goToUserProfileView(post.owner!.id),
+                            RouteManagement.goToUserProfileDetailsViewByUserId(
+                                post.owner!.id),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -521,6 +523,45 @@ class PostWidget extends StatelessWidget {
             ),
           ),
         ),
+
+        /// Block User
+        if (post.owner!.id != currentUser.id)
+          NxListTile(
+            bgColor: ColorValues.transparent,
+            padding: Dimens.edgeInsets12,
+            showBorder: false,
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              RouteManagement.goToBlockUserView(
+                post.owner!.id,
+                post.owner!.uname,
+                post.owner!.avatar!,
+              );
+            },
+            leading: Icon(
+              Icons.block,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+              size: Dimens.twentyFour,
+            ),
+            title: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: StringValues.block,
+                    style: AppStyles.style16Normal.copyWith(
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' ${post.owner!.uname}',
+                    style: AppStyles.style16Bold.copyWith(
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
 
         /// Report Post
 

@@ -76,7 +76,7 @@ class NxExpandableTextState extends State<NxExpandableText> {
             } else if (link.url.contains("#")) {
               AppUtility.printLog(link.text);
             } else if (link.url.contains("@")) {
-              RouteManagement.goToUserProfileViewByUsername(
+              RouteManagement.goToUserProfileDetailsViewByUsername(
                   link.url.replaceAll('@', ''));
             } else {
               AppUtility.printLog(link);

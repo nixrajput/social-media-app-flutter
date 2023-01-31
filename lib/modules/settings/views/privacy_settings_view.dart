@@ -116,6 +116,26 @@ class PrivacySettingsView extends StatelessWidget {
 
               Dimens.boxHeight8,
 
+              /// Mute and Block
+              NxListTile(
+                padding: Dimens.edgeInsets12,
+                bgColor: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(Dimens.four),
+                title: Text(
+                  StringValues.muteAndBlock,
+                  style: AppStyles.style14Bold,
+                ),
+                subtitle: Text(
+                  StringValues.muteAndBlockDesc,
+                  style: AppStyles.style13Normal.copyWith(
+                    color: Theme.of(context).textTheme.titleMedium!.color,
+                  ),
+                ),
+                onTap: RouteManagement.goToMuteAndBlockSettingsView,
+              ),
+
+              Dimens.boxHeight8,
+
               /// Posts
               NxListTile(
                 padding: Dimens.edgeInsets12,
@@ -152,43 +172,43 @@ class PrivacySettingsView extends StatelessWidget {
                 ),
               ),
 
-              Dimens.boxHeight8,
+              // Dimens.boxHeight8,
 
-              /// Messages
-              NxListTile(
-                padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(Dimens.four),
-                title: Text(
-                  StringValues.messagePrivacy,
-                  style: AppStyles.style14Bold,
-                ),
-                subtitle: Text(
-                  StringValues.commentPrivacyDesc,
-                  style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.titleMedium!.color,
-                  ),
-                ),
-              ),
+              // /// Messages
+              // NxListTile(
+              //   padding: Dimens.edgeInsets12,
+              //   bgColor: Theme.of(context).cardColor,
+              //   borderRadius: BorderRadius.circular(Dimens.four),
+              //   title: Text(
+              //     StringValues.messagePrivacy,
+              //     style: AppStyles.style14Bold,
+              //   ),
+              //   subtitle: Text(
+              //     StringValues.commentPrivacyDesc,
+              //     style: AppStyles.style13Normal.copyWith(
+              //       color: Theme.of(context).textTheme.titleMedium!.color,
+              //     ),
+              //   ),
+              // ),
 
-              Dimens.boxHeight8,
+              // Dimens.boxHeight8,
 
-              /// Moments
-              NxListTile(
-                padding: Dimens.edgeInsets12,
-                bgColor: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(Dimens.four),
-                title: Text(
-                  StringValues.storyPrivacy,
-                  style: AppStyles.style14Bold,
-                ),
-                subtitle: Text(
-                  StringValues.storyPrivacyDesc,
-                  style: AppStyles.style13Normal.copyWith(
-                    color: Theme.of(context).textTheme.titleMedium!.color,
-                  ),
-                ),
-              ),
+              // /// Moments
+              // NxListTile(
+              //   padding: Dimens.edgeInsets12,
+              //   bgColor: Theme.of(context).cardColor,
+              //   borderRadius: BorderRadius.circular(Dimens.four),
+              //   title: Text(
+              //     StringValues.storyPrivacy,
+              //     style: AppStyles.style14Bold,
+              //   ),
+              //   subtitle: Text(
+              //     StringValues.storyPrivacyDesc,
+              //     style: AppStyles.style13Normal.copyWith(
+              //       color: Theme.of(context).textTheme.titleMedium!.color,
+              //     ),
+              //   ),
+              // ),
 
               Dimens.boxHeight16,
             ],

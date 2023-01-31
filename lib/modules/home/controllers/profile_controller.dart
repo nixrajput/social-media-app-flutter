@@ -5,28 +5,32 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
+import 'package:social_media_app/apis/models/responses/blocked_users_response.dart';
 import 'package:social_media_app/apis/models/responses/post_response.dart';
 import 'package:social_media_app/apis/models/responses/profile_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
+import 'package:social_media_app/constants/hive_box_names.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/services/hive_service.dart';
 import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class ProfileController extends GetxController {
-  static ProfileController get find => Get.find();
-
-  final _auth = AuthService.find;
-
   final _apiProvider = ApiProvider(http.Client());
-
+  final _auth = AuthService.find;
+  final List<User> _blockedUsers = [];
+  final _blockedUsersResponse = const BlockedUsersResponse().obs;
   var _isLoading = false;
-  final _isPostLoading = false.obs;
   final _isMorePostLoading = false.obs;
-  final _profileDetails = const ProfileResponse().obs;
+  final _isPostLoading = false.obs;
+  final _loadingBlockedUsers = false.obs;
+  final _loadingMoreBlockedUsers = false.obs;
   final _postData = PostResponse().obs;
   final List<Post> _postList = [];
+  final _profileDetails = const ProfileResponse().obs;
+
+  static ProfileController get find => Get.find();
 
   /// Getters
   bool get isLoading => _isLoading;
@@ -35,11 +39,19 @@ class ProfileController extends GetxController {
 
   bool get isMorePostLoading => _isMorePostLoading.value;
 
+  bool get loadingBlockedUsers => _loadingBlockedUsers.value;
+
+  bool get loadingMoreBlockedUsers => _loadingMoreBlockedUsers.value;
+
   PostResponse? get postData => _postData.value;
 
   List<Post> get postList => _postList;
 
+  List<User> get blockedUsers => _blockedUsers;
+
   ProfileResponse? get profileDetails => _profileDetails.value;
+
+  BlockedUsersResponse? get blockedUsersResponse => _blockedUsersResponse.value;
 
   /// Setters
   set setPostData(PostResponse value) => _postData.value = value;
@@ -47,14 +59,45 @@ class ProfileController extends GetxController {
   set setProfileDetailsData(ProfileResponse value) =>
       _profileDetails.value = value;
 
-  static Future<void> _saveProfileDataToLocalStorage(
-      ProfileResponse respone) async {
+  set setBlockedUsersResponse(BlockedUsersResponse value) =>
+      _blockedUsersResponse.value = value;
+
+  Future<void> unblockUser(String userId) async => await _unblockUser(userId);
+
+  Future<void> followUnfollowUser(User user) async =>
+      await _followUnfollowUser(user);
+
+  Future<void> cancelFollowRequest(User user) async =>
+      await _cancelFollowRequest(user);
+
+  Future<void> fetchProfileDetails({bool fetchPost = true}) async =>
+      await _fetchProfileDetails(fetchPost: fetchPost);
+
+  Future<bool> loadProfileDetails() async => await _loadProfileDetails();
+
+  Future<void> fetchProfilePosts() async => await _fetchProfilePosts();
+
+  Future<void> fetchBlockedUsers() async => await _fetchBlockedUsers();
+
+  Future<void> loadMoreBlockedUsers() async => await _fetchMoreBlockedUsers();
+
+  Future<void> loadMorePosts() async =>
+      await _loadMoreProfilePosts(page: _postData.value.currentPage! + 1);
+
+  Future<void> updateProfile(Map<String, dynamic> details,
+          {bool? showLoading}) async =>
+      await _updateProfile(details, showLoading: showLoading);
+
+  Future<void> applyForBlueTick(Map<String, dynamic> details) async =>
+      await _applyForBlueTick(details);
+
+  Future<void> _saveProfileDataToLocalStorage(ProfileResponse respone) async {
     var data = jsonEncode(respone.toJson());
     await StorageService.write('profileData', data);
     AppUtility.log('Profile data saved to local storage');
   }
 
-  static Future<ProfileResponse?> _readProfileDataFromLocalStorage() async {
+  Future<ProfileResponse?> _readProfileDataFromLocalStorage() async {
     var hasData = await StorageService.hasData('profileData');
 
     if (hasData) {
@@ -67,7 +110,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  static Future<void> _saveProfilePostsToLocalStorage(List<Post> posts) async {
+  Future<void> _saveProfilePostsToLocalStorage(List<Post> posts) async {
     AppUtility.log('Saving profile posts to local storage');
 
     if (posts.isEmpty) {
@@ -77,7 +120,7 @@ class ProfileController extends GetxController {
 
     for (var item in posts) {
       await HiveService.put<Post>(
-        'profilePosts',
+        HiveBoxNames.profilePosts,
         item.id,
         item,
       );
@@ -85,16 +128,47 @@ class ProfileController extends GetxController {
     AppUtility.log('Profile posts saved to local storage');
   }
 
-  static Future<List<Post>?> _readProfilePostsFromLocalStorage() async {
+  Future<void> _saveBlockedUsersToLocalStorage(List<User> users) async {
+    AppUtility.log('Saving blocked users to local storage');
+
+    if (users.isEmpty) {
+      AppUtility.log('No users found to save');
+      return;
+    }
+
+    for (var item in users) {
+      await HiveService.put<User>(
+        HiveBoxNames.blockedUsers,
+        item.id,
+        item,
+      );
+    }
+    AppUtility.log('Blocked Users saved to local storage');
+  }
+
+  Future<List<Post>?> _readProfilePostsFromLocalStorage() async {
     AppUtility.log('Loading User Posts From Local Storage');
-    var isExists = await HiveService.hasLength<Post>('profilePosts');
+    var isExists = await HiveService.hasLength<Post>(HiveBoxNames.profilePosts);
     if (isExists) {
-      var data = await HiveService.getAll<Post>('profilePosts');
+      var data = await HiveService.getAll<Post>(HiveBoxNames.profilePosts);
       data.sort((a, b) => b.createdAt!.compareTo(a.createdAt!));
       AppUtility.log('User Posts From Local Storage Loaded');
       return data;
     }
     AppUtility.log('User Posts From Local Storage Loaded');
+    return null;
+  }
+
+  static Future<List<User>?> _readPBlockedUsersFromLocalStorage() async {
+    AppUtility.log('Loading Blocked Users From Local Storage');
+    var isExists = await HiveService.hasLength<User>(HiveBoxNames.blockedUsers);
+    if (isExists) {
+      var data = await HiveService.getAll<User>(HiveBoxNames.blockedUsers);
+      data.sort((a, b) => b.uname.compareTo(a.uname));
+      AppUtility.log('Blocked Users From Local Storage Loaded');
+      return data;
+    }
+    AppUtility.log('Blocked Users From Local Storage Loaded');
     return null;
   }
 
@@ -107,18 +181,19 @@ class ProfileController extends GetxController {
       setProfileDetailsData = decodedData;
 
       final profilePosts = await _readProfilePostsFromLocalStorage();
+      final blockedUsers = await _readPBlockedUsersFromLocalStorage();
 
       if (profilePosts != null) {
         _postList.clear();
         _postList.addAll(profilePosts);
-        // await _fetchPosts();
-        return true;
-      } else {
-        AppUtility.log("Failed To Load Profile Posts From Local Storage",
-            tag: 'error');
-        await _auth.deleteAllLocalDataAndCache();
-        return false;
       }
+
+      if (blockedUsers != null) {
+        _blockedUsers.clear();
+        _blockedUsers.addAll(blockedUsers);
+      }
+
+      return true;
     } else {
       AppUtility.log("Failed To Load Profile Details From Local Storage",
           tag: 'error');
@@ -138,6 +213,7 @@ class ProfileController extends GetxController {
         final decodedData = response.data;
         setProfileDetailsData = ProfileResponse.fromJson(decodedData);
         await _saveProfileDataToLocalStorage(_profileDetails.value);
+        await _fetchBlockedUsers();
         _isLoading = false;
         update();
         if (fetchPost) await _fetchProfilePosts();
@@ -385,26 +461,102 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> followUnfollowUser(User user) async =>
-      await _followUnfollowUser(user);
+  Future<void> _fetchBlockedUsers() async {
+    _loadingBlockedUsers.value = true;
+    update();
 
-  Future<void> cancelFollowRequest(User user) async =>
-      await _cancelFollowRequest(user);
+    try {
+      final response = await _apiProvider.getBlockedUsers(_auth.token);
 
-  Future<void> fetchProfileDetails({bool fetchPost = true}) async =>
-      await _fetchProfileDetails(fetchPost: fetchPost);
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        setBlockedUsersResponse = BlockedUsersResponse.fromJson(decodedData);
+        _blockedUsers.clear();
+        _blockedUsers.addAll(_blockedUsersResponse.value.results!);
+        _loadingBlockedUsers.value = false;
+        update();
+        await _saveBlockedUsersToLocalStorage(
+            _blockedUsersResponse.value.results!);
+      } else {
+        final decodedData = response.data;
+        _loadingBlockedUsers.value = false;
+        update();
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } catch (exc) {
+      _loadingBlockedUsers.value = false;
+      update();
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+    }
+  }
 
-  Future<bool> loadProfileDetails() async => await _loadProfileDetails();
+  Future<void> _fetchMoreBlockedUsers() async {
+    _loadingMoreBlockedUsers.value = true;
+    update();
 
-  Future<void> fetchProfilePosts() async => await _fetchProfilePosts();
+    try {
+      final response = await _apiProvider.getBlockedUsers(
+        _auth.token,
+        page: _blockedUsersResponse.value.currentPage! + 1,
+      );
 
-  Future<void> loadMore() async =>
-      await _loadMoreProfilePosts(page: _postData.value.currentPage! + 1);
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        setBlockedUsersResponse = BlockedUsersResponse.fromJson(decodedData);
+        _blockedUsers.addAll(_blockedUsersResponse.value.results!);
+        _loadingMoreBlockedUsers.value = false;
+        update();
+        await _saveBlockedUsersToLocalStorage(
+            _blockedUsersResponse.value.results!);
+      } else {
+        final decodedData = response.data;
+        _loadingMoreBlockedUsers.value = false;
+        update();
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } catch (exc) {
+      _loadingMoreBlockedUsers.value = false;
+      update();
+      AppUtility.showSnackBar('Error: ${exc.toString()}', StringValues.error);
+    }
+  }
 
-  Future<void> updateProfile(Map<String, dynamic> details,
-          {bool? showLoading}) async =>
-      await _updateProfile(details, showLoading: showLoading);
+  Future<void> _unblockUser(String userId) async {
+    if (userId.isEmpty) {
+      AppUtility.showSnackBar(
+        StringValues.userIdNotFound,
+        StringValues.warning,
+      );
+      return;
+    }
 
-  Future<void> applyForBlueTick(Map<String, dynamic> details) async =>
-      await _applyForBlueTick(details);
+    try {
+      final response = await _apiProvider.unblockUser(_auth.token, userId);
+
+      if (response.isSuccessful) {
+        final decodedData = response.data;
+        _blockedUsers.removeWhere((element) => element.id == userId);
+        update();
+        await HiveService.delete<User>(HiveBoxNames.blockedUsers, userId);
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.success,
+        );
+      } else {
+        final decodedData = response.data;
+        AppUtility.showSnackBar(
+          decodedData[StringValues.message],
+          StringValues.error,
+        );
+      }
+    } catch (exc) {
+      AppUtility.showSnackBar('Error: $exc', StringValues.error);
+    }
+  }
 }

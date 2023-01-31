@@ -136,7 +136,8 @@ class PeopleTab extends StatelessWidget {
               user: item,
               totalLength: logic.recommendedUsersList.length,
               index: index,
-              onTap: () => RouteManagement.goToUserProfileView(item.id),
+              onTap: () =>
+                  RouteManagement.goToUserProfileDetailsViewByUserId(item.id),
               onActionTap: () {
                 if (item.followingStatus == "requested") {
                   logic.cancelFollowRequest(item);

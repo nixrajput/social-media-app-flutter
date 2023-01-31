@@ -1,13 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/apis/models/entities/media_file.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/constants/enums.dart';
+import 'package:social_media_app/modules/block_user/block_user_controller.dart';
 import 'package:social_media_app/modules/chat/controllers/p2p_chat_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/followers_list_controller.dart';
 import 'package:social_media_app/modules/follower/controllers/following_list_controller.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/post_details_controller.dart';
+import 'package:social_media_app/modules/report/report_controller.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/app_pages.dart';
 
@@ -37,18 +40,36 @@ abstract class RouteManagement {
     Get.offAllNamed(AppRoutes.home);
   }
 
+  /// User ---------------------------------------------------------------------
+
+  static void goToBlockUserView(String id, String uname, MediaFile avatar) {
+    Get.delete<BlockUserController>();
+    Get.toNamed(AppRoutes.blockUser, arguments: {
+      'id': id,
+      'uname': uname,
+      'avatar': avatar,
+    });
+  }
+
+  static void goToUserProfileDetailsViewByUserId(String userId) {
+    Get.delete<UserDetailsController>();
+    Get.toNamed(AppRoutes.userProfile, arguments: [userId, 'uid']);
+  }
+
+  static void goToUserProfileDetailsViewByUsername(String username) {
+    Get.delete<UserDetailsController>();
+    Get.toNamed(AppRoutes.userProfile, arguments: [username, 'uname']);
+  }
+
+  /// --------------------------------------------------------------------------
+
   /// Auth ---------------------------------------------------------------------
 
   static void goToLoginView() {
     Get.toNamed(AppRoutes.login);
   }
 
-  // static void _goToRegisterView() {
-
-  // }
-
   static void goToRegisterView() {
-    // goToSendOtpToEmailView(callback: _goToRegisterView);
     Get.toNamed(AppRoutes.register);
   }
 
@@ -191,16 +212,6 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.following, arguments: userId);
   }
 
-  static void goToUserProfileView(String userId) {
-    Get.delete<UserDetailsController>();
-    Get.toNamed(AppRoutes.userProfile, arguments: [userId, 'uid']);
-  }
-
-  static void goToUserProfileViewByUsername(String username) {
-    Get.delete<UserDetailsController>();
-    Get.toNamed(AppRoutes.userProfile, arguments: [username, 'uname']);
-  }
-
   static void goToPostDetailsView(String postId, Post? post) {
     Get.delete<PostDetailsController>();
     Get.delete<CommentController>();
@@ -295,6 +306,14 @@ abstract class RouteManagement {
     Get.toNamed(AppRoutes.onlineStatusSettings);
   }
 
+  static void goToMuteAndBlockSettingsView() {
+    Get.toNamed(AppRoutes.muteBlockPrivacySettings);
+  }
+
+  static void goToBlockedUsersSettingsView() {
+    Get.toNamed(AppRoutes.blockedUsersSettings);
+  }
+
   /// --------------------------------------------------------------------------
 
   /// Go to App Update View ----------------------------------------------------
@@ -316,6 +335,7 @@ abstract class RouteManagement {
   /// Report Issue -------------------------------------------------------------
 
   static void goToReportIssueView(String id, ReportType type) {
+    Get.delete<ReportController>();
     Get.toNamed(AppRoutes.reportIssue,
         arguments: {'id': id, 'reportType': type});
   }

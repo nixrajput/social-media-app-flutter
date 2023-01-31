@@ -28,8 +28,8 @@ abstract class ColorValues {
       Color.fromARGB(255, 100, 100, 100);
 
   static const Color linkColor = Color.fromARGB(255, 56, 130, 240);
-  static const Color primaryColor = Color.fromARGB(255, 238, 113, 30);
-  static const Color primaryLightColor = Color.fromARGB(255, 235, 146, 87);
+  static const Color primaryColor = Color.fromARGB(255, 240, 90, 100);
+  static const Color primaryLightColor = Color.fromARGB(200, 240, 90, 100);
 
   static const Color shadowColor = Color.fromARGB(255, 0, 0, 0);
   static const Color successColor = Color.fromARGB(255, 76, 175, 80);

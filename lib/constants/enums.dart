@@ -19,4 +19,5 @@ enum ReportType {
   user,
   post,
   comment,
+  commentReply,
 }

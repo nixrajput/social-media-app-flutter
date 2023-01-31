@@ -10,6 +10,8 @@ import 'package:social_media_app/modules/auth/views/login_view.dart';
 import 'package:social_media_app/modules/auth/views/reactivate_account_view.dart';
 import 'package:social_media_app/modules/auth/views/register_view.dart';
 import 'package:social_media_app/modules/auth/views/reset_password_view.dart';
+import 'package:social_media_app/modules/block_user/block_user_binding.dart';
+import 'package:social_media_app/modules/block_user/block_user_view.dart';
 import 'package:social_media_app/modules/chat/bindings/single_chat_binding.dart';
 import 'package:social_media_app/modules/chat/views/p2p_chat_settings_view.dart';
 import 'package:social_media_app/modules/chat/views/p2p_chat_view.dart';
@@ -72,6 +74,8 @@ import 'package:social_media_app/modules/settings/views/pages/account/verified_a
 import 'package:social_media_app/modules/settings/views/pages/help/report_app_issue_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/help/send_suggestions_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy/account_privacy_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/privacy/blocked_users_view.dart';
+import 'package:social_media_app/modules/settings/views/pages/privacy/mute_block_privacy_settings_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/privacy/online_status_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/security/change_password_view.dart';
 import 'package:social_media_app/modules/settings/views/pages/security/login_info_history_view.dart';
@@ -226,6 +230,15 @@ abstract class AppPages {
     GetPage(
       name: _Routes.profile,
       page: ProfileView.new,
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    /// Block User
+    GetPage(
+      name: _Routes.blockUser,
+      page: BlockUserView.new,
+      binding: BlockUserBinding(),
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),
@@ -546,6 +559,20 @@ abstract class AppPages {
     GetPage(
       name: _Routes.onlineStatusSettings,
       page: OnlineStatusView.new,
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.muteBlockPrivacySettings,
+      page: MuteBlockPrivacySettingsView.new,
+      transitionDuration: transitionDuration,
+      transition: defaultTransition,
+    ),
+
+    GetPage(
+      name: _Routes.blockedUsersSettings,
+      page: BlockedUsersView.new,
       transitionDuration: transitionDuration,
       transition: defaultTransition,
     ),

@@ -12,7 +12,7 @@ abstract class AppRoutes {
   static const blueTickVerification = _Routes.blueTickVerification;
   static const blueTickVerificationSettings =
       _Routes.blueTickVerificationSettings;
-
+  static const blockUser = _Routes.blockUser;
   static const changeEmailSettings = _Routes.changeEmailSettings;
   static const changePassword = _Routes.changePassword;
   static const changePhoneSettings = _Routes.changePhoneSettings;
@@ -45,6 +45,7 @@ abstract class AppRoutes {
   static const loginActivitySettings = _Routes.loginActivitySettings;
   static const maintenance = _Routes.maintenance;
   static const momentsSettings = _Routes.momentsSettings;
+  static const muteBlockPrivacySettings = _Routes.muteBlockPrivacySettings;
   static const noNetwork = _Routes.noNetwork;
   static const offline = _Routes.offline;
   static const onlineStatusSettings = _Routes.onlineStatusSettings;
@@ -90,7 +91,7 @@ abstract class _Routes {
   static const blueTickVerification = "/blue_tick_verification";
   static const blueTickVerificationSettings =
       "/blue_tick_verification_settings";
-
+  static const blockUser = '/block_user';
   static const changeEmailSettings = '/change_email_settings';
   static const changePassword = '/change_password';
   static const changePhoneSettings = '/change_phone_settings';
@@ -123,6 +124,7 @@ abstract class _Routes {
   static const loginActivitySettings = '/login_activity_settings';
   static const maintenance = '/maintenance';
   static const momentsSettings = '/moments_settings';
+  static const muteBlockPrivacySettings = '/mute_block_privacy_settings';
   static const noNetwork = '/no_network';
   static const offline = '/offline';
   static const onlineStatusSettings = '/online_status_settings';

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/constants/enums.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
@@ -11,6 +12,7 @@ import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/count_widget.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/global_widgets/custom_list_tile.dart';
 import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/image_viewer_widget.dart';
@@ -19,6 +21,7 @@ import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
 import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/verified_widget.dart';
+import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/user/user_details_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -33,28 +36,128 @@ class UserProfileView extends StatelessWidget {
         child: SizedBox(
           width: Dimens.screenWidth,
           height: Dimens.screenHeight,
-          child: GetBuilder<UserDetailsController>(builder: (logic) {
-            return NxRefreshIndicator(
-              onRefresh: logic.fetchUserDetailsById,
-              showProgress: false,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildProfileHeader(logic, context),
-                  _buildProfileBody(logic, context),
-                ],
-              ),
-            );
-          }),
+          child: GetBuilder<UserDetailsController>(
+            builder: (logic) {
+              if (logic.isLoading) {
+                return const Center(child: NxCircularProgressIndicator());
+              }
+
+              return NxRefreshIndicator(
+                onRefresh: logic.fetchUserDetailsById,
+                showProgress: false,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildProfileHeader(logic, context),
+                    _buildProfileBody(logic, context),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
+  void _showHeaderOptionBottomSheet(
+      BuildContext context, UserDetailsController logic) {
+    final currentUser = ProfileController.find.profileDetails!.user!;
+    AppUtility.showBottomSheet(
+      children: [
+        /// Block User
+
+        if (logic.userDetails!.user!.id != currentUser.id &&
+            !logic.userDetails!.user!.isBlockedByYou &&
+            !logic.userDetails!.user!.isBlockedByUser)
+          NxListTile(
+            bgColor: ColorValues.transparent,
+            padding: Dimens.edgeInsets12,
+            showBorder: false,
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              RouteManagement.goToBlockUserView(
+                logic.userDetails!.user!.id,
+                logic.userDetails!.user!.uname,
+                logic.userDetails!.user!.avatar!,
+              );
+            },
+            leading: Icon(
+              Icons.block,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+              size: Dimens.twentyFour,
+            ),
+            title: Text(
+              StringValues.block,
+              style: AppStyles.style16Normal.copyWith(
+                color: Theme.of(context).textTheme.bodyLarge!.color,
+              ),
+            ),
+          ),
+
+        /// Report User
+
+        if (logic.userDetails!.user!.id != currentUser.id &&
+            !logic.userDetails!.user!.isBlockedByYou &&
+            !logic.userDetails!.user!.isBlockedByUser)
+          NxListTile(
+            bgColor: ColorValues.transparent,
+            padding: Dimens.edgeInsets12,
+            showBorder: false,
+            onTap: () {
+              AppUtility.closeBottomSheet();
+              RouteManagement.goToReportIssueView(
+                logic.userDetails!.user!.id,
+                ReportType.user,
+              );
+            },
+            leading: Icon(
+              Icons.report,
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+              size: Dimens.twentyFour,
+            ),
+            title: Text(
+              StringValues.report,
+              style: AppStyles.style16Normal.copyWith(
+                color: Theme.of(context).textTheme.bodyLarge!.color,
+              ),
+            ),
+          ),
+
+        /// Share User Profile
+
+        NxListTile(
+          bgColor: ColorValues.transparent,
+          padding: Dimens.edgeInsets12,
+          showBorder: false,
+          onTap: () {
+            AppUtility.closeBottomSheet();
+            AppUtility.showShareDialog(
+              context,
+              '${StringValues.websiteUrl}/user/${logic.userDetails!.user!.id}',
+            );
+          },
+          leading: Icon(
+            Icons.share,
+            color: Theme.of(context).textTheme.bodyLarge!.color,
+            size: Dimens.twentyFour,
+          ),
+          title: Text(
+            StringValues.share,
+            style: AppStyles.style16Normal.copyWith(
+              color: Theme.of(context).textTheme.bodyLarge!.color,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildProfileHeader(
       UserDetailsController logic, BuildContext context) {
-    final user = logic.userDetails!.user;
+    final user = logic.userDetails!.user!;
+    final currentUser = ProfileController.find.profileDetails!.user!;
     return NxAppBar(
       padding: Dimens.edgeInsetsDefault,
       child: Expanded(
@@ -62,42 +165,44 @@ class UserProfileView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              user != null ? user.uname : StringValues.profile,
+              user.uname,
               style: AppStyles.style20Bold,
             ),
             const Spacer(),
-            GestureDetector(
-              child: Container(
-                padding: Dimens.edgeInsets6,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Theme.of(context).dividerColor,
-                  ),
-                ),
-                child: Icon(
-                  Icons.more_vert,
-                  size: Dimens.twenty,
-                  color: Theme.of(context).textTheme.bodyLarge!.color,
-                ),
+            if (user.id != currentUser.id &&
+                !user.isBlockedByYou &&
+                !user.isBlockedByUser)
+              GestureDetector(
+                onTap: () => _showHeaderOptionBottomSheet(context, logic),
+                child: _buildMoreIconBtn(context),
               ),
-            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildProfileBody(UserDetailsController logic, BuildContext context) {
-    if (logic.isLoading) {
-      return const Expanded(
-        child: Center(child: NxCircularProgressIndicator()),
-      );
-    }
+  Container _buildMoreIconBtn(BuildContext context) {
+    return Container(
+      padding: Dimens.edgeInsets6,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Theme.of(context).dividerColor,
+        ),
+      ),
+      child: Icon(
+        Icons.more_vert,
+        size: Dimens.twenty,
+        color: Theme.of(context).textTheme.bodyLarge!.color,
+      ),
+    );
+  }
 
+  Widget _buildProfileBody(UserDetailsController logic, BuildContext context) {
     /// If user not found
-    else if (logic.userDetails == null || logic.userDetails!.user == null) {
+    if (logic.userDetails == null || logic.userDetails!.user == null) {
       return Expanded(
         child: Center(
           child: Padding(

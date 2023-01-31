@@ -78,7 +78,7 @@ class AppUpdateView extends StatelessWidget {
 
   SvgPicture _buildSvgImage(BuildContext context) {
     return SvgPicture.asset(
-      SvgAssets.upgrade,
+      SvgAssets.update,
       width: Dimens.screenWidth * 0.25,
       height: Dimens.screenWidth * 0.25,
     );

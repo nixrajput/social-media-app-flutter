@@ -54,6 +54,7 @@ abstract class AppUrls {
   static const registerEndpoint = '/register';
   static const removeFollowRequestEndpoint = '/remove-follow-request';
   static const reportCommentEndpoint = '/report-comment';
+  static const reportCommentReplyEndpoint = '/report-comment-reply';
   static const reportPostEndpoint = '/report-post';
   static const reportUserEndpoint = '/report-user';
   static const requestVerificationEndpoint = '/request-verification';

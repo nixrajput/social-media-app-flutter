@@ -1432,6 +1432,20 @@ class ApiProvider {
     return response;
   }
 
+  /// Report Comment Reply
+  Future<ResponseData> reportCommentReply(
+      String token, Map<String, dynamic> body) async {
+    final response = await _catchAsyncApiError(
+      endPoint: AppUrls.reportCommentReplyEndpoint,
+      method: 'POST',
+      feature: 'Report Comment Reply',
+      headers: {"authorization": "Bearer $token"},
+      body: body,
+    );
+
+    return response;
+  }
+
   /// --------------------------------------------------------------------------
 
   /// Block --------------------------------------------------------------------
@@ -1541,7 +1555,6 @@ class ApiProvider {
 
     try {
       switch (method) {
-
         /// GET request
         case "GET":
           var response = await _client.get(

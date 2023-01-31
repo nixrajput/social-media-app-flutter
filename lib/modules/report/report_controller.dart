@@ -64,7 +64,7 @@ class ReportController extends GetxController {
     update();
 
     final body = {
-      'reason': _reason.value,
+      'reportReason': _reason.value,
     };
 
     if (reportType == ReportType.user) {
@@ -73,6 +73,8 @@ class ReportController extends GetxController {
       body['postId'] = id;
     } else if (reportType == ReportType.comment) {
       body['commentId'] = id;
+    } else if (reportType == ReportType.commentReply) {
+      body['commentReplyId'] = id;
     }
 
     try {
@@ -90,6 +92,11 @@ class ReportController extends GetxController {
         );
       } else if (reportType == ReportType.comment) {
         response = await _apiProvider.reportComment(
+          _auth.token,
+          body,
+        );
+      } else if (reportType == ReportType.commentReply) {
+        response = await _apiProvider.reportCommentReply(
           _auth.token,
           body,
         );

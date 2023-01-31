@@ -252,7 +252,6 @@ class RegisterController extends GetxController {
       'uname': unameTextController.text.trim(),
       'password': passwordTextController.text.trim(),
       'confirmPassword': confirmPasswordTextController.text.trim(),
-      'isValidated': '${_isEmailVerified.value}',
     };
 
     AppUtility.showLoadingDialog();
@@ -263,16 +262,33 @@ class RegisterController extends GetxController {
       final response = await _apiProvider.register(body);
 
       if (response.isSuccessful) {
+        final decodedData = response.data;
+
+        String validateOtp = decodedData['data']['otp'];
+
+        if (validateOtp.isNotEmpty) {
+          final data = {
+            'email': emailTextController.text.trim(),
+            'otp': validateOtp,
+          };
+          final validationResponse = await _apiProvider.validateUser(data);
+
+          if (validationResponse.isSuccessful) {
+            final decodedData = validationResponse.data;
+            AppUtility.log('Validation Response: $decodedData');
+          }
+        }
+
         _clearRegisterTextControllers();
         AppUtility.closeDialog();
         _isLoading.value = false;
         update();
+        RouteManagement.goToBack();
+        RouteManagement.goToLoginView();
         AppUtility.showSnackBar(
           StringValues.registrationSuccessful,
           StringValues.success,
         );
-        RouteManagement.goToBack();
-        RouteManagement.goToLoginView();
       } else {
         final decodedData = response.data;
         AppUtility.closeDialog();

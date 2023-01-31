@@ -30,8 +30,8 @@ class CommentWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             GestureDetector(
-              onTap: () =>
-                  RouteManagement.goToUserProfileView(comment.user!.id),
+              onTap: () => RouteManagement.goToUserProfileDetailsViewByUserId(
+                  comment.user!.id),
               child: AvatarWidget(
                 avatar: comment.user!.avatar,
                 size: Dimens.twenty,
@@ -70,8 +70,9 @@ class CommentWidget extends StatelessWidget {
                         color: Theme.of(context).textTheme.bodyLarge!.color,
                       ),
                       recognizer: TapGestureRecognizer()
-                        ..onTap = () => RouteManagement.goToUserProfileView(
-                            comment.user!.id),
+                        ..onTap = () =>
+                            RouteManagement.goToUserProfileDetailsViewByUserId(
+                                comment.user!.id),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),

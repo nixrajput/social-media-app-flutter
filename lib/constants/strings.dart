@@ -43,6 +43,10 @@ abstract class StringValues {
   static const back = 'Back';
   static const birthDate = 'Date of Birth';
   static const block = 'Block';
+  static const blockUser = 'Block User';
+  static const blockUserHelp = 'Are you sure you want to block this user?';
+  static const blockDesc =
+      'They won\'t be able to see your posts or find you. They will be removed from your followers and you won\'t be able to see their posts or find them. You can unblock them anytime. They won\'t be notified that you blocked them.';
   static const blocked = 'Blocked';
   static const blockedAccountWarningDesc =
       'You can\'t follow, message or see their posts';
@@ -338,6 +342,12 @@ abstract class StringValues {
   static const postDetailsNotFound = 'Post deleted or archived';
   static const postPrivacy = 'Post Privacy';
   static const postPrivacyDesc = 'Who can see your posts?';
+  static const muteAndBlock = 'Mute & Block';
+  static const blockedUsers = 'Blocked Users';
+  static const blockedUsersDesc = 'Manage users you have blocked.';
+  static const noBlockedUsers = 'No blocked users yet';
+  static const muteAndBlockDesc =
+      'Mute and block users to stop seeing their posts and stories.';
   static const posts = 'Posts';
   static const privacy = 'Privacy';
   static const privacyPolicy = 'Privacy Policy';
@@ -456,6 +466,8 @@ abstract class StringValues {
       'Help protect your account from unauthorised access by requiring a second authentication method in addition to your password.';
 
   static const unblock = 'Unblock';
+  static const unblockDesc =
+      'The user will be able to follow and message you again. They won\'t be notified that you\'ve unblocked them.';
   static const unfollow = 'Unfollow';
   static const unknownErrorOccurred = 'An unknown error occurred.';
   static const update = 'Update';

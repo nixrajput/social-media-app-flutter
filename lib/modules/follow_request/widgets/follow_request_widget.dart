@@ -38,7 +38,8 @@ class FollowRequestWidget extends StatelessWidget {
     final profile = ProfileController.find;
     return GestureDetector(
       onTap: onTap ??
-          () => RouteManagement.goToUserProfileView(followRequest.from.id),
+          () => RouteManagement.goToUserProfileDetailsViewByUserId(
+              followRequest.from.id),
       child: Container(
         margin: Dimens.edgeInsets6_0,
         padding: padding ?? Dimens.edgeInsets8,

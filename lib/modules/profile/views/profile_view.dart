@@ -523,7 +523,7 @@ class ProfileView extends StatelessWidget {
             loadingCondition: logic.isMorePostLoading,
             hasMoreCondition:
                 logic.postData!.results != null && logic.postData!.hasNextPage!,
-            loadMore: logic.loadMore,
+            loadMore: logic.loadMorePosts,
           ),
         ],
       ),

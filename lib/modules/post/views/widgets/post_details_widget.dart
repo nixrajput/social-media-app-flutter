@@ -46,7 +46,8 @@ class PostDetailsWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           GestureDetector(
-            onTap: () => RouteManagement.goToUserProfileView(post.owner!.id),
+            onTap: () => RouteManagement.goToUserProfileDetailsViewByUserId(
+                post.owner!.id),
             child: AvatarWidget(
               avatar: avatar,
               size: Dimens.twenty,
@@ -87,7 +88,8 @@ class PostDetailsWidget extends StatelessWidget {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () =>
-                            RouteManagement.goToUserProfileView(post.owner!.id),
+                            RouteManagement.goToUserProfileDetailsViewByUserId(
+                                post.owner!.id),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),

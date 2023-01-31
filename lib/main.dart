@@ -24,6 +24,7 @@ import 'package:social_media_app/app_services/network_controller.dart';
 import 'package:social_media_app/app_services/route_service.dart';
 import 'package:social_media_app/app_services/theme_controller.dart';
 import 'package:social_media_app/constants/enums.dart';
+import 'package:social_media_app/constants/hive_box_names.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
@@ -94,16 +95,16 @@ Future<void> _initPreAppServices() async {
 
   AppUtility.log('Opening Hive Boxes');
 
-  await Hive.openBox<String>('themeMode');
-  await Hive.openBox<Post>('posts');
-  await Hive.openBox<Post>('trendingPosts');
-  await Hive.openBox<User>('recommendedUsers');
-  await Hive.openBox<ChatMessage>('lastMessages');
-  await Hive.openBox<NotificationModel>('notifications');
-  await Hive.openBox<Post>('profilePosts');
-  await Hive.openBox<Follower>('followers');
-  await Hive.openBox<Follower>('followings');
-  await Hive.openBox<String>('blockedUsers');
+  await Hive.openBox<String>(HiveBoxNames.themeMode);
+  await Hive.openBox<Post>(HiveBoxNames.posts);
+  await Hive.openBox<Post>(HiveBoxNames.trendingPosts);
+  await Hive.openBox<User>(HiveBoxNames.recommendedUsers);
+  await Hive.openBox<ChatMessage>(HiveBoxNames.lastMessages);
+  await Hive.openBox<NotificationModel>(HiveBoxNames.notifications);
+  await Hive.openBox<Post>(HiveBoxNames.profilePosts);
+  await Hive.openBox<Follower>(HiveBoxNames.followers);
+  await Hive.openBox<Follower>(HiveBoxNames.followings);
+  await Hive.openBox<User>(HiveBoxNames.blockedUsers);
 
   AppUtility.log('Hive Boxes Opened');
 
