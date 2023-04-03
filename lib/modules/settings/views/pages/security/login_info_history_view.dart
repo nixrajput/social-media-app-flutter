@@ -5,12 +5,12 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
-import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/load_more_widget.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
-import 'package:social_media_app/global_widgets/unfocus_widget.dart';
+import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
+import 'package:social_media_app/app_widgets/custom_refresh_indicator.dart';
+import 'package:social_media_app/app_widgets/load_more_widget.dart';
+import 'package:social_media_app/app_widgets/app_text_btn.dart';
+import 'package:social_media_app/app_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/settings/controllers/login_info_controller.dart';
 import 'package:social_media_app/modules/settings/views/widgets/login_info_widget.dart';
 

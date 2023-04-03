@@ -3,14 +3,14 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/app_filled_btn.dart';
-import 'package:social_media_app/global_widgets/avatar_widget.dart';
-import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
-import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/custom_list_tile.dart';
-import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/load_more_widget.dart';
-import 'package:social_media_app/global_widgets/no_data_widget.dart';
+import 'package:social_media_app/app_widgets/app_filled_btn.dart';
+import 'package:social_media_app/app_widgets/avatar_widget.dart';
+import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
+import 'package:social_media_app/app_widgets/custom_list_tile.dart';
+import 'package:social_media_app/app_widgets/custom_refresh_indicator.dart';
+import 'package:social_media_app/app_widgets/load_more_widget.dart';
+import 'package:social_media_app/app_widgets/no_data_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class BlockedUsersView extends StatelessWidget {

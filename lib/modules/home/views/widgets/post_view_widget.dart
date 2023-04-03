@@ -4,9 +4,9 @@ import 'package:photo_view/photo_view.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
-import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
-import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/video_player_widget.dart';
+import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
+import 'package:social_media_app/app_widgets/video_player_widget.dart';
 
 class PostViewWidget extends StatelessWidget {
   const PostViewWidget({

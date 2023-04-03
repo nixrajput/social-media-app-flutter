@@ -8,6 +8,7 @@ class NxIconButton extends StatelessWidget {
   final double? iconSize;
   final Color? bgColor;
   final EdgeInsets? padding;
+  final EdgeInsets? margin;
   final double? borderRadius;
   final double? width;
   final bool? centerIcon;
@@ -25,6 +26,7 @@ class NxIconButton extends StatelessWidget {
     this.width,
     this.height,
     this.centerIcon = true,
+    this.margin,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,8 @@ class NxIconButton extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
-        padding: padding ?? Dimens.edgeInsets0,
+        padding: padding,
+        margin: margin,
         decoration: BoxDecoration(
           color: bgColor ?? Colors.transparent,
           borderRadius: BorderRadius.all(

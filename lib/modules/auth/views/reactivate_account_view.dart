@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/app_filled_btn.dart';
-import 'package:social_media_app/global_widgets/custom_app_bar.dart';
+import 'package:social_media_app/app_widgets/app_filled_btn.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
 import 'package:social_media_app/modules/auth/controllers/reactivate_account_controller.dart';
 
 class ReactivateAccountView extends StatelessWidget {

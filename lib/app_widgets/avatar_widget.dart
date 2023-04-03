@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+
 import 'package:social_media_app/apis/models/entities/media_file.dart';
+import 'package:social_media_app/app_widgets/circular_network_image.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
-import 'package:social_media_app/global_widgets/circular_network_image.dart';
 
 class AvatarWidget extends StatelessWidget {
   const AvatarWidget({

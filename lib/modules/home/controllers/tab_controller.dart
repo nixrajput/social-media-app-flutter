@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/keep_alive_page.dart';
+import 'package:social_media_app/app_widgets/keep_alive_page.dart';
 import 'package:social_media_app/modules/home/views/trending_tabs/people_tab.dart';
 import 'package:social_media_app/modules/home/views/trending_tabs/trending_posts_tab.dart';
 

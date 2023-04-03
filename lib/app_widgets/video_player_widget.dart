@@ -5,9 +5,9 @@ import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/cached_network_image.dart';
-import 'package:social_media_app/global_widgets/custom_colored_box.dart';
-import 'package:social_media_app/global_widgets/custom_video_controls.dart';
+import 'package:social_media_app/app_widgets/cached_network_image.dart';
+import 'package:social_media_app/app_widgets/custom_colored_box.dart';
+import 'package:social_media_app/app_widgets/custom_video_controls.dart';
 
 class NxVideoPlayerWidget extends StatefulWidget {
   const NxVideoPlayerWidget({

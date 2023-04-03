@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
-import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
-import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/unfocus_widget.dart';
+import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
+import 'package:social_media_app/app_widgets/unfocus_widget.dart';
 
 class ImageViewerScreen extends StatelessWidget {
   const ImageViewerScreen({super.key, required this.url});

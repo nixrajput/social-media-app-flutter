@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_time_ago/get_time_ago.dart';
-import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/timer_refresh_widget.dart';
+import 'package:social_media_app/app_widgets/get_time_ago_refresh_widget/timer_refresh_widget.dart';
 
 typedef TimeagoBuilder = Widget Function(BuildContext context, String value);
 

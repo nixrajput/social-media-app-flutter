@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
+import 'package:social_media_app/app_widgets/app_text_btn.dart';
+import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 
 class LoadMoreWidget extends StatelessWidget {
   const LoadMoreWidget({

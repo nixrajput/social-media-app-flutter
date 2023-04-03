@@ -8,7 +8,7 @@ import 'package:social_media_app/apis/models/entities/profile.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class ChatReplyToBox extends StatelessWidget {

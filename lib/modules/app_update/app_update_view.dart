@@ -9,8 +9,8 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
-import 'package:social_media_app/global_widgets/app_outlined_btn.dart';
-import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/app_widgets/app_outlined_btn.dart';
+import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 
 class AppUpdateView extends StatelessWidget {

@@ -5,9 +5,9 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/file_image.dart';
-import 'package:social_media_app/global_widgets/primary_icon_btn.dart';
-import 'package:social_media_app/global_widgets/video_player_widget.dart';
+import 'package:social_media_app/app_widgets/file_image.dart';
+import 'package:social_media_app/app_widgets/app_icon_btn.dart';
+import 'package:social_media_app/app_widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/chat/controllers/p2p_chat_controller.dart';
 import 'package:social_media_app/utils/file_utility.dart';
 

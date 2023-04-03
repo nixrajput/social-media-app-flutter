@@ -4,10 +4,10 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
-import 'package:social_media_app/global_widgets/custom_refresh_indicator.dart';
-import 'package:social_media_app/global_widgets/load_more_widget.dart';
-import 'package:social_media_app/global_widgets/unfocus_widget.dart';
+import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/app_widgets/custom_refresh_indicator.dart';
+import 'package:social_media_app/app_widgets/load_more_widget.dart';
+import 'package:social_media_app/app_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/home/controllers/trending_post_controller.dart';
 import 'package:social_media_app/modules/home/views/widgets/post_widget.dart';
 

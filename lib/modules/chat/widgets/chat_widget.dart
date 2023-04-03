@@ -8,9 +8,9 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
-import 'package:social_media_app/global_widgets/avatar_widget.dart';
-import 'package:social_media_app/global_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
-import 'package:social_media_app/global_widgets/verified_widget.dart';
+import 'package:social_media_app/app_widgets/avatar_widget.dart';
+import 'package:social_media_app/app_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
+import 'package:social_media_app/app_widgets/verified_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class ChatWidget extends StatelessWidget {

@@ -7,10 +7,10 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
-import 'package:social_media_app/global_widgets/app_filled_btn.dart';
-import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/custom_list_tile.dart';
-import 'package:social_media_app/global_widgets/primary_text_btn.dart';
+import 'package:social_media_app/app_widgets/app_filled_btn.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
+import 'package:social_media_app/app_widgets/custom_list_tile.dart';
+import 'package:social_media_app/app_widgets/app_text_btn.dart';
 import 'package:social_media_app/modules/verify-otp/controllers/verify_otp_controller.dart';
 import 'package:social_media_app/utils/utility.dart';
 
