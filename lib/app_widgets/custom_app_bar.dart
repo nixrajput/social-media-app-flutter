@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/routes/route_management.dart';
@@ -30,9 +31,9 @@ class NxAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: Dimens.screenWidth,
-      color: bgColor ?? Colors.transparent,
+      color: bgColor ?? ColorValues.transparent,
       child: Padding(
-        padding: padding ?? Dimens.edgeInsets8,
+        padding: padding ?? AppStyles.defaultHorizontalPadding,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -40,11 +41,18 @@ class NxAppBar extends StatelessWidget {
             if (showBackBtn == true)
               GestureDetector(
                 onTap: RouteManagement.goToBack,
-                child: Icon(
-                  CupertinoIcons.arrow_left,
-                  color: backBtnColor ??
-                      Theme.of(context).textTheme.bodyLarge!.color,
-                  size: Dimens.twentyFour,
+                child: Container(
+                  padding: Dimens.edgeInsets12,
+                  decoration: BoxDecoration(
+                    color: ColorValues.primaryColor30,
+                    borderRadius: AppStyles.defaultBorderRadius,
+                  ),
+                  child: Icon(
+                    CupertinoIcons.arrow_left,
+                    color: backBtnColor ??
+                        Theme.of(context).textTheme.bodyLarge!.color,
+                    size: Dimens.twentyFour,
+                  ),
                 ),
               ),
             if (showBackBtn == true) Dimens.boxWidth12,

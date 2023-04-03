@@ -11,6 +11,7 @@ class NxTextButton extends StatelessWidget {
   final TextStyle? labelStyle;
   final bool? enabled;
   final double? fontSize;
+  final Color? textColor;
 
   const NxTextButton({
     Key? key,
@@ -21,6 +22,7 @@ class NxTextButton extends StatelessWidget {
     this.labelStyle,
     this.enabled = true,
     this.fontSize,
+    this.textColor,
   }) : super(key: key);
 
   @override
@@ -33,15 +35,15 @@ class NxTextButton extends StatelessWidget {
         child: Text(
           label,
           style: labelStyle ??
-              AppStyles.style16Normal.copyWith(
-                color: enabled == true
-                    ? ColorValues.linkColor
-                    : Theme.of(context)
+              AppStyles.p.copyWith(
+                color: enabled == false
+                    ? Theme.of(context)
                         .textTheme
                         .bodyLarge!
                         .color!
-                        .withAlpha(50),
-                fontSize: fontSize ?? Dimens.sixTeen,
+                        .withAlpha(50)
+                    : textColor ?? ColorValues.primaryColor,
+                fontSize: fontSize ?? Dimens.fourteen,
                 fontWeight: FontWeight.w500,
               ),
         ),

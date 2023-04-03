@@ -3,46 +3,20 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/app_widgets/app_filled_btn.dart';
+import 'package:social_media_app/app_widgets/app_text_btn.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
+import 'package:social_media_app/app_widgets/unfocus_widget.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/app_widgets/app_filled_btn.dart';
-import 'package:social_media_app/app_widgets/custom_app_bar.dart';
-import 'package:social_media_app/app_widgets/app_text_btn.dart';
-import 'package:social_media_app/app_widgets/unfocus_widget.dart';
 import 'package:social_media_app/modules/auth/controllers/register_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class RegisterView extends StatelessWidget {
   const RegisterView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return UnFocusWidget(
-      child: Scaffold(
-        body: SafeArea(
-          child: SizedBox(
-            width: Dimens.screenWidth,
-            height: Dimens.screenHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NxAppBar(
-                  title: StringValues.register,
-                  showBackBtn: true,
-                  padding: Dimens.edgeInsetsDefault,
-                ),
-                _buildBody(context),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildBody(BuildContext context) {
     return GetBuilder<RegisterController>(
@@ -57,10 +31,15 @@ class RegisterView extends StatelessWidget {
               children: [
                 Dimens.boxHeight32,
                 Text(
+                  StringValues.helloThere,
+                  style: AppStyles.h2,
+                  textAlign: TextAlign.center,
+                ),
+                Dimens.boxHeight8,
+                Text(
                   StringValues.registerWelcome,
-                  style: AppStyles.style32Bold.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
+                  style: AppStyles.p,
+                  textAlign: TextAlign.center,
                 ),
                 Dimens.boxHeight32,
                 AnimatedSwitcher(
@@ -238,13 +217,13 @@ class RegisterView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            StringValues.enterEmailToSendOtp,
-            style: AppStyles.style14Normal.copyWith(
-              color: Theme.of(context).textTheme.bodyLarge!.color,
-            ),
-          ),
-          Dimens.boxHeight12,
+          // Text(
+          //   StringValues.enterEmailToSendOtp,
+          //   style: AppStyles.style14Normal.copyWith(
+          //     color: Theme.of(context).textTheme.bodyLarge!.color,
+          //   ),
+          // ),
+          // Dimens.boxHeight12,
           TextFormField(
             decoration: const InputDecoration(
               hintText: StringValues.email,
@@ -357,9 +336,7 @@ class RegisterView extends StatelessWidget {
     return NxFilledButton(
       width: Dimens.screenWidth,
       height: Dimens.fiftySix,
-      label: logic.isOtpSent
-          ? StringValues.verify.toUpperCase()
-          : StringValues.sendOtp.toUpperCase(),
+      label: logic.isOtpSent ? StringValues.verify : StringValues.sendOtp,
       onTap: () =>
           logic.isOtpSent ? logic.verifyOtpFromEmail() : logic.sendOtpToEmail(),
     );
@@ -435,5 +412,31 @@ class RegisterView extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return UnFocusWidget(
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
+            width: Dimens.screenWidth,
+            height: Dimens.screenHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildAppBar(),
+                _buildBody(context),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  NxAppBar _buildAppBar() {
+    return const NxAppBar();
   }
 }

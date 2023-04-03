@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/app_widgets/app_filled_btn.dart';
+import 'package:social_media_app/app_widgets/app_text_btn.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
+import 'package:social_media_app/app_widgets/unfocus_widget.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/app_widgets/app_filled_btn.dart';
-import 'package:social_media_app/app_widgets/custom_app_bar.dart';
-import 'package:social_media_app/app_widgets/app_text_btn.dart';
 import 'package:social_media_app/modules/auth/controllers/login_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
@@ -17,7 +18,7 @@ class LoginView extends StatelessWidget {
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
-              padding: Dimens.edgeInsetsHorizDefault,
+              padding: AppStyles.defaultHorizontalPadding,
               child: FocusScope(
                 node: logic.focusNode,
                 child: Column(
@@ -26,17 +27,17 @@ class LoginView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      StringValues.loginWelcome,
-                      style: AppStyles.h3,
+                      StringValues.welcomeBack,
+                      style: AppStyles.h2,
+                      textAlign: TextAlign.center,
                     ),
-                    // Dimens.boxHeight32,
-                    // Text(
-                    //   StringValues.enterEmailUsernamePassword,
-                    //   style: AppStyles.style14Normal.copyWith(
-                    //     color: Theme.of(context).textTheme.bodyLarge!.color,
-                    //   ),
-                    // ),
-                    Dimens.boxHeight24,
+                    Dimens.boxHeight8,
+                    Text(
+                      StringValues.loginToAccount,
+                      style: AppStyles.p,
+                      textAlign: TextAlign.center,
+                    ),
+                    Dimens.boxHeight32,
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: StringValues.emailOrUsername,
@@ -49,7 +50,7 @@ class LoginView extends StatelessWidget {
                       controller: logic.emailUnameTextController,
                       onEditingComplete: logic.focusNode.nextFocus,
                     ),
-                    Dimens.boxHeight12,
+                    Dimens.boxHeight16,
                     TextFormField(
                       obscureText: logic.showPassword,
                       decoration: InputDecoration(
@@ -109,10 +110,13 @@ class LoginView extends StatelessWidget {
         ),
       );
 
+  NxAppBar _buildAppBar(BuildContext context) {
+    return const NxAppBar();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return UnFocusWidget(
       child: Scaffold(
         body: SafeArea(
           child: SizedBox(
@@ -122,10 +126,7 @@ class LoginView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                NxAppBar(
-                  title: StringValues.login,
-                  padding: Dimens.edgeInsetsDefault,
-                ),
+                _buildAppBar(context),
                 _buildLoginFields(context),
               ],
             ),

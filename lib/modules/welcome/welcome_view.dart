@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:social_media_app/app_widgets/app_filled_btn.dart';
+import 'package:social_media_app/app_widgets/asset_image.dart';
+import 'package:social_media_app/app_widgets/bottom_oval_clipper.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/app_widgets/app_filled_btn.dart';
-import 'package:social_media_app/app_widgets/asset_image.dart';
-import 'package:social_media_app/app_widgets/bottom_oval_clipper.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class WelcomeView extends StatelessWidget {
@@ -33,7 +33,7 @@ class WelcomeView extends StatelessWidget {
       width: Dimens.screenWidth,
       height: (Dimens.screenHeight * 0.4) - Dimens.twelve,
       child: Padding(
-        padding: Dimens.edgeInsetsHorizDefault,
+        padding: AppStyles.defaultHorizontalPadding,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -45,9 +45,7 @@ class WelcomeView extends StatelessWidget {
                 Dimens.boxHeight12,
                 Text(
                   StringValues.connectWithTheWorld,
-                  style: AppStyles.style40Bold.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppStyles.h1,
                   textAlign: TextAlign.center,
                 ),
                 Dimens.boxHeight8,

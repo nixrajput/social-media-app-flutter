@@ -83,7 +83,7 @@ abstract class StringValues {
   static const communityGuidelinesUrl =
       'https://nixlab.co.in/community-guidelines';
 
-  static const connectWithTheWorld = "Let's connect with the world";
+  static const connectWithTheWorld = "Let's connect \nwith the world";
   static const confirm = 'Confirm';
   static const confirmPassword = 'Confirm Password';
   static const connTimedOut = 'Connection timed out';
@@ -209,7 +209,7 @@ abstract class StringValues {
 
   static const followers = 'Followers';
   static const following = 'Following';
-  static const forgotPassword = 'Forgot Password';
+  static const forgotPassword = 'Forgot Password?';
   static const forgotPasswordWelcome = 'Hi there, Forgot your password?';
   static const forgotYourPassword = 'Forgot your password?';
   static const formatExcError = 'Format error occurred.';
@@ -222,6 +222,7 @@ abstract class StringValues {
   static const hasDeactivatedTheirAccount = 'has deactivated their account';
   static const hasWikiPage = 'Do you have a Wikipedia page?';
   static const hello = 'Hello';
+  static const helloThere = 'Hello there!';
   static const help = "Help";
   static const helpSettingsHelp =
       "Get help from Rippl support and report any bug or problem.";
@@ -249,7 +250,7 @@ abstract class StringValues {
 
   static const loginData = 'loginData';
   static const loginSuccessful = 'Logged in successfully';
-  static const loginToAccount = 'Login To Account';
+  static const loginToAccount = 'Login to your account';
   static const loginWelcome = 'Welcome, Login to continue';
   static const logout = 'Logout';
   static const logoutAllDevices = 'Logout All Other Devices';
@@ -393,6 +394,7 @@ abstract class StringValues {
   static const registerUsingEmail = 'Register Using Email';
   static const registerUsingPhone = 'Register Using Phone';
   static const registerWelcome = 'Hello! Register to get started';
+  static const registerToGetStarted = 'Register to get started';
   static const registrationSuccessful =
       'Account registered successfully, please verify your account';
 
@@ -528,6 +530,7 @@ abstract class StringValues {
   static const website = 'Website';
   static const websiteUrl = 'https://nixlab.co.in';
   static const welcome = 'Welcome';
+  static const welcomeBack = 'Welcome back!';
   static const welcomeDescription = 'Login or Register to continue';
   static const whatsOnYourMind = 'What\'s on your mind?';
   static const wikiPageLink = 'Wikipedia Page Link';

@@ -287,7 +287,7 @@ abstract class AppStyles {
 
   static String get mugeFontFamily => 'Muge';
 
-  static double get defaultFontHeight => 1.5;
+  static double get defaultFontHeight => 1.2;
 
   static BorderRadius get defaultBorderRadius =>
       BorderRadius.circular(Dimens.twenty);
@@ -334,21 +334,21 @@ abstract class AppStyles {
 
   static TextStyle get h1 => TextStyle(
         fontSize: Dimens.fourty,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         fontFamily: defaultFontFamily,
         height: defaultFontHeight,
       );
 
   static TextStyle get h2 => TextStyle(
         fontSize: Dimens.thirtyTwo,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         fontFamily: defaultFontFamily,
         height: defaultFontHeight,
       );
 
   static TextStyle get h3 => TextStyle(
         fontSize: Dimens.twentyEight,
-        fontWeight: FontWeight.w700,
+        fontWeight: FontWeight.w600,
         fontFamily: defaultFontFamily,
         height: defaultFontHeight,
       );

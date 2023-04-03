@@ -116,65 +116,63 @@ class AppThemeController extends GetxController {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: ColorValues.lightDialogColor,
+        contentPadding: Dimens.edgeInsets16,
         constraints: BoxConstraints(
-          minHeight: Dimens.fiftySix,
           maxWidth: Dimens.screenWidth,
         ),
-        labelStyle: AppStyles.style14Normal.copyWith(
+        labelStyle: AppStyles.p.copyWith(
           color: ColorValues.lightBodyTextColor,
         ),
-        floatingLabelStyle: AppStyles.style14Normal.copyWith(
+        floatingLabelStyle: AppStyles.p.copyWith(
           color: ColorValues.lightBodyTextColor.withAlpha(140),
         ),
-        hintStyle: AppStyles.style14Normal.copyWith(
+        hintStyle: AppStyles.p.copyWith(
           color: ColorValues.lightBodyTextColor.withAlpha(140),
         ),
-        errorStyle: AppStyles.style14Normal.copyWith(
+        errorStyle: AppStyles.p.copyWith(
           color: ColorValues.errorColor,
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.lightDividerColor,
-            width: Dimens.pointFour,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
         disabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.lightDividerColor.withAlpha(20),
-            width: Dimens.pointFour,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.lightDividerColor,
-            width: Dimens.pointFour,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.primaryColor,
-            width: Dimens.pointEight,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.errorColor,
-            width: Dimens.pointEight,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.errorColor,
-            width: Dimens.pointEight,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
       ),
       fontFamily: kDefaultFontFamily,
@@ -237,65 +235,64 @@ class AppThemeController extends GetxController {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: ColorValues.darkDialogColor,
+        filled: false,
+        contentPadding: Dimens.edgeInsets16,
         constraints: BoxConstraints(
-          minHeight: Dimens.fiftySix,
           maxWidth: Dimens.screenWidth,
         ),
-        labelStyle: AppStyles.style14Normal.copyWith(
+        labelStyle: AppStyles.p.copyWith(
           color: ColorValues.darkBodyTextColor,
         ),
-        floatingLabelStyle: AppStyles.style14Normal.copyWith(
+        floatingLabelStyle: AppStyles.p.copyWith(
           color: ColorValues.darkBodyTextColor.withAlpha(140),
         ),
-        hintStyle: AppStyles.style14Normal.copyWith(
+        hintStyle: AppStyles.p.copyWith(
           color: ColorValues.darkBodyTextColor.withAlpha(140),
         ),
-        errorStyle: AppStyles.style14Normal.copyWith(
+        errorStyle: AppStyles.p.copyWith(
           color: ColorValues.errorColor,
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.darkDividerColor,
-            width: Dimens.pointFour,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
         disabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.darkDividerColor,
-            width: Dimens.pointFour,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.darkDividerColor,
-            width: Dimens.pointFour,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.primaryColor,
-            width: Dimens.pointEight,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.errorColor,
-            width: Dimens.pointEight,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: ColorValues.errorColor,
-            width: Dimens.pointEight,
+            width: Dimens.one,
           ),
-          borderRadius: BorderRadius.circular(Dimens.four),
+          borderRadius: BorderRadius.circular(Dimens.twelve),
         ),
       ),
       fontFamily: kDefaultFontFamily,
