@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 
 class NxOutlinedButton extends StatelessWidget {
   const NxOutlinedButton({
@@ -21,6 +23,7 @@ class NxOutlinedButton extends StatelessWidget {
     this.labelStyle,
     this.borderStyle,
     this.minWidth,
+    this.margin,
   }) : super(key: key);
 
   final Color? bgColor;
@@ -39,6 +42,7 @@ class NxOutlinedButton extends StatelessWidget {
   final double? minWidth;
   final BorderStyle? borderStyle;
   final TextStyle? labelStyle;
+  final EdgeInsets? margin;
 
   @override
   Widget build(BuildContext context) {
@@ -47,19 +51,16 @@ class NxOutlinedButton extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
-        padding: padding,
-        constraints: BoxConstraints(
-          maxWidth: Dimens.screenWidth,
-          minWidth: minWidth ?? Dimens.sixtyFour,
-        ),
+        padding: padding ?? Dimens.edgeInsets12_16,
+        margin: margin,
+        constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
         decoration: BoxDecoration(
           border: Border.all(
-            color:
-                borderColor ?? Theme.of(context).textTheme.titleMedium!.color!,
-            width: borderWidth ?? Dimens.pointEight,
+            color: borderColor ?? ColorValues.primaryColor,
+            width: borderWidth ?? Dimens.one,
             style: borderStyle ?? BorderStyle.solid,
           ),
-          borderRadius: BorderRadius.circular(borderRadius ?? Dimens.four),
+          borderRadius: BorderRadius.circular(borderRadius ?? Dimens.twelve),
           color: bgColor ?? Colors.transparent,
         ),
         child: Row(
@@ -70,12 +71,12 @@ class NxOutlinedButton extends StatelessWidget {
             if (prefix != null) prefix!,
             if (prefix != null) Dimens.boxWidth4,
             Text(
-              label,
+              label.toTitleCase(),
               style: labelStyle ??
                   AppStyles.style16Bold.copyWith(
-                    color: labelColor ??
-                        Theme.of(context).textTheme.bodyLarge!.color,
+                    color: labelColor ?? ColorValues.primaryColor,
                     fontSize: fontSize ?? Dimens.sixTeen,
+                    fontWeight: FontWeight.w500,
                   ),
             ),
             if (suffix != null) Dimens.boxWidth4,

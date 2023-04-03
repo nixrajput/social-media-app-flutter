@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/app_filled_btn.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/modules/verify-otp/controllers/verify_otp_controller.dart';
 
 class SendOtpToEmailView extends StatelessWidget {

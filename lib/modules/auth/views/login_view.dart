@@ -4,40 +4,14 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/app_filled_btn.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/auth/controllers/login_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: SafeArea(
-          child: SizedBox(
-            width: Dimens.screenWidth,
-            height: Dimens.screenHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NxAppBar(
-                  title: StringValues.login,
-                  padding: Dimens.edgeInsetsDefault,
-                ),
-                _buildLoginFields(context),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildLoginFields(BuildContext context) => GetBuilder<LoginController>(
         builder: (logic) => Expanded(
@@ -53,18 +27,16 @@ class LoginView extends StatelessWidget {
                     Dimens.boxHeight32,
                     Text(
                       StringValues.loginWelcome,
-                      style: AppStyles.style32Bold.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
+                      style: AppStyles.h3,
                     ),
-                    Dimens.boxHeight32,
-                    Text(
-                      StringValues.enterEmailUsernamePassword,
-                      style: AppStyles.style14Normal.copyWith(
-                        color: Theme.of(context).textTheme.bodyLarge!.color,
-                      ),
-                    ),
-                    Dimens.boxHeight12,
+                    // Dimens.boxHeight32,
+                    // Text(
+                    //   StringValues.enterEmailUsernamePassword,
+                    //   style: AppStyles.style14Normal.copyWith(
+                    //     color: Theme.of(context).textTheme.bodyLarge!.color,
+                    //   ),
+                    // ),
+                    Dimens.boxHeight24,
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: StringValues.emailOrUsername,
@@ -107,8 +79,7 @@ class LoginView extends StatelessWidget {
                     Dimens.boxHeight32,
                     NxFilledButton(
                       onTap: () => logic.login(),
-                      label: StringValues.login.toUpperCase(),
-                      height: Dimens.fiftySix,
+                      label: StringValues.login,
                     ),
                     Dimens.boxHeight32,
                     Row(
@@ -117,7 +88,7 @@ class LoginView extends StatelessWidget {
                       children: [
                         Text(
                           StringValues.doNotHaveAccount,
-                          style: AppStyles.style14Normal,
+                          style: AppStyles.p,
                         ),
                         Dimens.boxWidth4,
                         NxTextButton(
@@ -137,4 +108,30 @@ class LoginView extends StatelessWidget {
           ),
         ),
       );
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
+            width: Dimens.screenWidth,
+            height: Dimens.screenHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                NxAppBar(
+                  title: StringValues.login,
+                  padding: Dimens.edgeInsetsDefault,
+                ),
+                _buildLoginFields(context),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

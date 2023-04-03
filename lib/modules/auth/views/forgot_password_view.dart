@@ -3,40 +3,14 @@ import 'package:get/get.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/app_filled_btn.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/global_widgets/primary_text_btn.dart';
 import 'package:social_media_app/modules/auth/controllers/password_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class ForgotPasswordView extends StatelessWidget {
   const ForgotPasswordView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: SafeArea(
-          child: SizedBox(
-            width: Dimens.screenWidth,
-            height: Dimens.screenHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NxAppBar(
-                  title: StringValues.forgotPassword,
-                  padding: Dimens.edgeInsetsDefault,
-                ),
-                _buildForgotPasswordFields(context),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildForgotPasswordFields(BuildContext context) =>
       GetBuilder<PasswordController>(
@@ -116,4 +90,30 @@ class ForgotPasswordView extends StatelessWidget {
           ),
         ),
       );
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
+            width: Dimens.screenWidth,
+            height: Dimens.screenHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                NxAppBar(
+                  title: StringValues.forgotPassword,
+                  padding: Dimens.edgeInsetsDefault,
+                ),
+                _buildForgotPasswordFields(context),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

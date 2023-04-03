@@ -4,38 +4,12 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/app_filled_btn.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/modules/profile/controllers/edit_about_controller.dart';
 
 class EditAboutView extends StatelessWidget {
   const EditAboutView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: SafeArea(
-          child: SizedBox(
-            width: Dimens.screenWidth,
-            height: Dimens.screenHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                NxAppBar(
-                  title: StringValues.about,
-                  padding: Dimens.edgeInsetsDefault,
-                ),
-                _buildBody(),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildBody() => GetBuilder<EditAboutController>(
         builder: (logic) => Expanded(
@@ -88,4 +62,30 @@ class EditAboutView extends StatelessWidget {
           ),
         ),
       );
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
+            width: Dimens.screenWidth,
+            height: Dimens.screenHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                NxAppBar(
+                  title: StringValues.about,
+                  padding: Dimens.edgeInsetsDefault,
+                ),
+                _buildBody(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

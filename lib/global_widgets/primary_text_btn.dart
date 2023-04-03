@@ -10,6 +10,7 @@ class NxTextButton extends StatelessWidget {
   final EdgeInsets? margin;
   final TextStyle? labelStyle;
   final bool? enabled;
+  final double? fontSize;
 
   const NxTextButton({
     Key? key,
@@ -19,6 +20,7 @@ class NxTextButton extends StatelessWidget {
     this.margin,
     this.labelStyle,
     this.enabled = true,
+    this.fontSize,
   }) : super(key: key);
 
   @override
@@ -26,12 +28,12 @@ class NxTextButton extends StatelessWidget {
     return GestureDetector(
       onTap: enabled == true ? onTap : () {},
       child: Container(
-        padding: padding ?? Dimens.edgeInsets0,
-        margin: margin ?? Dimens.edgeInsets0,
+        padding: padding,
+        margin: margin,
         child: Text(
           label,
           style: labelStyle ??
-              AppStyles.style16Bold.copyWith(
+              AppStyles.style16Normal.copyWith(
                 color: enabled == true
                     ? ColorValues.linkColor
                     : Theme.of(context)
@@ -39,6 +41,8 @@ class NxTextButton extends StatelessWidget {
                         .bodyLarge!
                         .color!
                         .withAlpha(50),
+                fontSize: fontSize ?? Dimens.sixTeen,
+                fontWeight: FontWeight.w500,
               ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/extensions/string_extensions.dart';
 
 class NxFilledButton extends StatelessWidget {
   const NxFilledButton({
@@ -18,6 +19,7 @@ class NxFilledButton extends StatelessWidget {
     this.width,
     this.height,
     this.labelStyle,
+    this.margin,
   }) : super(key: key);
 
   final Color? bgColor;
@@ -32,6 +34,7 @@ class NxFilledButton extends StatelessWidget {
   final double? width;
   final double? height;
   final TextStyle? labelStyle;
+  final EdgeInsets? margin;
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +43,11 @@ class NxFilledButton extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
-        padding: padding,
+        padding: padding ?? Dimens.edgeInsets12_16,
+        margin: margin,
         constraints: BoxConstraints(maxWidth: Dimens.screenWidth),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadius ?? Dimens.four),
+          borderRadius: BorderRadius.circular(borderRadius ?? Dimens.twelve),
           color: bgColor ?? ColorValues.primaryColor,
         ),
         child: Row(
@@ -54,12 +58,12 @@ class NxFilledButton extends StatelessWidget {
             if (prefix != null) prefix!,
             if (prefix != null) Dimens.boxWidth4,
             Text(
-              label,
+              label.toTitleCase(),
               style: labelStyle ??
                   AppStyles.style16Bold.copyWith(
-                    color: labelColor ??
-                        Theme.of(context).textTheme.bodyLarge!.color,
+                    color: labelColor ?? ColorValues.whiteColor,
                     fontSize: fontSize ?? Dimens.sixTeen,
+                    fontWeight: FontWeight.w500,
                   ),
             ),
             if (suffix != null) Dimens.boxWidth4,

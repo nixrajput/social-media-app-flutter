@@ -7,6 +7,7 @@ import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
+import 'package:social_media_app/global_widgets/app_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/avatar_widget.dart';
 import 'package:social_media_app/global_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/global_widgets/count_widget.dart';
@@ -17,7 +18,6 @@ import 'package:social_media_app/global_widgets/expandable_text_widget.dart';
 import 'package:social_media_app/global_widgets/image_viewer_widget.dart';
 import 'package:social_media_app/global_widgets/load_more_widget.dart';
 import 'package:social_media_app/global_widgets/post_thumb_widget.dart';
-import 'package:social_media_app/global_widgets/primary_outlined_btn.dart';
 import 'package:social_media_app/global_widgets/verified_widget.dart';
 import 'package:social_media_app/modules/app_update/app_update_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -27,34 +27,6 @@ import 'package:social_media_app/utils/utility.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SizedBox(
-          width: Dimens.screenWidth,
-          height: Dimens.screenHeight,
-          child: GetBuilder<ProfileController>(
-            builder: (logic) {
-              return NxRefreshIndicator(
-                onRefresh: logic.fetchProfileDetails,
-                showProgress: false,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildProfileHeader(logic, context),
-                    _buildProfileBody(logic, context),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildProfileHeader(ProfileController logic, BuildContext context) {
     return NxAppBar(
@@ -419,12 +391,6 @@ class ProfileView extends StatelessWidget {
     return NxOutlinedButton(
       label: StringValues.editProfile.toTitleCase(),
       width: Dimens.screenWidth,
-      padding: Dimens.edgeInsets8,
-      borderRadius: Dimens.four,
-      borderWidth: Dimens.pointEight,
-      labelStyle: AppStyles.style14Normal.copyWith(
-        color: Theme.of(context).textTheme.bodyLarge!.color,
-      ),
       onTap: RouteManagement.goToEditProfileView,
     );
   }
@@ -604,4 +570,32 @@ class ProfileView extends StatelessWidget {
           ),
         ],
       );
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SizedBox(
+          width: Dimens.screenWidth,
+          height: Dimens.screenHeight,
+          child: GetBuilder<ProfileController>(
+            builder: (logic) {
+              return NxRefreshIndicator(
+                onRefresh: logic.fetchProfileDetails,
+                showProgress: false,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildProfileHeader(logic, context),
+                    _buildProfileBody(logic, context),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
 }

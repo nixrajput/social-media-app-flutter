@@ -598,7 +598,7 @@ class PostWidget extends StatelessWidget {
       margin: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(Dimens.four),
+        borderRadius: AppStyles.defaultBorderRadius,
         boxShadow: AppStyles.defaultShadow,
       ),
       child: Column(

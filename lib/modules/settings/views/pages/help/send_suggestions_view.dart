@@ -4,8 +4,8 @@ import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
+import 'package:social_media_app/global_widgets/app_filled_btn.dart';
 import 'package:social_media_app/global_widgets/custom_app_bar.dart';
-import 'package:social_media_app/global_widgets/primary_filled_btn.dart';
 import 'package:social_media_app/modules/settings/controllers/send_suggestions_controller.dart';
 
 class SendSuggestionsView extends StatelessWidget {

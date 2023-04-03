@@ -24,7 +24,8 @@ abstract class StringValues {
   static const alreadyHaveOtp = "Already have an OTP?";
   static const and = 'and';
   static const appDescription = 'Connect with the world!';
-  static const appDownloadUrl = 'https://nixlab.co.in/projects';
+  static const appDownloadUrl =
+      'https://nixlab.co.in/projects/com.nixlab.rippl';
   static const appGithubUrl =
       'https://github.com/nixrajput/social-media-app-flutter';
 
@@ -82,6 +83,7 @@ abstract class StringValues {
   static const communityGuidelinesUrl =
       'https://nixlab.co.in/community-guidelines';
 
+  static const connectWithTheWorld = "Let's connect with the world";
   static const confirm = 'Confirm';
   static const confirmPassword = 'Confirm Password';
   static const connTimedOut = 'Connection timed out';
@@ -214,6 +216,8 @@ abstract class StringValues {
   static const forward = 'Forward';
   static const gender = 'Gender';
   static const getOtp = 'Get OTP';
+  static const getStarted = 'Get Started';
+  static const getStartedDesc = 'Get started your journey with us';
   static const githubRepo = 'Github Repo';
   static const hasDeactivatedTheirAccount = 'has deactivated their account';
   static const hasWikiPage = 'Do you have a Wikipedia page?';

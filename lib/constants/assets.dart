@@ -1,8 +1,6 @@
 abstract class AssetValues {
   static const String appIcon = 'assets/images/icon_trans.png';
-  static const String avatar = 'assets/images/avatar.png';
-  static const String iconDark = 'assets/images/icon_dark.png';
-  static const String iconLight = 'assets/images/icon_light.png';
+  static const String group = 'assets/images/group.jpg';
 }
 
 abstract class RiveAssets {
@@ -18,4 +16,5 @@ abstract class SvgAssets {
   static const noData = 'assets/svgs/no_data.svg';
   static const addFiles = 'assets/svgs/add_files.svg';
   static const messaging = 'assets/svgs/messaging.svg';
+  static const connect = 'assets/svgs/connect.svg';
 }

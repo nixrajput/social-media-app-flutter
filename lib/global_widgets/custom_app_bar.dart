@@ -47,7 +47,7 @@ class NxAppBar extends StatelessWidget {
                   size: Dimens.twentyFour,
                 ),
               ),
-            if (showBackBtn == true) Dimens.boxWidth16,
+            if (showBackBtn == true) Dimens.boxWidth12,
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -59,7 +59,7 @@ class NxAppBar extends StatelessWidget {
                     Text(
                       title!,
                       style: titleStyle ??
-                          AppStyles.style20Bold.copyWith(
+                          AppStyles.h4.copyWith(
                             color: Theme.of(context).textTheme.bodyLarge!.color,
                           ),
                     )

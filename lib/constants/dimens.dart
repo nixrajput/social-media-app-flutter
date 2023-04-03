@@ -8,8 +8,6 @@ abstract class Dimens {
   static SizedBox boxHeight10 = SizedBox(height: ten);
   static SizedBox boxHeight12 = SizedBox(height: twelve);
   static SizedBox boxHeight16 = SizedBox(height: sixTeen);
-  //SizedBoxes
-
   static SizedBox boxHeight2 = SizedBox(height: two);
 
   static SizedBox boxHeight20 = SizedBox(height: twenty);
