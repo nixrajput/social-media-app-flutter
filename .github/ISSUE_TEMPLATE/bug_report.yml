@@ -55,12 +55,11 @@ body:
       label: Relevant log output
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
       render: shell
-  - type: file
+  - type: files
     id: screenshots
     attributes:
       label: Screenshots
       description: If applicable, add screenshots to help explain your problem.
-      multiple: true
   - type: checkboxes
     id: terms
     attributes:
