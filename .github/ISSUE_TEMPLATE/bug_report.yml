@@ -23,35 +23,44 @@ body:
       label: What happened?
       description: Also tell us, what did you expect to happen?
       placeholder: Tell us what you see!
-      value: "A bug happened!"
     validations:
       required: true
-  - type: dropdown
+  - type: input
     id: version
     attributes:
       label: Version
-      description: What version of our software are you running?
-      options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
+      description: What version of our app are you running?
+      placeholder: 1.0.1+01
     validations:
       required: true
   - type: dropdown
-    id: browsers
+    id: devices
     attributes:
-      label: What browsers are you seeing the problem on?
+      label: What devices are you seeing the problem on?
       multiple: true
       options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
+        - Android
+        - iPhone
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      description: On what version of OS is your device running?
+      placeholder: Android 12
+    validations:
+      required: true
   - type: textarea
     id: logs
     attributes:
       label: Relevant log output
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
       render: shell
+  - type: file
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+      multiple: true
   - type: checkboxes
     id: terms
     attributes:
