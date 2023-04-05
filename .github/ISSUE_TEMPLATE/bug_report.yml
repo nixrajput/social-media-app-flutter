@@ -50,7 +50,7 @@ body:
     attributes:
       label: Relevant log output
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
+      render: markdown
   - type: checkboxes
     id: terms
     attributes:
@@ -61,5 +61,4 @@ body:
           required: true
   - type: markdown
     attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report!
+      value: "## Thanks for taking the time to fill out this bug report!"
