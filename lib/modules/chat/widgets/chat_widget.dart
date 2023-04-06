@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
+import 'package:social_media_app/app_widgets/avatar_widget.dart';
+import 'package:social_media_app/app_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
+import 'package:social_media_app/app_widgets/verified_widget.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
-import 'package:social_media_app/app_widgets/avatar_widget.dart';
-import 'package:social_media_app/app_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
-import 'package:social_media_app/app_widgets/verified_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class ChatWidget extends StatelessWidget {
@@ -46,15 +46,14 @@ class ChatWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        margin: Dimens.edgeInsets8_0,
-        padding: Dimens.edgeInsets8,
+        margin: Dimens.edgeInsetsOnlyBottom8,
+        padding: Dimens.edgeInsets8_12,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(Dimens.four),
-          boxShadow: AppStyles.defaultShadow,
+          color: ColorValues.primaryColor20,
+          borderRadius: AppStyles.defaultBorderRadius,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

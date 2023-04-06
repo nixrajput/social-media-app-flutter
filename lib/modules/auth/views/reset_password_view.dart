@@ -2,46 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/app_widgets/app_filled_btn.dart';
+import 'package:social_media_app/app_widgets/app_text_btn.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
+import 'package:social_media_app/app_widgets/unfocus_widget.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/app_widgets/app_filled_btn.dart';
-import 'package:social_media_app/app_widgets/custom_app_bar.dart';
-import 'package:social_media_app/app_widgets/app_text_btn.dart';
 import 'package:social_media_app/modules/auth/controllers/password_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class ResetPasswordView extends StatelessWidget {
   const ResetPasswordView({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: SafeArea(
-          child: SizedBox(
-            width: Dimens.screenWidth,
-            height: Dimens.screenHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NxAppBar(
-                  title: StringValues.resetPassword,
-                  padding: Dimens.edgeInsetsDefault,
-                ),
-                _buildResetPasswordFields(context),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildResetPasswordFields(BuildContext context) =>
-      GetBuilder<PasswordController>(
+  Widget _buildBody(BuildContext context) => GetBuilder<PasswordController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
@@ -54,17 +28,17 @@ class ResetPasswordView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      StringValues.resetPasswordWelcome,
-                      style: AppStyles.style32Bold.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
+                      StringValues.resetPassword,
+                      style: AppStyles.h2,
+                      textAlign: TextAlign.center,
+                    ),
+                    Dimens.boxHeight8,
+                    Text(
+                      StringValues.resetPasswordHelp,
+                      style: AppStyles.p,
+                      textAlign: TextAlign.center,
                     ),
                     Dimens.boxHeight32,
-                    Text(
-                      StringValues.enterOtpPassword,
-                      style: AppStyles.style12Normal,
-                    ),
-                    Dimens.boxHeight12,
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: StringValues.otp,
@@ -125,7 +99,7 @@ class ResetPasswordView extends StatelessWidget {
                       controller: logic.confirmPasswordTextController,
                       onEditingComplete: logic.focusNode.unfocus,
                     ),
-                    Dimens.heightedBox(Dimens.twentyEight),
+                    Dimens.boxHeight32,
                     NxTextButton(
                       label: StringValues.loginToAccount,
                       onTap: () {
@@ -136,8 +110,7 @@ class ResetPasswordView extends StatelessWidget {
                     Dimens.boxHeight32,
                     NxFilledButton(
                       onTap: () => logic.resetPassword(),
-                      label: StringValues.resetPassword.toUpperCase(),
-                      height: Dimens.fiftySix,
+                      label: StringValues.resetPassword,
                     ),
                     Dimens.boxHeight32,
                     Row(
@@ -166,4 +139,26 @@ class ResetPasswordView extends StatelessWidget {
           ),
         ),
       );
+
+  @override
+  Widget build(BuildContext context) {
+    return UnFocusWidget(
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
+            width: Dimens.screenWidth,
+            height: Dimens.screenHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const NxAppBar(),
+                _buildBody(context),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

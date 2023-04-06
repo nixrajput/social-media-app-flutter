@@ -2,42 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-
+import 'package:social_media_app/app_widgets/app_filled_btn.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/app_widgets/app_filled_btn.dart';
-import 'package:social_media_app/app_widgets/custom_app_bar.dart';
 import 'package:social_media_app/modules/auth/controllers/reactivate_account_controller.dart';
 
 class ReactivateAccountView extends StatelessWidget {
   const ReactivateAccountView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: SafeArea(
-          child: SizedBox(
-            width: Dimens.screenWidth,
-            height: Dimens.screenHeight,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                NxAppBar(
-                  title: StringValues.reactivateAccount,
-                  padding: Dimens.edgeInsetsDefault,
-                ),
-                _buildLoginFields(context),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildLoginFields(BuildContext context) =>
       GetBuilder<ReactivateAccountController>(
@@ -131,4 +104,30 @@ class ReactivateAccountView extends StatelessWidget {
           ),
         ),
       );
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: SizedBox(
+            width: Dimens.screenWidth,
+            height: Dimens.screenHeight,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                NxAppBar(
+                  title: StringValues.reactivateAccount,
+                  padding: Dimens.edgeInsetsDefault,
+                ),
+                _buildLoginFields(context),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/apis/models/entities/user.dart';
+import 'package:social_media_app/app_widgets/app_filled_btn.dart';
+import 'package:social_media_app/app_widgets/avatar_widget.dart';
+import 'package:social_media_app/app_widgets/verified_widget.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/app_widgets/app_filled_btn.dart';
-import 'package:social_media_app/app_widgets/avatar_widget.dart';
-import 'package:social_media_app/app_widgets/verified_widget.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 
 class UserWidget extends StatelessWidget {
@@ -114,7 +114,6 @@ class UserWidget extends StatelessWidget {
               bgColor: getButtonColor(user.followingStatus, context),
               onTap: onActionTap,
               padding: Dimens.edgeInsets6_8,
-              borderRadius: Dimens.four,
               labelStyle: AppStyles.style12Normal.copyWith(
                 color: getLabelColor(user.followingStatus, context),
               ),
@@ -130,15 +129,14 @@ class UserWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: Dimens.edgeInsets8_0,
-        padding: padding ?? Dimens.edgeInsets8,
+        margin: Dimens.edgeInsetsOnlyBottom8,
+        padding: padding ?? Dimens.edgeInsets8_12,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(Dimens.four),
-          boxShadow: AppStyles.defaultShadow,
+          color: ColorValues.primaryColor20,
+          borderRadius: AppStyles.defaultBorderRadius,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

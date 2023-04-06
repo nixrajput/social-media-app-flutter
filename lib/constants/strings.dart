@@ -210,7 +210,7 @@ abstract class StringValues {
   static const followers = 'Followers';
   static const following = 'Following';
   static const forgotPassword = 'Forgot Password?';
-  static const forgotPasswordWelcome = 'Hi there, Forgot your password?';
+  static const forgotPasswordHelp = 'Reset your password now';
   static const forgotYourPassword = 'Forgot your password?';
   static const formatExcError = 'Format error occurred.';
   static const forward = 'Forward';
@@ -393,7 +393,7 @@ abstract class StringValues {
   static const register = 'Register';
   static const registerUsingEmail = 'Register Using Email';
   static const registerUsingPhone = 'Register Using Phone';
-  static const registerWelcome = 'Hello! Register to get started';
+  static const registerWelcome = 'Register to get started';
   static const registerToGetStarted = 'Register to get started';
   static const registrationSuccessful =
       'Account registered successfully, please verify your account';
@@ -409,7 +409,7 @@ abstract class StringValues {
   static const requested = 'Requested';
   static const resendOtp = 'Resend OTP';
   static const resetPassword = 'Reset Password';
-  static const resetPasswordWelcome = 'Hi there, Reset your password now';
+  static const resetPasswordHelp = 'Create a new password now';
   static const resetYourPassword = 'Reset your password';
   static const resume = 'Resume';
   static const right = 'Right';

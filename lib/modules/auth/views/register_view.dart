@@ -414,6 +414,10 @@ class RegisterView extends StatelessWidget {
     );
   }
 
+  NxAppBar _buildAppBar() {
+    return const NxAppBar();
+  }
+
   @override
   Widget build(BuildContext context) {
     return UnFocusWidget(
@@ -434,9 +438,5 @@ class RegisterView extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  NxAppBar _buildAppBar() {
-    return const NxAppBar();
   }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_media_app/apis/models/entities/notification.dart';
+import 'package:social_media_app/app_widgets/avatar_widget.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/date_extensions.dart';
-import 'package:social_media_app/app_widgets/avatar_widget.dart';
 import 'package:social_media_app/modules/home/controllers/notification_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/utility.dart';
@@ -38,15 +38,14 @@ class NotificationWidget extends StatelessWidget {
       },
       onLongPress: () => _showDeletePostOptions(context),
       child: Container(
-        margin: Dimens.edgeInsets8_0,
-        padding: Dimens.edgeInsets8,
+        margin: Dimens.edgeInsetsOnlyBottom8,
+        padding: Dimens.edgeInsets8_12,
         constraints: BoxConstraints(
           maxWidth: Dimens.screenWidth,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(Dimens.four),
-          boxShadow: AppStyles.defaultShadow,
+          color: ColorValues.primaryColor20,
+          borderRadius: AppStyles.defaultBorderRadius,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

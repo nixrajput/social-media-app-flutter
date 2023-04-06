@@ -4,6 +4,14 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:get_time_ago/get_time_ago.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
+import 'package:social_media_app/app_widgets/app_icon_btn.dart';
+import 'package:social_media_app/app_widgets/avatar_widget.dart';
+import 'package:social_media_app/app_widgets/cached_network_image.dart';
+import 'package:social_media_app/app_widgets/custom_list_tile.dart';
+import 'package:social_media_app/app_widgets/expandable_text_widget.dart';
+import 'package:social_media_app/app_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
+import 'package:social_media_app/app_widgets/verified_widget.dart';
+import 'package:social_media_app/app_widgets/video_player_widget.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/enums.dart';
@@ -11,14 +19,6 @@ import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/date_extensions.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
-import 'package:social_media_app/app_widgets/avatar_widget.dart';
-import 'package:social_media_app/app_widgets/cached_network_image.dart';
-import 'package:social_media_app/app_widgets/custom_list_tile.dart';
-import 'package:social_media_app/app_widgets/expandable_text_widget.dart';
-import 'package:social_media_app/app_widgets/get_time_ago_refresh_widget/get_time_ago_widget.dart';
-import 'package:social_media_app/app_widgets/app_icon_btn.dart';
-import 'package:social_media_app/app_widgets/verified_widget.dart';
-import 'package:social_media_app/app_widgets/video_player_widget.dart';
 import 'package:social_media_app/helpers/get_time_ago_msg.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -386,7 +386,7 @@ class PostWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
-                        Icons.repeat_outlined,
+                        Icons.bar_chart,
                         size: Dimens.twenty,
                         color: Theme.of(context).textTheme.titleMedium!.color,
                       ),
@@ -597,9 +597,8 @@ class PostWidget extends StatelessWidget {
     return Container(
       margin: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: ColorValues.primaryColor20,
         borderRadius: AppStyles.defaultBorderRadius,
-        boxShadow: AppStyles.defaultShadow,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

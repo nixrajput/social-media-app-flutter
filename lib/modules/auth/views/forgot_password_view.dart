@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/app_widgets/app_filled_btn.dart';
+import 'package:social_media_app/app_widgets/app_text_btn.dart';
+import 'package:social_media_app/app_widgets/custom_app_bar.dart';
+import 'package:social_media_app/app_widgets/unfocus_widget.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/app_widgets/app_filled_btn.dart';
-import 'package:social_media_app/app_widgets/custom_app_bar.dart';
-import 'package:social_media_app/app_widgets/app_text_btn.dart';
 import 'package:social_media_app/modules/auth/controllers/password_controller.dart';
 import 'package:social_media_app/routes/route_management.dart';
 
 class ForgotPasswordView extends StatelessWidget {
   const ForgotPasswordView({Key? key}) : super(key: key);
 
-  Widget _buildForgotPasswordFields(BuildContext context) =>
-      GetBuilder<PasswordController>(
+  Widget _buildBody(BuildContext context) => GetBuilder<PasswordController>(
         builder: (logic) => Expanded(
           child: SingleChildScrollView(
             child: Padding(
@@ -26,17 +26,17 @@ class ForgotPasswordView extends StatelessWidget {
                   children: [
                     Dimens.boxHeight32,
                     Text(
-                      StringValues.forgotPasswordWelcome,
-                      style: AppStyles.style32Bold.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
+                      StringValues.forgotPassword,
+                      style: AppStyles.h2,
+                      textAlign: TextAlign.center,
+                    ),
+                    Dimens.boxHeight8,
+                    Text(
+                      StringValues.forgotPasswordHelp,
+                      style: AppStyles.p,
+                      textAlign: TextAlign.center,
                     ),
                     Dimens.boxHeight32,
-                    Text(
-                      StringValues.enterEmailToSendOtp,
-                      style: AppStyles.style12Normal,
-                    ),
-                    Dimens.boxHeight12,
                     TextFormField(
                       decoration: const InputDecoration(
                         hintText: StringValues.enterEmail,
@@ -49,7 +49,7 @@ class ForgotPasswordView extends StatelessWidget {
                       controller: logic.emailTextController,
                       onEditingComplete: logic.focusNode.unfocus,
                     ),
-                    Dimens.heightedBox(Dimens.twentyEight),
+                    Dimens.boxHeight32,
                     NxTextButton(
                       label: StringValues.loginToAccount,
                       onTap: () {
@@ -60,8 +60,7 @@ class ForgotPasswordView extends StatelessWidget {
                     Dimens.boxHeight32,
                     NxFilledButton(
                       onTap: () => logic.sendResetPasswordOTP(),
-                      label: StringValues.sendOtp.toUpperCase(),
-                      height: Dimens.fiftySix,
+                      label: StringValues.sendOtp,
                     ),
                     Dimens.boxHeight32,
                     Row(
@@ -93,8 +92,7 @@ class ForgotPasswordView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return UnFocusWidget(
       child: Scaffold(
         body: SafeArea(
           child: SizedBox(
@@ -104,11 +102,8 @@ class ForgotPasswordView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                NxAppBar(
-                  title: StringValues.forgotPassword,
-                  padding: Dimens.edgeInsetsDefault,
-                ),
-                _buildForgotPasswordFields(context),
+                const NxAppBar(),
+                _buildBody(context),
               ],
             ),
           ),
