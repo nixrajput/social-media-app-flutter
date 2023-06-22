@@ -4,18 +4,18 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
+import 'package:social_media_app/app_widgets/app_icon_btn.dart';
+import 'package:social_media_app/app_widgets/avatar_widget.dart';
+import 'package:social_media_app/app_widgets/cached_network_image.dart';
+import 'package:social_media_app/app_widgets/expandable_text_widget.dart';
+import 'package:social_media_app/app_widgets/verified_widget.dart';
+import 'package:social_media_app/app_widgets/video_player_widget.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/date_extensions.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
-import 'package:social_media_app/app_widgets/avatar_widget.dart';
-import 'package:social_media_app/app_widgets/cached_network_image.dart';
-import 'package:social_media_app/app_widgets/expandable_text_widget.dart';
-import 'package:social_media_app/app_widgets/app_icon_btn.dart';
-import 'package:social_media_app/app_widgets/verified_widget.dart';
-import 'package:social_media_app/app_widgets/video_player_widget.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
 import 'package:social_media_app/modules/home/controllers/trending_post_controller.dart';
@@ -388,7 +388,7 @@ class PostDetailsWidget extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
-                        Icons.repeat_outlined,
+                        Icons.bar_chart,
                         size: Dimens.twenty,
                         color: Theme.of(context).textTheme.titleMedium!.color,
                       ),
@@ -560,11 +560,10 @@ class PostDetailsWidget extends StatelessWidget {
         controller is PostController ||
         controller is TrendingPostController);
     return Container(
-      margin: Dimens.edgeInsets6_0,
+      margin: Dimens.edgeInsets8_0,
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(Dimens.four),
-        boxShadow: AppStyles.defaultShadow,
+        color: ColorValues.primaryColor20,
+        borderRadius: AppStyles.defaultBorderRadius,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

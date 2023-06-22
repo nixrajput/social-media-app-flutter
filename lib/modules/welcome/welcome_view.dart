@@ -76,6 +76,7 @@ class WelcomeView extends StatelessWidget {
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: const SystemUiOverlayStyle(
           statusBarColor: ColorValues.transparent,
+          statusBarIconBrightness: Brightness.light,
         ),
         child: SizedBox(
           width: Dimens.screenWidth,

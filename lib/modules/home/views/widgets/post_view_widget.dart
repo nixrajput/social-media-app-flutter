@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:social_media_app/apis/models/entities/post.dart';
-import 'package:social_media_app/constants/colors.dart';
-import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/app_widgets/custom_app_bar.dart';
 import 'package:social_media_app/app_widgets/video_player_widget.dart';
+import 'package:social_media_app/constants/colors.dart';
+import 'package:social_media_app/constants/dimens.dart';
 
 class PostViewWidget extends StatelessWidget {
   const PostViewWidget({
@@ -27,11 +27,7 @@ class PostViewWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              NxAppBar(
-                padding: Dimens.edgeInsetsDefault.copyWith(
-                  bottom: Dimens.zero,
-                ),
-              ),
+              const NxAppBar(),
               Expanded(
                 child: Center(
                   child: _buildBody(context),

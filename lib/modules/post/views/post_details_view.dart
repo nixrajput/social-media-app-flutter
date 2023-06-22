@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:social_media_app/constants/dimens.dart';
-import 'package:social_media_app/constants/strings.dart';
-import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/app_widgets/custom_app_bar.dart';
 import 'package:social_media_app/app_widgets/custom_refresh_indicator.dart';
 import 'package:social_media_app/app_widgets/load_more_widget.dart';
 import 'package:social_media_app/app_widgets/unfocus_widget.dart';
+import 'package:social_media_app/constants/dimens.dart';
+import 'package:social_media_app/constants/strings.dart';
+import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/modules/post/controllers/comment_controller.dart';
 import 'package:social_media_app/modules/post/controllers/post_details_controller.dart';
 import 'package:social_media_app/modules/post/views/widgets/comment_widget.dart';

@@ -6,6 +6,49 @@ const String timeFormatter = 'hh:mm a';
 const String longDateFormatter = 'dd MMM yyyy';
 
 extension DateHelper on DateTime {
+  String toTimeAgo(
+      {bool? showSuffix = true, String? suffix, String? separator}) {
+    var currentClock = DateTime.now();
+    var elapsed =
+        (currentClock.millisecondsSinceEpoch - millisecondsSinceEpoch).abs();
+    var currentSuffix = suffix ?? 'ago';
+    var currentSeparator = separator ?? ' ';
+    var messageSuffix = currentSeparator + currentSuffix;
+
+    var seconds = (elapsed / 1000).floor();
+
+    var interval = (seconds / 31536000).floor();
+    if (interval >= 1) {
+      return '${interval}y${showSuffix! ? messageSuffix : ''}';
+    }
+
+    interval = (seconds / 2592000).floor();
+    if (interval >= 1) {
+      return '${interval}mo${showSuffix! ? messageSuffix : ''}';
+    }
+
+    interval = (seconds / 86400).floor();
+    if (interval >= 1) {
+      return '${interval}d${showSuffix! ? messageSuffix : ''}';
+    }
+
+    interval = (seconds / 3600).floor();
+    if (interval >= 1) {
+      return '${interval}h${showSuffix! ? messageSuffix : ''}';
+    }
+
+    interval = (seconds / 60).floor();
+    if (interval >= 1) {
+      return '${interval}m${showSuffix! ? messageSuffix : ''}';
+    }
+
+    if (seconds > 29 && seconds < 59) {
+      return '${seconds}s${showSuffix! ? messageSuffix : ''}';
+    }
+
+    return 'just now';
+  }
+
   String formatDate() {
     var diff = DateTime.now().toLocal().difference(toLocal());
 

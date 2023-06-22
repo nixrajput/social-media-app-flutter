@@ -1,6 +1,6 @@
 abstract class AssetValues {
   static const String appIcon = 'assets/images/icon_trans.png';
-  static const String group = 'assets/images/group.jpg';
+  static const String group = 'assets/images/group.webp';
 }
 
 abstract class RiveAssets {

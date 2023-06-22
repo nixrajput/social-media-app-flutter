@@ -34,7 +34,6 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 33
-    ndkVersion "25.1.8937393"
 
     kotlinOptions {
         jvmTarget = '1.8'

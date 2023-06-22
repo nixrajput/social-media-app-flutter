@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
 import 'package:social_media_app/modules/home/controllers/home_controller.dart';
@@ -29,16 +30,20 @@ class NxBottomNavBar extends StatelessWidget {
       builder: (logic) {
         return SafeArea(
           child: Container(
-            height: height ?? Dimens.fiftySix,
             width: Dimens.screenWidth,
-            padding: padding ?? Dimens.edgeInsets12,
+            height: height,
+            constraints: BoxConstraints(
+              maxWidth: Dimens.screenWidth,
+              maxHeight: Dimens.sixtyFour,
+            ),
+            padding: padding ?? Dimens.edgeInsets16_12,
             decoration: BoxDecoration(
-              color: bgColor ?? Theme.of(context).scaffoldBackgroundColor,
-              border: Border(
-                top: BorderSide(
-                  color: Theme.of(context).dividerColor,
-                  width: Dimens.pointEight,
-                ),
+              color: bgColor ?? ColorValues.primaryColor40,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(Dimens.twelve),
+                topRight: Radius.circular(Dimens.twelve),
+                // bottomLeft: Radius.circular(Dimens.twelve),
+                // bottomRight: Radius.circular(Dimens.twelve),
               ),
             ),
             child: Row(

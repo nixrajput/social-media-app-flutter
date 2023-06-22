@@ -60,7 +60,8 @@ class TrendingTabView extends StatelessWidget {
       labelPadding: Dimens.edgeInsets0,
       padding: Dimens.edgeInsetsHorizDefault,
       indicatorPadding: Dimens.edgeInsets0,
-      indicatorColor: ColorValues.primaryColor,
+      indicatorColor: ColorValues.primaryColor80,
+      dividerColor: ColorValues.transparent,
     );
   }
 }

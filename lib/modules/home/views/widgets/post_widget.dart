@@ -595,7 +595,7 @@ class PostWidget extends StatelessWidget {
         controller is PostController ||
         controller is TrendingPostController);
     return Container(
-      margin: Dimens.edgeInsets8_0,
+      margin: Dimens.edgeInsetsOnlyBottom8,
       decoration: BoxDecoration(
         color: ColorValues.primaryColor20,
         borderRadius: AppStyles.defaultBorderRadius,
