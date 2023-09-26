@@ -26,7 +26,9 @@ Rippl is a social media app designed for sharing photos and videos while enablin
 
 - Currently, Rippl is in the development phase and is not yet production-ready.
 - The app is exclusively available on Android devices.
-- Contributions to the project are highly encouraged, including participation from UI/UX designers. If you're interested in contributing, please take a moment to review [contribution guidelines](CONTRIBUTING.md). These guidelines provide valuable information on how to get started and effectively collaborate with the project.
+- Contributions to the project are highly encouraged, including participation from UI/UX designers.
+- If you're interested in contributing, please take a moment to review [contribution guidelines](CONTRIBUTING.md).
+- These guidelines provide valuable information on how to get started and effectively collaborate with the project.
 - Your contributions, whether in code or design, are highly valued and can play a pivotal role in shaping the future of Rippl.
 - The community is open to design suggestions, feature requests, and bug reports via  [GitHub issues](https://github.com/nixrajput/social-media-app-flutter/issues).
 - Exciting plans for upcoming features include group messaging, group creation, post sharing, and more.
