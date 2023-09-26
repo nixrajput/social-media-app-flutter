@@ -62,10 +62,10 @@ You can download the APK from [here][releases].
 - The app is the brainchild of [Nikhil Rajput][portfolio].
 - You can connect with Nikhil on various social media platforms.
 
-[![Telegram: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Telegram&logoColor=fff)][telegramMe]
-[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Instagram&logoColor=fff)][instagram]
-[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Linkedin&logoColor=fff)][linkedin]
-[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-141430?logo=Twitter&logoColor=fff)][twitter]
+[![Telegram: nixrajput](https://img.shields.io/badge/nixrajput-F05A64?logo=Telegram&logoColor=fff)][telegramMe]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-F05A64?logo=Instagram&logoColor=fff)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-F05A64?logo=Linkedin&logoColor=fff)][linkedin]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-F05A64?logo=Twitter&logoColor=fff)][twitter]
 
 If you have any specific inquiries or require further information about Rippl or its development, please don't hesitate to ask!
 
