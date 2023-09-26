@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
+import 'package:social_media_app/app_widgets/custom_colored_box.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/styles.dart';
-import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
-import 'package:social_media_app/app_widgets/custom_colored_box.dart';
 
 class CustomControlsWidget extends StatefulWidget {
   const CustomControlsWidget({

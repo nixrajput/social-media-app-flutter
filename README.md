@@ -1,8 +1,6 @@
 # Rippl - A Social Media App
 
-Rippl is a social media app that allows users to share their photos and videos
-with other users. Users can also follow other users and like and comment on
-their posts.
+Rippl is a social media app designed for sharing photos and videos while enabling users to follow others, like posts, and engage through comments. Here are the key details:
 
 [![Downloads](https://img.shields.io/github/downloads/nixrajput/social-media-app-flutter/total?label=Downloads)][releases]
 [![Stars](https://img.shields.io/github/stars/nixrajput/social-media-app-flutter?label=Stars)][repo]
@@ -16,127 +14,67 @@ their posts.
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-app-flutter?label=Pull+Requests)][pulls]
 [![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-app-flutter?label=Licence)][license]
 
-- This project is powered by [NixLab Technologies][website].
+## App Features
 
-- The app is developed using Flutter and GetX state management. The app is
-currently in development and is not yet ready for production.
+- Users can easily share photos and videos.
+- Following, liking, and commenting on posts are core functionalities.
+- Robust user authentication is in place.
+- A variety of post-related features and profile management options are already implemented.
+- Additional features such as P2P messaging and push notifications enhance user interaction.
 
-- Right now, the app is only available for Android devices.
+## Development Information
 
-- We are open to contributions. If you would like to contribute, please read the
-[contribution guidelines](CONTRIBUTING.md).
+- Currently, Rippl is in the development phase and is not yet production-ready.
+- The app is exclusively available on Android devices.
+- Contributions to the project are highly encouraged, including participation from UI/UX designers. If you're interested in contributing, please take a moment to review [contribution guidelines](CONTRIBUTING.md). These guidelines provide valuable information on how to get started and effectively collaborate with the project.
+- Your contributions, whether in code or design, are highly valued and can play a pivotal role in shaping the future of Rippl.
+- The community is open to design suggestions, feature requests, and bug reports via  [GitHub issues](https://github.com/nixrajput/social-media-app-flutter/issues).
+- Exciting plans for upcoming features include group messaging, group creation, post sharing, and more.
+- If you require assistance or support, we invite you to join our [Telegram][telegram] group.
+- Our community is there to provide help, answer questions, and offer support to ensure your experience with Rippl is as smooth as possible. Feel free to reach out, and we'll be happy to assist you.
 
-- We are also looking for UI/UX designers. If you would like to contribute as a UI/UX designer,
-please read the [contribution guidelines](CONTRIBUTING.md) and then contact the project [owner][github].
+## Sponsoring to the App's Budget
 
-- We are also open to design suggestions. If you would like to suggest a design, feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues).
+- Besides code contributions, you can also support the app's development by sponsoring its budget.
+- Sponsoring helps cover development costs and accelerate the app's progress.
+- Details on sponsoring financially can be found [here](https://github.com/sponsors/nixrajput).
 
-- We are also open to feature requests. If you would like to request a feature, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to implement the feature as soon as possible.
+## Setting Up
 
-- We are also open to bug reports. If you would like to report a bug, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to fix the bug as soon as possible.
-
-- For any help and support, please join our [Telegram][telegram] group.
-
-## Setup
-
-- Create `secrets.dart` file in constants folder.
-- Add the following code to the file.
-
-```dart
-abstract class AppSecrets {
-  static const cloudinaryUploadPreset = 'XXX-XXX-XXX-XXX';
-  static const cloudinaryCloudName = 'XXX-XXX-XXX-XXX';
-}
-```
-
-- Replace XXX-XXX-XXX-XXX with your values in the file.
-- Now run the following commands:
-
-```dart
-flutter clean
-flutter pub get packages
-```
+- To facilitate image uploads, Rippl integrates with Cloudinary. Users should configure their Cloudinary credentials in a `secrets.dart` file.
+- The file should specify values for `cloudinaryUploadPreset` and `cloudinaryCloudName`.
 
 ## Screenshots
 
+Adding soon...
+
 ## Download
 
-You can download the app from the [releases page][releases].
+You can download the APK from [here][releases].
 
-## Contributing
+## Licensing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of
-conduct, and the process for submitting pull requests to us.
+- Rippl is distributed under the GPL-3.0 License.
+- See the [LICENSE](LICENSE.md) file for details.
 
-## Authors
+## Connect with the Developer
 
-- **[Nikhil Rajput][portfolio]** - *Owner & Lead Developer*
+- The app is the brainchild of [Nikhil Rajput][portfolio].
+- You can connect with Nikhil on various social media platforms.
 
-## Features
+[![Telegram: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Telegram&logoColor=fff)][telegramMe]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Instagram&logoColor=fff)][instagram]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Linkedin&logoColor=fff)][linkedin]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-141430?logo=Twitter&logoColor=fff)][twitter]
 
-- [x] User Authentication
-- [x] Post Feed
-- [x] Post Creation
-- [x] Post Editing
-- [x] Post Deletion
-- [x] Post Liking
-- [x] Post Commenting
-- [ ] Post Sharing
-- [x] Post Searching
-- [ ] Post Filtering
-- [ ] Post Sorting
-- [ ] Post Reporting
-- [ ] Post Blocking
-- [ ] Post Muting
-- [x] Profile Creation
-- [x] Profile Editing
-- [x] Profile Deactivation
-- [x] User Following
-- [x] User Unfollowing
-- [ ] User Blocking
-- [ ] User Muting
-- [x] User Searching
-- [ ] User Filtering
-- [x] Trending Posts
-- [ ] Hashtag Searching
-- [ ] Post Tagging
-- [ ] User Mentioning
-- [x] Recommendations
-- [ ] Search Suggestions
-- [x] Settings
-- [x] Support
-- [x] Dynamic Theme
-- [x] P2P Messaging
-- [x] Push Notifications
-
-## Upcoming Features
-
-- [ ] Group Messaging
-- [ ] Group Creation
-- [ ] Post Sharing
-- [ ] Post and Chat Settings
-- [ ] End-to-End Encryption
-
-## License
-
-This project is licensed under the GPL-3.0 License - see the
-[LICENSE.md](LICENSE.md) file for details.
+If you have any specific inquiries or require further information about Rippl or its development, please don't hesitate to ask!
 
 ## Activities
 
 ![Alt](https://repobeats.axiom.co/api/embed/e86f92199e9d903eba60dadebd6f780fda7c5815.svg "Repobeats analytics image")
 
-## Connect With Me
-
-[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Instagram&logoColor=fff)][instagram]
-[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Linkedin&logoColor=fff)][linkedin]
-[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-141430?logo=Github&logoColor=fff)][github]
-[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-141430?logo=Twitter&logoColor=fff)][twitter]
-[![Facebook: nixrajput07](https://img.shields.io/badge/nixrajput07-141430?logo=Facebook&logoColor=fff)][facebook]
-
 [github]: https://github.com/nixrajput
 [website]: https://nixlab.co.in
-[facebook]: https://facebook.com/nixrajput07
 [twitter]: https://twitter.com/nixrajput07
 [instagram]: https://instagram.com/nixrajput
 [linkedin]: https://linkedin.com/in/nixrajput
@@ -147,3 +85,4 @@ This project is licensed under the GPL-3.0 License - see the
 [license]: https://github.com/nixrajput/social-media-app-flutter/blob/master/LICENSE.md
 [pulls]: https://github.com/nixrajput/social-media-app-flutter/pulls
 [telegram]: https://telegram.me/nixlab_in
+[telegramMe]: https://telegram.me/nixrajput
