@@ -3,16 +3,14 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rive/rive.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:social_media_app/constants/assets.dart';
+import 'package:social_media_app/app_widgets/app_text_btn.dart';
+import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
 import 'package:social_media_app/constants/colors.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/constants/styles.dart';
 import 'package:social_media_app/extensions/string_extensions.dart';
-import 'package:social_media_app/app_widgets/circular_progress_indicator.dart';
-import 'package:social_media_app/app_widgets/app_text_btn.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -320,10 +318,6 @@ abstract class AppUtility {
                 SizedBox(
                   width: Dimens.screenWidth * 0.75,
                   height: Dimens.screenWidth * 0.75,
-                  child: const RiveAnimation.asset(
-                    RiveAssets.error,
-                    alignment: Alignment.center,
-                  ),
                 ),
                 Dimens.boxHeight16,
                 Text(

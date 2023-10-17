@@ -3,7 +3,9 @@ abstract class AppUrls {
   static const addChangePhoneEndpoint = '/add-change-phone';
   static const addCommentEndpoint = '/add-comment';
   static const addCommentReplyEndpoint = '/add-comment-reply';
-  static const baseUrl = 'https://api.nixlab.co.in/api/v1';
+
+  /// https://pear-jittery-crocodile.cyclic.cloud/
+  static const baseUrl = 'https://nixlab-api.cyclic.app/api/v1';
   static const blockUserEndpoint = '/block-user';
   static const cancelFollowRequestEndpoint = '/cancel-follow-request';
   static const changeEmailEndpoint = '/change-email';

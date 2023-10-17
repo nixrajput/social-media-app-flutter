@@ -14,6 +14,20 @@ Rippl is a social media app designed for sharing photos and videos while enablin
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/nixrajput/social-media-app-flutter?label=Pull+Requests)][pulls]
 [![GitHub Licence](https://img.shields.io/github/license/nixrajput/social-media-app-flutter?label=Licence)][license]
 
+## Table of Contents
+
+- [Rippl - A Social Media App](#rippl---a-social-media-app)
+  - [Table of Contents](#table-of-contents)
+  - [App Features](#app-features)
+  - [Development Information](#development-information)
+  - [Setting Up](#setting-up)
+  - [Screenshots](#screenshots)
+  - [Download](#download)
+  - [Licensing](#licensing)
+  - [Sponsor Me](#sponsor-me)
+  - [Connect with Me](#connect-with-me)
+  - [Activities](#activities)
+
 ## App Features
 
 - Users can easily share photos and videos.
@@ -35,12 +49,6 @@ Rippl is a social media app designed for sharing photos and videos while enablin
 - If you require assistance or support, we invite you to join our [Telegram][telegram] group.
 - Our community is there to provide help, answer questions, and offer support to ensure your experience with Rippl is as smooth as possible. Feel free to reach out, and we'll be happy to assist you.
 
-## Sponsoring to the App's Budget
-
-- Besides code contributions, you can also support the app's development by sponsoring its budget.
-- Sponsoring helps cover development costs and accelerate the app's progress.
-- Details on sponsoring financially can be found [here](https://github.com/sponsors/nixrajput).
-
 ## Setting Up
 
 - To facilitate image uploads, Rippl integrates with Cloudinary. Users should configure their Cloudinary credentials in a `secrets.dart` file.
@@ -59,15 +67,26 @@ You can download the APK from [here][releases].
 - Rippl is distributed under the GPL-3.0 License.
 - See the [LICENSE](LICENSE.md) file for details.
 
-## Connect with the Developer
+## Sponsor Me
+
+- By sponsoring my efforts, you're not merely contributing to the development of my projects; you're investing in its growth and sustainability.
+- Your support empowers me to dedicate more time and resources to improving the project's features, addressing issues, and ensuring its continued relevance in the rapidly evolving landscape of technology.
+- Your sponsorship directly fuels innovation, fosters a vibrant community, and helps maintain the project's high standards of quality. Together, we can shape the future of the projects and make a lasting impact in the open-source community.
+- Thank you for considering sponsoring my work!
+
+[![Sponsor](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/nixrajput)
+
+## Connect with Me
 
 - The app is the brainchild of [Nikhil Rajput][portfolio].
 - You can connect with Nikhil on various social media platforms.
 
-[![Telegram: nixrajput](https://img.shields.io/badge/nixrajput-F05A64?logo=Telegram&logoColor=fff)][telegramMe]
-[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-F05A64?logo=Instagram&logoColor=fff)][instagram]
-[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-F05A64?logo=Linkedin&logoColor=fff)][linkedin]
-[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput07-F05A64?logo=Twitter&logoColor=fff)][twitter]
+[![GitHub: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=GitHub&logoColor=333&link=https://www.github.com/nixrajput)][github]
+[![Linkedin: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=LinkedIn&logoColor=blue&link=https://www.linkedin.com/in/nixrajput)][linkedin]
+[![Instagram: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=Instagram&link=https://www.instagram.com/nixrajput)][instagram]
+[![Twitter: nixrajput07](https://img.shields.io/badge/nixrajput-EFF7F6?logo=X&logoColor=333&link=https://x.com/nixrajput)][twitter]
+[![Telegram: nixrajput](https://img.shields.io/badge/nixrajput-EFF7F6?logo=Telegram&link=https://telegram.me/nixrajput)][telegramMe]
+[![Gmail: nkr.nikhi.nkr@gmail.com](https://img.shields.io/badge/nkr.nikhil.nkr@gmail.com-EFF7F6?logo=Gmail&link=mailto:nkr.nikhil.nkr@gmail.com)][gmail]
 
 If you have any specific inquiries or require further information about Rippl or its development, please don't hesitate to ask!
 
@@ -75,16 +94,17 @@ If you have any specific inquiries or require further information about Rippl or
 
 ![Alt](https://repobeats.axiom.co/api/embed/e86f92199e9d903eba60dadebd6f780fda7c5815.svg "Repobeats analytics image")
 
+[portfolio]: https://nixrajput.vercel.app
 [github]: https://github.com/nixrajput
-[website]: https://nixlab.co.in
 [twitter]: https://twitter.com/nixrajput07
 [instagram]: https://instagram.com/nixrajput
 [linkedin]: https://linkedin.com/in/nixrajput
-[portfolio]: https://nixrajput.nixlab.co.in
+[gmail]: mailto:nkr.nikhil.nkr@gmail.com
+[telegram]: https://telegram.me/nixlab_in
+[telegramMe]: https://telegram.me/nixrajput
+[website]: https://nixlab.co.in
 [releases]: https://github.com/nixrajput/social-media-app-flutter/releases
 [repo]: https://github.com/nixrajput/social-media-app-flutter
 [issues]: https://github.com/nixrajput/social-media-app-flutter/issues
 [license]: https://github.com/nixrajput/social-media-app-flutter/blob/master/LICENSE.md
 [pulls]: https://github.com/nixrajput/social-media-app-flutter/pulls
-[telegram]: https://telegram.me/nixlab_in
-[telegramMe]: https://telegram.me/nixrajput
