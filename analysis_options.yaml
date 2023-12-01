@@ -1,6 +1,4 @@
-analyzer:
-  language:
-    strict-raw-types: true
+include: package:flutter_lints/flutter.yaml
 
 errors:
   dead_code: error
@@ -37,15 +35,13 @@ linter:
     - file_names
     - hash_and_equals
     - implementation_imports
-    - iterable_contains_unrelated_type
+    - collection_methods_unrelated_type
     - library_names
     - library_prefixes
-    - list_remove_unrelated_type
     - literal_only_boolean_expressions
     - no_duplicate_case_values
     - non_constant_identifier_names
     - null_closures
-    - omit_local_variable_types
     - only_throw_errors
     - overridden_fields
     - package_api_docs
@@ -55,6 +51,7 @@ linter:
     - prefer_conditional_assignment
     - prefer_const_constructors
     - prefer_contains
+    - prefer_equal_for_default_values
     - prefer_final_fields
     - prefer_generic_function_type_aliases
     - prefer_initializing_formals
@@ -73,7 +70,6 @@ linter:
     - unnecessary_brace_in_string_interps
     - unnecessary_const
     - unnecessary_getters_setters
-    - unnecessary_lambdas
     - unnecessary_new
     - unnecessary_null_aware_assignments
     - unnecessary_null_in_if_null_operators
