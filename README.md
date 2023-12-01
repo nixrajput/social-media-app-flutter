@@ -86,7 +86,7 @@ Rippl is a social media application developed using Flutter and managed with the
 4. Install dependencies:
   
     ```bash
-    cd flutter pub get
+    flutter pub get
     ```
 
 5. Create an environment file (`.env`) in the root of the project and add the following:
