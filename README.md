@@ -1,6 +1,6 @@
 # Rippl - Social Media Application
 
-Rippl is a social media application developed using Flutter and managed with the GetX state management tool. Please note that the app is currently in development and not ready for production. It is available for Android devices.
+Rippl is a social media application developed using Flutter and managed with the GetX state management tool. It vows to revolutionize your social engagements by offering a smooth and immersive experience.
 
 [![Downloads](https://img.shields.io/github/downloads/nixrajput/social-media-app-flutter/total?label=Downloads)][releases]
 [![Stars](https://img.shields.io/github/stars/nixrajput/social-media-app-flutter?label=Stars)][repo]
