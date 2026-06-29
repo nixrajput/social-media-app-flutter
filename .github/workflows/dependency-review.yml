@@ -1,0 +1,23 @@
+name: Dependency Review
+
+# Flags vulnerable or disallowed-license dependencies introduced by a PR before
+# they merge. Replaces Dependabot's alerting with a hard PR gate.
+on:
+  pull_request:
+    branches: ["master"]
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    name: Dependency review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          comment-summary-in-pr: on-failure

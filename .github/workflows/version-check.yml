@@ -1,0 +1,47 @@
+name: Version Check
+
+# Every PR must bump the pubspec.yaml version. Release tags it on merge; the
+# existing publish workflow then publishes to pub.dev on that tag.
+on:
+  pull_request:
+    branches: ["master"]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  version-bumped:
+    name: version bumped
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # need the base branch to diff the version
+          persist-credentials: false
+      - name: Read versions
+        id: v
+        run: |
+          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+          read_ver() { grep -E '^version:' "$1" | head -1 | awk '{print $2}' | tr -d '\r'; }
+          pr=$(read_ver pubspec.yaml)
+          git show "origin/${{ github.base_ref }}:pubspec.yaml" > /tmp/base_pubspec.yaml
+          base=$(read_ver /tmp/base_pubspec.yaml)
+          echo "pr=$pr" >> "$GITHUB_OUTPUT"
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+      - name: Compare
+        env:
+          PR: ${{ steps.v.outputs.pr }}
+          BASE: ${{ steps.v.outputs.base }}
+        run: |
+          echo "base=$BASE  pr=$PR"
+          if [ "$PR" = "$BASE" ]; then
+            echo "::error::pubspec.yaml version not bumped (still $BASE)."
+            exit 1
+          fi
+          greater=$(printf '%s\n%s\n' "$BASE" "$PR" | sort -V | tail -n1)
+          if [ "$greater" != "$PR" ]; then
+            echo "::error::pubspec.yaml version $PR is lower than base $BASE."
+            exit 1
+          fi
+          echo "Version bumped $BASE -> $PR ✓"
