@@ -34,6 +34,7 @@ class AppButton extends StatelessWidget {
         style: FilledButton.styleFrom(
           backgroundColor: bg,
           foregroundColor: fg,
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
