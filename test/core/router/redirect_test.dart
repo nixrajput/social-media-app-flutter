@@ -60,7 +60,11 @@ void main() {
     expect(redirectFor(_authed(), Routes.splash), Routes.home);
   });
 
-  test('unknown auth state holds on splash while resolving', () {
-    expect(redirectFor(const AuthState.unknown(), Routes.splash), isNull);
+  test('unknown (stored token) is treated as authenticated off splash', () {
+    expect(redirectFor(const AuthState.unknown(), Routes.splash), Routes.home);
+  });
+
+  test('unknown stays put on a protected route', () {
+    expect(redirectFor(const AuthState.unknown(), Routes.home), isNull);
   });
 }

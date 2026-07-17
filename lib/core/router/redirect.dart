@@ -13,14 +13,15 @@ const _publicRoutes = {
 // resolving (unknown); once resolved, always leave it (home or welcome).
 String? redirectFor(AuthState state, String location) {
   return switch (state) {
-    AuthUnknown() => null,
     AuthTwoFactorPending() =>
       location == Routes.twoFactor ? null : Routes.twoFactor,
     AuthProfileSetup() =>
       location == Routes.profileSetup ? null : Routes.profileSetup,
     AuthUnauthenticated() =>
       _publicRoutes.contains(location) ? null : Routes.welcome,
-    AuthAuthenticated() =>
+    // 'unknown' carries a stored token: navigate as if authenticated and let a
+    // 401 (via the auth interceptor) demote to unauthenticated later.
+    AuthUnknown() || AuthAuthenticated() =>
       _publicRoutes.contains(location) || location == Routes.splash
           ? Routes.home
           : null,
