@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/design/components/app_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../../../core/design/app_colors.dart';
 import '../../../core/design/components/app_snackbar.dart';
 import '../../../core/errors/api_error.dart';
 import 'auth_controller.dart';
@@ -28,11 +29,44 @@ class _GoogleButtonState extends ConsumerState<GoogleButton> {
 
   @override
   Widget build(BuildContext context) {
-    return AppButton(
-      label: 'Continue with Google',
-      variant: AppButtonVariant.secondary,
-      loading: _busy,
-      onPressed: _signIn,
+    final colors = Theme.of(context).extension<AppColors>()!;
+    return SizedBox(
+      height: 52,
+      child: OutlinedButton(
+        onPressed: _busy ? null : _signIn,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: colors.surface,
+          foregroundColor: colors.textPrimary,
+          side: BorderSide(color: colors.border),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+        child: _busy
+            ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    'assets/google_g.svg',
+                    height: 20,
+                    width: 20,
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Continue with Google',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: colors.textPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }
