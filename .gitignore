@@ -48,4 +48,14 @@ app.*.map.json
 
 /lib/constants/secrets.dart
 local.properties
-pubspec.lock
+# pubspec.lock is committed: this is an application, not a package.
+
+graphify-out/
+
+# Local-only AI-collab artifacts
+docs/superpowers/
+.superpowers/
+code-reviews/
+settings.local.json
+.playwright-mcp/
+bug-reports/
