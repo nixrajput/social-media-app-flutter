@@ -48,4 +48,19 @@ void main() {
       Routes.profileSetup,
     );
   });
+
+  test('unauthenticated user is moved off splash to welcome', () {
+    expect(
+      redirectFor(const AuthState.unauthenticated(), Routes.splash),
+      Routes.welcome,
+    );
+  });
+
+  test('authenticated user is moved off splash to home', () {
+    expect(redirectFor(_authed(), Routes.splash), Routes.home);
+  });
+
+  test('unknown auth state holds on splash while resolving', () {
+    expect(redirectFor(const AuthState.unknown(), Routes.splash), isNull);
+  });
 }
