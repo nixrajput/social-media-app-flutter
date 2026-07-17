@@ -1,64 +1,95 @@
 name: Bug Report
-description: File a bug report
+description: File a bug report for the app
 title: "[Bug]: "
 labels: ["bug", "triage"]
-assignees:
-  - nixrajput
+assignees: ["nixrajput"]
 body:
-  - type: input
-    id: contact
+  - type: markdown
     attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
+      value: |
+        Thanks for taking the time to fill out this bug report.
+        Before submitting, please check the [existing issues](https://github.com/nixrajput/social-media-app-flutter/issues) to avoid duplicates.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      description: Which part of the app is affected?
+      multiple: false
+      options:
+        - Auth / onboarding
+        - Feed / posts / comments
+        - Chat / messaging (E2EE)
+        - Profile / followers
+        - Notifications
+        - Settings / privacy
+        - UI / theming
+        - Build / CI
+        - Other
     validations:
-      required: false
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      multiple: true
+      options:
+        - Android
+        - iOS
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device and OS version
+      placeholder: "e.g. Pixel 8 (Android 15), iPhone 15 (iOS 18)"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: pubspec.yaml version or the build number.
+      placeholder: "e.g. 2.0.0+1"
+    validations:
+      required: true
+
   - type: textarea
     id: what-happened
     attributes:
       label: What happened?
-      description: Also tell us, what did you expect to happen?
-      placeholder: Tell us what you see!
+      description: Describe the bug clearly. What did you see, and what did you expect?
+      placeholder: "Expected: ... Actual: ..."
     validations:
       required: true
-  - type: input
-    id: version
+
+  - type: textarea
+    id: steps
     attributes:
-      label: Version
-      description: What version of our app are you running?
-      placeholder: 1.0.1+01
+      label: Steps to reproduce
+      description: Numbered steps that reliably reproduce the issue.
+      placeholder: |
+        1. Go to '...'
+        2. Tap on '...'
+        3. See error
     validations:
       required: true
-  - type: dropdown
-    id: devices
-    attributes:
-      label: What devices are you seeing the problem on?
-      multiple: true
-      options:
-        - Android
-        - iPhone
-  - type: input
-    id: os
-    attributes:
-      label: OS
-      description: On what version of OS is your device running?
-      placeholder: Android 12
-    validations:
-      required: true
+
   - type: textarea
     id: logs
     attributes:
-      label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      label: Relevant logs or screenshots
+      description: Paste any `flutter run` console output or attach screenshots.
       render: shell
+
   - type: checkboxes
-    id: terms
+    id: conduct
     attributes:
       label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/nixrajput/social-media-app-flutter/CODE_OF_CONDUCT.md).
+      description: By submitting this issue you agree to follow our [Code of Conduct](https://github.com/nixrajput/social-media-app-flutter/blob/master/CODE_OF_CONDUCT.md).
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true
-  - type: markdown
-    attributes:
-      value: "## Thanks for taking the time to fill out this bug report!"
