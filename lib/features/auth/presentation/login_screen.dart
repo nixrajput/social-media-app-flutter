@@ -5,6 +5,7 @@ import '../../../core/design/components/app_snackbar.dart';
 import '../../../core/design/components/app_text_field.dart';
 import '../../../core/errors/api_error.dart';
 import 'auth_controller.dart';
+import 'google_button.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -60,6 +61,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
             const SizedBox(height: 16),
             AppButton(label: 'Log in', loading: _busy, onPressed: _submit),
+            const SizedBox(height: 12),
+            const GoogleButton(),
           ],
         ),
       ),

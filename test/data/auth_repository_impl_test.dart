@@ -68,6 +68,44 @@ void main() {
     verify(() => store.writeDeviceId('d1')).called(1);
   });
 
+  test(
+    'oauthLogin returns OAuthResult and persists tokens + deviceId',
+    () async {
+      adapter.onPost(
+        '/auth/oauth/google',
+        (server) => server.reply(200, {
+          'user': {
+            'id': 'u1',
+            'username': 'nik',
+            'email': 'n@e.com',
+            'displayName': null,
+            'avatarUrl': null,
+            'isPrivate': false,
+            'createdAt': '2026-01-01T00:00:00.000Z',
+          },
+          'tokens': {
+            'accessToken': 'A',
+            'accessExpiresAt': '2026-01-01T00:00:00.000Z',
+            'refreshToken': 'R',
+            'refreshExpiresAt': '2026-02-01T00:00:00.000Z',
+          },
+          'deviceId': 'd1',
+          'needsProfile': true,
+        }),
+        data: {'idToken': 'tok', 'deviceName': 'Pixel', 'platform': 'android'},
+      );
+      final repo = AuthRepositoryImpl(dio, store);
+      final result = await repo.oauthLogin(
+        provider: 'google',
+        idToken: 'tok',
+        deviceName: 'Pixel',
+        platform: 'android',
+      );
+      expect(result.needsProfile, true);
+      verify(() => store.writeDeviceId('d1')).called(1);
+    },
+  );
+
   test('login returns LoginTwoFactor when the server asks for 2fa', () async {
     adapter.onPost(
       '/auth/login',

@@ -4,6 +4,7 @@ import '../../core/errors/api_error.dart';
 import '../../domain/models/auth_session.dart';
 import '../../domain/models/auth_tokens.dart';
 import '../../domain/models/login_result.dart';
+import '../../domain/models/oauth_result.dart';
 import '../../domain/models/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../services/secure_store.dart';
@@ -115,6 +116,45 @@ class AuthRepositoryImpl implements AuthRepository {
         options: Options(extra: {'skip_auth': true}),
       );
       return _persist(res.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      _throw(e);
+    }
+  }
+
+  @override
+  Future<OAuthResult> oauthLogin({
+    required String provider,
+    required String idToken,
+    required String deviceName,
+    required String platform,
+  }) async {
+    try {
+      final res = await _dio.post<dynamic>(
+        '/auth/oauth/$provider',
+        data: {
+          'idToken': idToken,
+          'deviceName': deviceName,
+          'platform': platform,
+        },
+        options: Options(extra: {'skip_auth': true}),
+      );
+      final data = res.data as Map<String, dynamic>;
+      return OAuthResult(
+        session: await _persist(data),
+        needsProfile: data['needsProfile'] == true,
+      );
+    } on DioException catch (e) {
+      _throw(e);
+    }
+  }
+
+  @override
+  Future<void> updateProfile({required String displayName, String? bio}) async {
+    try {
+      await _dio.patch<dynamic>(
+        '/users/me',
+        data: {'displayName': displayName, 'bio': ?bio},
+      );
     } on DioException catch (e) {
       _throw(e);
     }

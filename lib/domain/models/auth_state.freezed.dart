@@ -55,14 +55,15 @@ extension AuthStatePatterns on AuthState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthUnknown value)?  unknown,TResult Function( AuthUnauthenticated value)?  unauthenticated,TResult Function( AuthAuthenticated value)?  authenticated,TResult Function( AuthTwoFactorPending value)?  twoFactorPending,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthUnknown value)?  unknown,TResult Function( AuthUnauthenticated value)?  unauthenticated,TResult Function( AuthAuthenticated value)?  authenticated,TResult Function( AuthTwoFactorPending value)?  twoFactorPending,TResult Function( AuthProfileSetup value)?  profileSetup,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AuthUnknown() when unknown != null:
 return unknown(_that);case AuthUnauthenticated() when unauthenticated != null:
 return unauthenticated(_that);case AuthAuthenticated() when authenticated != null:
 return authenticated(_that);case AuthTwoFactorPending() when twoFactorPending != null:
-return twoFactorPending(_that);case _:
+return twoFactorPending(_that);case AuthProfileSetup() when profileSetup != null:
+return profileSetup(_that);case _:
   return orElse();
 
 }
@@ -80,14 +81,15 @@ return twoFactorPending(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthUnknown value)  unknown,required TResult Function( AuthUnauthenticated value)  unauthenticated,required TResult Function( AuthAuthenticated value)  authenticated,required TResult Function( AuthTwoFactorPending value)  twoFactorPending,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthUnknown value)  unknown,required TResult Function( AuthUnauthenticated value)  unauthenticated,required TResult Function( AuthAuthenticated value)  authenticated,required TResult Function( AuthTwoFactorPending value)  twoFactorPending,required TResult Function( AuthProfileSetup value)  profileSetup,}){
 final _that = this;
 switch (_that) {
 case AuthUnknown():
 return unknown(_that);case AuthUnauthenticated():
 return unauthenticated(_that);case AuthAuthenticated():
 return authenticated(_that);case AuthTwoFactorPending():
-return twoFactorPending(_that);}
+return twoFactorPending(_that);case AuthProfileSetup():
+return profileSetup(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -101,14 +103,15 @@ return twoFactorPending(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthUnknown value)?  unknown,TResult? Function( AuthUnauthenticated value)?  unauthenticated,TResult? Function( AuthAuthenticated value)?  authenticated,TResult? Function( AuthTwoFactorPending value)?  twoFactorPending,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthUnknown value)?  unknown,TResult? Function( AuthUnauthenticated value)?  unauthenticated,TResult? Function( AuthAuthenticated value)?  authenticated,TResult? Function( AuthTwoFactorPending value)?  twoFactorPending,TResult? Function( AuthProfileSetup value)?  profileSetup,}){
 final _that = this;
 switch (_that) {
 case AuthUnknown() when unknown != null:
 return unknown(_that);case AuthUnauthenticated() when unauthenticated != null:
 return unauthenticated(_that);case AuthAuthenticated() when authenticated != null:
 return authenticated(_that);case AuthTwoFactorPending() when twoFactorPending != null:
-return twoFactorPending(_that);case _:
+return twoFactorPending(_that);case AuthProfileSetup() when profileSetup != null:
+return profileSetup(_that);case _:
   return null;
 
 }
@@ -125,13 +128,14 @@ return twoFactorPending(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  unknown,TResult Function()?  unauthenticated,TResult Function( AuthSession session)?  authenticated,TResult Function( String challengeToken)?  twoFactorPending,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  unknown,TResult Function()?  unauthenticated,TResult Function( AuthSession session)?  authenticated,TResult Function( String challengeToken)?  twoFactorPending,TResult Function( AuthSession session)?  profileSetup,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AuthUnknown() when unknown != null:
 return unknown();case AuthUnauthenticated() when unauthenticated != null:
 return unauthenticated();case AuthAuthenticated() when authenticated != null:
 return authenticated(_that.session);case AuthTwoFactorPending() when twoFactorPending != null:
-return twoFactorPending(_that.challengeToken);case _:
+return twoFactorPending(_that.challengeToken);case AuthProfileSetup() when profileSetup != null:
+return profileSetup(_that.session);case _:
   return orElse();
 
 }
@@ -149,13 +153,14 @@ return twoFactorPending(_that.challengeToken);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  unknown,required TResult Function()  unauthenticated,required TResult Function( AuthSession session)  authenticated,required TResult Function( String challengeToken)  twoFactorPending,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  unknown,required TResult Function()  unauthenticated,required TResult Function( AuthSession session)  authenticated,required TResult Function( String challengeToken)  twoFactorPending,required TResult Function( AuthSession session)  profileSetup,}) {final _that = this;
 switch (_that) {
 case AuthUnknown():
 return unknown();case AuthUnauthenticated():
 return unauthenticated();case AuthAuthenticated():
 return authenticated(_that.session);case AuthTwoFactorPending():
-return twoFactorPending(_that.challengeToken);}
+return twoFactorPending(_that.challengeToken);case AuthProfileSetup():
+return profileSetup(_that.session);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -169,13 +174,14 @@ return twoFactorPending(_that.challengeToken);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  unknown,TResult? Function()?  unauthenticated,TResult? Function( AuthSession session)?  authenticated,TResult? Function( String challengeToken)?  twoFactorPending,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  unknown,TResult? Function()?  unauthenticated,TResult? Function( AuthSession session)?  authenticated,TResult? Function( String challengeToken)?  twoFactorPending,TResult? Function( AuthSession session)?  profileSetup,}) {final _that = this;
 switch (_that) {
 case AuthUnknown() when unknown != null:
 return unknown();case AuthUnauthenticated() when unauthenticated != null:
 return unauthenticated();case AuthAuthenticated() when authenticated != null:
 return authenticated(_that.session);case AuthTwoFactorPending() when twoFactorPending != null:
-return twoFactorPending(_that.challengeToken);case _:
+return twoFactorPending(_that.challengeToken);case AuthProfileSetup() when profileSetup != null:
+return profileSetup(_that.session);case _:
   return null;
 
 }
@@ -386,6 +392,81 @@ as String,
 }
 
 
+}
+
+/// @nodoc
+
+
+class AuthProfileSetup implements AuthState {
+  const AuthProfileSetup(this.session);
+  
+
+ final  AuthSession session;
+
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AuthProfileSetupCopyWith<AuthProfileSetup> get copyWith => _$AuthProfileSetupCopyWithImpl<AuthProfileSetup>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthProfileSetup&&(identical(other.session, session) || other.session == session));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,session);
+
+@override
+String toString() {
+  return 'AuthState.profileSetup(session: $session)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AuthProfileSetupCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
+  factory $AuthProfileSetupCopyWith(AuthProfileSetup value, $Res Function(AuthProfileSetup) _then) = _$AuthProfileSetupCopyWithImpl;
+@useResult
+$Res call({
+ AuthSession session
+});
+
+
+$AuthSessionCopyWith<$Res> get session;
+
+}
+/// @nodoc
+class _$AuthProfileSetupCopyWithImpl<$Res>
+    implements $AuthProfileSetupCopyWith<$Res> {
+  _$AuthProfileSetupCopyWithImpl(this._self, this._then);
+
+  final AuthProfileSetup _self;
+  final $Res Function(AuthProfileSetup) _then;
+
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? session = null,}) {
+  return _then(AuthProfileSetup(
+null == session ? _self.session : session // ignore: cast_nullable_to_non_nullable
+as AuthSession,
+  ));
+}
+
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AuthSessionCopyWith<$Res> get session {
+  
+  return $AuthSessionCopyWith<$Res>(_self.session, (value) {
+    return _then(_self.copyWith(session: value));
+  });
+}
 }
 
 // dart format on

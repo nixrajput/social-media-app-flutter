@@ -5,6 +5,7 @@ import '../../domain/models/auth_state.dart';
 import '../../features/auth/presentation/auth_controller.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/otp_verify_screen.dart';
+import '../../features/auth/presentation/profile_setup_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
 import '../../features/auth/presentation/two_factor_screen.dart';
 import '../../features/auth/presentation/welcome_screen.dart';
@@ -36,6 +37,10 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: Routes.twoFactor,
         builder: (_, _) => const TwoFactorScreen(),
+      ),
+      GoRoute(
+        path: Routes.profileSetup,
+        builder: (_, _) => const ProfileSetupScreen(),
       ),
       GoRoute(path: Routes.home, builder: (_, _) => const HomeShell()),
     ],

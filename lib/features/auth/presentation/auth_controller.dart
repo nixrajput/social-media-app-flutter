@@ -4,6 +4,7 @@ import '../../../data/repositories/auth_repository_impl.dart';
 import '../../../domain/models/auth_state.dart';
 import '../../../domain/models/login_result.dart';
 import '../../../domain/repositories/auth_repository.dart';
+import '../../../services/google_sign_in_service.dart';
 import '../../../services/secure_store.dart';
 
 part 'auth_controller.g.dart';
@@ -57,6 +58,38 @@ class AuthController extends _$AuthController {
         challengeToken,
       ),
     });
+  }
+
+  Future<void> loginWithGoogle() async {
+    final idToken = await ref.read(googleSignInServiceProvider).signInIdToken();
+    if (idToken == null) return; // user cancelled the Google prompt
+    final result = await _repo.oauthLogin(
+      provider: 'google',
+      idToken: idToken,
+      deviceName: _defaultDeviceName,
+      platform: _platform,
+    );
+    state = AsyncData(
+      result.needsProfile
+          ? AuthState.profileSetup(result.session)
+          : AuthState.authenticated(result.session),
+    );
+  }
+
+  Future<void> completeProfile({
+    required String displayName,
+    String? bio,
+  }) async {
+    final current = state.value;
+    if (current is! AuthProfileSetup) return;
+    await _repo.updateProfile(displayName: displayName, bio: bio);
+    state = AsyncData(AuthState.authenticated(current.session));
+  }
+
+  void skipProfileSetup() {
+    final current = state.value;
+    if (current is! AuthProfileSetup) return;
+    state = AsyncData(AuthState.authenticated(current.session));
   }
 
   Future<void> submit2fa(String totp) async {

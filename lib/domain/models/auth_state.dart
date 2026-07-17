@@ -11,4 +11,6 @@ sealed class AuthState with _$AuthState {
       AuthAuthenticated;
   const factory AuthState.twoFactorPending(String challengeToken) =
       AuthTwoFactorPending;
+  // Authenticated, but a brand-new OAuth account must finish the profile step.
+  const factory AuthState.profileSetup(AuthSession session) = AuthProfileSetup;
 }

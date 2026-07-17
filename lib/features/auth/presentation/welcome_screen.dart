@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/design/components/app_button.dart';
 import '../../../core/router/routes.dart';
+import 'google_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -32,6 +33,8 @@ class WelcomeScreen extends StatelessWidget {
                 variant: AppButtonVariant.secondary,
                 onPressed: () => context.push(Routes.login),
               ),
+              const SizedBox(height: 12),
+              const GoogleButton(),
             ],
           ),
         ),

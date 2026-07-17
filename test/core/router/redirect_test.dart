@@ -6,18 +6,18 @@ import 'package:rippl/domain/models/auth_state.dart';
 import 'package:rippl/domain/models/auth_tokens.dart';
 import 'package:rippl/domain/models/user.dart';
 
-AuthState _authed() => AuthState.authenticated(
-  AuthSession(
-    user: User(id: 'u', username: 'n', email: 'e', createdAt: DateTime(2026)),
-    tokens: AuthTokens(
-      accessToken: 'a',
-      accessExpiresAt: DateTime(2026),
-      refreshToken: 'r',
-      refreshExpiresAt: DateTime(2026, 2),
-    ),
-    deviceId: 'd',
+AuthSession _session() => AuthSession(
+  user: User(id: 'u', username: 'n', email: 'e', createdAt: DateTime(2026)),
+  tokens: AuthTokens(
+    accessToken: 'a',
+    accessExpiresAt: DateTime(2026),
+    refreshToken: 'r',
+    refreshExpiresAt: DateTime(2026, 2),
   ),
+  deviceId: 'd',
 );
+
+AuthState _authed() => AuthState.authenticated(_session());
 
 void main() {
   test('unauthenticated user on a protected route is sent to welcome', () {
@@ -40,5 +40,12 @@ void main() {
 
   test('no redirect when already on the right place', () {
     expect(redirectFor(_authed(), Routes.home), isNull);
+  });
+
+  test('profileSetup forces the profile-setup screen', () {
+    expect(
+      redirectFor(AuthState.profileSetup(_session()), Routes.home),
+      Routes.profileSetup,
+    );
   });
 }

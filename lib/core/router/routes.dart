@@ -5,5 +5,6 @@ abstract final class Routes {
   static const register = '/register';
   static const otp = '/register/otp';
   static const twoFactor = '/login/2fa';
+  static const profileSetup = '/profile-setup';
   static const home = '/home';
 }

@@ -15,6 +15,8 @@ String? redirectFor(AuthState state, String location) {
     AuthUnknown() => null,
     AuthTwoFactorPending() =>
       location == Routes.twoFactor ? null : Routes.twoFactor,
+    AuthProfileSetup() =>
+      location == Routes.profileSetup ? null : Routes.profileSetup,
     AuthUnauthenticated() =>
       _publicRoutes.contains(location) ? null : Routes.welcome,
     AuthAuthenticated() =>
