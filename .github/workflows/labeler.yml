@@ -1,0 +1,18 @@
+name: Labeler
+
+# Auto-labels PRs by the paths they touch (config in .github/labeler.yml).
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v5
+        with:
+          sync-labels: true

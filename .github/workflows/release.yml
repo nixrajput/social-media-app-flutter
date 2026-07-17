@@ -1,0 +1,40 @@
+name: Release
+
+# On push to the default branch (a merged PR), tag v<pubspec version> and
+# publish a GitHub Release with generated notes - unless the tag already exists.
+on:
+  push:
+    branches: ["master"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Tag and release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Read version
+        id: v
+        run: |
+          version=$(grep '^version:' pubspec.yaml | awk '{print $2}' | cut -d+ -f1)
+          echo "tag=v$version" >> "$GITHUB_OUTPUT"
+      - name: Release if new
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.v.outputs.tag }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1 \
+            || git ls-remote --tags origin "refs/tags/$TAG" | grep -q .; then
+            echo "Tag $TAG already exists - skipping."
+            exit 0
+          fi
+          gh release create "$TAG" --target "${{ github.sha }}" --title "$TAG" --generate-notes
+          echo "Released $TAG"

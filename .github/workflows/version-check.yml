@@ -1,0 +1,32 @@
+name: Version Check
+
+# Every PR into the default branch must bump pubspec.yaml "version". The Release
+# workflow turns that version into a tag + GitHub Release on merge.
+on:
+  pull_request:
+    branches: ["master"]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  version-bumped:
+    name: version bumped
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Compare pubspec version with base
+        run: |
+          git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+          pr=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          base=$(git show "origin/${{ github.base_ref }}:pubspec.yaml" | grep '^version:' | awk '{print $2}')
+          echo "base=$base  pr=$pr"
+          if [ "$base" = "$pr" ]; then
+            echo "::error::pubspec.yaml version not bumped (still $base). Bump it: patch for fixes, minor for features, major for breaking."
+            exit 1
+          fi
+          echo "Version bumped $base -> $pr"

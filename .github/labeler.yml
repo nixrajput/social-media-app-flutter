@@ -1,0 +1,19 @@
+# .github/labeler.yml - path-based PR auto-labels (actions/labeler@v5 format).
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ["**/*.md", "docs/**"]
+ci:
+  - changed-files:
+      - any-glob-to-any-file: [".github/**"]
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file: ["**/pubspec.yaml", "**/pubspec.lock"]
+tests:
+  - changed-files:
+      - any-glob-to-any-file: ["**/*_test.dart", "test/**"]
+android:
+  - changed-files:
+      - any-glob-to-any-file: ["android/**"]
+ios:
+  - changed-files:
+      - any-glob-to-any-file: ["ios/**"]
