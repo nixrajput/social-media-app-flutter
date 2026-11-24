@@ -46,7 +46,13 @@ void main() {
     await GetStorage.init();
   });
 
-  tearDownAll(() => dir.delete(recursive: true));
+  tearDownAll(() async {
+    // GetStorage writes its .bak file without awaiting it. Let it land, or it
+    // creates the deleted directory again.
+    await GetStorage().save();
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    await dir.delete(recursive: true);
+  });
 
   setUp(() async {
     await GetStorage().erase();
