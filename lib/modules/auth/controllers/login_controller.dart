@@ -93,13 +93,11 @@ class LoginController extends GetxController {
           var fcmToken = await _auth.readFcmTokenFromLocalStorage();
 
           if (fcmToken.isNotEmpty) {
-            AppUtility.log('fcmToken: $fcmToken');
             await _auth.saveFcmToken(fcmToken);
           } else {
             AppUtility.log('Generating FCM token');
             var messaging = FirebaseMessaging.instance;
             var token = await messaging.getToken();
-            AppUtility.log('fcmToken: $token');
             await _auth.saveFcmTokenToLocalStorage(token!);
             await _auth.saveFcmToken(token);
           }
