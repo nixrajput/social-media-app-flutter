@@ -83,6 +83,7 @@ dev_dependencies:
   hive_ce_generator: 1.12.1
   json_serializable: 6.15.2
   copy_with_extension_gen: 18.0.1
+  flutter_secure_storage_platform_interface: 2.1.1
 
 flutter:
   uses-material-design: true

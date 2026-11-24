@@ -79,24 +79,36 @@ class AuthService extends GetxService {
     AppUtility.log('Local Data Removed');
   }
 
-  // Versions before 1.1.0 kept these in plain GetStorage. Move them once.
-  Future<void> _moveLegacySecretsToSecureStorage() async {
-    if (await StorageService.hasData('loginData')) {
-      var data = jsonEncode(StorageService.read('loginData'));
-      await _secureStorage.write(key: 'loginData', value: data);
-      await StorageService.remove('loginData');
-    }
-    if (await StorageService.hasData('fcmToken')) {
-      var data = String.fromCharCodes(
-          base64Decode(StorageService.read('fcmToken') as String));
-      await _secureStorage.write(key: 'fcmToken', value: data);
-      await StorageService.remove('fcmToken');
+  // Versions before 1.1.0 kept [key] in plain GetStorage. If moving it fails,
+  // use the plaintext copy for this launch and keep it, so the next launch retries.
+  Future<String?> _readSecret(
+    String key,
+    String Function(dynamic) decode,
+  ) async {
+    try {
+      if (!await StorageService.hasData(key)) {
+        return await _secureStorage.read(key: key);
+      }
+      var value = decode(StorageService.read(key));
+      try {
+        await _secureStorage.write(key: key, value: value);
+        await StorageService.remove(key);
+      } catch (e) {
+        AppUtility.log('Keeping $key in plain storage: $e', tag: 'error');
+      }
+      return value;
+    } catch (e) {
+      AppUtility.log('Reading $key failed: $e', tag: 'error');
+      return null;
     }
   }
 
   Future<Map<String, dynamic>?> readLoginDataFromLocalStorage() async {
-    await _moveLegacySecretsToSecureStorage();
-    var data = await _secureStorage.read(key: 'loginData');
+    // Versions before 1.0.1+24 saved the session as a JSON string.
+    var data = await _readSecret(
+      'loginData',
+      (legacy) => legacy is String ? legacy : jsonEncode(legacy),
+    );
 
     if (data != null) {
       AppUtility.log('Login Data Found');
@@ -133,8 +145,10 @@ class AuthService extends GetxService {
   }
 
   Future<String> readFcmTokenFromLocalStorage() async {
-    await _moveLegacySecretsToSecureStorage();
-    var data = await _secureStorage.read(key: 'fcmToken');
+    var data = await _readSecret(
+      'fcmToken',
+      (legacy) => String.fromCharCodes(base64Decode(legacy as String)),
+    );
 
     if (data != null) {
       AppUtility.log('Fcm Token Found');
