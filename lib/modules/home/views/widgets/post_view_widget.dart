@@ -102,16 +102,14 @@ class PostViewWidget extends StatelessWidget {
                   );
                 },
               ).toList(),
-              options: CarouselOptions(
-                aspectRatio: 1 / 1,
-                viewportFraction: 1.0,
-                showIndicator: false,
-                onPageChanged: (int index, CarouselPageChangedReason reason) {
-                  setInnerState(() {
-                    currentItem = index;
-                  });
-                },
-              ),
+              aspectRatio: 1 / 1,
+              viewportFraction: 1.0,
+              indicator: null,
+              onPageChanged: (int index, CarouselPageChangedReason reason) {
+                setInnerState(() {
+                  currentItem = index;
+                });
+              },
             ),
           ),
           if (post.mediaFiles!.length > 1) Dimens.boxHeight8,

@@ -50,20 +50,16 @@ class ReportAppIssueController extends GetxController {
   }
 
   void selectMultipleFiles() async {
-    final filePicker = FilePicker.platform;
     var fileList = <PlatformFile>[];
     const maxImageBytes = 1048576;
 
     /// Pick Files
-    final pickedFiles = await filePicker.pickFiles(
-      allowMultiple: true,
-      withReadStream: true,
-      allowCompression: false,
+    final pickedFiles = await FilePicker.pickFiles(
       type: FileType.image,
     );
 
-    if (pickedFiles != null) {
-      fileList = pickedFiles.files;
+    if (pickedFiles.isNotEmpty) {
+      fileList = pickedFiles;
       for (var file in fileList) {
         var croppedImage = File(file.path!);
         File? resultFile = croppedImage;

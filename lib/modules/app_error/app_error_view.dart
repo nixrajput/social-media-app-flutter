@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rive/rive.dart';
+import 'package:social_media_app/app_widgets/rive_asset_widget.dart';
 import 'package:social_media_app/constants/assets.dart';
 import 'package:social_media_app/constants/dimens.dart';
 import 'package:social_media_app/constants/strings.dart';
@@ -43,10 +43,7 @@ class AppErrorView extends StatelessWidget {
                 SizedBox(
                   width: Dimens.screenWidth * 0.75,
                   height: Dimens.screenWidth * 0.75,
-                  child: const RiveAnimation.asset(
-                    RiveAssets.error,
-                    alignment: Alignment.center,
-                  ),
+                  child: const NxRiveAssetWidget(asset: RiveAssets.error),
                 ),
                 Dimens.boxHeight16,
                 Text(

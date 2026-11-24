@@ -21,7 +21,7 @@ class NxVideoPlayerWidget extends StatefulWidget {
     this.thumbnailUrl,
   }) : super(key: key);
 
-  final BetterPlayerConfiguration? configuration;
+  final PlayerConfiguration? configuration;
   final bool? isSmallPlayer;
   final VoidCallback? onTap;
   final bool showControls;
@@ -80,12 +80,12 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
   }
 
   _init() {
-    var betterPlayerDataSource = BetterPlayerDataSource(
+    var betterPlayerDataSource = PlayerDataSource(
       widget.url.contains("https") || widget.url.contains("http")
-          ? BetterPlayerDataSourceType.network
-          : BetterPlayerDataSourceType.file,
+          ? DataSourceType.network
+          : DataSourceType.file,
       widget.url,
-      cacheConfiguration: const BetterPlayerCacheConfiguration(
+      cacheConfiguration: const CacheConfiguration(
         useCache: true,
         maxCacheSize: 1024 * 1024 * 1024,
         maxCacheFileSize: 1024 * 1024 * 1024,
@@ -93,7 +93,7 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
       ),
     );
 
-    var kDefaultConfiguration = BetterPlayerConfiguration(
+    var kDefaultConfiguration = PlayerConfiguration(
       autoDispose: true,
       autoPlay: false,
       fit: BoxFit.contain,
@@ -121,9 +121,9 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
           }
         }
       },
-      controlsConfiguration: BetterPlayerControlsConfiguration(
+      controlsConfiguration: PlayerControlsConfiguration(
         showControlsOnInitialize: false,
-        playerTheme: BetterPlayerTheme.custom,
+        playerTheme: PlayerTheme.custom,
         customControlsBuilder: (controller, onControlsVisibilityChanged) =>
             CustomControlsWidget(
           controller: controller,
@@ -139,7 +139,7 @@ class _NxVideoPlayerWidgetState extends State<NxVideoPlayerWidget> {
     _playerController = BetterPlayerController(kDefaultConfiguration);
     _playerController.setupDataSource(betterPlayerDataSource);
     _playerController.addEventsListener((event) {
-      if (event.betterPlayerEventType == BetterPlayerEventType.play) {
+      if (event.betterPlayerEventType == PlayerEventType.play) {
         _setPlaceholderVisibleState(false);
       }
     });

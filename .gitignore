@@ -48,4 +48,3 @@ app.*.map.json
 
 /lib/constants/secrets.dart
 local.properties
-pubspec.lock

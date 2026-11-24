@@ -129,7 +129,7 @@ class PostWidget extends StatelessWidget {
       );
 
   Widget _buildPostTime(BuildContext context) {
-    GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
+    GetTimeAgo.registerLocale('en', customMessages);
     return GetTimeAgoWidget(
       date: post.createdAt!.toLocal(),
       pattern: 'dd MMM yy',
@@ -276,16 +276,17 @@ class PostWidget extends StatelessWidget {
                 );
               },
             ).toList(),
-            options: CarouselOptions(
-              height: Dimens.screenWidth * 0.75,
-              aspectRatio: 1 / 1,
-              viewportFraction: 1.0,
-              showIndicator: true,
-              floatingIndicator: false,
-              slideIndicator: CircularWaveSlideIndicator(
-                indicatorRadius: Dimens.four,
-                itemSpacing: Dimens.twelve,
+            height: Dimens.screenWidth * 0.75,
+            aspectRatio: 1 / 1,
+            viewportFraction: 1.0,
+            indicator: CarouselIndicator(
+              painter: CircularWaveIndicator(
+                style: SlideIndicatorStyle(
+                  radius: Dimens.four,
+                  spacing: Dimens.twelve,
+                ),
               ),
+              placement: CarouselIndicatorPlacement.below,
             ),
           ),
         ),

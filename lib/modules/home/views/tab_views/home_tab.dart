@@ -302,15 +302,14 @@ class HomeTabView extends StatelessWidget {
                               ),
                             ))
                         .toList(),
-                    options: CarouselOptions(
-                        height: Dimens.eighty,
-                        viewportFraction: 1.0,
-                        showIndicator: false,
-                        onPageChanged: (int index, reason) {
-                          setInnerState(() {
-                            currentItem = index;
-                          });
-                        }),
+                    height: Dimens.eighty,
+                    viewportFraction: 1.0,
+                    indicator: null,
+                    onPageChanged: (int index, reason) {
+                      setInnerState(() {
+                        currentItem = index;
+                      });
+                    },
                   ),
                   if (bannerLogic.bannerList.length > 1) Dimens.boxHeight4,
                   if (bannerLogic.bannerList.length > 1)

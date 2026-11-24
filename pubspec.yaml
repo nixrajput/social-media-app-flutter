@@ -3,97 +3,86 @@ description: A social media app using Flutter, Dart, GetX, and REST API that all
 
 publish_to: "none"
 
-version: 1.0.1+31
+version: 1.1.0+32
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ^3.13.0
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.6
+  cupertino_icons: 2.0.0
 
-  device_info_plus: ^9.0.3
-  package_info_plus: ^4.1.0
-  geolocator: ^10.1.0
-  geocoding: ^2.1.0
+  device_info_plus: 13.3.0
+  package_info_plus: 10.2.2
 
-  talker_flutter: ^3.3.1
+  talker_flutter: 5.2.0
 
-  flutter_svg: ^2.0.7
-  image_picker: ^1.0.4
-  image_cropper: ^5.0.0
-  photo_view: ^0.14.0
-  cached_network_image: ^3.3.0
-  fast_cached_network_image: ^1.2.0
-  flutter_carousel_widget: ^2.1.0
+  flutter_svg: 2.5.0
+  image_picker: 1.2.4
+  image_cropper: 14.0.0
+  photo_view: 0.15.0
+  cached_network_image: 4.0.7
+  flutter_carousel_widget: 4.0.2
 
-  flutter_animate: ^4.2.0+1
-  # rive: ^0.11.3
+  flutter_animate: 4.5.2
+  rive: 0.14.11
 
-  connectivity_plus: ^4.0.2
-  intl: ^0.18.1
-  get_time_ago: ^1.2.5
+  connectivity_plus: 7.3.2
+  intl: 0.20.3
+  get_time_ago: 3.0.2
 
-  dio: ^5.3.3
-  http: ^1.1.0
+  http: 1.6.0
 
-  cloudinary: ^1.2.0
-  r_upgrade: ^0.4.2
+  cloudinary: 2.1.2
+  r_upgrade: 0.4.2
 
-  libsignal_protocol_dart: ^0.7.1
+  libsignal_protocol_dart: 0.8.2
 
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
+  hive_ce: 2.24.0
+  flutter_secure_storage: 11.2.0
 
-  url_launcher: ^6.1.14
-  flutter_linkify: ^6.0.0
-  share_plus: ^7.1.0
+  url_launcher: 6.3.3
+  flutter_linkify: 6.0.0
+  share_plus: 13.3.1
 
-  flutter_local_notifications: ^15.1.1
-  firebase_core: ^2.16.0
-  firebase_messaging: ^14.6.8
+  flutter_local_notifications: 23.0.4
+  firebase_core: 5.2.0
+  firebase_messaging: 17.1.0
 
-  # better_player: ^0.0.83
-  video_player: ^2.7.2
-  video_editor: ^3.0.0
-  just_audio: ^0.9.35
+  better_player: 1.39.0
 
-  emoji_picker_flutter: ^1.6.1
-  path: ^1.8.3
-  file_picker: ^5.5.0
-  path_provider: ^2.1.1
-  flutter_markdown: ^0.6.17+4
-  flutter_image_compress: ^2.0.4
-  video_compress_ds: ^3.1.6
+  path: 1.9.1
+  file_picker: 13.4.1
+  path_provider: 2.1.6
+  flutter_markdown_plus: 1.0.12
+  flutter_image_compress: 2.5.1
+  video_compress_ds: 3.1.6
 
-  flutter_screenutil: ^5.9.0
-  permission_handler: ^11.0.0
-  flutter_datetime_picker: ^1.5.1
+  flutter_screenutil: 5.9.3
+  permission_handler: 13.0.2
+  flutter_datetime_picker_plus: 3.0.1
 
   # State Management
-  flutter_bloc: ^8.1.3
-
-  get: ^4.6.6
-  get_storage: ^2.1.1
-  built_value: ^8.6.3
-  json_annotation: ^4.8.1
-  equatable: ^2.0.5
-  copy_with_extension: ^5.0.4
+  get: 4.7.3
+  get_storage: 2.1.1
+  json_annotation: 4.12.0
+  equatable: 3.0.0
+  copy_with_extension: 18.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.3
-  flutter_launcher_icons: ^0.13.1
-  flutter_native_splash: ^2.3.3
+  flutter_lints: 6.0.0
+  flutter_launcher_icons: 0.14.4
+  flutter_native_splash: 2.4.8
 
-  build_runner: ^2.4.6
-  hive_generator: ^2.0.1
-  json_serializable: ^6.7.1
-  copy_with_extension_gen: ^5.0.4
+  build_runner: 2.17.1
+  hive_ce_generator: 1.12.1
+  json_serializable: 6.15.2
+  copy_with_extension_gen: 18.0.1
 
 flutter:
   uses-material-design: true

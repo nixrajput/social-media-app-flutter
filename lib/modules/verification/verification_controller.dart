@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
-import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/routes/route_management.dart';
 import 'package:social_media_app/utils/file_utility.dart';
@@ -22,10 +21,8 @@ class VerificationController extends GetxController {
 
   final FocusScopeNode focusNode = FocusScopeNode();
 
-  var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME',
-      defaultValue: AppSecrets.cloudinaryCloudName);
-  var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
-      defaultValue: AppSecrets.cloudinaryUploadPreset);
+  var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME');
+  var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET');
 
   final _isLoading = false.obs;
   final _legalName = ''.obs;
@@ -168,15 +165,15 @@ class VerificationController extends GetxController {
   }
 
   Future<Map<String, dynamic>?> _uploadDocument(File file) async {
-    final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
+    final cloudinary = Cloudinary.unsigned(cloudName: cloudName);
 
     try {
-      var res = await cloudinary.unsignedUpload(
+      var res = await cloudinary.upload.unsignedUpload(
         uploadPreset: uploadPreset,
-        file: file.path,
+        file: CloudinaryFileSource.path(file.path),
         resourceType: CloudinaryResourceType.auto,
         folder: "social_media_api/verification/documents",
-        progressCallback: (count, total) {
+        onProgress: (count, total) {
           var progress = ((count / total) * 100).toStringAsFixed(2);
           AppUtility.log('Uploading Document : $progress %');
         },

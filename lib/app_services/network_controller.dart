@@ -42,12 +42,12 @@ class NetworkController {
 
   void _checkForInternetConnectivity() {
     _streamSubscription =
-        _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.mobile) {
+        _connectivity.onConnectivityChanged.listen((List<ConnectivityResult> results) {
+      if (results.contains(ConnectivityResult.mobile)) {
         isConnected = true;
         _connectionStatusController.add(true);
         AppUtility.log('Internet Connection Available');
-      } else if (result == ConnectivityResult.wifi) {
+      } else if (results.contains(ConnectivityResult.wifi)) {
         isConnected = true;
         _connectionStatusController.add(true);
         AppUtility.log('Internet Connection Available');
