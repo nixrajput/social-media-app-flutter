@@ -4,6 +4,7 @@ import 'dart:math' show Random;
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +19,7 @@ import 'package:social_media_app/services/storage_service.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 class AuthService extends GetxService {
+  static const _secureStorage = FlutterSecureStorage();
   final _apiProvider = ApiProvider(http.Client());
   int _deviceId = 0;
   int _expiresAt = 0;
@@ -68,6 +70,8 @@ class AuthService extends GetxService {
   }
 
   Future<void> deleteAllLocalDataAndCache() async {
+    await _secureStorage.delete(key: 'loginData');
+    await _secureStorage.delete(key: 'fcmToken');
     await StorageService.remove('loginData');
     await StorageService.remove('profileData');
     await StorageService.remove("fcmToken");
@@ -75,13 +79,28 @@ class AuthService extends GetxService {
     AppUtility.log('Local Data Removed');
   }
 
-  Future<Map<String, dynamic>?> readLoginDataFromLocalStorage() async {
-    var hasData = await StorageService.hasData('loginData');
+  // Versions before 1.1.0 kept these in plain GetStorage. Move them once.
+  Future<void> _moveLegacySecretsToSecureStorage() async {
+    if (await StorageService.hasData('loginData')) {
+      var data = jsonEncode(StorageService.read('loginData'));
+      await _secureStorage.write(key: 'loginData', value: data);
+      await StorageService.remove('loginData');
+    }
+    if (await StorageService.hasData('fcmToken')) {
+      var data = String.fromCharCodes(
+          base64Decode(StorageService.read('fcmToken') as String));
+      await _secureStorage.write(key: 'fcmToken', value: data);
+      await StorageService.remove('fcmToken');
+    }
+  }
 
-    if (hasData) {
+  Future<Map<String, dynamic>?> readLoginDataFromLocalStorage() async {
+    await _moveLegacySecretsToSecureStorage();
+    var data = await _secureStorage.read(key: 'loginData');
+
+    if (data != null) {
       AppUtility.log('Login Data Found');
-      var data = StorageService.read('loginData') as Map<String, dynamic>;
-      return data;
+      return jsonDecode(data) as Map<String, dynamic>;
     } else {
       AppUtility.log('No Login Data Found', tag: 'error');
       return null;
@@ -99,7 +118,7 @@ class AuthService extends GetxService {
       StringValues.expiresAt: expiresAt,
     };
 
-    await StorageService.write('loginData', data);
+    await _secureStorage.write(key: 'loginData', value: jsonEncode(data));
     AppUtility.log('Login Data Saved to Local Storage');
   }
 
@@ -109,17 +128,17 @@ class AuthService extends GetxService {
       return;
     }
 
-    await StorageService.write('fcmToken', base64Encode(fcmToken.codeUnits));
+    await _secureStorage.write(key: 'fcmToken', value: fcmToken);
     AppUtility.log('Fcm Token Saved to Local Storage');
   }
 
   Future<String> readFcmTokenFromLocalStorage() async {
-    var hasData = await StorageService.hasData('fcmToken');
+    await _moveLegacySecretsToSecureStorage();
+    var data = await _secureStorage.read(key: 'fcmToken');
 
-    if (hasData) {
+    if (data != null) {
       AppUtility.log('Fcm Token Found');
-      var data = StorageService.read('fcmToken');
-      return String.fromCharCodes(base64Decode(data));
+      return data;
     } else {
       AppUtility.log('No Fcm Token Found', tag: 'error');
       return '';
