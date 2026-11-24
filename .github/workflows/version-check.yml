@@ -1,0 +1,32 @@
+name: Version Check
+
+on:
+  pull_request:
+    branches: ["master"]
+
+permissions:
+  contents: read
+
+jobs:
+  version-bumped:
+    name: version bumped
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Compare pubspec version with base
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          version() { grep '^version:' | tr -d '\r' | awk '{print $2}'; }
+          pr=$(version < pubspec.yaml)
+          base=$(git show "origin/$BASE_REF:pubspec.yaml" | version)
+          echo "base=$base pr=$pr"
+          newest=$(printf '%s\n%s\n' "$base" "$pr" | sort -V | tail -n 1)
+          if [ "$pr" = "$base" ] || [ "$newest" != "$pr" ]; then
+            echo "::error::Bump the pubspec.yaml version above $base."
+            exit 1
+          fi
+          echo "Version bumped $base -> $pr"
