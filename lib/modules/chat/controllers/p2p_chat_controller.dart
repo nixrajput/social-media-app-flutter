@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:cloudinary/cloudinary.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive_ce.dart';
 import 'package:http/http.dart' as http;
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/media_file.dart';
@@ -17,7 +17,6 @@ import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/apis/providers/socket_api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
 import 'package:social_media_app/constants/dimens.dart';
-import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/helpers/global_string_key.dart';
 import 'package:social_media_app/modules/chat/controllers/chat_controller.dart';
@@ -78,10 +77,8 @@ class P2PChatController extends GetxController {
 
   User? user;
 
-  var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME',
-      defaultValue: AppSecrets.cloudinaryCloudName);
-  var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
-      defaultValue: AppSecrets.cloudinaryUploadPreset);
+  var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME');
+  var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET');
 
   void onChangedText(value) {
     _message.value = value;
@@ -152,20 +149,21 @@ class P2PChatController extends GetxController {
   }
 
   Future<Map<String, dynamic>?> _uploadVideo(File file, File thumbnail) async {
-    final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
+    final cloudinary = Cloudinary.unsigned(cloudName: cloudName);
 
-    var thumbnailUploadTask = await cloudinary.unsignedUpload(
-      uploadPreset: uploadPreset,
-      file: thumbnail.path,
-      resourceType: CloudinaryResourceType.image,
-      folder: 'social_media_api/chats/thumbnails',
-      progressCallback: (count, total) {
-        var progress = ((count / total) * 100).toStringAsFixed(2);
-        AppUtility.log('Uploading Thumbnail : $progress %');
-      },
-    );
-
-    if (!thumbnailUploadTask.isSuccessful) {
+    final UploadResult thumbnailUploadTask;
+    try {
+      thumbnailUploadTask = await cloudinary.upload.unsignedUpload(
+        uploadPreset: uploadPreset,
+        file: CloudinaryFileSource.path(thumbnail.path),
+        resourceType: CloudinaryResourceType.image,
+        folder: 'social_media_api/chats/thumbnails',
+        onProgress: (count, total) {
+          var progress = ((count / total) * 100).toStringAsFixed(2);
+          AppUtility.log('Uploading Thumbnail : $progress %');
+        },
+      );
+    } on CloudinaryException {
       AppUtility.showSnackBar(
         'Thumbnail upload failed',
         StringValues.error,
@@ -174,12 +172,12 @@ class P2PChatController extends GetxController {
     }
 
     try {
-      var res = await cloudinary.unsignedUpload(
+      var res = await cloudinary.upload.unsignedUpload(
         uploadPreset: uploadPreset,
-        file: file.path,
+        file: CloudinaryFileSource.path(file.path),
         resourceType: CloudinaryResourceType.video,
         folder: "social_media_api/chats/videos",
-        progressCallback: (count, total) {
+        onProgress: (count, total) {
           var progress = ((count / total) * 100).toStringAsFixed(2);
           AppUtility.log('Uploading Video : $progress %');
         },
@@ -201,15 +199,15 @@ class P2PChatController extends GetxController {
   }
 
   Future<Map<String, dynamic>?> _uploadImage(File file) async {
-    final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
+    final cloudinary = Cloudinary.unsigned(cloudName: cloudName);
 
     try {
-      var res = await cloudinary.unsignedUpload(
+      var res = await cloudinary.upload.unsignedUpload(
         uploadPreset: uploadPreset,
-        file: file.path,
+        file: CloudinaryFileSource.path(file.path),
         resourceType: CloudinaryResourceType.image,
         folder: "social_media_api/chats/images",
-        progressCallback: (count, total) {
+        onProgress: (count, total) {
           var progress = ((count / total) * 100).toStringAsFixed(2);
           AppUtility.log('Uploading Image : $progress %');
         },

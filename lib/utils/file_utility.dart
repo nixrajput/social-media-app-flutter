@@ -64,12 +64,13 @@ abstract class FileUtility {
 
     var timestamp = DateTime.now().millisecondsSinceEpoch;
     AppUtility.log('Compressing...');
-    resultFile = await FlutterImageCompress.compressAndGetFile(
+    final compressed = await FlutterImageCompress.compressAndGetFile(
       resultFile.path,
       '${tempDir.absolute.path}/temp$timestamp.jpg',
       quality: 60,
       format: CompressFormat.jpeg,
     );
+    resultFile = compressed == null ? null : File(compressed.path);
     size = resultFile!.lengthSync();
 
     /// ----------------------------------------------------------------
@@ -229,23 +230,19 @@ abstract class FileUtility {
   }
 
   static Future<List<File>?> selectMultipleVideos() async {
-    final filePicker = FilePicker.platform;
     var fileList = <File>[];
 
-    final pickedVideos = await filePicker.pickFiles(
-      allowMultiple: true,
-      withReadStream: true,
-      allowCompression: false,
+    final pickedVideos = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['mp4', 'mkv'],
     );
 
-    if (pickedVideos!.files.isEmpty) {
+    if (pickedVideos.isEmpty) {
       AppUtility.log('No video selected');
       return null;
     }
 
-    for (var video in pickedVideos.files) {
+    for (var video in pickedVideos) {
       var videoFile = File(video.path!);
       var size = videoFile.lengthSync();
 
@@ -263,56 +260,45 @@ abstract class FileUtility {
   }
 
   static Future<File?> selectDocument() async {
-    final filePicker = FilePicker.platform;
 
-    final pickedDocument = await filePicker.pickFiles(
-      allowMultiple: false,
-      withReadStream: true,
-      allowCompression: false,
+    final pickedDocument = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'png', 'jpg', 'jpeg'],
     );
 
-    if (pickedDocument!.files.isEmpty) {
+    if (pickedDocument == null) {
       AppUtility.log('No document selected');
       return null;
     }
 
-    for (var doc in pickedDocument.files) {
-      var document = File(doc.path!);
-      var size = document.lengthSync();
+    var document = File(pickedDocument.path!);
+    var size = document.lengthSync();
 
-      if (size > (5 * maxImageBytes)) {
-        AppUtility.showSnackBar(
-          'Document size must be less than 5 mb',
-          '',
-        );
-      } else {
-        return document;
-      }
+    if (size > (5 * maxImageBytes)) {
+      AppUtility.showSnackBar(
+        'Document size must be less than 5 mb',
+        '',
+      );
+      return null;
     }
 
-    return null;
+    return document;
   }
 
   static Future<List<File>?> selectMultipleDocuments() async {
-    final filePicker = FilePicker.platform;
     var fileList = <File>[];
 
-    final pickedDocuments = await filePicker.pickFiles(
-      allowMultiple: true,
-      withReadStream: true,
-      allowCompression: false,
+    final pickedDocuments = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'png', 'jpg', 'jpeg'],
     );
 
-    if (pickedDocuments!.files.isEmpty) {
+    if (pickedDocuments.isEmpty) {
       AppUtility.log('No document selected');
       return null;
     }
 
-    for (var video in pickedDocuments.files) {
+    for (var video in pickedDocuments) {
       var videoFile = File(video.path!);
       var size = videoFile.lengthSync();
 
@@ -335,6 +321,7 @@ abstract class FileUtility {
       int? maxHeight,
       CropAspectRatio? aspectRatio}) async {
     final imageCropper = ImageCropper();
+    final presets = aspectRatioPresets ?? [CropAspectRatioPreset.square];
 
     final croppedImage = await imageCropper.cropImage(
       sourcePath: imageFile.path,
@@ -344,20 +331,18 @@ abstract class FileUtility {
       aspectRatio:
           aspectRatio ?? const CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
       compressQuality: 100,
-      aspectRatioPresets: aspectRatioPresets ??
-          [
-            CropAspectRatioPreset.square,
-          ],
       uiSettings: [
         AndroidUiSettings(
           toolbarColor: Theme.of(context).scaffoldBackgroundColor,
           toolbarTitle: StringValues.cropImage,
           toolbarWidgetColor: Theme.of(context).colorScheme.primary,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          aspectRatioPresets: presets,
         ),
         IOSUiSettings(
           title: StringValues.cropImage,
           minimumAspectRatio: 1.0,
+          aspectRatioPresets: presets,
         ),
       ],
     );

@@ -55,7 +55,7 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
   }
 
   calculateDuration() {
-    var splitDur = widget.controller!.videoPlayerController!.value.duration;
+    var splitDur = widget.controller!.videoPlayerValue!.duration;
     setState(() {
       totalDuration = splitDur!.inSeconds;
     });
@@ -102,36 +102,36 @@ class CustomControlsWidgetState extends State<CustomControlsWidget> {
     }
   }
 
-  void onPlayerEvent(BetterPlayerEvent evt) {
+  void onPlayerEvent(PlayerEvent evt) {
     /// AppUtility.log('Video Player Event: ${evt.betterPlayerEventType}');
-    if (evt.betterPlayerEventType == BetterPlayerEventType.initialized) {
-      if (widget.controller!.videoPlayerController!.value.volume > 0) {
+    if (evt.betterPlayerEventType == PlayerEventType.initialized) {
+      if (widget.controller!.videoPlayerValue!.volume > 0) {
         setState(() {
           isMuted = false;
         });
       }
       calculateDuration();
     }
-    if (evt.betterPlayerEventType == BetterPlayerEventType.play) {
+    if (evt.betterPlayerEventType == PlayerEventType.play) {
       if (widget.controller!.isPlaying() == true) {
         playProgressTimer();
       }
     }
 
-    if (evt.betterPlayerEventType == BetterPlayerEventType.pause) {
+    if (evt.betterPlayerEventType == PlayerEventType.pause) {
       if (widget.controller!.isPlaying() == false) {
         pauseProgressTimer();
       }
     }
 
-    if (evt.betterPlayerEventType == BetterPlayerEventType.finished) {
+    if (evt.betterPlayerEventType == PlayerEventType.finished) {
       resetProgressTimer();
       widget.controller!.seekTo(Duration.zero).then((_) {
         widget.controller!.pause();
       });
     }
 
-    if (evt.betterPlayerEventType == BetterPlayerEventType.progress) {
+    if (evt.betterPlayerEventType == PlayerEventType.progress) {
       if (progressSeconds > 9 &&
           progressSeconds.remainder(10) == 0 &&
           showControls == true) {

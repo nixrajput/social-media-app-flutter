@@ -1,46 +1,35 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:rive/rive.dart';
 
-class RiveTimerAnimatedIcon extends StatefulWidget {
-  const RiveTimerAnimatedIcon({
-    super.key,
-    required this.asset,
-    this.artboard,
-    this.initAnimation,
-    this.autoPlay,
-  });
+class NxRiveAssetWidget extends StatefulWidget {
+  const NxRiveAssetWidget({super.key, required this.asset});
 
   final String asset;
-  final String? artboard;
-  final String? initAnimation;
-  final bool? autoPlay;
 
   @override
-  State<RiveTimerAnimatedIcon> createState() => _RiveTimerAnimatedIconState();
+  State<NxRiveAssetWidget> createState() => _NxRiveAssetWidgetState();
 }
 
-class _RiveTimerAnimatedIconState extends State<RiveTimerAnimatedIcon> {
-  late RiveAnimationController<dynamic> controller;
+class _NxRiveAssetWidgetState extends State<NxRiveAssetWidget> {
+  late final _fileLoader = FileLoader.fromAsset(
+    widget.asset,
+    riveFactory: Factory.rive,
+  );
 
   @override
-  void initState() {
-    super.initState();
-    controller = SimpleAnimation(
-      widget.initAnimation ?? 'idle',
-      autoplay: widget.autoPlay ?? true,
-    );
+  void dispose() {
+    _fileLoader.dispose();
+    super.dispose();
   }
-
-  void togglePlay() =>
-      setState(() => controller.isActive = !controller.isActive);
 
   @override
   Widget build(BuildContext context) {
-    return RiveAnimation.asset(
-      widget.asset,
-      artboard: widget.artboard,
-      controllers: [controller],
-      antialiasing: true,
+    return RiveWidgetBuilder(
+      fileLoader: _fileLoader,
+      builder: (context, state) => switch (state) {
+        RiveLoaded() => RiveWidget(controller: state.controller),
+        _ => const SizedBox.shrink(),
+      },
     );
   }
 }

@@ -108,7 +108,7 @@ class CommentWidget extends StatelessWidget {
       );
 
   Widget _buildPostTime(BuildContext context) {
-    GetTimeAgo.setCustomLocaleMessages('en', CustomMessages());
+    GetTimeAgo.registerLocale('en', customMessages);
     return GetTimeAgoWidget(
       date: comment.createdAt!.toLocal(),
       pattern: 'dd MMM yy',

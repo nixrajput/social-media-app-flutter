@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_ce/hive_ce.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:rive/rive.dart' show RiveNative;
 import 'package:social_media_app/apis/models/entities/chat_message.dart';
 import 'package:social_media_app/apis/models/entities/comment.dart';
 import 'package:social_media_app/apis/models/entities/follower.dart';
@@ -40,6 +42,7 @@ import 'package:social_media_app/utils/utility.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await RiveNative.init();
   await _initPreAppServices();
   final networkService = NetworkController.instance;
   await networkService.init();
@@ -74,7 +77,7 @@ Future<void> _initPostAppServices() async {
 Future<void> _initPreAppServices() async {
   AppUtility.log('Initializing PreApp Services');
   await GetStorage.init();
-  await Hive.initFlutter();
+  Hive.init((await getApplicationDocumentsDirectory()).path);
 
   AppUtility.log('Registering Hive Adapters');
 

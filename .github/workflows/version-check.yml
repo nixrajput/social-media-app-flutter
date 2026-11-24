@@ -1,0 +1,48 @@
+name: Version Check
+
+# A PR that changes only .github/, the .fvmrc pin or agent docs ships nothing,
+# so it needs no bump. The job still passes, so the required check reports.
+on:
+  pull_request:
+    branches: ["master"]
+
+permissions:
+  contents: read
+
+jobs:
+  version-bumped:
+    name: version bumped
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Detect a no-ship change
+        id: scope
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          changed=$(git diff --name-only --no-renames "$BASE...$HEAD")
+          if grep -vqE '^(\.github/|\.fvmrc$|AGENTS\.md$|CLAUDE\.md$|\.claude/)' <<< "$changed"; then
+            echo "ship=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Only .github/, .fvmrc or agent docs changed - no bump needed"
+            echo "ship=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Compare pubspec version with base
+        if: steps.scope.outputs.ship == 'true'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          version() { grep '^version:' | tr -d '\r' | awk '{print $2}'; }
+          pr=$(version < pubspec.yaml)
+          base=$(git show "origin/$BASE_REF:pubspec.yaml" | version)
+          echo "base=$base pr=$pr"
+          newest=$(printf '%s\n%s\n' "$base" "$pr" | sort -V | tail -n 1)
+          if [ "$pr" = "$base" ] || [ "$newest" != "$pr" ]; then
+            echo "::error::Bump the pubspec.yaml version above $base."
+            exit 1
+          fi
+          echo "Version bumped $base -> $pr"

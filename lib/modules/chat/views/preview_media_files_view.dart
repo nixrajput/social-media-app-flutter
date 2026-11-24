@@ -204,16 +204,14 @@ class PreviewMediaFilesView extends StatelessWidget {
                                           ],
                                         );
                                       },
-                                      options: CarouselOptions(
-                                        height: Dimens.screenHeight * 0.75,
-                                        viewportFraction: 1.0,
-                                        showIndicator: false,
-                                        onPageChanged: (int index, reason) {
-                                          setInnerState(() {
-                                            currentItem = index;
-                                          });
-                                        },
-                                      ),
+                                      height: Dimens.screenHeight * 0.75,
+                                      viewportFraction: 1.0,
+                                      indicator: null,
+                                      onPageChanged: (int index, reason) {
+                                        setInnerState(() {
+                                          currentItem = index;
+                                        });
+                                      },
                                     ),
                                   ),
                                 ],

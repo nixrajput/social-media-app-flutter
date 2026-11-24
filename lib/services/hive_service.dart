@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive_ce.dart';
 import 'package:social_media_app/utils/utility.dart';
 
 abstract class HiveService {

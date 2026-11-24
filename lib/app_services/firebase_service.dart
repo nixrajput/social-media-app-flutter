@@ -267,7 +267,6 @@ Future<void> onMessage(RemoteMessage message) async {
 @pragma('vm:entry-point')
 Future<void> onBackgroundMessage(RemoteMessage message) async {
   debugPrint("Handling a background message");
-  debugPrint('Message data: ${message.data}');
 
   if (message.data.isNotEmpty) {
     var messageData = message.data;

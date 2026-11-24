@@ -48,4 +48,20 @@ app.*.map.json
 
 /lib/constants/secrets.dart
 local.properties
-pubspec.lock
+
+# Secrets, keys and local data
+.env
+.env.*
+!.env.example
+key.properties
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+**/google-services.json
+**/GoogleService-Info.plist
+*.db
+*.sqlite
+*.sqlite3
+*.hive

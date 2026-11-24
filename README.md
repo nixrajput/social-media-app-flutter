@@ -65,7 +65,7 @@ Rippl is a social media application developed using Flutter and managed with the
 
 ### Prerequisites
 
-- [Flutter](https://flutter.dev) installed on your development machine.
+- [Flutter](https://flutter.dev) 3.50 (stable), the version pinned in `.fvmrc`.
 
 ### Installation
 
@@ -89,20 +89,15 @@ Rippl is a social media application developed using Flutter and managed with the
     flutter pub get
     ```
 
-5. Create an environment file (`.env`) in the root of the project and add the following:
-  
-    ```env
-    API_BASE_URL=your_base_url
-    SHOW_LOGS=true_or_flase
-    ```
-
-    Replace `your_base_url` and `true_or_flase` with the appropriate values.
-
-6. Run the app on an Android emulator or physical device:
+5. Run the app on an Android emulator or physical device. Media uploads need your Cloudinary cloud name and an unsigned upload preset:
 
     ```bash
-    flutter run
+    flutter run \
+      --dart-define=CLOUDINARY_CLOUD_NAME=your_cloud_name \
+      --dart-define=CLOUDINARY_UPLOAD_PRESET=your_unsigned_preset
     ```
+
+    These values are compiled into the app. Restrict the unsigned preset to the folders and formats the app uploads, and never pass an API secret.
 
 ## Development
 
@@ -113,7 +108,8 @@ Rippl is a social media application developed using Flutter and managed with the
 ## Known Issues
 
 - The app is currently in development, and certain features may be incomplete.
-- Limited platform support: Android devices only.
+- Limited platform support: Android devices only, Android 7.0 (API 24) or later.
+- The Android Gradle setup (Android Gradle Plugin 4.1, Gradle 7.6, Kotlin 1.8, imperative Flutter plugin apply) is older than Flutter 3.50 accepts, so `flutter run` and `flutter build apk` fail until it is migrated.
 - We are also open to bug reports. If you would like to report a bug, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to fix the bug as soon as possible.
 
 ## Future Roadmap

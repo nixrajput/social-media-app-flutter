@@ -256,19 +256,20 @@ class CreatePostView extends StatelessWidget {
                 ),
         );
       },
-      options: CarouselOptions(
-        height: Dimens.screenWidth * 0.8,
-        aspectRatio: 1 / 1,
-        viewportFraction: 1.0,
-        showIndicator: true,
-        floatingIndicator: false,
-        onPageChanged: (index, reason) {
-          logic.onChangeFile(index);
-        },
-        slideIndicator: CircularWaveSlideIndicator(
-          indicatorRadius: Dimens.four,
-          itemSpacing: Dimens.twelve,
+      height: Dimens.screenWidth * 0.8,
+      aspectRatio: 1 / 1,
+      viewportFraction: 1.0,
+      onPageChanged: (index, reason) {
+        logic.onChangeFile(index);
+      },
+      indicator: CarouselIndicator(
+        painter: CircularWaveIndicator(
+          style: SlideIndicatorStyle(
+            radius: Dimens.four,
+            spacing: Dimens.twelve,
+          ),
         ),
+        placement: CarouselIndicatorPlacement.below,
       ),
     );
   }

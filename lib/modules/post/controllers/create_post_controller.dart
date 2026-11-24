@@ -14,7 +14,6 @@ import 'package:social_media_app/apis/models/entities/post.dart';
 import 'package:social_media_app/apis/models/responses/hashtag_response.dart';
 import 'package:social_media_app/apis/providers/api_provider.dart';
 import 'package:social_media_app/app_services/auth_service.dart';
-import 'package:social_media_app/constants/secrets.dart';
 import 'package:social_media_app/constants/strings.dart';
 import 'package:social_media_app/modules/home/controllers/post_controller.dart';
 import 'package:social_media_app/modules/home/controllers/profile_controller.dart';
@@ -88,10 +87,8 @@ class CreatePostController extends GetxController {
     update();
   }
 
-  var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME',
-      defaultValue: AppSecrets.cloudinaryCloudName);
-  var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET',
-      defaultValue: AppSecrets.cloudinaryUploadPreset);
+  var cloudName = const String.fromEnvironment('CLOUDINARY_CLOUD_NAME');
+  var uploadPreset = const String.fromEnvironment('CLOUDINARY_UPLOAD_PRESET');
 
   @override
   onInit() {
@@ -171,7 +168,7 @@ class CreatePostController extends GetxController {
   // }
 
   Future<void> _createNewPost() async {
-    final cloudinary = Cloudinary.unsignedConfig(cloudName: cloudName);
+    final cloudinary = Cloudinary.unsigned(cloudName: cloudName);
     var mediaFiles = <Object>[];
 
     AppUtility.showLoadingDialog(message: "Compressing...");
@@ -201,18 +198,19 @@ class CreatePostController extends GetxController {
           position: 500,
         );
 
-        var thumbnailUploadTask = await cloudinary.unsignedUpload(
-          uploadPreset: uploadPreset,
-          file: thumbnailFile.path,
-          resourceType: CloudinaryResourceType.image,
-          folder: 'social_media_api/posts/thumbnails',
-          progressCallback: (count, total) {
-            var progress = ((count / total) * 100).toStringAsFixed(2);
-            AppUtility.log('Uploading Thumbnail : $progress %');
-          },
-        );
-
-        if (!thumbnailUploadTask.isSuccessful) {
+        final UploadResult thumbnailUploadTask;
+        try {
+          thumbnailUploadTask = await cloudinary.upload.unsignedUpload(
+            uploadPreset: uploadPreset,
+            file: CloudinaryFileSource.path(thumbnailFile.path),
+            resourceType: CloudinaryResourceType.image,
+            folder: 'social_media_api/posts/thumbnails',
+            onProgress: (count, total) {
+              var progress = ((count / total) * 100).toStringAsFixed(2);
+              AppUtility.log('Uploading Thumbnail : $progress %');
+            },
+          );
+        } on CloudinaryException {
           AppUtility.showSnackBar(
             'Thumbnail upload failed',
             StringValues.error,
@@ -221,12 +219,12 @@ class CreatePostController extends GetxController {
         }
 
         await cloudinary
-            .unsignedUpload(
+            .upload.unsignedUpload(
           uploadPreset: uploadPreset,
-          file: file.path,
+          file: CloudinaryFileSource.path(file.path),
           resourceType: CloudinaryResourceType.video,
           folder: "social_media_api/posts/videos",
-          progressCallback: (count, total) {
+          onProgress: (count, total) {
             var progress = ((count / total) * 100).toStringAsFixed(2);
             AppUtility.log('Uploading Video : $progress %');
           },
@@ -249,12 +247,12 @@ class CreatePostController extends GetxController {
         });
       } else {
         await cloudinary
-            .unsignedUpload(
+            .upload.unsignedUpload(
           uploadPreset: uploadPreset,
-          file: file.path,
+          file: CloudinaryFileSource.path(file.path),
           resourceType: CloudinaryResourceType.image,
           folder: "social_media_api/posts/images",
-          progressCallback: (count, total) {
+          onProgress: (count, total) {
             var progress = ((count / total) * 100).toStringAsFixed(2);
             AppUtility.log('Uploading : $progress %');
           },
@@ -323,24 +321,20 @@ class CreatePostController extends GetxController {
   /// Pick Image
 
   Future<void> _selectMultipleImages() async {
-    final filePicker = FilePicker.platform;
     var fileList = <PlatformFile>[];
     const maxImageBytes = 1048576;
 
     /// Pick Files
-    final pickedFiles = await filePicker.pickFiles(
-      allowMultiple: true,
-      withReadStream: true,
-      allowCompression: false,
+    final pickedFiles = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['png', 'jpg', 'jpeg'],
     );
 
-    if (pickedFiles == null) {
+    if (pickedFiles.isEmpty) {
       return;
     }
 
-    fileList = pickedFiles.files;
+    fileList = pickedFiles;
     for (var file in fileList) {
       var imageFile = File(file.path!);
       File? resultFile = imageFile;
@@ -436,7 +430,7 @@ class CreatePostController extends GetxController {
     }
 
     _pickedFileList.removeAt(index);
-    _pickedFileList.insert(index, resultFile);
+    _pickedFileList.insert(index, File(resultFile.path));
     update();
 
     AppUtility.closeDialog();
@@ -446,24 +440,20 @@ class CreatePostController extends GetxController {
   /// Pick Video
 
   Future<void> _selectMultipleVideos() async {
-    final filePicker = FilePicker.platform;
     var fileList = <PlatformFile>[];
     const maxVideoBytes = 10485760;
 
     /// Pick Files
-    final pickedFiles = await filePicker.pickFiles(
-      allowMultiple: true,
-      withReadStream: true,
-      allowCompression: false,
+    final pickedFiles = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['mp4', 'mkv'],
     );
 
-    if (pickedFiles == null) {
+    if (pickedFiles.isEmpty) {
       return;
     }
 
-    fileList = pickedFiles.files;
+    fileList = pickedFiles;
     for (var file in fileList) {
       var imageFile = File(file.path!);
       File? resultFile = imageFile;

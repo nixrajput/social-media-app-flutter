@@ -21,7 +21,7 @@ class NotificationService {
         iOS: _iosInitSettings,
         android: _androidInitSettings,
       );
-      await _notificationPlugin.initialize(initializationSettings);
+      await _notificationPlugin.initialize(settings: initializationSettings);
       _initialized = true;
     }
     AppUtility.log('Notification Service Initialized');
@@ -62,10 +62,10 @@ class NotificationService {
     );
 
     await _notificationPlugin.show(
-      id ?? 0,
-      title,
-      body,
-      platformNot,
+      id: id ?? 0,
+      title: title,
+      body: body,
+      notificationDetails: platformNot,
       payload: 'Default_Sound',
     );
   }
@@ -112,10 +112,8 @@ class NotificationService {
         NotificationDetails(android: androidNotificationDetails);
 
     await _notificationPlugin.show(
-      id ?? 0,
-      null,
-      null,
-      notificationDetails,
+      id: id ?? 0,
+      notificationDetails: notificationDetails,
     );
   }
 
@@ -161,10 +159,8 @@ class NotificationService {
         NotificationDetails(android: androidNotificationDetails);
 
     await _notificationPlugin.show(
-      id ?? 0,
-      null,
-      null,
-      notificationDetails,
+      id: id ?? 0,
+      notificationDetails: notificationDetails,
     );
   }
 
@@ -206,10 +202,10 @@ class NotificationService {
     );
 
     await _notificationPlugin.show(
-      id ?? 0,
-      title,
-      body,
-      platformNot,
+      id: id ?? 0,
+      title: title,
+      body: body,
+      notificationDetails: platformNot,
     );
   }
 
@@ -284,10 +280,10 @@ class NotificationService {
         NotificationDetails(android: androidNotificationDetails);
 
     await _notificationPlugin.show(
-      2,
-      'message title',
-      'message body',
-      notificationDetails,
+      id: 2,
+      title: 'message title',
+      body: 'message body',
+      notificationDetails: notificationDetails,
     );
 
     // wait 10 seconds and add another message to simulate another response
@@ -296,22 +292,22 @@ class NotificationService {
           DateTime.now().add(const Duration(minutes: 11)), null));
 
       await _notificationPlugin.show(
-        2,
-        'message title',
-        'message body',
-        notificationDetails,
+        id: 2,
+        title: 'message title',
+        body: 'message body',
+        notificationDetails: notificationDetails,
       );
     });
   }
 
   /// Cancel Notification With ID
   Future<void> cancelNotification(int id) async {
-    await _notificationPlugin.cancel(id);
+    await _notificationPlugin.cancel(id: id);
   }
 
   /// Cancel Notification With ID and Tag
   Future<void> cancelNotificationWithTag(int id, String tag) async {
-    await _notificationPlugin.cancel(id, tag: tag);
+    await _notificationPlugin.cancel(id: id, tag: tag);
   }
 
   /// Cancel All Notification

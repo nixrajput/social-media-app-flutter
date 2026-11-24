@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
@@ -17,7 +18,9 @@ import 'package:url_launcher/url_launcher.dart';
 abstract class AppUtility {
   /// Logger
 
-  static final logger = TalkerFlutter.init();
+  static final logger = TalkerFlutter.init(
+    settings: TalkerSettings(enabled: !kReleaseMode),
+  );
 
   static void log(dynamic message, {String? tag}) {
     switch (tag) {
@@ -269,10 +272,12 @@ abstract class AppUtility {
   static void showShareDialog(BuildContext context, String text,
       {String? subject}) async {
     final box = context.findRenderObject() as RenderBox?;
-    await Share.share(
-      text,
-      subject: subject,
-      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    await SharePlus.instance.share(
+      ShareParams(
+        text: text,
+        subject: subject,
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      ),
     );
   }
 
@@ -451,6 +456,7 @@ abstract class AppUtility {
   /// --------------------------------------------------------------------------
 
   static void printLog(message) {
+    if (kReleaseMode) return;
     debugPrint(
         "=======================================================================");
     debugPrint(message.toString(), wrapWidth: 1024);
@@ -460,12 +466,13 @@ abstract class AppUtility {
 
   /// --------------------------------------------------------------------------
 
+  static bool canOpenUrl(Uri url) =>
+      const ['http', 'https', 'mailto'].contains(url.scheme);
+
   /// Open Url
   static Future<void> openUrl(Uri url) async {
-    if (!await launchUrl(
-      url,
-      mode: LaunchMode.externalApplication,
-    )) {
+    if (!canOpenUrl(url) ||
+        !await launchUrl(url, mode: LaunchMode.externalApplication)) {
       showSnackBar("Couldn't launch url", StringValues.error);
     }
   }

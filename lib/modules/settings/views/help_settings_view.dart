@@ -175,7 +175,7 @@ class HelpSettingsView extends StatelessWidget {
                       talker: AppUtility.logger,
                       appBarTitle: 'Logs',
                       theme: TalkerScreenTheme(
-                        backgroudColor:
+                        backgroundColor:
                             Theme.of(context).scaffoldBackgroundColor,
                       ),
                     ),
