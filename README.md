@@ -108,7 +108,7 @@ Rippl is a social media application developed using Flutter and managed with the
 ## Known Issues
 
 - The app is currently in development, and certain features may be incomplete.
-- Limited platform support: Android devices only.
+- Limited platform support: Android devices only, Android 7.0 (API 24) or later.
 - The Android Gradle setup (Android Gradle Plugin 4.1, Gradle 7.6, Kotlin 1.8, imperative Flutter plugin apply) is older than Flutter 3.50 accepts, so `flutter run` and `flutter build apk` fail until it is migrated.
 - We are also open to bug reports. If you would like to report a bug, please feel free to open an [issue](https://github.com/nixrajput/social-media-app-flutter/issues). We will try to fix the bug as soon as possible.
 
